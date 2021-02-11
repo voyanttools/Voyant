@@ -34,6 +34,19 @@ a {
     background-color: #f5f5f5;
 }
 
+/*
+@font-face {
+  font-family : 'FontAwesome';
+  src         : url('../fontawesome/4.4.0/fonts/fontawesome-webfont.eot?32940503');
+  src         : url('../fontawesome/4.4.0/fonts/fontawesome-webfont.eot?32940503#iefix') 
+        format('embedded-opentype'), url('../fontawesome/4.4.0/fonts/fontawesome-webfont.woff?32940503') 
+        format('woff'), url('../fontawesome/4.4.0/fonts/fontawesome-webfont.ttf?32940503') format('truetype'), 
+        url('../fontawesome/4.4.0/fonts/fontawesome-webfont.svg?32940503#FontAwesome') format('svg');
+  font-weight : normal;
+  font-style  : normal;
+}
+*/
+
 .info-tip {
     border-bottom: thin dotted #aaf;
 }
@@ -210,6 +223,12 @@ svg.cirrusGraph text {
     span.cc {
 	    font-family: 'CC-ICONS';
     }
+ 
+ /* loading animation */
+#pageloading {position:absolute;top:50%;width:100%;margin-top:-70px}
+#pageloading .title{font-family:"Exo",sans-serif;font-size:2em;color:gray;text-align:center;white-space:nowrap;display:block}
+#pageloading .logo{background:url(rotating-owl.gif) no-repeat center;display:block;height:121px}
+ 
  
 .mask-no-spinner .x-mask-msg-text {
     background: transparent !important;
