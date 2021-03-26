@@ -515,13 +515,12 @@ Ext.define('Voyant.notebook.Notebook', {
 		const data = this.generateExportHtml();
 		const metadata = this.getMetadata().clone(); // use a clone so that altering title and description doesn't affect original
 
-		// get text content of title and description
-		const textContainer = document.createElement('div');
-		textContainer.innerHTML = metadata.title;
-		metadata.title = textContainer.textContent;
-		textContainer.innerHTML = metadata.description;
-		metadata.description = textContainer.textContent;
-		textContainer.remove();
+		if (metadata.title) {
+			metadata.title = metadata.title.replace(/<\/?\w+.*?>/g, '');
+		}
+		if (metadata.description) {
+			metadata.description = metadata.description.replace(/<\/?\w+.*?>/g, '');
+		}
 
 		if (metadata.keywords) {
 			metadata.keywords = metadata.keywords.split(/[\s,]+/).reduce(function(keywordsArray, keyword) {

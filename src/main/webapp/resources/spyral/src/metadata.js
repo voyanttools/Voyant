@@ -22,7 +22,7 @@ class Metadata {
 	 */
 	constructor(config) {
 		['title', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
-			this[key] = undefined;
+			this[key] = '';
 		})
 		this.version = "0.1"; // may be changed by config
 		if (config instanceof HTMLDocument) {
