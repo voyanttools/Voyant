@@ -94,3 +94,7 @@ table.spyral-table td:last-child {
 	background-color: rgba(0,0,0,.01);
 	border-top: rgba(0,0,0,.05);
 }
+
+.catalogue .facets .x-panel-header {
+	cursor: pointer;
+}

@@ -52,6 +52,28 @@ Ext.define('Voyant.notebook.Catalogue', {
 				'</div>',
 			'</tpl>'
 		);
+		this.suggestedStore = Ext.create('Ext.data.JsonStore', {
+			fields: [
+				{name: 'id'},
+				{name: 'author'},
+				{name: 'title'},
+				{name: 'description'},
+				{name: 'keywords'},
+				{name: 'language'},
+				{name: 'license'},
+				{name: 'created', type: 'date'},
+				{name: 'modified', type: 'date'},
+				{name: 'version'}
+			]
+		});
+		this.suggestedTemplate = new Ext.XTemplate(
+			'<tpl for=".">',
+				'<div class="catalogue-notebook" style="height: auto !important;">',
+					'<div class="title" title="{title}">{title}</div>',
+					'<div class="description"><i class="fa fa-info-circle" aria-hidden="true"></i> {description}</div>',
+				'</div>',
+			'</tpl>'
+		);
 		this.callParent(arguments);
 	},
 
@@ -63,9 +85,10 @@ Ext.define('Voyant.notebook.Catalogue', {
 		if (this.window === undefined) {
 			this.window = Ext.create('Ext.window.Window', {
 				title: this.localize('title'),
-				width: 800,
+				width: 850,
 				height: 675,
 				modal: true,
+				cls: 'catalogue',
 				layout: 'border',
 				items: [{
 					xtype: 'panel',
@@ -137,38 +160,44 @@ Ext.define('Voyant.notebook.Catalogue', {
 					title: this.localize('browse'),
 					flex: 1,
 					itemId: 'facets',
+					cls: 'facets',
 					layout: {
 						type: 'accordion',
 						animate: false,
 						multi: true,
+						fill: false,
 						align: 'stretch',
+						titleCollapse: true,
 						hideCollapseTool: true
 					},
 					defaults: {
-						xtype: 'facet',
-						flex: 1
+						xtype: 'facet'
 					},
 					items: [{
 						title: this.localize('keywords'),
 						facet: 'facet.keywords',
+						flex: 3,
 						store: Ext.create('Voyant.data.store.NotebookFacets', {
 							facet: 'facet.keywords'
 						})
 					},{
 						title: this.localize('author'),
 						facet: 'facet.author',
+						flex: 2,
 						store: Ext.create('Voyant.data.store.NotebookFacets', {
 							facet: 'facet.author'
 						})
 					},{
 						title: this.localize('language'),
 						facet: 'facet.language',
+						flex: 1,
 						store: Ext.create('Voyant.data.store.NotebookFacets', {
 							facet: 'facet.language'
 						})
 					},{
 						title: this.localize('license'),
 						facet: 'facet.license',
+						flex: 1,
 						store: Ext.create('Voyant.data.store.NotebookFacets', {
 							facet: 'facet.license'
 						})
@@ -177,11 +206,26 @@ Ext.define('Voyant.notebook.Catalogue', {
 					xtype: 'panel',
 					region: 'east',
 					collapsible: true,
-					collapsed: true,
+					collapsed: false,
 					title: this.localize('suggested'),
-					flex: 1,
+					width: 230,
+					layout: 'fit',
 					items: [{
-
+						xtype: 'dataview',
+						padding: 10,
+						scrollable: 'vertical',
+						itemId: 'suggestedNotebooks',
+						store: this.suggestedStore,
+						tpl: this.suggestedTemplate,
+						itemSelector: 'div.catalogue-notebook',
+						overItemCls: 'catalogue-notebook-over',
+						selectedItemCls: 'catalogue-notebook-selected',
+						listeners: {
+							itemdblclick: function(view, record, el) {
+								this.fireEvent('notebookSelected', this, record.get('id'));
+							},
+							scope: this
+						}
 					}]
 				}],
 				closeAction: 'hide',
@@ -209,6 +253,10 @@ Ext.define('Voyant.notebook.Catalogue', {
 			this.window.down('#queryfield').setValue('');
 			this.window.down('#catalogue').getSelectionModel().deselectAll();
 			this.store.removeAll();
+		}
+
+		if (this.suggestedStore.isLoaded() === false) {
+			this.getSuggestedNotebooks();
 		}
 
 		this.window.show();
@@ -265,5 +313,20 @@ Ext.define('Voyant.notebook.Catalogue', {
 		}).catch(function(err) {
 			me.window.unmask()
 		});
+	},
+
+	getSuggestedNotebooks: function() {
+		var notebookIds = ['homeALTA', 'startALTA', 'createALTA', 'smallerALTA', 'tableALTA'];
+		var query = 'id:'+notebookIds.join(' OR id:');
+		var me = this;
+		Spyral.Load.trombone({
+			tool: 'notebook.NotebookFinder',
+			query: query,
+			noCache: 1
+		}).then(function(json) {
+			me.suggestedStore.loadRawData(json.catalogue.notebooks);
+			me.suggestedStore.sort('modified', 'DESC');
+		}).catch(function(err) {
+		})
 	}
 });
