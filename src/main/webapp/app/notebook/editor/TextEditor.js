@@ -67,6 +67,13 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 					}
 				}, this)
 				
+				editor.on('contentDom', function() {
+					var editable = editor.editable();
+					editable.attachListener(editable, 'click', function(evt) {
+						// prevent further listeners from firing, esp. the one that prevents links from working ( https://stackoverflow.com/a/45616460 )
+						evt.stop();
+					}, null, null, 0); // zero (i.e. very high) priority
+				})
 				
 				editor.on("blur", function(evt) {
 //					cmp.setEditor(undefined);
