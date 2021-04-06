@@ -14,7 +14,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 			search: 'Search',
 			noResults: 'No matching notebooks',
 			suggested: 'Suggested Notebooks',
-			load: 'Load Selected Notebook'
+			load: 'Load Selected Notebook',
+			cancel: 'Cancel'
 		}
 	},
 
@@ -68,9 +69,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 		});
 		this.suggestedTemplate = new Ext.XTemplate(
 			'<tpl for=".">',
-				'<div class="catalogue-notebook" style="height: auto !important;">',
+				'<div class="catalogue-notebook" style="height: auto !important;" title="{description}">',
 					'<div class="title" title="{title}">{title}</div>',
-					'<div class="description"><i class="fa fa-info-circle" aria-hidden="true"></i> {description}</div>',
 				'</div>',
 			'</tpl>'
 		);
@@ -85,8 +85,9 @@ Ext.define('Voyant.notebook.Catalogue', {
 		if (this.window === undefined) {
 			this.window = Ext.create('Ext.window.Window', {
 				title: this.localize('title'),
-				width: 850,
-				height: 675,
+				width: '80%',
+				height: '80%',
+				maximizable: true,
 				modal: true,
 				cls: 'catalogue',
 				layout: 'border',
@@ -208,7 +209,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 					collapsible: true,
 					collapsed: false,
 					title: this.localize('suggested'),
-					width: 230,
+					width: 250,
 					layout: 'fit',
 					items: [{
 						xtype: 'dataview',
@@ -230,10 +231,20 @@ Ext.define('Voyant.notebook.Catalogue', {
 				}],
 				closeAction: 'hide',
 				buttons: [{
+					text: this.localize('cancel'),
+					ui: 'default-toolbar',
+					handler: function(but) {
+						this.window.close();
+					},
+					scope: this
+				},{
 					text: this.localize('load'),
 					handler: function(but) {
-						var record = this.window.down('#catalogue').getSelection()[0]
-						if (record !== undefined) {
+						var record = this.window.down('#catalogue').getSelection()[0];
+						if (record === undefined) {
+							record = this.window.down('#suggestedNotebooks').getSelection()[0];
+						}
+						if (record) {
 							this.fireEvent('notebookSelected', this, record.get('id'))
 						}
 					},
@@ -316,12 +327,13 @@ Ext.define('Voyant.notebook.Catalogue', {
 	},
 
 	getSuggestedNotebooks: function() {
-		var notebookIds = ['homeALTA', 'startALTA', 'createALTA', 'smallerALTA', 'tableALTA'];
-		var query = 'id:'+notebookIds.join(' OR id:');
+		var notebookIds = ['aboutspyral', 'homeALTA', 'startALTA', 'createALTA', 'smallerALTA', 'tableALTA'];
+		var query = 'id:'+notebookIds.join('|id:');
 		var me = this;
 		Spyral.Load.trombone({
 			tool: 'notebook.NotebookFinder',
 			query: query,
+			parse: false,
 			noCache: 1
 		}).then(function(json) {
 			me.suggestedStore.loadRawData(json.catalogue.notebooks);
