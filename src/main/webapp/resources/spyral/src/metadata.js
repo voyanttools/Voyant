@@ -31,6 +31,14 @@ class Metadata {
 				if (name && this.hasOwnProperty(name)) {
 					var content = meta.getAttribute("content");
 					if (content) {
+						if (name === 'keywords') {
+							if (content.search(',') === -1 && content.match(/\s+/g).length > 1) {
+								// backwards compatibility: if there are no commas but multiple spaces then assume space delimited keywords
+								content = content.split(/\s+/);
+							} else {
+								content = content.split(',');
+							}
+						}
 						this[name] = content;
 					}
 				}
@@ -79,7 +87,13 @@ class Metadata {
 			headers = "<title>"+(this.title || "").replace(tags,"")+"</title>\n"
 		for (var key in this) {
 			if (this[key]) {
-				headers+='<meta name="'+key+'" content="'+this[key].replace(quotes, "&quot;").replace(newlines, " ")+'">';
+				if (typeof this[key] === 'string') {
+					headers+='<meta name="'+key+'" content="'+this[key].replace(quotes, "&quot;").replace(newlines, " ")+'">';
+				} else {
+					// assume array
+					const array2string = this[key].join(',');
+					headers+='<meta name="'+key+'" content="'+array2string.replace(quotes, "&quot;").replace(newlines, " ")+'">';
+				}
 			}
 		}
 		return headers;

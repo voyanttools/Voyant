@@ -523,7 +523,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 
 		if (metadata.keywords) {
-			metadata.keywords = metadata.keywords.split(/[\s,]+/).reduce(function(keywordsArray, keyword) {
+			if (Array.isArray(metadata.keywords) === false) {
+				metadata.keywords = metadata.keywords.split(/[\s,]+/)
+			}
+			metadata.keywords = metadata.keywords.reduce(function(keywordsArray, keyword) {
 				if (keyword.length > 0) {
 					keywordsArray.push(keyword.toLowerCase());
 				}
@@ -1067,9 +1070,25 @@ Ext.define('Voyant.notebook.Notebook', {
 							fieldLabel: this.localize("metadataAuthor"),
 							name: 'author'
 						},{
-							// TODO convert to tag field?
 							fieldLabel: this.localize("metadataKeywords"),
-							name: 'keywords'
+							name: 'keywords',
+							xtype: 'tagfield',
+							store: Ext.create('Voyant.data.store.NotebookFacets', {
+								facet: 'facet.keywords'
+							}),
+							displayField: 'label',
+							valueField: 'label',
+							queryMode: 'local',
+							filterPickList: true,
+							forceSelection: false,
+							delimiter: ',',
+							createNewOnEnter: true,
+							listeners: {
+								afterrender: function(cmp) {
+									// use remote to populate store once, then query it locally
+									cmp.getStore().load();
+								}
+							}
 						},{
 							xtype: 'htmleditor',
 							fieldLabel: this.localize("metadataDescription"),
