@@ -5,6 +5,7 @@ Ext.define('Voyant.panel.Documents', {
 	isConsumptive: true,
     statics: {
     	i18n: {
+			newCorpusError: 'There was an error creating the new the corpus. You may not have permission to do this.'
     	},
     	api: {
     		query: undefined,
@@ -461,7 +462,17 @@ Ext.define('Voyant.panel.Documents', {
 //    				view.unmask();
 //    				app.showErrorResponse({message: message}, response);
 //    			});
-    		}
+    		},
+			failure: function(response) {
+				view.unmask();
+				Ext.Msg.show({
+					title: this.localize('error'),
+					message: this.localize('newCorpusError'),
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			},
+			scope: this
     	});
     	
     	// close editing window if we're in modal mode, should happen asynchronously while new corpus is created
