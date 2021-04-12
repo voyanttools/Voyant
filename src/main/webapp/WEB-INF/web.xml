@@ -89,6 +89,15 @@
         <jsp-file>/spyral/cookie/index.jsp</jsp-file>
 	</servlet>
     
+	<servlet-mapping>
+        <servlet-name>spyral-sandbox</servlet-name>
+        <url-pattern>/spyral/sandbox.jsp</url-pattern>
+    </servlet-mapping>
+	<servlet>
+        <servlet-name>spyral-sandbox</servlet-name>
+        <jsp-file>/spyral/sandbox.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>spyral</servlet-name>
         <url-pattern>/spyral/*</url-pattern>
