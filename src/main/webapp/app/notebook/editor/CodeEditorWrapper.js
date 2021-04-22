@@ -187,10 +187,10 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 						xtype: 'notebookwrapperrun',
 						hidden: !runnable,
 						listeners: {
-							click: {
-								fn: this.run,
-								scope: this
-							}
+							click: function() {
+								this.run();
+							},
+							scope: this
 						}
 					},{
 						glyph: 'xf050@FontAwesome',
@@ -255,14 +255,76 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			        }
 			    ]
 			}],
-			items: [this.editor]
+			items: [this.editor],
+			listeners: {
+				resize: function(cmp, nw, nh, ow, oh) {
+					// console.log('resize', nh, oh, nw, ow);
+				},
+				removed: function() {
+					window.removeEventListener('message', handleResults);
+				}
+			}
 		});
 
 		if (config.uiHtml !== undefined) {
 			this.items.push(this._getUIComponent(config.uiHtml))
 		}
 
-		this.results = this._getResultsComponent(Ext.Array.from(config.output).join(""), config);
+		this.results = this._getResultsComponent(config);
+		
+		var initHtml = Ext.Array.from(config.output).join("");
+		var initIntervalID;
+
+		var me = this;
+		var handleResults = function(e) {
+			var frame = me.results.getFrame();
+			if (e.source === frame.contentWindow) {
+				if (e.data.type) {
+					switch (e.data.type) {
+						case 'error':
+							console.log('iframe error:', e.data.value);
+							break;
+						case 'command':
+							console.log('iframe command:', e.data.value);
+							switch (e.data.value) {
+								case 'init':
+									clearInterval(initIntervalID);
+									me.results.update(initHtml);
+									break;
+								case 'clear':
+									me.getTargetEl().fireEvent('resize');
+									break;
+							}
+							break;
+						case 'result':
+							console.log('iframe result:', e.data.value);
+							break;
+					}
+
+					if (e.data.output) {
+						me.results.cachedResultsOutput = e.data.output;
+					}
+
+					// console.log('height', e.data.height);
+					if (e.data.height > 0) {
+						me._setResultsHeight(e.data.height);
+					}
+					var height = 20;
+					me.items.each(function(item) {height+=item.getHeight();})
+					me.setSize({height: height});
+					
+				} else {
+					console.warn('unrecognized message!', e);
+				}
+			}
+		}
+		window.addEventListener('message', handleResults);
+
+		initIntervalID = setInterval(function() {
+			console.log('interval init');
+			me.results._sendMessage({type: 'command', command: 'init'});
+		}, 100);
+
 		this.results.setVisible(runnable);
 		this.items.push(this.results);
 		
@@ -274,10 +336,10 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		var me = this;
 		me.on("afterrender", function() {
 			this.getTargetEl().on("resize", function(el) {
-				me._setResultsHeight();
-
+				// me._setResultsHeight();
 				var height = 20;
 				me.items.each(function(item) {height+=item.getHeight();})
+				// console.log('resize setSize', height);
 				me.setSize({height: height});
 			});
 		}, this);
@@ -298,22 +360,23 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	/**
 	 * Run the code in this editor.
 	 * @param {boolean} forceRun True to force the code to run, otherwise a check is performed to see if previous editors have already run.
+	 * @param {array} priorCode Code from prior cells that should be run before this cell's code
 	 */
-	run: function(forceRun) {
+	run: function(forceRun, priorCode) {
 		if (this.editor.getMode()==='ace/mode/javascript') { // only run JS
 			if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
-				return this._run();
+				return this._run(priorCode);
 			} else {
 				// this code was for checking if previous cells hadn't been run, but it didn't seem worthwhile
 				var notebook = this.up('notebook');
 				Ext.Array.each(notebook.query('notebookcodeeditorwrapper'), function(wrapper) {
-					if (wrapper===this) {this._run(); return false;} // break
+					if (wrapper===this) {this._run(priorCode); return false;} // break
 					if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript' && wrapper.getIsRun()===false) {
 						Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
 							if (btnId==='yes') {
 								notebook.runUntil(this);
 							} else {
-								this._run();
+								this._run(priorCode);
 							}
 						}, this);
 						this.setIsWarnedAboutPreviousCells(true);
@@ -324,20 +387,27 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		}
 	},
 	
-	_run: function() {
+	_run: function(priorCode) {
 		this.results.show(); // make sure it's visible 
-		this.results.update(this.EMPTY_RESULTS_TEXT); // clear out the results
-		this.results.mask('working…'); // mask results
+		this.results.clear();
+		// this.results.update(this.EMPTY_RESULTS_TEXT); // clear out the results
+		// this.results.mask('working…'); // mask results
 		var code = this.editor.getValue();
-		Voyant.notebook.util.Show.TARGET = this.results.getResultsEl(); // this is for output
-		Voyant.notebook.Notebook.currentBlock = this; // this is to tie back in to the block
-		Voyant.notebook.Notebook.currentNotebook.setCurrentBlock(this);
+		if (priorCode !== undefined) {
+			code = priorCode.concat([code]);
+		} else {
+			code = [code];
+		}
+		// Voyant.notebook.util.Show.TARGET = this.results.getResultsEl(); // this is for output
+		// Voyant.notebook.Notebook.currentBlock = this; // this is to tie back in to the block
+		// Voyant.notebook.Notebook.currentNotebook.setCurrentBlock(this);
 		var result;
 		try {
 			
 			// I'd like to be able to run this in another scope/context, but it
 			// doesn't seem possible for the type of code that's being run
-			result = eval.call(window, code);
+			// result = eval.call(window, code);
+			this.results.run(code);
 		}
 		catch (e) {
 			this.results.unmask();
@@ -372,7 +442,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		return result;
 	},
 
-	_getResultsComponent: function(html, config) {
+	_getResultsComponent: function(config) {
 		var me = this;
 		var isExpanded = config.expandResults === undefined ? me.config.expandResults : config.expandResults;
 		var height = me.config.emptyResultsHeight;
@@ -392,13 +462,14 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					type: 'absolute'
 				},
 				items: [{
-					xtype: 'component',
-					itemId: 'results',
+					xtype: 'uxiframe',
+					itemId: 'resultsFrame',
 					x: 0,
 					y: 0,
 					anchor: '100%',
 					height: '100%',
-					html: html
+					src: 'https://beta.voyant-tools.org/spyral/sandbox.jsp',// Spyral.Load.baseUrl+'spyral/sandbox.jsp',
+					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>']
 				},{
 					xtype: 'toolbar',
 					itemId: 'buttons',
@@ -440,13 +511,33 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					}
 				}
 			}],
+			
+			cachedPaddingHeight: undefined,
+			cachedResultsHeight: undefined,
+			cachedResultsOutput: '',
+
+			_sendMessage: function(messageObj) {
+				this.down('#resultsFrame').getWin().postMessage(JSON.stringify(messageObj), '*');
+			},
+			clear: function() {
+				this._sendMessage({type: 'command', command: 'clear'});
+			},
+			run: function(code) {
+				this._sendMessage({type: 'code', value: code});
+			},
 			getValue: function() {
-				var resultEl = this.getResultsEl().dom.cloneNode(true);
-				var output = resultEl.innerHTML;
-				return output;
+				return this.cachedResultsOutput;
+			},
+			getFrame: function() {
+				return this.down('#resultsFrame').getFrame();
 			},
 			getResultsEl: function() {
-				return this.down('#results').getEl();
+				var doc = this.down('#resultsFrame');
+				if (doc) {
+					return doc;
+				} else {
+					return null;
+				}
 			},
 			doExpandContract: function() {
 				var expandButton = me.results.down('#expandButton');
@@ -459,12 +550,14 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					expandButton.setTooltip('Contract Results');
 					expandButton.setGlyph('xf066@FontAwesome');
 				}
-				me.getTargetEl().fireEvent('resize');
+				
+				me._setResultsHeight();
+				// me.getTargetEl().fireEvent('resize');
 			},
 			// override update method and call it on results child instead
-			update: function() {
-				var results = this.down('#results');
-				results.update.apply(results, arguments);
+			update: function(htmlOrData) {
+				console.log('update', htmlOrData);
+				this._sendMessage({type: 'command', command: 'update', value: htmlOrData});
 			},
 			listeners: {
 				afterrender: function(cmp) {
@@ -513,84 +606,55 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	/**
 	 * Set the height of the results component
 	 */
-	_setResultsHeight: function() {
-		var height = this._measureResultsHeight();
-		var resultsEl = this.results.getResultsEl();
-		var expandWidget = this.results.down('#expandWidget');
-		if (this.getExpandResults()) {
-			expandWidget.hide();
-			this.results.setHeight(Math.max(height, this.getEmptyResultsHeight()));
-			resultsEl.removeCls('collapsed');
-		} else {
-			height = Math.min(Math.max(height, this.getEmptyResultsHeight()), this.getMinimumResultsHeight());
-			if (height < this.getMinimumResultsHeight()) {
-				expandWidget.hide();
-			} else {
-				expandWidget.show();
-			}
-			this.results.setHeight(height);
-			resultsEl.addCls('collapsed');
-		}
-	},
-
-	_measureResultsHeight: function() {
-		if (this.results.paddingHeight === undefined) {
+	_setResultsHeight: function(height) {
+		if (this.results.cachedPaddingHeight === undefined) {
 			// compute and store parent padding, which we'll need when determining proper height
 			var computedStyle = window.getComputedStyle(this.results.getEl().dom);
-			this.results.paddingHeight = parseFloat(computedStyle.getPropertyValue('padding-top'))+parseFloat(computedStyle.getPropertyValue('padding-bottom'));
+			this.results.cachedPaddingHeight = parseFloat(computedStyle.getPropertyValue('padding-top'))+parseFloat(computedStyle.getPropertyValue('padding-bottom'));
+			this.results.cachedPaddingHeight += 2; // extra 2 for border
 		}
+		if (height !== undefined) {
+			// cache height
+			this.results.cachedResultsHeight = height;
+		} else {
+			height = this.results.cachedResultsHeight;
+			if (height === undefined) {
+				var resultsEl = this.results.getResultsEl();
+				if (resultsEl) {
+					height = resultsEl.getHeight();
+				} else {
+					height = this.getEmptyResultsHeight();
+				}
+				this.results.cachedResultsHeight = height;
+			}
+		}
+		height += this.results.cachedPaddingHeight;
 
 		var resultsEl = this.results.getResultsEl();
-
-		var resultsChildHeight = undefined;
-		if (resultsEl.dom.childElementCount > 0) {
-			// child might be taller than the results el (e.g. in the case of highcharts)
-			resultsChildHeight = resultsEl.getFirstChild().getHeight() + this.results.paddingHeight;
-		} else if (resultsEl.dom.firstChild !== null && resultsEl.dom.firstChild.nodeType === Node.TEXT_NODE) {
-			// calculate text height
-			var textHeight = Ext.util.TextMetrics.measure(resultsEl, resultsEl.dom.firstChild.data, resultsEl.getWidth()).height;
-			resultsChildHeight = textHeight + this.results.paddingHeight;
-		} else {
-			// no results?
-			resultsChildHeight = this.getEmptyResultsHeight();
+		if (resultsEl) {
+			var expandWidget = this.results.down('#expandWidget');
+			if (this.getExpandResults()) {
+				expandWidget.hide();
+				// console.log('setResultsHeight', Math.max(height, this.getEmptyResultsHeight()))
+				this.results.setHeight(Math.max(height, this.getEmptyResultsHeight()));
+				// resultsEl.removeCls('collapsed');
+			} else {
+				height = Math.min(Math.max(height, this.getEmptyResultsHeight()), this.getMinimumResultsHeight());
+				if (height < this.getMinimumResultsHeight()) {
+					expandWidget.hide();
+				} else {
+					expandWidget.show();
+				}
+				// console.log('setResultsHeight', height)
+				this.results.setHeight(height);
+				// resultsEl.addCls('collapsed');
+			}
 		}
-
-		return resultsChildHeight;
 	},
 	
 	clearResults: function() {
 		this.results.show();
-		
-		var panel = this.results.el.down('.x-panel');
-		if (panel) {
-			var id = panel.id;
-			var cmp = Ext.getCmp(id);
-			if (cmp) {
-				cmp.destroy();
-			} else {
-				panel.destroy();
-			}
-		} else if (this.results.getResultsEl().dom.hasAttribute('data-highcharts-chart')) {
-			var chartId = this.results.getResultsEl().dom.id;
-			var highchart = undefined;
-			Highcharts.charts.forEach(function(chart) {
-				if (chart !== undefined && chart.renderTo.id === chartId) {
-					highchart = chart;
-				}
-			})
-			if (highchart) {
-				highchart.destroy();
-				// remove highcharts style changes from results element
-				var resultsDom = this.results.getResultsEl().dom;
-				resultsDom.style.height = '100%';
-				resultsDom.style.overflow = '';
-			} else {
-				console.warn('tried to destroy highchart but could not', chartId);
-			}
-		} else {
-			this.results.update(' ');
-		}
-		this.getTargetEl().fireEvent('resize');
+		this.results.clear();
 	},
 	
 	tryToUnmask: function() {
@@ -614,6 +678,10 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		}
 	},
 	
+	getCode: function() {
+		return this.editor.getValue();
+	},
+
 	getContent: function() {
 		var toReturn = {
 			input: this.editor.getValue(),

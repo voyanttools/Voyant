@@ -26,24 +26,12 @@ body.exported-notebook .notebook-code-editor {
 	outline: thin dashed rgba(0,0,0,.2) !important;
 	outline-offset: -1px !important;
 }
-.notebook-code-editor, .notebook-code-results {
-	margin-left: 2em;
-}
 .notebook-code-editor {
 	border-left: thin solid rgb(240, 240, 240);
 }
 .notebook-code-results {
 	background-color: rgb(252, 252, 252);
 	border: thin solid rgb(240, 240, 240);
-}
-.notebook-code-results .error {
-	color: red;
-}
-.notebook-code-results pre {
-	font-size: smaller;
-}	
-.notebook-code-results .info {
-	overflow: scroll
 }
 .notebook-code-editor-raw { /* used for raw code in saved view */
 	display: none;

@@ -38,8 +38,7 @@ Ext.define('Voyant.notebook.Notebook', {
     		input: undefined,
     		inputEncodedBase64Json: undefined,
     		run: undefined
-    	},
-		currentNotebook: undefined
+    	}
     },
     config: {
         /**
@@ -80,7 +79,6 @@ Ext.define('Voyant.notebook.Notebook', {
      * @private
      */
     constructor: function(config) {
-    	Voyant.notebook.Notebook.currentNotebook = this;
     	Ext.apply(config, {
     		title: this.localize('title'),
     	    autoScroll: true,
@@ -717,17 +715,21 @@ Ext.define('Voyant.notebook.Notebook', {
     	this._run(containers);
     },
     
-    _run: function(containers) {
+    _run: function(containers, prevCode) {
     	if (containers.length>0) {
     		var container = containers.shift();
-    		var result = container.run(true);
+			if (prevCode === undefined) {
+				prevCode = []
+			}
+    		var result = container.run(true, prevCode);
+			prevCode.push(container.getCode());
 			if (result!==undefined && result.then && result.catch && result.finally) {
 				var me = this;
 				result.then(function() {
-		        	Ext.defer(me._run, 100, me, [containers]);
+		        	Ext.defer(me._run, 100, me, [containers, prevCode]);
 				})
 			} else {
-	        	Ext.defer(this._run, 100, this, [containers]);
+	        	Ext.defer(this._run, 100, this, [containers, prevCode]);
 			}
     	}
 	},
