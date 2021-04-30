@@ -4,9 +4,11 @@ Ext.define('Voyant.panel.Embedder', {
 	alias: 'widget.embedder',
 	statics: {
 		i18n: {
-			title: 'Embedded',
+			title: 'Embedder',
 			url: 'URL',
-			go: 'Go'
+			go: 'Go',
+			help: 'Embedder provides a way to embed a web page into your Voyant Tools experience.',
+			helpTip: 'Embedder provides a way to embed a web page into your Voyant Tools experience.'
 		},
 		api: {
 			url: undefined

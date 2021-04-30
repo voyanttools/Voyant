@@ -4,7 +4,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     
     name: 'VoyantCorpusApp',
 
-    requires: ['Voyant.panel.CorpusSet','Voyant.data.model.Corpus','Voyant.panel.VoyantHeader', 'Voyant.panel.VoyantFooter', 'Voyant.panel.CorpusCreator', 'Voyant.panel.Cirrus', 'Voyant.panel.Summary', 'Voyant.panel.DreamScape', 'Voyant.panel.CorpusTerms', 'Voyant.panel.Reader', 'Voyant.panel.Documents', 'Voyant.panel.Trends', 'Voyant.panel.Contexts', 'Voyant.panel.DocumentTerms','Voyant.panel.CorpusCollocates','Voyant.panel.CollocatesGraph','Voyant.panel.Phrases','Voyant.panel.ScatterPlot','Voyant.panel.TopicContexts','Voyant.panel.TermsRadio','Voyant.panel.TermsBerry'],
+    requires: ['Voyant.panel.CorpusSet','Voyant.data.model.Corpus','Voyant.panel.VoyantHeader', 'Voyant.panel.VoyantFooter', 'Voyant.panel.CorpusCreator', 'Voyant.panel.Cirrus', 'Voyant.panel.Summary', 'Voyant.panel.DreamScape', 'Voyant.panel.CorpusTerms', 'Voyant.panel.Reader', 'Voyant.panel.Documents', 'Voyant.panel.Trends', 'Voyant.panel.Contexts', 'Voyant.panel.DocumentTerms','Voyant.panel.CorpusCollocates','Voyant.panel.CollocatesGraph','Voyant.panel.Phrases','Voyant.panel.ScatterPlot','Voyant.panel.TopicContexts','Voyant.panel.TermsRadio','Voyant.panel.TermsBerry', 'Voyant.panel.Embedder'],
     
     statics: {
     	i18n: {
@@ -42,7 +42,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 			
 			i18n: 'moreToolsTypeOther',
 			glyph: 'xf035@FontAwesome',
-			items: ['reader','summary','veliza']
+			items: ['reader','summary','veliza','embedder']
     	}]
     },
     
