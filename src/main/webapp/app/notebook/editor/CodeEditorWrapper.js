@@ -468,7 +468,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					y: 0,
 					anchor: '100%',
 					height: '100%',
-					src: 'https://beta.voyant-tools.org/spyral/sandbox.jsp',// Spyral.Load.baseUrl+'spyral/sandbox.jsp',
+					src: 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
+					// src: Spyral.Load.baseUrl+'spyral/sandbox.jsp',
 					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>']
 				},{
 					xtype: 'toolbar',

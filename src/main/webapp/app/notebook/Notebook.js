@@ -1075,9 +1075,13 @@ Ext.define('Voyant.notebook.Notebook', {
 							fieldLabel: this.localize("metadataKeywords"),
 							name: 'keywords',
 							xtype: 'tagfield',
-							store: Ext.create('Voyant.data.store.NotebookFacets', {
-								facet: 'facet.keywords'
-							}),
+							store: {
+								xtype: 'store.json',
+								fields: [
+									{name: 'label'},
+									{name: 'count', type: 'integer'}
+								]
+							},
 							displayField: 'label',
 							valueField: 'label',
 							queryMode: 'local',
@@ -1087,8 +1091,15 @@ Ext.define('Voyant.notebook.Notebook', {
 							createNewOnEnter: true,
 							listeners: {
 								afterrender: function(cmp) {
-									// use remote to populate store once, then query it locally
-									cmp.getStore().load();
+									Spyral.Load.trombone({
+										tool: 'notebook.CatalogueFacets',
+										facets: 'facet.keywords',
+										noCache: 1
+									}).then(function(json) {
+										cmp.getStore().loadRawData(json.catalogue.facets[0].results);
+										// need to reset value to make sure previously set keywords show up
+										cmp.setValue(cmp.getValue());
+									});
 								}
 							}
 						},{

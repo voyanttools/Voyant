@@ -23,6 +23,21 @@ body pre {
 }	
 body .info {
 }
+
+table.spyral-table {
+	border: thin solid #ccc;
+}
+
+table.spyral-table th {
+	background-color: rgba(255, 255, 0, .05);
+}
+
+table.spyral-table td, table.spyral-table th {
+	border-right: thin solid #eee; border-bottom: thin solid #eee;
+}
+table.spyral-table td:last-child {
+	border-right: none; border-bottom: none;
+}
 		</style>
 
 		<link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/8/highcharts.css" />

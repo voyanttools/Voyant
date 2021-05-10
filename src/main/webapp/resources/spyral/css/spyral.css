@@ -12,7 +12,7 @@ body.exported-notebook .notebook-code-editor {
 	line-height: normal;
 	white-space: pre;
 }
-.notebook-text-editor, .notebook-code-editor, .notebook-code-results {
+.notebook-text-editor, .notebook-code-editor {
 	padding: 6px;
 	margin: 6px;
 }
@@ -58,20 +58,6 @@ body.exported-notebook .notebook-code-editor {
 	font-size: smaller;
 }
 
-table.spyral-table {
-	border: thin solid #ccc;
-}
-
-table.spyral-table th {
-	background-color: rgba(255, 255, 0, .05);
-}
-
-table.spyral-table td, table.spyral-table th {
-	border-right: thin solid #eee; border-bottom: thin solid #eee;
-}
-table.spyral-table td:last-child {
-	border-right: none; border-bottom: none;
-}
 
 .spyral-header, .spyral-footer {
 	text-align: center;
@@ -85,4 +71,87 @@ table.spyral-table td:last-child {
 
 .catalogue .facets .x-panel-header {
 	cursor: pointer;
+}
+
+
+.ace_layer {
+	white-space: pre;
+	font-family: monospace;
+}
+
+.notebook-code-editor-raw {
+	display: none;
+}
+.notebookcodeeditorwrapper {
+	margin-left: 1em;
+	padding-left: .5em;
+	border: thin solid rgba(0,0,0,.1);
+}
+.notebookcodeeditorwrapper .collapsed {
+	overflow: auto;
+	max-height: 120px;
+}
+.notebook-code-results {
+	margin: .5em;
+	padding: .5em;
+	background-color: rgba(0,0,0,.01)
+}
+.notebook-code-results .collapsed {
+	overflow: auto;
+}
+.spyral-header, .spyral-footer {
+	text-align: center
+}
+.notebook-code-results .error {
+	color: red !important;
+}
+
+.catalogue-notebook {
+	margin: 0px;
+	padding: 10px;
+	border: 1px solid #fff;
+	border-bottom: 1px solid #ccc;
+	font-size: 13px;
+	line-height: 18px;
+}
+.catalogue-notebook-over {
+	background-color: #eee;
+	cursor: pointer;
+}
+.catalogue-notebook-over .id {
+	visibility: visible !important;
+}
+.catalogue-notebook-selected {
+	background-color: #ddd;
+	border: 1px solid #aaa;
+}
+.catalogue-notebook > div {
+	margin: 0px 0px 3px 0px;
+}
+.catalogue-notebook .id {
+	float: right;
+	color: #666;
+	font-size: 9px;
+	line-height: 9px;
+	visibility: hidden;
+}
+.catalogue-notebook .title {
+	color: #333;
+	font-weight: 600;
+}
+.catalogue-notebook .author, .catalogue-notebook .keywords, .catalogue-notebook .date {
+	color: #666;
+	font-size: 11px;
+}
+.catalogue-notebook .keywords span {
+	font-size: 9px;
+	background-color: #eee;
+	padding: 3px 5px;
+	border-radius: 3px;
+	margin-right: 5px;
+}
+.catalogue-notebook .nowrap {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }

@@ -1,6 +1,5 @@
 Ext.define('Voyant.notebook.Catalogue', {
 	extend: 'Ext.Component',
-	requires: ['Voyant.widget.Facet','Voyant.data.store.NotebookFacets'],
     mixins: ['Voyant.util.Localization'],
 	alias: 'widget.notebookcatalogue',
 	statics: {
@@ -11,7 +10,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 			author: 'Author',
 			language: 'Language',
 			license: 'License',
-			search: 'Search',
+			search: 'Search within notebooks',
 			noResults: 'No matching notebooks',
 			suggested: 'Suggested Notebooks',
 			load: 'Load Selected Notebook',
@@ -24,9 +23,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 	store: undefined,
 	template: undefined,
 
-	config: {
-		facets: {}
-	},
+	gettingFacets: false,
 
 	constructor: function() {
 		this.store = Ext.create('Ext.data.JsonStore', {
@@ -49,6 +46,15 @@ Ext.define('Voyant.notebook.Catalogue', {
 					'<div class="id">{id}</div>',
 					'<div class="title nowrap" title="{title}">{title}</div>',
 					'<div class="author nowrap"><i class="fa fa-user" aria-hidden="true"></i> {author}</div>',
+					'<div class="description">{description}</div>',
+					'<tpl if="keywords.length &gt; 0">',
+						'<div class="keywords nowrap">',
+							'<i class="fa fa-tags" aria-hidden="true"></i> ',
+							'<tpl for="keywords">',
+								'<span>{.}</span>',
+							'</tpl>',
+						'</div>',
+					'</tpl>',
 					'<div class="dates"><span class="date"><i class="fa fa-clock-o" aria-hidden="true"></i> {[Ext.Date.format(values.modified, "M j Y")]}</span></div>',
 				'</div>',
 			'</tpl>'
@@ -69,8 +75,9 @@ Ext.define('Voyant.notebook.Catalogue', {
 		});
 		this.suggestedTemplate = new Ext.XTemplate(
 			'<tpl for=".">',
-				'<div class="catalogue-notebook" style="height: auto !important;" title="{description}">',
-					'<div class="title" title="{title}">{title}</div>',
+				'<div class="catalogue-notebook">',
+					'<div class="title nowrap" title="{title}">{title}</div>',
+					'<div class="description">{description}</div>',
 				'</div>',
 			'</tpl>'
 		);
@@ -114,13 +121,19 @@ Ext.define('Voyant.notebook.Catalogue', {
 							flex: .8,
 							enableKeyEvents: true,
 							triggers: {
+								cancel: {
+									hidden: true,
+									cls: 'fa-trigger form-fa-clear-trigger',
+									handler: function(cmp) {
+										cmp.setValue('');
+										cmp.getTriggers()['cancel'].hide();
+										this.getNotebooks();
+									},
+									scope: this
+								},
 								search: {
 									cls: 'fa-trigger form-fa-search-trigger',
 									handler: function(cmp) {
-										// var query = cmp.getValue();
-										// if (query.trim().length > 0) {
-										// 	this.getNotebooks([query]);
-										// }
 										this.getNotebooks();
 									},
 									scope: this
@@ -130,6 +143,11 @@ Ext.define('Voyant.notebook.Catalogue', {
 								keyup: function(cmp, e) {
 									if (e.getCharCode() === 13) {
 										this.getNotebooks();
+									}
+									if (cmp.getValue().trim().length > 0) {
+										cmp.getTriggers()['cancel'].show();
+									} else {
+										cmp.getTriggers()['cancel'].hide();
 									}
 								},
 								scope: this
@@ -172,36 +190,35 @@ Ext.define('Voyant.notebook.Catalogue', {
 						hideCollapseTool: true
 					},
 					defaults: {
-						xtype: 'facet'
+						xtype: 'grid',
+						rowLines: false,
+						hideHeaders: true,
+        				selType: 'checkboxmodel',
+						columns: [{ renderer: function(value, metaData, record) {return "("+record.get('count')+") "+record.get('label')}, flex: 1 }],
+						store: {
+							xtype: 'store.json',
+							fields: [
+								{name: 'label'},
+								{name: 'count', type: 'integer'}
+							]
+						}
 					},
 					items: [{
 						title: this.localize('keywords'),
 						facet: 'facet.keywords',
-						flex: 3,
-						store: Ext.create('Voyant.data.store.NotebookFacets', {
-							facet: 'facet.keywords'
-						})
+						flex: 3
 					},{
 						title: this.localize('author'),
 						facet: 'facet.author',
-						flex: 2,
-						store: Ext.create('Voyant.data.store.NotebookFacets', {
-							facet: 'facet.author'
-						})
+						flex: 2
 					},{
 						title: this.localize('language'),
 						facet: 'facet.language',
-						flex: 1,
-						store: Ext.create('Voyant.data.store.NotebookFacets', {
-							facet: 'facet.language'
-						})
+						flex: 1
 					},{
 						title: this.localize('license'),
 						facet: 'facet.license',
-						flex: 1,
-						store: Ext.create('Voyant.data.store.NotebookFacets', {
-							facet: 'facet.license'
-						})
+						flex: 1
 					}]
 				},{
 					xtype: 'panel',
@@ -251,18 +268,18 @@ Ext.define('Voyant.notebook.Catalogue', {
 					scope: this
 				}]
 			});
-			this.window.query('#facets > facet').forEach(function(facetCmp) {
-				facetCmp.getSelectionModel().on('selectionchange', this._handleFacetSelection.bind(this, facetCmp.facet))
-				facetCmp.getStore().load();
+			this.window.query('#facets > grid').forEach(function(facetCmp) {
+				facetCmp.getSelectionModel().on('selectionchange', this._loadFacets, this);
 			}, this);
 		} else {
-			// reset
-			this.setFacets({});
-			this.window.query('#facets > facet').forEach(function(facetCmp) {
+			// reset catalogue
+			this.window.query('#facets > grid').forEach(function(facetCmp) {
+				facetCmp.getStore().clearFilter();
 				facetCmp.getSelectionModel().deselectAll();
 			});
 			this.window.down('#queryfield').setValue('');
 			this.window.down('#catalogue').getSelectionModel().deselectAll();
+			this.window.down('#suggestedNotebooks').getSelectionModel().deselectAll();
 			this.store.removeAll();
 		}
 
@@ -271,6 +288,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 		}
 
 		this.window.show();
+
+		this._loadFacets();
 	},
 
 	hideWindow: function() {
@@ -279,24 +298,68 @@ Ext.define('Voyant.notebook.Catalogue', {
 		}
 	},
 
-	_handleFacetSelection: function(facet, model, selected) {
-		var labels = [];
-		selected.forEach(function(model) {
-			labels.push({facet: facet, label: model.getLabel ? model.getLabel() : model.getTerm()})
-		})
-		this.getFacets()[facet] = labels;
-		this.getNotebooks();
+	_getSelectedFacets: function() {
+		var facets = [];
+		this.window.query('#facets > grid').forEach(function(facetCmp) {
+			facetCmp.getSelection().forEach(function(record) {
+				facets.push([facetCmp.facet, record.get('label')]);
+			})
+		});
+		return facets;
+	},
+
+	_loadFacets: function() {
+		if (this.gettingFacets === false) {
+			this.window.down('#facets').mask('Loading');
+			this.gettingFacets = true;
+			var facetQuery = this._getSelectedFacets().map(function(f) { return f.join('=') });
+
+			var me = this;
+			Spyral.Load.trombone({
+				tool: 'notebook.CatalogueFacets',
+				query: facetQuery,
+				noCache: 1
+			}).then(function(json) {
+				json.catalogue.facets.forEach(function(facetResult) {
+					var facetCmp = me.window.query('#facets > grid[facet='+facetResult.facet+']')[0];
+					var store = facetCmp.getStore();
+					store.clearFilter();
+					if (store.getCount() === 0) {
+						store.loadRawData(facetResult.results);
+					} else {
+						var matches = [];
+						store.each(function(record) {
+							var label = record.get('label');
+							for (var i = 0; i < facetResult.results.length; i++) {
+								var result = facetResult.results[i];
+								if (result.label === label) {
+									record.set('count', result.count);
+									matches.push(label);
+									break;
+								}
+							}
+						});
+						store.filterBy(function(record) { return matches.indexOf(record.get('label')) !== -1 });
+					}
+				});
+				me.window.down('#facets').unmask();
+				me.gettingFacets = false;
+				
+				me.getNotebooks();
+			}).catch(function(err) {
+				me.window.down('#facets').unmask();
+				me.gettingFacets = false;
+			});
+		}
 	},
 
 	getNotebooks: function(queries) {
     	if (!queries) {
 	    	queries = [];
-			var facets = this.getFacets();
-	    	for (facet in facets) {
-	    		facets[facet].forEach(function(label) {
-	        		queries.push(label.facet+":"+label.label);
-	    		})
-	    	}
+			var facets = this._getSelectedFacets();
+	    	facets.forEach(function(f) {
+				queries.push(f.join(':'));
+			})
 			var queryfieldstring = this.window.down('#queryfield').getValue();
 			if (queryfieldstring.trim().length > 0) {
 				queries.push(queryfieldstring);

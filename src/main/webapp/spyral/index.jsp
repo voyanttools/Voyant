@@ -19,87 +19,10 @@ if (request.getServletPath().equals("/spiral")) {
 		background-color: rgba(0,0,0,.05)!important;
 	}
 	
-	</style>
-	<!--script src="<%= base %>/resources/ace/1.4.12/src-min-noconflict/ext-language_tools.js"></script-->
-	<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/spyral.css" />
-	<style id="voyant-notebooks-styles">
-	.ace_layer {
-		white-space: pre;
-		font-family: monospace;
-	}
-	
-	.notebook-code-editor-raw {
-		display: none;
-	}
-	.notebookcodeeditorwrapper {
-		margin-left: 1em;
-		padding-left: .5em;
-		border: thin solid rgba(0,0,0,.1);
-	}
-	.notebookcodeeditorwrapper .collapsed {
-		overflow: auto;
-		max-height: 120px;
-	}
-	.notebook-code-results {
-		margin-top: .5em;
-		padding: .5em;
-		background-color: rgba(0,0,0,.01)
-	}
-	.notebook-code-results .collapsed {
-		overflow: auto;
-	}
-	.spyral-header, .spyral-footer {
-		text-align: center
-	}
-	.notebook-code-results .error {
-		color: red !important;
-	}
-	</style>
-	<style id="voyant-notebook-catalogue">
-	.catalogue-notebook {
-		float: left;
-		width: 210px;
-		margin: 0 10px 10px 0;
-		padding: 10px;
-		border-radius: 2px;
-		border: 1px solid #ccc;
-		font-size: 13px;
-		line-height: 18px;
-		height: 75px;
-	}
-	.catalogue-notebook-over {
-		background-color: #eee;
-		border: 1px solid #bbb;
-		cursor: pointer;
-	}
-	.catalogue-notebook-selected {
-		background-color: #ddd;
-		border: 1px solid #aaa;
-	}
-	.catalogue-notebook .id {
-		float: right;
-		color: #666;
-		font-size: 9px;
-		line-height: 9px;
-	}
-	.catalogue-notebook .title {
-		font-weight: 600;
-	}
-	.catalogue-notebook .author {
-		color: #666;
-		font-size: 11px;
-	}
-	.catalogue-notebook .date {
-		color: #666;
-		font-size: 11px;
-	}
-	.catalogue-notebook .nowrap {
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
-	}
-	
 </style>
+<!--script src="<%= base %>/resources/ace/1.4.12/src-min-noconflict/ext-language_tools.js"></script-->
+<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/spyral.css" />
+	
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/8/highcharts.css" />
 
 <%@ include file="../resources/jsp/head_body.jsp" %>
