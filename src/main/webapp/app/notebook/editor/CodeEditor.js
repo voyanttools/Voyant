@@ -21,6 +21,9 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			content: undefined
 		}
 	},
+
+	MIN_LINES: 6,
+
 	constructor: function(config) {
 		this.callParent(arguments);
 	},
@@ -34,15 +37,18 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editor.setTheme(this.getTheme());
 			editor.getSession().setMode(this.getMode());
 			editor.setOptions({
-				minLines: 6,
+				minLines: me.MIN_LINES,
 				maxLines: Infinity, // this.getMode().indexOf("javascript")>-1 ? Infinity : 10,
 				autoScrollEditorIntoView: true,
-				scrollPastEnd: true
+				scrollPastEnd: true,
+				highlightActiveLine: false,
+				
 			});
-			editor.setHighlightActiveLine(false);
-			editor.setHighlightGutterLine(false);
-			editor.renderer.setShowPrintMargin(false);
-//			editor.renderer.setShowGutter(false);
+			editor.renderer.setOptions({
+				showGutter: true,
+				showFoldWidgets: false,
+				showPrintMargin: false
+			});
 			
 			editor.setValue(this.getContent() ? this.getContent() : "" /*this.localize('emptyText')*/);
 			editor.clearSelection();
@@ -54,9 +60,11 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		    }, this);
 		    editor.on("change", function(ev, editor) {
 				var lines = editor.getSession().getScreenLength();
-				if (lines!=me.getLines()) {
-					me.up('notebookcodeeditorwrapper').setSize({height: lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth()})
+				if (lines > me.MIN_LINES && lines !== me.getLines()) {
 					me.setLines(lines);
+					var height = lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth();
+					me.setSize({height: height});
+					me.up('notebookcodeeditorwrapper').getTargetEl().fireEvent('resize');
 				}
 				if (me.getIsChangeRegistered()==false) {
 					me.setIsChangeRegistered(true);

@@ -146,6 +146,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		}
 	},
 	config: {
+		isInitialized: false,
 		isRun: false,
 		autoExecute: false,
 		mode: 'javascript',
@@ -161,6 +162,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	height: 150,
 	border: false,
 
+	BASE_HEIGHT: 2, // used when calculating total height for this component
 	EMPTY_RESULTS_TEXT: ' ', // text to use when clearing results, prior to running code
 
 	constructor: function(config) {
@@ -279,37 +281,45 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		var handleResults = function(e) {
 			var frame = me.results.getFrame();
 			if (e.source === frame.contentWindow) {
-				if (e.data.type) {
-					switch (e.data.type) {
+				var eventData = JSON.parse(e.data);
+				if (eventData.type) {
+					switch (eventData.type) {
 						case 'error':
-							console.log('iframe error:', e.data.value);
+							console.log('iframe error:', eventData);
+							me.results.unmask();
+							me.results.runPromise.reject(eventData);
 							break;
 						case 'command':
-							console.log('iframe command:', e.data.value);
-							switch (e.data.value) {
+							// console.log('iframe command:', eventData);
+							switch (eventData.command) {
 								case 'init':
+									me.setIsInitialized(true);
 									clearInterval(initIntervalID);
 									me.results.update(initHtml);
 									break;
 								case 'clear':
+									me._setResultsHeight(0);
 									me.getTargetEl().fireEvent('resize');
 									break;
 							}
 							break;
 						case 'result':
-							console.log('iframe result:', e.data.value);
+							console.log('iframe result:', eventData);
+							me.results.unmask();
+							me.results.runPromise.resolve(eventData);
 							break;
 					}
 
-					if (e.data.output) {
-						me.results.cachedResultsOutput = e.data.output;
+					if (eventData.output) {
+						me.results.cachedResultsOutput = eventData.output;
 					}
 
-					// console.log('height', e.data.height);
-					if (e.data.height > 0) {
-						me._setResultsHeight(e.data.height);
+					me.results.cachedResultsVariables = eventData.variables;
+
+					if (eventData.height > 0) {
+						me._setResultsHeight(eventData.height);
 					}
-					var height = 20;
+					var height = me.BASE_HEIGHT;
 					me.items.each(function(item) {height+=item.getHeight();})
 					me.setSize({height: height});
 					
@@ -337,10 +347,12 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		me.on("afterrender", function() {
 			this.getTargetEl().on("resize", function(el) {
 				// me._setResultsHeight();
-				var height = 20;
+				var height = me.BASE_HEIGHT;
 				me.items.each(function(item) {height+=item.getHeight();})
 				// console.log('resize setSize', height);
-				me.setSize({height: height});
+				if (me.getHeight() !== height) {
+					me.setSize({height: height});
+				}
 			});
 		}, this);
 		me.callParent(arguments);
@@ -360,86 +372,46 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	/**
 	 * Run the code in this editor.
 	 * @param {boolean} forceRun True to force the code to run, otherwise a check is performed to see if previous editors have already run.
-	 * @param {array} priorCode Code from prior cells that should be run before this cell's code
+	 * @param {array} priorVariables Variables from prior cells that should be eval'd before this cell's code
 	 */
-	run: function(forceRun, priorCode) {
+	run: function(forceRun, priorVariables) {
 		if (this.editor.getMode()==='ace/mode/javascript') { // only run JS
-			if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
-				return this._run(priorCode);
+			if (this.getIsInitialized()) {
+				if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
+					return this._run(priorVariables);
+				} else {
+					// this code was for checking if previous cells hadn't been run, but it didn't seem worthwhile
+					var notebook = this.up('notebook');
+					Ext.Array.each(notebook.query('notebookcodeeditorwrapper'), function(wrapper) {
+						if (wrapper===this) {this._run(priorVariables); return false;} // break
+						if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript' && wrapper.getIsRun()===false) {
+							Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
+								if (btnId==='yes') {
+									notebook.runUntil(this);
+								} else {
+									this._run(priorVariables);
+								}
+							}, this);
+							this.setIsWarnedAboutPreviousCells(true);
+							return false;
+						}
+					}, this);
+				}
 			} else {
-				// this code was for checking if previous cells hadn't been run, but it didn't seem worthwhile
-				var notebook = this.up('notebook');
-				Ext.Array.each(notebook.query('notebookcodeeditorwrapper'), function(wrapper) {
-					if (wrapper===this) {this._run(priorCode); return false;} // break
-					if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript' && wrapper.getIsRun()===false) {
-						Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
-							if (btnId==='yes') {
-								notebook.runUntil(this);
-							} else {
-								this._run(priorCode);
-							}
-						}, this);
-						this.setIsWarnedAboutPreviousCells(true);
-						return false;
-					}
-				}, this);
+				// TODO init and then run
+				console.warn('run called before init!', this);
 			}
 		}
 	},
 	
-	_run: function(priorCode) {
+	_run: function(priorVariables) {
 		this.results.show(); // make sure it's visible 
 		this.results.clear();
-		// this.results.update(this.EMPTY_RESULTS_TEXT); // clear out the results
-		// this.results.mask('working…'); // mask results
+
 		var code = this.editor.getValue();
-		if (priorCode !== undefined) {
-			code = priorCode.concat([code]);
-		} else {
-			code = [code];
-		}
-		// Voyant.notebook.util.Show.TARGET = this.results.getResultsEl(); // this is for output
-		// Voyant.notebook.Notebook.currentBlock = this; // this is to tie back in to the block
-		// Voyant.notebook.Notebook.currentNotebook.setCurrentBlock(this);
-		var result;
-		try {
-			
-			// I'd like to be able to run this in another scope/context, but it
-			// doesn't seem possible for the type of code that's being run
-			// result = eval.call(window, code);
-			this.results.run(code);
-		}
-		catch (e) {
-			this.results.unmask();
-			Voyant.notebook.util.Show.showError(e);
-			this.getTargetEl().fireEvent('resize');
-			return e;
-		}
+
 		this.setIsRun(true);
-		if (result!==undefined) {
-			if (result.then && result.catch && result.finally) {
-				var me = this;
-				result.then(function(result) {
-					me.results.unmask();
-					if (result!==undefined) {
-						me._showResult(result);
-					}
-				}).catch(function(err) {
-					me.results.unmask();
-					Voyant.notebook.util.Show.showError(err);
-				}).finally(function() {
-					Ext.defer(function() {this.getTargetEl().fireEvent('resize')}, 50, me);
-				})
-			} else {
-				this.results.unmask();
-				this._showResult(result);
-				this.getTargetEl().fireEvent('resize');
-			}
-		} else {
-			this.results.unmask();
-			this.getTargetEl().fireEvent('resize');
-		}
-		return result;
+		return this.results.run(code, priorVariables);
 	},
 
 	_getResultsComponent: function(config) {
@@ -468,8 +440,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					y: 0,
 					anchor: '100%',
 					height: '100%',
-					src: 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
-					// src: Spyral.Load.baseUrl+'spyral/sandbox.jsp',
+					// src: 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
+					src: Spyral.Load.baseUrl+'spyral/sandbox.jsp',
 					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>']
 				},{
 					xtype: 'toolbar',
@@ -477,7 +449,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					hidden: true,
 					x: 0,
 					y: 0,
-					style: { background: 'none', paddingTop: '0px', pointerEvents: 'none' },
+					style: { background: 'none', paddingTop: '6px', pointerEvents: 'none' },
 					defaults: { style: { pointerEvents: 'auto'} },
 					items: ['->',{
 						itemId: 'expandButton',
@@ -516,6 +488,11 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			cachedPaddingHeight: undefined,
 			cachedResultsHeight: undefined,
 			cachedResultsOutput: '',
+			cachedResultsVariables: [],
+
+			runPromise: undefined,
+
+			maskTimeoutId: undefined,
 
 			_sendMessage: function(messageObj) {
 				this.down('#resultsFrame').getWin().postMessage(JSON.stringify(messageObj), '*');
@@ -523,11 +500,35 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			clear: function() {
 				this._sendMessage({type: 'command', command: 'clear'});
 			},
-			run: function(code) {
-				this._sendMessage({type: 'code', value: code});
+			run: function(code, priorVariables) {
+				if (priorVariables === undefined) {
+					priorVariables = [];
+				}
+
+				this.runPromise = new Ext.Deferred();
+
+				this.mask('Running code...');
+
+				console.log('sending vars', priorVariables);
+				this._sendMessage({type: 'code', value: code, variables: priorVariables});
+
+				return this.runPromise.promise;
+			},
+			mask: function(maskMsg) {
+				var me = this;
+				this.maskTimeoutId = setTimeout(function() {
+					me.superclass.mask.call(me, maskMsg, 'spyral-code-mask');
+				}, 250); // only mask long running code
+			},
+			unmask: function() {
+				clearTimeout(this.maskTimeoutId);
+				this.superclass.unmask.call(this);
 			},
 			getValue: function() {
 				return this.cachedResultsOutput;
+			},
+			getVariables: function() {
+				return this.cachedResultsVariables;
 			},
 			getFrame: function() {
 				return this.down('#resultsFrame').getFrame();
@@ -557,7 +558,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			},
 			// override update method and call it on results child instead
 			update: function(htmlOrData) {
-				console.log('update', htmlOrData);
+				// console.log('update', htmlOrData);
 				this._sendMessage({type: 'command', command: 'update', value: htmlOrData});
 			},
 			listeners: {
@@ -658,29 +659,12 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		this.results.clear();
 	},
 	
-	tryToUnmask: function() {
-		if (Spyral && Spyral.promises) {
-			Ext.defer(this.tryToUnmask, 20, this);
-		}
-		if (Voyant.application.getDeferredCount()===0) {
-			for (var key in window) {
-				if (typeof window[key] == 'object' && window[key] && key!="opener" && window[key].isFulfilled &&  window[key].isFulfilled()) {
-					window[key] = window[key].valueOf();
-				}
-			}
-			this.results.unmask();
-			if (this.results.getTargetEl().getHtml().trim().length===0) {
-				this.results.hide();
-			}
-			this.getTargetEl().fireEvent('resize');
-		}
-		else {
-			Ext.defer(this.tryToUnmask, 20, this);
-		}
-	},
-	
 	getCode: function() {
 		return this.editor.getValue();
+	},
+
+	getVariables: function() {
+		return this.results.getVariables();
 	},
 
 	getContent: function() {

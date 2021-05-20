@@ -231,7 +231,11 @@ Ext.define('Voyant.notebook.Notebook', {
     			}
     		},{
     			xtype: 'container',
-    			itemId: 'cells'
+    			itemId: 'cells',
+				defaults: {
+					margin: '0 0 12 0',
+					padding: '0 0 0 0'
+				}
     		},{
     			itemId: 'spyralFooter',
     			cls: 'spyral-footer',
@@ -348,18 +352,6 @@ Ext.define('Voyant.notebook.Notebook', {
     },
     
     init: function() {
-		// add static / global functions from Spyral
-		window.Corpus = Spyral.Corpus;
-		window.Table = Spyral.Table;
-
-		window.loadCorpus = function() {
-			return Spyral.Corpus.load.apply(Spyral.Corpus.load, arguments)
-		}
-
-		window.createTable = function() {
-			return Spyral.Table.create.apply(Spyral.Table, arguments)
-		}
-
 		window.onbeforeunload = function() {
 			if (this.getIsEdited()) {
 				return ''; // return any string to prompt the browser to warn the user they have unsaved changes
@@ -493,10 +485,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			title: "<h1>Spyral Notebook</h1>"
 		}));
 		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
-		var code = this.addCode('');
-		Ext.defer(function() {
-			code.run();
-		}, 100, this);
+		this.addCode('');
     },
     
     clear: function() {
@@ -715,22 +704,21 @@ Ext.define('Voyant.notebook.Notebook', {
     	this._run(containers);
     },
     
-    _run: function(containers, prevCode) {
+    _run: function(containers, prevVars) {
     	if (containers.length>0) {
     		var container = containers.shift();
-			if (prevCode === undefined) {
-				prevCode = []
+			if (prevVars === undefined) {
+				prevVars = [];
 			}
-    		var result = container.run(true, prevCode);
-			prevCode.push(container.getCode());
-			if (result!==undefined && result.then && result.catch && result.finally) {
-				var me = this;
-				result.then(function() {
-		        	Ext.defer(me._run, 100, me, [containers, prevCode]);
-				})
-			} else {
-	        	Ext.defer(this._run, 100, this, [containers, prevCode]);
-			}
+			var me = this;
+    		container.run(true, prevVars).then(function(result) {
+				// console.log('nb result', result);
+				prevVars = prevVars.concat(container.getVariables());
+				// console.log('nb pr', prevVars);
+				Ext.defer(me._run, 100, me, [containers, prevVars]);
+			}, function(error) {
+				// console.log('nb error', error);
+			});
     	}
 	},
 	
@@ -887,8 +875,12 @@ Ext.define('Voyant.notebook.Notebook', {
         	metadata.getHeaders();
         var aceChromeEl = document.getElementById("ace-chrome");
         if (aceChromeEl) {out+=aceChromeEl.outerHTML+"\n"}
-        out += document.getElementById("voyant-notebooks-styles").outerHTML+"\n"+
-	        "<script> // this script checks to see if embedded tools seem to be available\n"+
+		
+		// TODO voyant-notebooks-styles has been removed
+		var stylesEl = document.getElementById("voyant-notebooks-styles");
+		if (stylesEl) {out+=stylesEl.outerHTML+"\n"}
+
+        out += "<script> // this script checks to see if embedded tools seem to be available\n"+
 	    	"window.addEventListener('load', function() {\n"+
 	    		"var hostnames = {}, warned = false;\n"+
 	    		"document.querySelectorAll('iframe').forEach(function(iframeEl) {\n"+

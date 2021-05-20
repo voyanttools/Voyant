@@ -3,7 +3,6 @@ body.exported-notebook {
 	font-size: 13px;
 	font-weight: 300;
 	line-height: 17px;
-	-webkit-font-smoothing: antialiased
 }
 body.exported-notebook .notebook-code-editor {
 	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
@@ -13,25 +12,25 @@ body.exported-notebook .notebook-code-editor {
 	white-space: pre;
 }
 .notebook-text-editor, .notebook-code-editor {
-	padding: 6px;
-	margin: 6px;
+	padding: 0px;
+	margin: 0px;
 }
 .notebook-text-wrapper .x-panel-body {
-   border: thin solid rgba(0,0,0,0) !important;
+   border: 1px solid rgba(0,0,0,0) !important;
 }
 .notebook-code-wrapper .x-panel-body {
-   border: thin solid rgba(0,0,0,0) !important;
+   border: 1px solid rgba(0,0,0,0) !important;
 }
 .x-panel .notebook-editor-wrapper-hover.x-panel-body, .editable .x-panel-body {
-	outline: thin dashed rgba(0,0,0,.2) !important;
+	outline: 1px dashed rgba(0,0,0,.2) !important;
 	outline-offset: -1px !important;
 }
 .notebook-code-editor {
-	border-left: thin solid rgb(240, 240, 240);
+	border-left: 1px solid rgb(240, 240, 240);
 }
 .notebook-code-results {
 	background-color: rgb(252, 252, 252);
-	border: thin solid rgb(240, 240, 240);
+	border-left: 1px solid rgb(240, 240, 240);
 }
 .notebook-code-editor-raw { /* used for raw code in saved view */
 	display: none;
@@ -52,12 +51,16 @@ body.exported-notebook .notebook-code-editor {
 	border-radius: 3px;
 	background-color: #f5f5f5;
 	text-align: right;
-	border: thin solid #d8d8d8;
+	border: 1px solid #d8d8d8;
 	padding: 1px;
 	margin: 1px;
 	font-size: smaller;
 }
 
+.spyral-code-mask .x-mask-msg-text { /* reposition loading gif to the left side */
+	padding: 0 0 0 21px;
+	background-position: 0;
+}
 
 .spyral-header, .spyral-footer {
 	text-align: center;
@@ -85,15 +88,15 @@ body.exported-notebook .notebook-code-editor {
 .notebookcodeeditorwrapper {
 	margin-left: 1em;
 	padding-left: .5em;
-	border: thin solid rgba(0,0,0,.1);
+	border: 1px solid rgba(0,0,0,.1);
 }
 .notebookcodeeditorwrapper .collapsed {
 	overflow: auto;
 	max-height: 120px;
 }
 .notebook-code-results {
-	margin: .5em;
-	padding: .5em;
+	/* margin: .5em;
+	padding: .5em; */
 	background-color: rgba(0,0,0,.01)
 }
 .notebook-code-results .collapsed {

@@ -4,7 +4,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 	alias: 'widget.notebookcatalogue',
 	statics: {
 		i18n: {
-			title: 'Notebooks Catalogue',
+			title: 'Spyral Notebooks Catalogue',
 			browse: 'Browse Notebooks',
 			keywords: 'Keywords',
 			author: 'Author',
