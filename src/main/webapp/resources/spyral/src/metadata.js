@@ -32,7 +32,8 @@ class Metadata {
 					var content = meta.getAttribute("content");
 					if (content) {
 						if (name === 'keywords') {
-							if (content.search(',') === -1 && content.match(/\s+/g).length > 1) {
+							var spaces = content.match(/\s+/g);
+							if (content.search(',') === -1 && spaces !== null && spaces.length > 1) {
 								// backwards compatibility: if there are no commas but multiple spaces then assume space delimited keywords
 								content = content.split(/\s+/);
 							} else {
@@ -112,4 +113,4 @@ class Metadata {
 
 }
 
-export { Metadata }
+export default Metadata

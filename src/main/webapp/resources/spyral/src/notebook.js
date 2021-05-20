@@ -159,4 +159,4 @@ class Notebook {
 	}
 }
 
-export { Notebook }
+export default Notebook

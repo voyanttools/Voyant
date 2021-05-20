@@ -1,14 +1,17 @@
 import {Corpus, Table, Load, Util, Chart, Categories} from 'voyant';
 
-import {Notebook} from './notebook';
-import {Metadata} from './metadata';
-import {Storage} from './storage';
-import {show, showError} from './show';
+import Notebook from './notebook';
+import Metadata from './metadata';
 
+import Storage from './storage';
 Util.Storage = Storage;
 
+import {show, showError} from './show';
 Util.show = show;
 Util.showError = showError;
+
+import FileInput from './fileinput';
+Load.files = FileInput.files;
 
 /**
  * @namespace Spyral
