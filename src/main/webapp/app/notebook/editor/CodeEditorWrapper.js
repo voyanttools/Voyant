@@ -554,7 +554,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 				}
 				
 				me._setResultsHeight();
-				// me.getTargetEl().fireEvent('resize');
+				me.getTargetEl().fireEvent('resize');
 			},
 			// override update method and call it on results child instead
 			update: function(htmlOrData) {
