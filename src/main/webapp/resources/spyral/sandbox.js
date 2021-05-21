@@ -9,6 +9,9 @@ window.createTable = function() {
 	return Spyral.Table.create.apply(Spyral.Table, arguments)
 }
 
+window.show = Spyral.Util.show;
+window.showError = Spyral.Util.showError;
+
 function Sandboxer(event) {
 	var me = this;
 
@@ -18,6 +21,8 @@ function Sandboxer(event) {
 		height: undefined,
 		variables: []
 	};
+
+	me.evalSuccess = true;
 
 	this.handleEvent = function() {
 		try {
@@ -46,9 +51,7 @@ function Sandboxer(event) {
 				}
 			}
 		} catch (err) {
-			me.result.type = 'error';
-			me.result.value = 'exception: '+err.message;
-			this.resolveEvent();
+			me.handleError(err);
 		}
 	}
 
@@ -139,10 +142,19 @@ function Sandboxer(event) {
 
 	this.runCode = function(code, priorVariables) {
 		// collect all the declared variables
+		var hasAssigner = false;
 		var esr = esprima.parseScript(code, {}, function(node, metadata) {
-			if (node.type === 'VariableDeclaration') {
+			if (hasAssigner && node.type === 'Literal') {
+				// hack to get variable name inside assign function
+				me.result.variables.push(node.value);
+				hasAssigner = false;
+			} else if (node.type === 'VariableDeclaration') {
 				if (node.declarations[0] && node.declarations[0].id && node.declarations[0].id.type === 'Identifier') {
 					me.result.variables.push(node.declarations[0].id.name);
+				}
+			} else if (node.type === 'MemberExpression') {
+				if (node.property.type === 'Identifier' && node.property.name === 'assign') {
+					hasAssigner = true;
 				}
 			}
 		});
@@ -171,42 +183,43 @@ function Sandboxer(event) {
 				try {
 					result = eval(code);
 				} catch (err) {
-					me.result.type = 'error';
-					me.result.value = 'exception: '+err.message;
-					me.resolveEvent();
+					me.evalSuccess = false;
+					me.handleError(err);
 				}
 				console.log('eval result', result);
 
-				Promise.resolve(result).then(function(prResult) {
-					console.log('prResult', prResult);
-					me.result.value = prResult;
+				if (me.evalSuccess) {
+					Promise.resolve(result).then(function(prResult) {
+						console.log('prResult', prResult);
+						me.result.value = prResult;
 
-					var variableNames = me.result.variables;
-					var variables = [];
-					for (var i = 0; i < variableNames.length; i++) {
-						var varName = variableNames[i];
-						var varValue = eval(varName);
-						variables.push({name: varName, value: varValue, isSpyralClass: me.getSpyralClass(varValue), isFunction: me.isFunction(varValue), isElement: me.isElement(varValue)});
-					}
-					me.result.variables = variables;
+						var variableNames = me.result.variables;
+						var variables = [];
+						for (var i = 0; i < variableNames.length; i++) {
+							var varName = variableNames[i];
+							var varValue = eval(varName);
+							variables.push({name: varName, value: varValue, isSpyralClass: me.getSpyralClass(varValue), isFunction: me.isFunction(varValue), isElement: me.isElement(varValue)});
+						}
+						me.result.variables = variables;
 
-					me.resolveEvent();
-				}, function(err) {
-					me.result.type = 'error';
-					me.result.value = 'exception: '+err.message;
-					me.resolveEvent();
-				})
+						me.resolveEvent();
+					}, function(err) {
+						me.handleError(err);
+					})
+				}
 			}, function(err) {
-				me.result.type = 'error';
-				me.result.value = 'exception: '+err.message;
-				me.resolveEvent();
+				me.handleError(err);
 			});
 		} catch (err) {
-			me.result.type = 'error';
-			me.result.value = 'exception: '+err.message;
-			me.resolveEvent();
+			me.handleError(err);
 		}
-		
+	}
+
+	this.handleError = function(error) {
+		me.result.type = 'error';
+		me.result.value = 'exception: '+error.message;
+		me.result.error = error;
+		me.resolveEvent();
 	}
 
 	this.resolveEvent = function() {
@@ -214,13 +227,19 @@ function Sandboxer(event) {
 			if (me.result.type === 'error') {
 				// always display error
 				me.result.value = '<div class="error">'+me.result.value+'</div>';
-				document.body.innerHTML = me.result.value;
+				// document.body.innerHTML = me.result.value;
+				showError(me.result.error);
 			} else if (document.body.firstChild === null) {
 				// only display result value if the body is empty
 				if (typeof me.result.value === 'string' || typeof me.result.value === 'undefined') {
 					document.body.innerHTML = '<div class="success">'+me.result.value+'</div>';
 				} else {
-					document.body.innerHTML = me.result.value;
+					// TODO would be nice to use toString but corpus toString returns a promise :(
+					// if (typeof me.result.value.toString === 'function') {
+					// 	document.body.innerHTML = me.result.value.toString();
+					// } else {
+						document.body.innerHTML = JSON.stringify(me.result.value);
+					// }
 				}
 			}
 			

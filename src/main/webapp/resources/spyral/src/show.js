@@ -69,8 +69,8 @@ function showError(error, more) {
 		if (console) {
 			console.error(more);
 		}
-		encodedMore = more.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&apos;')
-		error="<h3>"+error.toString()+"</h3><pre>"+encodedMore+'</pre>';
+		var encodedMore = more.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&apos;')
+		error='<h3>'+error.toString()+'</h3><pre>'+encodedMore+'</pre>';
 	}
 	show(error, undefined, 'error');
 }
