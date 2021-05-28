@@ -1,0 +1,91 @@
+.jv-container {
+    color: #000;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+	font-size: 12px;
+    overflow: auto;
+}
+
+.jv-folder {
+    cursor: pointer;
+}
+
+.jv-type, .jv-length {
+	color: #555;
+}
+
+.jv-folder-icon {
+	margin-right: 6px;
+	cursor: pointer;
+    text-align: center;
+    height: 8px;
+	width: 8px;
+}
+
+.jv-content {
+    line-height: 24px;
+    padding-left: 20px;
+    position: relative;
+	display: inline-block;
+}
+.jv-expanded > .jv-content {
+	display: block;
+}
+.jv-collapsed > .jv-content {
+	padding-left: 10px;
+}
+.jv-collapsed > .jv-content:first-of-type {
+    padding-left: 0px;
+}
+.jv-collapsed > .jv-content:not(.jv-content:last-of-type)::after {
+	content: ',';
+}
+
+
+.jv-left, .jv-right {
+    display: inline-block;
+}
+
+.jv-String {
+    color: #1A1AA6;
+}
+
+.jv-Boolean {
+    color: #1A1AA6;
+}
+
+.jv-Number {
+    color: #1A1AA6;
+}
+
+.jv-Null {
+    color: #1A1AA6;
+}
+
+.jv-Object, .jv-Array {
+    display: inline;
+	white-space: nowrap;
+}
+.jv-expanded.jv-Object, .jv-expanded.jv-Array {
+	display: block;
+}
+
+.jv-expanded svg.open {
+	display: inline-block;
+}
+.jv-expanded svg.closed {
+	display: none;
+}
+.jv-collapsed svg.open {
+	display: none;
+}
+.jv-collapsed svg.closed {
+	display: inline-block;
+}
+
+.jv-collapsed .jv-folder .jv-folder-icon, .jv-collapsed .jv-folder+.jv-right {
+	display: none;
+}
+
+.jv-expanded + .jv-type {
+	display: none;
+}

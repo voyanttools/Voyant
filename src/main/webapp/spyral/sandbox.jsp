@@ -48,6 +48,9 @@ table.spyral-table td:last-child {
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
 
+		<script type="text/javascript" src="<%=base %>/resources/spyral/json-viewer.js"></script>
+		<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/json-viewer.css" />
+
 		<script type="text/javascript" src="<%= base %>/resources/spyral/build/spyral.js"></script>
 		<script>
 			<% // there's a very weird thing where reloading a secure page sometimes causes the insecure page to be requested, so let's rely on the browser for scheme %>

@@ -22,6 +22,8 @@ function Sandboxer(event) {
 		variables: []
 	};
 
+	me.jsonViewer = undefined;
+
 	me.evalSuccess = true;
 
 	this.handleEvent = function() {
@@ -38,6 +40,7 @@ function Sandboxer(event) {
 							break;
 						case 'clear':
 							document.body.innerHTML = '';
+							document.body.classList.value = '';
 							break;
 						case 'getContents':
 							me.result.value = document.body.outerHTML;
@@ -86,6 +89,13 @@ function Sandboxer(event) {
 
 	this.isElement = function(thing) {
 		return thing instanceof Element || thing instanceof HTMLDocument;  
+	}
+
+	this.handleJsonViewerToggle = function(e) {
+		me.result.type = 'command';
+		me.result.command = 'update';
+		me.result.height = document.firstElementChild.offsetHeight;
+		event.source.postMessage(JSON.stringify(me.result), event.origin);
 	}
 
 
@@ -238,7 +248,23 @@ function Sandboxer(event) {
 					// if (typeof me.result.value.toString === 'function') {
 					// 	document.body.innerHTML = me.result.value.toString();
 					// } else {
-						document.body.innerHTML = JSON.stringify(me.result.value);
+
+						var name = 'result';
+						for (var i = 0; i < me.result.variables.length; i++) {
+							var variable = me.result.variables[i];
+							if (variable.value === me.result.value) {
+								name = variable.name;
+								break;
+							}
+						}
+						document.body.removeEventListener('jv-toggle', me.handleJsonViewerToggle);
+						me.jsonViewer = new JsonViewer({
+							container: document.body,
+							name: name,
+							data: me.result.value
+						});
+						document.body.addEventListener('jv-toggle', me.handleJsonViewerToggle);
+
 					// }
 				}
 			}
