@@ -1,4 +1,5 @@
 <style>
+body {margin: 0; padding: 0;}
 #pageloading {position:absolute;top:50%;width:100%;margin-top:-70px}
 #pageloading .title{font-family:helvetica,arial,verdana,sans-serif;font-size:2em;color:gray;text-align:center;white-space:nowrap;display:block}
 #pageloading .logo{height:110px;text-align:center}
