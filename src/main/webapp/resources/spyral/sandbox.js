@@ -258,7 +258,7 @@ function Sandboxer(event) {
 							}
 						}
 						document.body.removeEventListener('jv-toggle', me.handleJsonViewerToggle);
-						me.jsonViewer = new JsonViewer({
+						me.jsonViewer = new Spyral.Util.JsonViewer({
 							container: document.body,
 							name: name,
 							data: me.result.value
