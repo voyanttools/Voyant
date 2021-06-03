@@ -34,43 +34,29 @@ function show(contents, len, mode='info') {
 			if (len && typeof len === 'number' && isFinite(len)) {
 				contents = contents.substring(0,len);
 			}
-			// if (Voyant.notebook.util.Show.SINGLE_LINE_MODE==false) {
 			contents="<div class='"+mode+"'>"+contents+"</div>";
-			// }
-			// Voyant.notebook.util.Show.TARGET.insertHtml('beforeEnd',contents);
 			document.body.insertAdjacentHTML('beforeend', contents);
 		}
 	}
 }
 
 function showError(error, more) {
-	// if (Voyant && Voyant.util && Voyant.util.ResponseError) {
-	// 	if (this instanceof Voyant.util.ResponseError) {
-	// 		error = this;
-	// 	}
-	// 	if (error instanceof Voyant.util.ResponseError) {
-	// 		if (console) {
-	// 			console.error(error.getResponse());
-	// 		}
-	// 		more = error.getResponse().responseText
-	// 		error = error.getMsg();
-	// 	}
-	// }
-
-	if (error !== undefined && error.stack && !more) {
-		more = error.stack;
+	if (error !== undefined && error instanceof Error) {
+		if (error.stack && more === undefined) {
+			more = error.stack;
+		}
+		// trim excess error stack (it's likely already in "more")
+		error = error.toString().split(/(\r\n|\r|\n)/).shift();
 	}
+
 	if (more && typeof more !== 'string' && more instanceof String === false) {
 		more = more.toString();
 	}
 
 	if (console) {console.error(error)}
 	if (more) {
-		if (console) {
-			console.error(more);
-		}
 		var encodedMore = more.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&apos;')
-		error='<h3>'+error.toString()+'</h3><pre>'+encodedMore+'</pre>';
+		error='<strong>'+error.toString()+'</strong><pre><span style="cursor:pointer;text-decoration:underline;" onclick="this.nextElementSibling.style.display=\'block\';this.style.display=\'none\';">Details</span><span style="display:none;">'+encodedMore+'</span></pre>';
 	}
 	show(error, undefined, 'error');
 }
