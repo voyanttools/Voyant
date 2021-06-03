@@ -75,10 +75,11 @@ class Notebook {
 
 	/**
 	 * Fetch and return the content of a notebook or a particular cell in a notebook
-	 * @param {string} url
+	 * @param {string} url The URL of the notebook to import
+	 * @param {number} [cellIndex] The index of the cell to import
 	 */
-	static async import(url) {
-		const isFullNotebook = url.indexOf('#') === -1;
+	static async import(url, cellIndex=undefined) {
+		const urlHasHash = url.indexOf('#') !== -1;
 		const isAbsoluteUrl = url.indexOf('http') === 0;
 
 		let notebookId = '';
@@ -90,72 +91,78 @@ class Notebook {
 			} else {
 				return;
 			}
-			if (!isFullNotebook) {
+			if (urlHasHash) {
 				cellId = url.split('#')[1];
 			}
 		} else {
-			if (isFullNotebook) {
-				notebookId = url;
-			} else {
+			if (urlHasHash) {
 				[notebookId, cellId] = url.split('#');
+			} else {
+				notebookId = url;
 			}
 		}
 
-		const json = await Spyral.Load.trombone({
-			tool: 'notebook.NotebookManager',
-			action: 'load',
-			id: notebookId,
-			noCache: 1
-		})
+		let json;
+		try {
+			json = await Spyral.Load.trombone({
+				tool: 'notebook.NotebookManager',
+				action: 'load',
+				id: notebookId,
+				noCache: 1
+			})
+		} catch (e) {
+			throw new Error('There was an error importing the notebook. Please ensure the URL and ID are correct.');
+		}
 
 		const notebook = json.notebook.data;
 		const parser = new DOMParser();
 		const htmlDoc = parser.parseFromString(notebook, 'text/html');
 		
-		let code = ''
-		let error = undefined
+		let importedCode = [];
+		let error = undefined;
 		if (cellId !== undefined) {
 			const cell = htmlDoc.querySelector('#'+cellId);
 			if (cell !== null && cell.classList.contains('notebookcodeeditorwrapper')) {
-				code = cell.querySelector('pre').textContent
-			} else {
-				error = 'No code found for cell: '+cellId
+				importedCode.push(cell.querySelector('pre').textContent);
 			}
 		} else {
-			htmlDoc.querySelectorAll('section.notebook-editor-wrapper').forEach((cell, i) => {
-				if (cell.classList.contains('notebookcodeeditorwrapper')) {
-					code += cell.querySelector('pre').textContent + "\n"
+			const allCells = htmlDoc.querySelectorAll('section.notebook-editor-wrapper')
+			if (cellIndex !== undefined) {
+				const cell = allCells[cellIndex];
+				if (cell !== undefined) {
+					importedCode.push(cell.querySelector('pre').textContent);
 				}
-			})
-		}
-		
-		if (Ext) {
-			if (error === undefined) {
-				Ext.toast({ // quick tip that auto-destructs
-				     html: 'Imported code from: '+url,
-				     width: 200,
-				     align: 'b'
-				});
 			} else {
-				Ext.Msg.show({
-					title: 'Error importing code from: '+url,
-					message: error,
-					icon: Ext.Msg.ERROR,
-					buttons: Ext.Msg.OK
-				})
+				allCells.forEach((cell, i) => {
+					if (cell.classList.contains('notebookcodeeditorwrapper')) {
+						importedCode.push(cell.querySelector('pre').textContent);
+					}
+				});
 			}
 		}
 
-		let result = undefined
-		try {
-			result = eval.call(window, code);
-		} catch(e) {
-			return e
+		// console.log('imported:', importedCode);
+
+		async function __doRun(code) {
+			// console.log('running:',code);
+			try {
+				const result = eval.call(window, code);
+				const prResult = await Promise.resolve(result);
+				if (importedCode.length > 0) {
+					return __doRun(importedCode.shift());
+				} else {
+					return prResult;
+				}
+			} catch(e) {
+				throw new Error('There was an error importing the notebook: '+e.message);
+			}
 		}
-		if (result !== undefined) {
-			console.log(result)
+
+		if (importedCode.length > 0) {
+			return __doRun(importedCode.shift());
+		} else {
+			throw new Error('There was an error importing the notebook. No code found for the specified '+ (cellId === undefined && cellIndex === undefined ? 'notebook' : 'cell')+'.');
 		}
-		return result; // could be a promise?
 	}
 }
 
