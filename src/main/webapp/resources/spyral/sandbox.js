@@ -148,29 +148,30 @@ function Sandboxer(event) {
 
 	}
 
+	this.getNewWindowKeys = function() {
+		var newKeys = [];
+
+		var currWindowKeys = Object.keys(window);
+		for (var i = 0; i < currWindowKeys.length; i++) {
+			var key = currWindowKeys[i];
+			if (window['__defaultWindowKeys__'].indexOf(key) === -1) {
+				newKeys.push(key);
+			}
+		}
+
+		return newKeys;
+	}
+
 
 
 	this.runCode = function(code, priorVariables) {
-		// collect all the declared variables
-		var hasAssigner = false;
-		var esr = esprima.parseScript(code, {}, function(node, metadata) {
-			if (hasAssigner && node.type === 'Literal') {
-				// hack to get variable name inside assign function
-				me.result.variables.push(node.value);
-				hasAssigner = false;
-			} else if (node.type === 'VariableDeclaration') {
-				if (node.declarations[0] && node.declarations[0].id && node.declarations[0].id.type === 'Identifier') {
-					me.result.variables.push(node.declarations[0].id.name);
-				}
-			} else if (node.type === 'MemberExpression') {
-				if (node.property.type === 'Identifier' && node.property.name === 'assign') {
-					hasAssigner = true;
-				}
-			}
-		});
-		// console.log('code vars', me.result.variables);
-
 		try {
+			// remove variables from previous times this code has run
+			this.getNewWindowKeys().forEach(function(newKey) {
+				// console.log('deleting var:', newKey);
+				delete window[newKey];
+			});
+
 			// set variables from prior code cells
 			var prString = '';
 			var complexVariables = [];
@@ -191,7 +192,7 @@ function Sandboxer(event) {
 				console.log('running code:', code);
 				var result = undefined;
 				try {
-					result = eval(code);
+					result = eval.call(window, code);
 				} catch (err) {
 					me.evalSuccess = false;
 					me.handleError(err);
@@ -203,11 +204,11 @@ function Sandboxer(event) {
 						console.log('prResult', prResult);
 						me.result.value = prResult;
 
-						var variableNames = me.result.variables;
+						var newKeys = me.getNewWindowKeys();
 						var variables = [];
-						for (var i = 0; i < variableNames.length; i++) {
-							var varName = variableNames[i];
-							var varValue = eval(varName);
+						for (var i = 0; i < newKeys.length; i++) {
+							var varName = newKeys[i];
+							var varValue = window[varName];//eval.call(window, varName);
 							variables.push({name: varName, value: varValue, isSpyralClass: me.getSpyralClass(varValue), isFunction: me.isFunction(varValue), isElement: me.isElement(varValue)});
 						}
 						me.result.variables = variables;
@@ -302,9 +303,13 @@ function Sandboxer(event) {
 	}
 }
 
-window.addEventListener('message', function(event) {
+window.addEventListener('load', function(event) {
+	// store the default window keys
+	window['__defaultWindowKeys__'] = [];
+	window['__defaultWindowKeys__'] = Object.keys(window);
+});
 
+window.addEventListener('message', function(event) {
 	var sandboxer = new Sandboxer(event);
 	sandboxer.handleEvent();
-	
 });

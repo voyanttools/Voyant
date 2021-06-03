@@ -46,9 +46,6 @@ table.spyral-table td:last-child {
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/data.js"></script>
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/networkgraph.js"></script>
 
-		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
-
-		<script type="text/javascript" src="<%=base %>/resources/spyral/json-viewer.js"></script>
 		<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/json-viewer.css" />
 
 		<script type="text/javascript" src="<%= base %>/resources/spyral/build/spyral.js"></script>
