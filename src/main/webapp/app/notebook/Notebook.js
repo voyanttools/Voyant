@@ -262,7 +262,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			notebookWrapperMoveDown: this.notebookWrapperMoveDown,
     			notebookWrapperRemove: this.notebookWrapperRemove,
 				notebookWrapperAdd: this.notebookWrapperAdd,
-				notebookLoaded: this.autoExecuteCells,
+				notebookInitialized: this.autoExecuteCells,
     			scope: this
     		}
     	})
@@ -608,15 +608,20 @@ Ext.define('Voyant.notebook.Notebook', {
     },
     
     loadFromHtmlString: function(html) {
+		var me = this;
+
     	var parser = new DOMParser();
     	var dom = parser.parseFromString(html, 'text/html');
-    	this.setMetadata(new Spyral.Metadata(dom));
-    	var hasDomError = false;
+    	
+		me.setMetadata(new Spyral.Metadata(dom));
+    	
+		var hasDomError = false;
+		var cells2Init = [];
     	dom.querySelectorAll("section.notebook-editor-wrapper").forEach(function(section) {
     		var classes = section.classList;
     		if (classes.contains("notebooktexteditorwrapper")) {
     			var editor = section.querySelector(".notebook-text-editor").innerHTML;
-    			this.addText(editor, undefined, section.id);
+    			me.addText(editor, undefined, section.id);
     		} else if (classes.contains("notebookcodeeditorwrapper")) {
     			var inputEl = section.querySelector(".notebook-code-editor-raw");
     			var typeRe = /\beditor-mode-(\w+)\b/.exec(inputEl.className);
@@ -655,22 +660,36 @@ Ext.define('Voyant.notebook.Notebook', {
 				} else {
 					ui = undefined;
 				}
-    			this.addCode({
+    			var codeCell = me.addCode({
     				input: input,
 					output: output,
 					expandResults: expandResults,
 					uiHtml: ui,
 					mode: editorType,
 					autoExecute: autoexec,
-    			}, undefined, section.id)
+    			}, undefined, section.id);
+
+				cells2Init.push(codeCell);
+				codeCell.on('initialized', function() {
+					var cellIndex = cells2Init.indexOf(codeCell);
+					if (cellIndex !== -1) {
+						cells2Init.splice(cellIndex, 1);
+						if (cells2Init.length === 0) {
+							me.fireEvent('notebookInitialized');
+						}
+					} else {
+						console.error('unknown cell initialized', codeCell);
+					}
+				});
+
     		}
-		}, this);
+		});
 		
     	if (hasDomError) {
-			this.showError(this.localize("errorParsingDomInput"))
+			me.showError(me.localize("errorParsingDomInput"))
     	}
     	
-		this.fireEvent('notebookLoaded');
+		me.fireEvent('notebookLoaded');
     },
     
     runUntil: function(upToCmp) {

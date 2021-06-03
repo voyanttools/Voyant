@@ -148,6 +148,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	config: {
 		isInitialized: false,
 		isRun: false,
+		needsRun: false,
 		autoExecute: false,
 		mode: 'javascript',
 		isWarnedAboutPreviousCells: false,
@@ -297,9 +298,12 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 							// console.log('iframe command:', eventData);
 							switch (eventData.command) {
 								case 'init':
-									me.setIsInitialized(true);
-									clearInterval(initIntervalID);
-									me.results.update(initHtml);
+									if (me.getIsInitialized() === false) {
+										me.setIsInitialized(true);
+										clearInterval(initIntervalID);
+										me.results.update(initHtml);
+										me.fireEvent('initialized', me);
+									}
 									break;
 								case 'clear':
 									me._setResultsHeight(0);
@@ -402,8 +406,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					}, this);
 				}
 			} else {
-				// TODO init and then run
-				console.warn('run called before init!', this);
+				this.setNeedsRun(true); // TODO do something with this
 			}
 		}
 	},
