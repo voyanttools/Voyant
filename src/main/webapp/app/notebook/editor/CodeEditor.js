@@ -59,6 +59,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				}, 100); // slight delay to avoid selecting a range of text, caused by showing the gutter while mouse is still pressed
 		    }, this);
 		    editor.on("change", function(ev, editor) {
+				me.clearMarkers();
+				
 				var lines = editor.getSession().getScreenLength();
 				if (lines > me.MIN_LINES && lines !== me.getLines()) {
 					me.setLines(lines);
@@ -159,5 +161,21 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 	
 	getValue: function() {
 		return this.getEditor().getValue();
+	},
+
+	addLineMarker: function(lineNumber, type) {
+		type = type === undefined ? 'error' : type;
+		lineNumber--; // need to change to zero based numbering to get correct position
+		this.getEditor().getSession().addMarker(new ace.Range(lineNumber, 0, lineNumber, 1), 'spyral-editor-'+type, 'screenLine', false);
+	},
+
+	clearMarkers: function() {
+		var session = this.getEditor().getSession();
+		var markers = session.getMarkers(false);
+		for (var key in markers) {
+			if (markers[key]['clazz'].indexOf('spyral-editor') !== -1) {
+				session.removeMarker(key);
+			}
+		}
 	}
 })

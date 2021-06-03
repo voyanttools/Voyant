@@ -91,7 +91,7 @@ function Sandboxer(event) {
 		return thing instanceof Element || thing instanceof HTMLDocument;  
 	}
 
-	this.handleJsonViewerToggle = function(e) {
+	this.notifyHeightChange = function(e) {
 		me.result.type = 'command';
 		me.result.command = 'update';
 		me.result.height = document.firstElementChild.offsetHeight;
@@ -236,9 +236,22 @@ function Sandboxer(event) {
 		try {
 			if (me.result.type === 'error') {
 				// always display error
-				me.result.value = '<div class="error">'+me.result.value+'</div>';
-				// document.body.innerHTML = me.result.value;
 				showError(me.result.error);
+				// event listener to adjust height when showing error details
+				document.body.querySelector('.error > pre > span:first-child').addEventListener('click', me.notifyHeightChange);
+
+				// try to determine error location in the code that was run
+				if (me.result.error.stack !== undefined) {
+					var locationDetailsRegex = /<anonymous>:(\d+):(\d+)/;
+					if (navigator.userAgent.indexOf('Chrome') === -1) { // very naive browser detection
+						locationDetailsRegex = />\seval:(\d+):(\d+)/; // firefox style stack trace
+					}
+					var locationDetails = me.result.error.stack.match(locationDetailsRegex);
+					if (locationDetails !== null) {
+						me.result.error.row = parseInt(locationDetails[1]);
+						me.result.error.column = parseInt(locationDetails[2]);
+					}
+				}
 			} else if (document.body.firstChild === null) {
 				// only display result value if the body is empty
 				if (typeof me.result.value === 'string' || typeof me.result.value === 'undefined') {
@@ -257,13 +270,13 @@ function Sandboxer(event) {
 								break;
 							}
 						}
-						document.body.removeEventListener('jv-toggle', me.handleJsonViewerToggle);
+						document.body.removeEventListener('jv-toggle', me.notifyHeightChange);
 						me.jsonViewer = new Spyral.Util.JsonViewer({
 							container: document.body,
 							name: name,
 							data: me.result.value
 						});
-						document.body.addEventListener('jv-toggle', me.handleJsonViewerToggle);
+						document.body.addEventListener('jv-toggle', me.notifyHeightChange);
 
 					// }
 				}

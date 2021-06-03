@@ -288,6 +288,10 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 							console.log('iframe error:', eventData);
 							me.results.unmask();
 							me.results.runPromise.reject(eventData);
+
+							if (eventData.error !== undefined && eventData.error.row !== undefined) {
+								me.editor.addLineMarker(eventData.error.row, 'error');
+							}
 							break;
 						case 'command':
 							// console.log('iframe command:', eventData);
@@ -407,6 +411,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	_run: function(priorVariables) {
 		this.results.show(); // make sure it's visible 
 		this.results.clear();
+
+		this.editor.clearMarkers();
 
 		var code = this.editor.getValue();
 
