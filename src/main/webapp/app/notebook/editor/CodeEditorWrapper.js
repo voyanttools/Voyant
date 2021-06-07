@@ -146,15 +146,11 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		}
 	},
 	config: {
-		isInitialized: false,
 		isRun: false,
 		needsRun: false,
 		autoExecute: false,
 		mode: 'javascript',
-		isWarnedAboutPreviousCells: false,
-		expandResults: true,
-		emptyResultsHeight: 40,
-		minimumResultsHeight: 120
+		isWarnedAboutPreviousCells: false
 	},
 	layout: {
 		type: 'vbox',
@@ -162,9 +158,6 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	},
 	height: 150,
 	border: false,
-
-	BASE_HEIGHT: 2, // used when calculating total height for this component
-	EMPTY_RESULTS_TEXT: ' ', // text to use when clearing results, prior to running code
 
 	constructor: function(config) {
 		config.mode = config.mode !== undefined ? config.mode : this.config.mode;
@@ -174,6 +167,27 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs,
 			mode: 'ace/mode/'+config.mode
+		});
+
+		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
+			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
+			expandResults: config.expandResults,
+			content: Ext.Array.from(config.output).join(""),
+			listeners: {
+				initialized: function() {
+					// pass along initialized
+					this.fireEvent('initialized', this);
+				},
+				sizeChanged: function() {
+					var height = 2;
+					this.items.each(function(item) {height+=item.getHeight();})
+					// console.log('resize setSize', height);
+					if (this.getHeight() !== height) {
+						this.setSize({height: height});
+					}
+				},
+				scope: this
+			}
 		});
 
 		Ext.apply(this, {
@@ -258,112 +272,24 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			        }
 			    ]
 			}],
-			items: [this.editor],
+			items: [this.editor, this.results],
 			listeners: {
-				resize: function(cmp, nw, nh, ow, oh) {
-					// console.log('resize', nh, oh, nw, ow);
-				},
 				removed: function() {
 					window.removeEventListener('message', handleResults);
 				}
 			}
 		});
 
+		// TODO review this
 		if (config.uiHtml !== undefined) {
 			this.items.push(this._getUIComponent(config.uiHtml))
 		}
-
-		this.results = this._getResultsComponent(config);
 		
-		var initHtml = Ext.Array.from(config.output).join("");
-		var initIntervalID;
-
-		var me = this;
-		var handleResults = function(e) {
-			var frame = me.results.getFrame();
-			if (e.source === frame.contentWindow) {
-				var eventData = JSON.parse(e.data);
-				if (eventData.type) {
-					switch (eventData.type) {
-						case 'error':
-							console.log('iframe error:', eventData);
-							me.results.unmask();
-							me.results.runPromise.reject(eventData);
-
-							if (eventData.error !== undefined && eventData.error.row !== undefined) {
-								me.editor.addLineMarker(eventData.error.row, 'error');
-							}
-							break;
-						case 'command':
-							// console.log('iframe command:', eventData);
-							switch (eventData.command) {
-								case 'init':
-									if (me.getIsInitialized() === false) {
-										me.setIsInitialized(true);
-										clearInterval(initIntervalID);
-										me.results.update(initHtml);
-										me.fireEvent('initialized', me);
-									}
-									break;
-								case 'clear':
-									me._setResultsHeight(0);
-									me.getTargetEl().fireEvent('resize');
-									break;
-							}
-							break;
-						case 'result':
-							console.log('iframe result:', eventData);
-							me.results.unmask();
-							me.results.runPromise.resolve(eventData);
-							break;
-					}
-
-					if (eventData.output) {
-						me.results.cachedResultsOutput = eventData.output;
-					}
-
-					me.results.cachedResultsVariables = eventData.variables;
-
-					if (eventData.height > 0) {
-						me._setResultsHeight(eventData.height);
-					}
-					var height = me.BASE_HEIGHT;
-					me.items.each(function(item) {height+=item.getHeight();})
-					me.setSize({height: height});
-					
-				} else {
-					console.warn('unrecognized message!', e);
-				}
-			}
-		}
-		window.addEventListener('message', handleResults);
-
-		initIntervalID = setInterval(function() {
-			console.log('interval init');
-			me.results._sendMessage({type: 'command', command: 'init'});
-		}, 100);
-
+		// TODO
 		this.results.setVisible(runnable);
-		this.items.push(this.results);
 		
 		this.callParent(arguments);
         
-	},
-	
-	initComponent: function(config) {
-		var me = this;
-		me.on("afterrender", function() {
-			this.getTargetEl().on("resize", function(el) {
-				// me._setResultsHeight();
-				var height = me.BASE_HEIGHT;
-				me.items.each(function(item) {height+=item.getHeight();})
-				// console.log('resize setSize', height);
-				if (me.getHeight() !== height) {
-					me.setSize({height: height});
-				}
-			});
-		}, this);
-		me.callParent(arguments);
 	},
 	
 	switchModes: function(mode) {
@@ -384,7 +310,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	 */
 	run: function(forceRun, priorVariables) {
 		if (this.editor.getMode()==='ace/mode/javascript') { // only run JS
-			if (this.getIsInitialized()) {
+			if (this.results.getIsInitialized()) {
 				if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
 					return this._run(priorVariables);
 				} else {
@@ -412,175 +338,24 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	},
 	
 	_run: function(priorVariables) {
-		this.results.show(); // make sure it's visible 
 		this.results.clear();
+
+		Voyant.notebook.Notebook.currentNotebook.setCurrentBlock(this);
 
 		this.editor.clearMarkers();
 
 		var code = this.editor.getValue();
 
 		this.setIsRun(true);
-		return this.results.run(code, priorVariables);
-	},
-
-	_getResultsComponent: function(config) {
-		var me = this;
-		var isExpanded = config.expandResults === undefined ? me.config.expandResults : config.expandResults;
-		var height = me.config.emptyResultsHeight;
-
-		return Ext.create('Ext.Container', {
-			itemId: 'parent',
-			cls: 'notebook-code-results',
-			height: height,
-			layout: {
-				type: 'vbox',
-				align: 'stretch'
-			},
-			items: [{
-				xtype: 'container',
-				flex: 1,
-				layout: {
-					type: 'absolute'
-				},
-				items: [{
-					xtype: 'uxiframe',
-					itemId: 'resultsFrame',
-					x: 0,
-					y: 0,
-					anchor: '100%',
-					height: '100%',
-					// src: 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
-					src: Spyral.Load.baseUrl+'spyral/sandbox.jsp',
-					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>']
-				},{
-					xtype: 'toolbar',
-					itemId: 'buttons',
-					hidden: true,
-					x: 0,
-					y: 0,
-					style: { background: 'none', paddingTop: '6px', pointerEvents: 'none' },
-					defaults: { style: { pointerEvents: 'auto'} },
-					items: ['->',{
-						itemId: 'expandButton',
-						glyph: isExpanded ? 'xf066@FontAwesome' : 'xf065@FontAwesome',
-						tooltip: isExpanded ? 'Contract Results' : 'Expand Results',
-						handler: function() {
-							me.results.doExpandContract();
-						}
-					},{
-						xtype: 'notebookwrapperexport',
-						exportType: 'output'
-					},{
-						glyph: 'xf014@FontAwesome',
-						tooltip: 'Remove Results',
-						handler: function() {
-							me.clearResults();
-						}
-					}]
-				}]
-			},{
-				xtype: 'component',
-				itemId: 'expandWidget',
-				height: 20,
-				hidden: isExpanded ? true : false,
-				style: {textAlign: 'center', fontSize: '26px', cursor: 'pointer', borderTop: '1px solid #DDD'},
-				html: '&#8943;',
-				listeners: {
-					afterrender: function(cmp) {
-						cmp.getEl().on('click', function() {
-							me.results.doExpandContract();
-						})
-					}
-				}
-			}],
-			
-			cachedPaddingHeight: undefined,
-			cachedResultsHeight: undefined,
-			cachedResultsOutput: '',
-			cachedResultsVariables: [],
-
-			runPromise: undefined,
-
-			maskTimeoutId: undefined,
-
-			_sendMessage: function(messageObj) {
-				this.down('#resultsFrame').getWin().postMessage(JSON.stringify(messageObj), '*');
-			},
-			clear: function() {
-				this._sendMessage({type: 'command', command: 'clear'});
-			},
-			run: function(code, priorVariables) {
-				if (priorVariables === undefined) {
-					priorVariables = [];
-				}
-
-				this.runPromise = new Ext.Deferred();
-
-				this.mask('Running code...');
-
-				console.log('sending vars', priorVariables);
-				this._sendMessage({type: 'code', value: code, variables: priorVariables});
-
-				return this.runPromise.promise;
-			},
-			mask: function(maskMsg) {
-				var me = this;
-				this.maskTimeoutId = setTimeout(function() {
-					me.superclass.mask.call(me, maskMsg, 'spyral-code-mask');
-				}, 250); // only mask long running code
-			},
-			unmask: function() {
-				clearTimeout(this.maskTimeoutId);
-				this.superclass.unmask.call(this);
-			},
-			getValue: function() {
-				return this.cachedResultsOutput;
-			},
-			getVariables: function() {
-				return this.cachedResultsVariables;
-			},
-			getFrame: function() {
-				return this.down('#resultsFrame').getFrame();
-			},
-			getResultsEl: function() {
-				var doc = this.down('#resultsFrame');
-				if (doc) {
-					return doc;
-				} else {
-					return null;
-				}
-			},
-			doExpandContract: function() {
-				var expandButton = me.results.down('#expandButton');
-				if (me.getExpandResults()) {
-					me.setExpandResults(false);
-					expandButton.setTooltip('Expand Results');
-					expandButton.setGlyph('xf065@FontAwesome');
-				} else {
-					me.setExpandResults(true);
-					expandButton.setTooltip('Contract Results');
-					expandButton.setGlyph('xf066@FontAwesome');
-				}
-				
-				me._setResultsHeight();
-				me.getTargetEl().fireEvent('resize');
-			},
-			// override update method and call it on results child instead
-			update: function(htmlOrData) {
-				// console.log('update', htmlOrData);
-				this._sendMessage({type: 'command', command: 'update', value: htmlOrData});
-			},
-			listeners: {
-				afterrender: function(cmp) {
-					cmp.getEl().on('mouseover', function(event, el) {
-						cmp.down('#buttons').setVisible(true);
-					});
-					cmp.getEl().on('mouseout', function(event, el) {
-						cmp.down('#buttons').setVisible(false);
-					});
-				}
+		
+		var runPromise = this.results.run(code, priorVariables);
+		runPromise.otherwise(function(eventData) {
+			if (eventData.error !== undefined && eventData.error.row !== undefined) {
+				this.editor.addLineMarker(eventData.error.row, 'error');
 			}
-		});
+		}, this);
+
+		return runPromise;
 	},
 
 	_getUIComponent: function(html) {
@@ -590,81 +365,15 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			padding: '20 10',
 			html: html,
 			getValue: function() {
-				const el = this.getTargetEl()
+				const el = this.getTargetEl();
 				const resultEl = el.dom.cloneNode(true);
 				let output = resultEl.innerHTML;
 				return output;
 			}
 		});
 	},
-
-	_showResult: function(result) {
-		// check for pre-existing content (such as from highcharts) and if it exists don't update
-		if (this.results.getResultsEl().dom.innerHTML === this.EMPTY_RESULTS_TEXT) {
-			if (result.toString) {result = result.toString()}
-			if (result && result.then) {
-				var me = this;
-				result.then(out => {
-					me.results.update(out);
-					return out;
-				})
-			} else {
-				this.results.update(result);
-			}
-		}
-	},
-
-	/**
-	 * Set the height of the results component
-	 */
-	_setResultsHeight: function(height) {
-		if (this.results.cachedPaddingHeight === undefined) {
-			// compute and store parent padding, which we'll need when determining proper height
-			var computedStyle = window.getComputedStyle(this.results.getEl().dom);
-			this.results.cachedPaddingHeight = parseFloat(computedStyle.getPropertyValue('padding-top'))+parseFloat(computedStyle.getPropertyValue('padding-bottom'));
-			this.results.cachedPaddingHeight += 2; // extra 2 for border
-		}
-		if (height !== undefined) {
-			// cache height
-			this.results.cachedResultsHeight = height;
-		} else {
-			height = this.results.cachedResultsHeight;
-			if (height === undefined) {
-				var resultsEl = this.results.getResultsEl();
-				if (resultsEl) {
-					height = resultsEl.getHeight();
-				} else {
-					height = this.getEmptyResultsHeight();
-				}
-				this.results.cachedResultsHeight = height;
-			}
-		}
-		height += this.results.cachedPaddingHeight;
-
-		var resultsEl = this.results.getResultsEl();
-		if (resultsEl) {
-			var expandWidget = this.results.down('#expandWidget');
-			if (this.getExpandResults()) {
-				expandWidget.hide();
-				// console.log('setResultsHeight', Math.max(height, this.getEmptyResultsHeight()))
-				this.results.setHeight(Math.max(height, this.getEmptyResultsHeight()));
-				// resultsEl.removeCls('collapsed');
-			} else {
-				height = Math.min(Math.max(height, this.getEmptyResultsHeight()), this.getMinimumResultsHeight());
-				if (height < this.getMinimumResultsHeight()) {
-					expandWidget.hide();
-				} else {
-					expandWidget.show();
-				}
-				// console.log('setResultsHeight', height)
-				this.results.setHeight(height);
-				// resultsEl.addCls('collapsed');
-			}
-		}
-	},
 	
 	clearResults: function() {
-		this.results.show();
 		this.results.clear();
 	},
 	
@@ -674,6 +383,10 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 
 	getVariables: function() {
 		return this.results.getVariables();
+	},
+
+	getExpandResults: function() {
+		return this.results.getExpandResults();
 	},
 
 	getContent: function() {

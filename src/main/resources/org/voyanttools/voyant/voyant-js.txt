@@ -171,6 +171,7 @@ app/notebook/editor/button/Run.js
 app/notebook/editor/button/RunAll.js
 app/notebook/editor/button/RunUntil.js
 app/notebook/editor/EditorWrapper.js
+app/notebook/editor/SandboxWrapper.js
 app/notebook/editor/CodeEditor.js
 app/notebook/editor/CodeEditorWrapper.js
 app/notebook/editor/TextEditor.js
