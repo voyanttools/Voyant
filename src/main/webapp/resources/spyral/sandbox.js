@@ -113,6 +113,7 @@ function Sandboxer(event) {
 
 	this.loadComplexVariable = function(cv) {
 		return new Promise(function(resolve, reject) {
+			console.log('adding complex var:', cv.name);
 			if (cv.isSpyralClass) {
 				switch (cv.isSpyralClass) {
 					case 'Spyral.Categories':
@@ -166,10 +167,36 @@ function Sandboxer(event) {
 
 	this.runCode = function(code, priorVariables) {
 		try {
+
+			// collect all the declared variables
+			var hasAssigner = false;
+			var declaredVariables = [];
+			var esr = esprima.parseScript(code, {}, function(node, metadata) {
+				if (hasAssigner && node.type === 'Literal') {
+					// hack to get variable name inside assign function
+					declaredVariables.push(node.value);
+					hasAssigner = false;
+				} else if (node.type === 'VariableDeclaration') {
+					if (node.declarations[0] && node.declarations[0].id && node.declarations[0].id.type === 'Identifier') {
+						declaredVariables.push(node.declarations[0].id.name);
+					}
+				} else if (node.type === 'MemberExpression') {
+					if (node.property.type === 'Identifier' && node.property.name === 'assign') {
+						hasAssigner = true;
+					}
+				}
+			});
+
+
 			// remove variables from previous times this code has run
 			this.getNewWindowKeys().forEach(function(newKey) {
-				// console.log('deleting var:', newKey);
-				delete window[newKey];
+				if (declaredVariables.indexOf(newKey) === -1) {
+					// don't delete variables that were passed from other cells
+					console.log('preserving external var:', newKey);
+				} else {
+					// console.log('deleting var:', newKey);
+					delete window[newKey];
+				}
 			});
 
 			// set variables from prior code cells
@@ -184,8 +211,6 @@ function Sandboxer(event) {
 					window[pr.name] = pr.value;
 				}
 			});
-
-			console.log('loading complex vars');
 
 			this.loadComplexVariables(complexVariables).then(function() {
 				// actually run the code

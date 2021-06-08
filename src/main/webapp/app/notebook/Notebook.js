@@ -731,9 +731,20 @@ Ext.define('Voyant.notebook.Notebook', {
 			}
 			var me = this;
     		container.run(true, prevVars).then(function(result) {
-				// console.log('nb result', result);
-				prevVars = prevVars.concat(container.getVariables());
-				// console.log('nb pr', prevVars);
+				// check for and remove older duplicates
+				var newVars = container.getVariables();
+				newVars.forEach(function(newVar) {
+					for (var i = 0; i < prevVars.length; i++) {
+						var prevVar = prevVars[i];
+						if (newVar.name === prevVar.name) {
+							// console.log('removing duplicate var:', prevVar.name);
+							prevVars.splice(i, 1);
+							break;
+						}
+					}
+				});
+				prevVars = prevVars.concat(newVars);
+				
 				Ext.defer(me._run, 100, me, [containers, prevVars]);
 			}, function(error) {
 				// console.log('nb error', error);

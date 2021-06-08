@@ -272,12 +272,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			        }
 			    ]
 			}],
-			items: [this.editor, this.results],
-			listeners: {
-				removed: function() {
-					window.removeEventListener('message', handleResults);
-				}
-			}
+			items: [this.editor, this.results]
 		});
 
 		// TODO review this

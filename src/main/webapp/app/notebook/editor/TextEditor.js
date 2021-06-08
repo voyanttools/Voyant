@@ -38,7 +38,7 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 	listeners: {
 		boxready: function(cmp) {
 			this.getTargetEl().on("click", function(e, t) {
-				if (t.tagName!="A") {
+				if (t.tagName !== "A") {
 					this.handleClick(cmp);
 				}
 			}, this);

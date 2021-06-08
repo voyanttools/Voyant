@@ -8,6 +8,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 
 	config: {
 		isInitialized: false,
+		initialContent: '',
 
 		cachedPaddingHeight: undefined,
 		cachedResultsHeight: undefined,
@@ -16,6 +17,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 
 		runPromise: undefined,
 
+		initIntervalID: undefined,
 		maskTimeoutId: undefined,
 
 		emptyResultsHeight: 40,
@@ -27,7 +29,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	constructor: function(config) {
 		var isExpanded = config.expandResults;
 		var sandboxSrcUrl = config.sandboxSrcUrl;
-		var initialContent = config.content;
+		
+		this.setInitialContent(config.content);
 
 		Ext.apply(this, {
 			itemId: 'parent',
@@ -99,69 +102,12 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 			}]
 		});
 
-
-		var initIntervalID;
-
-		var me = this;
-		var handleResults = function(e) {
-			var frame = me.getFrame();
-			if (e.source === frame.contentWindow) {
-				var eventData = JSON.parse(e.data);
-				if (eventData.type) {
-					switch (eventData.type) {
-						case 'error':
-							console.log('iframe error:', eventData);
-							me.unmask();
-							me.getRunPromise().reject(eventData);
-							break;
-						case 'command':
-							// console.log('iframe command:', eventData);
-							switch (eventData.command) {
-								case 'init':
-									if (me.getIsInitialized() === false) {
-										me.setIsInitialized(true);
-										clearInterval(initIntervalID);
-										me.update(initialContent);
-										me.fireEvent('initialized', me);
-									}
-									break;
-								case 'clear':
-									me._setHeight(0);
-									break;
-							}
-							break;
-						case 'result':
-							console.log('iframe result:', eventData);
-							me.unmask();
-							me.getRunPromise().resolve(eventData);
-							break;
-					}
-
-					if (eventData.output) {
-						me.setCachedResultsOutput(eventData.output);
-					}
-
-					me.setCachedResultsVariables(eventData.variables);
-
-					if (eventData.height > 0) {
-						me._setHeight(eventData.height);
-					}
-				} else {
-					console.warn('unrecognized message!', e);
-				}
-			}
-		}
-		window.addEventListener('message', handleResults);
-
-		initIntervalID = setInterval(function() {
-			console.log('interval init');
-			me._sendMessage({type: 'command', command: 'init'});
-		}, 100);
-
 		this.callParent(arguments);
 	},
 
 	initComponent: function() {
+		var handleResultsScoped = this._handleResults.bind(this);
+
 		this.on('afterrender', function(cmp) {
 			cmp.getEl().on('mouseover', function(event, el) {
 				cmp.down('#buttons').setVisible(true);
@@ -169,7 +115,19 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 			cmp.getEl().on('mouseout', function(event, el) {
 				cmp.down('#buttons').setVisible(false);
 			});
-		});
+
+			window.addEventListener('message', handleResultsScoped);
+
+			var me = this;
+			this.setInitIntervalID(setInterval(function() {
+				console.log('interval init');
+				me._sendMessage({type: 'command', command: 'init'});
+			}, 100));
+		}, this);
+
+		this.on('removed', function() {
+			window.removeEventListener('message', handleResultsScoped);
+		}, this);
 
 		this.callParent(arguments);
 	},
@@ -222,10 +180,6 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		return this.getCachedResultsVariables();
 	},
 
-	getFrame: function() {
-		return this.down('#resultsFrame').getFrame();
-	},
-
 	getResultsEl: function() {
 		var doc = this.down('#resultsFrame');
 		if (doc) {
@@ -237,6 +191,55 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 
 	_sendMessage: function(messageObj) {
 		this.down('#resultsFrame').getWin().postMessage(JSON.stringify(messageObj), '*');
+	},
+
+	_handleResults: function(e) {
+		var frame = this.down('#resultsFrame').getFrame();
+		if (e.source === frame.contentWindow) {
+			var eventData = JSON.parse(e.data);
+			if (eventData.type) {
+				switch (eventData.type) {
+					case 'error':
+						console.log('iframe error:', eventData);
+						this.unmask();
+						this.getRunPromise().reject(eventData);
+						break;
+					case 'command':
+						// console.log('iframe command:', eventData);
+						switch (eventData.command) {
+							case 'init':
+								if (this.getIsInitialized() === false) {
+									this.setIsInitialized(true);
+									clearInterval(this.getInitIntervalID());
+									this.update(this.getInitialContent());
+									this.fireEvent('initialized', this);
+								}
+								break;
+							case 'clear':
+								this._setHeight(0);
+								break;
+						}
+						break;
+					case 'result':
+						console.log('iframe result:', eventData);
+						this.unmask();
+						this.getRunPromise().resolve(eventData);
+						break;
+				}
+
+				if (eventData.output) {
+					this.setCachedResultsOutput(eventData.output);
+				}
+
+				this.setCachedResultsVariables(eventData.variables);
+
+				if (eventData.height > 0) {
+					this._setHeight(eventData.height);
+				}
+			} else {
+				console.warn('unrecognized message!', e);
+			}
+		}
 	},
 
 	_doExpandContract: function() {
