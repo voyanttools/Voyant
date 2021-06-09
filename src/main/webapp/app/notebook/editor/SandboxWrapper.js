@@ -255,7 +255,6 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		}
 		
 		this._setHeight();
-		this.fireEvent('sizeChanged', this);
 	},
 	
 	/**
@@ -305,6 +304,6 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 			}
 		}
 
-		this.fireEvent('sizeChanged', this);
+		// this.fireEvent('sizeChanged', this);
 	}
 });

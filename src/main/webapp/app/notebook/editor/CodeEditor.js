@@ -66,7 +66,6 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 					me.setLines(lines);
 					var height = lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth();
 					me.setSize({height: height});
-					me.up('notebookcodeeditorwrapper').getTargetEl().fireEvent('resize');
 				}
 				if (me.getIsChangeRegistered()==false) {
 					me.setIsChangeRegistered(true);

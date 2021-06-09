@@ -990,7 +990,7 @@ Ext.define('Voyant.notebook.Notebook', {
         		text += this.localize("created")+" "+created+"."
     		}
     		if (modified && created!=modified) {
-        		text += this.localize("modified")+" "+modified+"."
+        		text += " "+this.localize("modified")+" "+modified+"."
     		}
     		
     	}

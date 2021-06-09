@@ -166,7 +166,11 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs,
-			mode: 'ace/mode/'+config.mode
+			mode: 'ace/mode/'+config.mode,
+			listeners: {
+				resize: this._handleResize,
+				scope: this
+			}
 		});
 
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
@@ -178,14 +182,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					// pass along initialized
 					this.fireEvent('initialized', this);
 				},
-				sizeChanged: function() {
-					var height = 2;
-					this.items.each(function(item) {height+=item.getHeight();})
-					// console.log('resize setSize', height);
-					if (this.getHeight() !== height) {
-						this.setSize({height: height});
-					}
-				},
+				resize: this._handleResize,
 				scope: this
 			}
 		});
@@ -366,6 +363,14 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 				return output;
 			}
 		});
+	},
+
+	_handleResize: function() {
+		var height = 2;
+		this.items.each(function(item) {height+=item.getHeight();})
+		if (this.getHeight() !== height) {
+			this.setSize({height: height});
+		}
 	},
 	
 	clearResults: function() {
