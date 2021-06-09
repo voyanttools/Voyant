@@ -49,6 +49,10 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				showFoldWidgets: false,
 				showPrintMargin: false
 			});
+
+			editor.renderer.once('afterRender', function() {
+				me.fireEvent('resize', me);
+			});
 			
 			editor.setValue(this.getContent() ? this.getContent() : "" /*this.localize('emptyText')*/);
 			editor.clearSelection();
