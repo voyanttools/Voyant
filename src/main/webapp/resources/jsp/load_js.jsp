@@ -23,9 +23,6 @@ String rtl_js = (String) request.getAttribute("rtl");
 <!-- vis.js -->
 <script type="text/javascript" src="<%= base_js %>/resources/visjs/vis.min.js"></script>
 
-<!-- ACE Editor (used by Spyral and the widget.codeeditor -->
-<script src="<%= base_js %>/resources/ace/1.4.12/src-min-noconflict/ace.js"></script>
-
 <!-- spectrum -->
 <script type="text/javascript" src="<%=base_js %>/resources/spectrum/spectrum.js"></script>
 
