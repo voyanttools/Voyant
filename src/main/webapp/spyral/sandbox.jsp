@@ -15,9 +15,6 @@ body {
 	margin: 6px;
 	padding: 0;
 }
-body .success {
-	color: #1EBD42;
-}
 body .error {
 	color: #C23241;
 }
