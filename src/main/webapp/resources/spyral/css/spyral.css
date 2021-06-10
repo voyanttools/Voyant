@@ -34,8 +34,16 @@ body.exported-notebook .notebook-code-editor {
 }
 .notebook-code-results {
 	background-color: rgb(252, 252, 252);
-	border-left: 1px solid rgb(240, 240, 240);
+	border-left: 3px solid rgb(240, 240, 240);
 }
+.notebook-code-results.error {
+	border-left-color: rgba(194, 50, 65, .5);
+}
+.notebook-code-results.success {
+	/* border-left-color: rgba(30, 189, 66, .5); */
+	border-left-color: rgba(23, 145, 232, .5);
+}
+
 .notebook-code-editor-raw { /* used for raw code in saved view */
 	display: none;
 }
@@ -108,9 +116,6 @@ body.exported-notebook .notebook-code-editor {
 }
 .spyral-header, .spyral-footer {
 	text-align: center
-}
-.notebook-code-results .error {
-	color: red !important;
 }
 
 .catalogue-notebook {

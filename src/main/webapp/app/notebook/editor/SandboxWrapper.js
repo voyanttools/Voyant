@@ -145,14 +145,23 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 			priorVariables = [];
 		}
 
+		this.getEl().removeCls(['error','success']);
+
 		this.setRunPromise(new Ext.Deferred());
+
+		var actualPromise = this.getRunPromise().promise;
+		actualPromise.then(function() {
+			this.getEl().addCls('success');
+		}, function() {
+			this.getEl().addCls('error');
+		}, undefined, this);
 
 		this.mask('Running code...');
 
 		console.log('sending vars', priorVariables);
 		this._sendMessage({type: 'code', value: code, variables: priorVariables});
 
-		return this.getRunPromise().promise;
+		return actualPromise;
 	},
 
 	mask: function(maskMsg) {

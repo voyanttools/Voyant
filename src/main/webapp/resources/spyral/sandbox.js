@@ -281,7 +281,7 @@ function Sandboxer(event) {
 			} else if (document.body.firstChild === null) {
 				// only display result value if the body is empty
 				if (typeof me.result.value === 'string' || typeof me.result.value === 'undefined') {
-					document.body.innerHTML = '<div class="success">'+me.result.value+'</div>';
+					document.body.innerHTML = '<div>'+me.result.value+'</div>';
 				} else {
 					// TODO would be nice to use toString but corpus toString returns a promise :(
 					// if (typeof me.result.value.toString === 'function') {
