@@ -306,20 +306,30 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 				if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
 					return this._run(priorVariables);
 				} else {
-					// this code was for checking if previous cells hadn't been run, but it didn't seem worthwhile
 					var notebook = this.up('notebook');
+					var variablesAggregator = [];
 					Ext.Array.each(notebook.query('notebookcodeeditorwrapper'), function(wrapper) {
-						if (wrapper===this) {this._run(priorVariables); return false;} // break
-						if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript' && wrapper.getIsRun()===false) {
-							Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
-								if (btnId==='yes') {
-									notebook.runUntil(this);
-								} else {
-									this._run(priorVariables);
-								}
-							}, this);
-							this.setIsWarnedAboutPreviousCells(true);
+						if (wrapper===this) {
+							if (priorVariables === undefined) {
+								priorVariables = variablesAggregator;
+							}
+							this._run(priorVariables);
 							return false;
+						}
+						if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript') {
+							if (wrapper.getIsRun()) {
+								variablesAggregator = variablesAggregator.concat(wrapper.getVariables());
+							} else {
+								Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
+									if (btnId==='yes') {
+										notebook.runUntil(this);
+									} else {
+										this._run(priorVariables);
+									}
+								}, this);
+								this.setIsWarnedAboutPreviousCells(true);
+								return false;
+							}
 						}
 					}, this);
 				}
