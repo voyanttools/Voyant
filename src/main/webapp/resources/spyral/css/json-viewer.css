@@ -1,19 +1,19 @@
-.jv-container {
+.spyral-jv-container {
     color: #000;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 	font-size: 12px;
     overflow: auto;
 }
 
-.jv-folder {
+.spyral-jv-folder {
     cursor: pointer;
 }
 
-.jv-type, .jv-length {
+.spyral-jv-type, .spyral-jv-length {
 	color: #555;
 }
 
-.jv-folder-icon {
+.spyral-jv-folder-icon {
 	margin-right: 6px;
 	cursor: pointer;
     text-align: center;
@@ -21,71 +21,59 @@
 	width: 8px;
 }
 
-.jv-content {
+.spyral-jv-content {
     line-height: 24px;
     padding-left: 20px;
     position: relative;
 	display: inline-block;
 }
-.jv-expanded > .jv-content {
+.spyral-jv-expanded > .spyral-jv-content {
 	display: block;
 }
-.jv-collapsed > .jv-content {
+.spyral-jv-collapsed > .spyral-jv-content {
 	padding-left: 10px;
 }
-.jv-collapsed > .jv-content:first-of-type {
+.spyral-jv-collapsed > .spyral-jv-content:first-of-type {
     padding-left: 0px;
 }
-.jv-collapsed > .jv-content:not(.jv-content:last-of-type)::after {
+.spyral-jv-collapsed > .spyral-jv-content:not(.spyral-jv-content:last-of-type)::after {
 	content: ',';
 }
 
 
-.jv-left, .jv-right {
+.spyral-jv-left, .spyral-jv-right {
     display: inline-block;
 }
 
-.jv-String {
+.spyral-jv-String, .spyral-jv-Boolean, .spyral-jv-Number, .spyral-jv-Element, .spyral-jv-Null, .spyral-jv-Undefined {
     color: #1A1AA6;
 }
 
-.jv-Boolean {
-    color: #1A1AA6;
-}
-
-.jv-Number {
-    color: #1A1AA6;
-}
-
-.jv-Null {
-    color: #1A1AA6;
-}
-
-.jv-Object, .jv-Array {
+.spyral-jv-Object, .spyral-jv-Array {
     display: inline;
 	white-space: nowrap;
 }
-.jv-expanded.jv-Object, .jv-expanded.jv-Array {
+.spyral-jv-expanded.spyral-jv-Object, .spyral-jv-expanded.spyral-jv-Array {
 	display: block;
 }
 
-.jv-expanded svg.open {
+.spyral-jv-expanded svg.open {
 	display: inline-block;
 }
-.jv-expanded svg.closed {
+.spyral-jv-expanded svg.closed {
 	display: none;
 }
-.jv-collapsed svg.open {
+.spyral-jv-collapsed svg.open {
 	display: none;
 }
-.jv-collapsed svg.closed {
+.spyral-jv-collapsed svg.closed {
 	display: inline-block;
 }
 
-.jv-collapsed .jv-folder .jv-folder-icon, .jv-collapsed .jv-folder+.jv-right {
+.spyral-jv-collapsed .spyral-jv-folder .spyral-jv-folder-icon, .spyral-jv-collapsed .spyral-jv-folder+.spyral-jv-right {
 	display: none;
 }
 
-.jv-expanded + .jv-type {
+.spyral-jv-expanded + .spyral-jv-type {
 	display: none;
 }

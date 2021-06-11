@@ -1,5 +1,3 @@
-/* global Spyral */ 
-
 import Util from 'voyant/src/util';
 
 /**
@@ -11,6 +9,8 @@ import Util from 'voyant/src/util';
 class JsonViewer {
 
 	constructor(options) {
+		this.cls = 'spyral-jv-';
+
 		let defaults = {
 			container: document.body,
 			data: '{}',
@@ -19,152 +19,130 @@ class JsonViewer {
 		};
 		this.options = Object.assign(defaults, options);
 		
-		this.render();
+		this.options.container.setAttribute('class', this.cls+'container');
+		this.render(0, this.options.container, this.options.name, this.options.data);
 	}
 
-	render() {
-		let data = this.options.data;
-		let indent = 0;
-		let parent = this.options.container;
-		let key = this.options.name;
-		let dataObj;
-			
-		parent.setAttribute('class', 'jv-container');
-		if (typeof data === 'string') {
-			try {
-				dataObj = JSON.parse(data);
-			} catch (error) {
-				throw new Error('It is not a json format');
-			}
-		} else {
-			dataObj = data;
-		}
-		let createdItem = this.createItem(indent, parent, key);
-		this.renderChildren(key, dataObj, createdItem.right, indent, createdItem.left);
-	}
-	 
-	createItem(indent, parent, key, basicType) {
-		let self = this;
-		let current = document.createElement('span');
-		let left = document.createElement('span');
-		let right = document.createElement('span');
-	 
-		current.style.marginLeft = indent * 2 + 'px';
-		left.innerHTML = key+':&nbsp;';
-		current.appendChild(left);
-		current.appendChild(right);
-		parent.appendChild(current);
-		current.setAttribute('class', 'jv-content');
+	render(indent, parent, key, data) {
+		let type = getType(data);
+		let basicType = type !== 'Object' && type !== 'Array';
+
+		let createdItem = this.createItem(indent, parent, key, data);
 		
 		if (basicType) {
-			left.setAttribute('class', 'jv-left');
+			createdItem.right.setAttribute('class', `${this.cls}${type} ${this.cls}right`);
+			if (type === 'Null') data = 'null';
+			else if (type === 'String') data = '"'+data+'"';
+			createdItem.right.innerText = data;
 		} else {
-			left.setAttribute('class', 'jv-left jv-folder');
+			if (type === 'Object') {
+				for (let key in data) {
+					if (data.hasOwnProperty(key)) {
+						this.render(indent+0, createdItem.right, key, data[key]);
+					}
+				}
+			} else {
+				for (let i = 0, l = data.length; i < l; i++) {
+					this.render(indent+0, createdItem.right, i, data[i]);
+				}
+			}
+		}
+	}
+	 
+	createItem(indent, parent, key, data) {
+		let container = document.createElement('span');
+		container.style.marginLeft = indent*2 + 'px';
+		container.setAttribute('class', `${this.cls}content`);
+
+		let left = document.createElement('span');
+		let right = document.createElement('span');
+		container.appendChild(left);
+		container.appendChild(right);
+
+		parent.appendChild(container);
+		
+		let type = getType(data);
+		let basicType = type !== 'Object' && type !== 'Array';
+
+		if (basicType) {
+			left.innerHTML = key+':&nbsp;';
+			left.setAttribute('class', `${this.cls}left`);
+		} else {
+			if (type === 'Object') {
+				left.innerHTML = `${key} : <span class="${this.cls}type">Object</span><span class="${this.cls}length">{${Object.keys(data).length}}</span> `;
+			} else {
+				left.innerHTML = `${key} : <span class="${this.cls}type">Array</span><span class="${this.cls}length">[${data.length}]</span> `;
+			}
+
+			let expandCls = this.options.expand ? `${this.cls}expanded` : `${this.cls}collapsed`;
+
+			let folderIcon = document.createElement('span');
+			folderIcon.setAttribute('class', `${this.cls}folder-icon ${expandCls}`);
+			folderIcon.innerHTML = '<svg width="8" height="8" class="open"><path d="M4 7L0 1h8z" fill="#000"></path></svg>'+'<svg width="8" height="8" class="closed"><path d="M7 4L1 8V0z" fill="#000"></path></svg>';
+			left.append(folderIcon);
+			
+			left.setAttribute('class', `${this.cls}left ${this.cls}folder`);
+			
+			let self = this;
 			left.onclick = function(e) {
 				let target = e.currentTarget;
-				let collapsedParent = e.currentTarget.closest('.jv-collapsed');
+				let collapsedParent = e.currentTarget.closest(`.${self.cls}collapsed`);
 				if (collapsedParent !== null) {
 					target = collapsedParent.previousElementSibling;
 				}
 				self.toggleItem(target);
-				self.options.container.dispatchEvent(new Event('jv-toggle'));
+				self.options.container.dispatchEvent(new Event(`${self.cls}toggle`));
 			}
+
+			right.setAttribute('class', `${this.cls}${type} ${this.cls}right ${expandCls}`);
 		}
 			
 		return {
 			left: left,
-			right: right,
-			current: current,
+			right: right
 		};
-	}
-	
-	renderChildren(key, val, right, indent, left) {
-		let self = this;
-		
-		let folder = this.getFolderIcon(this.options.expand);
-	
-		let isObj = Spyral.Util.isObject(val);
-		if (isObj) {
-			left.innerHTML = key + ': <span class="jv-type">Object</span><span class="jv-length">{' + Object.keys(val).length + '}</span> '
-		} else {
-			left.innerHTML = key + ': <span class="jv-type">Array</span><span class="jv-length">[' + val.length + ']</span> ';
-		}
-	
-		left.append(folder);
-		let state = this.options.expand ? 'jv-expanded' : 'jv-collapsed';
-		right.setAttribute('class', 'jv-'+(isObj ? 'Object' : 'Array')+' jv-right ' + state);
-	
-		forEach(val, function(childVal, key) {
-			let createdItem = self.createItem(indent+0, right, key, typeof childVal !== 'object');
-			if (typeof childVal !== 'object') {
-				self.renderRight(createdItem.right, childVal);
-			} else {
-				self.renderChildren(key, childVal, createdItem.right, indent+0, createdItem.left);
-			}
-		});
-	}
-	
-	renderRight(right, val) {
-		if (Spyral.Util.isNumber(val)) {
-			right.setAttribute('class', 'jv-Number jv-right');
-		} else if (Spyral.Util.isBoolean(val)) {
-			right.setAttribute('class', 'jv-Boolean jv-right');
-		} else if (val === 'null') {
-			right.setAttribute('class', 'jv-Null jv-right');
-		} else {
-			right.setAttribute('class', 'jv-String jv-right');
-		}
-		right.innerText = val;
-	}
-	
-	getFolderIcon(isExpanded) {
-		let span = document.createElement('span');
-		span.setAttribute('class', 'jv-folder-icon '+(isExpanded ? 'jv-expanded' : 'jv-collapsed'));
-		span.innerHTML = '<svg width="8" height="8" class="open"><path d="M4 7L0 1h8z" fill="#000"></path></svg>'+'<svg width="8" height="8" class="closed"><path d="M7 4L1 8V0z" fill="#000"></path></svg>';
-		return span;
 	}
 	 
 	toggleItem(folderEl) {
-		let iconEl = folderEl.querySelector('.jv-folder-icon');
+		let iconEl = folderEl.querySelector(`.${this.cls}folder-icon`);
 		let contentsEl = folderEl.nextElementSibling;
 		
-		let doExpand = iconEl.classList.contains('jv-expanded') === false;
+		let doExpand = iconEl.classList.contains(`${this.cls}expanded`) === false;
 	
 		if (doExpand) {
-			iconEl.classList.remove('jv-collapsed');
-			iconEl.classList.add('jv-expanded');
-			contentsEl.classList.remove('jv-collapsed');
-			contentsEl.classList.add('jv-expanded');
+			iconEl.classList.remove(`${this.cls}collapsed`);
+			iconEl.classList.add(`${this.cls}expanded`);
+			contentsEl.classList.remove(`${this.cls}collapsed`);
+			contentsEl.classList.add(`${this.cls}expanded`);
 		} else {
-			iconEl.classList.remove('jv-expanded');
-			iconEl.classList.add('jv-collapsed');
-			contentsEl.classList.remove('jv-expanded');
-			contentsEl.classList.add('jv-collapsed');
-			contentsEl.querySelectorAll('.jv-expanded').forEach(function(expandedChild) {
-				expandedChild.classList.remove('jv-expanded');
-				expandedChild.classList.add('jv-collapsed');
-			})
+			iconEl.classList.remove(`${this.cls}expanded`);
+			iconEl.classList.add(`${this.cls}collapsed`);
+			contentsEl.classList.remove(`${this.cls}expanded`);
+			contentsEl.classList.add(`${this.cls}collapsed`);
+			contentsEl.querySelectorAll(`.${this.cls}expanded`).forEach(function(expandedChild) {
+				expandedChild.classList.remove(`${this.cls}expanded`);
+				expandedChild.classList.add(`${this.cls}collapsed`);
+			}.bind(this));
 		}
 	}
 }
 
 // Helper functions
+function getType(val) {
+	if (Util.isElement(val)) return 'Element';
+	if (Util.isObject(val)) return 'Object';
+	if (Util.isArray(val)) return 'Array';
+	if (Util.isString(val)) return 'String';
+	if (Util.isNumber(val)) return 'Number';
+	if (Util.isBoolean(val)) return 'Boolean';
+	if (Util.isNull(val)) return 'Null';
+	
+	return 'Undefined';
+}
 
-function forEach(obj, fn) {
-	if (Spyral.Util.isUndefined(obj) || Spyral.Util.isNull(obj)) {
-		return;
-	}
-	if (typeof obj === 'object' && Spyral.Util.isArray(obj)) {
-		for (let i = 0, l = obj.length; i < l; i++) {
-			fn.call(null, obj[i], i, obj);
-		}
-	} else {
-		for (let key in obj) {
-			if (obj.hasOwnProperty(key)) {
-				fn.call(null, obj[key] || 'null', key, obj);
-			}
-		}
-	}
+function isBasicType(val) {
+	let type = getType(val);
+	return type !== 'Object' && type !== 'Array';
 }
 
 export default JsonViewer;

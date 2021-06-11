@@ -280,32 +280,26 @@ function Sandboxer(event) {
 				}
 			} else if (document.body.firstChild === null) {
 				// only display result value if the body is empty
-				if (typeof me.result.value === 'string' || typeof me.result.value === 'undefined') {
-					document.body.innerHTML = '<div>'+me.result.value+'</div>';
-				} else {
-					// TODO would be nice to use toString but corpus toString returns a promise :(
-					// if (typeof me.result.value.toString === 'function') {
-					// 	document.body.innerHTML = me.result.value.toString();
-					// } else {
+				// if (typeof me.result.value === 'string' || typeof me.result.value === 'undefined') {
+				// 	document.body.innerHTML = '<div>'+me.result.value+'</div>';
+				// }
 
-						var name = 'result';
-						for (var i = 0; i < me.result.variables.length; i++) {
-							var variable = me.result.variables[i];
-							if (variable.value === me.result.value) {
-								name = variable.name;
-								break;
-							}
-						}
-						document.body.removeEventListener('jv-toggle', me.notifyHeightChange);
-						me.jsonViewer = new Spyral.Util.JsonViewer({
-							container: document.body,
-							name: name,
-							data: me.result.value
-						});
-						document.body.addEventListener('jv-toggle', me.notifyHeightChange);
-
-					// }
+				var name = 'result';
+				for (var i = 0; i < me.result.variables.length; i++) {
+					var variable = me.result.variables[i];
+					if (variable.value === me.result.value) {
+						name = variable.name;
+						break;
+					}
 				}
+
+				document.body.removeEventListener('spyral-jv-toggle', me.notifyHeightChange);
+				me.jsonViewer = new Spyral.Util.JsonViewer({
+					container: document.body,
+					name: name,
+					data: me.result.value
+				});
+				document.body.addEventListener('spyral-jv-toggle', me.notifyHeightChange);
 			}
 			
 			setTimeout(function() {
