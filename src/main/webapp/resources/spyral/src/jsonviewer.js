@@ -14,7 +14,7 @@ class JsonViewer {
 		let defaults = {
 			container: document.body,
 			data: '{}',
-			name: 'result',
+			name: undefined,
 			expand: false
 		};
 		this.options = Object.assign(defaults, options);
@@ -65,36 +65,47 @@ class JsonViewer {
 		let basicType = type !== 'Object' && type !== 'Array';
 
 		if (basicType) {
-			left.innerHTML = key+':&nbsp;';
+			if (key !== undefined) left.innerHTML = key+':&nbsp;';
 			left.setAttribute('class', `${this.cls}left`);
 		} else {
+			let numChildren;
+			let bracketL;
+			let bracketR;
 			if (type === 'Object') {
-				left.innerHTML = `${key} : <span class="${this.cls}type">Object</span><span class="${this.cls}length">{${Object.keys(data).length}}</span> `;
+				numChildren = Object.keys(data).length;
+				bracketL = '{';
+				bracketR = '}';
 			} else {
-				left.innerHTML = `${key} : <span class="${this.cls}type">Array</span><span class="${this.cls}length">[${data.length}]</span> `;
+				numChildren = data.length;
+				bracketL = '[';
+				bracketR = ']';
 			}
-
-			let expandCls = this.options.expand ? `${this.cls}expanded` : `${this.cls}collapsed`;
-
-			let folderIcon = document.createElement('span');
-			folderIcon.setAttribute('class', `${this.cls}folder-icon ${expandCls}`);
-			folderIcon.innerHTML = '<svg width="8" height="8" class="open"><path d="M4 7L0 1h8z" fill="#000"></path></svg>'+'<svg width="8" height="8" class="closed"><path d="M7 4L1 8V0z" fill="#000"></path></svg>';
-			left.append(folderIcon);
 			
-			left.setAttribute('class', `${this.cls}left ${this.cls}folder`);
-			
-			let self = this;
-			left.onclick = function(e) {
-				let target = e.currentTarget;
-				let collapsedParent = e.currentTarget.closest(`.${self.cls}collapsed`);
-				if (collapsedParent !== null) {
-					target = collapsedParent.previousElementSibling;
+			left.innerHTML = `${key}: <span class="${this.cls}type">${type}</span><span class="${this.cls}length">${bracketL}${numChildren}${bracketR}</span> `;
+
+			if (numChildren > 0) {
+				let expandCls = this.options.expand ? `${this.cls}expanded` : `${this.cls}collapsed`;
+
+				let folderIcon = document.createElement('span');
+				folderIcon.setAttribute('class', `${this.cls}folder-icon ${expandCls}`);
+				folderIcon.innerHTML = '<svg width="8" height="8" class="open"><path d="M4 7L0 1h8z" fill="#000"></path></svg>'+'<svg width="8" height="8" class="closed"><path d="M7 4L1 8V0z" fill="#000"></path></svg>';
+				left.append(folderIcon);
+				
+				left.setAttribute('class', `${this.cls}left ${this.cls}folder`);
+				
+				let self = this;
+				left.onclick = function(e) {
+					let target = e.currentTarget;
+					let collapsedParent = e.currentTarget.closest(`.${self.cls}collapsed`);
+					if (collapsedParent !== null) {
+						target = collapsedParent.previousElementSibling;
+					}
+					self.toggleItem(target);
+					self.options.container.dispatchEvent(new Event(`${self.cls}toggle`));
 				}
-				self.toggleItem(target);
-				self.options.container.dispatchEvent(new Event(`${self.cls}toggle`));
-			}
 
-			right.setAttribute('class', `${this.cls}${type} ${this.cls}right ${expandCls}`);
+				right.setAttribute('class', `${this.cls}${type} ${this.cls}right ${expandCls}`);
+			}
 		}
 			
 		return {

@@ -284,7 +284,7 @@ function Sandboxer(event) {
 				// 	document.body.innerHTML = '<div>'+me.result.value+'</div>';
 				// }
 
-				var name = 'result';
+				var name;
 				for (var i = 0; i < me.result.variables.length; i++) {
 					var variable = me.result.variables[i];
 					if (variable.value === me.result.value) {
