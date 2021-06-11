@@ -16,6 +16,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		cachedResultsVariables: [],
 
 		runPromise: undefined,
+		hasRunError: false,
 
 		initIntervalID: undefined,
 		maskTimeoutId: undefined,
@@ -145,6 +146,10 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 			priorVariables = [];
 		}
 
+		// reset
+		this.setCachedResultsOutput('');
+		this.setCachedResultsVariables([]);
+		this.setHasRunError(false);
 		this.getEl().removeCls(['error','success']);
 
 		this.setRunPromise(new Ext.Deferred());
@@ -153,12 +158,13 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		actualPromise.then(function() {
 			this.getEl().addCls('success');
 		}, function() {
+			this.setHasRunError(true);
 			this.getEl().addCls('error');
 		}, undefined, this);
 
 		this.mask('Running code...');
 
-		console.log('sending vars', priorVariables);
+		// console.log('sending vars', priorVariables);
 		this._sendMessage({type: 'code', value: code, variables: priorVariables});
 
 		return actualPromise;

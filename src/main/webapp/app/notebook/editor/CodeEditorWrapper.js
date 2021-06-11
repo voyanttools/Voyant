@@ -303,38 +303,18 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	run: function(forceRun, priorVariables) {
 		if (this.editor.getMode()==='ace/mode/javascript') { // only run JS
 			if (this.results.getIsInitialized()) {
-				if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
+				if (forceRun===true) {
 					return this._run(priorVariables);
 				} else {
-					var notebook = this.up('notebook');
-					var variablesAggregator = [];
-					Ext.Array.each(notebook.query('notebookcodeeditorwrapper'), function(wrapper) {
-						if (wrapper===this) {
-							if (priorVariables === undefined) {
-								priorVariables = variablesAggregator;
-							}
-							this._run(priorVariables);
-							return false;
-						}
-						if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript') {
-							if (wrapper.getIsRun()) {
-								variablesAggregator = variablesAggregator.concat(wrapper.getVariables());
-							} else {
-								Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
-									if (btnId==='yes') {
-										notebook.runUntil(this);
-									} else {
-										this._run(priorVariables);
-									}
-								}, this);
-								this.setIsWarnedAboutPreviousCells(true);
-								return false;
-							}
-						}
-					}, this);
+					if (priorVariables === undefined) {
+						console.log('fetching prior vars');
+						priorVariables = this.up('notebook').getNotebookVariables(this);
+					}
+					return this._run(priorVariables);
 				}
 			} else {
 				this.setNeedsRun(true); // TODO do something with this
+				return Ext.Promise.reject('Editor is not initialized');
 			}
 		}
 	},
@@ -392,7 +372,11 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	},
 
 	getVariables: function() {
-		return this.results.getVariables();
+		if (this.results.getHasRunError()) {
+			return [];
+		} else {
+			return this.results.getVariables();
+		}
 	},
 
 	getExpandResults: function() {

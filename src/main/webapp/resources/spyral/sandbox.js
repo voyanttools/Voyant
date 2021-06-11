@@ -113,7 +113,7 @@ function Sandboxer(event) {
 
 	this.loadComplexVariable = function(cv) {
 		return new Promise(function(resolve, reject) {
-			console.log('adding complex var:', cv.name);
+			// console.log('adding complex var:', cv.name);
 			if (cv.isSpyralClass) {
 				switch (cv.isSpyralClass) {
 					case 'Spyral.Categories':
@@ -190,6 +190,7 @@ function Sandboxer(event) {
 
 			// remove variables from previous times this code has run
 			this.getNewWindowKeys().forEach(function(newKey) {
+				/** variables are now passed every time so delete all new ones
 				if (declaredVariables.indexOf(newKey) === -1) {
 					// don't delete variables that were passed from other cells
 					console.log('preserving external var:', newKey);
@@ -197,6 +198,8 @@ function Sandboxer(event) {
 					// console.log('deleting var:', newKey);
 					delete window[newKey];
 				}
+				*/
+				delete window[newKey];
 			});
 
 			// set variables from prior code cells
@@ -206,7 +209,7 @@ function Sandboxer(event) {
 				if (pr.isSpyralClass || pr.isFunction || pr.isElement) {
 					complexVariables.push(pr);
 				} else {
-					console.log('adding var:', pr.name);
+					// console.log('adding var:', pr.name);
 					// prString += pr.name + '=' + JSON.stringify(pr.value) + ';';
 					window[pr.name] = pr.value;
 				}
@@ -222,11 +225,11 @@ function Sandboxer(event) {
 					me.evalSuccess = false;
 					me.handleError(err);
 				}
-				console.log('eval result', result);
+				// console.log('eval result', result);
 
 				if (me.evalSuccess) {
 					Promise.resolve(result).then(function(prResult) {
-						console.log('prResult', prResult);
+						// console.log('prResult', prResult);
 						me.result.value = prResult;
 
 						var newKeys = me.getNewWindowKeys();

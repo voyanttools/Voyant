@@ -697,7 +697,7 @@ Ext.define('Voyant.notebook.Notebook', {
     	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
 			containers.push(item);
 			item.clearResults();
-    		if (upToCmp && upToCmp==item) {return false;}
+    		if (upToCmp && upToCmp===item) {return false;}
     	}, this);
     	this._run(containers);
     },
@@ -705,7 +705,7 @@ Ext.define('Voyant.notebook.Notebook', {
     runFrom: function(fromCmp) {
     	var containers = [], matched = false;
     	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
-    		if (fromCmp && fromCmp==item) {matched=true;}
+    		if (fromCmp && fromCmp===item) {matched=true;}
     		if (matched) {
     			containers.push(item);
     			item.clearResults();
@@ -750,6 +750,31 @@ Ext.define('Voyant.notebook.Notebook', {
 				// console.log('nb error', error);
 			});
     	}
+	},
+
+	getNotebookVariables: function(upToCmp) {
+		var variables = [];
+
+		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
+
+			if (item.editor && item.editor.getMode() === 'ace/mode/javascript' && item.getIsRun()) {
+				var newVars = item.getVariables();
+				newVars.forEach(function(newVar) {
+					for (var i = 0; i < variables.length; i++) {
+						var prevVar = variables[i];
+						if (newVar.name === prevVar.name) {
+							variables.splice(i, 1); // remove older duplicate var
+							break;
+						}
+					}
+				});
+
+				variables = variables.concat(newVars);
+			}
+		});
+
+		return variables;
 	},
 	
 	autoExecuteCells: function() {
@@ -1243,33 +1268,4 @@ Ext.define('Voyant.notebook.Notebook', {
 
 		this.metadataWindow.show();
 	}
-	
-	/*
-	showOptionsClick: function(panel) {
-		let me = panel;
-		if (me.optionsWin === undefined) {
-			me.optionsWin = Ext.create('Ext.window.Window', {
-				title: me.localize('gearWinTitle'),
-    			closeAction: 'hide',
-				layout: 'fit',
-				width: 400,
-				height: 300,
-				bodyPadding: 10,
-				items: {
-				},
-    			buttons: [{
-    				text: me.localize('ok'),
-    				handler: function(button, event) {
-    				}
-    			},{
-    				text: me.localize('cancel'),
-    				handler: function(button, event) {
-    					button.findParentByType('window').hide();
-    				}
-    			}]
-			});
-		}
-		me.optionsWin.show();
-	}
-	*/
 });
