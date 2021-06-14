@@ -359,10 +359,6 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		}
 	},
 	
-	clearResults: function() {
-		this.results.clear();
-	},
-	
 	getCode: function() {
 		return this.editor.getValue();
 	},

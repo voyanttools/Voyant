@@ -696,7 +696,6 @@ Ext.define('Voyant.notebook.Notebook', {
     	var containers = [];
     	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
 			containers.push(item);
-			item.clearResults();
     		if (upToCmp && upToCmp===item) {return false;}
     	}, this);
     	this._run(containers);
@@ -708,7 +707,6 @@ Ext.define('Voyant.notebook.Notebook', {
     		if (fromCmp && fromCmp===item) {matched=true;}
     		if (matched) {
     			containers.push(item);
-    			item.clearResults();
     		}
     	}, this);
     	this._run(containers);
@@ -718,7 +716,6 @@ Ext.define('Voyant.notebook.Notebook', {
     	var containers = [];
     	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
 			containers.push(item);
-			item.clearResults();
     	}, this);
     	this._run(containers);
     },
