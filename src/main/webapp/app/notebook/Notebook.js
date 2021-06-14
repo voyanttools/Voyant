@@ -726,13 +726,13 @@ Ext.define('Voyant.notebook.Notebook', {
     _run: function(containers, prevVars) {
     	if (containers.length>0) {
     		var container = containers.shift();
-			if (prevVars === undefined) {
-				prevVars = [];
-			}
 			var me = this;
     		container.run(true, prevVars).then(function(result) {
 				// check for and remove older duplicates
 				var newVars = container.getVariables();
+				if (prevVars === undefined) {
+					prevVars = [];
+				}
 				newVars.forEach(function(newVar) {
 					for (var i = 0; i < prevVars.length; i++) {
 						var prevVar = prevVars[i];
