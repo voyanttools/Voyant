@@ -281,11 +281,10 @@ function Sandboxer(event) {
 						me.result.error.column = parseInt(locationDetails[2]);
 					}
 				}
-			} else if (document.body.firstChild === null) {
-				// only display result value if the body is empty
-				// if (typeof me.result.value === 'string' || typeof me.result.value === 'undefined') {
-				// 	document.body.innerHTML = '<div>'+me.result.value+'</div>';
-				// }
+			} else if (
+				document.body.firstChild === null || 
+				(document.body.firstElementChild !== null && document.body.firstElementChild.classList.contains('spyral-jv-container'))
+			) {
 
 				var name;
 				for (var i = 0; i < me.result.variables.length; i++) {
@@ -296,13 +295,15 @@ function Sandboxer(event) {
 					}
 				}
 
-				document.body.removeEventListener('spyral-jv-toggle', me.notifyHeightChange);
+				document.body.innerHTML = '<div></div>';
+				var container = document.body.firstElementChild;
+				container.removeEventListener('spyral-jv-toggle', me.notifyHeightChange);
 				me.jsonViewer = new Spyral.Util.JsonViewer({
-					container: document.body,
+					container: container,
 					name: name,
 					data: me.result.value
 				});
-				document.body.addEventListener('spyral-jv-toggle', me.notifyHeightChange);
+				container.addEventListener('spyral-jv-toggle', me.notifyHeightChange);
 			}
 			
 			setTimeout(function() {
