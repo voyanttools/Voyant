@@ -14,7 +14,7 @@
  */
 Ext.define('Voyant.data.table.Table', {
 	alternateClassName: ["VoyantTable"],
-	mixins: ['Voyant.notebook.util.Embed','Voyant.notebook.util.Show'],
+	mixins: ['Voyant.notebook.util.Embed'],
 	embeddable: ['Voyant.widget.VoyantTableTransform','Voyant.widget.VoyantChart','Voyant.widget.CodeEditor'],
 	config: {
 		

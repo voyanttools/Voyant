@@ -15,7 +15,7 @@
  */
 Ext.define('Voyant.data.util.NetworkGraph', {
 	alternateClassName: ["NetworkGraph"],
-	mixins: ['Voyant.notebook.util.Embed','Voyant.notebook.util.Show'],
+	mixins: ['Voyant.notebook.util.Embed'],
 	embeddable: ["Voyant.widget.VoyantNetworkGraph"],
 	config: {
 		
