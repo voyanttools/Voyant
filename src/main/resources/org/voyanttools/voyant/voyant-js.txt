@@ -17,7 +17,6 @@ resources/doubletree/Trie.js
 resources/termsradio/TermsRadio.js
 
 # UTILS
-app/util/Assignable.js
 app/util/Api.js
 app/util/Localization.js
 app/util/Colors.js
