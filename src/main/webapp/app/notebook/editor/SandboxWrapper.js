@@ -89,7 +89,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 				itemId: 'expandWidget',
 				height: 20,
 				hidden: isExpanded ? true : false,
-				style: {textAlign: 'center', fontSize: '26px', cursor: 'pointer', borderTop: '1px solid #DDD'},
+				style: {textAlign: 'center', fontSize: '26px', cursor: 'pointer', borderTop: '1px solid #DDD', color: '#000'},
 				html: '&#8943;',
 				listeners: {
 					afterrender: function(cmp) {
