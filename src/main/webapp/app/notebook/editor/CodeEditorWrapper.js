@@ -277,11 +277,9 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			this.items.push(this._getUIComponent(config.uiHtml))
 		}
 		
-		// TODO
 		this.results.setVisible(runnable);
 		
 		this.callParent(arguments);
-        
 	},
 	
 	switchModes: function(mode) {
@@ -293,6 +291,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		this.down('notebookwrapperexport').setVisible(!runnable);
 		this.queryById("runMultiple").setVisible(runnable);
 		this.results.setVisible(runnable);
+
+		this._handleResize(); // recalculate height based on presence of results
 	},
 	
 	/**
@@ -312,6 +312,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 				this.setNeedsRun(true); // TODO do something with this
 				return Ext.Promise.reject('Editor is not initialized');
 			}
+		} else {
+			return Ext.Promise.resolve(this.getInput());
 		}
 	},
 	
@@ -359,7 +361,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		}
 	},
 	
-	getCode: function() {
+	getInput: function() {
 		return this.editor.getValue();
 	},
 
@@ -377,7 +379,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 
 	getContent: function() {
 		var toReturn = {
-			input: this.editor.getValue(),
+			input: this.getInput(),
 			mode: this.getMode()
 		}
 		if (toReturn.mode==='javascript') {
@@ -388,11 +390,5 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			}
 		}
 		return toReturn;
-	},
-	
-	setContentAndMode: function(content, mode, config) {
-		debugger
-		this.editor.setContent(content);
-		this.switchModes(mode || "javascript")
 	}
 })

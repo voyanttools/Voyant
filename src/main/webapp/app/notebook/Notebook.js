@@ -79,6 +79,7 @@ Ext.define('Voyant.notebook.Notebook', {
      * @private
      */
     constructor: function(config) {
+		Voyant.notebook.Notebook.currentNotebook = this;
     	Ext.apply(config, {
     		title: this.localize('title'),
     	    autoScroll: true,
@@ -447,26 +448,16 @@ Ext.define('Voyant.notebook.Notebook', {
     		mode: mode || "text"
     	}, config), current+offset);
     },
-    getBlock: function(offset, config) {
-    	offset = offset || 0;
-    	config = config || {};
+    getBlock: function(offset) {
+    	offset = offset === undefined ? 0 : offset;
     	var containers = this.query("notebookcodeeditorwrapper");
     	var id = this.getCurrentBlock().id;
     	var current = containers.findIndex(function(container) {return container.id==id})
     	if (current+offset<0 || current+offset>containers.length-1) {
-    		if ("failQuietly" in config && config.failQuietly) {}
-    		else {
-    			Ext.Msg.show({
-    				title: this.localize('error'),
-    				msg: this.localize('blockDoesNotExist'),
-    				buttons: Ext.MessageBox.OK,
-    				icon: Ext.MessageBox.ERROR
-    			});
-    		}
-			return undefined;
+    		throw new Error(this.localize('blockDoesNotExist'));
     	}
-    	content = containers[current+offset].getContent();
-    	return content.input;
+    	return containers[current+offset].getInput();
+
 //    	debugger
 //    	var mode = containers[current+offset].editor.getMode().split("/").pop();
 //    	if (content.mode=="xml") {
@@ -755,7 +746,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
 			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
 
-			if (item.editor && item.editor.getMode() === 'ace/mode/javascript' && item.getIsRun()) {
+			if (item.editor.getMode() === 'ace/mode/javascript' && item.getIsRun()) {
 				var newVars = item.getVariables();
 				newVars.forEach(function(newVar) {
 					for (var i = 0; i < variables.length; i++) {
@@ -772,6 +763,18 @@ Ext.define('Voyant.notebook.Notebook', {
 		});
 
 		return variables;
+	},
+
+	getNotebookBlocks: function(upToCmp) {
+		var blocks = [];
+
+		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
+
+			blocks.push(item.getInput());
+		});
+
+		return blocks;
 	},
 	
 	autoExecuteCells: function() {
