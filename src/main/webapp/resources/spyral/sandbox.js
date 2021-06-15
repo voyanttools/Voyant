@@ -281,29 +281,33 @@ function Sandboxer(event) {
 						me.result.error.column = parseInt(locationDetails[2]);
 					}
 				}
-			} else if (
-				document.body.firstChild === null || 
-				(document.body.firstElementChild !== null && document.body.firstElementChild.classList.contains('spyral-jv-container'))
-			) {
+			} else {
+				if (document.body.firstChild === null) {
+					var name;
+					for (var i = 0; i < me.result.variables.length; i++) {
+						var variable = me.result.variables[i];
+						if (variable.value === me.result.value) {
+							name = variable.name;
+							break;
+						}
+					}
 
-				var name;
-				for (var i = 0; i < me.result.variables.length; i++) {
-					var variable = me.result.variables[i];
-					if (variable.value === me.result.value) {
-						name = variable.name;
-						break;
+					// .tool() output check
+					if (name === undefined && Spyral.Util.isString(me.result.value) && me.result.value.indexOf('<iframe') === 0) {
+						// probably tool output
+						document.body.innerHTML = me.result.value;
+					} else {
+						document.body.innerHTML = '<div></div>';
+						var container = document.body.firstElementChild;
+						// container.removeEventListener('spyral-jv-toggle', me.notifyHeightChange); // unnecessary? removed by clear command
+						me.jsonViewer = new Spyral.Util.JsonViewer({
+							container: container,
+							name: name,
+							data: me.result.value
+						});
+						container.addEventListener('spyral-jv-toggle', me.notifyHeightChange);
 					}
 				}
-
-				document.body.innerHTML = '<div></div>';
-				var container = document.body.firstElementChild;
-				container.removeEventListener('spyral-jv-toggle', me.notifyHeightChange);
-				me.jsonViewer = new Spyral.Util.JsonViewer({
-					container: container,
-					name: name,
-					data: me.result.value
-				});
-				container.addEventListener('spyral-jv-toggle', me.notifyHeightChange);
 			}
 			
 			setTimeout(function() {
