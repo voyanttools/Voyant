@@ -25,10 +25,11 @@ Ext.define('Voyant.notebook.Notebook', {
     		created: "Created",
     		modified: "Modified",
     		clickToEdit: "Click to edit",
-    		cantLoadNotebook: "Unable to load Spyral notebook:",
+    		errorLoadingNotebook: "Error loading Spyral notebook",
     		cannotLoadJson: "Unable to parse JSON input.",
     		cannotLoadJsonUnrecognized: "Unable to recognize JSON input.",
     		cannotLoadUnrecognized: "Unable to recognize input.",
+			cannotLoadNotebookId: "Unable to load the Spyral Notebook. It may no longer exist.",
     		openTitle: "Open",
     		openMsg: "Paste in Notebook ID, a URL or a Spyral data file (in HTML).",
     		exportHtmlDownload: "HTML (download)",
@@ -540,7 +541,7 @@ Ext.define('Voyant.notebook.Notebook', {
 				json = JSON.parse(text)
 			} catch(e) {
 				return Ext.Msg.show({
-					title: this.localize('error'),
+					title: this.localize('errorLoadingNotebook'),
 					msg: this.localize('cannotLoadJson')+"<br><pre style='color: red'>"+e+"</pre>",
 					buttons: Ext.MessageBox.OK,
 					icon: Ext.MessageBox.ERROR
@@ -548,7 +549,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			}
 			if (!json.metadata || !json.blocks) {
 				return Ext.Msg.show({
-					title: this.localize('error'),
+					title: this.localize('errorLoadingNotebook'),
 					msg: this.localize('cannotLoadJsonUnrecognized'),
 					buttons: Ext.MessageBox.OK,
 					icon: Ext.MessageBox.ERROR
@@ -568,7 +569,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 		else if (text.indexOf("<")!==0 || text.indexOf("spyral")==-1) {
 			return Ext.Msg.show({
-				title: this.localize('error'),
+				title: this.localize('errorLoadingNotebook'),
 				msg: this.localize('cannotLoadUnrecognized'),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.ERROR
@@ -595,7 +596,15 @@ Ext.define('Voyant.notebook.Notebook', {
 				me.setNotebookId(json.notebook.id);
 			}
 	    	me.setIsEdited(false);
-    	}).catch(function(err) {me.unmask()})
+    	}).catch(function(err) {
+			me.unmask();
+			Ext.Msg.show({
+				title: me.localize('errorLoadingNotebook'),
+				msg: me.localize('cannotLoadNotebookId'),
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		});
     },
     
     loadFromHtmlString: function(html) {
