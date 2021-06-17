@@ -398,8 +398,6 @@ Ext.apply(Voyant.panel.Via.i18n, {
 "helpTip":"Via is a tool intended to help you explore the semantic clusters of English texts."});
 Ext.apply(Voyant.util.DetailedError.i18n, {
 "error":"Greška"});
-Ext.apply(Voyant.notebook.editor.button.Edit.i18n, {
-"tip":"Edit"});
 Ext.apply(Voyant.panel.Summary.i18n, {
 "longest":"najduže:",
 "documentType":"<tpl for=\"types\"><a href=\"#\" onclick=\"return false\" class=\"document-type keyword\" voyant:recordid=\"{id}\" voyant:docindex=\"{docIndex}\">{type}</a> ({val})<tpl if=\"xindex < xcount\">, </tpl></tpl>",
@@ -422,8 +420,6 @@ Ext.apply(Voyant.panel.Summary.i18n, {
 Ext.apply(Voyant.panel.CorpusSet.i18n, {
 "title":"Prikaz korpusa",
 "helpTip":"Ovo je predefinirani, opće namjenski prikaz korpusa."});
-Ext.apply(Voyant.notebook.editor.button.Movement.i18n, {
-"tip":"Move / Remove Controls"});
 Ext.apply(Voyant.widget.FontFamilyOption.i18n, {
 "label":"Familija fontova"});
 Ext.apply(Voyant.notebook.editor.button.Remove.i18n, {

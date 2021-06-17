@@ -398,8 +398,6 @@ Ext.apply(Voyant.panel.Via.i18n, {
 "helpTip":"Via é uma ferramenta de ajuda para exploração de agrupamentos semânticos de textos em inglês."});
 Ext.apply(Voyant.util.DetailedError.i18n, {
 "error":"Erro"});
-Ext.apply(Voyant.notebook.editor.button.Edit.i18n, {
-"tip":"Editar"});
 Ext.apply(Voyant.panel.Summary.i18n, {
 "longest":"Mais longo:",
 "documentType":"<tpl for=\"types\"><a href=\"#\" onclick=\"return false\" class=\"document-type keyword\" voyant:recordid=\"{id}\" voyant:docindex=\"{docIndex}\">{type}</a> ({val})<tpl if=\"xindex < xcount\">, </tpl></tpl>",
@@ -422,8 +420,6 @@ Ext.apply(Voyant.panel.Summary.i18n, {
 Ext.apply(Voyant.panel.CorpusSet.i18n, {
 "title":"Vista do corpus",
 "helpTip":"Vista geral do corpus por padrão."});
-Ext.apply(Voyant.notebook.editor.button.Movement.i18n, {
-"tip":"Mover ou excluir comandos"});
 Ext.apply(Voyant.widget.FontFamilyOption.i18n, {
 "label":"Família de fontes"});
 Ext.apply(Voyant.notebook.editor.button.Remove.i18n, {

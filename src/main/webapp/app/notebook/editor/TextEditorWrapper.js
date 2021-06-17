@@ -1,6 +1,6 @@
 Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	extend: "Voyant.notebook.editor.EditorWrapper",
-	requires: ["Voyant.notebook.editor.TextEditor","Voyant.notebook.editor.button.Edit"],
+	requires: ["Voyant.notebook.editor.TextEditor"],
 	alias: "widget.notebooktexteditorwrapper",
 	cls: 'notebook-text-wrapper',
 	config: {

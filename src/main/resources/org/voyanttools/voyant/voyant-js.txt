@@ -157,14 +157,11 @@ app/panel/Via.js
 
 # NOTEBOOKS
 app/notebook/editor/button/Add.js
-app/notebook/editor/button/Edit.js
 app/notebook/editor/button/Export.js
 app/notebook/editor/button/Counter.js
 app/notebook/editor/button/MoveDown.js
 app/notebook/editor/button/MoveUp.js
 app/notebook/editor/button/Remove.js
-app/notebook/editor/button/Metadata.js
-app/notebook/editor/button/Movement.js
 app/notebook/editor/button/Run.js
 app/notebook/editor/button/RunAll.js
 app/notebook/editor/button/RunUntil.js
@@ -179,6 +176,8 @@ app/notebook/storage/github/ReposBrowser.js
 app/notebook/storage/github/FileSaver.js
 app/notebook/storage/github/GitHubDialogs.js
 app/notebook/storage/voyant/StorageDialogs.js
+app/notebook/metadata/MetadataEditor.js
+app/notebook/util/FormatConverter.js
 app/notebook/Catalogue.js
 app/notebook/Notebook.js
 

@@ -35,9 +35,7 @@ Date	Location	ID	English (en)	French (fr)	Italian (it)	Spanish (es)	Portuguese (
 2018-05-29	Voyant.notebook.editor.button.Add	tip	Add New Cell (with Shift key to repeat the same kind of cell)	Ajouter un nouveau bloc			Adicionar novo bloco			Neue Zelle hinzufügen (mit Shift, um dieselbe Zellenart zu erstellen)										
 2018-05-29	Voyant.notebook.editor.button.Add	title	Spyral Notebook	Carnet Spyral			Caderno Spyral			Spyral Notebook										
 2018-05-29	Voyant.notebook.editor.button.Counter	tip	Edit	Éditer			Editar			Editieren										
-2018-05-29	Voyant.notebook.editor.button.Edit	tip	Edit	Éditer			Editar			Editieren										
 2018-05-29	Voyant.notebook.editor.button.MoveDown	tip	move this block down	déplacer ce bloc vers le bas			mover este bloco para baixo			Diesen Block nach unten bewegen										
-2018-05-29	Voyant.notebook.editor.button.Movement	tip	Move / Remove Controls	Déplacer ou supprimer les commandes			Mover ou excluir comandos			Bedienung bewegen oder löschen										
 2018-05-29	Voyant.notebook.editor.button.MoveUp	tip	move this block up	déplacer ce bloc vers le haut			mover este bloco para cima			Diesen Block nach oben bewegen										
 2018-05-29	Voyant.notebook.editor.button.Remove	confirmRemove	Are you sure you want to remove this block (and lose any content in the editor)?	Voulez-vous vraiment supprimer ce bloc (et le contenu de l’éditeur) ?			Tem certeza de que deseja excluir esse bloco (e perder todo conteúdo do edtor)?			Sind Sie sicher, dass Sie diesen Block bewegen wollen (und so den gesamten Inhalt im Editor verlieren)?										
 2018-05-29	Voyant.notebook.editor.button.Remove	confirmRemoveTitle	Confirm Remove	Confirmer la suppression			Confirmar a exclusão			Löschen bestätigen										

@@ -5,23 +5,12 @@
 Ext.define('Voyant.notebook.Notebook', {
 	alternateClassName: ["Notebook"],
 	extend: 'Ext.panel.Panel',
-	requires: ['Voyant.notebook.editor.CodeEditorWrapper','Voyant.notebook.editor.TextEditorWrapper','Voyant.panel.Cirrus','Voyant.panel.Summary','Voyant.notebook.StorageDialogs','Voyant.notebook.github.GitHubDialogs'],
-	mixins: ['Voyant.panel.Panel'],
+	requires: ['Voyant.notebook.editor.CodeEditorWrapper','Voyant.notebook.editor.TextEditorWrapper','Voyant.notebook.metadata.MetadataEditor','Voyant.notebook.StorageDialogs','Voyant.notebook.github.GitHubDialogs'],
+	mixins: ['Voyant.panel.Panel','Voyant.notebook.util.FormatConverter'],
 	alias: 'widget.notebook',
     statics: {
     	i18n: {
     		title: "Spyral",
-    		metadataEditor: "Edit Metadata",
-    		metadataTitle: "Title",
-    		metadataTip: "Edit notebook metadata.",
-    		metadataAuthor: "Author(s)",
-    		metadataKeywords: "Keywords",
-    		metadataDescription: "Description",
-    		metadataLicense: "Licence",
-    		metadataLanguage: "Language",
-    		metadataReset: "Reset",
-    		metadataSave: "Save",
-    		metadataCancel: "Cancel",
     		created: "Created",
     		modified: "Modified",
     		clickToEdit: "Click to edit",
@@ -33,7 +22,11 @@ Ext.define('Voyant.notebook.Notebook', {
     		openTitle: "Open",
     		openMsg: "Paste in Notebook ID, a URL or a Spyral data file (in HTML).",
     		exportHtmlDownload: "HTML (download)",
-    		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags."
+    		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags.",
+			metadataEditor: "Edit Metadata",
+    		metadataReset: "Reset",
+    		metadataSave: "Save",
+    		metadataCancel: "Cancel"
     	},
     	api: {
     		input: undefined,
@@ -81,6 +74,7 @@ Ext.define('Voyant.notebook.Notebook', {
      */
     constructor: function(config) {
 		Voyant.notebook.Notebook.currentNotebook = this;
+		this.mixins['Voyant.notebook.util.FormatConverter'].constructor.apply(this, arguments);
     	Ext.apply(config, {
     		title: this.localize('title'),
     	    autoScroll: true,
@@ -422,63 +416,6 @@ Ext.define('Voyant.notebook.Notebook', {
 		})
     },
     
-    setBlock: function(data, offset, mode, config) {
-    	data = data || "";
-    	offset = offset || 1;
-    	config = config || {};
-    	var containers = this.query("notebookeditorwrapper");
-    	var id = this.getCurrentBlock().id;
-    	var current = containers.findIndex(function(container) {return container.id==id})
-    	if (current+offset<0 || current+offset>containers.length) { // wanting to place before beginning or one beyond end
-			Ext.Msg.show({
-				title: this.localize('error'),
-				msg: this.localize('blockDoesNotExist'),
-				buttons: Ext.MessageBox.OK,
-				icon: Ext.MessageBox.ERROR
-			});
-			return undefined
-    	}
-    	
-    	// I can't seem to set the content, so we'll go nuclear and remove the block
-    	if (containers[current+offset]) {
-        	var cells = this.getComponent("cells");
-    		cells.remove(containers[current+offset]);
-    	}
-    	return this.addCode(Object.assign({},{
-    		input: data,
-    		mode: mode || "text"
-    	}, config), current+offset);
-    },
-    getBlock: function(offset) {
-    	offset = offset === undefined ? 0 : offset;
-    	var containers = this.query("notebookcodeeditorwrapper");
-    	var id = this.getCurrentBlock().id;
-    	var current = containers.findIndex(function(container) {return container.id==id})
-    	if (current+offset<0 || current+offset>containers.length-1) {
-    		throw new Error(this.localize('blockDoesNotExist'));
-    	}
-    	return containers[current+offset].getInput();
-
-//    	debugger
-//    	var mode = containers[current+offset].editor.getMode().split("/").pop();
-//    	if (content.mode=="xml") {
-//    		return new DOMParser().parseFromString(content.input, 'text/xml')
-//    	} else if (content.mode=="json") {
-//    		return JSON.parse(content.input);
-//    	} else if (content.mode=="html") {
-//    		return new DOMParser().parseFromString(content.input, 'text/html')
-//    	} else {
-//    		return content.input;
-//    	}
-    },
-    
-    addNew: function() {
-		this.setMetadata(new Spyral.Metadata({
-			title: "<h1>Spyral Notebook</h1>"
-		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
-		this.addCode('');
-    },
     
     clear: function() {
 		this.setMetadata(new Spyral.Metadata());
@@ -491,29 +428,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		this.getMetadata().setDateNow("modified");
 
-		const data = this.generateExportHtml();
-		const metadata = this.getMetadata().clone(); // use a clone so that altering title and description doesn't affect original
+		var data = this.generateExportHtml();
+		var metadata = this.generateExportMetadata(this.getMetadata());
 
-		if (metadata.title) {
-			metadata.title = metadata.title.replace(/<\/?\w+.*?>/g, '');
-		}
-		if (metadata.description) {
-			metadata.description = metadata.description.replace(/<\/?\w+.*?>/g, '');
-		}
-
-		if (metadata.keywords) {
-			if (Array.isArray(metadata.keywords) === false) {
-				metadata.keywords = metadata.keywords.split(/[\s,]+/)
-			}
-			metadata.keywords = metadata.keywords.reduce(function(keywordsArray, keyword) {
-				if (keyword.length > 0) {
-					keywordsArray.push(keyword.toLowerCase());
-				}
-				return keywordsArray;
-			}, []);
-		}
-
-		const storageSolution = this.getStorageSolution();
+		var storageSolution = this.getStorageSolution();
 		
 		if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.voyantStorageDialogs.getAccessCode() !== undefined) {
 			this.voyantStorageDialogs.doSave({
@@ -533,41 +451,13 @@ Ext.define('Voyant.notebook.Notebook', {
 	
     loadFromString: function(text) {
     	text = text.trim();
-		if (text.indexOf("http")==0) {
+		if (text.indexOf("http") === 0) {
 			this.loadFromUrl(text);
-		} else if (text.indexOf("{")==0) { // old format?
-			var json;
-			try {
-				json = JSON.parse(text)
-			} catch(e) {
-				return Ext.Msg.show({
-					title: this.localize('errorLoadingNotebook'),
-					msg: this.localize('cannotLoadJson')+"<br><pre style='color: red'>"+e+"</pre>",
-					buttons: Ext.MessageBox.OK,
-					icon: Ext.MessageBox.ERROR
-				});
-			}
-			if (!json.metadata || !json.blocks) {
-				return Ext.Msg.show({
-					title: this.localize('errorLoadingNotebook'),
-					msg: this.localize('cannotLoadJsonUnrecognized'),
-					buttons: Ext.MessageBox.OK,
-					icon: Ext.MessageBox.ERROR
-				});
-			}
-			json.blocks.forEach(function(block) {
-        		if (Ext.isString(block) && block!='') {this.addCode({input: block});}
-        		else if (block.input) {
-            		if (block.type=='text') {this.addText(block);}
-            		else {
-            			this.addCode(block);
-            		}
-        		}
-			}, this);
+		} else if (text.indexOf("{") === 0) { // old format?
+			this.loadFromJson(text);
 		} else if (/^[\w-_]+$/.test(text)) {
 			this.loadFromId(text)
-		}
-		else if (text.indexOf("<")!==0 || text.indexOf("spyral")==-1) {
+		} else if (text.indexOf("<") !== 0 || text.indexOf("spyral") === -1) {
 			return Ext.Msg.show({
 				title: this.localize('errorLoadingNotebook'),
 				msg: this.localize('cannotLoadUnrecognized'),
@@ -575,10 +465,47 @@ Ext.define('Voyant.notebook.Notebook', {
 				icon: Ext.MessageBox.ERROR
 			});
 		} else {
-			this.loadFromHtmlString(text);
+			this.importFromHtml(text);
 		}
 		return true;
+    },
 
+	loadFromJson: function(text) {
+		// TODO old format
+		var json;
+		try {
+			json = JSON.parse(text)
+		} catch(e) {
+			return Ext.Msg.show({
+				title: this.localize('errorLoadingNotebook'),
+				msg: this.localize('cannotLoadJson')+"<br><pre style='color: red'>"+e+"</pre>",
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		}
+		if (!json.metadata || !json.blocks) {
+			return Ext.Msg.show({
+				title: this.localize('errorLoadingNotebook'),
+				msg: this.localize('cannotLoadJsonUnrecognized'),
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		}
+		json.blocks.forEach(function(block) {
+			if (Ext.isString(block) && block!='') {this.addCode({input: block});}
+			else if (block.input) {
+				if (block.type=='text') {this.addText(block);}
+				else {
+					this.addCode(block);
+				}
+			}
+		}, this);
+	},
+
+	loadFromUrl: function(url, run) {
+    	var me = this;
+    	// load as string and not HTML in case it's an older JSON format
+    	Spyral.Load.text(url).then(function(text) {me.loadFromString(text)})
     },
     
     loadFromId: function(id) {
@@ -605,91 +532,6 @@ Ext.define('Voyant.notebook.Notebook', {
 				icon: Ext.MessageBox.ERROR
 			});
 		});
-    },
-    
-    loadFromHtmlString: function(html) {
-		var me = this;
-
-    	var parser = new DOMParser();
-    	var dom = parser.parseFromString(html, 'text/html');
-    	
-		me.setMetadata(new Spyral.Metadata(dom));
-    	
-		var hasDomError = false;
-		var cells2Init = [];
-    	dom.querySelectorAll("section.notebook-editor-wrapper").forEach(function(section) {
-    		var classes = section.classList;
-    		if (classes.contains("notebooktexteditorwrapper")) {
-    			var editor = section.querySelector(".notebook-text-editor").innerHTML;
-    			me.addText(editor, undefined, section.id);
-    		} else if (classes.contains("notebookcodeeditorwrapper")) {
-    			var inputEl = section.querySelector(".notebook-code-editor-raw");
-    			var typeRe = /\beditor-mode-(\w+)\b/.exec(inputEl.className);
-    			var editorType = typeRe[1];
-    			
-    			/* in an ideal world we could use inputEl.innerHTML to get the contents
-    			 * except that since it's in a parsed DOM it's already been transformed
-    			 *  significantly. For instance, all >, <, and & character appear in the
-    			 * html entities form (which breaks things like && () => {}). You also
-    			 * get strange artefacts like if you have "<div>" in your code it may add
-    			 * </div> to the end of the innerHTML (to make sure tags are balanced).
-    			 * and of course textContent or innerText won't work because that will
-    			 * strip any of the HTML formatting out. What's left is to use the parsing
-    			 * to ensure the order and to properly grab the IDs and then to do character
-    			 * searches on the original string. */
-    			var secPos = html.indexOf("<section id='"+section.id+"' class='notebook-editor-wrapper notebookcodeeditorwrapper'>");
-				var startPre = html.indexOf("<pre class='notebook-code-editor-raw editor-mode-", secPos);
-    			startPre = html.indexOf(">", startPre)+1; // add the length of the string
-    			var endPre = html.indexOf("</pre>\n<div class='notebook-code-results", startPre);
-    			
-    			// check if we have valid values
-    			if (secPos===-1 || startPre === -1 || endPre === -1) {
-    				hasDomError = true;
-    				// this might work, unless the js code includes HTML
-    				input = editorType === "javascript" ? inputEl.innerText : inputEl.innerHTML;
-    				debugger
-    			} else {
-        			input = html.substring(startPre, endPre);
-    			}
-				var autoexec = /\bautoexec\b/.exec(inputEl.className) !== null;
-				var output = section.querySelector(".notebook-code-results").innerHTML;
-				var expandResults = section.querySelector(".notebook-code-results").classList.contains('collapsed') === false;
-				var ui = section.querySelector(".notebook-code-ui");
-				if (ui !== null) {
-					ui = ui.innerHTML;
-				} else {
-					ui = undefined;
-				}
-    			var codeCell = me.addCode({
-    				input: input,
-					output: output,
-					expandResults: expandResults,
-					uiHtml: ui,
-					mode: editorType,
-					autoExecute: autoexec,
-    			}, undefined, section.id);
-
-				cells2Init.push(codeCell);
-				codeCell.on('initialized', function() {
-					var cellIndex = cells2Init.indexOf(codeCell);
-					if (cellIndex !== -1) {
-						cells2Init.splice(cellIndex, 1);
-						if (cells2Init.length === 0) {
-							me.fireEvent('notebookInitialized');
-						}
-					} else {
-						console.error('unknown cell initialized', codeCell);
-					}
-				});
-
-    		}
-		});
-		
-    	if (hasDomError) {
-			me.showError(me.localize("errorParsingDomInput"))
-    	}
-    	
-		me.fireEvent('notebookLoaded');
     },
     
     runUntil: function(upToCmp) {
@@ -749,6 +591,16 @@ Ext.define('Voyant.notebook.Notebook', {
     	}
 	},
 
+	autoExecuteCells: function() {
+		var containers = [];
+		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+			if (item.getAutoExecute()) {
+				containers.push(item);
+			}
+		});
+		this._run(containers);
+	},
+
 	getNotebookVariables: function(upToCmp) {
 		var variables = [];
 
@@ -785,22 +637,16 @@ Ext.define('Voyant.notebook.Notebook', {
 
 		return blocks;
 	},
+
+
 	
-	autoExecuteCells: function() {
-		var containers = [];
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
-			if (item.getAutoExecute()) {
-				containers.push(item);
-			}
-		});
-		this._run(containers);
+	addNew: function() {
+		this.setMetadata(new Spyral.Metadata({
+			title: "<h1>Spyral Notebook</h1>"
+		}));
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addCode('');
 	},
-    
-    loadFromUrl: function(url, run) {
-    	var me = this;
-    	// load as string and not HTML in case it's an older JSON format
-    	Spyral.Load.text(url).then(function(text) {me.loadFromString(text)})
-    },
     
     addText: function(block, order, cellId) {
     	return this._add(block, order, 'notebooktexteditorwrapper', cellId);
@@ -823,13 +669,7 @@ Ext.define('Voyant.notebook.Notebook', {
     		cellId: cellId
     	}, config))
     },
-    
-    updateMetadata: function() {
-    	var metadata = this.getMetadata();
-    	this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
-    	this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
-    	this.setIsEdited(true);
-    },
+
     
 	notebookWrapperMoveUp: function(wrapper) {
 		var cells = this.getComponent("cells");
@@ -924,318 +764,31 @@ Ext.define('Voyant.notebook.Notebook', {
     	}
 		this.callParent(arguments);
     },
-
-	setMetadata: function(metadata) {
-		this.callParent(arguments);
-		if (metadata && metadata.title) {
-			let title = metadata.title.replace(/<\/?\w+.*?>/g, ''); // remove tags
-			document.title = title+' - Spyral';
-		}
-	},
-    
-    generateExportHtml: function() {
-    	var metadata = this.getMetadata();
-        var out = "<!DOCTYPE HTML>\n<html>\n<head>\n\t<meta charset='UTF-8'>\n"+
-        	metadata.getHeaders();
-        var aceChromeEl = document.getElementById("ace-chrome");
-        if (aceChromeEl) {out+=aceChromeEl.outerHTML+"\n"}
 		
-		// TODO voyant-notebooks-styles has been removed
-		var stylesEl = document.getElementById("voyant-notebooks-styles");
-		if (stylesEl) {out+=stylesEl.outerHTML+"\n"}
+	updateMetadata: function() {
+		var metadata = this.getMetadata();
+		document.title = metadata.title.replace(/<\/?\w+.*?>/g, '')+' - Spyral';
 
-        out += "<script> // this script checks to see if embedded tools seem to be available\n"+
-	    	"window.addEventListener('load', function() {\n"+
-	    		"var hostnames = {}, warned = false;\n"+
-	    		"document.querySelectorAll('iframe').forEach(function(iframeEl) {\n"+
-	    			"let url = new URL(iframeEl.src);\n"+
-	    			"if (!(url.hostname in hostnames) && !warned) {\n"+
-	    				"hostnames[url.hostname] = true; // mark as fetched\n"+
-	    				"fetch(url).catch(response => {\n"+
-	    					"warned = true;\n"+
-	    					"alert('This notebook seems to contain one ore more tools that may not be able to load. Possible reasons include a server no longer being accessible (especially if the notebook was generated from a local server), or because of security restrictions.'+url)\n"+
-	    				"})\n"+
-	    			"}\n"+
-	    		"})\n"+
-	    	"})\n"+
-	    	"</script>\n"+
-        	"</head>\n<body class='exported-notebook'>"+
-        	this.getHeaderHtml()+
-        	"<article class='spyralArticle'>";
-		this.getComponent("cells").items.each(function(item, i) {
-    		var type = item.isXType('notebookcodeeditorwrapper') ? 'code' : 'text';
-    		var content = item.getContent();
-    		var counter = item.down("notebookwrappercounter");
-			// reminder that the parsing in of notebooks depends on the stability of this syntax
-    		out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
-    			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
-    		if (type==='code') {
-    			var mode = item.down("notebookcodeeditor").getMode();
-				mode = mode.substring(mode.lastIndexOf("/")+1);
+		this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
+		this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
 
-				var expandResults = item.getExpandResults();
-				
-				var autoexec = item.getAutoExecute() ? 'autoexec' : '';
-				
-				var codeTextLayer = item.getTargetEl().query('.ace_text-layer')[0].cloneNode(true);
-				codeTextLayer.style.setProperty('height', 'auto'); // fix for very large height set by ace
-				// reminder that the parsing in of notebooks depends on the stability of this syntax
-    			out+="<div class='notebook-code-editor ace-chrome'>\n"+codeTextLayer.outerHTML+"\n</div>\n"+
-    				"<pre class='notebook-code-editor-raw editor-mode-"+mode+" "+autoexec+"'>"+content.input+"</pre>\n"+
-					"<div class='notebook-code-results"+(expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
-				if (content.ui !== undefined) {
-					out += "<div class='notebook-code-ui'>\n"+content.ui+"\n</div>\n";
-				}
-    		} else {
-    			out+="<div class='notebook-text-editor'>"+content+"</div>\n";
-    		}
-    		out+="</section>\n"
-    	})
-        out += "</article>\n<footer class='spyral-footer'>"+this.getInnerFooterHtml()+"</footer></body>\n</html>";
-    	return out;
-    },
-    
-    getHeaderHtml: function() {
-    	return "<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n";
-    },
-    
-    getInnerHeaderHtml: function() {
-    	let html = "";
-    	if (this.getMetadata().title) {
-        	html += "<div class='title'>"+this.getMetadata().title+"</div>";
-    	}
-    	if (this.getMetadata().author) {
-        	html += "<div class='author'>"+this.getMetadata().author+"</div>";
-    	}
-    	return html;
-    },
-    
-    getInnerFooterHtml: function() {
-    	var text = "", metadata = this.getMetadata();
-    	if (metadata.author || metadata.license) {
-        	var text = "&copy;";
-        	if (metadata.author) {text+=" "+metadata.author;}
-        	if (metadata.license) {text+=" ("+metadata.license+")";}
-    		text += ". ";
-    	}
-    	if (metadata.created || metadata.modified) {
-    		var created = metadata.shortDate("created"), modified = metadata.shortDate("modified");
-    		if (created) {
-        		text += this.localize("created")+" "+created+"."
-    		}
-    		if (modified && created!=modified) {
-        		text += " "+this.localize("modified")+" "+modified+"."
-    		}
-    		
-    	}
-    	return text;
-    },
-    
-    getExtraExportItems: function() {
-    	return [{
-       		inputValue: 'html',
-       		boxLabel: this.localize('exportHtml')
-       	},{
-       		inputValue: 'htmlDownload',
-       		boxLabel: '<a href="#">'+this.localize('exportHtmlDownload')+'</a>',
-       		listeners: {
-       			afterrender: function(cmp) {
-       		    	var file, name = (this.getNotebookId() || "spyral")+ ".html",
-       	    		data = this.generateExportHtml(),
-       	    		properties = {type: 'text/html'};
-	       	    	try {
-	       	    	  file = new File([data], name, properties);
-	       	    	} catch (e) {
-	       	    	  file = new Blob([data], properties);
-	       	    	}
-	       	    	
-       	    		var url = URL.createObjectURL(file);
-       	    		var a = cmp.boxLabelEl.dom.querySelector("a");
-       	    		a.setAttribute("download", name);
-       	    		a.setAttribute("href", url);
-       			},
-       			scope: this
-       		},
-       		handler: function(cmp) {
-       			cmp.boxLabelEl.dom.querySelector("a").click();
-       			cmp.up("window").close();
-       		}
-       	}]
-    },
-    
-    exportHtml: function() {
-    	var out = this.generateExportHtml();
-        var myWindow = window.open();
-        myWindow.document.write(out);
-        myWindow.document.close();
-        myWindow.focus();
-    },
-	
-	// TODO not currently being used
-    exportHtmlDownload: function() {
-    	// https://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
-    	var file,
-    		data = this.generateExportHtml(),
-    		properties = {type: 'text/plain'}; // Specify the file's mime-type.
-    	try {
-    	  file = new File([data], "files.txt", properties);
-    	} catch (e) {
-    	  file = new Blob([data], properties);
-    	}
-    	var url = URL.createObjectURL(file);
-    	this.getApplication().openUrl(url)
-    },
-    
-	getExportUrl: function(asTool) {
-		return location.href; // we just provide the current URL
+		this.setIsEdited(true);
 	},
 
-    showMetadataEditor: function() {
+	showMetadataEditor: function() {
 		if (this.metadataWindow === undefined) {
 			var me = this;
-
+			
+			this.metadataEditor = Ext.create('widget.metadataeditor', {
+				anchor: '100%'
+			});
 			this.metadataWindow = Ext.create('Ext.window.Window', {
 				title: this.localize('metadataEditor'),
 				autoScroll: true,
+				width: 600,
 				closeAction: 'hide',
-				items: [{
-					xtype: 'form',
-					items: {
-						bodyPadding: 5,
-						width: 600,
-
-						// Fields will be arranged vertically, stretched to full width
-						layout: 'anchor',
-						defaults: {
-							anchor: '100%',
-							labelAlign: "right"
-						},
-
-						// The fields
-						defaultType: 'textfield',
-						items: [{
-							fieldLabel: this.localize("metadataTitle"),
-							xtype: 'htmleditor',
-							name: 'title',
-							height: 100,
-							enableAlignments : false,
-							enableColors : false,
-							enableFont : false,
-							enableFontSize : false,
-							enableLinks : false,
-							enableLists : false
-						},{
-							fieldLabel: this.localize("metadataAuthor"),
-							name: 'author'
-						},{
-							fieldLabel: this.localize("metadataKeywords"),
-							name: 'keywords',
-							xtype: 'tagfield',
-							store: {
-								xtype: 'store.json',
-								fields: [
-									{name: 'label'},
-									{name: 'count', type: 'integer'}
-								]
-							},
-							displayField: 'label',
-							valueField: 'label',
-							queryMode: 'local',
-							filterPickList: true,
-							forceSelection: false,
-							delimiter: ',',
-							createNewOnEnter: true,
-							listeners: {
-								afterrender: function(cmp) {
-									Spyral.Load.trombone({
-										tool: 'notebook.CatalogueFacets',
-										facets: 'facet.keywords',
-										noCache: 1
-									}).then(function(json) {
-										cmp.getStore().loadRawData(json.catalogue.facets[0].results);
-										// need to reset value to make sure previously set keywords show up
-										cmp.setValue(cmp.getValue());
-									});
-								}
-							}
-						},{
-							xtype: 'htmleditor',
-							fieldLabel: this.localize("metadataDescription"),
-							name: 'description',
-							height: 100,
-							enableAlignments : false,
-							enableColors : false,
-							enableFont : false
-						},{
-							xtype: 'combo',
-							fieldLabel: this.localize("metadataLicense"),
-							name: 'license',
-							store: {
-								fields: ['text'],
-								data: [
-									{"text": "Apache License 2.0"},
-									{"text": "BSD 3-Clause \"New\" or \"Revised\" license"},
-									{"text": "BSD 2-Clause \"Simplified\" or \"FreeBSD\" license"},
-									{"text": "Creative Commons Attribution (CC BY)"},
-									{"text": "Creative Commons Attribution-ShareAlike (CC BY-SA)"},
-									{"text": "Creative Commons Zero (CC0)"},
-									{"text": "GNU General Public License (GPL)"},
-									{"text": "GNU Library or \"Lesser\" General Public License (LGPL)"},
-									{"text": "MIT license"},
-									{"text": "Mozilla Public License 2.0"},
-									{"text": "Common Development and Distribution License"},
-									{"text": "Eclipse Public License"}
-								]
-							}
-						},{
-							xtype: 'combo',
-							name: 'language',
-							fieldLabel: this.localize("metadataLanguage"),
-							store: {
-								fields: ['text'],
-								data: [
-									{"text": "Bengali"},
-									{"text": "Bhojpuri"},
-									{"text": "Egyptian Arabic"},
-									{"text": "English"},
-									{"text": "French"},
-									{"text": "German"},
-									{"text": "Gujarati"},
-									{"text": "Hausa"},
-									{"text": "Hindi"},
-									{"text": "Indonesian"},
-									{"text": "Italian"},
-									{"text": "Japanese"},
-									{"text": "Javanese"},
-									{"text": "Kannada"},
-									{"text": "Korean"},
-									{"text": "Mandarin"},
-									{"text": "Marathi"},
-									{"text": "Persian"},
-									{"text": "Portuguese"},
-									{"text": "Russian"},
-									{"text": "Southern Min"},
-									{"text": "Spanish"},
-									{"text": "Standard Arabic"},
-									{"text": "Swahili"},
-									{"text": "Tamil"},
-									{"text": "Telugu"},
-									{"text": "Thai"},
-									{"text": "Turkish"},
-									{"text": "Urdu"},
-									{"text": "Vietnamese"},
-									{"text": "Western Punjabi"},
-									{"text": "Wu Chinese"},
-									{"text": "Yue Chinese"}
-								]
-							}
-						}]
-						
-					}
-				}],
-
-				
-				// Reset and Submit buttons
+				layout: 'anchor',
+				items: this.metadataEditor,
 				buttons: [{
 					text: this.localize('metadataCancel'),
 					ui: 'default-toolbar',
@@ -1246,18 +799,17 @@ Ext.define('Voyant.notebook.Notebook', {
 					text: this.localize('metadataReset'),
 					ui: 'default-toolbar',
 					handler: function() {
-						this.up('window').down('form').getForm().reset();
+						me.metadataEditor.reset();
 					}
 				}, " ", {
 					text: this.localize('metadataSave'),
 					handler: function() {
-						var form = this.up('window').down('form').getForm();
+						var form = me.metadataEditor.getForm();
 						me.getMetadata().set(form.getValues());
 						me.updateMetadata();
 						this.up('window').close();
 					}
 				}]
-				
 			})
 		}
 
@@ -1266,15 +818,66 @@ Ext.define('Voyant.notebook.Notebook', {
 			metadata = new Spyral.Metadata();
 			this.setMetadata(metadata);
 		}
-		
-		var form = this.metadataWindow.down('form').getForm();
-		form.findField('title').setValue(metadata.title);
-		form.findField('author').setValue(metadata.author);
-		form.findField('keywords').setValue(metadata.keywords);
-		form.findField('description').setValue(metadata.description);
-		form.findField('license').setValue(metadata.license || "Creative Commons Attribution (CC BY)");
-		form.findField('language').setValue(metadata.language || "English");
+
+		this.metadataEditor.loadMetadata(metadata);
 
 		this.metadataWindow.show();
-	}
+	},
+
+
+
+
+	/*
+	 * Spyral.Notebook methods below
+	 */
+
+    setBlock: function(data, offset, mode, config) {
+    	data = data || "";
+    	offset = offset || 1;
+    	config = config || {};
+    	var containers = this.query("notebookeditorwrapper");
+    	var id = this.getCurrentBlock().id;
+    	var current = containers.findIndex(function(container) {return container.id==id})
+    	if (current+offset<0 || current+offset>containers.length) { // wanting to place before beginning or one beyond end
+			Ext.Msg.show({
+				title: this.localize('error'),
+				msg: this.localize('blockDoesNotExist'),
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+			return undefined
+    	}
+    	
+    	// I can't seem to set the content, so we'll go nuclear and remove the block
+    	if (containers[current+offset]) {
+        	var cells = this.getComponent("cells");
+    		cells.remove(containers[current+offset]);
+    	}
+    	return this.addCode(Object.assign({},{
+    		input: data,
+    		mode: mode || "text"
+    	}, config), current+offset);
+    },
+    getBlock: function(offset) {
+    	offset = offset === undefined ? 0 : offset;
+    	var containers = this.query("notebookcodeeditorwrapper");
+    	var id = this.getCurrentBlock().id;
+    	var current = containers.findIndex(function(container) {return container.id==id})
+    	if (current+offset<0 || current+offset>containers.length-1) {
+    		throw new Error(this.localize('blockDoesNotExist'));
+    	}
+    	return containers[current+offset].getInput();
+
+//    	debugger
+//    	var mode = containers[current+offset].editor.getMode().split("/").pop();
+//    	if (content.mode=="xml") {
+//    		return new DOMParser().parseFromString(content.input, 'text/xml')
+//    	} else if (content.mode=="json") {
+//    		return JSON.parse(content.input);
+//    	} else if (content.mode=="html") {
+//    		return new DOMParser().parseFromString(content.input, 'text/html')
+//    	} else {
+//    		return content.input;
+//    	}
+    },
 });

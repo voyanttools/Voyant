@@ -1,7 +1,6 @@
 Ext.define("Voyant.notebook.editor.EditorWrapper", {
 	extend: "Ext.panel.Panel",
 	mixins: ["Voyant.util.Localization"],
-	requires: ["Voyant.notebook.editor.button.Movement","Voyant.notebook.editor.button.Add"],
 	alias: "widget.notebookeditorwrapper",
 	cls: "notebook-editor-wrapper",
 	config: {
