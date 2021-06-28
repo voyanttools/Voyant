@@ -39,21 +39,24 @@
 .spyral-jv-collapsed > .spyral-jv-content:not(.spyral-jv-content:last-of-type)::after {
 	content: ',';
 }
+.spyral-jv-container > .spyral-jv-content {
+	padding-left: 6px;
+}
 
 
 .spyral-jv-left, .spyral-jv-right {
     display: inline-block;
 }
 
-.spyral-jv-String, .spyral-jv-Boolean, .spyral-jv-Number, .spyral-jv-Element, .spyral-jv-Null, .spyral-jv-Undefined {
+.spyral-jv-String, .spyral-jv-Boolean, .spyral-jv-Number, .spyral-jv-Node, .spyral-jv-Null, .spyral-jv-Undefined {
     color: #1A1AA6;
 }
 
-.spyral-jv-Object, .spyral-jv-Array {
+.spyral-jv-Node, .spyral-jv-Object, .spyral-jv-Array {
     display: inline;
 	white-space: nowrap;
 }
-.spyral-jv-expanded.spyral-jv-Object, .spyral-jv-expanded.spyral-jv-Array {
+.spyral-jv-expanded.spyral-jv-Node .spyral-jv-expanded.spyral-jv-Object, .spyral-jv-expanded.spyral-jv-Array {
 	display: block;
 }
 

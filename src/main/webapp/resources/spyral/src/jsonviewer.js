@@ -24,8 +24,7 @@ class JsonViewer {
 	}
 
 	render(indent, parent, key, data) {
-		let type = getType(data);
-		let basicType = type !== 'Object' && type !== 'Array';
+		let {type, basicType} = getTypeData(data);
 
 		let createdItem = this.createItem(indent, parent, key, data);
 		
@@ -35,7 +34,16 @@ class JsonViewer {
 			else if (type === 'String') data = '"'+data+'"';
 			createdItem.right.innerText = data;
 		} else {
-			if (type === 'Object') {
+			if (type === 'Node') {
+				for (let n of data.childNodes) {
+					let key = n.tagName || '#text';
+					if (key === '#text') {
+						n = n.textContent.trim();
+						if (n.length === 0) continue;
+					}
+					this.render(indent+0, createdItem.right, key, n);
+				}
+			} else if (type === 'Object') {
 				for (let key in data) {
 					if (data.hasOwnProperty(key)) {
 						this.render(indent+0, createdItem.right, key, data[key]);
@@ -61,8 +69,7 @@ class JsonViewer {
 
 		parent.appendChild(container);
 		
-		let type = getType(data);
-		let basicType = type !== 'Object' && type !== 'Array';
+		let {type, basicType} = getTypeData(data);
 
 		if (basicType) {
 			if (key !== undefined) left.innerHTML = key+':&nbsp;';
@@ -71,7 +78,11 @@ class JsonViewer {
 			let numChildren;
 			let bracketL;
 			let bracketR;
-			if (type === 'Object') {
+			if (type === 'Node') {
+				numChildren = data.childNodes.length;
+				bracketL = '<';
+				bracketR = '>';
+			} else if (type === 'Object') {
 				numChildren = Object.keys(data).length;
 				bracketL = '{';
 				bracketR = '}';
@@ -138,22 +149,19 @@ class JsonViewer {
 	}
 }
 
-// Helper functions
-function getType(val) {
-	if (Util.isElement(val)) return 'Element';
-	if (Util.isObject(val)) return 'Object';
-	if (Util.isArray(val)) return 'Array';
-	if (Util.isString(val)) return 'String';
-	if (Util.isNumber(val)) return 'Number';
-	if (Util.isBoolean(val)) return 'Boolean';
-	if (Util.isNull(val)) return 'Null';
-	
-	return 'Undefined';
-}
+function getTypeData(val) {
+	let type = 'Undefined';
+	if (Util.isNode(val)) type = 'Node';
+	if (Util.isObject(val)) type = 'Object';
+	if (Util.isArray(val)) type = 'Array';
+	if (Util.isString(val)) type = 'String';
+	if (Util.isNumber(val)) type = 'Number';
+	if (Util.isBoolean(val)) type = 'Boolean';
+	if (Util.isNull(val)) type = 'Null';
 
-function isBasicType(val) {
-	let type = getType(val);
-	return type !== 'Object' && type !== 'Array';
+	const basicType = type !== 'Node' && type !== 'Object' && type !== 'Array';
+
+	return {type, basicType};
 }
 
 export default JsonViewer;
