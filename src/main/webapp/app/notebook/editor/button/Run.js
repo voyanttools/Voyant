@@ -11,5 +11,11 @@ Ext.define("Voyant.notebook.editor.button.Run", {
 		config = config || {};
 		config.tooltip = this.localize('tip');
 		this.callParent(arguments);
+	},
+	listeners: {
+		click: function(btn, e) {
+			var cew = btn.findParentByType("notebookcodeeditorwrapper");
+			cew.run.call(cew);
+		}
 	}
 })

@@ -157,6 +157,7 @@ app/panel/Via.js
 
 # NOTEBOOKS
 app/notebook/editor/button/Add.js
+app/notebook/editor/button/CodeConfig.js
 app/notebook/editor/button/Export.js
 app/notebook/editor/button/Counter.js
 app/notebook/editor/button/MoveDown.js

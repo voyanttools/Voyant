@@ -7,16 +7,12 @@ Ext.define("Voyant.notebook.editor.button.Add", {
 		}
 	},
 	constructor: function(config) {
-    	Ext.apply(this, {
-    		tooltip: this.localize('tip')
-    	})
-        this.callParent(arguments);
+		config = config || {};
+		config.tooltip = this.localize('tip');
+		this.callParent(arguments);
 	},
 	glyph: 'xf067@FontAwesome',
-	textAlign: 'left',
-	listeners: {
-		click: function(btn, e) {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperAdd", this.findParentByType("notebookeditorwrapper"), e);
-		}
+	handler: function(btn, e) {
+		btn.findParentByType('notebook').fireEvent("notebookWrapperAdd", btn.findParentByType("notebookeditorwrapper"), e);
 	}
 })
