@@ -23,16 +23,16 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 				tooltip: this.localize("runUntilTip"),
 				glyph: 'xf049@FontAwesome',
 				handler: function() {
-					var cew = btn.findParentByType("notebookcodeeditorwrapper");
-					btn.up('notebook').runUntil(cew);
+					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
+					btn.up('notebook').runUntil(rew);
 				}
 			},{
 				text: this.localize("runFrom"),
 				tooltip: this.localize("runFromTip"),
 				glyph: 'xf050@FontAwesome',
 				handler: function() {
-					var cew = btn.findParentByType("notebookcodeeditorwrapper");
-					btn.up('notebook').runFrom(cew);
+					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
+					btn.up('notebook').runFrom(rew);
 				}
 			}]
 		});

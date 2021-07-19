@@ -3,52 +3,6 @@
  * @memberof Spyral
  */
 class Notebook {
-	/**
-	 * Returns the previous block.
-	 * @returns {string}
-	 */
-	// static getPreviousBlock(config) {
-	// 	return Spyral.Notebook.getBlock(-1, config);
-	// }
-	/**
-	 * Returns the next block.
-	 * @returns {string}
-	 */
-	// static getNextBlock(config) {
-	// 	return Spyral.Notebook.getBlock(1, config);
-	// }
-	/**
-	 * Returns the current block.
-	 * @param {number} [offset] If specified, returns the block whose position is offset from the current block
-	 * @returns {string}
-	 */
-	// static getBlock() {
-	// 	if (Voyant && Voyant.notebook) {
-	// 		return Voyant.notebook.Notebook.currentNotebook.getBlock.apply(Voyant.notebook.Notebook.currentNotebook, arguments)
-	// 	}
-	// }
-	
-	// static setNextBlockFromFiles(files, mode, config) {
-	// 	if (!mode) {
-	// 		if (files[0].name.endsWith("html")) {mode="html"}
-	// 		else if (files[0].name.endsWith("xml")) {mode="xml"}
-	// 		else if (files[0].name.endsWith("json")) {mode="json"}
-	// 		else {mode="text"}
-	// 	}
-	// 	return files[0].text().then(text => {
-	// 		return Spyral.Notebook.setNextBlock(text, mode, config);
-	// 	})
-	// }
-
-	// static setNextBlock(data, mode, config) {
-	// 	return Spyral.Notebook.setBlock(data, 1, mode, config);
-	// }
-	
-	// static setBlock(data, offset, mode, config) {
-	// 	if (Voyant && Voyant.notebook) {
-	// 		return Voyant.notebook.Notebook.currentNotebook.setBlock.apply(Voyant.notebook.Notebook.currentNotebook, arguments)
-	// 	}
-	// }
 	
 	/**
 	 * 

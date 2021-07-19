@@ -12,7 +12,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		isChangeRegistered: false,
 		editor: undefined,
 		editedTimeout: undefined,
-		lines: 0
+		lines: 0,
+		maxLines: Infinity
 	},
 	statics: {
 		i18n: {
@@ -28,7 +29,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		this.callParent(arguments);
 	},
 	listeners: {
-		boxready: function() {
+		render: function() {
 			var me = this;
 			var editor = ace.edit(Ext.getDom(this.getEl()));
 			
@@ -38,7 +39,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editor.getSession().setMode(this.getMode());
 			editor.setOptions({
 				minLines: me.MIN_LINES,
-				maxLines: Infinity,
+				maxLines: this.getMaxLines(),
 				autoScrollEditorIntoView: true,
 				scrollPastEnd: true,
 				highlightActiveLine: false,
@@ -53,32 +54,35 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editor.renderer.once('afterRender', function() {
 				me.fireEvent('resize', me);
 			});
+
+			// editor['$mouseHandler'].setOptions({
+			// 	tooltipFollowsMouse: false
+			// });
 			
 			editor.setValue(this.getContent() ? this.getContent() : "" /*this.localize('emptyText')*/);
 			editor.clearSelection();
 
-		    editor.on("focus", function() {
+			editor.on("focus", function() {
 				setTimeout(function() {
 					me.getEditor().setHighlightGutterLine(true);
 				}, 100); // slight delay to avoid selecting a range of text, caused by showing the gutter while mouse is still pressed
-		    }, this);
-		    editor.on("change", function(ev, editor) {
+			}, this);
+			editor.on("change", function(ev, editor) {
 				me.clearMarkers();
 				
 				var lines = editor.getSession().getScreenLength();
 				if (lines > me.MIN_LINES && lines !== me.getLines()) {
 					me.setLines(lines);
-					var height = lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth();
-					me.setSize({height: height});
+					if (me.getMaxLines() === Infinity) {
+						var height = lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth();
+						me.setSize({height: height});
+					}
 				}
 				if (me.getIsChangeRegistered()==false) {
 					me.setIsChangeRegistered(true);
-					var wrapper = me.up('notebookcodeeditorwrapper');
-					if (wrapper) {
-						wrapper.setIsRun(false);
-						var notebook = wrapper.up("notebook");
-						if (notebook) {notebook.setIsEdited(true);}
-					}
+					var wrapper = me.up('notebookrunnableeditorwrapper');
+					wrapper.setIsRun(false);
+					wrapper.up('notebook').setIsEdited(true);
 				} else {
 					if (!me.getEditedTimeout()) { // no timeout, so set it to 30 seconds
 						me.setEditedTimeout(setTimeout(function() {
@@ -86,28 +90,31 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 						}, 30000));
 					}
 				}
-		    }, this);
-		    editor.on("blur", function() {
-		    	me.getEditor().setHighlightGutterLine(false);
-		    });
+			}, this);
+			editor.on("blur", function() {
+				me.getEditor().setHighlightGutterLine(false);
+			});
+			// TODO fix tooltip positioning
+			// editor.on("showGutterTooltip", function(tooltip, editor) {
+			// 	if (tooltip['$element'].style.transform === '') {
+			// 		var rect = editor.renderer.getContainerElement().getBoundingClientRect();
+			// 		tooltip['$element'].style.transform = 'translate(-'+rect.x+'px, -'+rect.height+'px)';
+			// 	}
+			// });
 			editor.commands.addCommand({
 				name: 'run',
-			    bindKey: {win: "Shift-Enter", mac: "Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
-			    exec: function(editor) {
-			    	var wrapper = me.up('notebookcodeeditorwrapper');
-			    	if (wrapper) {
-			    		wrapper.run();
-			    	}
-			    }				
+				bindKey: {win: "Shift-Enter", mac: "Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
+				exec: function(editor) {
+					me.up('notebookrunnableeditorwrapper').run();
+				}
 			});
 			editor.commands.addCommand({
 				name: 'rununtil',
-			    bindKey: {win: "Command-Shift-Enter", mac: "Command-Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
-			    exec: function(editor) {
-			    	var wrapper = me.up('notebookcodeeditorwrapper');
-			    	var notebook = wrapper.up("notebook");
-			    	notebook.runUntil(wrapper);
-			    }				
+				bindKey: {win: "Ctrl-Shift-Enter", mac: "Command-Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
+				exec: function(editor) {
+					var wrapper = me.up('notebookrunnableeditorwrapper');
+					wrapper.up('notebook').runUntil(wrapper);
+				}
 			});
 			this.setEditor(editor);
 
@@ -157,7 +164,9 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 	
 	switchModes: function(mode) {
 		this.setMode('ace/mode/'+mode);
-		this.getEditor().getSession().setMode(this.getMode());
+		if (this.rendered) {
+			this.getEditor().getSession().setMode(this.getMode());
+		}
 	},
 	
 	getValue: function() {

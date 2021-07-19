@@ -51,10 +51,6 @@ Ext.define('Voyant.notebook.Notebook', {
     	 * @private
     	 */
     	version: "3.0",
-    	/**
-    	 * @private
-    	 */
-		currentBlock: undefined,
 		/**
 		 * @private
 		 * Which solution to use for storing notebooks, either: 'voyant' or 'github'
@@ -73,8 +69,6 @@ Ext.define('Voyant.notebook.Notebook', {
      * @private
      */
     constructor: function(config) {
-		Voyant.notebook.Notebook.currentNotebook = this;
-		this.mixins['Voyant.notebook.util.FormatConverter'].constructor.apply(this, arguments);
     	Ext.apply(config, {
     		title: this.localize('title'),
     	    autoScroll: true,
@@ -258,12 +252,14 @@ Ext.define('Voyant.notebook.Notebook', {
     			notebookWrapperMoveDown: this.notebookWrapperMoveDown,
     			notebookWrapperRemove: this.notebookWrapperRemove,
 				notebookWrapperAdd: this.notebookWrapperAdd,
-				notebookInitialized: this.autoExecuteCells,
+				notebookInitialized: this.notebookInitialized,
     			scope: this
     		}
     	})
+
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+		this.mixins['Voyant.notebook.util.FormatConverter'].constructor.apply(this, arguments);
 
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
 			listeners: {
@@ -428,7 +424,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		this.getMetadata().setDateNow("modified");
 
-		var data = this.generateExportHtml();
+		var data = this.generateExportJson();
 		var metadata = this.generateExportMetadata(this.getMetadata());
 
 		var storageSolution = this.getStorageSolution();
@@ -449,11 +445,16 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 	},
 	
+	// override toolable method
+	getExportUrl: function(asTool) {
+		return location.href; // we just provide the current URL
+	},
+	
     loadFromString: function(text) {
     	text = text.trim();
 		if (text.indexOf("http") === 0) {
 			this.loadFromUrl(text);
-		} else if (text.indexOf("{") === 0) { // old format?
+		} else if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
 		} else if (/^[\w-_]+$/.test(text)) {
 			this.loadFromId(text)
@@ -465,13 +466,12 @@ Ext.define('Voyant.notebook.Notebook', {
 				icon: Ext.MessageBox.ERROR
 			});
 		} else {
-			this.importFromHtml(text);
+			this.importFromHtml(text); // old format
 		}
 		return true;
     },
 
 	loadFromJson: function(text) {
-		// TODO old format
 		var json;
 		try {
 			json = JSON.parse(text)
@@ -483,7 +483,8 @@ Ext.define('Voyant.notebook.Notebook', {
 				icon: Ext.MessageBox.ERROR
 			});
 		}
-		if (!json.metadata || !json.blocks) {
+
+		if (!json.cells || !json.metadata) {
 			return Ext.Msg.show({
 				title: this.localize('errorLoadingNotebook'),
 				msg: this.localize('cannotLoadJsonUnrecognized'),
@@ -491,13 +492,36 @@ Ext.define('Voyant.notebook.Notebook', {
 				icon: Ext.MessageBox.ERROR
 			});
 		}
-		json.blocks.forEach(function(block) {
-			if (Ext.isString(block) && block!='') {this.addCode({input: block});}
-			else if (block.input) {
-				if (block.type=='text') {this.addText(block);}
-				else {
-					this.addCode(block);
-				}
+
+		this.setMetadata(new Spyral.Metadata(json.metadata));
+
+		var cells2Init = [];
+		json.cells.forEach(function(cell) {
+			var cell2Init = undefined;
+			switch(cell.type) {
+				case 'text':
+					this.addText(cell.content, undefined, cell.cellId);
+					break;
+				case 'code':
+					cell2Init = this.addCode(cell.content, undefined, cell.cellId);
+					break;
+				case 'data':
+					cell2Init = this.addData(cell.content, undefined, cell.cellId);
+					break;
+			}
+			if (cell2Init) {
+				cell2Init.on('initialized', function() {
+					var cellIndex = cells2Init.indexOf(cell2Init);
+					if (cellIndex !== -1) {
+						cells2Init.splice(cellIndex, 1);
+						if (cells2Init.length === 0) {
+							this.fireEvent('notebookInitialized', this);
+						}
+					} else {
+						console.error('unknown cell initialized', cell2Init);
+					}
+				}.bind(this));
+				cells2Init.push(cell2Init);
 			}
 		}, this);
 	},
@@ -518,8 +542,8 @@ Ext.define('Voyant.notebook.Notebook', {
 	    	 noCache: 1
     	}).then(function(json) {
     		me.unmask();
-    		me.loadFromString(json.notebook.data); // could be older JSON format
-			if (json.notebook.id && json.notebook.id!=me.getNotebookId()) {
+    		me.loadFromString(json.notebook.data);
+			if (json.notebook.id && json.notebook.id !== me.getNotebookId()) {
 				me.setNotebookId(json.notebook.id);
 			}
 	    	me.setIsEdited(false);
@@ -536,7 +560,7 @@ Ext.define('Voyant.notebook.Notebook', {
     
     runUntil: function(upToCmp) {
     	var containers = [];
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+    	Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
 			containers.push(item);
     		if (upToCmp && upToCmp===item) {return false;}
     	}, this);
@@ -545,7 +569,7 @@ Ext.define('Voyant.notebook.Notebook', {
     
     runFrom: function(fromCmp) {
     	var containers = [], matched = false;
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+    	Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
     		if (fromCmp && fromCmp===item) {matched=true;}
     		if (matched) {
     			containers.push(item);
@@ -556,7 +580,7 @@ Ext.define('Voyant.notebook.Notebook', {
     
     runAll: function() {
     	var containers = [];
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+    	Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
 			containers.push(item);
     	}, this);
     	this._run(containers);
@@ -591,23 +615,22 @@ Ext.define('Voyant.notebook.Notebook', {
     	}
 	},
 
-	autoExecuteCells: function() {
-		var containers = [];
-		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
-			if (item.getAutoExecute()) {
-				containers.push(item);
-			}
-		});
-		this._run(containers);
+	notebookInitialized: function() {
+		// run all data cells
+		// var containers = [];
+    	// Ext.Array.each(this.query("notebookdatawrapper"), function(item) {
+		// 	containers.push(item);
+    	// }, this);
+    	// this._run(containers, []);
 	},
 
 	getNotebookVariables: function(upToCmp) {
 		var variables = [];
 
-		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+		Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
 			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
 
-			if (item.editor.getMode() === 'ace/mode/javascript' && item.getIsRun()) {
+			if (item.getIsRun()) {
 				var newVars = item.getVariables();
 				newVars.forEach(function(newVar) {
 					for (var i = 0; i < variables.length; i++) {
@@ -629,7 +652,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	getNotebookBlocks: function(upToCmp) {
 		var blocks = [];
 
-		Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+		Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
 			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
 
 			blocks.push(item.getInput());
@@ -653,7 +676,13 @@ Ext.define('Voyant.notebook.Notebook', {
     },
  
     addCode: function(block, order, cellId, config) {
-    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, {docs: this.spyralTernDocs});
+		config = config || {};
+		config.docs = this.spyralTernDocs;
+    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
+    },
+
+	addData: function(block, order, cellId, config) {
+    	return this._add(block, order, 'notebookdatawrapper', cellId, config);
     },
     
     _add: function(block, order, xtype, cellId, config) {
@@ -717,12 +746,11 @@ Ext.define('Voyant.notebook.Notebook', {
 	notebookWrapperAdd: function(wrapper, e) {
 		var cells = this.getComponent("cells");
 		var i = cells.items.findIndex('id', wrapper.id);
-		var xtype = wrapper.getXType(wrapper);
+		var runnable = wrapper.getXTypes(wrapper).indexOf('notebookrunnableeditorwrapper') !== -1;
 		var cmp;
-		if ((xtype=='notebooktexteditorwrapper' && !e.hasModifier()) || (xtype=='notebookcodeeditorwrapper' && e.hasModifier())) {
+		if ((!runnable && !e.hasModifier()) || (runnable && e.hasModifier())) {
 			cmp = this.addCode('',i+1);
-		}
-		else {
+		} else {
 			cmp = this.addText('',i+1);
 		}
 		cmp.getTargetEl().scrollIntoView(this.getTargetEl(), null, true, true);
@@ -739,7 +767,7 @@ Ext.define('Voyant.notebook.Notebook', {
     setIsEdited: function(val) {
     	// TODO: perhaps setup autosave
     	if (this.getHeader()) {
-        	this.getHeader().down("#saveItTool").setDisabled(val==false);
+        	this.getHeader().down("#saveItTool").setDisabled(val === false);
         	if (!val) {
         		this.query("notebookcodeeditor").forEach(function(editor) {
         			editor.setIsChangeRegistered(false);
@@ -822,62 +850,5 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.metadataEditor.loadMetadata(metadata);
 
 		this.metadataWindow.show();
-	},
-
-
-
-
-	/*
-	 * Spyral.Notebook methods below
-	 */
-
-    setBlock: function(data, offset, mode, config) {
-    	data = data || "";
-    	offset = offset || 1;
-    	config = config || {};
-    	var containers = this.query("notebookeditorwrapper");
-    	var id = this.getCurrentBlock().id;
-    	var current = containers.findIndex(function(container) {return container.id==id})
-    	if (current+offset<0 || current+offset>containers.length) { // wanting to place before beginning or one beyond end
-			Ext.Msg.show({
-				title: this.localize('error'),
-				msg: this.localize('blockDoesNotExist'),
-				buttons: Ext.MessageBox.OK,
-				icon: Ext.MessageBox.ERROR
-			});
-			return undefined
-    	}
-    	
-    	// I can't seem to set the content, so we'll go nuclear and remove the block
-    	if (containers[current+offset]) {
-        	var cells = this.getComponent("cells");
-    		cells.remove(containers[current+offset]);
-    	}
-    	return this.addCode(Object.assign({},{
-    		input: data,
-    		mode: mode || "text"
-    	}, config), current+offset);
-    },
-    getBlock: function(offset) {
-    	offset = offset === undefined ? 0 : offset;
-    	var containers = this.query("notebookcodeeditorwrapper");
-    	var id = this.getCurrentBlock().id;
-    	var current = containers.findIndex(function(container) {return container.id==id})
-    	if (current+offset<0 || current+offset>containers.length-1) {
-    		throw new Error(this.localize('blockDoesNotExist'));
-    	}
-    	return containers[current+offset].getInput();
-
-//    	debugger
-//    	var mode = containers[current+offset].editor.getMode().split("/").pop();
-//    	if (content.mode=="xml") {
-//    		return new DOMParser().parseFromString(content.input, 'text/xml')
-//    	} else if (content.mode=="json") {
-//    		return JSON.parse(content.input);
-//    	} else if (content.mode=="html") {
-//    		return new DOMParser().parseFromString(content.input, 'text/html')
-//    	} else {
-//    		return content.input;
-//    	}
-    },
+	}
 });

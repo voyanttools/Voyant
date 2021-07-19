@@ -14,10 +14,14 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 			if (classes.contains("notebooktexteditorwrapper")) {
 				var editor = section.querySelector(".notebook-text-editor").innerHTML;
 				me.addText(editor, undefined, section.id);
-			} else if (classes.contains("notebookcodeeditorwrapper")) {
+			} else if (classes.contains("notebookcodeeditorwrapper") || classes.contains("notebookdatawrapper")) {
 				var inputEl = section.querySelector(".notebook-code-editor-raw");
 				var typeRe = /\beditor-mode-(\w+)\b/.exec(inputEl.className);
 				var editorType = typeRe[1];
+				var matchClass = 'notebookcodeeditorwrapper';
+				if (editorType !== 'javascript') {
+					matchClass = 'notebookdatawrapper';
+				}
 				
 				/* in an ideal world we could use inputEl.innerHTML to get the contents
 				 * except that since it's in a parsed DOM it's already been transformed
@@ -29,7 +33,7 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 				 * strip any of the HTML formatting out. What's left is to use the parsing
 				 * to ensure the order and to properly grab the IDs and then to do character
 				 * searches on the original string. */
-				var secPos = html.indexOf("<section id='"+section.id+"' class='notebook-editor-wrapper notebookcodeeditorwrapper'>");
+				var secPos = html.indexOf("<section id='"+section.id+"' class='notebook-editor-wrapper "+matchClass+"'>");
 				var startPre = html.indexOf("<pre class='notebook-code-editor-raw editor-mode-", secPos);
 				startPre = html.indexOf(">", startPre)+1; // add the length of the string
 				var endPre = html.indexOf("</pre>\n<div class='notebook-code-results", startPre);
@@ -39,49 +43,63 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 					hasDomError = true;
 					// this might work, unless the js code includes HTML
 					input = editorType === "javascript" ? inputEl.innerText : inputEl.innerHTML;
-					debugger
 				} else {
 					input = html.substring(startPre, endPre);
 				}
-				var autoexec = /\bautoexec\b/.exec(inputEl.className) !== null;
+
 				var output = section.querySelector(".notebook-code-results").innerHTML;
 				var expandResults = section.querySelector(".notebook-code-results").classList.contains('collapsed') === false;
-				var ui = section.querySelector(".notebook-code-ui");
-				if (ui !== null) {
-					ui = ui.innerHTML;
-				} else {
-					ui = undefined;
-				}
-				var codeCell = me.addCode({
-					input: input,
-					output: output,
-					expandResults: expandResults,
-					uiHtml: ui,
-					mode: editorType,
-					autoExecute: autoexec,
-				}, undefined, section.id);
 
-				cells2Init.push(codeCell);
-				codeCell.on('initialized', function() {
-					var cellIndex = cells2Init.indexOf(codeCell);
-					if (cellIndex !== -1) {
-						cells2Init.splice(cellIndex, 1);
-						if (cells2Init.length === 0) {
-							me.fireEvent('notebookInitialized');
+				if (editorType === 'javascript') {
+					var codeCell = me.addCode({
+						input: input,
+						output: output,
+						expandResults: expandResults,
+						mode: editorType
+					}, undefined, section.id);
+	
+					cells2Init.push(codeCell);
+					codeCell.on('initialized', function() {
+						var cellIndex = cells2Init.indexOf(codeCell);
+						if (cellIndex !== -1) {
+							cells2Init.splice(cellIndex, 1);
+							if (cells2Init.length === 0) {
+								me.fireEvent('notebookInitialized');
+							}
+						} else {
+							console.error('unknown cell initialized', codeCell);
 						}
-					} else {
-						console.error('unknown cell initialized', codeCell);
-					}
-				});
-
+					});
+				} else {
+					// hack to get the data name from the dataviewer
+					var dataName = section.querySelector('.notebook-code-results .spyral-dv-left').firstChild.data;
+					dataName = dataName.split(':')[0];
+					var dataCell = me.addData({
+						input: input,
+						output: output,
+						expandResults: expandResults,
+						dataName: dataName,
+						mode: editorType
+					}, undefined, section.id);
+					cells2Init.push(dataCell);
+					dataCell.on('initialized', function() {
+						var cellIndex = cells2Init.indexOf(dataCell);
+						if (cellIndex !== -1) {
+							cells2Init.splice(cellIndex, 1);
+							if (cells2Init.length === 0) {
+								me.fireEvent('notebookInitialized');
+							}
+						} else {
+							console.error('unknown cell initialized', dataCell);
+						}
+					});
+				}
 			}
 		});
 
 		if (hasDomError) {
 			me.showError(me.localize("errorParsingDomInput"))
 		}
-		
-		me.fireEvent('notebookLoaded');
 	},
 
 	getInnerHeaderHtml: function() {
@@ -142,40 +160,33 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 				"})\n"+
 			"})\n"+
 			"</script>\n"+
-			"</head>\n<body class='exported-notebook'>"+
+			"</head>\n<body class='exported-notebook'>\n"+
 			"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"+
-			"<article class='spyralArticle'>";
+			"<article class='spyralArticle'>\n";
 
 		this.getComponent("cells").items.each(function(item, i) {
-			var type = item.isXType('notebookcodeeditorwrapper') ? 'code' : 'text';
 			var content = item.getContent();
 			var counter = item.down("notebookwrappercounter");
+
 			// reminder that the parsing in of notebooks depends on the stability of this syntax
 			out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
-				"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
-			if (type==='code') {
-				var mode = item.down("notebookcodeeditor").getMode();
-				mode = mode.substring(mode.lastIndexOf("/")+1);
+			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
 
-				var expandResults = item.getExpandResults();
-				
-				var autoexec = item.getAutoExecute() ? 'autoexec' : '';
-				
+			if (item.isXType('notebooktexteditorwrapper')) {
+				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
+			} else {	
 				var codeTextLayer = item.getTargetEl().query('.ace_text-layer')[0].cloneNode(true);
 				codeTextLayer.style.setProperty('height', 'auto'); // fix for very large height set by ace
+
 				// reminder that the parsing in of notebooks depends on the stability of this syntax
 				out+="<div class='notebook-code-editor ace-chrome'>\n"+codeTextLayer.outerHTML+"\n</div>\n"+
-					"<pre class='notebook-code-editor-raw editor-mode-"+mode+" "+autoexec+"'>"+content.input+"</pre>\n"+
-					"<div class='notebook-code-results"+(expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
-				if (content.ui !== undefined) {
-					out += "<div class='notebook-code-ui'>\n"+content.ui+"\n</div>\n";
-				}
-			} else {
-				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
+					"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n"+
+					"<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
 			}
+
 			out+="</section>\n"
 		})
-		out += "</article>\n<footer class='spyral-footer'>"+this.getInnerFooterHtml()+"</footer></body>\n</html>";
+		out += "</article>\n<footer class='spyral-footer'>"+this.getInnerFooterHtml()+"</footer>\n</body>\n</html>";
 		return out;
 	},
 
@@ -204,7 +215,34 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 		return clone;
 	},
 
+	generateExportJson: function() {
+		var cells = [];
+		this.getComponent("cells").items.each(function(item, i) {
+			var type;
+			switch(item.xtype) {
+				case 'notebookcodeeditorwrapper':
+					type = 'code';
+					break;
+				case 'notebookdatawrapper':
+					type = 'data';
+					break;
+				default:
+					type = 'text';
+			}
+			cells.push({
+				cellId: item.getCellId(),
+				type: type,
+				content: item.getContent()
+			});
+		});
 
+		var json = {
+			metadata: this.getMetadata(),
+			cells: cells
+		}
+
+		return JSON.stringify(json);
+	},
 
 
 	/*
@@ -220,13 +258,14 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 			boxLabel: '<a href="#">'+this.localize('exportHtmlDownload')+'</a>',
 			listeners: {
 				afterrender: function(cmp) {
-					var file, name = (this.getNotebookId() || "spyral")+ ".html",
-					data = this.generateExportHtml(),
-					properties = {type: 'text/html'};
+					var name = (this.getNotebookId() || "spyral")+ ".html";
+					var data = this.generateExportHtml();
+					var properties = {type: 'text/html'};
+					var file;
 					try {
-					  file = new File([data], name, properties);
+						file = new File([data], name, properties);
 					} catch (e) {
-					  file = new Blob([data], properties);
+						file = new Blob([data], properties);
 					}
 
 					var url = URL.createObjectURL(file);
@@ -249,9 +288,5 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 		myWindow.document.write(out);
 		myWindow.document.close();
 		myWindow.focus();
-	},
-	
-	getExportUrl: function(asTool) {
-		return location.href; // we just provide the current URL
-	},
+	}
 })

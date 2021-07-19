@@ -8,10 +8,10 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 
 	config: {
 		isInitialized: false,
-		initialContent: '',
 
 		cachedPaddingHeight: undefined,
 		cachedResultsHeight: undefined,
+		cachedResultsValue: undefined,
 		cachedResultsOutput: '',
 		cachedResultsVariables: [],
 
@@ -30,8 +30,6 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	constructor: function(config) {
 		var isExpanded = config.expandResults;
 		var sandboxSrcUrl = config.sandboxSrcUrl;
-		
-		this.setInitialContent(config.content);
 
 		Ext.apply(this, {
 			itemId: 'parent',
@@ -182,12 +180,19 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		this.superclass.unmask.call(this);
 	},
 
-	update: function(htmlOrData) {
-		// override update method and call it on results child instead
-		this._sendMessage({type: 'command', command: 'update', value: htmlOrData});
+	updateHtml: function(html) {
+		this._sendMessage({type: 'command', command: 'update', html: html});
+	},
+
+	updateValue: function(name, value) {
+		this._sendMessage({type: 'command', command: 'update', name: name, value: value});
 	},
 
 	getValue: function() {
+		return this.getCachedResultsValue();
+	},
+
+	getOutput: function() {
 		return this.getCachedResultsOutput();
 	},
 
@@ -205,51 +210,54 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	},
 
 	_sendMessage: function(messageObj) {
-		this.down('#resultsFrame').getWin().postMessage(JSON.stringify(messageObj), '*');
+		this.down('#resultsFrame').getWin().postMessage(messageObj, '*');
 	},
 
 	_handleResults: function(e) {
 		var frame = this.down('#resultsFrame').getFrame();
 		if (e.source === frame.contentWindow) {
-			var eventData = JSON.parse(e.data);
+			var me = this;
+			var eventData = e.data;//JSON.parse(td.decode(ev.target.result));
 			if (eventData.type) {
 				switch (eventData.type) {
 					case 'error':
 						console.log('iframe error:', eventData);
-						this.unmask();
-						this.getRunPromise().reject(eventData);
+						me.unmask();
+						me.getRunPromise().reject(eventData);
 						break;
 					case 'command':
 						// console.log('iframe command:', eventData);
 						switch (eventData.command) {
 							case 'init':
-								if (this.getIsInitialized() === false) {
-									this.setIsInitialized(true);
-									clearInterval(this.getInitIntervalID());
-									this.update(this.getInitialContent());
-									this.fireEvent('initialized', this);
+								if (me.getIsInitialized() === false) {
+									me.setIsInitialized(true);
+									clearInterval(me.getInitIntervalID());
+									me.fireEvent('initialized', me);
 								}
 								break;
 							case 'clear':
-								this._setHeight(0);
+								me._setHeight(0);
 								break;
 						}
 						break;
 					case 'result':
 						console.log('iframe result:', eventData);
-						this.unmask();
-						this.getRunPromise().resolve(eventData);
+						me.unmask();
+						me.getRunPromise().resolve(eventData);
 						break;
 				}
 
+				if (eventData.value) {
+					me.setCachedResultsValue(eventData.value);
+				}
 				if (eventData.output) {
-					this.setCachedResultsOutput(eventData.output);
+					me.setCachedResultsOutput(eventData.output);
 				}
 
-				this.setCachedResultsVariables(eventData.variables);
+				me.setCachedResultsVariables(eventData.variables);
 
 				if (eventData.height > 0) {
-					this._setHeight(eventData.height);
+					me._setHeight(eventData.height);
 				}
 			} else {
 				console.warn('unrecognized message!', e);

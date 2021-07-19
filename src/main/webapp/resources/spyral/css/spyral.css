@@ -32,7 +32,7 @@ body.exported-notebook .notebook-code-editor {
 	background-color: rgba(194, 50, 65, .3);
 	position: absolute;
 }
-.notebook-code-results {
+.notebook-code-results, .notebook-data-input {
 	background-color: rgb(252, 252, 252);
 	border-left: 3px solid rgb(240, 240, 240);
 }
@@ -105,11 +105,6 @@ body.exported-notebook .notebook-code-editor {
 .notebookcodeeditorwrapper .collapsed {
 	overflow: auto;
 	max-height: 120px;
-}
-.notebook-code-results {
-	/* margin: .5em;
-	padding: .5em; */
-	background-color: rgba(0,0,0,.01)
 }
 .notebook-code-results .collapsed {
 	overflow: auto;

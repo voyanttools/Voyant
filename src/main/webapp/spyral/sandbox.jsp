@@ -18,6 +18,9 @@ body {
 body .error {
 	color: #C23241;
 }
+body .info {
+	margin-left: 6px;
+}
 body pre {
 	font-size: smaller;
 }
@@ -45,7 +48,7 @@ table.spyral-table td:last-child {
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/json-viewer.css" />
+		<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/dataviewer.css" />
 
 		<script type="text/javascript" src="<%= base %>/resources/spyral/build/spyral.js"></script>
 		<script>

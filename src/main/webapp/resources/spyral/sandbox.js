@@ -16,19 +16,17 @@ function Sandboxer(event) {
 	var me = this;
 
 	me.result = {
-		type: 'result',
-		value: undefined,
-		height: undefined,
-		variables: []
+		type: 'result', // 'result' or 'error' or 'command'
+		name: undefined, // variable name associated with result value
+		value: undefined, // result of running the code
+		output: undefined, // html result of running the code
+		height: undefined, // height of the this document
+		variables: [] // variables created as a result of running the code
 	};
-
-	me.jsonViewer = undefined;
-
-	me.evalSuccess = true;
 
 	this.handleEvent = function() {
 		try {
-			var messageObj = JSON.parse(event.data);
+			var messageObj = event.data;
 			if (messageObj.type === 'code') {
 				this.runCode(messageObj.value, messageObj.variables);
 			} else {
@@ -36,7 +34,12 @@ function Sandboxer(event) {
 					me.result.type = 'command';
 					switch (messageObj.command) {
 						case 'update':
-							document.body.innerHTML = messageObj.value;
+							if (messageObj.html !== undefined) {
+								document.body.classList.value = '';
+								document.body.innerHTML = messageObj.html;
+							} else {
+								me.showData(messageObj.dataName, messageObj.dataValue);
+							}
 							break;
 						case 'clear':
 							document.body.innerHTML = '';
@@ -50,7 +53,7 @@ function Sandboxer(event) {
 					}
 					me.result.command = messageObj.command;
 					me.result.height = document.firstElementChild.offsetHeight;
-					event.source.postMessage(JSON.stringify(me.result), event.origin);
+					event.source.postMessage(me.result, event.origin);
 				}
 			}
 		} catch (err) {
@@ -59,14 +62,6 @@ function Sandboxer(event) {
 	}
 
 
-
-	this.isPromiseLike = function(thing) {
-		return thing != undefined && thing.then !== undefined && thing.catch !== undefined && thing.finally !== undefined;
-	}
-
-	this.isFunction = function(thing) {
-		return thing && (Object.prototype.toString.call(thing) === "[object Function]" || "function" === typeof thing || thing instanceof Function);
-	}
 
 	this.getSpyralClass = function(thing) {
 		if (thing != undefined) {
@@ -87,64 +82,109 @@ function Sandboxer(event) {
 		return false;
 	}
 
-	this.isElement = function(thing) {
-		return thing instanceof Element || thing instanceof HTMLDocument;  
-	}
-
 	this.notifyHeightChange = function(e) {
 		me.result.type = 'command';
 		me.result.command = 'update';
 		me.result.height = document.firstElementChild.offsetHeight;
-		event.source.postMessage(JSON.stringify(me.result), event.origin);
+		event.source.postMessage(me.result, event.origin);
 	}
 
 
+	this.var2Blob = function(thing) {
+		if (thing instanceof Blob) {
+			return thing;
+		}
 
-	this.loadComplexVariables = function(cvs) {
+		var type = '';
+		var blobData = '';
+		if (Spyral.Util.isString(thing)) {
+			type = 'text/string';
+			blobData = thing;
+		} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
+			type = 'application/json';
+			blobData = JSON.stringify(thing);
+		} else if (Spyral.Util.isNode(thing)) {
+			type = 'text/xml';
+			blobData = new XMLSerializer().serializeToString(thing);
+		}
+		return new Blob([blobData], {type: type});
+	}
+
+	this.blob2Var = function(blob) {
+		return new Promise(function(resolve, reject) {
+			if (blob.type.search(/application\/[^json]/) === 0) {
+				// probably a non-browser file type
+				resolve(blob);
+			} else {
+				var reader = new FileReader();
+				reader.addEventListener('loadend', function(ev) {
+					var td = new TextDecoder();
+					var data = td.decode(ev.target.result);
+					if (blob.type === 'text/string' || blob.type === 'text/plain') {
+						// already taken care of
+					} else if (blob.type === 'application/json') {
+						data = JSON.parse(data);
+					} else if (blob.type === 'text/xml' || blob.type === 'text/html') {
+						data = new DOMParser().parseFromString(data, 'text/xml');
+					} else {
+						reject('unknown blob type: '+blob.type);
+					}
+					resolve(data);
+				});
+				reader.readAsArrayBuffer(blob);
+			}
+		});
+	}
+
+	this.loadVariables = function(cvs) {
 		if (cvs.length === 0) {
 			return Promise.resolve();
 		} else {
 			var cv = cvs.shift();
-			return me.loadComplexVariable(cv).then(function() {
-				return me.loadComplexVariables(cvs);
+			return me.loadVariable(cv).then(function() {
+				return me.loadVariables(cvs);
 			});
 		}
 	}
 
-	this.loadComplexVariable = function(cv) {
+	this.loadVariable = function(cv) {
 		return new Promise(function(resolve, reject) {
-			// console.log('adding complex var:', cv.name);
-			if (cv.isSpyralClass) {
-				switch (cv.isSpyralClass) {
-					case 'Spyral.Categories':
-						break;
-					case 'Spyral.Chart':
-						break;
-					case 'Spyral.Corpus':
-						return Spyral.Corpus.load(cv.value.corpusid).then(function(corpus) {
-							window[cv.name] = corpus;
+			me.blob2Var(cv.value).then(function(data) {
+				if (cv.isSpyralClass) {
+					switch (cv.isSpyralClass) {
+						case 'Spyral.Categories':
+							break;
+						case 'Spyral.Chart':
+							break;
+						case 'Spyral.Corpus':
+							return Spyral.Corpus.load(data.corpusid).then(function(corpus) {
+								window[cv.name] = corpus;
+								resolve();
+							})
+							break;
+						case 'Spyral.Metadata':
+							break;
+						case 'Spyral.Notebook':
+							break;
+						case 'Spyral.Table':
+							var table = new Spyral.Table();
+							['_rows', '_headers', '_rowKeyColumnIndex'].forEach(function(prop) {
+								if (data[prop] != undefined) {
+									table[prop] = data[prop];
+								}
+							})
+							window[cv.name] = table;
 							resolve();
-						})
-						break;
-					case 'Spyral.Metadata':
-						break;
-					case 'Spyral.Notebook':
-						break;
-					case 'Spyral.Table':
-						var table = new Spyral.Table();
-						['_rows', '_headers', '_rowKeyColumnIndex'].forEach(function(prop) {
-							if (cv.value[prop] != undefined) {
-								table[prop] = cv.value[prop];
-							}
-						})
-						window[cv.name] = table;
-						resolve();
-						break;
+							break;
+					}
+					reject('no match for spyral class: '+cv.isSpyralClass);
+				} else {
+					window[cv.name] = data;
+					resolve();
 				}
-				reject('no match');
-			} else {
-				reject('not spyral class');
-			}
+			}, function(err) {
+				reject(err);
+			});
 		});
 
 	}
@@ -187,47 +227,25 @@ function Sandboxer(event) {
 				}
 			});
 
-
 			// remove variables from previous times this code has run
 			this.getNewWindowKeys().forEach(function(newKey) {
-				/** variables are now passed every time so delete all new ones
-				if (declaredVariables.indexOf(newKey) === -1) {
-					// don't delete variables that were passed from other cells
-					console.log('preserving external var:', newKey);
-				} else {
-					// console.log('deleting var:', newKey);
-					delete window[newKey];
-				}
-				*/
 				delete window[newKey];
 			});
 
-			// set variables from prior code cells
-			var prString = '';
-			var complexVariables = [];
-			priorVariables.forEach(function(pr) {
-				if (pr.isSpyralClass || pr.isFunction || pr.isElement) {
-					complexVariables.push(pr);
-				} else {
-					// console.log('adding var:', pr.name);
-					// prString += pr.name + '=' + JSON.stringify(pr.value) + ';';
-					window[pr.name] = pr.value;
-				}
-			});
-
-			this.loadComplexVariables(complexVariables).then(function() {
+			this.loadVariables(priorVariables).then(function() {
 				// actually run the code
 				console.log('running code:', code);
 				var result = undefined;
+				var evalSuccess = true;
 				try {
 					result = eval.call(window, code);
 				} catch (err) {
-					me.evalSuccess = false;
+					evalSuccess = false;
 					me.handleError(err);
 				}
 				// console.log('eval result', result);
 
-				if (me.evalSuccess) {
+				if (evalSuccess) {
 					Promise.resolve(result).then(function(prResult) {
 						// console.log('prResult', prResult);
 						me.result.value = prResult;
@@ -237,7 +255,12 @@ function Sandboxer(event) {
 						for (var i = 0; i < newKeys.length; i++) {
 							var varName = newKeys[i];
 							var varValue = window[varName];//eval.call(window, varName);
-							variables.push({name: varName, value: varValue, isSpyralClass: me.getSpyralClass(varValue), isFunction: me.isFunction(varValue), isElement: me.isElement(varValue)});
+
+							if (varValue === me.result.value) {
+								me.result.name = varName;
+							}
+
+							variables.push({name: varName, value: me.var2Blob(varValue), isSpyralClass: me.getSpyralClass(varValue)});
 						}
 						me.result.variables = variables;
 
@@ -252,6 +275,18 @@ function Sandboxer(event) {
 		} catch (err) {
 			me.handleError(err);
 		}
+	}
+
+	this.showData = function(dataName, dataValue) {
+		document.body.innerHTML = '<div></div>';
+		var container = document.body.firstElementChild;
+		container.removeEventListener('spyral-dv-toggle', me.notifyHeightChange); // unnecessary? removed by clear command
+		var dataViewer = new Spyral.Util.DataViewer({
+			container: container,
+			name: dataName,
+			data: dataValue
+		});
+		container.addEventListener('spyral-dv-toggle', me.notifyHeightChange);
 	}
 
 	this.handleError = function(error) {
@@ -283,49 +318,30 @@ function Sandboxer(event) {
 				}
 			} else {
 				if (document.body.firstChild === null) {
-					var name;
-					for (var i = 0; i < me.result.variables.length; i++) {
-						var variable = me.result.variables[i];
-						if (variable.value === me.result.value) {
-							name = variable.name;
-							break;
-						}
-					}
-
 					// .tool() output check
-					if (name === undefined && Spyral.Util.isString(me.result.value) && me.result.value.indexOf('<iframe') === 0) {
+					if (me.result.name === undefined && Spyral.Util.isString(me.result.value) && me.result.value.indexOf('<iframe') === 0) {
 						// probably tool output
 						document.body.innerHTML = me.result.value;
 					} else {
-						document.body.innerHTML = '<div></div>';
-						var container = document.body.firstElementChild;
-						// container.removeEventListener('spyral-jv-toggle', me.notifyHeightChange); // unnecessary? removed by clear command
-						me.jsonViewer = new Spyral.Util.JsonViewer({
-							container: container,
-							name: name,
-							data: me.result.value
-						});
-						container.addEventListener('spyral-jv-toggle', me.notifyHeightChange);
+						me.showData(me.result.name, me.result.value);
 					}
 				}
 			}
 			
 			setTimeout(function() {
 				me.result.height = document.firstElementChild.offsetHeight;
-				me.result.output = document.body.outerHTML;
+				me.result.output = document.body.innerHTML;
 				try {
-					event.source.postMessage(JSON.stringify(me.result), event.origin);
+					event.source.postMessage(me.result, event.origin);
 				} catch (err) {
 					// most likely an error sending the result value so remove it
 					me.result.value = '';
-					event.source.postMessage(JSON.stringify(me.result), event.origin);
+					event.source.postMessage(me.result, event.origin);
 				}
 			}, 25);
 		} catch (err) {
-			event.source.postMessage(JSON.stringify({
-				type: 'error',
-				value: 'exception: '+err.message
-			}), event.origin);
+			var result = { type: 'error', value: 'exception: '+err.message };
+			event.source.postMessage(result, event.origin);
 		}
 	}
 }

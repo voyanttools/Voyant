@@ -108,9 +108,10 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 				var win = btn.up('window');
 				var form = win.down('form');
 				if (form.isDirty()) {
+					codeEditorInstance.up('notebook').setIsEdited(true);
 					var values = form.getValues();
 					codeEditorInstance.switchModes(values.codeMode);
-					codeEditorInstance.up('notebook').setIsEdited(true);
+					
 				}
 				win.close();
 			});

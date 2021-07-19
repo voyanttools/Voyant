@@ -4,7 +4,6 @@ Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	alias: "widget.notebooktexteditorwrapper",
 	cls: 'notebook-text-wrapper',
 	config: {
-		content: ''
 	},
 	minHeight: 85,
 	constructor: function(config) {

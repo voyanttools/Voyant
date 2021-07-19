@@ -6,10 +6,10 @@ import Util from 'voyant/src/util';
  * TODO add function support
  */
 
-class JsonViewer {
+class DataViewer {
 
 	constructor(options) {
-		this.cls = 'spyral-jv-';
+		this.cls = 'spyral-dv-';
 
 		let defaults = {
 			container: document.body,
@@ -18,13 +18,23 @@ class JsonViewer {
 			expand: false
 		};
 		this.options = Object.assign(defaults, options);
-		
-		this.options.container.setAttribute('class', this.cls+'container');
+
+		this.options.container.setAttribute('class', `${this.cls}container`);
+
+		this.exportData = {};
+		this.exportDataContext = this.exportData;
+
 		this.render(0, this.options.container, this.options.name, this.options.data);
 	}
 
 	render(indent, parent, key, data) {
 		let {type, basicType} = getTypeData(data);
+
+		this.exportDataContext[key] = {
+			type: type,
+			value: undefined
+		};
+		this.exportDataContext = this.exportDataContext[key];
 
 		let createdItem = this.createItem(indent, parent, key, data);
 		
@@ -33,7 +43,12 @@ class JsonViewer {
 			if (type === 'Null') data = 'null';
 			else if (type === 'String') data = '"'+data+'"';
 			createdItem.right.innerText = data;
+			
+			this.exportDataContext.value = data;
 		} else {
+			const exportDataParentContext = []
+			this.exportDataContext.value = exportDataParentContext;
+
 			if (type === 'Node') {
 				for (let n of data.childNodes) {
 					let key = n.tagName || '#text';
@@ -41,16 +56,28 @@ class JsonViewer {
 						n = n.textContent.trim();
 						if (n.length === 0) continue;
 					}
+
+					exportDataParentContext.push({});
+					this.exportDataContext = exportDataParentContext[exportDataParentContext.length-1];
+
 					this.render(indent+0, createdItem.right, key, n);
 				}
 			} else if (type === 'Object') {
 				for (let key in data) {
 					if (data.hasOwnProperty(key)) {
+
+						exportDataParentContext.push({});
+						this.exportDataContext = exportDataParentContext[exportDataParentContext.length-1];
+
 						this.render(indent+0, createdItem.right, key, data[key]);
 					}
 				}
 			} else {
 				for (let i = 0, l = data.length; i < l; i++) {
+					
+					exportDataParentContext.push({});
+					this.exportDataContext = exportDataParentContext[exportDataParentContext.length-1];
+
 					this.render(indent+0, createdItem.right, i, data[i]);
 				}
 			}
@@ -147,6 +174,10 @@ class JsonViewer {
 			}.bind(this));
 		}
 	}
+
+	getExportData() {
+		return this.exportData;
+	}
 }
 
 function getTypeData(val) {
@@ -164,4 +195,4 @@ function getTypeData(val) {
 	return {type, basicType};
 }
 
-export default JsonViewer;
+export default DataViewer;

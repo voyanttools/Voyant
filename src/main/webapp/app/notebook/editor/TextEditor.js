@@ -4,22 +4,6 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 	alias: "widget.notebooktexteditor",
 	cls: 'notebook-text-editor',
 	config: {
-		ckeditorConfig : { // when upgrading ckeditor, remember to copy stopediting and inserthtml4x plugins
-			toolbar:  [
-				    	{ name: 'basicstyles', items: [ 'Bold', 'Italic', '-', 'RemoveFormat' ] },
-				    	{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Justify', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-				    	{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-				    	{ name: 'styles', items: [ 'Styles', 'Format' ] },
-				    	{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor'] },
-				    	{ name: 'insert', items: [ 'Image', 'Table' ] },
-				    	{ name: 'document', items: [ 'inserthtml4x', 'Sourcedialog', 'Stopediting'] }
-		    ],
-		    
-		    extraPlugins: 'stopediting,sourcedialog,justify,colorbutton,inserthtml4x',
-			allowedContent: true,
-			toolbarCanCollapse: false,
-			startupFocus: true
-		},
 		editor: undefined,
 		isEditRegistered: false,
 		currentHeight: 0
@@ -58,7 +42,23 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 			el.set({contenteditable: true});
 			this.findParentByType("notebookeditorwrapper").setIsEditing(true);
 			if (!cmp.getEditor()) {
-				var editor = CKEDITOR.inline( el.dom, this.getCkeditorConfig() );
+				// when upgrading ckeditor, remember to copy stopediting and inserthtml4x plugins
+				var editor = CKEDITOR.inline(el.dom, {
+					toolbar: [
+						{ name: 'basicstyles', items: [ 'Bold', 'Italic', '-', 'RemoveFormat' ] },
+						{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Justify', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
+						{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+						{ name: 'styles', items: [ 'Styles', 'Format' ] },
+						{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor'] },
+						{ name: 'insert', items: [ 'Image', 'Table' ] },
+						{ name: 'document', items: [ 'inserthtml4x', 'Sourcedialog', 'Stopediting'] }
+					],
+					
+					extraPlugins: 'stopediting,sourcedialog,justify,colorbutton,inserthtml4x',
+					allowedContent: true,
+					toolbarCanCollapse: false,
+					startupFocus: true
+				});
 				
 				// erase contents if it's click to edit (not localized, FIXME
 				editor.on("focus", function(evt) {
@@ -83,7 +83,7 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 				})
 				editor.on("change", function() {
 					var editorHeight = editor.container.$.clientHeight;
-					if (editorHeight!=this.getCurrentHeight()) {
+					if (editorHeight !== this.getCurrentHeight()) {
 						this.findParentByType("notebookeditorwrapper").setHeight(editorHeight);
 						this.setCurrentHeight(editor.container.$.clientHeight)
 					}

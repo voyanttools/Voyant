@@ -49,7 +49,7 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 				});
 			}
 
-			var wrapper = instance.up("notebookcodeeditorwrapper");
+			var wrapper = instance.up('notebookrunnableeditorwrapper');
 			var content = wrapper.getContent();
 			var fileContent = instance.getExportType() === 'output' ? content.output : content.input;
 			var filename = wrapper.getCellId()+"."+instance.getFileExtension(content.mode);

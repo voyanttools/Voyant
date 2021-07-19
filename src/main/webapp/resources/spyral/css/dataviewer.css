@@ -1,0 +1,85 @@
+.spyral-dv-container {
+    color: #000;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+	font-size: 12px;
+    overflow: auto;
+}
+
+.spyral-dv-folder {
+    cursor: pointer;
+}
+
+.spyral-dv-type, .spyral-dv-length {
+	color: #555;
+}
+
+.spyral-dv-folder-icon {
+	margin-right: 6px;
+	cursor: pointer;
+    text-align: center;
+    height: 8px;
+	width: 8px;
+}
+
+.spyral-dv-content {
+    line-height: 24px;
+    padding-left: 20px;
+    position: relative;
+	display: inline-block;
+}
+.spyral-dv-expanded > .spyral-dv-content {
+	display: block;
+}
+.spyral-dv-collapsed > .spyral-dv-content {
+	padding-left: 10px;
+}
+.spyral-dv-collapsed > .spyral-dv-content:first-of-type {
+    padding-left: 0px;
+}
+.spyral-dv-collapsed > .spyral-dv-content:not(.spyral-dv-content:last-of-type)::after {
+	content: ',';
+}
+.spyral-dv-container > .spyral-dv-content {
+	padding-left: 6px;
+}
+
+.spyral-dv-left {
+	vertical-align: top;
+}
+
+.spyral-dv-left, .spyral-dv-right {
+    display: inline-block;
+}
+
+.spyral-dv-String, .spyral-dv-Boolean, .spyral-dv-Number, .spyral-dv-Node, .spyral-dv-Null, .spyral-dv-Undefined {
+    color: #1A1AA6;
+}
+
+.spyral-dv-Node, .spyral-dv-Object, .spyral-dv-Array {
+    display: inline;
+	white-space: nowrap;
+}
+.spyral-dv-expanded.spyral-dv-Node .spyral-dv-expanded.spyral-dv-Object, .spyral-dv-expanded.spyral-dv-Array {
+	display: block;
+}
+
+.spyral-dv-expanded svg.open {
+	display: inline-block;
+}
+.spyral-dv-expanded svg.closed {
+	display: none;
+}
+.spyral-dv-collapsed svg.open {
+	display: none;
+}
+.spyral-dv-collapsed svg.closed {
+	display: inline-block;
+}
+
+.spyral-dv-collapsed .spyral-dv-folder .spyral-dv-folder-icon, .spyral-dv-collapsed .spyral-dv-folder+.spyral-dv-right {
+	display: none;
+}
+
+.spyral-dv-expanded + .spyral-dv-type {
+	display: none;
+}

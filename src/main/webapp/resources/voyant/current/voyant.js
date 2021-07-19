@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Jul 09 17:49:15 EDT 2020 */
+/* This file created by JSCacher. Last modified: Thu Jul 15 17:14:01 EDT 2021 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -5840,46 +5840,6 @@ TermsRadio.prototype = {
 	}
 	
 };
-Ext.define('Voyant.util.Assignable', {
-    transferable: ['assign'],
-    /**
-     * This is a convenience method for assigning a variable name to this promised object once it's ready.
-     * 
-     * This method is chainable, so you can call other promise-aware corpus functions.
-     * 
-     * 		new Corpus("Hello World!").assign("helloworld").show();
-     * 
-     * This is somewhat equivalent to the nastier:
-     * 
-     *  	var helloworld;
-     *  	new Corpus("Hello World!").then(function(corpus) {
-     *  		helloworld = corpus;
-     *  		helloworld.show();
-     *  	})
-     *  
-     * Note that when using `assign` in spyral, any references to the name variable should occur in separate, subsequent code blocks. 
-     * 
-     * 		new Corpus("Hello Voyant!").assign("corpus");
-     * 
-     * Then use the named variable in a subsequent code block:
-     * 
-     * 	  corpus.show();
-     * 
-     *  @param {String} name The variable name to assign to this corpus.
-     */
-    assign: function(name) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			if (Ext.isString(name)) {
-				window[name] = this;
-			} else {
-				Voyant.application.showError("The 'assign' method expects a string argument. ("+typeof name+") "+name)
-			}
-			return this;
-		}
-	}
-})
 Ext.define('Voyant.util.Api', {
 	constructor: function(config) {
 		var apis = [];
@@ -6060,7 +6020,7 @@ Ext.define('Voyant.util.Localization', {
 	
 	showLanguageOptions: function() {
 		var me = this;
-		var langs = ["ar","bs","cz","en","es","fr","he","hr","it","ja","pt","sr"].map(function(lang) {
+		var langs = ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","sr"].map(function(lang) {
 			return {text: this.localize(lang), value: lang}
 		}, this);
 		langs.sort(function(a,b) {
@@ -6337,9 +6297,9 @@ Ext.define('Voyant.util.Deferrable', {
 		if (!deferred.promise.show && window.show) {deferred.promise.show=show}
 		
 		// make sure that this object can chain an assignment
-		if (!deferred.promise.assign) {
-			Ext.apply(deferred.promise, {assign: new Voyant.util.Assignable().assign});
-		}
+		// if (!deferred.promise.assign) {
+		// 	Ext.apply(deferred.promise, {assign: new Voyant.util.Assignable().assign});
+		// }
 
 		this.deferredStack.push(deferred);
 		
@@ -6816,6 +6776,9 @@ Ext.define('Voyant.util.Toolable', {
        		inputValue: 'spyral',
        		boxLabel: panel.localize("exportViewSpyral")
        	}];
+		if (panel.isXType('notebook')) {
+			exportViewItems.splice(2, 1); // remove redundant spyral export for spyral notebooks
+		}
 		if (panel.getExtraExportItems) {
 			panel.getExtraExportItems().forEach(function(item) {
 				Ext.applyIf(item, {
@@ -7000,7 +6963,7 @@ Ext.define('Voyant.util.Toolable', {
 			}
 		}
 		
-var canvasSurface = this.down('draw') || this.down('chart');
+		var canvasSurface = this.down('draw') || this.down('chart');
 		if (canvasSurface && (canvasSurface.isChart || canvasSurface.isCanvas)) {
 
 			// first part taken from EXTJ Draw.getImage()
@@ -7090,29 +7053,45 @@ var canvasSurface = this.down('draw') || this.down('chart');
 		var svg = targetEl.querySelector("svg"); // finally try finding an SVG
 		if (svg) {
 			var width = targetEl.offsetWidth*scale,
-				height = targetEl.offsetHeight*scale
+				height = targetEl.offsetHeight*scale;
 			var clone = svg.cloneNode(true); // we don't want to scale, etc. the original
 			clone.setAttribute("version", 1.1)
 			clone.setAttribute("xmlns", "http://www.w3.org/2000/svg")
-			clone.setAttribute("transform", "scale("+scale+")")
 			clone.setAttribute("width", width)
 			clone.setAttribute("height", height)
-			
-			var html = clone.outerHTML,
-			  img = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));
 
-			  var canvas = Ext.DomHelper.createDom({tag:'canvas',width: width,height:height}),
-			  context = canvas.getContext("2d"), me=this;
+			var svgChildren = [];
+			while (clone.children.length > 0) {
+				svgChildren.push(clone.removeChild(clone.children[0]));
+			};
+
+			var g = document.createElement('g');
+			g.setAttribute("style", "transform-box: fill-box;");
+			g.setAttribute("transform", "scale("+scale+")")
+			clone.appendChild(g);
+
+			svgChildren.forEach(function(item) {
+				g.appendChild(item);
+			})
+
+			var html = clone.outerHTML,
+				img = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));
+
+			var canvas = Ext.DomHelper.createDom({tag:'canvas',width: width,height:height}),
+				context = canvas.getContext("2d");
 			  
-			  var image = new Image;
-			  image.src = img;
-			  image.panel = this;
-			  image.onload = function() {
-				  context.drawImage(image, 0, 0);
-				  img = canvas.toDataURL("image/png");
+			var image = new Image;
+			image.src = img;
+			image.panel = this;
+			image.onload = function() {
+				context.drawImage(image, 0, 0);
+				img = canvas.toDataURL("image/png");
 		        if (form && form.isVisible()) {form.unmask();}
-				  return this.panel.exportPngData.call(this.panel, img);
-			  };
+				return this.panel.exportPngData.call(this.panel, img);
+			};
+			// image.onerror = function(ev) {
+			// 	console.log(ev)
+			// }
 		}
 	},
 	exportUrl: function() {
@@ -7171,16 +7150,17 @@ var canvasSurface = this.down('draw') || this.down('chart');
 		let enc = function(str) {
 			return btoa(encodeURIComponent(str)).replace(/=/g, "%3D");
 		}
-		let input = '["'+enc("<h2>Spyral Notebook Imported from Voyant Tools</h2>")+'","'+
-			enc('loadCorpus("'+this.getApplication().getCorpus().getAliasOrId()+'").tool("'+
-			(toolForUrl=="VoyantHeader" ? "" : toolForUrl)+'"'+(Object.keys(api).length>0 ? (","+Ext.encode(api)) : "")+ ');')+'"]'
-		this.openUrl(this.getApplication().getBaseUrl()+"spyral/?run=true&"+(isDebug ? "debug=true&" : "")+"inputJsonArrayOfEncodedBase64="+input);
+		let input = "['<h1>Spyral Notebook Imported from Voyant Tools</h1>',"+
+			"'<p>The proceeding code loads your corpus and tool. You can use this as a base to create your own notebook. Don\\'t forget to save your changes by clicking on the cloud icon!</p>','"+
+			'loadCorpus("'+this.getApplication().getCorpus().getAliasOrId()+'").tool("'+
+			(toolForUrl=="VoyantHeader" ? "" : toolForUrl)+'"'+(Object.keys(api).length>0 ? (","+Ext.encode(api)) : "")+ ");']"
+		this.openUrl(this.getApplication().getBaseUrl()+"spyral/?run=true&"+(isDebug ? "debug=true&" : "")+"inputJsonArrayOfEncodedBase64="+enc(input));
 	},
 	exportGridCurrentJson: function(grid, form) {
 		var store = grid.getStore();
 		var fields = store.getFields();
 		var value = "<table>\n\t<thead>\n\t\t<tr>\n";
-		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns();
+		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns().filter(function(col) { return col.dataIndex && col.dataIndex.trim().length > 0 });
 		values = [];
 
 		function jsonCollector(row) {
@@ -7210,7 +7190,7 @@ var canvasSurface = this.down('draw') || this.down('chart');
 	exportGridCurrentTsv: function(grid, form) {
 		var store = grid.getStore();
 		var fields = store.getFields();
-		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns();
+		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns().filter(function(col) { return col.dataIndex && col.dataIndex.trim().length > 0 });
 		var fields = [];
 		visibleColumns.forEach(function(column) {
 			fields.push(column.text);
@@ -7249,7 +7229,7 @@ var canvasSurface = this.down('draw') || this.down('chart');
 		var store = grid.getStore();
 		var fields = store.getFields();
 		var value = "<table>\n\t<thead>\n\t\t<tr>\n";
-		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns();
+		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns().filter(function(col) { return col.dataIndex && col.dataIndex.trim().length > 0 });
 		visibleColumns.forEach(function(column) {
 			value+="\t\t\t<td>"+column.text+"</td>\n";
 		});
@@ -7815,100 +7795,6 @@ Ext.define("Voyant.util.DiacriticsRemover", {
     }
 
 });
-Ext.define("Voyant.notebook.util.Show", {
-	transferable: ['show'],
-	
-    /**
-	 * Shows a one-line summary of this object. For example, for a corpus:
-	 * 
-	 * 	new Corpus("Hello World!").show(true);
-	 * 
-	 * @param {boolean} [withID] Includes the corpus ID in parentheses at the end, if true.
-	 */
-	show: function(len) { // this is for instances
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			show.call(this, this.getString ? this.getString(len) : this.toString(), !this.getString && Ext.isNumber(len) ? len : undefined);
-		}
-	},
-	statics: {
-		show: function(contents, len) {
-			if (this.then) {
-				var arg = contents;
-				this.then(function(val) {
-					show.call(val, val, arg);
-				})
-			} else {
-				if (contents === undefined) {
-					return;
-				}
-				
-				if (Ext.isArray(contents)) {
-					var allContents = "";
-					contents.forEach(function(content) {
-						allContents += content.getString ? content.getString() : content.toString();
-					});
-					contents = allContents;
-				} else if (Ext.isString(this) || this instanceof String) {
-					if (Ext.isNumber(contents)) {len = contents;}
-					contents = this;
-				}
-				if (contents.then) { // check if we currently have a promise
-					return contents.then(function(text) {show(text, len)})
-				}
-				if (contents.toHtml) {contents=contents.toHtml()}
-				else if (contents.getString) {contents=contents.getString()}
-				else if (contents.toString) {contents=contents.toString()}
-//				contents = contents.getString ? contents.getString() : contents.toString();
-
-				if (contents.then) { // check again to see if we have a promise (like from toString())
-					contents.then(function(text) {show(text, len)})
-				} else {
-					if (len && Ext.isNumber(len)) {contents = contents.substring(0,len)}
-					if (Voyant.notebook.util.Show.SINGLE_LINE_MODE==false) {contents="<div class='"+Voyant.notebook.util.Show.MODE+"'>"+contents+"</div>";}
-					Voyant.notebook.util.Show.TARGET.insertHtml('beforeEnd',contents);
-				}
-			}
-		},
-		showError: function(error, more) {
-			var mode = Voyant.notebook.util.Show.MODE;
-			Voyant.notebook.util.Show.MODE='error';
-			
-			if (this instanceof Voyant.util.ResponseError) {
-				error = this;
-			}
-			if (error instanceof Voyant.util.ResponseError) {
-				if (console) {console.error(error.getResponse())}
-				more = error.getResponse().responseText
-				error = error.getMsg();
-			}
-			
-			else {
-
-				if (error !== undefined && error.stack && !more) {more=error.stack}
-				if (more && Ext.isString(more)===false) {more=more.toString()}
-				
-			}
-
-			if (console) {console.error(error)}
-			if (more) {
-				if (console) {console.error(more);}
-				error="<h3>"+error.toString()+"</h3><pre>"+Ext.String.htmlEncode(more)+'</pre>';
-			}
-			show(error);
-			Voyant.notebook.util.Show.MODE = mode;
-		},
-		TARGET : null,
-		MODE: 'info',
-		SINGLE_LINE_MODE : false
-	}
-});
-
-String.prototype.show = Voyant.notebook.util.Show.show;
-var show = Voyant.notebook.util.Show.show;
-var showError = Voyant.notebook.util.Show.showError;
-
 Ext.define("Voyant.notebook.util.Embed", {
 	transferable: ['embed'],
 	embed: function() { // this is for instances
@@ -8210,7 +8096,8 @@ Ext.define('Voyant.data.model.Document', {
     //requires: ['Voyant.data.store.DocumentTerms'],
     fields: [
              {name: 'corpus'},
-             {name: 'id'},
+			 {name: 'id'},
+			 {name: 'author'},
              {name: 'pubDate'},
              {name: 'publisher'},
              {name: 'pubPlace'},
@@ -8427,7 +8314,7 @@ Ext.define('Voyant.data.model.Document', {
     	var val = this.get(field) || "";
     	val = Ext.isArray(val) ? val.join("; ") : val;
     	val = val.trim().replace(/\s+/g, ' ');
-    	return max ? this.getTruncated(author, max) : val;
+    	return max ? this.getTruncated(val, max) : val;
     },
     
     getCorpusId: function() {
@@ -9484,6 +9371,68 @@ Ext.define('Voyant.data.store.TSNEAnalysisBuffered', {
 		this.callParent([config]);
 	}
 });
+Ext.define('Voyant.data.model.NotebookFacet', {
+    extend: 'Ext.data.Model',
+    idProperty: 'label',
+    fields: [
+             {name: 'facet'},
+             {name: 'label'},
+             {name: 'inDocumentsCount', type: 'int'}
+    ],
+    getLabel: function() {
+    	return this.get('label')
+    },
+    getFacet: function() {
+    	return this.get('facet')
+    },
+	getInDocumentsCount: function() {
+		return this.get('inDocumentsCount')
+	}
+});
+
+Ext.define('Voyant.data.store.NotebookFacetsMixin', {
+	mixins: ['Voyant.data.store.VoyantStore'],
+    model: Voyant.data.model.NotebookFacet,
+	constructor : function(config) {
+		if (config.facet) {
+			if (config.proxy === undefined) {
+				config.proxy = {};
+			}
+			if (config.proxy.extraParams === undefined) {
+				config.proxy.extraParams = {};
+			}
+			config.proxy.extraParams.facet = config.facet;
+			config.proxy.extraParams.noCache = 1;
+			delete config.facet;
+		}
+		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {
+			'proxy.extraParams.tool': 'notebook.CatalogueFacets',
+			'proxy.reader.rootProperty': 'catalogue.facets',
+			'proxy.reader.totalProperty': 'catalogue.total'
+		}])
+	}
+});
+
+Ext.define('Voyant.data.store.NotebookFacets', {
+	extend: 'Ext.data.Store',
+	mixins: ['Voyant.data.store.NotebookFacetsMixin'],
+	constructor : function(config) {
+		config = config || {};
+		this.mixins['Voyant.data.store.NotebookFacetsMixin'].constructor.apply(this, [config])
+		this.callParent([config]);
+	}
+});
+
+Ext.define('Voyant.data.store.NotebookFacetsBuffered', {
+	extend: 'Ext.data.BufferedStore',
+	mixins: ['Voyant.data.store.NotebookFacetsMixin'],
+	constructor : function(config) {
+		config = config || {};
+		this.mixins['Voyant.data.store.NotebookFacetsMixin'].constructor.apply(this, [config])
+		this.callParent([config]);
+	}
+});
+
 /*
  * @class VoyantTable
  * A VoyantTable can facilitate working with tabular data structures, as well as
@@ -9500,7 +9449,7 @@ Ext.define('Voyant.data.store.TSNEAnalysisBuffered', {
  */
 Ext.define('Voyant.data.table.Table', {
 	alternateClassName: ["VoyantTable"],
-	mixins: ['Voyant.notebook.util.Embed','Voyant.notebook.util.Show'],
+	mixins: ['Voyant.notebook.util.Embed'],
 	embeddable: ['Voyant.widget.VoyantTableTransform','Voyant.widget.VoyantChart','Voyant.widget.CodeEditor'],
 	config: {
 		
@@ -9984,7 +9933,7 @@ Ext.define('Voyant.data.table.Table', {
  */
 Ext.define('Voyant.data.util.NetworkGraph', {
 	alternateClassName: ["NetworkGraph"],
-	mixins: ['Voyant.notebook.util.Embed','Voyant.notebook.util.Show'],
+	mixins: ['Voyant.notebook.util.Embed'],
 	embeddable: ["Voyant.widget.VoyantNetworkGraph"],
 	config: {
 		
@@ -10233,7 +10182,7 @@ Ext.define('Voyant.data.util.Geonames', {
  */
 Ext.define('Voyant.data.model.Corpus', {
 	alternateClassName: ["Corpus"],
-    mixins: ['Voyant.notebook.util.Embed','Voyant.notebook.util.Show','Voyant.util.Transferable','Voyant.util.Localization','Voyant.util.Assignable'],
+    mixins: ['Voyant.notebook.util.Embed','Voyant.util.Transferable','Voyant.util.Localization'],
     transferable: ['loadCorpusTerms','loadTokens','getPlainText','getText','getWords','getString','getLemmasArray'],
 //    transferable: ['getSize','getId','getDocument','getDocuments','getCorpusTerms','getDocumentsCount','getWordTokensCount','getWordTypesCount','getDocumentTerms'],
     embeddable: ['Voyant.panel.Summary','Voyant.panel.Cirrus','Voyant.panel.Documents','Voyant.panel.CorpusTerms','Voyant.panel.Reader','Voyant.panel.Trends','Voyant.panel.TermsRadio','Voyant.panel.DocumentTerms','Voyant.panel.TermsBerry','Voyant.panel.CollocatesGraph','Voyant.panel.Contexts','Voyant.panel.WordTree','Voyant.panel.Veliza','Voyant.panel.ScatterPlot','Voyant.panel.Topics'],
@@ -10611,8 +10560,8 @@ Ext.define('Voyant.data.model.Corpus', {
      * 
      * 	new Corpus("Hello World!");
      * 	new Corpus({input: "Hello World!"});
-     * 
-     * @param {String/String[]/Object} config The source document(s) as a text string, a URL, an array of text strings and URLs, or a config object.
+	 * @param  {String|String[]|Object} source The source document(s) as a text string, a URL, an array of text strings and URLs, or a config object.
+     * @param {String|String[]|Object} [config] An additional config to use with the source.
 	 * @returns {Ext.promise.Promise} *Important*: This doesn't immediately return a Corpus but a promise to return a Corpus when it's finished loading
 	 * (you should normally chain the promise with {@link Ext.promise.Promise#then then} and provide a function that receives the
 	 * Corpus as an argument, as per the example above).
@@ -11496,6 +11445,7 @@ Ext.define('Voyant.widget.StopListOption', {
     			ga: "stop.ga-irish-lucene.txt",
     			gl: "stop.ga.galician-lucene.txt",
     			grc: "stop.grc.ancient-greek.txt",
+				he: "stop.he.hebrew.txt",
     			hi: "stop.hi.hindi-lucene.txt",
     			hu: "stop.hu.hungarian.txt",
     			hy: "stop.hy.armenian-lucene.txt",
@@ -13296,7 +13246,9 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     		confirmRemove: 'Are you sure you want to remove the category?',
     		save: 'Save',
     		features: 'Features',
-    		category: 'Category',
+			category: 'Category',
+			increaseCategory: 'Increase Category Priority',
+			decreaseCategory: 'Decrease Category Priority',
     		
     		color: 'Color',
     		font: 'Font',
@@ -13480,7 +13432,11 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    	text: this.localize('removeTerms'),
 		                    	handler: function() {
 		                    		this.queryById('categories').query('grid').forEach(function(grid) {
-		                    			grid.getStore().remove(grid.getSelection());
+										var sels = grid.getSelection();
+										sels.forEach(function(sel) {
+											this.categoriesManager.removeTerm(grid.category, sel.getTerm());
+										}, this);
+		                    			grid.getStore().remove(sels);
 		                    		}, this);
 		                    	},
 		                    	scope: this
@@ -13518,13 +13474,13 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 				handler: function(btn) {
 					this.processFeatures();
 					this.setColorTermsFromCategoryFeatures();
-					this.app.saveCategoryData(this.categoriesManager.getCategoryExportData()).then(function(id) {
+					this.app.saveCategoryData().then(function(id) {
 						this.setCategoriesId(id);
 						btn.up('window').close();
-					}, function() {
+					}.bind(this), function() {
 						this.setCategoriesId(undefined);
 						btn.up('window').close();
-					}, null, this);
+					}.bind(this));
 				},
 				scope: this
 			}],
@@ -13532,11 +13488,11 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 				show: function() {
 					// check to see if the widget value is different from the API
 					if (this.getCategoriesId() && this.getCategoriesId()!=this.getApiParam("categories")) {
-		    			this.categoriesManager.loadCategoryData(this.getCategoriesId()).then(function(data) {
+		    			this.app.loadCategoryData(this.getCategoriesId()).then(function(data) {
 							this.setColorTermsFromCategoryFeatures();
 							this.buildCategories();
 							this.buildFeatures();
-						}, null, null, this);
+						}.bind(this));
 					} else {
 						this.buildCategories();
 						this.buildFeatures();
@@ -13556,7 +13512,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 	    			if (this.panel.getCorpus && this.panel.getCorpus()) {builder.fireEvent('loadedCorpus', builder, this.panel.getCorpus());}
 	    			else if (this.panel.getStore && this.panel.getStore() && this.panel.getStore().getCorpus && this.panel.getStore().getCorpus()) {
 	    				builder.fireEvent('loadedCorpus', builder, this.panel.getStore().getCorpus());
-	    			}
+					}
 				},
 				scope: this
 			}
@@ -13617,7 +13573,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 					form.clearInvalid();
     			}
     		}
-    	}));
+		}));
     	
     	this.callParent(arguments);
     },
@@ -13639,29 +13595,6 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     		xtype: 'grid',
     		category: name,
     		title: name,
-//    		header: {
-//    			items: [{
-//    				xtype: 'colorbutton',
-//    				format: '#hex6',
-//    				value: color,
-//    				width: 30,
-//    				height: 15,
-//    				listeners: {
-//    					change: function(btn, color, pcolor) {
-//    						this.categoriesManager.setCategoryFeature(name, 'color', color);
-//    					},
-//    					afterrender: function(btn) {
-//    						var popup = btn.getPopup();
-//    						popup.listeners = {
-//    							focusleave: function(sel, evt) {
-//    								sel.close(); // fix for conflict between selector and parent modal window, when you click outside of the selector
-//    							}
-//    						};
-//    					},
-//    					scope: this
-//    				}
-//    			}]
-//    		},
     		frame: true,
     		width: 150,
     		margin: '10 0 10 10',
@@ -13677,7 +13610,38 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     				}, this);
     			},
     			scope: this
-    		}],
+			}],
+			bbar: [{
+				xtype: 'button',
+				text: '',
+				tooltip: this.localize('increaseCategory'),
+				glyph: 'xf067@FontAwesome',
+				handler: function(b) {
+					var grid = b.findParentByType('grid');
+					var parent = this.queryById('categories');
+					var prev = parent.prevChild(grid);
+					if (prev !== null) {
+						parent.moveBefore(grid, prev);
+						this.app.getCategoriesManager().setCategoryRanking(grid.getTitle(), parent.items.indexOf(grid));
+					}
+				},
+				scope: this
+			},'->',{
+				xtype: 'button',
+				text: '',
+				tooltip: this.localize('decreaseCategory'),
+				glyph: 'xf068@FontAwesome',
+				handler: function(b) {
+					var grid = b.findParentByType('grid');
+					var parent = this.queryById('categories');
+					var next = parent.nextChild(grid);
+					if (next !== null) {
+						parent.moveAfter(grid, next);
+						this.app.getCategoriesManager().setCategoryRanking(grid.getTitle(), parent.items.indexOf(grid));
+					}
+				},
+				scope: this
+			}],
     		
     		store: Ext.create('Ext.data.JsonStore', {
     			data: termsData,
@@ -13708,14 +13672,16 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
             }],
     		listeners: {
     			beforedrop: function(node, data) {
-    				// remove duplicates
-    				var categoriesManager = this.up('categoriesbuilder').categoriesManager;
-    				for (var i = data.records.length-1; i >= 0; i--) {
-    					var term = data.records[i].get('term');
-    					if (categoriesManager.getCategoryForTerm(term) !== undefined) {
-    						data.records.splice(i, 1);
-    					}
-    				}
+					var categoriesManager = this.up('categoriesbuilder').categoriesManager;
+					var source = data.view.up('grid');
+
+					if (source.category !== undefined) {
+						// we're moving a term from one category to another
+						for (var i = data.records.length-1; i >= 0; i--) {
+							var term = data.records[i].get('term');
+							categoriesManager.removeTerm(source.category, term);
+						}
+					}
     			},
     			drop: function(node, data) {
     				data.view.getSelectionModel().deselectAll();
@@ -13725,16 +13691,9 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     				var terms = [];
     				for (var i = 0; i < data.records.length; i++) {
     					var term = data.records[i].get('term');
-    					if (categoriesManager.getCategoryForTerm(term) === undefined) {
-    						terms.push(term);
-    					}
+    					terms.push(term);
     				}
     				categoriesManager.addTerms(name, terms);
-    				
-    				var source = data.view.up('grid');
-    				if (source.category) {
-    					categoriesManager.removeTerms(source.category, terms);
-    				}
     			}
     		}
     	});
@@ -13763,7 +13722,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     	
     	grid.header.getTitle().textEl.on('dblclick', function(e, t) {
     		titleEditor.startEdit(t);
-    	});
+		});
     },
     
     removeCategory: function(name) {
@@ -15085,8 +15044,7 @@ Ext.define('Voyant.widget.Facet', {
         Ext.applyIf(config || {}, {
         	includeTools: [], // don't show tools in header
         	rowLines: false,
-        	columnLines: false, // ignored?
-        	subtitle: undefined
+			subtitle: undefined
         });
         this.mixins['Voyant.panel.Panel'].constructor.apply(this, [config]);
 	},
@@ -18577,8 +18535,8 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
                     store.load({
                         params: params,
                         callback: function(records, op, success) {
+							container.unmask();
                             if (success && records && records.length>0) {
-                                container.unmask();
                                 Ext.dom.Helper.append(container.getTargetEl().first().first(),
                                     new Ext.XTemplate('<div class="contents">'+template+'</div>').apply(records.map(mapping))
                                 );
@@ -18809,7 +18767,8 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		inputRemoveFromAfter: undefined,
     		inputRemoveUntil: undefined,
     		inputRemoveUntilAfter: undefined,
-    		sort: undefined
+    		sort: undefined,
+			dtocIndexDoc: -1
     	}
     },
     
@@ -18933,7 +18892,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
             	            	var form = filefield.up('form').getForm();
             	            	if (form.isValid()) {
             	            		var files = filefield.fileInputEl.dom.files;
-            	            		var badFilesRe = /\.(png|gif|jpe?g|xls|mp[234a]|mpeg|exe|wmv|avi|ppt|mpg|tif|wav|mov|psd|wma|ai|bmp|pps|aif|pub|dwg|indd|swf|asf|mbd|dmg|flv)$/i;
+            	            		var badFilesRe = /\.(png|gif|jpe?g|mp[234a]|mpeg|exe|wmv|avi|ppt|mpg|tif|wav|mov|psd|wma|ai|bmp|pps|aif|pub|dwg|indd|swf|asf|mbd|dmg|flv)$/i;
             	            		var goodFilesRe = /\.(txt|pdf|html?|xml|docx?|rtf|pages|epub|odt|zip|jar|tar|gz|ar|cpio|bzip2|bz2|gzip|xlsx?)$/i;
             	            		var badFiles = [];
             	            		var unknownFiles = [];
@@ -22673,6 +22632,26 @@ Ext.define('Voyant.panel.DocumentTerms', {
         		this.getStore().load({params: this.getApiParams()});
     		}
     	});
+
+		this.on("documentsSelected", function(src, docIds) {
+    		this.setApiParams({
+    			docId: docIds,
+    			query: undefined
+    		});
+    		if (this.isVisible()) {
+        		this.getStore().load({params: this.getApiParams()});
+    		}
+		});
+
+		this.on("corpusSelected", function(src, corpus) {
+			this.setApiParams({
+				docId: undefined,
+				docIndex: undefined
+			});
+			if (this.isVisible()) {
+				this.getStore().load({params: this.getApiParams()});
+			}
+		});
     	
     	this.on("activate", function() { // load after tab activate (if we're in a tab panel)
     		if (this.getStore().getCorpus()) {
@@ -22810,6 +22789,7 @@ Ext.define('Voyant.panel.Documents', {
 	isConsumptive: true,
     statics: {
     	i18n: {
+			newCorpusError: 'There was an error creating the new the corpus. You may not have permission to do this.'
     	},
     	api: {
     		query: undefined,
@@ -23266,7 +23246,17 @@ Ext.define('Voyant.panel.Documents', {
 //    				view.unmask();
 //    				app.showErrorResponse({message: message}, response);
 //    			});
-    		}
+    		},
+			failure: function(response) {
+				view.unmask();
+				Ext.Msg.show({
+					title: this.localize('error'),
+					message: this.localize('newCorpusError'),
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			},
+			scope: this
     	});
     	
     	// close editing window if we're in modal mode, should happen asynchronously while new corpus is created
@@ -23589,32 +23579,67 @@ Ext.define('Voyant.panel.DocumentsFinder', {
     }
     
 })
-Ext.define('Voyant.panel.Dummy', {
-    extend: 'Ext.Panel',
-    xtype: 'dummy',
-	autoScroll: true,
-    initComponent: function() {
-        var me = this;
-        
-        var columns = 3;
-        
-        Ext.apply(this, {
-    		xtype: 'tabpanel',
-    		items: [{
-                title: 'Tab 1',
-                icon: null,
-                glyph: 42,
-                html: "one"
-            }, {
-                title: 'Tab 2',
-                icon: null,
-                glyph: 70,
-                html: "two"
-            }]
-        })
-        
-        this.callParent();
-    }
+Ext.define('Voyant.panel.Embedder', {
+	extend: 'Ext.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.embedder',
+	statics: {
+		i18n: {
+			title: 'Embedder',
+			url: 'URL',
+			go: 'Go',
+			help: 'Embedder provides a way to embed a web page into your Voyant Tools experience.',
+			helpTip: 'Embedder provides a way to embed a web page into your Voyant Tools experience.'
+		},
+		api: {
+			url: undefined
+		},
+		glyph: 'xf0c1@FontAwesome'
+	},
+	constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
+		this.setApiParam('url', config.url);
+
+        this.callParent(arguments);
+		
+		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+    },
+	initComponent: function() {
+		Ext.apply(this, {
+			title: this.localize('title'),
+			layout: {
+				type: 'fit'
+			},
+			items: {
+				xtype: 'uxiframe',
+				src: this.getApiParam('url')
+			},
+			tbar: [{
+				xtype: 'textfield',
+				value: this.getApiParam('url'),
+				emptyText: this.localize('url'),
+				listeners: {
+					specialkey: function(field, e){
+						if (e.getKey() == e.ENTER) {
+							field.up('panel').down('uxiframe').load(field.getValue());
+						}
+					}
+				}
+			},{
+				xtype: 'button',
+				text: this.localize('go'),
+				handler: function(btn) {
+					var url = btn.prev('textfield').getValue();
+					btn.up('panel').down('uxiframe').load(url);
+				}
+			}]
+		});
+		
+		this.callParent();
+	},
+	loadUrl: function(url) {
+		this.down('uxiframe').load(url);
+	}
 });
 // assuming Bubblelines library is loaded by containing page (via voyant.jsp)
 Ext.define('Voyant.panel.Fountain', {
@@ -24180,7 +24205,6 @@ Ext.define('Voyant.panel.RezoViz', {
         });
         
         this.on('loadedCorpus', function(src, corpus) {
-        	debugger
         	if (corpus.getDocumentsCount()==1) {
         		this.setApiParam("minEdgeCount", 1);
         	}
@@ -24207,7 +24231,8 @@ Ext.define('Voyant.panel.RezoViz', {
     			limit: this.getApiParam('limit'),
     			minEdgeCount: this.getApiParam("minEdgeCount"),
     			corpus: corpusId
-    		},
+			},
+			timeout: 60000,
     		success: function(response) {
     			el.unmask();
     			var obj = Ext.decode(response.responseText);
@@ -24239,7 +24264,7 @@ Ext.define('Voyant.panel.RezoViz', {
     	var extent = d3.extent(nodes, function(node) {return node.rawFreq;});
     	var min = extent[0];
     	var max = extent[1];    	
-    	var scaleFont = d3.scale.linear()
+    	var scaleFont = d3.scaleLinear()
                     .domain([min, max])
                     .range([10, 24]);
     	
@@ -31763,8 +31788,8 @@ Ext.define('Voyant.panel.VoyantFooter', {
 		boxready: function(container, width, height) {
 			var parts = [
 				"<a href='"+container.getBaseUrl()+"docs/' target='voyantdocs'>"+container.localize('voyantTools')+"</a> ",
-				", <a href='http://stefansinclair.name/'>St&eacute;fan Sinclair</a> &amp; <a href='http://geoffreyrockwell.com'>Geoffrey Rockwell</a>",
-				" (<a href='http://creativecommons.org/licenses/by/4.0/' target='_blank'><span class='cc'>c</span></a> "+ new Date().getFullYear() +")",
+				", <a href='https://csdh-schn.org/stefan-sinclair-in-memoriam/'>St&eacute;fan Sinclair</a> &amp; <a href='https://geoffreyrockwell.com'>Geoffrey Rockwell</a>",
+				" (<a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'><span class='cc'>c</span></a> "+ new Date().getFullYear() +")",
 				" <a class='privacy' href='"+this.getBaseUrl()+"docs/#!/guide/about-section-privacy-statement' target='top'>"+container.localize('privacy')+"</a>",
 				" v. "+Voyant.application.getVersion() + (Voyant.application.getBuild() ? " ("+Voyant.application.getBuild()+")" : "")
 			];
@@ -34576,40 +34601,152 @@ Ext.define("Voyant.notebook.editor.button.Add", {
 		}
 	},
 	constructor: function(config) {
-    	Ext.apply(this, {
-    		tooltip: this.localize('tip')
-    	})
-        this.callParent(arguments);
+		config = config || {};
+		config.tooltip = this.localize('tip');
+		this.callParent(arguments);
 	},
 	glyph: 'xf067@FontAwesome',
-	textAlign: 'left',
-	listeners: {
-		click: function(btn, e) {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperAdd", this.findParentByType("notebookeditorwrapper"), e);
-		}
+	handler: function(btn, e) {
+		btn.findParentByType('notebook').fireEvent("notebookWrapperAdd", btn.findParentByType("notebookeditorwrapper"), e);
 	}
 })
-Ext.define("Voyant.notebook.editor.button.Edit", {
+Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 	extend: "Ext.button.Button",
 	mixins: ["Voyant.util.Localization"],
-	alias: 'widget.notebookwrapperedit',
+	alias: 'widget.notebookcodeconfig',
 	statics: {
 		i18n: {
+			tip: "Configuration Options",
+			title: "Cell Mode",
+			modeCode: 'Code',
+			modeJavascript: 'Javascript (default)',
+			modeData: 'Data',
+			modeFile: 'File',
+			modeJson: 'JSON',
+			modeText: 'Text',
+			modeXml: 'XML',
+			modeHtml: 'HTML',
+			ok: "OK",
+			cancel: "Cancel"
+		},
+		configWin: undefined,
+		initWindow: function(buttonInstance) {
+			if (Voyant.notebook.editor.button.CodeConfig.configWin === undefined) {
+				Voyant.notebook.editor.button.CodeConfig.configWin = new Ext.Window({
+					title: buttonInstance.localize('title'),
+					closeAction: 'hide',
+					layout: 'fit',
+					width: 240,
+					items: [{
+						xtype: 'form',
+						layout: {
+							type: 'vbox',
+							align: 'stretch'
+						},
+						bodyPadding: 10,
+						items: [{
+							xtype: 'fieldset',
+							title: buttonInstance.localize("modeCode"),
+							items: [{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeJavascript'),
+								name  : 'codeMode',
+								inputValue: 'javascript',
+								flex  : 1
+							}]
+						},{
+							xtype: 'fieldset',
+							title: buttonInstance.localize("modeData"),
+							items: [{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeFile'),
+								name  : 'codeMode',
+								inputValue: 'file',
+								flex  : 1
+							},{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeJson'),
+								name  : 'codeMode',
+								inputValue: 'json',
+								flex  : 1
+							},{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeText'),
+								name  : 'codeMode',
+								inputValue: 'text',
+								flex  : 1
+							},/*{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeCsv'),
+								name  : 'codeMode',
+								inputValue: 'csv',
+								flex  : 1													
+							},{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeTsv'),
+								name  : 'codeMode',
+								inputValue: 'tsv',
+								flex  : 1													
+							},*/{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeXml'),
+								name  : 'codeMode',
+								inputValue: 'xml',
+								flex  : 1
+							},{
+								xtype : 'radiofield',
+								boxLabel : buttonInstance.localize('modeHtml'),
+								name  : 'codeMode',
+								inputValue: 'html',
+								flex  : 1
+							}]
+						}]
+					}],
+					buttons: [{
+						text: buttonInstance.localize('ok'),
+						itemId: 'ok'
+					},{
+						text:  buttonInstance.localize('cancel'),
+						handler: function(btn) {
+							btn.up('window').close();
+						}
+					}]
+				});
+			}
+		},
+		showConfigWindow: function(codeEditorInstance) {
+			Voyant.notebook.editor.button.CodeConfig.configWin.down('radiofield[name=codeMode][inputValue="'+codeEditorInstance.getMode()+'"]').setValue(true);
+			Voyant.notebook.editor.button.CodeConfig.configWin.down('button#ok').setHandler(function(btn) {
+				var win = btn.up('window');
+				var form = win.down('form');
+				if (form.isDirty()) {
+					codeEditorInstance.up('notebook').setIsEdited(true);
+					var values = form.getValues();
+					codeEditorInstance.switchModes(values.codeMode);
+					
+				}
+				win.close();
+			});
+			Voyant.notebook.editor.button.CodeConfig.configWin.show();
 		}
 	},
 	constructor: function(config) {
-    	Ext.apply(this, {
-    		toolTip: this.localize('tip')
-    	})
-        this.callParent(arguments);
+		Ext.apply(this, {
+			tooltip: this.localize('tip')
+		})
+		
+		Voyant.notebook.editor.button.CodeConfig.initWindow(this);
+
+		this.callParent(arguments);
 	},
-	glyph: 'xf040@FontAwesome',
+	glyph: 'xf013@FontAwesome',
 	listeners: {
-		click: function() {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperEdit", this.findParentByType("notebookeditorwrapper"));
+		click: function(btn, e) {
+			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(btn.findParentByType("notebookeditorwrapper"));
 		}
 	}
-})
+});
+
 Ext.define("Voyant.notebook.editor.button.Export", {
 	extend: "Ext.button.Button",
 	mixins: ["Voyant.util.Localization"],
@@ -34661,7 +34798,7 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 				});
 			}
 
-			var wrapper = instance.up("notebookcodeeditorwrapper");
+			var wrapper = instance.up('notebookrunnableeditorwrapper');
 			var content = wrapper.getContent();
 			var fileContent = instance.getExportType() === 'output' ? content.output : content.input;
 			var filename = wrapper.getCellId()+"."+instance.getFileExtension(content.mode);
@@ -34707,7 +34844,7 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 			Voyant.notebook.editor.button.Export.getExportWindow(cmp).show();
 		}
 	},
-	getFileExtension(mode) {
+	getFileExtension: function(mode) {
 		if (
 			mode === 'text' ||
 			(mode === 'javascript' && this.getExportType() === 'output') // use txt for javascript results because they could be anything
@@ -34825,54 +34962,6 @@ Ext.define("Voyant.notebook.editor.button.Remove", {
 		}
 	}
 })
-Ext.define("Voyant.notebook.editor.button.Metadata", {
-	extend: "Ext.button.Button",
-	mixins: ["Voyant.util.Localization"],
-	alias: 'widget.notebookwrappermetadata',
-	statics: {
-		i18n: {
-		}
-	},
-	constructor: function(config) {
-    	Ext.apply(this, {
-    		tooltip: this.localize('tip')
-    	})
-        this.callParent(arguments);
-	},
-	glyph: 'xf02c@FontAwesome',
-	textAlign: 'left',
-	listeners: {
-		click: function(btn, e) {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperMetadata", this.findParentByType("notebookeditorwrapper"), e);
-		}
-	}
-})
-Ext.define("Voyant.notebook.editor.button.Movement", {
-	extend: "Ext.button.Button",
-	mixins: ["Voyant.util.Localization"],
-	requires: ["Voyant.notebook.editor.button.MoveUp", "Voyant.notebook.editor.button.MoveDown", "Voyant.notebook.editor.button.Remove"],
-	alias: 'widget.notebookwrappermovement',
-	statics: {
-		i18n: {
-		}
-	},
-	constructor: function(config) {
-    	Ext.apply(this, {
-    		tooltip: this.localize('tip')
-    	})
-        this.callParent(arguments);
-	},
-	glyph: 'xf07d@FontAwesome',
-	menu: [
-		{
-        	xtype: 'notebookwrappermoveup'
-        },{
-        	xtype: 'notebookwrappermovedown'
-        },{
-        	xtype: 'notebookwrapperremove'
-        }
-	]
-})
 Ext.define("Voyant.notebook.editor.button.Run", {
 	extend: "Ext.button.Button",
 	mixins: ["Voyant.util.Localization"],
@@ -34886,6 +34975,12 @@ Ext.define("Voyant.notebook.editor.button.Run", {
 		config = config || {};
 		config.tooltip = this.localize('tip');
 		this.callParent(arguments);
+	},
+	listeners: {
+		click: function(btn, e) {
+			var rew = btn.findParentByType("notebookrunnableeditorwrapper");
+			rew.run.call(rew);
+		}
 	}
 })
 Ext.define("Voyant.notebook.editor.button.RunAll", {
@@ -34909,19 +35004,48 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 	alias: 'widget.notebookwrapperrununtil',
 	statics: {
 		i18n: {
+			tip: "Run multiple cells",
+			runUntil: "Run up to here",
+			runUntilTip: "Run previous code blocks and this one.",
+			runFrom: "Run from here onwards",
+			runFromTip: "Run this and following code blocks."
 		}
 	},
 	glyph: 'xf050@FontAwesome',
 	constructor: function(config) {
 		config = config || {};
 		config.tooltip = this.localize('tip');
+
+		var btn = this;
+		this.runMenu = Ext.create('Ext.menu.Menu', {
+			items: [{
+				text: this.localize("runUntil"),
+				tooltip: this.localize("runUntilTip"),
+				glyph: 'xf049@FontAwesome',
+				handler: function() {
+					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
+					btn.up('notebook').runUntil(rew);
+				}
+			},{
+				text: this.localize("runFrom"),
+				tooltip: this.localize("runFromTip"),
+				glyph: 'xf050@FontAwesome',
+				handler: function() {
+					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
+					btn.up('notebook').runFrom(rew);
+				}
+			}]
+		});
+
 		this.callParent(arguments);
+	},
+	handler: function(btn, ev) {
+		btn.runMenu.showAt(ev.pageX, ev.pageY)
 	}
 })
 Ext.define("Voyant.notebook.editor.EditorWrapper", {
 	extend: "Ext.panel.Panel",
 	mixins: ["Voyant.util.Localization"],
-	requires: ["Voyant.notebook.editor.button.Movement","Voyant.notebook.editor.button.Add"],
 	alias: "widget.notebookeditorwrapper",
 	cls: "notebook-editor-wrapper",
 	config: {
@@ -34972,6 +35096,432 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 		}
 	}
 })
+Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
+	extend: "Voyant.notebook.editor.EditorWrapper",
+	mixins: ["Voyant.util.Localization"],
+	alias: "widget.notebookrunnableeditorwrapper",
+	config: {
+		isRun: false,
+		mode: 'javascript'
+	},
+
+	editor: undefined,
+	results: undefined,
+
+	constructor: function(config) {
+		this.results.addListener('initialized', this.updateLayout, this);
+
+		this.callParent(arguments);
+	},
+
+	/**
+	 * Run the code in this editor.
+	 * @param {boolean} forceRun True to force the code to run, otherwise a check is performed to see if previous editors have already run.
+	 * @param {array} priorVariables Variables from prior cells that should be eval'd before this cell's code
+	 */
+	run: function(forceRun, priorVariables) {
+		if (this.results.getIsInitialized()) {
+			if (priorVariables === undefined) {
+				console.log('fetching prior vars');
+				priorVariables = this.up('notebook').getNotebookVariables(this);
+			}
+			return this._run(priorVariables);
+		} else {
+			return Ext.Promise.reject('Editor is not initialized');
+		}
+	},
+	
+	_run: function(priorVariables) {
+		this.results.clear();
+
+		this.editor.clearMarkers();
+
+		var code = this.editor.getValue();
+
+		this.setIsRun(true);
+		
+		var runPromise = this.results.run(code, priorVariables);
+		runPromise.otherwise(function(eventData) {
+			if (eventData.error !== undefined && eventData.error.row !== undefined) {
+				this.editor.addLineMarker(eventData.error.row, 'error');
+			}
+		}, this);
+
+		return runPromise;
+	},
+	
+	getInput: function() {
+		return this.editor.getValue();
+	},
+
+	getVariables: function() {
+		if (this.results.getHasRunError()) {
+			return [];
+		} else {
+			return this.results.getVariables();
+		}
+	},
+
+	_reduceOutput: function(output) {
+		var html = new DOMParser().parseFromString(output, 'text/html');
+		
+		var container = html.querySelector('.spyral-dv-container');
+		if (container !== null) {
+			// if dataviewer, parse the output and return the top level in the hierarchy
+			if (container.querySelectorAll('.spyral-dv-folder-icon').length > 0) {
+				container.querySelector('.spyral-dv-right .spyral-dv-right').remove();
+			}
+
+			return container.outerHTML;
+		} else {
+			return output;
+		}
+	},
+
+	getContent: function() {
+		var output = this._reduceOutput(this.results.getOutput());
+		return {
+			input: this.getInput(),
+			output: output,
+			mode: this.getMode(),
+			expandResults: this.results.getExpandResults()
+		};
+	}
+});
+
+Ext.define("Voyant.notebook.editor.SandboxWrapper", {
+	extend: "Ext.Container",
+	mixins: ["Voyant.util.Localization"],
+	alias: "widget.sandboxwrapper",
+	statics: {
+		i18n: {}
+	},
+
+	config: {
+		isInitialized: false,
+
+		cachedPaddingHeight: undefined,
+		cachedResultsHeight: undefined,
+		cachedResultsValue: undefined,
+		cachedResultsOutput: '',
+		cachedResultsVariables: [],
+
+		runPromise: undefined,
+		hasRunError: false,
+
+		initIntervalID: undefined,
+		maskTimeoutId: undefined,
+
+		emptyResultsHeight: 40,
+		minimumResultsHeight: 120,
+
+		expandResults: true
+	},
+
+	constructor: function(config) {
+		var isExpanded = config.expandResults;
+		var sandboxSrcUrl = config.sandboxSrcUrl;
+
+		Ext.apply(this, {
+			itemId: 'parent',
+			cls: 'notebook-code-results',
+			height: this.getEmptyResultsHeight(),
+			layout: {
+				type: 'vbox',
+				align: 'stretch'
+			},
+			items: [{
+				xtype: 'container',
+				flex: 1,
+				layout: {
+					type: 'absolute'
+				},
+				items: [{
+					xtype: 'uxiframe',
+					itemId: 'resultsFrame',
+					x: 0,
+					y: 0,
+					anchor: '100%',
+					height: '100%',
+					src: sandboxSrcUrl,
+					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>']
+				},{
+					xtype: 'toolbar',
+					itemId: 'buttons',
+					hidden: true,
+					x: 0,
+					y: 0,
+					style: { background: 'none', paddingTop: '6px', pointerEvents: 'none' },
+					defaults: { style: { pointerEvents: 'auto'} },
+					items: ['->',{
+						itemId: 'expandButton',
+						glyph: isExpanded ? 'xf066@FontAwesome' : 'xf065@FontAwesome',
+						tooltip: isExpanded ? 'Contract Results' : 'Expand Results',
+						handler: function() {
+							this._doExpandContract();
+						},
+						scope: this
+					},{
+						xtype: 'notebookwrapperexport',
+						exportType: 'output'
+					},{
+						glyph: 'xf014@FontAwesome',
+						tooltip: 'Remove Results',
+						handler: function() {
+							this.clear();
+						},
+						scope: this
+					}]
+				}]
+			},{
+				xtype: 'component',
+				itemId: 'expandWidget',
+				height: 20,
+				hidden: isExpanded ? true : false,
+				style: {textAlign: 'center', fontSize: '26px', cursor: 'pointer', borderTop: '1px solid #DDD', color: '#000'},
+				html: '&#8943;',
+				listeners: {
+					afterrender: function(cmp) {
+						var me = this;
+						cmp.getEl().on('click', function() {
+							me._doExpandContract();
+						})
+					},
+					scope: this
+				}
+			}]
+		});
+
+		this.callParent(arguments);
+	},
+
+	initComponent: function() {
+		var handleResultsScoped = this._handleResults.bind(this);
+
+		this.on('afterrender', function(cmp) {
+			cmp.getEl().on('mouseover', function(event, el) {
+				cmp.down('#buttons').setVisible(true);
+			});
+			cmp.getEl().on('mouseout', function(event, el) {
+				cmp.down('#buttons').setVisible(false);
+			});
+
+			window.addEventListener('message', handleResultsScoped);
+
+			var me = this;
+			this.setInitIntervalID(setInterval(function() {
+				console.log('interval init');
+				me._sendMessage({type: 'command', command: 'init'});
+			}, 100));
+		}, this);
+
+		this.on('removed', function() {
+			window.removeEventListener('message', handleResultsScoped);
+		}, this);
+
+		this.callParent(arguments);
+	},
+
+	clear: function() {
+		if (this.isVisible() === false) {
+			console.log("clearing but not visible!", this);
+			this.show();
+		}
+		this._sendMessage({type: 'command', command: 'clear'});
+	},
+
+	run: function(code, priorVariables) {
+		if (priorVariables === undefined) {
+			priorVariables = [];
+		}
+
+		// reset
+		this.setCachedResultsOutput('');
+		this.setCachedResultsVariables([]);
+		this.setHasRunError(false);
+		this.getEl().removeCls(['error','success']);
+
+		this.setRunPromise(new Ext.Deferred());
+
+		var actualPromise = this.getRunPromise().promise;
+		actualPromise.then(function() {
+			this.getEl().addCls('success');
+		}, function() {
+			this.setHasRunError(true);
+			this.getEl().addCls('error');
+		}, undefined, this);
+
+		this.mask('Running code...');
+
+		// console.log('sending vars', priorVariables);
+		this._sendMessage({type: 'code', value: code, variables: priorVariables});
+
+		return actualPromise;
+	},
+
+	mask: function(maskMsg) {
+		var me = this;
+		this.setMaskTimeoutId(setTimeout(function() {
+			me.superclass.mask.call(me, maskMsg, 'spyral-code-mask');
+		}, 250)); // only mask long running code
+	},
+
+	unmask: function() {
+		clearTimeout(this.getMaskTimeoutId());
+		this.superclass.unmask.call(this);
+	},
+
+	updateHtml: function(html) {
+		this._sendMessage({type: 'command', command: 'update', html: html});
+	},
+
+	updateValue: function(name, value) {
+		this._sendMessage({type: 'command', command: 'update', name: name, value: value});
+	},
+
+	getValue: function() {
+		return this.getCachedResultsValue();
+	},
+
+	getOutput: function() {
+		return this.getCachedResultsOutput();
+	},
+
+	getVariables: function() {
+		return this.getCachedResultsVariables();
+	},
+
+	getResultsEl: function() {
+		var doc = this.down('#resultsFrame');
+		if (doc) {
+			return doc;
+		} else {
+			return null;
+		}
+	},
+
+	_sendMessage: function(messageObj) {
+		this.down('#resultsFrame').getWin().postMessage(messageObj, '*');
+	},
+
+	_handleResults: function(e) {
+		var frame = this.down('#resultsFrame').getFrame();
+		if (e.source === frame.contentWindow) {
+			var me = this;
+			var eventData = e.data;//JSON.parse(td.decode(ev.target.result));
+			if (eventData.type) {
+				switch (eventData.type) {
+					case 'error':
+						console.log('iframe error:', eventData);
+						me.unmask();
+						me.getRunPromise().reject(eventData);
+						break;
+					case 'command':
+						// console.log('iframe command:', eventData);
+						switch (eventData.command) {
+							case 'init':
+								if (me.getIsInitialized() === false) {
+									me.setIsInitialized(true);
+									clearInterval(me.getInitIntervalID());
+									me.fireEvent('initialized', me);
+								}
+								break;
+							case 'clear':
+								me._setHeight(0);
+								break;
+						}
+						break;
+					case 'result':
+						console.log('iframe result:', eventData);
+						me.unmask();
+						me.getRunPromise().resolve(eventData);
+						break;
+				}
+
+				if (eventData.value) {
+					me.setCachedResultsValue(eventData.value);
+				}
+				if (eventData.output) {
+					me.setCachedResultsOutput(eventData.output);
+				}
+
+				me.setCachedResultsVariables(eventData.variables);
+
+				if (eventData.height > 0) {
+					me._setHeight(eventData.height);
+				}
+			} else {
+				console.warn('unrecognized message!', e);
+			}
+		}
+	},
+
+	_doExpandContract: function() {
+		var expandButton = this.down('#expandButton');
+		if (this.getExpandResults()) {
+			this.setExpandResults(false);
+			expandButton.setTooltip('Expand Results');
+			expandButton.setGlyph('xf065@FontAwesome');
+		} else {
+			this.setExpandResults(true);
+			expandButton.setTooltip('Contract Results');
+			expandButton.setGlyph('xf066@FontAwesome');
+		}
+		
+		this._setHeight();
+	},
+	
+	/**
+	 * Set the height of the results component
+	 */
+	_setHeight: function(height) {
+		if (this.getCachedPaddingHeight() === undefined) {
+			// compute and store parent padding, which we'll need when determining proper height
+			var computedStyle = window.getComputedStyle(this.getEl().dom);
+			this.setCachedPaddingHeight(parseFloat(computedStyle.getPropertyValue('padding-top'))+parseFloat(computedStyle.getPropertyValue('padding-bottom')) + 2); // extra 2 for border
+		}
+		if (height !== undefined) {
+			// cache height
+			this.setCachedResultsHeight(height);
+		} else {
+			height = this.getCachedResultsHeight();
+			if (height === undefined) {
+				var resultsEl = this.getResultsEl();
+				if (resultsEl) {
+					height = resultsEl.getHeight();
+				} else {
+					height = this.getEmptyResultsHeight();
+				}
+				this.setCachedResultsHeight(height);
+			}
+		}
+		height += this.getCachedPaddingHeight();
+
+		var resultsEl = this.getResultsEl();
+		if (resultsEl) {
+			var expandWidget = this.down('#expandWidget');
+			if (this.getExpandResults()) {
+				expandWidget.hide();
+				// console.log('setResultsHeight', Math.max(height, this.getEmptyResultsHeight()))
+				this.setHeight(Math.max(height, this.getEmptyResultsHeight()));
+				// resultsEl.removeCls('collapsed');
+			} else {
+				height = Math.min(Math.max(height, this.getEmptyResultsHeight()), this.getMinimumResultsHeight());
+				if (height < this.getMinimumResultsHeight()) {
+					expandWidget.hide();
+				} else {
+					expandWidget.show();
+				}
+				// console.log('setResultsHeight', height)
+				this.setHeight(height);
+				// resultsEl.addCls('collapsed');
+			}
+		}
+
+		// this.fireEvent('sizeChanged', this);
+	}
+});
+
 Ext.define("Voyant.notebook.editor.CodeEditor", {
 	extend: "Ext.Component",
 	alias: "widget.notebookcodeeditor", 
@@ -34986,7 +35536,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		isChangeRegistered: false,
 		editor: undefined,
 		editedTimeout: undefined,
-		lines: 0
+		lines: 0,
+		maxLines: Infinity
 	},
 	statics: {
 		i18n: {
@@ -34995,11 +35546,14 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			content: undefined
 		}
 	},
+
+	MIN_LINES: 6,
+
 	constructor: function(config) {
 		this.callParent(arguments);
 	},
 	listeners: {
-		boxready: function() {
+		render: function() {
 			var me = this;
 			var editor = ace.edit(Ext.getDom(this.getEl()));
 			
@@ -35008,38 +35562,51 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editor.setTheme(this.getTheme());
 			editor.getSession().setMode(this.getMode());
 			editor.setOptions({
-				minLines: 6,
-				maxLines: Infinity, // this.getMode().indexOf("javascript")>-1 ? Infinity : 10,
+				minLines: me.MIN_LINES,
+				maxLines: this.getMaxLines(),
 				autoScrollEditorIntoView: true,
-				scrollPastEnd: true
+				scrollPastEnd: true,
+				highlightActiveLine: false,
+				
 			});
-			editor.setHighlightActiveLine(false);
-			editor.setHighlightGutterLine(false);
-			editor.renderer.setShowPrintMargin(false);
-//			editor.renderer.setShowGutter(false);
+			editor.renderer.setOptions({
+				showGutter: true,
+				showFoldWidgets: false,
+				showPrintMargin: false
+			});
+
+			editor.renderer.once('afterRender', function() {
+				me.fireEvent('resize', me);
+			});
+
+			// editor['$mouseHandler'].setOptions({
+			// 	tooltipFollowsMouse: false
+			// });
 			
 			editor.setValue(this.getContent() ? this.getContent() : "" /*this.localize('emptyText')*/);
 			editor.clearSelection();
 
-		    editor.on("focus", function() {
+			editor.on("focus", function() {
 				setTimeout(function() {
 					me.getEditor().setHighlightGutterLine(true);
 				}, 100); // slight delay to avoid selecting a range of text, caused by showing the gutter while mouse is still pressed
-		    }, this);
-		    editor.on("change", function(ev, editor) {
+			}, this);
+			editor.on("change", function(ev, editor) {
+				me.clearMarkers();
+				
 				var lines = editor.getSession().getScreenLength();
-				if (lines!=me.getLines()) {
-					me.up('notebookcodeeditorwrapper').setSize({height: lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth()})
+				if (lines > me.MIN_LINES && lines !== me.getLines()) {
 					me.setLines(lines);
+					if (me.getMaxLines() === Infinity) {
+						var height = lines*editor.renderer.lineHeight+editor.renderer.scrollBar.getWidth();
+						me.setSize({height: height});
+					}
 				}
 				if (me.getIsChangeRegistered()==false) {
 					me.setIsChangeRegistered(true);
-					var wrapper = me.up('notebookcodeeditorwrapper');
-					if (wrapper) {
-						wrapper.setIsRun(false);
-						var notebook = wrapper.up("notebook");
-						if (notebook) {notebook.setIsEdited(true);}
-					}
+					var wrapper = me.up('notebookrunnableeditorwrapper');
+					wrapper.setIsRun(false);
+					wrapper.up('notebook').setIsEdited(true);
 				} else {
 					if (!me.getEditedTimeout()) { // no timeout, so set it to 30 seconds
 						me.setEditedTimeout(setTimeout(function() {
@@ -35047,28 +35614,31 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 						}, 30000));
 					}
 				}
-		    }, this);
-		    editor.on("blur", function() {
-		    	me.getEditor().setHighlightGutterLine(false);
-		    });
+			}, this);
+			editor.on("blur", function() {
+				me.getEditor().setHighlightGutterLine(false);
+			});
+			// TODO fix tooltip positioning
+			// editor.on("showGutterTooltip", function(tooltip, editor) {
+			// 	if (tooltip['$element'].style.transform === '') {
+			// 		var rect = editor.renderer.getContainerElement().getBoundingClientRect();
+			// 		tooltip['$element'].style.transform = 'translate(-'+rect.x+'px, -'+rect.height+'px)';
+			// 	}
+			// });
 			editor.commands.addCommand({
 				name: 'run',
-			    bindKey: {win: "Shift-Enter", mac: "Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
-			    exec: function(editor) {
-			    	var wrapper = me.up('notebookcodeeditorwrapper');
-			    	if (wrapper) {
-			    		wrapper.run();
-			    	}
-			    }				
+				bindKey: {win: "Shift-Enter", mac: "Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
+				exec: function(editor) {
+					me.up('notebookrunnableeditorwrapper').run();
+				}
 			});
 			editor.commands.addCommand({
 				name: 'rununtil',
-			    bindKey: {win: "Command-Shift-Enter", mac: "Command-Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
-			    exec: function(editor) {
-			    	var wrapper = me.up('notebookcodeeditorwrapper');
-			    	var notebook = wrapper.up("notebook");
-			    	notebook.runUntil(wrapper);
-			    }				
+				bindKey: {win: "Ctrl-Shift-Enter", mac: "Command-Shift-Enter"}, // additional bindings like alt/cmd-enter don't seem to work
+				exec: function(editor) {
+					var wrapper = me.up('notebookrunnableeditorwrapper');
+					wrapper.up('notebook').runUntil(wrapper);
+				}
 			});
 			this.setEditor(editor);
 
@@ -35118,183 +35688,43 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 	
 	switchModes: function(mode) {
 		this.setMode('ace/mode/'+mode);
-		this.getEditor().getSession().setMode(this.getMode());
-//		this.getEditor().setOptions({maxLines: this.getMode().indexOf("javascript")>-1 ? Infinity : 10});
-
+		if (this.rendered) {
+			this.getEditor().getSession().setMode(this.getMode());
+		}
 	},
 	
 	getValue: function() {
 		return this.getEditor().getValue();
+	},
+
+	addLineMarker: function(lineNumber, type) {
+		type = type === undefined ? 'error' : type;
+		lineNumber--; // need to change to zero based numbering to get correct position
+		this.getEditor().getSession().addMarker(new ace.Range(lineNumber, 0, lineNumber, 1), 'spyral-editor-'+type, 'screenLine', false);
+	},
+
+	clearMarkers: function() {
+		var session = this.getEditor().getSession();
+		var markers = session.getMarkers(false);
+		for (var key in markers) {
+			if (markers[key]['clazz'].indexOf('spyral-editor') !== -1) {
+				session.removeMarker(key);
+			}
+		}
 	}
 })
 Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
-	extend: "Voyant.notebook.editor.EditorWrapper",
+	extend: "Voyant.notebook.editor.RunnableEditorWrapper",
 	requires: ["Voyant.notebook.editor.CodeEditor","Voyant.notebook.editor.button.Run","Voyant.notebook.editor.button.RunAll"],
 	alias: "widget.notebookcodeeditorwrapper",
 	cls: 'notebook-code-wrapper',
 	statics: {
 		i18n: {
-			runMultiple: "Run multiple cells",
-			runUntil: "Run up to here",
-			runUntilTip: "Run previous code blocks and this one.",
-			runFrom: "Run from here onwards",
-			runFromTip: "Run this and following code blocks.",
-			codeMode: "select from several formats for this cell",
-			codeModeTitle: "Code Mode",
-			codeModeTip: "Select from multiple code formats for this cell.",
-			configureTip: "Configuration Options",
-			autoExecuteOnLoad: "auto-run this cell on page load",
-			ok: "OK",
-			cancel: "Cancel"
-		},
-		configWin: undefined,
-		getConfigWindow: function(codeEditorInstance) {
-			if (this.configWin === undefined) {
-				this.configWin = new Ext.Window({
-					title: codeEditorInstance.localize('codeModeTitle'),
-					closeAction: 'hide',
-					layout: 'fit',
-					width: 240,
-					items: [{
-						xtype: 'form',
-						layout: {
-							type: 'vbox',
-							align: 'stretch'
-						},
-						bodyPadding: 10,
-						items: [{
-							xtype: 'fieldset',
-							title: codeEditorInstance.localize("modeCode"),
-							items: [{
-								xtype : 'radiofield',
-								boxLabel : codeEditorInstance.localize('modeJavascript'),
-								name  : 'codeMode',
-								inputValue: 'javascript',
-								flex  : 1,
-								listeners: {
-									change: function(cmp, newval, oldval) {
-										var autoExecCheck = cmp.up().queryById('autoExecute');
-										autoExecCheck.setHidden(!newval);
-										if (!newval) {
-											autoExecCheck.setValue(false);
-										}
-									}
-								}
-							},{
-								xtype: 'checkbox',
-								boxLabel: codeEditorInstance.localize('autoExecuteOnLoad'),
-								name: 'autoExecute',
-								itemId: 'autoExecute'
-							}]
-						},{
-							xtype: 'fieldset',
-							title: codeEditorInstance.localize("modeData"),
-							items: [{
-								items: {
-									xtype : 'radiofield',
-									boxLabel : codeEditorInstance.localize('modeJson'),
-									name  : 'codeMode',
-									inputValue: 'json',
-									flex  : 1
-								}
-							},{
-								items: {
-									xtype : 'radiofield',
-									boxLabel : codeEditorInstance.localize('modeText'),
-									name  : 'codeMode',
-									inputValue: 'text',
-									flex  : 1
-								}
-							},/*{
-								items: {
-									xtype : 'radiofield',
-									boxLabel : codeEditorInstance.localize('modeCsv'),
-									name  : 'codeMode',
-									inputValue: 'csv',
-									flex  : 1													
-								}
-							},{
-								items: {
-									xtype : 'radiofield',
-									boxLabel : codeEditorInstance.localize('modeTsv'),
-									name  : 'codeMode',
-									inputValue: 'tsv',
-									flex  : 1													
-								}
-							},*/{
-								items: {
-									xtype : 'radiofield',
-									boxLabel : codeEditorInstance.localize('modeHtml'),
-									name  : 'codeMode',
-									inputValue: 'html',
-									flex  : 1
-								}
-							},{
-								items: {
-									xtype : 'radiofield',
-									boxLabel : codeEditorInstance.localize('modeXml'),
-									name  : 'codeMode',
-									inputValue: 'xml',
-									flex  : 1
-								}
-							}]
-						}]
-					}],
-					buttons: [{
-						text: codeEditorInstance.localize('ok'),
-						itemId: 'ok'
-					},{
-						text:  codeEditorInstance.localize('cancel'),
-						handler: function(btn) {
-							btn.up('window').close();
-						},
-						scope: this
-					}]
-				})
-			}
-
-			// set form values
-			var mode = codeEditorInstance.getMode();
-			this.configWin.down('radiofield[name=codeMode][inputValue="'+mode+'"]').setValue(true);
-			this.configWin.down('checkbox#autoExecute').setValue(codeEditorInstance.getAutoExecute());
-			// set ok handler
-			this.configWin.down('button#ok').setHandler(function(btn) {
-				var win = btn.up('window');
-				var form = win.down('form');
-				if (form.isDirty()) {
-					var values = form.getValues();
-					codeEditorInstance.switchModes(values.codeMode);
-					codeEditorInstance.setAutoExecute(values.autoExecute === 'on');
-					codeEditorInstance.down('button#config').toggleCls("autoExecute", values.autoExecute === 'on');
-					codeEditorInstance.up('notebook').setIsEdited(true);
-				}
-				win.close();
-			});
-
-			return this.configWin;
 		}
 	},
-	config: {
-		isRun: false,
-		autoExecute: false,
-		mode: 'javascript',
-		isWarnedAboutPreviousCells: false,
-		expandResults: true,
-		emptyResultsHeight: 40,
-		minimumResultsHeight: 120
-	},
-	layout: {
-		type: 'vbox',
-		align: 'stretch'
-	},
-	height: 150,
-	border: false,
-
-	EMPTY_RESULTS_TEXT: ' ', // text to use when clearing results, prior to running code
 
 	constructor: function(config) {
-		config.mode = config.mode !== undefined ? config.mode : this.config.mode;
-		var runnable = config.mode.indexOf('javascript') > -1;
+		config.mode = 'javascript';
 
 		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
 			content: Ext.Array.from(config.input).join("\n"),
@@ -35302,7 +35732,24 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			mode: 'ace/mode/'+config.mode
 		});
 
+		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
+			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
+			expandResults: config.expandResults,
+			listeners: {
+				initialized: function() {
+					// pass along initialized
+					this.fireEvent('initialized', this);
+
+					if (config.output !== undefined) {
+						this.results.updateHtml(config.output);
+					}
+				},
+				scope: this
+			}
+		});
+
 		Ext.apply(this, {
+			border: false,
 			dockedItems: [{
 			    xtype: 'toolbar',
 			    dock: 'left',
@@ -35313,59 +35760,11 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 					{
 						xtype: 'notebookwrapperadd'
 					},{
-						xtype: 'notebookwrapperrun',
-						hidden: !runnable,
-						listeners: {
-							click: {
-								fn: this.run,
-								scope: this
-							}
-						}
+						xtype: 'notebookwrapperrun'
 					},{
-						glyph: 'xf050@FontAwesome',
-						tooltip: this.localize("runMultiple"),
-						itemId: 'runMultiple',
-//						xtype: 'notebookwrapperrununtil',
-						hidden: !runnable,
-						listeners: {
-							click: {
-								fn: function(btn, ev) {
-									Ext.create('Ext.menu.Menu', {
-										items: [{
-						    				text: this.localize("runUntil"),
-						    				tooltip: this.localize("runUntilTip"),
-						    				glyph: 'xf049@FontAwesome',
-						    				handler: function() {
-						    					this.up('notebook').runUntil(this);
-						    				},
-						    				scope: this
-										},{
-						    				text: this.localize("runFrom"),
-						    				tooltip: this.localize("runFromTip"),
-						    				glyph: 'xf050@FontAwesome',
-						    				handler: function() {
-						    					this.up('notebook').runFrom(this);
-						    				},
-						    				scope: this
-										}]
-									}).showAt(ev.pageX, ev.pageY)
-								},
-								scope: this
-							}
-						}
+						xtype: 'notebookwrapperrununtil'
 					},{
-						xtype: 'button',
-						itemId: 'config',
-						glyph: 'xf013@FontAwesome',
-						tooltip: this.localize("configureTip"),
-						cls: config.autoExecute ? "autoExecute" : "",
-						handler: function(btn, ev) {
-							Voyant.notebook.editor.CodeEditorWrapper.getConfigWindow(this).show();
-						},
-						scope: this
-					},{
-						xtype: "notebookwrapperexport",
-						hidden: runnable
+						xtype: 'notebookcodeconfig'
 					}
 			    ]
 			},{
@@ -35384,384 +35783,23 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			        }
 			    ]
 			}],
-			items: [this.editor]
+			layout: 'anchor',
+			defaults: { anchor: '100%' },
+			items: [this.editor, this.results]
 		});
-
-		if (config.uiHtml !== undefined) {
-			this.items.push(this._getUIComponent(config.uiHtml))
-		}
-
-		this.results = this._getResultsComponent(Ext.Array.from(config.output).join(""), config);
-		this.results.setVisible(runnable);
-		this.items.push(this.results);
 		
 		this.callParent(arguments);
-        
-	},
-	
-	initComponent: function(config) {
-		var me = this;
-		me.on("afterrender", function() {
-			this.getTargetEl().on("resize", function(el) {
-				me._setResultsHeight();
-
-				var height = 20;
-				me.items.each(function(item) {height+=item.getHeight();})
-				me.setSize({height: height});
-			});
-		}, this);
-		me.callParent(arguments);
 	},
 	
 	switchModes: function(mode) {
-		this.setMode(mode);
-		this.editor.switchModes(mode);
-
-		var runnable = mode.indexOf('javascript') > -1;
-		this.down('notebookwrapperrun').setVisible(runnable);
-		this.down('notebookwrapperexport').setVisible(!runnable);
-		this.queryById("runMultiple").setVisible(runnable);
-		this.results.setVisible(runnable);
-	},
-	
-	/**
-	 * Run the code in this editor.
-	 * @param {boolean} forceRun True to force the code to run, otherwise a check is performed to see if previous editors have already run.
-	 */
-	run: function(forceRun) {
-		if (this.editor.getMode()==='ace/mode/javascript') { // only run JS
-			if (forceRun===true || this.getIsWarnedAboutPreviousCells()) {
-				return this._run();
-			} else {
-				// this code was for checking if previous cells hadn't been run, but it didn't seem worthwhile
-				var notebook = this.up('notebook');
-				Ext.Array.each(notebook.query('notebookcodeeditorwrapper'), function(wrapper) {
-					if (wrapper===this) {this._run(); return false;} // break
-					if (wrapper.editor && wrapper.editor.getMode() === 'ace/mode/javascript' && wrapper.getIsRun()===false) {
-						Ext.Msg.confirm(this.localize('previousNotRunTitle'), this.localize('previousNotRun'), function(btnId) {
-							if (btnId==='yes') {
-								notebook.runUntil(this);
-							} else {
-								this._run();
-							}
-						}, this);
-						this.setIsWarnedAboutPreviousCells(true);
-						return false;
-					}
-				}, this);
-			}
-		}
-	},
-	
-	_run: function() {
-		this.results.show(); // make sure it's visible 
-		this.results.update(this.EMPTY_RESULTS_TEXT); // clear out the results
-		this.results.mask('working…'); // mask results
-		var code = this.editor.getValue();
-		Voyant.notebook.util.Show.TARGET = this.results.getResultsEl(); // this is for output
-		Voyant.notebook.Notebook.currentBlock = this; // this is to tie back in to the block
-		Voyant.notebook.Notebook.currentNotebook.setCurrentBlock(this);
-		var result;
-		try {
-			
-			// I'd like to be able to run this in another scope/context, but it
-			// doesn't seem possible for the type of code that's being run
-			result = eval.call(window, code);
-		}
-		catch (e) {
-			this.results.unmask();
-			Voyant.notebook.util.Show.showError(e);
-			this.getTargetEl().fireEvent('resize');
-			return e;
-		}
-		this.setIsRun(true);
-		if (result!==undefined) {
-			if (result.then && result.catch && result.finally) {
-				var me = this;
-				result.then(function(result) {
-					me.results.unmask();
-					if (result!==undefined) {
-						me._showResult(result);
-					}
-				}).catch(function(err) {
-					me.results.unmask();
-					Voyant.notebook.util.Show.showError(err);
-				}).finally(function() {
-					Ext.defer(function() {this.getTargetEl().fireEvent('resize')}, 50, me);
-				})
-			} else {
-				this.results.unmask();
-				this._showResult(result);
-				this.getTargetEl().fireEvent('resize');
-			}
+		if (mode !== 'javascript') {
+			var notebook = this.up('notebook');
+			var order = this.down('notebookwrappercounter').getOrder();
+			notebook.addData('', order, undefined, {mode: mode});
+			notebook.notebookWrapperRemove(this);
 		} else {
-			this.results.unmask();
-			this.getTargetEl().fireEvent('resize');
+			console.log('unhandled mode switch:',mode);
 		}
-		return result;
-	},
-
-	_getResultsComponent: function(html, config) {
-		var me = this;
-		var isExpanded = config.expandResults === undefined ? me.config.expandResults : config.expandResults;
-		var height = me.config.emptyResultsHeight;
-
-		return Ext.create('Ext.Container', {
-			itemId: 'parent',
-			cls: 'notebook-code-results',
-			height: height,
-			layout: {
-				type: 'vbox',
-				align: 'stretch'
-			},
-			items: [{
-				xtype: 'container',
-				flex: 1,
-				layout: {
-					type: 'absolute'
-				},
-				items: [{
-					xtype: 'component',
-					itemId: 'results',
-					x: 0,
-					y: 0,
-					anchor: '100%',
-					height: '100%',
-					html: html
-				},{
-					xtype: 'toolbar',
-					itemId: 'buttons',
-					hidden: true,
-					x: 0,
-					y: 0,
-					style: { background: 'none', paddingTop: '0px', pointerEvents: 'none' },
-					defaults: { style: { pointerEvents: 'auto'} },
-					items: ['->',{
-						itemId: 'expandButton',
-						glyph: isExpanded ? 'xf066@FontAwesome' : 'xf065@FontAwesome',
-						tooltip: isExpanded ? 'Contract Results' : 'Expand Results',
-						handler: function() {
-							me.results.doExpandContract();
-						}
-					},{
-						xtype: 'notebookwrapperexport',
-						exportType: 'output'
-					},{
-						glyph: 'xf014@FontAwesome',
-						tooltip: 'Remove Results',
-						handler: function() {
-							me.clearResults();
-						}
-					}]
-				}]
-			},{
-				xtype: 'component',
-				itemId: 'expandWidget',
-				height: 20,
-				hidden: isExpanded ? true : false,
-				style: {textAlign: 'center', fontSize: '26px', cursor: 'pointer', borderTop: '1px solid #DDD'},
-				html: '&#8943;',
-				listeners: {
-					afterrender: function(cmp) {
-						cmp.getEl().on('click', function() {
-							me.results.doExpandContract();
-						})
-					}
-				}
-			}],
-			getValue: function() {
-				var resultEl = this.getResultsEl().dom.cloneNode(true);
-				var output = resultEl.innerHTML;
-				return output;
-			},
-			getResultsEl: function() {
-				return this.down('#results').getEl();
-			},
-			doExpandContract: function() {
-				var expandButton = me.results.down('#expandButton');
-				if (me.getExpandResults()) {
-					me.setExpandResults(false);
-					expandButton.setTooltip('Expand Results');
-					expandButton.setGlyph('xf065@FontAwesome');
-				} else {
-					me.setExpandResults(true);
-					expandButton.setTooltip('Contract Results');
-					expandButton.setGlyph('xf066@FontAwesome');
-				}
-				me.getTargetEl().fireEvent('resize');
-			},
-			// override update method and call it on results child instead
-			update: function() {
-				var results = this.down('#results');
-				results.update.apply(results, arguments);
-			},
-			listeners: {
-				afterrender: function(cmp) {
-					cmp.getEl().on('mouseover', function(event, el) {
-						cmp.down('#buttons').setVisible(true);
-					});
-					cmp.getEl().on('mouseout', function(event, el) {
-						cmp.down('#buttons').setVisible(false);
-					});
-				}
-			}
-		});
-	},
-
-	_getUIComponent: function(html) {
-		return Ext.create('Ext.Component', {
-			align: 'stretch',
-			cls: 'notebook-code-ui',
-			padding: '20 10',
-			html: html,
-			getValue: function() {
-				const el = this.getTargetEl()
-				const resultEl = el.dom.cloneNode(true);
-				let output = resultEl.innerHTML;
-				return output;
-			}
-		});
-	},
-
-	_showResult: function(result) {
-		// check for pre-existing content (such as from highcharts) and if it exists don't update
-		if (this.results.getResultsEl().dom.innerHTML === this.EMPTY_RESULTS_TEXT) {
-			if (result.toString) {result = result.toString()}
-			if (result && result.then) {
-				var me = this;
-				result.then(out => {
-					me.results.update(out);
-					return out;
-				})
-			} else {
-				this.results.update(result);
-			}
-		}
-	},
-
-	/**
-	 * Set the height of the results component
-	 */
-	_setResultsHeight: function() {
-		var height = this._measureResultsHeight();
-		var resultsEl = this.results.getResultsEl();
-		var expandWidget = this.results.down('#expandWidget');
-		if (this.getExpandResults()) {
-			expandWidget.hide();
-			this.results.setHeight(Math.max(height, this.getEmptyResultsHeight()));
-			resultsEl.removeCls('collapsed');
-		} else {
-			height = Math.min(Math.max(height, this.getEmptyResultsHeight()), this.getMinimumResultsHeight());
-			if (height < this.getMinimumResultsHeight()) {
-				expandWidget.hide();
-			} else {
-				expandWidget.show();
-			}
-			this.results.setHeight(height);
-			resultsEl.addCls('collapsed');
-		}
-	},
-
-	_measureResultsHeight: function() {
-		if (this.results.paddingHeight === undefined) {
-			// compute and store parent padding, which we'll need when determining proper height
-			var computedStyle = window.getComputedStyle(this.results.getEl().dom);
-			this.results.paddingHeight = parseFloat(computedStyle.getPropertyValue('padding-top'))+parseFloat(computedStyle.getPropertyValue('padding-bottom'));
-		}
-
-		var resultsEl = this.results.getResultsEl();
-
-		var resultsChildHeight = undefined;
-		if (resultsEl.dom.childElementCount > 0) {
-			// child might be taller than the results el (e.g. in the case of highcharts)
-			resultsChildHeight = resultsEl.getFirstChild().getHeight() + this.results.paddingHeight;
-		} else if (resultsEl.dom.firstChild !== null && resultsEl.dom.firstChild.nodeType === Node.TEXT_NODE) {
-			// calculate text height
-			var textHeight = Ext.util.TextMetrics.measure(resultsEl, resultsEl.dom.firstChild.data, resultsEl.getWidth()).height;
-			resultsChildHeight = textHeight + this.results.paddingHeight;
-		} else {
-			// no results?
-			resultsChildHeight = this.getEmptyResultsHeight();
-		}
-
-		return resultsChildHeight;
-	},
-	
-	clearResults: function() {
-		this.results.show();
-		
-		var panel = this.results.el.down('.x-panel');
-		if (panel) {
-			var id = panel.id;
-			var cmp = Ext.getCmp(id);
-			if (cmp) {
-				cmp.destroy();
-			} else {
-				panel.destroy();
-			}
-		} else if (this.results.getResultsEl().dom.hasAttribute('data-highcharts-chart')) {
-			var chartId = this.results.getResultsEl().dom.id;
-			var highchart = undefined;
-			Highcharts.charts.forEach(function(chart) {
-				if (chart !== undefined && chart.renderTo.id === chartId) {
-					highchart = chart;
-				}
-			})
-			if (highchart) {
-				highchart.destroy();
-				// remove highcharts style changes from results element
-				var resultsDom = this.results.getResultsEl().dom;
-				resultsDom.style.height = '100%';
-				resultsDom.style.overflow = '';
-			} else {
-				console.warn('tried to destroy highchart but could not', chartId);
-			}
-		} else {
-			this.results.update(' ');
-		}
-		this.getTargetEl().fireEvent('resize');
-	},
-	
-	tryToUnmask: function() {
-		if (Spyral && Spyral.promises) {
-			Ext.defer(this.tryToUnmask, 20, this);
-		}
-		if (Voyant.application.getDeferredCount()===0) {
-			for (var key in window) {
-				if (typeof window[key] == 'object' && window[key] && key!="opener" && window[key].isFulfilled &&  window[key].isFulfilled()) {
-					window[key] = window[key].valueOf();
-				}
-			}
-			this.results.unmask();
-			if (this.results.getTargetEl().getHtml().trim().length===0) {
-				this.results.hide();
-			}
-			this.getTargetEl().fireEvent('resize');
-		}
-		else {
-			Ext.defer(this.tryToUnmask, 20, this);
-		}
-	},
-	
-	getContent: function() {
-		var toReturn = {
-			input: this.editor.getValue(),
-			mode: this.getMode()
-		}
-		if (toReturn.mode==='javascript') {
-			toReturn.output = this.results.getValue();
-			var ui = this.down('component[cls="notebook-code-ui"]');
-			if (ui !== null) {
-				toReturn.ui = ui.getValue();
-			}
-		}
-		return toReturn;
-	},
-	
-	setContentAndMode: function(content, mode, config) {
-		debugger
-		this.editor.setContent(content);
-		this.switchModes(mode || "javascript")
 	}
 })
 Ext.define("Voyant.notebook.editor.TextEditor", {
@@ -35770,23 +35808,6 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 	alias: "widget.notebooktexteditor",
 	cls: 'notebook-text-editor',
 	config: {
-		ckeditorConfig : { // when upgrading ckeditor, remember to copy stopediting and inserthtml4x plugins
-			toolbar:  [
-				    	{ name: 'basicstyles', items: [ 'Bold', 'Italic', '-', 'RemoveFormat' ] },
-				    	{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Justify', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-				    	{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-				    	{ name: 'styles', items: [ 'Styles', 'Format' ] },
-				    	{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor'] },
-				    	{ name: 'insert', items: [ 'Image', 'Table' ] },
-				    	{ name: 'document', items: [ 'inserthtml4x', 'Sourcedialog', 'Stopediting'] }
-		    ],
-		    
-		    extraPlugins: 'stopediting,sourcedialog,justify,colorbutton,inserthtml4x',
-//		    removePlugins: 'iframe', // why was this added?
-			allowedContent: true,
-			toolbarCanCollapse: true,
-			startupFocus: true
-		},
 		editor: undefined,
 		isEditRegistered: false,
 		currentHeight: 0
@@ -35805,7 +35826,7 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 	listeners: {
 		boxready: function(cmp) {
 			this.getTargetEl().on("click", function(e, t) {
-				if (t.tagName!="A") {
+				if (t.tagName !== "A") {
 					this.handleClick(cmp);
 				}
 			}, this);
@@ -35825,7 +35846,23 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 			el.set({contenteditable: true});
 			this.findParentByType("notebookeditorwrapper").setIsEditing(true);
 			if (!cmp.getEditor()) {
-				var editor = CKEDITOR.inline( el.dom, this.getCkeditorConfig() );
+				// when upgrading ckeditor, remember to copy stopediting and inserthtml4x plugins
+				var editor = CKEDITOR.inline(el.dom, {
+					toolbar: [
+						{ name: 'basicstyles', items: [ 'Bold', 'Italic', '-', 'RemoveFormat' ] },
+						{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Justify', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
+						{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+						{ name: 'styles', items: [ 'Styles', 'Format' ] },
+						{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor'] },
+						{ name: 'insert', items: [ 'Image', 'Table' ] },
+						{ name: 'document', items: [ 'inserthtml4x', 'Sourcedialog', 'Stopediting'] }
+					],
+					
+					extraPlugins: 'stopediting,sourcedialog,justify,colorbutton,inserthtml4x',
+					allowedContent: true,
+					toolbarCanCollapse: false,
+					startupFocus: true
+				});
 				
 				// erase contents if it's click to edit (not localized, FIXME
 				editor.on("focus", function(evt) {
@@ -35834,6 +35871,13 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 					}
 				}, this)
 				
+				editor.on('contentDom', function() {
+					var editable = editor.editable();
+					editable.attachListener(editable, 'click', function(evt) {
+						// prevent further listeners from firing, esp. the one that prevents links from working ( https://stackoverflow.com/a/45616460 )
+						evt.stop();
+					}, null, null, 0); // zero (i.e. very high) priority
+				})
 				
 				editor.on("blur", function(evt) {
 //					cmp.setEditor(undefined);
@@ -35843,7 +35887,7 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 				})
 				editor.on("change", function() {
 					var editorHeight = editor.container.$.clientHeight;
-					if (editorHeight!=this.getCurrentHeight()) {
+					if (editorHeight !== this.getCurrentHeight()) {
 						this.findParentByType("notebookeditorwrapper").setHeight(editorHeight);
 						this.setCurrentHeight(editor.container.$.clientHeight)
 					}
@@ -35871,11 +35915,10 @@ Ext.define("Voyant.notebook.editor.TextEditor", {
 })
 Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	extend: "Voyant.notebook.editor.EditorWrapper",
-	requires: ["Voyant.notebook.editor.TextEditor","Voyant.notebook.editor.button.Edit"],
+	requires: ["Voyant.notebook.editor.TextEditor"],
 	alias: "widget.notebooktexteditorwrapper",
 	cls: 'notebook-text-wrapper',
 	config: {
-		content: ''
 	},
 	minHeight: 85,
 	constructor: function(config) {
@@ -35916,6 +35959,404 @@ Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	}
 	
 })
+Ext.define('Voyant.notebook.editor.FileInput', {
+	extend: 'Ext.container.Container',
+	alias: 'widget.notebookfileinput', 
+	mixins: ['Voyant.util.Localization'],
+	cls: 'notebook-file-input',
+	config: {
+		dataUrl: undefined,
+		resourceId: undefined,
+		file: undefined
+	},
+	statics: {
+		i18n: {
+			fileUpload: 'File Upload',
+			buttonLabel: 'Choose a file...',
+			deleteMsg: 'The previously added file has been deleted. You will need to add a new file.'
+		}
+	},
+
+	serverStorage: undefined,
+
+	constructor: function(config) {
+		Ext.apply(this, {
+			height: 125,
+			width: '100%',
+			layout: 'center',
+			items: [{
+				xtype: 'voyantfilefield',
+				itemId: 'file',
+				fieldLabel: this.localize('fileUpload'),
+				labelAlign: 'right',
+				buttonText: this.localize('buttonLabel'),
+				width: 350,
+				listeners: {
+					render: function(cmp) {
+						if (config.resourceId) {
+							cmp.inputEl.dom.value = config.resourceId;
+						}
+					},
+					change: function(cmp, val) {
+						var file = cmp.fileInputEl.dom.files[0];
+						this.setFile(file);
+						this.setDataUrl(undefined);
+						this.setResourceId(undefined);
+					},
+					scope: this
+				}
+			}]
+		});
+
+		if (typeof Voyant.util.ServerStorage === 'undefined') {
+			Ext.define('Voyant.util.ServerStorage', {
+				extend: 'Voyant.util.Storage',
+				getTromboneUrl: function() {
+					return Voyant.application.getTromboneUrl();
+				}
+			});
+		}
+		this.serverStorage = Ext.create('Voyant.util.ServerStorage');
+
+		this.callParent(arguments);
+	},
+
+	getDataUrl: function() {
+		var dfd = new Ext.Deferred();
+
+		var dataUrl = this.callParent();
+		if (dataUrl === undefined) {
+			if (this.getResourceId()) {
+				this.loadStoredFile().then(function(dataUrl) {
+					dfd.resolve(dataUrl);
+				}, function() {
+					dfd.reject();
+				})
+			} else {
+				if (this.getFile()) {
+					this.storeFile().then(function(result) {
+						dfd.resolve(result[1]);
+					}, function() {
+						dfd.reject();
+					});
+				} else {
+					dfd.reject();
+				}
+			}
+		} else {
+			dfd.resolve(dataUrl);
+		}
+
+		return dfd.promise;
+	},
+
+	storeFile: function() {
+		var dfd = new Ext.Deferred();
+
+		var file = this.getFile();
+		if (file === undefined) {
+			dfd.reject();
+		} else {
+			var me = this;
+			Spyral.Util.blobToDataUrl(file).then(function(data) {
+				var resourceId = Spyral.Util.id(32);
+				me.serverStorage.storeResource(resourceId, data).then(function() {
+					me.setResourceId(resourceId);
+					me.setDataUrl(data);
+					dfd.resolve([resourceId, data]);
+				}, function() {
+					dfd.reject();
+				})
+			}, function(err) {
+				dfd.reject(err);
+			});
+		}
+
+		return dfd.promise;
+	},
+
+	loadStoredFile: function() {
+		var dfd = new Ext.Deferred();
+		
+		var resourceId = this.getResourceId();
+		if (resourceId === undefined) {
+			dfd.reject();
+		} else {
+			var me = this;
+			this.serverStorage.getStoredResource(resourceId).then(function(dataUrl) {
+				if (dataUrl !== undefined) {
+					me.setDataUrl(dataUrl);
+					dfd.resolve(dataUrl);
+				} else {
+					dfd.reject();
+				}
+			}, function() {
+				dfd.reject();
+			});
+		}
+		
+		return dfd.promise;
+	}
+});
+
+Ext.define('Voyant.form.field.File', {
+	extend: 'Ext.form.field.File',
+	alias: 'widget.voyantfilefield',
+	onFileChange: function(button, e, value) {
+		// remove fakepath
+		var newValue = value.replace(/^.*(\\|\/|\:)/, ''); // TODO test in safari etc
+
+		return this.callParent([ button, e, newValue ]);
+	}
+});
+Ext.define("Voyant.notebook.editor.DataWrapper", {
+	extend: "Voyant.notebook.editor.RunnableEditorWrapper",
+	requires: ["Voyant.notebook.editor.CodeEditor", "Voyant.notebook.editor.FileInput"],
+	alias: "widget.notebookdatawrapper",
+	cls: 'notebook-code-wrapper',
+	statics: {
+		i18n: {
+			dataNameAlphanum: 'The data name must contain alphanumeric characters only',
+			dataNameAlphastart: 'The data name must not begin with a number'
+		}
+	},
+	config: {
+		dataName: undefined
+	},
+
+	constructor: function(config) {
+		config.mode = config.mode !== undefined ? config.mode : 'json';
+
+		var isFile = config.mode === 'file';
+
+		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
+			content: Ext.Array.from(config.input).join("\n"),
+			docs: config.docs, // TODO
+			mode: 'ace/mode/'+config.mode,
+			maxLines: 12,
+			hidden: isFile
+		});
+
+		this.fileInput = Ext.create('Voyant.notebook.editor.FileInput', {
+			resourceId: config.input,
+			hidden: !isFile
+		});
+
+		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
+			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
+			expandResults: config.expandResults,
+			listeners: {
+				initialized: function() {
+					// pass along initialized
+					this.fireEvent('initialized', this);
+
+					if (config.output !== undefined) {
+						this.results.updateHtml(config.output);
+					}
+				},
+				scope: this
+			}
+		});
+
+		Ext.apply(this, {
+			border: false,
+			dockedItems: [{
+			    xtype: 'toolbar',
+			    dock: 'left',
+			    defaults: {
+			    	textAlign: 'left'
+			    },
+			    items: [
+					{
+						xtype: 'notebookwrapperadd'
+					},{
+						xtype: 'notebookwrapperrun'
+					},{
+						xtype: 'notebookwrapperrununtil'
+					},{
+						xtype: 'notebookcodeconfig'
+					},{
+						xtype: "notebookwrapperexport"
+					}
+			    ]
+			},{
+			    xtype: 'toolbar',
+			    dock: 'right',
+			    items: [{
+			    		xtype: 'notebookwrappercounter',
+			    		order: config.order,
+			    		name: config.cellId
+			    	},{
+		        		xtype: 'notebookwrapperremove'
+		        	},{
+			        	xtype: 'notebookwrappermoveup'
+			        },{
+			        	xtype: 'notebookwrappermovedown'
+			        }
+			    ]
+			}],
+			layout: 'anchor',
+			defaults: { anchor: '100%' },
+			items: [this.editor, this.fileInput, {
+				xtype: 'form',
+				cls: 'notebook-data-input',
+				bodyPadding: 6,
+				bodyStyle: 'background-color: rgb(252, 252, 252);',
+				layout: {
+					type: 'hbox',
+					pack: 'center'
+				},
+				items: [{
+					width: 350,
+					xtype: 'textfield',
+					fieldLabel: 'Data Name',
+					labelAlign: 'right',
+					name: 'dataName',
+					value: config.dataName,
+					validator: function(val) {
+						if (/^[a-zA-Z0-9_]+$/.test(val)) {
+							if (/^\D/.test(val)) {
+								return true;
+							} else {
+								return this.localize('dataNameAlphastart');
+							}
+						} else {
+							return this.localize('dataNameAlphanum')
+						}
+					}.bind(this),
+					allowBlank: false,
+					listeners: {
+						change: function(cmp, newVal, oldVal) {
+							if (cmp.isValid()) {
+								this.setDataName(newVal);
+							} else {
+								this.setDataName(undefined);
+							}
+						},
+						scope: this
+					}
+				},{
+					width: 100,
+					margin: '0 0 0 6',
+					xtype: 'button',
+					text: 'Assign',
+					handler: function(btn) {
+						this.up('notebook').setIsEdited(true);
+						this.run();
+					},
+					scope: this
+				}]
+			}, this.results]
+		});
+		
+		this.callParent(arguments);
+	},
+
+	switchModes: function(mode) {
+		if (mode === 'javascript') {
+			var notebook = this.up('notebook');
+			var order = this.down('notebookwrappercounter').getOrder();
+			notebook.addCode('', order, undefined, {mode: 'javascript'});
+			notebook.notebookWrapperRemove(this);
+		} else {
+			this.setMode(mode);
+			
+			if (mode === 'file') {
+				this.editor.hide();
+				this.fileInput.show();
+			} else {
+				this.fileInput.hide();
+				this.editor.switchModes(mode);
+				this.editor.show();
+			}
+			
+			this.updateLayout();
+		}
+	},
+
+	_getCode: function() {
+		var dfd = new Ext.Deferred();
+
+		var dataName = this.getDataName();
+		if (dataName === undefined) {
+			dfd.reject();
+		}
+
+		var mode = this.getMode();
+		if (mode === 'file') {
+			this.fileInput.getDataUrl().then(function(dataUrl) {
+				var code = dataName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
+				dfd.resolve(code);
+			}, function() {
+				dfd.reject();
+			});
+		} else {
+			var code = this.editor.getValue();
+			switch(mode) {
+				case 'text':
+					code = dataName+'=`'+code+'`';
+					break;
+				case 'json':
+					code = dataName+'= JSON.parse(`'+code+'`)';
+					break;
+				case 'xml':
+					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "application/xml")';
+					break;
+				case 'html':
+					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "text/html")';
+					break;
+			}
+			// TODO handle parse errors for xml/html
+			dfd.resolve(code);
+		}
+
+		return dfd.promise;
+	},
+
+	_run: function(priorVariables) {
+		var dfd = new Ext.Deferred();
+
+		var me = this;
+		this._getCode().then(function(code) {
+			me.results.clear();
+
+			if (me.getMode() !== 'file') {
+				me.editor.clearMarkers();
+			}
+
+			me.setIsRun(true);
+			
+			me.results.run(code, priorVariables).then(function(eventData) {
+				dfd.resolve(eventData);
+			}, function(eventData) {
+				if (eventData.error !== undefined && eventData.error.row !== undefined) {
+					me.editor.addLineMarker(eventData.error.row, 'error');
+				}
+				dfd.reject(eventData);
+			});
+		}, function() {
+			dfd.reject('Error handling data');
+		});
+
+		return dfd.promise;
+	},
+
+	getInput: function() {
+		var mode = this.getMode();
+		if (mode !== 'file') {
+			return this.editor.getValue();
+		} else {
+			return this.fileInput.getResourceId();
+		}
+	},
+
+	getContent: function() {
+		var content = this.callParent(arguments);
+		content.dataName = this.getDataName();
+		return content;
+	}
+});
+
 Ext.define("Voyant.notebook.github.OctokitWrapper", {
 	extend: "Ext.Base",
 	alias: "octokitwrapper",
@@ -37027,14 +37468,500 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 			}
 		}
 		return code;
+	},
+
+	reset: function() {
+		this.setAccessCode(undefined);
+	}
+})
+Ext.define('Voyant.notebook.metadata.MetadataEditor', {
+	extend: 'Ext.form.Panel',
+	mixins: ['Voyant.util.Localization'],
+	alias: 'widget.metadataeditor',
+	statics: {
+		i18n: {
+    		metadataTitle: "Title",
+    		metadataTip: "Edit notebook metadata.",
+    		metadataAuthor: "Author(s)",
+    		metadataKeywords: "Keywords",
+    		metadataDescription: "Description",
+    		metadataLicense: "Licence",
+    		metadataLanguage: "Language"
+		}
+	},
+
+	constructor: function(config) {
+		Ext.apply(this, config, {
+			trackResetOnLoad: true,
+			items: {
+				bodyPadding: 5,
+
+				// Fields will be arranged vertically, stretched to full width
+				layout: 'anchor',
+				defaults: {
+					anchor: '100%',
+					labelAlign: "right"
+				},
+
+				// The fields
+				defaultType: 'textfield',
+				items: [{
+					fieldLabel: this.localize("metadataTitle"),
+					xtype: 'htmleditor',
+					name: 'title',
+					height: 100,
+					enableAlignments : false,
+					enableColors : false,
+					enableFont : false,
+					enableFontSize : false,
+					enableLinks : false,
+					enableLists : false
+				},{
+					fieldLabel: this.localize("metadataAuthor"),
+					name: 'author'
+				},{
+					fieldLabel: this.localize("metadataKeywords"),
+					name: 'keywords',
+					xtype: 'tagfield',
+					store: {
+						xtype: 'store.json',
+						fields: [
+							{name: 'label'},
+							{name: 'count', type: 'integer'}
+						]
+					},
+					displayField: 'label',
+					valueField: 'label',
+					queryMode: 'local',
+					filterPickList: true,
+					forceSelection: false,
+					delimiter: ',',
+					createNewOnEnter: true,
+					listeners: {
+						afterrender: function(cmp) {
+							Spyral.Load.trombone({
+								tool: 'notebook.CatalogueFacets',
+								facets: 'facet.keywords',
+								noCache: 1
+							}).then(function(json) {
+								cmp.getStore().loadRawData(json.catalogue.facets[0].results);
+								// need to reset value to make sure previously set keywords show up
+								cmp.setValue(cmp.getValue());
+							});
+						}
+					}
+				},{
+					xtype: 'htmleditor',
+					fieldLabel: this.localize("metadataDescription"),
+					name: 'description',
+					height: 100,
+					enableAlignments : false,
+					enableColors : false,
+					enableFont : false
+				},{
+					xtype: 'combo',
+					fieldLabel: this.localize("metadataLicense"),
+					name: 'license',
+					store: {
+						fields: ['text'],
+						data: [
+							{"text": "Apache License 2.0"},
+							{"text": "BSD 3-Clause \"New\" or \"Revised\" license"},
+							{"text": "BSD 2-Clause \"Simplified\" or \"FreeBSD\" license"},
+							{"text": "Creative Commons Attribution (CC BY)"},
+							{"text": "Creative Commons Attribution-ShareAlike (CC BY-SA)"},
+							{"text": "Creative Commons Zero (CC0)"},
+							{"text": "GNU General Public License (GPL)"},
+							{"text": "GNU Library or \"Lesser\" General Public License (LGPL)"},
+							{"text": "MIT license"},
+							{"text": "Mozilla Public License 2.0"},
+							{"text": "Common Development and Distribution License"},
+							{"text": "Eclipse Public License"}
+						]
+					}
+				},{
+					xtype: 'combo',
+					name: 'language',
+					fieldLabel: this.localize("metadataLanguage"),
+					store: {
+						fields: ['text'],
+						data: [
+							{"text": "Bengali"},
+							{"text": "Bhojpuri"},
+							{"text": "Egyptian Arabic"},
+							{"text": "English"},
+							{"text": "French"},
+							{"text": "German"},
+							{"text": "Gujarati"},
+							{"text": "Hausa"},
+							{"text": "Hindi"},
+							{"text": "Indonesian"},
+							{"text": "Italian"},
+							{"text": "Japanese"},
+							{"text": "Javanese"},
+							{"text": "Kannada"},
+							{"text": "Korean"},
+							{"text": "Mandarin"},
+							{"text": "Marathi"},
+							{"text": "Persian"},
+							{"text": "Portuguese"},
+							{"text": "Russian"},
+							{"text": "Southern Min"},
+							{"text": "Spanish"},
+							{"text": "Standard Arabic"},
+							{"text": "Swahili"},
+							{"text": "Tamil"},
+							{"text": "Telugu"},
+							{"text": "Thai"},
+							{"text": "Turkish"},
+							{"text": "Urdu"},
+							{"text": "Vietnamese"},
+							{"text": "Western Punjabi"},
+							{"text": "Wu Chinese"},
+							{"text": "Yue Chinese"}
+						]
+					}
+				}]
+			}
+		});
+		this.callParent(arguments);
+	},
+	loadMetadata: function(metadata) {
+		if (metadata instanceof Spyral.Metadata) {
+			this.loadRecord(Ext.create('Voyant.data.model.NotebookMetadata', {
+				title: metadata.title,
+				author: metadata.author,
+				description: metadata.description,
+				keywords: metadata.keywords,
+				language: metadata.language,
+				license: metadata.license
+			}));
+		}
+	}
+});
+
+Ext.define('Voyant.data.model.NotebookMetadata', {
+	extend: 'Ext.data.Model',
+	fields: [
+		{name: 'title', type: 'string'},
+		{name: 'author', type: 'string'},
+		{name: 'description', type: 'string'},
+		{name: 'keywords', type: 'string'},
+		{name: 'language', type: 'string', defaultValue: 'English'},
+		{name: 'license', type: 'string', defaultValue: 'Creative Commons Attribution (CC BY)'},
+		{name: 'modified', type: 'date'},
+		{name: 'created', type: 'date'}
+	]
+});
+Ext.define('Voyant.notebook.util.FormatConverter', {
+	importFromHtml: function(html) {
+		var me = this;
+
+		var parser = new DOMParser();
+		var dom = parser.parseFromString(html, 'text/html');
+		
+		me.setMetadata(new Spyral.Metadata(dom));
+		
+		var hasDomError = false;
+		var cells2Init = [];
+		dom.querySelectorAll("section.notebook-editor-wrapper").forEach(function(section) {
+			var classes = section.classList;
+			if (classes.contains("notebooktexteditorwrapper")) {
+				var editor = section.querySelector(".notebook-text-editor").innerHTML;
+				me.addText(editor, undefined, section.id);
+			} else if (classes.contains("notebookcodeeditorwrapper") || classes.contains("notebookdatawrapper")) {
+				var inputEl = section.querySelector(".notebook-code-editor-raw");
+				var typeRe = /\beditor-mode-(\w+)\b/.exec(inputEl.className);
+				var editorType = typeRe[1];
+				var matchClass = 'notebookcodeeditorwrapper';
+				if (editorType !== 'javascript') {
+					matchClass = 'notebookdatawrapper';
+				}
+				
+				/* in an ideal world we could use inputEl.innerHTML to get the contents
+				 * except that since it's in a parsed DOM it's already been transformed
+				 *  significantly. For instance, all >, <, and & character appear in the
+				 * html entities form (which breaks things like && () => {}). You also
+				 * get strange artefacts like if you have "<div>" in your code it may add
+				 * </div> to the end of the innerHTML (to make sure tags are balanced).
+				 * and of course textContent or innerText won't work because that will
+				 * strip any of the HTML formatting out. What's left is to use the parsing
+				 * to ensure the order and to properly grab the IDs and then to do character
+				 * searches on the original string. */
+				var secPos = html.indexOf("<section id='"+section.id+"' class='notebook-editor-wrapper "+matchClass+"'>");
+				var startPre = html.indexOf("<pre class='notebook-code-editor-raw editor-mode-", secPos);
+				startPre = html.indexOf(">", startPre)+1; // add the length of the string
+				var endPre = html.indexOf("</pre>\n<div class='notebook-code-results", startPre);
+				
+				// check if we have valid values
+				if (secPos===-1 || startPre === -1 || endPre === -1) {
+					hasDomError = true;
+					// this might work, unless the js code includes HTML
+					input = editorType === "javascript" ? inputEl.innerText : inputEl.innerHTML;
+				} else {
+					input = html.substring(startPre, endPre);
+				}
+
+				var output = section.querySelector(".notebook-code-results").innerHTML;
+				var expandResults = section.querySelector(".notebook-code-results").classList.contains('collapsed') === false;
+
+				if (editorType === 'javascript') {
+					var codeCell = me.addCode({
+						input: input,
+						output: output,
+						expandResults: expandResults,
+						mode: editorType
+					}, undefined, section.id);
+	
+					cells2Init.push(codeCell);
+					codeCell.on('initialized', function() {
+						var cellIndex = cells2Init.indexOf(codeCell);
+						if (cellIndex !== -1) {
+							cells2Init.splice(cellIndex, 1);
+							if (cells2Init.length === 0) {
+								me.fireEvent('notebookInitialized');
+							}
+						} else {
+							console.error('unknown cell initialized', codeCell);
+						}
+					});
+				} else {
+					// hack to get the data name from the dataviewer
+					var dataName = section.querySelector('.notebook-code-results .spyral-dv-left').firstChild.data;
+					dataName = dataName.split(':')[0];
+					var dataCell = me.addData({
+						input: input,
+						output: output,
+						expandResults: expandResults,
+						dataName: dataName,
+						mode: editorType
+					}, undefined, section.id);
+					cells2Init.push(dataCell);
+					dataCell.on('initialized', function() {
+						var cellIndex = cells2Init.indexOf(dataCell);
+						if (cellIndex !== -1) {
+							cells2Init.splice(cellIndex, 1);
+							if (cells2Init.length === 0) {
+								me.fireEvent('notebookInitialized');
+							}
+						} else {
+							console.error('unknown cell initialized', dataCell);
+						}
+					});
+				}
+			}
+		});
+
+		if (hasDomError) {
+			me.showError(me.localize("errorParsingDomInput"))
+		}
+	},
+
+	getInnerHeaderHtml: function() {
+		let html = "";
+		if (this.getMetadata().title) {
+			html += "<div class='title'>"+this.getMetadata().title+"</div>";
+		}
+		if (this.getMetadata().author) {
+			html += "<div class='author'>"+this.getMetadata().author+"</div>";
+		}
+		return html;
+	},
+	
+	getInnerFooterHtml: function() {
+		var text = "", metadata = this.getMetadata();
+		if (metadata.author || metadata.license) {
+			var text = "&copy;";
+			if (metadata.author) {text+=" "+metadata.author;}
+			if (metadata.license) {text+=" ("+metadata.license+")";}
+			text += ". ";
+		}
+		if (metadata.created || metadata.modified) {
+			var created = metadata.shortDate("created"), modified = metadata.shortDate("modified");
+			if (created) {
+				text += this.localize("created")+" "+created+"."
+			}
+			if (modified && created!=modified) {
+				text += " "+this.localize("modified")+" "+modified+"."
+			}
+			
+		}
+		return text;
+	},
+
+	generateExportHtml: function() {
+		var metadata = this.getMetadata();
+		var out = "<!DOCTYPE HTML>\n<html>\n<head>\n\t<meta charset='UTF-8'>\n"+
+			metadata.getHeaders();
+		var aceChromeEl = document.getElementById("ace-chrome");
+		if (aceChromeEl) {out+=aceChromeEl.outerHTML+"\n"}
+		
+		// TODO voyant-notebooks-styles has been removed
+		var stylesEl = document.getElementById("voyant-notebooks-styles");
+		if (stylesEl) {out+=stylesEl.outerHTML+"\n"}
+
+		out += "<script> // this script checks to see if embedded tools seem to be available\n"+
+			"window.addEventListener('load', function() {\n"+
+				"var hostnames = {}, warned = false;\n"+
+				"document.querySelectorAll('iframe').forEach(function(iframeEl) {\n"+
+					"let url = new URL(iframeEl.src);\n"+
+					"if (!(url.hostname in hostnames) && !warned) {\n"+
+						"hostnames[url.hostname] = true; // mark as fetched\n"+
+						"fetch(url).catch(response => {\n"+
+							"warned = true;\n"+
+							"alert('This notebook seems to contain one ore more tools that may not be able to load. Possible reasons include a server no longer being accessible (especially if the notebook was generated from a local server), or because of security restrictions.'+url)\n"+
+						"})\n"+
+					"}\n"+
+				"})\n"+
+			"})\n"+
+			"</script>\n"+
+			"</head>\n<body class='exported-notebook'>\n"+
+			"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"+
+			"<article class='spyralArticle'>\n";
+
+		this.getComponent("cells").items.each(function(item, i) {
+			var content = item.getContent();
+			var counter = item.down("notebookwrappercounter");
+
+			// reminder that the parsing in of notebooks depends on the stability of this syntax
+			out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
+			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
+
+			if (item.isXType('notebooktexteditorwrapper')) {
+				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
+			} else {	
+				var codeTextLayer = item.getTargetEl().query('.ace_text-layer')[0].cloneNode(true);
+				codeTextLayer.style.setProperty('height', 'auto'); // fix for very large height set by ace
+
+				// reminder that the parsing in of notebooks depends on the stability of this syntax
+				out+="<div class='notebook-code-editor ace-chrome'>\n"+codeTextLayer.outerHTML+"\n</div>\n"+
+					"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n"+
+					"<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
+			}
+
+			out+="</section>\n"
+		})
+		out += "</article>\n<footer class='spyral-footer'>"+this.getInnerFooterHtml()+"</footer>\n</body>\n</html>";
+		return out;
+	},
+
+	generateExportMetadata: function(metadata) {
+		var clone = metadata.clone(); // use a clone so that altering title and description doesn't affect original
+		
+		if (clone.title) {
+			clone.title = clone.title.replace(/<\/?\w+.*?>/g, '');
+		}
+		if (clone.description) {
+			clone.description = clone.description.replace(/<\/?\w+.*?>/g, '');
+		}
+
+		if (clone.keywords) {
+			if (Array.isArray(clone.keywords) === false) {
+				clone.keywords = clone.keywords.split(/[\s,]+/)
+			}
+			clone.keywords = clone.keywords.reduce(function(keywordsArray, keyword) {
+				if (keyword.length > 0) {
+					keywordsArray.push(keyword.toLowerCase());
+				}
+				return keywordsArray;
+			}, []);
+		}
+
+		return clone;
+	},
+
+	generateExportJson: function() {
+		var cells = [];
+		this.getComponent("cells").items.each(function(item, i) {
+			var type;
+			switch(item.xtype) {
+				case 'notebookcodeeditorwrapper':
+					type = 'code';
+					break;
+				case 'notebookdatawrapper':
+					type = 'data';
+					break;
+				default:
+					type = 'text';
+			}
+			cells.push({
+				cellId: item.getCellId(),
+				type: type,
+				content: item.getContent()
+			});
+		});
+
+		var json = {
+			metadata: this.getMetadata(),
+			cells: cells
+		}
+
+		return JSON.stringify(json);
+	},
+
+
+	/*
+	 * Export dialog options below
+	 */
+	
+	getExtraExportItems: function() {
+		return [{
+			inputValue: 'html',
+			boxLabel: this.localize('exportHtml')
+		},{
+			inputValue: 'htmlDownload',
+			boxLabel: '<a href="#">'+this.localize('exportHtmlDownload')+'</a>',
+			listeners: {
+				afterrender: function(cmp) {
+					var name = (this.getNotebookId() || "spyral")+ ".html";
+					var data = this.generateExportHtml();
+					var properties = {type: 'text/html'};
+					var file;
+					try {
+						file = new File([data], name, properties);
+					} catch (e) {
+						file = new Blob([data], properties);
+					}
+
+					var url = URL.createObjectURL(file);
+					var a = cmp.boxLabelEl.dom.querySelector("a");
+					a.setAttribute("download", name);
+					a.setAttribute("href", url);
+				},
+				scope: this
+			},
+			handler: function(cmp) {
+				cmp.boxLabelEl.dom.querySelector("a").click();
+				cmp.up("window").close();
+			}
+		}]
+	},
+	
+	exportHtml: function() {
+		var out = this.generateExportHtml();
+		var myWindow = window.open();
+		myWindow.document.write(out);
+		myWindow.document.close();
+		myWindow.focus();
 	}
 })
 Ext.define('Voyant.notebook.Catalogue', {
 	extend: 'Ext.Component',
-	requires: [],
+    mixins: ['Voyant.util.Localization'],
 	alias: 'widget.notebookcatalogue',
 	statics: {
 		i18n: {
+			title: 'Spyral Notebooks Catalogue',
+			browse: 'Browse Notebooks',
+			keywords: 'Keywords',
+			author: 'Author',
+			language: 'Language',
+			license: 'License',
+			search: 'Search within notebooks',
+			noResults: 'No matching notebooks',
+			suggested: 'Suggested Notebooks',
+			load: 'Load Selected Notebook',
+			cancel: 'Cancel'
 		}
 	},
 
@@ -37043,7 +37970,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 	store: undefined,
 	template: undefined,
 
-	config: {},
+	gettingFacets: false,
 
 	constructor: function() {
 		this.store = Ext.create('Ext.data.JsonStore', {
@@ -37064,9 +37991,40 @@ Ext.define('Voyant.notebook.Catalogue', {
 			'<tpl for=".">',
 				'<div class="catalogue-notebook">',
 					'<div class="id">{id}</div>',
-					'<div class="title">{title}</div>',
-					'<div class="author">{author}</div>',
-					'<div class="dates"><span class="date">{[Ext.Date.format(values.created, "M j Y")]}</span> | <span class="date">{[Ext.Date.format(values.modified, "M j Y")]}</span></div>',
+					'<div class="title nowrap" title="{title}">{title}</div>',
+					'<div class="author nowrap"><i class="fa fa-user" aria-hidden="true"></i> {author}</div>',
+					'<div class="description">{description}</div>',
+					'<tpl if="keywords.length &gt; 0">',
+						'<div class="keywords nowrap">',
+							'<i class="fa fa-tags" aria-hidden="true"></i> ',
+							'<tpl for="keywords">',
+								'<span>{.}</span>',
+							'</tpl>',
+						'</div>',
+					'</tpl>',
+					'<div class="dates"><span class="date"><i class="fa fa-clock-o" aria-hidden="true"></i> {[Ext.Date.format(values.modified, "M j Y")]}</span></div>',
+				'</div>',
+			'</tpl>'
+		);
+		this.suggestedStore = Ext.create('Ext.data.JsonStore', {
+			fields: [
+				{name: 'id'},
+				{name: 'author'},
+				{name: 'title'},
+				{name: 'description'},
+				{name: 'keywords'},
+				{name: 'language'},
+				{name: 'license'},
+				{name: 'created', type: 'date'},
+				{name: 'modified', type: 'date'},
+				{name: 'version'}
+			]
+		});
+		this.suggestedTemplate = new Ext.XTemplate(
+			'<tpl for=".">',
+				'<div class="catalogue-notebook">',
+					'<div class="title nowrap" title="{title}">{title}</div>',
+					'<div class="description">{description}</div>',
 				'</div>',
 			'</tpl>'
 		);
@@ -37080,94 +38038,205 @@ Ext.define('Voyant.notebook.Catalogue', {
 	showWindow: function() {
 		if (this.window === undefined) {
 			this.window = Ext.create('Ext.window.Window', {
-				title: 'Notebooks Catalogue',
-				width: 700,
-				height: 550,
-				layout: {
-					type: 'vbox'
-				},
-				closeAction: 'hide',
+				title: this.localize('title'),
+				width: '80%',
+				height: '80%',
+				maximizable: true,
+				modal: true,
+				cls: 'catalogue',
+				layout: 'border',
 				items: [{
-					xtype: 'toolbar',
-					height: 30,
+					xtype: 'panel',
+					region: 'center',
+					flex: 2,
+					border: true,
+					layout: {
+						type: 'vbox',
+						align: 'stretch'
+					},
 					items: [{
-						xtype: 'splitbutton',
-						text: 'Sort',
-						glyph: 'xf161@FontAwesome',
-						menu: {
-							defaults: {
-								xtype: 'menucheckitem',
-								group: 'sortfield'
+						xtype: 'toolbar',
+						height: 30,
+						layout: {
+							type: 'hbox',
+							pack: 'center'
+						},
+						items: [{xtype:'tbspacer', flex: .1},{
+							xtype: 'textfield',
+							itemId: 'queryfield',
+							emptyText: this.localize('search'),
+							flex: .8,
+							enableKeyEvents: true,
+							triggers: {
+								cancel: {
+									hidden: true,
+									cls: 'fa-trigger form-fa-clear-trigger',
+									handler: function(cmp) {
+										cmp.setValue('');
+										cmp.getTriggers()['cancel'].hide();
+										this.getNotebooks();
+									},
+									scope: this
+								},
+								search: {
+									cls: 'fa-trigger form-fa-search-trigger',
+									handler: function(cmp) {
+										this.getNotebooks();
+									},
+									scope: this
+								}
 							},
-							items: [{
-								itemId: 'id',
-								text: 'ID'
-							},{
-								itemId: 'created',
-								text: 'Created'
-							},{
-								itemId: 'modified',
-								text: 'Modified',
-								checked: true
-							},{
-								itemId: 'title',
-								text: 'Title'
-							},{
-								itemId: 'author',
-								text: 'Author'
-							}],
 							listeners: {
-								click: function(menu, item) {
-									var sortDir = menu.up().getGlyph().glyphConfig === 'xf161@FontAwesome' ? 'DESC' : 'ASC';
-									var sortField = item.itemId;
-									this.store.sort(sortField, sortDir);
-									this.window.down('#catalogue').refresh();
+								keyup: function(cmp, e) {
+									if (e.getCharCode() === 13) {
+										this.getNotebooks();
+									}
+									if (cmp.getValue().trim().length > 0) {
+										cmp.getTriggers()['cancel'].show();
+									} else {
+										cmp.getTriggers()['cancel'].hide();
+									}
 								},
 								scope: this
 							}
-						},
-						handler: function(but) {
-							var sortDir;
-							if (but.getGlyph().glyphConfig === 'xf161@FontAwesome') {
-								but.setGlyph('xf160@FontAwesome');
-								sortDir = 'ASC';
-							} else {
-								but.setGlyph('xf161@FontAwesome');
-								sortDir = 'DESC';
-							}
-							var sortField = but.menu.down('[checked=true]').itemId;
-							this.store.sort(sortField, sortDir);
-							this.window.down('#catalogue').refresh();
-						},
-						scope: this
+						},{xtype:'tbspacer', flex: .1}]
+					},{
+						xtype: 'dataview',
+						flex: 1,
+						width: '100%',
+						padding: 10,
+						scrollable: 'vertical',
+						itemId: 'catalogue',
+						store: this.store,
+						tpl: this.template,
+						itemSelector: 'div.catalogue-notebook',
+						overItemCls: 'catalogue-notebook-over',
+						selectedItemCls: 'catalogue-notebook-selected',
+						listeners: {
+							itemdblclick: function(view, record, el) {
+								this.fireEvent('notebookSelected', this, record.get('id'));
+							},
+							scope: this
+						}
 					}]
 				},{
-					xtype: 'dataview',
+					xtype: 'panel',
+					region: 'west',
+					collapsible: true,
+					title: this.localize('browse'),
 					flex: 1,
-					width: '100%',
-					padding: 10,
-					scrollable: 'vertical',
-					itemId: 'catalogue',
-					store: this.store,
-					tpl: this.template,
-					itemSelector: 'div.catalogue-notebook',
-					overItemCls: 'catalogue-notebook-over',
-					selectedItemCls: 'catalogue-notebook-selected'
+					itemId: 'facets',
+					cls: 'facets',
+					layout: {
+						type: 'accordion',
+						animate: false,
+						multi: true,
+						fill: false,
+						align: 'stretch',
+						titleCollapse: true,
+						hideCollapseTool: true
+					},
+					defaults: {
+						xtype: 'grid',
+						rowLines: false,
+						hideHeaders: true,
+        				selType: 'checkboxmodel',
+						columns: [{ renderer: function(value, metaData, record) {return "("+record.get('count')+") "+record.get('label')}, flex: 1 }],
+						store: {
+							xtype: 'store.json',
+							fields: [
+								{name: 'label'},
+								{name: 'count', type: 'integer'}
+							]
+						}
+					},
+					items: [{
+						title: this.localize('keywords'),
+						facet: 'facet.keywords',
+						flex: 3
+					},{
+						title: this.localize('author'),
+						facet: 'facet.author',
+						flex: 2
+					},{
+						title: this.localize('language'),
+						facet: 'facet.language',
+						flex: 1
+					},{
+						title: this.localize('license'),
+						facet: 'facet.license',
+						flex: 1
+					}]
+				},{
+					xtype: 'panel',
+					region: 'east',
+					collapsible: true,
+					collapsed: false,
+					title: this.localize('suggested'),
+					width: 250,
+					layout: 'fit',
+					items: [{
+						xtype: 'dataview',
+						padding: 10,
+						scrollable: 'vertical',
+						itemId: 'suggestedNotebooks',
+						store: this.suggestedStore,
+						tpl: this.suggestedTemplate,
+						itemSelector: 'div.catalogue-notebook',
+						overItemCls: 'catalogue-notebook-over',
+						selectedItemCls: 'catalogue-notebook-selected',
+						listeners: {
+							itemdblclick: function(view, record, el) {
+								this.fireEvent('notebookSelected', this, record.get('id'));
+							},
+							scope: this
+						}
+					}]
 				}],
+				closeAction: 'hide',
 				buttons: [{
-					text: 'Load Selected Notebook',
+					text: this.localize('cancel'),
+					ui: 'default-toolbar',
 					handler: function(but) {
-						var record = this.window.down('#catalogue').getSelection()[0]
-						if (record !== undefined) {
+						this.window.close();
+					},
+					scope: this
+				},{
+					text: this.localize('load'),
+					handler: function(but) {
+						var record = this.window.down('#catalogue').getSelection()[0];
+						if (record === undefined) {
+							record = this.window.down('#suggestedNotebooks').getSelection()[0];
+						}
+						if (record) {
 							this.fireEvent('notebookSelected', this, record.get('id'))
 						}
 					},
 					scope: this
 				}]
-			})
+			});
+			this.window.query('#facets > grid').forEach(function(facetCmp) {
+				facetCmp.getSelectionModel().on('selectionchange', this._loadFacets, this);
+			}, this);
+		} else {
+			// reset catalogue
+			this.window.query('#facets > grid').forEach(function(facetCmp) {
+				facetCmp.getStore().clearFilter();
+				facetCmp.getSelectionModel().deselectAll();
+			});
+			this.window.down('#queryfield').setValue('');
+			this.window.down('#catalogue').getSelectionModel().deselectAll();
+			this.window.down('#suggestedNotebooks').getSelectionModel().deselectAll();
+			this.store.removeAll();
 		}
+
+		if (this.suggestedStore.isLoaded() === false) {
+			this.getSuggestedNotebooks();
+		}
+
 		this.window.show();
-		this.getNotebooks();
+
+		this._loadFacets();
 	},
 
 	hideWindow: function() {
@@ -37176,19 +38245,111 @@ Ext.define('Voyant.notebook.Catalogue', {
 		}
 	},
 
-	getNotebooks(query, config) {
-		this.window.mask('Loading');
+	_getSelectedFacets: function() {
+		var facets = [];
+		this.window.query('#facets > grid').forEach(function(facetCmp) {
+			facetCmp.getSelection().forEach(function(record) {
+				facets.push([facetCmp.facet, record.get('label')]);
+			})
+		});
+		return facets;
+	},
+
+	_loadFacets: function() {
+		if (this.gettingFacets === false) {
+			this.window.down('#facets').mask('Loading');
+			this.gettingFacets = true;
+			var facetQuery = this._getSelectedFacets().map(function(f) { return f.join('=') });
+
+			var me = this;
+			Spyral.Load.trombone({
+				tool: 'notebook.CatalogueFacets',
+				query: facetQuery,
+				noCache: 1
+			}).then(function(json) {
+				json.catalogue.facets.forEach(function(facetResult) {
+					var facetCmp = me.window.query('#facets > grid[facet='+facetResult.facet+']')[0];
+					var store = facetCmp.getStore();
+					store.clearFilter();
+					if (store.getCount() === 0) {
+						store.loadRawData(facetResult.results);
+					} else {
+						var matches = [];
+						store.each(function(record) {
+							var label = record.get('label');
+							for (var i = 0; i < facetResult.results.length; i++) {
+								var result = facetResult.results[i];
+								if (result.label === label) {
+									record.set('count', result.count);
+									matches.push(label);
+									break;
+								}
+							}
+						});
+						store.filterBy(function(record) { return matches.indexOf(record.get('label')) !== -1 });
+					}
+				});
+				me.window.down('#facets').unmask();
+				me.gettingFacets = false;
+				
+				me.getNotebooks();
+			}).catch(function(err) {
+				me.window.down('#facets').unmask();
+				me.gettingFacets = false;
+			});
+		}
+	},
+
+	getNotebooks: function(queries) {
+    	if (!queries) {
+	    	queries = [];
+			var facets = this._getSelectedFacets();
+	    	facets.forEach(function(f) {
+				queries.push(f.join(':'));
+			})
+			var queryfieldstring = this.window.down('#queryfield').getValue();
+			if (queryfieldstring.trim().length > 0) {
+				queries.push(queryfieldstring);
+			}
+			return this.getNotebooks(queries);
+    	}
+		if (queries.length === 0) {
+			this.window.down('#catalogue').getSelectionModel().deselectAll();
+			this.store.removeAll();
+			return;
+		}
+
+		this.window.down('#catalogue').mask('Loading');
 		this.window.down('#catalogue').getSelectionModel().deselectAll();
-    	var me = this;
+
+		var me = this;
 		Spyral.Load.trombone({
-			tool: 'notebook.GitNotebookManager',
-			action: 'catalogue',
+			tool: 'notebook.NotebookFinder',
+			query: queries,
 			noCache: 1
 		}).then(function(json) {
-			me.window.unmask();
-			var notebooks = JSON.parse(json.notebook.data);
-			me.store.loadRawData(notebooks);
-		}).catch(function(err) {me.window.unmask()});
+			me.window.down('#catalogue').unmask();
+			me.store.loadRawData(json.catalogue.notebooks);
+			me.store.sort('modified', 'DESC');
+		}).catch(function(err) {
+			me.window.unmask()
+		});
+	},
+
+	getSuggestedNotebooks: function() {
+		var notebookIds = ['aboutspyral', 'homeALTA', 'startALTA', 'createALTA', 'smallerALTA', 'tableALTA'];
+		var query = 'id:'+notebookIds.join('|id:');
+		var me = this;
+		Spyral.Load.trombone({
+			tool: 'notebook.NotebookFinder',
+			query: query,
+			parse: false,
+			noCache: 1
+		}).then(function(json) {
+			me.suggestedStore.loadRawData(json.catalogue.notebooks);
+			me.suggestedStore.sort('modified', 'DESC');
+		}).catch(function(err) {
+		})
 	}
 });
 
@@ -37199,41 +38360,34 @@ Ext.define('Voyant.notebook.Catalogue', {
 Ext.define('Voyant.notebook.Notebook', {
 	alternateClassName: ["Notebook"],
 	extend: 'Ext.panel.Panel',
-	requires: ['Voyant.notebook.editor.CodeEditorWrapper','Voyant.notebook.editor.TextEditorWrapper','Voyant.notebook.util.Show','Voyant.panel.Cirrus','Voyant.panel.Summary','Voyant.notebook.StorageDialogs','Voyant.notebook.github.GitHubDialogs'],
-	mixins: ['Voyant.panel.Panel'],
+	requires: ['Voyant.notebook.editor.CodeEditorWrapper','Voyant.notebook.editor.TextEditorWrapper','Voyant.notebook.metadata.MetadataEditor','Voyant.notebook.StorageDialogs','Voyant.notebook.github.GitHubDialogs'],
+	mixins: ['Voyant.panel.Panel','Voyant.notebook.util.FormatConverter'],
 	alias: 'widget.notebook',
     statics: {
     	i18n: {
     		title: "Spyral",
-    		metadataEditor: "Edit Metadata",
-    		metadataTitle: "Title",
-    		metadataTip: "Edit notebook metadata.",
-    		metadataAuthor: "Author(s)",
-    		metadataKeywords: "Keywords",
-    		metadataDescription: "Description",
-    		metadataLicense: "Licence",
-    		metadataLanguage: "Language",
-    		metadataReset: "Reset",
-    		metadataSave: "Save",
-    		metadataCancel: "Cancel",
     		created: "Created",
     		modified: "Modified",
     		clickToEdit: "Click to edit",
-    		cantLoadNotebook: "Unable to load Spyral notebook:",
+    		errorLoadingNotebook: "Error loading Spyral notebook",
     		cannotLoadJson: "Unable to parse JSON input.",
     		cannotLoadJsonUnrecognized: "Unable to recognize JSON input.",
     		cannotLoadUnrecognized: "Unable to recognize input.",
+			cannotLoadNotebookId: "Unable to load the Spyral Notebook. It may no longer exist.",
     		openTitle: "Open",
     		openMsg: "Paste in Notebook ID, a URL or a Spyral data file (in HTML).",
     		exportHtmlDownload: "HTML (download)",
-    		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags."
+    		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags.",
+			metadataEditor: "Edit Metadata",
+    		metadataReset: "Reset",
+    		metadataSave: "Save",
+    		metadataCancel: "Cancel"
     	},
     	api: {
     		input: undefined,
     		inputEncodedBase64Json: undefined,
     		run: undefined
-    	},
-		currentNotebook: undefined
+    	}
     },
     config: {
         /**
@@ -37252,10 +38406,6 @@ Ext.define('Voyant.notebook.Notebook', {
     	 * @private
     	 */
     	version: "3.0",
-    	/**
-    	 * @private
-    	 */
-		currentBlock: undefined,
 		/**
 		 * @private
 		 * Which solution to use for storing notebooks, either: 'voyant' or 'github'
@@ -37263,6 +38413,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		storageSolution: 'voyant'
 	},
 	
+	metadataWindow: undefined,
 	voyantStorageDialogs: undefined,
 	githubDialogs: undefined,
 	catalogueWindow: undefined,
@@ -37273,7 +38424,6 @@ Ext.define('Voyant.notebook.Notebook', {
      * @private
      */
     constructor: function(config) {
-    	Voyant.notebook.Notebook.currentNotebook = this;
     	Ext.apply(config, {
     		title: this.localize('title'),
     	    autoScroll: true,
@@ -37426,7 +38576,11 @@ Ext.define('Voyant.notebook.Notebook', {
     			}
     		},{
     			xtype: 'container',
-    			itemId: 'cells'
+    			itemId: 'cells',
+				defaults: {
+					margin: '0 0 12 0',
+					padding: '0 0 0 0'
+				}
     		},{
     			itemId: 'spyralFooter',
     			cls: 'spyral-footer',
@@ -37453,12 +38607,14 @@ Ext.define('Voyant.notebook.Notebook', {
     			notebookWrapperMoveDown: this.notebookWrapperMoveDown,
     			notebookWrapperRemove: this.notebookWrapperRemove,
 				notebookWrapperAdd: this.notebookWrapperAdd,
-				notebookLoaded: this.autoExecuteCells,
+				notebookInitialized: this.notebookInitialized,
     			scope: this
     		}
     	})
+
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+		this.mixins['Voyant.notebook.util.FormatConverter'].constructor.apply(this, arguments);
 
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
 			listeners: {
@@ -37543,18 +38699,6 @@ Ext.define('Voyant.notebook.Notebook', {
     },
     
     init: function() {
-		// add static / global functions from Spyral
-		window.Corpus = Spyral.Corpus;
-		window.Table = Spyral.Table;
-
-		window.loadCorpus = function() {
-			return Spyral.Corpus.load.apply(Spyral.Corpus.load, arguments)
-		}
-
-		window.createTable = function() {
-			return Spyral.Table.create.apply(Spyral.Table, arguments)
-		}
-
 		window.onbeforeunload = function() {
 			if (this.getIsEdited()) {
 				return ''; // return any string to prompt the browser to warn the user they have unsaved changes
@@ -37580,11 +38724,18 @@ Ext.define('Voyant.notebook.Notebook', {
 				var spyralIdMatches = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
 				var isGithub = Ext.isDefined(queryParams.githubId);
 				if ("inputJsonArrayOfEncodedBase64" in queryParams) {
-					let json = Ext.decode(queryParams.inputJsonArrayOfEncodedBase64);
-					json.forEach(function(block) {
-						let text = decodeURIComponent(atob(block));
+					let json = Ext.decode(decodeURIComponent(atob(queryParams.inputJsonArrayOfEncodedBase64)));
+					json.forEach(function(block, index) {
+						let text = block;
 						if (text.trim().indexOf("<")==0) {
-							this.addText(text);
+							if (index === 0) {
+								// assume first text block is metadata
+								this.setMetadata(new Spyral.Metadata({
+									title: text
+								}));
+							} else {
+								this.addText(text);
+							}
 						} else {
 							this.addCode(text);
 						}
@@ -37601,6 +38752,7 @@ Ext.define('Voyant.notebook.Notebook', {
 					this.setStorageSolution('github');
 				} else {
 					this.addNew();
+					this.setIsEdited(false);
 				}
 				
 				if (isRun) {
@@ -37615,79 +38767,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		})
     },
     
-    setBlock: function(data, offset, mode, config) {
-    	data = data || "";
-    	offset = offset || 1;
-    	config = config || {};
-    	var containers = this.query("notebookeditorwrapper");
-    	var id = this.getCurrentBlock().id;
-    	var current = containers.findIndex(function(container) {return container.id==id})
-    	if (current+offset<0 || current+offset>containers.length) { // wanting to place before beginning or one beyond end
-			Ext.Msg.show({
-				title: this.localize('error'),
-				msg: this.localize('blockDoesNotExist'),
-				buttons: Ext.MessageBox.OK,
-				icon: Ext.MessageBox.ERROR
-			});
-			return undefined
-    	}
-    	
-    	// I can't seem to set the content, so we'll go nuclear and remove the block
-    	if (containers[current+offset]) {
-        	var cells = this.getComponent("cells");
-    		cells.remove(containers[current+offset]);
-    	}
-    	return this.addCode(Object.assign({},{
-    		input: data,
-    		mode: mode || "text"
-    	}, config), current+offset);
-    },
-    getBlock: function(offset, config) {
-    	offset = offset || 0;
-    	config = config || {};
-    	var containers = this.query("notebookcodeeditorwrapper");
-    	var id = this.getCurrentBlock().id;
-    	var current = containers.findIndex(function(container) {return container.id==id})
-    	if (current+offset<0 || current+offset>containers.length-1) {
-    		if ("failQuietly" in config && config.failQuietly) {}
-    		else {
-    			Ext.Msg.show({
-    				title: this.localize('error'),
-    				msg: this.localize('blockDoesNotExist'),
-    				buttons: Ext.MessageBox.OK,
-    				icon: Ext.MessageBox.ERROR
-    			});
-    		}
-			return undefined;
-    	}
-    	content = containers[current+offset].getContent();
-    	return content.input;
-//    	debugger
-//    	var mode = containers[current+offset].editor.getMode().split("/").pop();
-//    	if (content.mode=="xml") {
-//    		return new DOMParser().parseFromString(content.input, 'text/xml')
-//    	} else if (content.mode=="json") {
-//    		return JSON.parse(content.input);
-//    	} else if (content.mode=="html") {
-//    		return new DOMParser().parseFromString(content.input, 'text/html')
-//    	} else {
-//    		return content.input;
-//    	}
-    },
-    
-    addNew: function() {
-		this.setMetadata(new Spyral.Metadata({
-			title: "<h1>Spyral Notebook</h1>"
-		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
-		var code = this.addCode('');
-		Ext.defer(function() {
-			code.run();
-		}, 100, this);
-    },
     
     clear: function() {
-    	this.setMetadata(new Spyral.Metadata());
+		this.setMetadata(new Spyral.Metadata());
+		this.voyantStorageDialogs.reset();
     	var cells = this.getComponent("cells");
     	cells.removeAll();
 	},
@@ -37696,18 +38779,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		this.getMetadata().setDateNow("modified");
 
-		const data = this.generateExportHtml();
-		const metadata = this.getMetadata().clone(); // use a clone so that altering title and description doesn't affect original
+		var data = this.generateExportJson();
+		var metadata = this.generateExportMetadata(this.getMetadata());
 
-		// get text content of title and description
-		const textContainer = document.createElement('div');
-		textContainer.innerHTML = metadata.title;
-		metadata.title = textContainer.textContent;
-		textContainer.innerHTML = metadata.description;
-		metadata.description = textContainer.textContent;
-		textContainer.remove();
-
-		const storageSolution = this.getStorageSolution();
+		var storageSolution = this.getStorageSolution();
 		
 		if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.voyantStorageDialogs.getAccessCode() !== undefined) {
 			this.voyantStorageDialogs.doSave({
@@ -37725,54 +38800,91 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 	},
 	
+	// override toolable method
+	getExportUrl: function(asTool) {
+		return location.href; // we just provide the current URL
+	},
+	
     loadFromString: function(text) {
     	text = text.trim();
-		if (text.indexOf("http")==0) {
+		if (text.indexOf("http") === 0) {
 			this.loadFromUrl(text);
-		} else if (text.indexOf("{")==0) { // old format?
-			var json;
-			try {
-				json = JSON.parse(text)
-			} catch(e) {
-				return Ext.Msg.show({
-					title: this.localize('error'),
-					msg: this.localize('cannotLoadJson')+"<br><pre style='color: red'>"+e+"</pre>",
-					buttons: Ext.MessageBox.OK,
-					icon: Ext.MessageBox.ERROR
-				});
-			}
-			if (!json.metadata || !json.blocks) {
-				return Ext.Msg.show({
-					title: this.localize('error'),
-					msg: this.localize('cannotLoadJsonUnrecognized'),
-					buttons: Ext.MessageBox.OK,
-					icon: Ext.MessageBox.ERROR
-				});
-			}
-			json.blocks.forEach(function(block) {
-        		if (Ext.isString(block) && block!='') {this.addCode({input: block});}
-        		else if (block.input) {
-            		if (block.type=='text') {this.addText(block);}
-            		else {
-            			this.addCode(block);
-            		}
-        		}
-			}, this);
+		} else if (text.indexOf("{") === 0) {
+			this.loadFromJson(text);
 		} else if (/^[\w-_]+$/.test(text)) {
 			this.loadFromId(text)
-		}
-		else if (text.indexOf("<")!==0 || text.indexOf("spyral")==-1) {
+		} else if (text.indexOf("<") !== 0 || text.indexOf("spyral") === -1) {
 			return Ext.Msg.show({
-				title: this.localize('error'),
+				title: this.localize('errorLoadingNotebook'),
 				msg: this.localize('cannotLoadUnrecognized'),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.ERROR
 			});
 		} else {
-			this.loadFromHtmlString(text);
+			this.importFromHtml(text); // old format
 		}
 		return true;
+    },
 
+	loadFromJson: function(text) {
+		var json;
+		try {
+			json = JSON.parse(text)
+		} catch(e) {
+			return Ext.Msg.show({
+				title: this.localize('errorLoadingNotebook'),
+				msg: this.localize('cannotLoadJson')+"<br><pre style='color: red'>"+e+"</pre>",
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		}
+
+		if (!json.cells || !json.metadata) {
+			return Ext.Msg.show({
+				title: this.localize('errorLoadingNotebook'),
+				msg: this.localize('cannotLoadJsonUnrecognized'),
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		}
+
+		this.setMetadata(new Spyral.Metadata(json.metadata));
+
+		var cells2Init = [];
+		json.cells.forEach(function(cell) {
+			var cell2Init = undefined;
+			switch(cell.type) {
+				case 'text':
+					this.addText(cell.content, undefined, cell.cellId);
+					break;
+				case 'code':
+					cell2Init = this.addCode(cell.content, undefined, cell.cellId);
+					break;
+				case 'data':
+					cell2Init = this.addData(cell.content, undefined, cell.cellId);
+					break;
+			}
+			if (cell2Init) {
+				cell2Init.on('initialized', function() {
+					var cellIndex = cells2Init.indexOf(cell2Init);
+					if (cellIndex !== -1) {
+						cells2Init.splice(cellIndex, 1);
+						if (cells2Init.length === 0) {
+							this.fireEvent('notebookInitialized', this);
+						}
+					} else {
+						console.error('unknown cell initialized', cell2Init);
+					}
+				}.bind(this));
+				cells2Init.push(cell2Init);
+			}
+		}, this);
+	},
+
+	loadFromUrl: function(url, run) {
+    	var me = this;
+    	// load as string and not HTML in case it's an older JSON format
+    	Spyral.Load.text(url).then(function(text) {me.loadFromString(text)})
     },
     
     loadFromId: function(id) {
@@ -37785,97 +38897,37 @@ Ext.define('Voyant.notebook.Notebook', {
 	    	 noCache: 1
     	}).then(function(json) {
     		me.unmask();
-    		me.loadFromString(json.notebook.data); // could be older JSON format
-			if (json.notebook.id && json.notebook.id!=me.getNotebookId()) {
+    		me.loadFromString(json.notebook.data);
+			if (json.notebook.id && json.notebook.id !== me.getNotebookId()) {
 				me.setNotebookId(json.notebook.id);
 			}
 	    	me.setIsEdited(false);
-    	}).catch(function(err) {me.unmask()})
-    },
-    
-    loadFromHtmlString: function(html) {
-    	var parser = new DOMParser();
-    	var dom = parser.parseFromString(html, 'text/html');
-    	this.setMetadata(new Spyral.Metadata(dom))
-    	var hasDomError = false;
-    	dom.querySelectorAll("section.notebook-editor-wrapper").forEach(function(section) {
-    		var classes = section.classList;
-    		if (classes.contains("notebooktexteditorwrapper")) {
-    			var editor = section.querySelector(".notebook-text-editor").innerHTML;
-    			this.addText(editor, undefined, section.id);
-    		} else if (classes.contains("notebookcodeeditorwrapper")) {
-    			var inputEl = section.querySelector(".notebook-code-editor-raw");
-    			var typeRe = /\beditor-mode-(\w+)\b/.exec(inputEl.className);
-    			var editorType = typeRe[1];
-    			
-    			/* in an ideal world we could use inputEl.innerHTML to get the contents
-    			 * except that since it's in a parsed DOM it's already been transformed
-    			 *  significantly. For instance, all >, <, and & character appear in the
-    			 * html entities form (which breaks things like && () => {}). You also
-    			 * get strange artefacts like if you have "<div>" in your code it may add
-    			 * </div> to the end of the innerHTML (to make sure tags are balanced).
-    			 * and of course textContent or innerText won't work because that will
-    			 * strip any of the HTML formatting out. What's left is to use the parsing
-    			 * to ensure the order and to properly grab the IDs and then to do character
-    			 * searches on the original string. */
-    			var secPos = html.indexOf("<section id='"+section.id+"' class='notebook-editor-wrapper notebookcodeeditorwrapper'>");
-				var startPre = html.indexOf("<pre class='notebook-code-editor-raw editor-mode-", secPos);
-    			startPre = html.indexOf(">", startPre)+1; // add the length of the string
-    			var endPre = html.indexOf("</pre>\n<div class='notebook-code-results", startPre);
-    			
-    			// check if we have valid values
-    			if (secPos===-1 || startPre === -1 || endPre === -1) {
-    				hasDomError = true;
-    				// this might work, unless the js code includes HTML
-    				input = editorType === "javascript" ? inputEl.innerText : inputEl.innerHTML;
-    				debugger
-    			} else {
-        			input = html.substring(startPre, endPre);
-    			}
-				var autoexec = /\bautoexec\b/.exec(inputEl.className) !== null;
-				var output = section.querySelector(".notebook-code-results").innerHTML;
-				var expandResults = section.querySelector(".notebook-code-results").classList.contains('collapsed') === false;
-				var ui = section.querySelector(".notebook-code-ui");
-				if (ui !== null) {
-					ui = ui.innerHTML;
-				} else {
-					ui = undefined;
-				}
-    			this.addCode({
-    				input: input,
-					output: output,
-					expandResults: expandResults,
-					uiHtml: ui,
-					mode: editorType,
-					autoExecute: autoexec,
-    			}, undefined, section.id)
-    		}
-		}, this);
-		
-    	if (hasDomError) {
-			this.showError(this.localize("errorParsingDomInput"))
-    	}
-    	
-		this.fireEvent('notebookLoaded');
+    	}).catch(function(err) {
+			me.unmask();
+			Ext.Msg.show({
+				title: me.localize('errorLoadingNotebook'),
+				msg: me.localize('cannotLoadNotebookId'),
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		});
     },
     
     runUntil: function(upToCmp) {
     	var containers = [];
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+    	Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
 			containers.push(item);
-			item.clearResults();
-    		if (upToCmp && upToCmp==item) {return false;}
+    		if (upToCmp && upToCmp===item) {return false;}
     	}, this);
     	this._run(containers);
     },
     
     runFrom: function(fromCmp) {
     	var containers = [], matched = false;
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
-    		if (fromCmp && fromCmp==item) {matched=true;}
+    	Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
+    		if (fromCmp && fromCmp===item) {matched=true;}
     		if (matched) {
     			containers.push(item);
-    			item.clearResults();
     		}
     	}, this);
     	this._run(containers);
@@ -37883,50 +38935,109 @@ Ext.define('Voyant.notebook.Notebook', {
     
     runAll: function() {
     	var containers = [];
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
+    	Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
 			containers.push(item);
-			item.clearResults();
     	}, this);
     	this._run(containers);
     },
     
-    _run: function(containers) {
+    _run: function(containers, prevVars) {
     	if (containers.length>0) {
     		var container = containers.shift();
-    		var result = container.run(true);
-			if (result!==undefined && result.then && result.catch && result.finally) {
-				var me = this;
-				result.then(function() {
-		        	Ext.defer(me._run, 100, me, [containers]);
-				})
-			} else {
-	        	Ext.defer(this._run, 100, this, [containers]);
-			}
+			var me = this;
+    		container.run(true, prevVars).then(function(result) {
+				// check for and remove older duplicates
+				var newVars = container.getVariables();
+				if (prevVars === undefined) {
+					prevVars = [];
+				}
+				newVars.forEach(function(newVar) {
+					for (var i = 0; i < prevVars.length; i++) {
+						var prevVar = prevVars[i];
+						if (newVar.name === prevVar.name) {
+							// console.log('removing duplicate var:', prevVar.name);
+							prevVars.splice(i, 1);
+							break;
+						}
+					}
+				});
+				prevVars = prevVars.concat(newVars);
+				
+				Ext.defer(me._run, 100, me, [containers, prevVars]);
+			}, function(error) {
+				// console.log('nb error', error);
+			});
     	}
 	},
-	
-	autoExecuteCells: function() {
-		var containers = [];
-    	Ext.Array.each(this.query("notebookcodeeditorwrapper"), function(item) {
-			if (item.getAutoExecute()) {
-				containers.push(item);
+
+	notebookInitialized: function() {
+		// run all data cells
+		// var containers = [];
+    	// Ext.Array.each(this.query("notebookdatawrapper"), function(item) {
+		// 	containers.push(item);
+    	// }, this);
+    	// this._run(containers, []);
+	},
+
+	getNotebookVariables: function(upToCmp) {
+		var variables = [];
+
+		Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
+			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
+
+			if (item.getIsRun()) {
+				var newVars = item.getVariables();
+				newVars.forEach(function(newVar) {
+					for (var i = 0; i < variables.length; i++) {
+						var prevVar = variables[i];
+						if (newVar.name === prevVar.name) {
+							variables.splice(i, 1); // remove older duplicate var
+							break;
+						}
+					}
+				});
+
+				variables = variables.concat(newVars);
 			}
 		});
-		this._run(containers);
+
+		return variables;
 	},
-    
-    loadFromUrl: function(url, run) {
-    	var me = this;
-    	// load as string and not HTML in case it's an older JSON format
-    	Spyral.Load.text(url).then(function(text) {me.loadFromString(text)})
-    },
+
+	getNotebookBlocks: function(upToCmp) {
+		var blocks = [];
+
+		Ext.Array.each(this.query("notebookrunnableeditorwrapper"), function(item) {
+			if (upToCmp && upToCmp===item) {return false;} // NB upToCmp exits earlier here than in runUntil
+
+			blocks.push(item.getInput());
+		});
+
+		return blocks;
+	},
+
+
+	
+	addNew: function() {
+		this.setMetadata(new Spyral.Metadata({
+			title: "<h1>Spyral Notebook</h1>"
+		}));
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addCode('');
+	},
     
     addText: function(block, order, cellId) {
     	return this._add(block, order, 'notebooktexteditorwrapper', cellId);
     },
  
     addCode: function(block, order, cellId, config) {
-    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, {docs: this.spyralTernDocs});
+		config = config || {};
+		config.docs = this.spyralTernDocs;
+    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
+    },
+
+	addData: function(block, order, cellId, config) {
+    	return this._add(block, order, 'notebookdatawrapper', cellId, config);
     },
     
     _add: function(block, order, xtype, cellId, config) {
@@ -37942,13 +39053,7 @@ Ext.define('Voyant.notebook.Notebook', {
     		cellId: cellId
     	}, config))
     },
-    
-    updateMetadata: function() {
-    	var metadata = this.getMetadata();
-    	this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
-    	this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
-    	this.setIsEdited(true);
-    },
+
     
 	notebookWrapperMoveUp: function(wrapper) {
 		var cells = this.getComponent("cells");
@@ -37996,12 +39101,11 @@ Ext.define('Voyant.notebook.Notebook', {
 	notebookWrapperAdd: function(wrapper, e) {
 		var cells = this.getComponent("cells");
 		var i = cells.items.findIndex('id', wrapper.id);
-		var xtype = wrapper.getXType(wrapper);
+		var runnable = wrapper.getXTypes(wrapper).indexOf('notebookrunnableeditorwrapper') !== -1;
 		var cmp;
-		if ((xtype=='notebooktexteditorwrapper' && !e.hasModifier()) || (xtype=='notebookcodeeditorwrapper' && e.hasModifier())) {
+		if ((!runnable && !e.hasModifier()) || (runnable && e.hasModifier())) {
 			cmp = this.addCode('',i+1);
-		}
-		else {
+		} else {
 			cmp = this.addText('',i+1);
 		}
 		cmp.getTargetEl().scrollIntoView(this.getTargetEl(), null, true, true);
@@ -38018,7 +39122,7 @@ Ext.define('Voyant.notebook.Notebook', {
     setIsEdited: function(val) {
     	// TODO: perhaps setup autosave
     	if (this.getHeader()) {
-        	this.getHeader().down("#saveItTool").setDisabled(val==false);
+        	this.getHeader().down("#saveItTool").setDisabled(val === false);
         	if (!val) {
         		this.query("notebookcodeeditor").forEach(function(editor) {
         			editor.setIsChangeRegistered(false);
@@ -38038,340 +39142,70 @@ Ext.define('Voyant.notebook.Notebook', {
     			let url = this.getBaseUrl()+"spyral/"+id+"/";
     			window.history.pushState({
 					url: url
-				}, "Spyral Notebook: "+id, url);
+				}, '', url);
     		}
     	}
 		this.callParent(arguments);
     },
-    
-    generateExportHtml: function() {
-    	var metadata = this.getMetadata();
-        var out = "<!DOCTYPE HTML>\n<html>\n<head>\n\t<meta charset='UTF-8'>\n"+
-        	metadata.getHeaders();
-        var aceChromeEl = document.getElementById("ace-chrome");
-        if (aceChromeEl) {out+=aceChromeEl.outerHTML+"\n"}
-        out += document.getElementById("voyant-notebooks-styles").outerHTML+"\n"+
-	        "<script> // this script checks to see if embedded tools seem to be available\n"+
-	    	"window.addEventListener('load', function() {\n"+
-	    		"var hostnames = {}, warned = false;\n"+
-	    		"document.querySelectorAll('iframe').forEach(function(iframeEl) {\n"+
-	    			"let url = new URL(iframeEl.src);\n"+
-	    			"if (!(url.hostname in hostnames) && !warned) {\n"+
-	    				"hostnames[url.hostname] = true; // mark as fetched\n"+
-	    				"fetch(url).catch(response => {\n"+
-	    					"warned = true;\n"+
-	    					"alert('This notebook seems to contain one ore more tools that may not be able to load. Possible reasons include a server no longer being accessible (especially if the notebook was generated from a local server), or because of security restrictions.'+url)\n"+
-	    				"})\n"+
-	    			"}\n"+
-	    		"})\n"+
-	    	"})\n"+
-	    	"</script>\n"+
-        	"</head>\n<body class='exported-notebook'>"+
-        	this.getHeaderHtml()+
-        	"<article class='spyralArticle'>";
-		this.getComponent("cells").items.each(function(item, i) {
-    		var type = item.isXType('notebookcodeeditorwrapper') ? 'code' : 'text';
-    		var content = item.getContent();
-    		var counter = item.down("notebookwrappercounter");
-			// reminder that the parsing in of notebooks depends on the stability of this syntax
-    		out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
-    			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
-    		if (type==='code') {
-    			var mode = item.down("notebookcodeeditor").getMode();
-				mode = mode.substring(mode.lastIndexOf("/")+1);
+		
+	updateMetadata: function() {
+		var metadata = this.getMetadata();
+		document.title = metadata.title.replace(/<\/?\w+.*?>/g, '')+' - Spyral';
 
-				var expandResults = item.getExpandResults();
-				
-				var autoexec = item.getAutoExecute() ? 'autoexec' : '';
-				
-				var codeTextLayer = item.getTargetEl().query('.ace_text-layer')[0].cloneNode(true);
-				codeTextLayer.style.setProperty('height', 'auto'); // fix for very large height set by ace
-				// reminder that the parsing in of notebooks depends on the stability of this syntax
-    			out+="<div class='notebook-code-editor ace-chrome'>\n"+codeTextLayer.outerHTML+"\n</div>\n"+
-    				"<pre class='notebook-code-editor-raw editor-mode-"+mode+" "+autoexec+"'>"+content.input+"</pre>\n"+
-					"<div class='notebook-code-results"+(expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
-				if (content.ui !== undefined) {
-					out += "<div class='notebook-code-ui'>\n"+content.ui+"\n</div>\n";
-				}
-    		} else {
-    			out+="<div class='notebook-text-editor'>"+content+"</div>\n";
-    		}
-    		out+="</section>\n"
-    	})
-        out += "</article>\n<footer class='spyral-footer'>"+this.getInnerFooterHtml()+"</footer></body>\n</html>";
-    	return out;
-    },
-    
-    getHeaderHtml: function() {
-    	return "<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n";
-    },
-    
-    getInnerHeaderHtml: function() {
-    	let html = "";
-    	if (this.getMetadata().title) {
-        	html += "<div class='title'>"+this.getMetadata().title+"</div>";
-    	}
-    	if (this.getMetadata().author) {
-        	html += "<div class='author'>"+this.getMetadata().author+"</div>";
-    	}
-    	return html;
-    },
-    
-    getInnerFooterHtml: function() {
-    	var text = "", metadata = this.getMetadata();
-    	if (metadata.author || metadata.license) {
-        	var text = "&copy;";
-        	if (metadata.author) {text+=" "+metadata.author;}
-        	if (metadata.license) {text+=" ("+metadata.license+")";}
-    		text += ". ";
-    	}
-    	if (metadata.created || metadata.modified) {
-    		var created = metadata.shortDate("created"), modified = metadata.shortDate("modified");
-    		if (created) {
-        		text += this.localize("created")+" "+created+"."
-    		}
-    		if (modified && created!=modified) {
-        		text += this.localize("modified")+" "+modified+"."
-    		}
-    		
-    	}
-    	return text;
-    },
-    
-    getExtraExportItems: function() {
-    	return [{
-       		inputValue: 'html',
-       		boxLabel: this.localize('exportHtml')
-       	},{
-       		inputValue: 'htmlDownload',
-       		boxLabel: '<a href="#">'+this.localize('exportHtmlDownload')+'</a>',
-       		listeners: {
-       			afterrender: function(cmp) {
-       		    	var file, name = (this.getNotebookId() || "spyral")+ ".html",
-       	    		data = this.generateExportHtml(),
-       	    		properties = {type: 'text/html'};
-	       	    	try {
-	       	    	  file = new File([data], name, properties);
-	       	    	} catch (e) {
-	       	    	  file = new Blob([data], properties);
-	       	    	}
-	       	    	
-       	    		var url = URL.createObjectURL(file);
-       	    		var a = cmp.boxLabelEl.dom.querySelector("a");
-       	    		a.setAttribute("download", name);
-       	    		a.setAttribute("href", url);
-       			},
-       			scope: this
-       		},
-       		handler: function(cmp) {
-       			cmp.boxLabelEl.dom.querySelector("a").click();
-       			cmp.up("window").close();
-       		}
-       	}]
-    },
-    
-    exportHtml: function() {
-    	var out = this.generateExportHtml();
-        var myWindow = window.open();
-        myWindow.document.write(out);
-        myWindow.document.close();
-        myWindow.focus();
-    },
-	
-	// TODO not currently being used
-    exportHtmlDownload: function() {
-    	// https://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file
-    	var file,
-    		data = this.generateExportHtml(),
-    		properties = {type: 'text/plain'}; // Specify the file's mime-type.
-    	try {
-    	  file = new File([data], "files.txt", properties);
-    	} catch (e) {
-    	  file = new Blob([data], properties);
-    	}
-    	var url = URL.createObjectURL(file);
-    	this.getApplication().openUrl(url)
-    },
-    
-	getExportUrl: function(asTool) {
-		return location.href; // we just provide the current URL
+		this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
+		this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
+
+		this.setIsEdited(true);
 	},
 
-    showMetadataEditor: function() {
-    	var me = this;
-    	var metadata = this.getMetadata();
-		Ext.create('Ext.window.Window', {
-    	    title: this.localize('metadataEditor'),
-    	    autoScroll: true,
-    	    items: [{
-    	    	xtype: 'form',
-    	    	items: {
-    	    	    bodyPadding: 5,
-    	    	    width: 600,
-
-    	    	    // Fields will be arranged vertically, stretched to full width
-    	    	    layout: 'anchor',
-    	    	    defaults: {
-    	    	        anchor: '100%',
-    	    	        labelAlign: "right"
-    	    	    },
-
-    	    	    // The fields
-    	    	    defaultType: 'textfield',
-    	    	    items: [{
-    	    	        fieldLabel: this.localize("metadataTitle"),
-    	    	        xtype: 'htmleditor',
-    	    	        name: 'title',
-    	    	        value: metadata.title,
-    	    	        height: 100,
-    	    	        enableAlignments : false,
-    	    	        enableColors : false,
-    	    	        enableFont : false,
-    	    	        enableFontSize : false,
-    	    	        enableLinks : false,
-    	    	        enableLists : false
-    	    	    },{
-    	    	        fieldLabel: this.localize("metadataAuthor"),
-    	    	        name: 'author',
-    	    	        value: metadata.author
-    	    	    },{
-    	    	        fieldLabel: this.localize("metadataKeywords"),
-    	    	        name: 'keywords',
-    	    	        value: metadata.keywords
-    	    	    },{
-    	    	    	xtype: 'htmleditor',
-    	    	        fieldLabel: this.localize("metadataDescription"),
-    	    	        name: 'description',
-    	    	        height: 100,
-    	    	        value: metadata.description,
-    	    	        enableAlignments : false,
-    	    	        enableColors : false,
-    	    	        enableFont : false
-    	    	    },{
-    	    	    	xtype: 'combo',
-    	    	        fieldLabel: this.localize("metadataLicense"),
-    	    	        name: 'license',
-    	    	        value: metadata.license || "Creative Commons Attribution (CC BY)",
-    	    	        store: {
-    	    	        	fields: ['text'],
-    	    	        	data: [
-    	        	        	{"text": "Apache License 2.0"},
-    	        	        	{"text": "BSD 3-Clause \"New\" or \"Revised\" license"},
-    	        	        	{"text": "BSD 2-Clause \"Simplified\" or \"FreeBSD\" license"},
-    	        	        	{"text": "Creative Commons Attribution (CC BY)"},
-    	        	        	{"text": "Creative Commons Attribution-ShareAlike (CC BY-SA)"},
-    	        	        	{"text": "Creative Commons Zero (CC0)"},
-    	        	        	{"text": "GNU General Public License (GPL)"},
-    	        	        	{"text": "GNU Library or \"Lesser\" General Public License (LGPL)"},
-    	        	        	{"text": "MIT license"},
-    	        	        	{"text": "Mozilla Public License 2.0"},
-    	        	        	{"text": "Common Development and Distribution License"},
-    	        	        	{"text": "Eclipse Public License"}
-    	        	        ]
-    	    	        }
-    	    	    },{
-    	    	    	xtype: 'combo',
-    	    	    	name: 'language',
-    	    	    	value: metadata.language || "English",
-    	    	        fieldLabel: this.localize("metadataLanguage"),
-    	    	        store: {
-    	    	        	fields: ['text'],
-    	    	        	data: [
-    	    	        		{"text": "Bengali"},
-    	    	        		{"text": "Bhojpuri"},
-    	    	        		{"text": "Egyptian Arabic"},
-    	    	        		{"text": "English"},
-    	    	        		{"text": "French"},
-    	    	        		{"text": "German"},
-    	    	        		{"text": "Gujarati"},
-    	    	        		{"text": "Hausa"},
-    	    	        		{"text": "Hindi"},
-    	    	        		{"text": "Indonesian"},
-    	    	        		{"text": "Italian"},
-    	    	        		{"text": "Japanese"},
-    	    	        		{"text": "Javanese"},
-    	    	        		{"text": "Kannada"},
-    	    	        		{"text": "Korean"},
-    	    	        		{"text": "Mandarin"},
-    	    	        		{"text": "Marathi"},
-    	    	        		{"text": "Persian"},
-    	    	        		{"text": "Portuguese"},
-    	    	        		{"text": "Russian"},
-    	    	        		{"text": "Southern Min"},
-    	    	        		{"text": "Spanish"},
-    	    	        		{"text": "Standard Arabic"},
-    	    	        		{"text": "Swahili"},
-    	    	        		{"text": "Tamil"},
-    	    	        		{"text": "Telugu"},
-    	    	        		{"text": "Thai"},
-    	    	        		{"text": "Turkish"},
-    	    	        		{"text": "Urdu"},
-    	    	        		{"text": "Vietnamese"},
-    	    	        		{"text": "Western Punjabi"},
-    	    	        		{"text": "Wu Chinese"},
-    	    	        		{"text": "Yue Chinese"}
-    	        	        ]
-    	    	        }
-    	    	    }]
-    	    		
-    	    	}
-    	    }],
-
-    	    
-    	    // Reset and Submit buttons
-    	    buttons: [{
-    	        text: this.localize('metadataCancel'),
-	            ui: 'default-toolbar',
-    	        handler: function() {
-    	            this.up('window').close();
-    	        }
-    	    },{
-    	        text: this.localize('metadataReset'),
-	            ui: 'default-toolbar',
-    	        handler: function() {
-    	            this.up('window').down('form').getForm().reset();
-    	        }
-    	    }, " ", {
-    	        text: this.localize('metadataSave'),
-    	        handler: function() {
-    	            var form = this.up('window').down('form').getForm();
-    	            metadata.set(form.getValues())
-    	            me.updateMetadata();
-    	            this.up('window').close();
-    	        }
-    	    }]
-    	    
-    	}).show();
-	}
-	
-	/*
-	showOptionsClick: function(panel) {
-		let me = panel;
-		if (me.optionsWin === undefined) {
-			me.optionsWin = Ext.create('Ext.window.Window', {
-				title: me.localize('gearWinTitle'),
-    			closeAction: 'hide',
-				layout: 'fit',
-				width: 400,
-				height: 300,
-				bodyPadding: 10,
-				items: {
-				},
-    			buttons: [{
-    				text: me.localize('ok'),
-    				handler: function(button, event) {
-    				}
-    			},{
-    				text: me.localize('cancel'),
-    				handler: function(button, event) {
-    					button.findParentByType('window').hide();
-    				}
-    			}]
+	showMetadataEditor: function() {
+		if (this.metadataWindow === undefined) {
+			var me = this;
+			
+			this.metadataEditor = Ext.create('widget.metadataeditor', {
+				anchor: '100%'
 			});
+			this.metadataWindow = Ext.create('Ext.window.Window', {
+				title: this.localize('metadataEditor'),
+				autoScroll: true,
+				width: 600,
+				closeAction: 'hide',
+				layout: 'anchor',
+				items: this.metadataEditor,
+				buttons: [{
+					text: this.localize('metadataCancel'),
+					ui: 'default-toolbar',
+					handler: function() {
+						this.up('window').close();
+					}
+				},{
+					text: this.localize('metadataReset'),
+					ui: 'default-toolbar',
+					handler: function() {
+						me.metadataEditor.reset();
+					}
+				}, " ", {
+					text: this.localize('metadataSave'),
+					handler: function() {
+						var form = me.metadataEditor.getForm();
+						me.getMetadata().set(form.getValues());
+						me.updateMetadata();
+						this.up('window').close();
+					}
+				}]
+			})
 		}
-		me.optionsWin.show();
+
+		var metadata = this.getMetadata();
+		if (metadata === undefined) {
+			metadata = new Spyral.Metadata();
+			this.setMetadata(metadata);
+		}
+
+		this.metadataEditor.loadMetadata(metadata);
+
+		this.metadataWindow.show();
 	}
-	*/
 });
 Ext.define('Voyant.VoyantApp', {
 	
@@ -38532,6 +39366,8 @@ Ext.define('Voyant.VoyantApp', {
 				message: config.getMsg()+"<p class='error'>\n"+config.getError()+" … "+
 					"<a href='#' onclick=\"window.open('').document.write(unescape('<pre>"+escape(config.getDetails())+"</pre>')); return false;\">more</a></p>"
 			}
+		} else if (config instanceof Ext.data.operation.Operation) {
+			return this.showError(Ext.create("Voyant.util.ResponseError", config.getError()))
 		} else {
 			if (Ext.isString(config)) {
 				config = {message: config}
@@ -38594,7 +39430,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     
     name: 'VoyantCorpusApp',
 
-    requires: ['Voyant.panel.CorpusSet','Voyant.data.model.Corpus','Voyant.panel.VoyantHeader', 'Voyant.panel.VoyantFooter', 'Voyant.panel.CorpusCreator', 'Voyant.panel.Cirrus', 'Voyant.panel.Summary', 'Voyant.panel.DreamScape', 'Voyant.panel.CorpusTerms', 'Voyant.panel.Reader', 'Voyant.panel.Documents', 'Voyant.panel.Trends', 'Voyant.panel.Contexts', 'Voyant.panel.DocumentTerms','Voyant.panel.CorpusCollocates','Voyant.panel.CollocatesGraph','Voyant.panel.Phrases','Voyant.panel.ScatterPlot','Voyant.panel.TopicContexts','Voyant.panel.TermsRadio','Voyant.panel.TermsBerry'],
+    requires: ['Voyant.panel.CorpusSet','Voyant.data.model.Corpus','Voyant.panel.VoyantHeader', 'Voyant.panel.VoyantFooter', 'Voyant.panel.CorpusCreator', 'Voyant.panel.Cirrus', 'Voyant.panel.Summary', 'Voyant.panel.DreamScape', 'Voyant.panel.CorpusTerms', 'Voyant.panel.Reader', 'Voyant.panel.Documents', 'Voyant.panel.Trends', 'Voyant.panel.Contexts', 'Voyant.panel.DocumentTerms','Voyant.panel.CorpusCollocates','Voyant.panel.CollocatesGraph','Voyant.panel.Phrases','Voyant.panel.ScatterPlot','Voyant.panel.TopicContexts','Voyant.panel.TermsRadio','Voyant.panel.TermsBerry', 'Voyant.panel.Embedder'],
     
     statics: {
     	i18n: {
@@ -38632,7 +39468,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 			
 			i18n: 'moreToolsTypeOther',
 			glyph: 'xf035@FontAwesome',
-			items: ['reader','summary','veliza']
+			items: ['reader','summary','veliza','embedder']
     	}]
     },
     
@@ -38843,57 +39679,15 @@ Ext.define('Voyant.VoyantCorpusApp', {
 	},
 	
 	loadCategoryData: function(id) {
-		var dfd = new Ext.Deferred();
-
-		Ext.Ajax.request({
-			url: Voyant.application.getTromboneUrl(),
-			params: {
-				tool: 'resource.StoredCategories',
-				retrieveResourceId: id,
-				failQuietly: false,
-				corpus: this.getCorpus() ? this.getCorpus().getId() : undefined
-			}
-		}).then(function(response) {
-			var json = Ext.decode(response.responseText);
-			var id = json.storedCategories.id;
-			var value = json.storedCategories.resource;
-			if (value.length === 0) {
-				dfd.reject();
-			} else {
-				value = Ext.decode(value);
-				
-				this.getCategoriesManager()._categories = value.categories;
-				this.getCategoriesManager()._features = value.features;
-				
-				dfd.resolve(value);
-			}
-		}, function() {
-			this.showError("Unable to load categories data: "+id);
-			dfd.reject();
-		}, null, this);
-		
-		return dfd.promise;
+		return this.getCategoriesManager().load(id, {
+			trombone: Voyant.application.getTromboneUrl()
+		});
 	},
 
 	saveCategoryData: function(data) {
-		var dfd = new Ext.Deferred();
-		
-		var dataString = Ext.encode(data);
-		Ext.Ajax.request({
-			url: Voyant.application.getTromboneUrl(),
-			params: {
-				tool: 'resource.StoredResource',
-				storeResource: dataString
-			}
-		}).then(function(response) {
-			var json = Ext.util.JSON.decode(response.responseText);
-			var id = json.storedResource.id;
-			dfd.resolve(id);
-		}, function(response) {
-			dfd.reject();
+		return this.getCategoriesManager().save({}, {
+			trombone: Voyant.application.getTromboneUrl()
 		});
-		
-		return dfd.promise;
 	},
     
     listeners: {
@@ -38902,7 +39696,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     		
     		// let's load the categories based on the corpus
         	if (this.getApiParam("categories")) {
-				this.loadCategoryData(this.getApiParam("categories")).then(function(a,b,c) {
+				this.loadCategoryData(this.getApiParam("categories")).then(function() {
 					// assign colors
 					for (var category in this.getCategoriesManager().getCategories()) {
 						var color = this.getCategoriesManager().getCategoryFeature(category, 'color');
@@ -38914,7 +39708,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 							}
 						}
 					}
-				}, null, null, this)
+				}.bind(this));
         	}    	
 
     		
@@ -39179,7 +39973,7 @@ Ext.define('Voyant.VoyantDocumentToolsetApp', {
 });
 Ext.define('Voyant.VoyantNotebookApp', {
 	extend : 'Voyant.VoyantApp',
-	requires: ['Voyant.panel.VoyantFooter','Voyant.notebook.Notebook','Voyant.data.model.Corpus','Voyant.notebook.util.Show'],
+	requires: ['Voyant.panel.VoyantFooter','Voyant.notebook.Notebook','Voyant.data.model.Corpus'],
 	name : 'VoyantNotebookApp',
 	launch: function() {
 		Ext.create('Ext.container.Viewport', {
