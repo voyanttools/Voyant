@@ -182,7 +182,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
             	            	var form = filefield.up('form').getForm();
             	            	if (form.isValid()) {
             	            		var files = filefield.fileInputEl.dom.files;
-            	            		var badFilesRe = /\.(png|gif|jpe?g|xls|mp[234a]|mpeg|exe|wmv|avi|ppt|mpg|tif|wav|mov|psd|wma|ai|bmp|pps|aif|pub|dwg|indd|swf|asf|mbd|dmg|flv)$/i;
+            	            		var badFilesRe = /\.(png|gif|jpe?g|mp[234a]|mpeg|exe|wmv|avi|ppt|mpg|tif|wav|mov|psd|wma|ai|bmp|pps|aif|pub|dwg|indd|swf|asf|mbd|dmg|flv)$/i;
             	            		var goodFilesRe = /\.(txt|pdf|html?|xml|docx?|rtf|pages|epub|odt|zip|jar|tar|gz|ar|cpio|bzip2|bz2|gzip|xlsx?)$/i;
             	            		var badFiles = [];
             	            		var unknownFiles = [];
