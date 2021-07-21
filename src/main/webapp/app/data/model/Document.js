@@ -214,7 +214,7 @@ Ext.define('Voyant.data.model.Document', {
     },
     
     getAuthor: function(max) {
-    	this.getMultiple("author")
+    	return this.getMultiple("author");
     },
     
     getMultiple: function(field, max) {
