@@ -6,6 +6,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	isConsumptive: true,
     statics: {
     	i18n: {
+			corpusSortInitialOrder: 'initial order'
     	},
     	api: {
     		inputFormat: undefined,
@@ -435,7 +436,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 									name: 'sort',
 								    xtype:'combo',
 								    queryMode:'local',
-								    store:[['',me.localize('corpusSortAuto')],['TITLEASC',me.localize('corpusSortTitle')],['AUTHORASC',me.localize('corpusSortAuthor')],['PUBDATEASC',me.localize('corpusSortPubDate')]],
+								    store:[['',me.localize('corpusSortAuto')],['TITLEASC',me.localize('corpusSortTitle')],['AUTHORASC',me.localize('corpusSortAuthor')],['PUBDATEASC',me.localize('corpusSortPubDate')],['NOCHANGE', me.localize('corpusSortInitialOrder')]],
 								    value: '',
 								    listeners: {
 								    	afterrender: {
