@@ -106,9 +106,9 @@ var Spyral = (function () {
 	if(options.sham||sourceProperty&&sourceProperty.sham||targetProperty&&targetProperty.sham){createNonEnumerableProperty(resultProperty,'sham',true);}target[key]=resultProperty;if(PROTO){VIRTUAL_PROTOTYPE=TARGET+'Prototype';if(!has(path,VIRTUAL_PROTOTYPE)){createNonEnumerableProperty(path,VIRTUAL_PROTOTYPE,{});}// export virtual prototype methods
 	path[VIRTUAL_PROTOTYPE][key]=sourceProperty;// export real prototype methods
 	if(options.real&&targetPrototype&&!targetPrototype[key]){createNonEnumerableProperty(targetPrototype,key,sourceProperty);}}}};},{"../internals/create-non-enumerable-property":91,"../internals/function-bind-context":106,"../internals/global":110,"../internals/has":111,"../internals/is-forced":120,"../internals/object-get-own-property-descriptor":135,"../internals/path":145,"@babel/runtime/helpers/interopRequireDefault":36,"@babel/runtime/helpers/typeof":39}],105:[function(require,module,exports){module.exports=function(exec){try{return !!exec();}catch(error){return true;}};},{}],106:[function(require,module,exports){var aFunction=require('../internals/a-function');// optional / simple context binding
-	module.exports=function(fn,that,length){aFunction(fn);if(that===undefined)return fn;switch(length){case 0:return function(){return fn.call(that);};case 1:return function(a){return fn.call(that,a);};case 2:return function(a,b){return fn.call(that,a,b);};case 3:return function(a,b,c){return fn.call(that,a,b,c);};}return function()/* ...args */{return fn.apply(that,arguments);};};},{"../internals/a-function":72}],107:[function(require,module,exports){var path=require('../internals/path');var global=require('../internals/global');var aFunction=function aFunction(variable){return typeof variable=='function'?variable:undefined;};module.exports=function(namespace,method){return arguments.length<2?aFunction(path[namespace])||aFunction(global[namespace]):path[namespace]&&path[namespace][method]||global[namespace]&&global[namespace][method];};},{"../internals/global":110,"../internals/path":145}],108:[function(require,module,exports){var classof=require('../internals/classof');var Iterators=require('../internals/iterators');var wellKnownSymbol=require('../internals/well-known-symbol');var ITERATOR=wellKnownSymbol('iterator');module.exports=function(it){if(it!=undefined)return it[ITERATOR]||it['@@iterator']||Iterators[classof(it)];};},{"../internals/classof":87,"../internals/iterators":127,"../internals/well-known-symbol":166}],109:[function(require,module,exports){var anObject=require('../internals/an-object');var getIteratorMethod=require('../internals/get-iterator-method');module.exports=function(it){var iteratorMethod=getIteratorMethod(it);if(typeof iteratorMethod!='function'){throw TypeError(String(it)+' is not iterable');}return anObject(iteratorMethod.call(it));};},{"../internals/an-object":75,"../internals/get-iterator-method":108}],110:[function(require,module,exports){(function(global){(function(){var _interopRequireDefault=require("@babel/runtime/helpers/interopRequireDefault");var _typeof2=_interopRequireDefault(require("@babel/runtime/helpers/typeof"));var check=function check(it){return it&&it.Math==Math&&it;};// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	module.exports=function(fn,that,length){aFunction(fn);if(that===undefined)return fn;switch(length){case 0:return function(){return fn.call(that);};case 1:return function(a){return fn.call(that,a);};case 2:return function(a,b){return fn.call(that,a,b);};case 3:return function(a,b,c){return fn.call(that,a,b,c);};}return function()/* ...args */{return fn.apply(that,arguments);};};},{"../internals/a-function":72}],107:[function(require,module,exports){var path=require('../internals/path');var global=require('../internals/global');var aFunction=function aFunction(variable){return typeof variable=='function'?variable:undefined;};module.exports=function(namespace,method){return arguments.length<2?aFunction(path[namespace])||aFunction(global[namespace]):path[namespace]&&path[namespace][method]||global[namespace]&&global[namespace][method];};},{"../internals/global":110,"../internals/path":145}],108:[function(require,module,exports){var classof=require('../internals/classof');var Iterators=require('../internals/iterators');var wellKnownSymbol=require('../internals/well-known-symbol');var ITERATOR=wellKnownSymbol('iterator');module.exports=function(it){if(it!=undefined)return it[ITERATOR]||it['@@iterator']||Iterators[classof(it)];};},{"../internals/classof":87,"../internals/iterators":127,"../internals/well-known-symbol":166}],109:[function(require,module,exports){var anObject=require('../internals/an-object');var getIteratorMethod=require('../internals/get-iterator-method');module.exports=function(it){var iteratorMethod=getIteratorMethod(it);if(typeof iteratorMethod!='function'){throw TypeError(String(it)+' is not iterable');}return anObject(iteratorMethod.call(it));};},{"../internals/an-object":75,"../internals/get-iterator-method":108}],110:[function(require,module,exports){(function(global){var _interopRequireDefault=require("@babel/runtime/helpers/interopRequireDefault");var _typeof2=_interopRequireDefault(require("@babel/runtime/helpers/typeof"));var check=function check(it){return it&&it.Math==Math&&it;};// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 	module.exports=/* global globalThis -- safe */check((typeof globalThis==="undefined"?"undefined":(0, _typeof2["default"])(globalThis))=='object'&&globalThis)||check((typeof window==="undefined"?"undefined":(0, _typeof2["default"])(window))=='object'&&window)||check((typeof self==="undefined"?"undefined":(0, _typeof2["default"])(self))=='object'&&self)||check((typeof global==="undefined"?"undefined":(0, _typeof2["default"])(global))=='object'&&global)||// eslint-disable-next-line no-new-func -- fallback
-	function(){return this;}()||Function('return this')();}).call(this);}).call(this,typeof commonjsGlobal!=="undefined"?commonjsGlobal:typeof self!=="undefined"?self:typeof window!=="undefined"?window:{});},{"@babel/runtime/helpers/interopRequireDefault":36,"@babel/runtime/helpers/typeof":39}],111:[function(require,module,exports){var hasOwnProperty={}.hasOwnProperty;module.exports=function(it,key){return hasOwnProperty.call(it,key);};},{}],112:[function(require,module,exports){module.exports={};},{}],113:[function(require,module,exports){var getBuiltIn=require('../internals/get-built-in');module.exports=getBuiltIn('document','documentElement');},{"../internals/get-built-in":107}],114:[function(require,module,exports){var DESCRIPTORS=require('../internals/descriptors');var fails=require('../internals/fails');var createElement=require('../internals/document-create-element');// Thank's IE8 for his funny defineProperty
+	function(){return this;}()||Function('return this')();}).call(this,typeof commonjsGlobal!=="undefined"?commonjsGlobal:typeof self!=="undefined"?self:typeof window!=="undefined"?window:{});},{"@babel/runtime/helpers/interopRequireDefault":36,"@babel/runtime/helpers/typeof":39}],111:[function(require,module,exports){var hasOwnProperty={}.hasOwnProperty;module.exports=function(it,key){return hasOwnProperty.call(it,key);};},{}],112:[function(require,module,exports){module.exports={};},{}],113:[function(require,module,exports){var getBuiltIn=require('../internals/get-built-in');module.exports=getBuiltIn('document','documentElement');},{"../internals/get-built-in":107}],114:[function(require,module,exports){var DESCRIPTORS=require('../internals/descriptors');var fails=require('../internals/fails');var createElement=require('../internals/document-create-element');// Thank's IE8 for his funny defineProperty
 	module.exports=!DESCRIPTORS&&!fails(function(){return Object.defineProperty(createElement('div'),'a',{get:function get(){return 7;}}).a!=7;});},{"../internals/descriptors":96,"../internals/document-create-element":97,"../internals/fails":105}],115:[function(require,module,exports){var fails=require('../internals/fails');var classof=require('../internals/classof-raw');var split=''.split;// fallback for non-array-like ES3 and non-enumerable old V8 strings
 	module.exports=fails(function(){// throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
 	// eslint-disable-next-line no-prototype-builtins -- safe
@@ -2938,7 +2938,7 @@ var Spyral = (function () {
 	     * Load a Corpus using the provided config and api
 	     * @param {Object} config the Corpus config
 	     * @param {Object} api any additional API values
-	     */}],[{key:"setBaseUrl",value:function setBaseUrl(baseUrl){_load["default"].setBaseUrl(baseUrl);}},{key:"load",value:function load(){var config=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var api=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var promise=new Promise(function(resolve,reject){if(config instanceof Corpus){resolve(config);}if(typeof config==='string'){if(config.length>0&&/\W/.test(config)===false){config={corpus:config};}else {config={input:config};}}else if(_util["default"].isArray(config)&&config.length>0&&typeof config[0]==='string'){config={input:config};}else if(config instanceof Blob||_util["default"].isNode(config)||_util["default"].isArray(config)&&(config[0]instanceof Blob||_util["default"].isNode(config[0]))){var formData=new FormData();if(_util["default"].isArray(config)){config.forEach(function(file){if(_util["default"].isNode(file)){var nodeString=new XMLSerializer().serializeToString(file);file=new Blob([nodeString],{type:'text/xml'});}formData.append('input',file);});}else {if(_util["default"].isNode(config)){var nodeString=new XMLSerializer().serializeToString(config);config=new Blob([nodeString],{type:'text/xml'});}formData.append('input',config);}// append any other form options that may have been included
+	     */}],[{key:"setBaseUrl",value:function setBaseUrl(baseUrl){_load["default"].setBaseUrl(baseUrl);}},{key:"load",value:function load(){var config=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};var api=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};var promise=new Promise(function(resolve,reject){if(config instanceof Corpus){resolve(config);}if(typeof config==='string'){if(config.length>0&&/\W/.test(config)===false){config={corpus:config};}else {config={input:config};}}else if(_util["default"].isArray(config)&&config.length>0&&typeof config[0]==='string'){config={input:config};}else if(config instanceof Blob||_util["default"].isNode(config)||_util["default"].isArray(config)&&(config[0]instanceof Blob||_util["default"].isNode(config[0]))){var formData=new FormData();if(_util["default"].isArray(config)){config.forEach(function(file){if(_util["default"].isNode(file)){var nodeString=new XMLSerializer().serializeToString(file);file=new Blob([nodeString],{type:'text/xml'});}formData.append('input',file);formData.append('inputFormat',_util["default"].getFileExtensionFromMimeType(file.type));});}else {if(_util["default"].isNode(config)){var nodeString=new XMLSerializer().serializeToString(config);config=new Blob([nodeString],{type:'text/xml'});}formData.append('input',config);formData.append('inputFormat',_util["default"].getFileExtensionFromMimeType(config.type));}// append any other form options that may have been included
 	if(api&&(0, _typeof2["default"])(api)==='object'){for(var key in api){formData.append(key,api[key]);}}formData.append('tool','corpus.CorpusMetadata');config={body:formData,method:'POST'};}_load["default"].trombone(_objectSpread({},config,{},api),{tool:'corpus.CorpusMetadata'}).then(function(data){resolve(new Corpus(data.corpus.metadata.id));},function(err){reject(err);});});['id','metadata','summary','titles','text','texts','terms','tokens','words','contexts','collocates','phrases','correlations','lemmas','tool'].forEach(function(name){promise[name]=function(){var args=arguments;return promise.then(function(corpus){return corpus[name].apply(corpus,args);});};});promise.assign=function(name){return this.then(function(corpus){window[name]=corpus;return corpus;});};return promise;}}]);return Corpus;}();(0, _defineProperty2["default"])(Corpus,"Load",_load["default"]);var _default=Corpus;exports["default"]=_default;},{"./load":245,"./util.js":247,"@babel/runtime/helpers/asyncToGenerator":31,"@babel/runtime/helpers/classCallCheck":32,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/defineProperty":35,"@babel/runtime/helpers/interopRequireDefault":36,"@babel/runtime/helpers/typeof":39,"@babel/runtime/regenerator":40,"lda-topic-model":226}],245:[function(require,module,exports){var _interopRequireDefault=require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _classCallCheck2=_interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));var _createClass2=_interopRequireDefault(require("@babel/runtime/helpers/createClass"));var _defineProperty2=_interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));function ownKeys(object,enumerableOnly){var keys=Object.keys(object);if(Object.getOwnPropertySymbols){var symbols=Object.getOwnPropertySymbols(object);if(enumerableOnly)symbols=symbols.filter(function(sym){return Object.getOwnPropertyDescriptor(object,sym).enumerable;});keys.push.apply(keys,symbols);}return keys;}function _objectSpread(target){for(var i=1;i<arguments.length;i++){var source=arguments[i]!=null?arguments[i]:{};if(i%2){ownKeys(Object(source),true).forEach(function(key){(0, _defineProperty2["default"])(target,key,source[key]);});}else if(Object.getOwnPropertyDescriptors){Object.defineProperties(target,Object.getOwnPropertyDescriptors(source));}else {ownKeys(Object(source)).forEach(function(key){Object.defineProperty(target,key,Object.getOwnPropertyDescriptor(source,key));});}}return target;}/**
 	 * Class embodying Load functionality.
 	 * @memberof Spyral
@@ -3383,7 +3383,52 @@ var Spyral = (function () {
 	     * @param {String} before 
 	     * @param {String} more 
 	     * @param {String} after 
-	     */},{key:"more",value:function more(before,_more,after){return before+'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+_more.substring(0,500)+' <a href="">+</a><div style="display: none">'+_more.substring(501)+'</div>'+after;}},{key:"dataUrlToBlob",value:function dataUrlToBlob(dataUrl){var parts=dataUrl.split(',');var byteString=atob(parts[1]);var mimeString=parts[0].split(':')[1].split(';')[0];var ab=new ArrayBuffer(byteString.length);var ia=new Uint8Array(ab);for(var i=0;i<byteString.length;i++){ia[i]=byteString.charCodeAt(i);}return new Blob([ab],{type:mimeString});}},{key:"blobToDataUrl",value:function blobToDataUrl(blob){return new Promise(function(resolve,reject){var fr=new FileReader();fr.onload=function(e){resolve(e.target.result);};try{fr.readAsDataURL(blob);}catch(e){reject(e);}});}},{key:"isString",value:function isString(val){return typeof val==='string';}},{key:"isNumber",value:function isNumber(val){return typeof val==='number';}},{key:"isBoolean",value:function isBoolean(val){return typeof val==='boolean';}},{key:"isUndefined",value:function isUndefined(val){return typeof val==='undefined';}},{key:"isArray",value:function isArray(val){return Object.prototype.toString.call(val)==='[object Array]';}},{key:"isObject",value:function isObject(val){return Object.prototype.toString.call(val)==='[object Object]';}},{key:"isNull",value:function isNull(val){return Object.prototype.toString.call(val)==='[object Null]';}},{key:"isNode",value:function isNode(val){return val instanceof Node;}}]);return Util;}();var _default=Util;exports["default"]=_default;},{"@babel/runtime/helpers/classCallCheck":32,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/interopRequireDefault":36}]},{},[1])(1);});});unwrapExports(voyantjs);var voyantjs_1=voyantjs.Corpus;var voyantjs_2=voyantjs.Table;var voyantjs_3=voyantjs.Load;var voyantjs_4=voyantjs.Util;var voyantjs_5=voyantjs.Chart;var voyantjs_6=voyantjs.Categories;
+	     */},{key:"more",value:function more(before,_more,after){return before+'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+_more.substring(0,500)+' <a href="">+</a><div style="display: none">'+_more.substring(501)+'</div>'+after;}/**
+	     * Take a data URL and convert it to a Blob.
+	     * @param {String} dataUrl 
+	     * @returns {Blob}
+	     */},{key:"dataUrlToBlob",value:function dataUrlToBlob(dataUrl){var parts=dataUrl.split(',');var byteString=atob(parts[1]);var mimeString=parts[0].split(':')[1].split(';')[0];var ab=new ArrayBuffer(byteString.length);var ia=new Uint8Array(ab);for(var i=0;i<byteString.length;i++){ia[i]=byteString.charCodeAt(i);}return new Blob([ab],{type:mimeString});}/**
+	     * Take a Blob and convert it to a data URL.
+	     * @param {Blob} blob 
+	     * @returns {String}
+	     */},{key:"blobToDataUrl",value:function blobToDataUrl(blob){return new Promise(function(resolve,reject){var fr=new FileReader();fr.onload=function(e){resolve(e.target.result);};try{fr.readAsDataURL(blob);}catch(e){reject(e);}});}/**
+	     * Returns true if the value is a String.
+	     * @param {*} val 
+	     * @returns {Boolean} 
+	     */},{key:"isString",value:function isString(val){return typeof val==='string';}/**
+	     * Returns true if the value is a Number.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isNumber",value:function isNumber(val){return typeof val==='number';}/**
+	     * Returns true if the value is a Boolean.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isBoolean",value:function isBoolean(val){return typeof val==='boolean';}/**
+	     * Returns true if the value is Undefined.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isUndefined",value:function isUndefined(val){return typeof val==='undefined';}/**
+	     * Returns true if the value is an Array.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isArray",value:function isArray(val){return Object.prototype.toString.call(val)==='[object Array]';}/**
+	     * Returns true if the value is an Object.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isObject",value:function isObject(val){return Object.prototype.toString.call(val)==='[object Object]';}/**
+	     * Returns true if the value is Null.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isNull",value:function isNull(val){return Object.prototype.toString.call(val)==='[object Null]';}/**
+	     * Returns true if the value is a Node.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */},{key:"isNode",value:function isNode(val){return val instanceof Node;}/**
+	     * Takes a MIME type and returns the related file extension.
+	     * Only handles file types supported by Voyant.
+	     * @param {String} mimeType 
+	     * @returns {String}
+	     */},{key:"getFileExtensionFromMimeType",value:function getFileExtensionFromMimeType(mimeType){mimeType=mimeType.trim().toLowerCase();switch(mimeType){case'application/atom+xml':return 'xml';case'application/rss+xml':return 'xml';case'application/xml':return 'xml';case'application/xhtml+xml':return 'xhtml';case'text/html':return 'html';case'application/pdf':return 'pdf';case'application/vnd.apple.pages':return 'pages';case'application/rtf':return 'rtf';case'application/vnd.oasis.opendocument.text':return 'odt';case'application/epub+zip':return 'epub';case'application/msword':return 'doc';case'application/vnd.openxmlformats-officedocument.wordprocessingml.document':return 'docx';case'application/vnd.ms-excel':return 'xls';case'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':return 'xlsx';default:return undefined;}}}]);return Util;}();var _default=Util;exports["default"]=_default;},{"@babel/runtime/helpers/classCallCheck":32,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/interopRequireDefault":36}]},{},[1])(1);});});unwrapExports(voyantjs);var voyantjs_1=voyantjs.Corpus;var voyantjs_2=voyantjs.Table;var voyantjs_3=voyantjs.Load;var voyantjs_4=voyantjs.Util;var voyantjs_5=voyantjs.Chart;var voyantjs_6=voyantjs.Categories;
 
 	var check = function (it) {
 	  return it && it.Math == Math && it;
@@ -7575,6 +7620,12 @@ var Spyral = (function () {
 	    value: function more(before, _more, after) {
 	      return before + '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' + _more.substring(0, 500) + ' <a href="">+</a><div style="display: none">' + _more.substring(501) + '</div>' + after;
 	    }
+	    /**
+	     * Take a data URL and convert it to a Blob.
+	     * @param {String} dataUrl 
+	     * @returns {Blob}
+	     */
+
 	  }, {
 	    key: "dataUrlToBlob",
 	    value: function dataUrlToBlob(dataUrl) {
@@ -7592,6 +7643,12 @@ var Spyral = (function () {
 	        type: mimeString
 	      });
 	    }
+	    /**
+	     * Take a Blob and convert it to a data URL.
+	     * @param {Blob} blob 
+	     * @returns {String}
+	     */
+
 	  }, {
 	    key: "blobToDataUrl",
 	    value: function blobToDataUrl(blob) {
@@ -7609,45 +7666,152 @@ var Spyral = (function () {
 	        }
 	      });
 	    }
+	    /**
+	     * Returns true if the value is a String.
+	     * @param {*} val 
+	     * @returns {Boolean} 
+	     */
+
 	  }, {
 	    key: "isString",
 	    value: function isString(val) {
 	      return typeof val === 'string';
 	    }
+	    /**
+	     * Returns true if the value is a Number.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isNumber",
 	    value: function isNumber(val) {
 	      return typeof val === 'number';
 	    }
+	    /**
+	     * Returns true if the value is a Boolean.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isBoolean",
 	    value: function isBoolean(val) {
 	      return typeof val === 'boolean';
 	    }
+	    /**
+	     * Returns true if the value is Undefined.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isUndefined",
 	    value: function isUndefined(val) {
 	      return typeof val === 'undefined';
 	    }
+	    /**
+	     * Returns true if the value is an Array.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isArray",
 	    value: function isArray(val) {
 	      return Object.prototype.toString.call(val) === '[object Array]';
 	    }
+	    /**
+	     * Returns true if the value is an Object.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isObject",
 	    value: function isObject(val) {
 	      return Object.prototype.toString.call(val) === '[object Object]';
 	    }
+	    /**
+	     * Returns true if the value is Null.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isNull",
 	    value: function isNull(val) {
 	      return Object.prototype.toString.call(val) === '[object Null]';
 	    }
+	    /**
+	     * Returns true if the value is a Node.
+	     * @param {*} val 
+	     * @returns {Boolean}
+	     */
+
 	  }, {
 	    key: "isNode",
 	    value: function isNode(val) {
 	      return val instanceof Node;
+	    }
+	    /**
+	     * Takes a MIME type and returns the related file extension.
+	     * Only handles file types supported by Voyant.
+	     * @param {String} mimeType 
+	     * @returns {String}
+	     */
+
+	  }, {
+	    key: "getFileExtensionFromMimeType",
+	    value: function getFileExtensionFromMimeType(mimeType) {
+	      mimeType = mimeType.trim().toLowerCase();
+
+	      switch (mimeType) {
+	        case 'application/atom+xml':
+	          return 'xml';
+
+	        case 'application/rss+xml':
+	          return 'xml';
+
+	        case 'application/xml':
+	          return 'xml';
+
+	        case 'application/xhtml+xml':
+	          return 'xhtml';
+
+	        case 'text/html':
+	          return 'html';
+
+	        case 'application/pdf':
+	          return 'pdf';
+
+	        case 'application/vnd.apple.pages':
+	          return 'pages';
+
+	        case 'application/rtf':
+	          return 'rtf';
+
+	        case 'application/vnd.oasis.opendocument.text':
+	          return 'odt';
+
+	        case 'application/epub+zip':
+	          return 'epub';
+
+	        case 'application/msword':
+	          return 'doc';
+
+	        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+	          return 'docx';
+
+	        case 'application/vnd.ms-excel':
+	          return 'xls';
+
+	        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+	          return 'xlsx';
+
+	        default:
+	          return undefined;
+	      }
 	    }
 	  }]);
 
@@ -7883,4 +8047,3 @@ var Spyral = (function () {
 	return Spyral$1;
 
 }());
-//# sourceMappingURL=spyral.js.map
