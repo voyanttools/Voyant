@@ -6,7 +6,8 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 	config: {
 		dataUrl: undefined,
 		resourceId: undefined,
-		file: undefined
+		file: undefined,
+		fileName: undefined
 	},
 	statics: {
 		i18n: {
@@ -32,13 +33,14 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 				width: 350,
 				listeners: {
 					render: function(cmp) {
-						if (config.resourceId) {
-							cmp.inputEl.dom.value = config.resourceId;
+						if (config.fileName) {
+							cmp.inputEl.dom.value = config.fileName;
 						}
 					},
-					change: function(cmp, val) {
+					change: function(cmp, filename) {
 						var file = cmp.fileInputEl.dom.files[0];
 						this.setFile(file);
+						this.setFileName(filename);
 						this.setDataUrl(undefined);
 						this.setResourceId(undefined);
 					},

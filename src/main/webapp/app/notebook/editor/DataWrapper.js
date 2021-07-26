@@ -17,6 +17,12 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		config.mode = config.mode !== undefined ? config.mode : 'json';
 
 		var isFile = config.mode === 'file';
+		var resourceId = undefined;
+		var fileName = undefined;
+		if (isFile) {
+			resourceId = config.input.resourceId;
+			fileName = config.input.fileName;
+		}
 
 		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
 			content: Ext.Array.from(config.input).join("\n"),
@@ -27,7 +33,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		});
 
 		this.fileInput = Ext.create('Voyant.notebook.editor.FileInput', {
-			resourceId: config.input,
+			resourceId: resourceId,
+			fileName: fileName,
 			hidden: !isFile
 		});
 
@@ -235,7 +242,10 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		if (mode !== 'file') {
 			return this.editor.getValue();
 		} else {
-			return this.fileInput.getResourceId();
+			return {
+				resourceId: this.fileInput.getResourceId(),
+				fileName: this.fileInput.getFileName()
+			}
 		}
 	},
 
