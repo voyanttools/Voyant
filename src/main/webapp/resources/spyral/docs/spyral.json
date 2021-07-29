@@ -3,31 +3,31 @@
   "!define": {
     "MetadataConfig": {
       "title": {
-        "!type": "string",
+        "!type": "+String",
         "!doc": "The title of the Corpus"
       },
       "author": {
-        "!type": "string",
+        "!type": "+String",
         "!doc": "The author of the Corpus"
       },
       "description": {
-        "!type": "string",
+        "!type": "+String",
         "!doc": "The description of the Corpus"
       },
       "keywords": {
-        "!type": "array",
+        "!type": "+Array",
         "!doc": "The keywords for the Corpus"
       },
       "created": {
-        "!type": "string",
+        "!type": "+String",
         "!doc": "When the Corpus was created"
       },
       "language": {
-        "!type": "string",
+        "!type": "+String",
         "!doc": "The language of the Corpus"
       },
       "license": {
-        "!type": "string",
+        "!type": "+String",
         "!doc": "The license for the Corpus"
       },
       "!doc": "The Metadata config object"
@@ -40,22 +40,22 @@
         "!type": "?"
       },
       "credits": {
-        "!type": "object"
+        "!type": "+Object"
       },
       "xAxis": {
-        "!type": "object"
+        "!type": "+Object"
       },
       "yAxis": {
-        "!type": "object"
+        "!type": "+Object"
       },
       "chart": {
-        "!type": "object"
+        "!type": "+Object"
       },
       "series": {
-        "!type": "array"
+        "!type": "+Array"
       },
       "plotOptions": {
-        "!type": "object"
+        "!type": "+Object"
       },
       "!doc": "The Highcharts config object"
     },
@@ -79,42 +79,40 @@
       "!doc": "The Table config object"
     }
   },
+  "DataViewer": {
+    "!type": "fn()",
+    "prototype": {}
+  },
   "Spyral": {
     "Metadata": {
       "!type": "fn(config: +MetadataConfig)",
       "prototype": {
         "set": {
-          "!type": "fn(config: object)",
+          "!type": "fn(config: +Object)",
           "!doc": "Set metadata properties."
         },
         "setDateNow": {
-          "!type": "fn(field: string)",
+          "!type": "fn(field: +String)",
           "!doc": "Sets the specified field to the current date and time."
         },
         "shortDate": {
-          "!type": "fn(field: string) -> ?",
+          "!type": "fn(field: +String) -> ?",
           "!doc": "Gets the specified field as a short date."
         },
         "getHeaders": {
-          "!type": "fn() -> string",
+          "!type": "fn() -> +String",
           "!doc": "Gets the fields as a set of HTML meta tags."
+        },
+        "clone": {
+          "!type": "fn() -> +Spyral.Metadata",
+          "!doc": "Returns a clone of this Metadata"
         }
       },
       "!doc": "The metadata constructor."
     },
     "Notebook": {
-      "getPreviousBlock": {
-        "!type": "fn() -> string",
-        "!doc": "Returns the previous block."
-      },
-      "getNextBlock": {
-        "!type": "fn() -> string",
-        "!doc": "Returns the next block."
-      },
-      "getBlock": {
-        "!type": "fn() -> string",
-        "!doc": "Returns the current block."
-      },
+      "!type": "fn()",
+      "prototype": {},
       "show": {
         "!type": "fn(contents: ?, config: ?)"
       },
@@ -123,7 +121,7 @@
         "!doc": "Returns the target element"
       },
       "import": {
-        "!type": "fn(url: string)",
+        "!type": "fn(url: string, cellIndex?: number)",
         "!doc": "Fetch and return the content of a notebook or a particular cell in a notebook"
       }
     },
@@ -131,7 +129,7 @@
       "!type": "fn()",
       "prototype": {
         "getCategories": {
-          "!type": "fn() -> object",
+          "!type": "fn() -> +Object",
           "!doc": "Get the categories"
         },
         "getCategoryNames": {
@@ -139,7 +137,7 @@
           "!doc": "Get category names as an array."
         },
         "getCategoryTerms": {
-          "!type": "fn(name: string) -> array",
+          "!type": "fn(name: string) -> +Array",
           "!doc": "Get the terms for a category"
         },
         "addCategory": {
@@ -154,12 +152,20 @@
           "!type": "fn(name: string)",
           "!doc": "Remove a category"
         },
+        "getCategoryRanking": {
+          "!type": "fn(name: string) -> number",
+          "!doc": "Gets the ranking for a category"
+        },
+        "setCategoryRanking": {
+          "!type": "fn(name: string, ranking: number)",
+          "!doc": "Sets the ranking for a category"
+        },
         "addTerm": {
           "!type": "fn(category: string, term: string)",
           "!doc": "Add a term to a category"
         },
         "addTerms": {
-          "!type": "fn(category: string, terms: array)",
+          "!type": "fn(category: string, terms: +Array)",
           "!doc": "Add multiple terms to a category"
         },
         "removeTerm": {
@@ -167,19 +173,23 @@
           "!doc": "Remove a term from a category"
         },
         "removeTerms": {
-          "!type": "fn(category: string, terms: array)",
+          "!type": "fn(category: string, terms: +Array)",
           "!doc": "Remove multiple terms from a category"
         },
         "getCategoryForTerm": {
-          "!type": "fn(term: string) -> object",
-          "!doc": "Get the category that a term belongs to"
+          "!type": "fn(term: string) -> string",
+          "!doc": "Get the category that a term belongs to, taking ranking into account"
+        },
+        "getCategoriesForTerm": {
+          "!type": "fn(term: string) -> +Array",
+          "!doc": "Get all the categories a term belongs to"
         },
         "getFeatureForTerm": {
           "!type": "fn(feature: string, term: string) -> ?",
           "!doc": "Get the feature for a term"
         },
         "getFeatures": {
-          "!type": "fn() -> object",
+          "!type": "fn() -> +Object",
           "!doc": "Get the features"
         },
         "addFeature": {
@@ -199,7 +209,7 @@
           "!doc": "Get the feature for a category"
         },
         "getCategoryExportData": {
-          "!type": "fn() -> object",
+          "!type": "fn() -> +Object",
           "!doc": "Get a copy of the category and feature data"
         },
         "save": {
@@ -214,56 +224,56 @@
       "!doc": "Construct a new Categories class"
     },
     "Chart": {
-      "!type": "fn(target: element, data: array)",
+      "!type": "fn(target: +HTMLElement, data: +Array)",
       "prototype": {
         "create": {
           "!type": "fn(target: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-          "!doc": "Create a new chart\nSee https://api.highcharts.com/highcharts/ for full set of config options."
+          "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options."
         },
         "bar": {
-          "!type": "fn(config?: object) -> +Highcharts.Chart",
+          "!type": "fn(config?: +Object) -> +Highcharts.Chart",
           "!doc": "Create a bar chart"
         },
         "line": {
-          "!type": "fn(config?: object) -> +Highcharts.Chart",
+          "!type": "fn(config?: +Object) -> +Highcharts.Chart",
           "!doc": "Create a line chart"
         },
         "scatter": {
-          "!type": "fn(config?: object) -> +Highcharts.Chart",
+          "!type": "fn(config?: +Object) -> +Highcharts.Chart",
           "!doc": "Create a scatter plot"
         },
         "networkgraph": {
-          "!type": "fn(config?: object) -> +Highcharts.Chart",
+          "!type": "fn(config?: +Object) -> +Highcharts.Chart",
           "!doc": "Create a network graph"
         }
       },
       "!doc": "Construct a new Chart class",
       "create": {
         "!type": "fn(target: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-        "!doc": "Create a new chart\nSee https://api.highcharts.com/highcharts/ for full set of config options."
+        "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options."
       },
       "setDefaultChartType": {
-        "!type": "fn(config: object, type: string)",
+        "!type": "fn(config: +Object, type: string)",
         "!doc": "Sets the default chart type"
       },
       "setSeriesData": {
-        "!type": "fn(config: object, data: array)",
+        "!type": "fn(config: +Object, data: +Array)",
         "!doc": "Add the provided data to the config as a series"
       },
       "bar": {
-        "!type": "fn(target: element, config: object) -> +Highcharts.Chart",
+        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
         "!doc": "Create a bar chart"
       },
       "line": {
-        "!type": "fn(target: element, config: object) -> +Highcharts.Chart",
+        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
         "!doc": "Create a line chart"
       },
       "scatter": {
-        "!type": "fn(target: element, config: object) -> +Highcharts.Chart",
+        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
         "!doc": "Create a scatter plot"
       },
       "networkgraph": {
-        "!type": "fn(target: element, config: object) -> +Highcharts.Chart",
+        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
         "!doc": "Create a network graph"
       }
     },
@@ -271,15 +281,15 @@
       "!type": "fn()",
       "prototype": {
         "id": {
-          "!type": "fn() -> +Promise/String",
+          "!type": "fn() -> ?",
           "!doc": "Get a Promise for the ID of the corpus."
         },
         "metadata": {
-          "!type": "fn(config: +Object) -> +Promise/Object",
+          "!type": "fn(config: +Object) -> ?",
           "!doc": "Get a Promise for the metadata object (of the corpus or document, depending on which mode is used).\n\nThe following is an example of the object return for the metadata of the Jane Austen corpus:\n\n\t{\n\t\t\"id\": \"b50407fd1cbbecec4315a8fc411bad3c\",\n\t\t\"alias\": \"austen\",\n\t\t\"title\": \"\",\n\t\t\"subTitle\": \"\",\n\t\t\"documentsCount\": 8,\n\t\t\"createdTime\": 1582429585984,\n\t\t\"createdDate\": \"2020-02-22T22:46:25.984-0500\",\n\t\t\"lexicalTokensCount\": 781763,\n\t\t\"lexicalTypesCount\": 15368,\n\t\t\"noPasswordAccess\": \"NORMAL\",\n\t\t\"languageCodes\": [\n\t\t\t\"en\"\n\t\t]\n\t}\n\nThe following is an example of what is returned as metadata for the first document:\n\n\t[\n\t\t{\n  \t\t\"id\": \"ddac6b12c3f4261013c63d04e8d21b45\",\n  \t\t\"extra.X-Parsed-By\": \"org.apache.tika.parser.DefaultParser\",\n  \t\t\"tokensCount-lexical\": \"33559\",\n  \t\t\"lastTokenStartOffset-lexical\": \"259750\",\n  \t\t\"parent_modified\": \"1548457455000\",\n  \t\t\"typesCount-lexical\": \"4235\",\n  \t\t\"typesCountMean-lexical\": \"7.924203\",\n  \t\t\"lastTokenPositionIndex-lexical\": \"33558\",\n  \t\t\"index\": \"0\",\n  \t\t\"language\": \"en\",\n  \t\t\"sentencesCount\": \"1302\",\n  \t\t\"source\": \"stream\",\n  \t\t\"typesCountStdDev-lexical\": \"46.626404\",\n  \t\t\"title\": \"1790 Love And Freindship\",\n  \t\t\"parent_queryParameters\": \"VOYANT_BUILD=M16&textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&VOYANT_REMOTE_ID=199.229.249.196&accessIP=199.229.249.196&VOYANT_VERSION=2.4&palette=default&suppressTools=false\",\n  \t\t\"extra.Content-Type\": \"text/plain; charset=windows-1252\",\n  \t\t\"parentType\": \"expansion\",\n  \t\t\"extra.Content-Encoding\": \"windows-1252\",\n  \t\t\"parent_source\": \"file\",\n  \t\t\"parent_id\": \"ae47e3a72cd3cad51e196e8a41e21aec\",\n  \t\t\"modified\": \"1432861756000\",\n  \t\t\"location\": \"1790 Love And Freindship.txt\",\n  \t\t\"parent_title\": \"Austen\",\n  \t\t\"parent_location\": \"Austen.zip\"\n\t\t}\n\t]\n\nIn Corpus mode there's no reason to specify arguments. In documents mode you\ncan request specific documents in the config object:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\n An example:\n \n \t// this would show the number 8 (the size of the corpus)\n \tloadCorpus(\"austen\").metadata().then(metadata => metadata.documentsCount)"
         },
         "summary": {
-          "!type": "fn() -> +Promise/String",
+          "!type": "fn() -> ?",
           "!doc": "Get a Promise for a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) \n\nAn example:\n\n\tloadCorpus(\"austen\").summary();"
         },
         "titles": {
@@ -287,11 +297,11 @@
           "!doc": "Get a Promise for an Array of the document titles.\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nAn example:\n\n\tloadCorpus(\"austen\").titles().then(titles => \"The last work is: \"+titles[titles.length-1])"
         },
         "text": {
-          "!type": "fn(config: +Object) -> +Promise/String",
+          "!type": "fn(config: +Object) -> ?",
           "!doc": "Get a Promise for the text of the entire corpus.\n\nTexts are concatenated together with two new lines and three dashes (\\\\n\\\\n---\\\\n\\\\n)\n\nThe following are valid in the config parameter:\n\n* **noMarkup**: strips away the markup\n* **compactSpace**: strips away superfluous spaces and multiple new lines\n* **limit**: a limit to the number of characters (per text)\n* **format**: `text` for plain text, any other value for the simplified Voyant markup\n\nAn example:\n\n\t// fetch 1000 characters from each text in the corpus into a single string\n\tloadCorpus(\"austen\").text({limit:1000})"
         },
         "texts": {
-          "!type": "fn(config: +Object) -> +Promise/String",
+          "!type": "fn(config: +Object) -> ?",
           "!doc": "Get a Promise for an Array of texts from the entire corpus.\n\nThe following are valid in the config parameter:\n\n* **noMarkup**: strips away the markup\n* **compactSpace**: strips away superfluous spaces and multiple new lines\n* **limit**: a limit to the number of characters (per text)\n* **format**: `text` for plain text, any other value for the simplified Voyant markup\n\nAn example:\n\n\t// fetch 1000 characters from each text in the corpus into an Array\n\tloadCorpus(\"austen\").texts({limit:1000})"
         },
         "terms": {
@@ -322,26 +332,34 @@
           "!type": "fn(config: +Object) -> ?",
           "!doc": "Get a Promise for an Array of correlations (either document or corpus correlations, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus correlation (corpus mode):\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"mrs\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 2531,\n\t\t\t\"relativePeakedness\": 0.46444246,\n\t\t\t\"relativeSkewness\": -0.44197384\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 568,\n\t\t\t\"relativePeakedness\": 5.763066,\n\t\t\t\"relativeSkewness\": 2.2536576\n\t\t},\n\t\t\"correlation\": -0.44287738,\n\t\t\"significance\": 0.08580014\n\t}\n\nThe following is an example of Document correlation (documents mode), without positions requested:\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"confide\",\n\t\t\t\"rawFreq\": 3,\n\t\t\t\"relativeFreq\": 89.3948,\n\t\t\t\"zscore\": -0.10560975,\n\t\t\t\"zscoreRatio\": -0.7541012,\n\t\t\t\"tfidf\": 1.1168874E-5,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"relativeFreq\": 1609.1063,\n\t\t\t\"zscore\": 53.830048,\n\t\t\t\"zscoreRatio\": -707.44696,\n\t\t\t\"tfidf\": 0.0,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"correlation\": 0.93527687,\n\t\t\"significance\": 7.0970666E-5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minRawFreq**: the minimum raw frequency of the collocate terms\n * **termsOnly**: a very compact data view of the correlations\n * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 10 phrases in the corpus\n\tloadCorpus(\"austen\").correlations({query: \"love\", limit: 10})"
         },
+        "lemmas": {
+          "!type": "fn(config: +Object) -> ?",
+          "!doc": "Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })"
+        },
         "lda": {
-          "!type": "fn(config: +Object)",
-          "!doc": "config params:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
+          "!type": "fn(config: +Object) -> +Promise",
+          "!doc": "Get a promise for an LDA object that has two primary methods of use:\n\n\t* **getTopicWords**: get a list of topics (words organized into bunches of a specified size\n\t* **getDocuments**: get a list of documents and the signican words\n\nThe config object as parameter can contain the following:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
+        },
+        "ldaTopics": {
+          "!type": "fn(config: +Object) -> +Promise",
+          "!doc": "Get a promise for a list of LDA topics from the corpus.\n\nThe config object as parameter can contain the following:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
+        },
+        "ldaDocuments": {
+          "!type": "fn(config: +Object) -> +Promise",
+          "!doc": "Get a promise for a list of documents and associated words\n\nThe config object as parameter can contain the following:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
         },
         "tool": {
           "!type": "fn()",
-          "!doc": "Get a promise for the HTML snippet that will produce the specified Voyant tools to appear.\n\nIn its simplest form we can simply call the named tool:\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\");\n\nEach tool supports some options (that are summarized below), and those can be specified as options:\n\n\tloadCorpus(\"austen\").tool(\"Trends\", {query: \"love\"});\n\nThere are also parameters (width, height, style, float) that apply to the actual tool window:\n\n loadCorpus(\"austen\").tool(\"Trends\", {query: \"love\", style: \"width: 500px; height: 500px\"});\n\nIt's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\", \"Trends\");\n\nOne easy way to get connected tools is to use the `CustomSet` tool and experiment with the layout:\n\n\tloadCorpus(\"austen\").tool(\"CustomSet\", {tableLayout: \"Cirrus,Trends\", style: \"width:800px; height: 500px\"});\n\nHere's a partial list of the tools available as well as their significant parameters:\n\n * <a href=\"./#!/guide/bubblelines\" target=\"_blank\">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.\n \t* **bins**: number of bins to separate a document into\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **maxDocs**: maximum number of documents to show\n \t* **query**: a query to search for in the corpus\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/bubbles\" target=\"_blank\">Bubbles</a> is a playful visualization of term frequencies by document.\n \t* **audio**: whether or not to include audio\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **speed**: speed of the animation (0 to 60 lower is slower)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/cirrus\" target=\"_blank\">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.\n \t* **background**: set the background colour of the word cloud\n \t* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **fontFamily**: the default font to use for the words (default: \"Palatino Linotype\", \"Book Antiqua\", Palatino, serif),\n \t* **inlineData**: user-defined data, most easily expressed like this: love:20,like:15,dear:10\n \t* **limit**: the number of terms to load (that are available, see also `visible` which determines how many are displayed),\n \t* **stopList**: a named stopword list or comma-separated list of words\n \t* **visible**: the number of terms to display in the word cloud (default is 50)\n \t* **whiteList**: a keyword list – terms will be limited to this list\n * <a href=\"./#!/guide/collocatesgraph\" target=\"_blank\">CollocateGraphs</a> represents keywords and terms that occur in close proximity as a force directed network graph.\n \t* **centralize**: the term to use for centralize mode (where things are focused on a single word)\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **limit**: the number of collocates to load for each keyword\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/corpuscollocates\" target=\"_blank\">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/contexts\" target=\"_blank\">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/correlations\" target=\"_blank\">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n \t* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/documentterms\" target=\"_blank\">DocumentTerms</a> is a table view of document term frequencies.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/corpusterms\" target=\"_blank\">CorpusTerms</a> is a table view of term frequencies in the entire corpus.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/documents\" target=\"_blank\">The</a> Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n * <a href=\"./#!/guide/knots\" target=\"_blank\">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.\n * <a href=\"./#!/guide/mandala\" target=\"_blank\">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.\n * <a href=\"./#!/guide/microsearch\" target=\"_blank\">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.\n * <a href=\"./#!/guide/phrases\" target=\"_blank\">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n * <a href=\"./#!/guide/reader\" target=\"_blank\">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.\n * <a href=\"./#!/guide/scatterplot\" target=\"_blank\">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.\n * <a href=\"./#!/guide/streamgraph\" target=\"_blank\">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"./#!/guide/summary\" target=\"_blank\">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.\n * <a href=\"./#!/guide/termsradio\" target=\"_blank\">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"./#!/guide/textualarc\" target=\"_blank\">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.\n * <a href=\"./#!/guide/topics\" target=\"_blank\">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n * <a href=\"./#!/guide/trends\" target=\"_blank\">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.\n * <a href=\"./#!/guide/veliza\" target=\"_blank\">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.\n * <a href=\"./#!/guide/wordtree\" target=\"_blank\">WordTree</a> is a tool that allows you to explore how words are used in phrases."
+          "!doc": "Get a promise for the HTML snippet that will produce the specified Voyant tools to appear.\n\nIn its simplest form we can simply call the named tool:\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\");\n\nEach tool supports some options (that are summarized below), and those can be specified as options:\n\n\tloadCorpus(\"austen\").tool(\"Trends\", {query: \"love\"});\n\nThere are also parameters (width, height, style, float) that apply to the actual tool window:\n\n loadCorpus(\"austen\").tool(\"Trends\", {query: \"love\", style: \"width: 500px; height: 500px\"});\n\nIt's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\", \"Trends\");\n\nOne easy way to get connected tools is to use the `CustomSet` tool and experiment with the layout:\n\n\tloadCorpus(\"austen\").tool(\"CustomSet\", {tableLayout: \"Cirrus,Trends\", style: \"width:800px; height: 500px\"});\n\nHere's a partial list of the tools available as well as their significant parameters:\n\n * <a href=\"./#!/guide/bubblelines\" target=\"_blank\">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.\n \t* **bins**: number of bins to separate a document into\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **maxDocs**: maximum number of documents to show\n \t* **query**: a query to search for in the corpus\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/bubbles\" target=\"_blank\">Bubbles</a> is a playful visualization of term frequencies by document.\n \t* **audio**: whether or not to include audio\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **speed**: speed of the animation (0 to 60 lower is slower)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/cirrus\" target=\"_blank\">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.\n \t* **background**: set the background colour of the word cloud\n \t* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **fontFamily**: the default font to use for the words (default: \"Palatino Linotype\", \"Book Antiqua\", Palatino, serif),\n \t* **inlineData**: user-defined data, most easily expressed like this: love:20,like:15,dear:10\n \t* **limit**: the number of terms to load (that are available, see also `visible` which determines how many are displayed),\n \t* **stopList**: a named stopword list or comma-separated list of words\n \t* **visible**: the number of terms to display in the word cloud (default is 50)\n \t* **whiteList**: a keyword list – terms will be limited to this list\n * <a href=\"./#!/guide/collocatesgraph\" target=\"_blank\">CollocatesGraph</a> represents keywords and terms that occur in close proximity as a force directed network graph.\n \t* **centralize**: the term to use for centralize mode (where things are focused on a single word)\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **limit**: the number of collocates to load for each keyword\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/corpuscollocates\" target=\"_blank\">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/contexts\" target=\"_blank\">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/correlations\" target=\"_blank\">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n \t* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/documentterms\" target=\"_blank\">DocumentTerms</a> is a table view of document term frequencies.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/corpusterms\" target=\"_blank\">CorpusTerms</a> is a table view of term frequencies in the entire corpus.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/documents\" target=\"_blank\">The</a> Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n * <a href=\"./#!/guide/knots\" target=\"_blank\">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.\n * <a href=\"./#!/guide/mandala\" target=\"_blank\">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.\n * <a href=\"./#!/guide/microsearch\" target=\"_blank\">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.\n * <a href=\"./#!/guide/phrases\" target=\"_blank\">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n * <a href=\"./#!/guide/reader\" target=\"_blank\">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.\n * <a href=\"./#!/guide/scatterplot\" target=\"_blank\">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.\n * <a href=\"./#!/guide/streamgraph\" target=\"_blank\">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"./#!/guide/summary\" target=\"_blank\">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.\n * <a href=\"./#!/guide/termsradio\" target=\"_blank\">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"./#!/guide/textualarc\" target=\"_blank\">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.\n * <a href=\"./#!/guide/topics\" target=\"_blank\">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n * <a href=\"./#!/guide/trends\" target=\"_blank\">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.\n * <a href=\"./#!/guide/veliza\" target=\"_blank\">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.\n * <a href=\"./#!/guide/wordtree\" target=\"_blank\">WordTree</a> is a tool that allows you to explore how words are used in phrases."
         },
         "toString": {
           "!type": "fn()",
           "!doc": "An alias for #summary."
         }
       },
-      "create": {
-        "!type": "fn(config: object)",
-        "!doc": "Create a new Corpus using the provided config"
-      },
       "load": {
-        "!type": "fn(config: object)",
-        "!doc": "Load a Corpus using the provided config"
+        "!type": "fn(config: +Object, api: +Object)",
+        "!doc": "Load a Corpus using the provided config and api"
       }
     },
     "Load": {
@@ -352,11 +370,11 @@
         "!doc": "Set the base URL for use with the Load class"
       },
       "trombone": {
-        "!type": "fn(config: object, params: object) -> +JSON",
+        "!type": "fn(config: +Object, params: +Object) -> +JSON",
         "!doc": "Make a call to trombone"
       },
       "load": {
-        "!type": "fn(urlToFetch: string, config: object) -> +Response",
+        "!type": "fn(urlToFetch: string, config: +Object) -> +Response",
         "!doc": "Fetch content from a URL, often resolving cross-domain data constraints"
       },
       "html": {
@@ -374,10 +392,6 @@
       "text": {
         "!type": "fn(url: string) -> string",
         "!doc": "Fetch text content from a URL"
-      },
-      "file": {
-        "!type": "fn(target: element) -> +Promise",
-        "!doc": "Create a file input in the target element and returns a Promise that's resolved with the file that is added to the input.\nThe file is also temporarily stored in the session storage for successive retrieval."
       }
     },
     "Table": {
@@ -388,7 +402,7 @@
           "!doc": "Set the headers for the Table"
         },
         "addRows": {
-          "!type": "fn(data: array) -> +Table",
+          "!type": "fn(data: +Array) -> +Table",
           "!doc": "Add rows to the Table"
         },
         "addRow": {
@@ -500,11 +514,11 @@
           "!doc": "Get the count of each unique value in the specified column"
         },
         "rowRollingMean": {
-          "!type": "fn(ind: ?, neighbors: number, overwrite: bool) -> array",
+          "!type": "fn(ind: ?, neighbors: number, overwrite: bool) -> +Array",
           "!doc": "Get the rolling mean for the specified row"
         },
         "columnRollingMean": {
-          "!type": "fn(ind: ?, neighbors: number, overwrite: bool) -> array",
+          "!type": "fn(ind: ?, neighbors: number, overwrite: bool) -> +Array",
           "!doc": "Get the rolling mean for the specified column"
         },
         "rowVariance": {
@@ -524,11 +538,11 @@
           "!doc": "Get the standard deviation for the specified column"
         },
         "rowZScores": {
-          "!type": "fn(ind: ?) -> array",
+          "!type": "fn(ind: ?) -> +Array",
           "!doc": "Get the z scores for the specified row"
         },
         "columnZScores": {
-          "!type": "fn(ind: ?) -> array",
+          "!type": "fn(ind: ?) -> +Array",
           "!doc": "Get the z scores for the specified column"
         },
         "rowSort": {
@@ -540,15 +554,15 @@
           "!doc": "TODO\nSort the specified columns"
         },
         "toCsv": {
-          "!type": "fn(config?: object) -> string",
+          "!type": "fn(config?: +Object) -> string",
           "!doc": "Get a CSV representation of the Table"
         },
         "toTsv": {
-          "!type": "fn(config?: object) -> string",
+          "!type": "fn(config?: +Object) -> string",
           "!doc": "Get a TSV representation of the Table"
         },
         "html": {
-          "!type": "fn(target: ?, config?: object) -> +Table",
+          "!type": "fn(target: ?, config?: +Object) -> +Table",
           "!doc": "Set the target's contents to an HTML representation of the Table"
         },
         "toHtml": {
@@ -556,7 +570,7 @@
           "!doc": "Same as toString."
         },
         "toString": {
-          "!type": "fn(config?: object) -> string",
+          "!type": "fn(config?: +Object) -> string",
           "!doc": "Get an HTML representation of the Table"
         },
         "chart": {
@@ -570,11 +584,11 @@
         "!doc": "Create a new Table"
       },
       "fetch": {
-        "!type": "fn(input: ?, api: object, config: object) -> +Promise",
+        "!type": "fn(input: ?, api: +Object, config: +Object) -> +Promise",
         "!doc": "Fetch a Table from a source"
       },
       "counts": {
-        "!type": "fn(data: array) -> object",
+        "!type": "fn(data: +Array) -> +Object",
         "!doc": "Get the count of each unique value in the data"
       },
       "cmp": {
@@ -582,50 +596,91 @@
         "!doc": "Compare two values"
       },
       "sum": {
-        "!type": "fn(data: array) -> number",
+        "!type": "fn(data: +Array) -> number",
         "!doc": "Get the sum of the provided values"
       },
       "mean": {
-        "!type": "fn(data: array) -> number",
+        "!type": "fn(data: +Array) -> number",
         "!doc": "Get the mean of the provided values"
       },
       "rollingMean": {
-        "!type": "fn(data: array, neighbors: number) -> array",
+        "!type": "fn(data: +Array, neighbors: number) -> +Array",
         "!doc": "Get rolling mean for the provided values"
       },
       "variance": {
-        "!type": "fn(data: array) -> number",
+        "!type": "fn(data: +Array) -> number",
         "!doc": "Get the variance for the provided values"
       },
       "standardDeviation": {
-        "!type": "fn(data: array) -> number",
+        "!type": "fn(data: +Array) -> number",
         "!doc": "Get the standard deviation for the provided values"
       },
       "zScores": {
-        "!type": "fn(data: array) -> array",
+        "!type": "fn(data: +Array) -> +Array",
         "!doc": "Get the z scores for the provided values"
       },
       "zip": {
-        "!type": "fn(data: array) -> array",
-        "!doc": "Perform a zip operation of the provided arrays https://en.wikipedia.org/wiki/Convolution_(computer_science)"
+        "!type": "fn(data: +Array) -> +Array",
+        "!doc": "Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia](https://en.wikipedia.org/wiki/Convolution_%28computer_science%29)."
       }
     },
     "Util": {
+      "!type": "fn()",
+      "prototype": {},
       "id": {
-        "!type": "fn(len: number) -> string",
+        "!type": "fn(len: +Number) -> +String",
         "!doc": "Generates a random ID of the specified length."
       },
       "toString": {
-        "!type": "fn(contents: ?) -> string"
+        "!type": "fn(contents: ?) -> +String"
       },
       "more": {
-        "!type": "fn(before: string, more: string, after: string)"
+        "!type": "fn(before: +String, more: +String, after: +String)"
+      },
+      "dataUrlToBlob": {
+        "!type": "fn(dataUrl: +String) -> +Blob",
+        "!doc": "Take a data URL and convert it to a Blob."
+      },
+      "blobToDataUrl": {
+        "!type": "fn(blob: +Blob) -> +String",
+        "!doc": "Take a Blob and convert it to a data URL."
+      },
+      "isString": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is a String."
+      },
+      "isNumber": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is a Number."
+      },
+      "isBoolean": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is a Boolean."
+      },
+      "isUndefined": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is Undefined."
+      },
+      "isArray": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is an Array."
+      },
+      "isObject": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is an Object."
+      },
+      "isNull": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is Null."
+      },
+      "isNode": {
+        "!type": "fn(val: ?) -> +Boolean",
+        "!doc": "Returns true if the value is a Node."
+      },
+      "getFileExtensionFromMimeType": {
+        "!type": "fn(mimeType: +String) -> +String",
+        "!doc": "Takes a MIME type and returns the related file extension.\nOnly handles file types supported by Voyant."
       }
     }
-  },
-  "FileInput": {
-    "!type": "fn(target: element, resolve: fn(), reject: fn())",
-    "prototype": {},
-    "!doc": "The FileInput constructor"
   }
 }
