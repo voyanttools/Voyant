@@ -71,8 +71,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						},
 						scope: this
 					},{
-						xtype: 'notebookwrapperexport',
-						exportType: 'output'
+						xtype: 'notebookwrapperexport'
 					},{
 						glyph: 'xf014@FontAwesome',
 						tooltip: 'Remove Results',

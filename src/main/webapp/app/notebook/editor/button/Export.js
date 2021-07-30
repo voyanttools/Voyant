@@ -1,22 +1,24 @@
-Ext.define("Voyant.notebook.editor.button.Export", {
-	extend: "Ext.button.Button",
-	mixins: ["Voyant.util.Localization"],
+Ext.define('Voyant.notebook.editor.button.Export', {
+	extend: 'Ext.button.Button',
+	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.notebookwrapperexport',
 	statics: {
 		i18n: {
-			tip: "Export",
-			exportTitle: "Export",
-			exportOpen: "Export content into new window",
-			exportDownload: "Download file to your machine",
-			cancelTitle: "Cancel"
+			tip: 'Export',
+			exportTitle: 'Export',
+			exportOpen: 'Export content into new window',
+			exportDownload: 'Download file to your machine',
+			exportCorpus: 'Open Corpus in Voyant Tools',
+			cancelTitle: 'Cancel'
 		},
 		exportWin: undefined,
 		getExportWindow: function(instance) {
 			if (this.exportWin === undefined) {
 				this.exportWin = Ext.create('Ext.window.Window', {
-					title: instance.localize("exportTitle"),
+					title: instance.localize('exportTitle'),
 					closeAction: 'hide',
 					modal: true,
+					width: 250,
 					bodyPadding: 5,
 					layout: {
 						type: 'vbox',
@@ -26,12 +28,18 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 						xtype: 'button'
 					},
 					items: [{
+						itemId: 'corpus',
+						text: instance.localize('exportCorpus'),
+						glyph: 'xf08e@FontAwesome',
+						margin: '0 0 5 0',
+						hidden: true
+					},{
 						itemId: 'open',
 						text: instance.localize('exportOpen'),
-						glyph: 'xf08e@FontAwesome'
+						glyph: 'xf08e@FontAwesome',
+						margin: '0 0 5 0',
 					},{
 						itemId: 'download',
-						margin: '5 0 0 0',
 						preventDefault: false,
 						text: instance.localize('exportDownload'),
 						glyph: 'xf019@FontAwesome',
@@ -40,7 +48,7 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 						}
 					}],
 					buttons: [{
-						text: instance.localize("cancelTitle"),
+						text: instance.localize('cancelTitle'),
 						glyph: 'xf00d@FontAwesome',
 						handler: function(btn) {
 							btn.up('window').close();
@@ -50,16 +58,72 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 			}
 
 			var wrapper = instance.up('notebookrunnableeditorwrapper');
-			var content = wrapper.getContent();
-			var fileContent = instance.getExportType() === 'output' ? content.output : content.input;
-			var filename = wrapper.getCellId()+"."+instance.getFileExtension(content.mode);
-			var properties = {type: content.mode==="text" || true ? "text/plain" : "text/"+content.mode};
-			var file;
-			try {
-				file = new File([fileContent], filename, properties);
-			} catch (e) {
-				file = new Blob([fileContent], properties);
+			
+			var notebook = wrapper.up('notebook');
+			var notebookId = notebook.getNotebookId() || 'spyral';
+			
+			var input = wrapper.getInput();
+			var output = wrapper.getOutput();
+			var mode = wrapper.getMode();
+
+			var corpusButton = this.exportWin.down('#corpus');
+			var openButton = this.exportWin.down('#open');
+			corpusButton.setHidden(true);
+			openButton.setHidden(false);
+
+			var fileName;
+			var fileType;
+			var fileContent;
+			if (mode === 'file') {
+				openButton.setHidden(true);
+				fileName = input.fileName;
+				fileType = output.type;
+			} else if (mode === 'javascript') {
+				// corpus check
+				if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
+					corpusButton.setHidden(false);
+					corpusButton.setHandler(function(btn) {
+						var url = Voyant.application.getBaseUrlFull()+'?corpus='+output.corpusid;
+						window.open(url);
+					});
+				}
+
+				if (Spyral.Util.isUndefined(output)) {
+					// output is probably a document and couldn't be sent from sandbox
+					// try getContent fallback
+					output = wrapper.getContent().output;
+				}
+				
+				if (Spyral.Util.isObject(output) || Spyral.Util.isArray(output)) {
+					fileName = notebookId+'_'+wrapper.getCellId()+'.json';
+					fileType = 'application/json';
+					fileContent = JSON.stringify(output);
+				} else if (Spyral.Util.isNode(output) || (Spyral.Util.isString(output) && output.match(/<\/?\w+.*?>/g) !== null)) {
+					fileName = notebookId+'_'+wrapper.getCellId()+'.html';
+					fileType = 'text/html';
+					if (Spyral.Util.isString(output)) {
+						fileContent = output;
+					} else {
+						fileContent = new XMLSerializer().serializeToString(output);
+					}
+				} else {
+					fileName = notebookId+'_'+wrapper.getCellId()+'.txt';
+					fileType = 'text/plain';
+					fileContent = output;
+				}
+			} else {
+				fileName = notebookId+'_'+wrapper.getDataName()+'.'+mode;
+				fileType = 'text/'+mode;
+				fileContent = input;
+				if (mode === 'json') {
+					fileType = 'application/json';
+				} else if (mode === 'text') {
+					fileName = notebookId+'_'+wrapper.getDataName()+'.txt';
+					fileType = 'text/plain';
+				}
 			}
+			
+			var file = new File([fileContent], fileName, {lastModified: new Date().getTime(), type: fileType});
 
 			this.exportWin.down('#open').setHandler(function(btn) {
 				var myWindow = window.open();
@@ -72,7 +136,7 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 			this.exportWin.addListener('show', function() {
 				var url = URL.createObjectURL(file);
 				this.exportWin.down('#download').getEl().set({
-					download: filename,
+					download: fileName,
 					href: url
 				});
 			}, this, { single: true });
@@ -86,23 +150,10 @@ Ext.define("Voyant.notebook.editor.button.Export", {
 		})
 		this.callParent(arguments);
 	},
-	config: {
-		exportType: 'input' // what type of content to include in the export: 'input' or 'output'
-	},
 	glyph: 'xf08e@FontAwesome',
 	listeners: {
 		click: function(cmp) {
 			Voyant.notebook.editor.button.Export.getExportWindow(cmp).show();
-		}
-	},
-	getFileExtension: function(mode) {
-		if (
-			mode === 'text' ||
-			(mode === 'javascript' && this.getExportType() === 'output') // use txt for javascript results because they could be anything
-		) {
-			return 'txt';
-		} else {
-			return mode;
 		}
 	}
 })

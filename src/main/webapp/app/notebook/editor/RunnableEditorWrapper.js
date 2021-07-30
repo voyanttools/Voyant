@@ -64,7 +64,15 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 		}
 	},
 
-	_reduceOutput: function(output) {
+	getOutput: function() {
+		if (this.results.getHasRunError()) {
+			return undefined;
+		} else {
+			return this.results.getCachedResultsValue();
+		}
+	},
+
+	_reduceDataViewerOutput: function(output) {
 		var html = new DOMParser().parseFromString(output, 'text/html');
 		
 		var container = html.querySelector('.spyral-dv-container');
@@ -80,8 +88,13 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 		}
 	},
 
+	/**
+	 * This is a method for getting string versions of input and output content.
+	 * Primarily used when saving the notebook.
+	 * @returns {Object}
+	 */
 	getContent: function() {
-		var output = this._reduceOutput(this.results.getOutput());
+		var output = this._reduceDataViewerOutput(this.results.getOutput());
 		return {
 			input: this.getInput(),
 			output: output,
