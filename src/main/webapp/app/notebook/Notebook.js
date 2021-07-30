@@ -224,7 +224,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			itemId: 'cells',
 				defaults: {
 					margin: '0 0 12 0',
-					padding: '0 0 0 0'
+					padding: '0 48 0 48'
 				}
     		},{
     			itemId: 'spyralFooter',
@@ -664,8 +664,10 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	
 	addNew: function() {
+		// TODO metadata defaults
 		this.setMetadata(new Spyral.Metadata({
-			title: "<h1>Spyral Notebook</h1>"
+			title: "<h1>Spyral Notebook</h1>",
+			language: "English"
 		}));
 		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
 		this.addCode('');
