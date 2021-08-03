@@ -6,7 +6,7 @@ def parse_file(fullfilename):
     commentsRe = re.compile(r'/\*\*(.*?)\*/[ \t]*(\r\n|\r|\n)(.*?)(\r\n|\r|\n)', re.S)
     classCodeRe = re.compile(r'class\s+(\w+)')
     classCommentsRe = re.compile(r'@class(\s+\w+)*')
-    memberOfRe = re.compile(r'@memberof\s+(\w+)')
+    memberOfRe = re.compile(r'@memberof\s+([\w\.]+)')
     defaultsRe = re.compile(r'=\s*(\{\s*\}|undefined)')
     functionCodeRe = re.compile(r'^\s*(\w+)\s*\(')
     typeDefRe = re.compile(r'@typedef\s+\{(\w+)\}\s+(\w+)(.*)', re.S | re.M)
@@ -55,9 +55,11 @@ def parse_file(fullfilename):
                     code = ""
                 else:
                     raise Exception("Can't find function: "+code+"\n\ncomments: "+comments)
+            elif "@method" in comments:
+                code = ""
             memberOfMatch = memberOfRe.search(comments)
             if memberOfMatch:
-                memberOf = memberOfMatch.group(1)+"."
+                memberOf = memberOfMatch.group(1)
             else:
                 memberOf = ""
             if "class" in code:
@@ -67,10 +69,12 @@ def parse_file(fullfilename):
                 comments = re.compile(r'(\r\n|\r|\n)(\r\n|\r|\n)+').sub("\n", comments)
                 classMatch = classCodeRe.search(code)
                 if classMatch:
-                    comments += "* @class "+memberOf+classMatch.group(1)
+                    comments += "* @class "+memberOf+"."+classMatch.group(1)
                     code = ""
                 else:
                     raise Exception("Unable to find class")
+            elif memberOf != "":
+                comments = comments.replace("@memberof", "@member", 1)
             code = code.replace("...", "")
             code = defaultsRe.sub("", code)
             if "@cfg" in comments or "@class" in comments or "@method" in comments:
@@ -94,12 +98,11 @@ def main(argv):
     args = parser.parse_args()
     output = ""
     for input_dir in args.input_dir:
-        for root, subFolders, files in os.walk(input_dir):
-            for f in files:
-                if f.endswith(".js"):
-                    fullfilename = os.path.join(root, f)
-                    if not args.exclude_file or fullfilename not in args.exclude_file:
-                        output += parse_file(fullfilename)
+        for filename in os.listdir(input_dir):
+            if filename.endswith(".js"):
+                fullfilename = os.path.join(input_dir, filename)
+                if not args.exclude_file or fullfilename not in args.exclude_file:
+                    output += parse_file(fullfilename)
     with open(args.output_file, 'w') as f:
         f.write(output)
 

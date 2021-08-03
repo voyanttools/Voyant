@@ -1,9 +1,20 @@
+/**
+ * A class for simplying resource storage
+ * @class Storage
+ * @memberof Spyral.Util
+ */
 class Storage {
 
 	constructor(config) {
 		this.MAX_LENGTH = 950000; // keep it under 1 megabyte
 	}
 	
+	/**
+	 * Store a resource
+	 * @param {String} id 
+	 * @param {*} data 
+	 * @returns {Promise}
+	 */
 	static storeResource(id, data) {
 		var dataString = JSON.stringify(data);
 		
@@ -44,8 +55,13 @@ class Storage {
 		}
 	}
 
+	/**
+	 * Get the URL for trombone
+	 * @returns {String}
+	 */
 	static getTromboneUrl() {
 		return 'https://beta.voyant-tools.org/trombone'
+		// return 'http://localhost:8080/voyant/trombone'
 	}
 	
 	static _doStore(id, dataString) {
@@ -59,6 +75,11 @@ class Storage {
 		});
 	}
 	
+	/**
+	 * Get a stored resource
+	 * @param {String} id 
+	 * @returns {Promise}
+	 */
 	static getStoredResource(id) {
 		return fetch(this.getTromboneUrl(), {
 			method: 'GET',

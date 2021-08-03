@@ -1,3 +1,12 @@
+/**
+ * Show contents in the results area.
+ * @memberof Spyral.Util
+ * @method show
+ * @static
+ * @param {*} contents 
+ * @param {*} len 
+ * @param {*} mode 
+ */
 function show(contents, len, mode='info') {
 	if (this && this.then) {
 		var arg = contents;
@@ -40,6 +49,14 @@ function show(contents, len, mode='info') {
 	}
 }
 
+/**
+ * Show an error in the results area.
+ * @memberof Spyral.Util
+ * @method showError
+ * @static
+ * @param {*} error 
+ * @param {*} more 
+ */
 function showError(error, more) {
 	if (error !== undefined && error instanceof Error) {
 		if (error.stack && more === undefined) {

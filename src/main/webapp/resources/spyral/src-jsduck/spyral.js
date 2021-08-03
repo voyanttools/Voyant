@@ -2332,7 +2332,61 @@
 
 // *** Documentation extracted from: resources\spyral\src\show.js ***
 
+/**
+* Show contents in the results area.
+ * @member Spyral.Util
+ * @method show
+ * @static
+ * @param {*} contents 
+ * @param {*} len 
+ * @param {*} mode
+ */
+
+
+/**
+* Show an error in the results area.
+ * @member Spyral.Util
+ * @method showError
+ * @static
+ * @param {*} error 
+ * @param {*} more
+ */
+
+
 
 
 // *** Documentation extracted from: resources\spyral\src\storage.js ***
+
+/**
+* A class for simplying resource storage
+ * @class Spyral.Util.Storage
+ */
+
+
+/**
+* Store a resource
+	 * @param {String} id 
+	 * @param {*} data 
+	 * @returns {Promise}
+	 * @static
+ * @method storeResource
+ */
+
+
+/**
+* Get the URL for trombone
+	 * @returns {String}
+	 * @static
+ * @method getTromboneUrl
+ */
+
+
+/**
+* Get a stored resource
+	 * @param {String} id 
+	 * @returns {Promise}
+	 * @static
+ * @method getStoredResource
+ */
+
 
