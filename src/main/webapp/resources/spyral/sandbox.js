@@ -101,8 +101,12 @@ function Sandboxer(event) {
 			type = 'text/string';
 			blobData = thing;
 		} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
+			// TODO deep / recursive analysis
 			type = 'application/json';
 			blobData = JSON.stringify(thing);
+		} else if (Spyral.Util.isFunction(thing)) {
+			type = 'application/javascript';
+			blobData = thing.toString();
 		} else if (Spyral.Util.isNode(thing)) {
 			type = 'text/xml';
 			blobData = new XMLSerializer().serializeToString(thing);
@@ -112,24 +116,30 @@ function Sandboxer(event) {
 
 	this.blob2Var = function(blob) {
 		return new Promise(function(resolve, reject) {
-			if (blob.type.search(/application\/[^json]/) === 0) {
+			if (blob.type.search(/application\/(?!json|javascript)/) === 0) {
 				// probably a non-browser file type
 				resolve(blob);
 			} else {
 				var reader = new FileReader();
 				reader.addEventListener('loadend', function(ev) {
-					var td = new TextDecoder();
-					var data = td.decode(ev.target.result);
-					if (blob.type === 'text/string' || blob.type === 'text/plain') {
-						// already taken care of
-					} else if (blob.type === 'application/json') {
-						data = JSON.parse(data);
-					} else if (blob.type === 'text/xml' || blob.type === 'text/html') {
-						data = new DOMParser().parseFromString(data, 'text/xml');
-					} else {
-						reject('unknown blob type: '+blob.type);
+					try {
+						var td = new TextDecoder();
+						var data = td.decode(ev.target.result);
+						if (blob.type === 'text/string' || blob.type === 'text/plain') {
+							// already taken care of
+						} else if (blob.type === 'application/json') {
+							data = JSON.parse(data);
+						} else if (blob.type === 'application/javascript') {
+							// it's a function and we'll eval it in loadVariable
+						} else if (blob.type === 'text/xml' || blob.type === 'text/html') {
+							data = new DOMParser().parseFromString(data, 'text/xml');
+						} else {
+							reject('unknown blob type: '+blob.type);
+						}
+						resolve(data);
+					} catch (err) {
+						reject(err);
 					}
-					resolve(data);
 				});
 				reader.readAsArrayBuffer(blob);
 			}
@@ -143,6 +153,8 @@ function Sandboxer(event) {
 			var cv = cvs.shift();
 			return me.loadVariable(cv).then(function() {
 				return me.loadVariables(cvs);
+			}, function(err) {
+				return Promise.reject(err);
 			});
 		}
 	}
@@ -178,6 +190,15 @@ function Sandboxer(event) {
 							break;
 					}
 					reject('no match for spyral class: '+cv.isSpyralClass);
+				} else if (cv.value.type === 'application/javascript') {
+					if (data.search(/^function\s+\w+\(/) !== -1) {
+						// named function
+						window.eval(data);
+					} else {
+						// anonymous function
+						window.eval(cv.name+'='+data);
+					}
+					resolve();
 				} else {
 					window[cv.name] = data;
 					resolve();
