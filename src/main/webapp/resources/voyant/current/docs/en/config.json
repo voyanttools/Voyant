@@ -3,6 +3,7 @@
     "--css": "#guide-body p img {max-width: 100%; height: auto; border: thin solid #efefef; thumb-list dd .thumb img {border: none;};",
     "--warnings": ["-link"],
     "--guides": "guides.json",
+	"--categories": "categories.json",
     "--exclude": "app/notebook/storage/github/FileSaver.js,app/notebook/storage/github/OctokitWrapper.js",
     "--template": "../template-min",
     "--welcome": "welcome.html",

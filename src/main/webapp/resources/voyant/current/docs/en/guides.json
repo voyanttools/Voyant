@@ -246,7 +246,18 @@
                         "description": "Known Mirrors of Voyant Tools."
                     }
                  ]
-            }
+            },
+			{
+				"title": "Spyral",
+				"items": [
+					{
+						"name": "notebook",
+						"url": "guides/notebook",
+						"title": "About Spyral",
+                        "description": "General information about Spyral."
+					}
+				]
+			}
         ]
     }
 ]

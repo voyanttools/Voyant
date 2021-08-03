@@ -1,0 +1,25 @@
+[
+	{
+		"name": "Spyral",
+		"groups": [
+			{
+				"name": "Base",
+				"classes": [
+					"Spyral.Corpus",
+					"Spyral.Table",
+					"Spyral.Load",
+					"Spyral.Util",
+					"Spyral.Chart",
+					"Spyral.Categories"
+				]
+			},{
+				"name": "Notebook",
+				"classes": [
+					"Spyral.Metadata",
+					"Spyral.Notebook",
+					"Spyral.Util.Storage"
+				]
+			}
+		]
+	}
+]
