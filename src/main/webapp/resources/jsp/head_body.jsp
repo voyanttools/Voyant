@@ -17,7 +17,7 @@ body {margin: 0; padding: 0;}
 </style>
 </head>
 <body>
-<div id="pageloading"><span class="title">Voyant Tools</span><div class="logo"><img src="<%= (String) request.getAttribute("base") %>/resources/images/voyant-logo-90.png" alt="Voyant Tools logo" width="90" height="90"/></div></div>
+<div id="pageloading"><span class="title">Voyant Tools</span><div class="logo"><img src="<%= (String) request.getAttribute("base") %>/resources/images/voyant-logo-90.png" width="90" height="90"/></div></div>
 
 <%@ include file="load_js.jsp" %>
 
