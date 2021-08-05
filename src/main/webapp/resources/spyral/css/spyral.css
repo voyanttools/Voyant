@@ -29,8 +29,7 @@ body.exported-notebook .notebook-code-editor {
 	border-left: 1px solid rgb(240, 240, 240);
 }
 .notebook-code-editor .spyral-editor-error {
-	background-color: rgba(194, 50, 65, .3);
-	position: absolute;
+	background-color: rgba(194, 50, 65, .3) !important;
 }
 .notebook-code-results, .notebook-data-input {
 	background-color: rgb(252, 252, 252);

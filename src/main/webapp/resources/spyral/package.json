@@ -9,6 +9,7 @@
 		"build-spyral-local-voyant": "rollup -c --environment LOCAL_VOYANT",
 		"watch-spyral-local-voyant": "rollup -c --watch --sourcemap --environment LOCAL_VOYANT",
 		"docs": "jsdoc -c jsdoc.config.json",
+		"build-tern-worker": "rollup -c rollup.tern.config.js",
 		"docs-tern": "jsdoc -t jsdoc-tern-template -c jsdoc.config.json",
 		"docs-tern-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tern-template -c jsdoc.config.json"
 	},
@@ -39,9 +40,14 @@
 		"@babel/preset-env": "^7.9.5",
 		"@rollup/plugin-commonjs": "^11.1.0",
 		"@rollup/plugin-node-resolve": "^7.1.3",
+		"acorn": "^8.4.1",
+		"acorn-loose": "^8.1.0",
+		"acorn-walk": "^8.1.1",
 		"core-js": "^3.6.5",
 		"jsdoc": "^3.6.4",
 		"rollup": "^2.6.1",
-		"rollup-plugin-babel": "^4.4.0"
+		"rollup-plugin-babel": "^4.4.0",
+		"rollup-plugin-concatfiles": "git+https://github.com/kpulkit29/rollup-plugin-concatfiles.git",
+		"tern": "^0.24.3"
 	}
 }

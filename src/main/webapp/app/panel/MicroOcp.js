@@ -158,6 +158,7 @@ Ext.define('Voyant.panel.MicroOcp', {
 		        	listeners: {
 		        		boxready: function() {
 		        			var me = this;
+							/* TODO swap out ace for codemirror
 		        			var editor = ace.edit(Ext.getDom(this.getEl()));
 		        			microocp.setEditor(editor); // set to the containing panel
 //		        			editor.setOptions({enableBasicAutocompletion: false, enableLiveAutocompletion: false});
@@ -229,6 +230,7 @@ Ext.define('Voyant.panel.MicroOcp', {
 		            				microocp.getEditor().setValue(data);
 		            			})
 		            		}
+							*/
 
 		        		}
 
@@ -264,9 +266,10 @@ Ext.define('Voyant.panel.MicroOcp', {
     		var me = this;
     		corpus.getPlainText().then(function(text) {
     			text = text.replace(/(\r\n|\r|\n)(\r\n|\r|\n)(\r\n|\r|\n)+/g,"\n\n")
-    			var editor = me.getEditor();
-    			editor.setValue(text).trim();
-    			editor.scrollToLine(1, true, true, function () {});
+				// TODO swap out ace for codemirror
+    			// var editor = me.getEditor();
+    			// editor.setValue(text).trim();
+    			// editor.scrollToLine(1, true, true, function () {});
     		})
     	}, this);
     	

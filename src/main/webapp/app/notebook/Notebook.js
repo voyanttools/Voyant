@@ -63,7 +63,10 @@ Ext.define('Voyant.notebook.Notebook', {
 	githubDialogs: undefined,
 	catalogueWindow: undefined,
 
-	spyralTernDocs: undefined, // holds the content of the spyral tern docs, for passing to the code editor
+	// holds the content of the tern docs, for passing to the code editor
+	spyralTernDocs: undefined,
+	ecmaTernDocs: undefined,
+	browserTernDocs: undefined,
     
     /**
      * @private
@@ -351,65 +354,27 @@ Ext.define('Voyant.notebook.Notebook', {
 		}.bind(this);
 
 		// need to load docs first
-		Ext.Ajax.request({
-			url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/spyral.json',
-			callback: function(opts, success, response) {
-				if (success) {
-					this.spyralTernDocs = Ext.JSON.decode(response.responseText);
-					
-					// add docs for static / global functions
-					this.spyralTernDocs.Corpus = this.spyralTernDocs.Spyral.Corpus;
-					this.spyralTernDocs.Table = this.spyralTernDocs.Spyral.Table;
-					this.spyralTernDocs.loadCorpus = this.spyralTernDocs.Spyral.Corpus.load;
-					this.spyralTernDocs.createTable = this.spyralTernDocs.Spyral.Table.create;
-				}
+		Ext.Promise.all([
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/spyral.json'}),
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/ecmascript.json'}),
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'})
+		]).then(function(responses) {
+			this.spyralTernDocs = Ext.JSON.decode(responses[0].responseText);
+			// add docs for static / global functions TODO automate this at doc creation
+			this.spyralTernDocs.Corpus = this.spyralTernDocs.Spyral.Corpus;
+			this.spyralTernDocs.Table = this.spyralTernDocs.Spyral.Table;
+			this.spyralTernDocs.loadCorpus = this.spyralTernDocs.Spyral.Corpus.load;
+			this.spyralTernDocs.createTable = this.spyralTernDocs.Spyral.Table.create;
+			this.spyralTernDocs.show = this.spyralTernDocs.Spyral.Util.show;
+			this.spyralTernDocs.showError = this.spyralTernDocs.Spyral.Util.showError;
+			
+			this.ecmaTernDocs = Ext.JSON.decode(responses[1].responseText);
+			this.browserTernDocs = Ext.JSON.decode(responses[2].responseText);
 
-				var queryParams = Ext.Object.fromQueryString(document.location.search, true);
-				var isRun = Ext.isDefined(queryParams.run);
-				var spyralIdMatches = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
-				var isGithub = Ext.isDefined(queryParams.githubId);
-				if ("inputJsonArrayOfEncodedBase64" in queryParams) {
-					let json = Ext.decode(decodeURIComponent(atob(queryParams.inputJsonArrayOfEncodedBase64)));
-					json.forEach(function(block, index) {
-						let text = block;
-						if (text.trim().indexOf("<")==0) {
-							if (index === 0) {
-								// assume first text block is metadata
-								this.setMetadata(new Spyral.Metadata({
-									title: text
-								}));
-							} else {
-								this.addText(text);
-							}
-						} else {
-							this.addCode(text);
-						}
-					}, this);
-				} else if (queryParams.input) {
-					if (queryParams.input.indexOf("http")===0) {
-						this.loadFromUrl(queryParams.input, isRun);
-					}
-				} else if (spyralIdMatches) {
-					this.loadFromId(spyralIdMatches[1]);
-					this.setStorageSolution('voyant');
-				} else if (isGithub) {
-					this.githubDialogs.loadFileFromId(queryParams.githubId);
-					this.setStorageSolution('github');
-				} else {
-					this.addNew();
-					this.setIsEdited(false);
-				}
-				
-				if (isRun) {
-					var me = this;
-					Ext.defer(function() {
-						me.runAll()
-					}, 100)
-				}
-
-			},
-			scope: this
-		})
+			this.loadFromQueryParams();
+		}.bind(this), function() {
+			this.loadFromQueryParams();
+		}.bind(this))
     },
     
     
@@ -448,6 +413,51 @@ Ext.define('Voyant.notebook.Notebook', {
 	// override toolable method
 	getExportUrl: function(asTool) {
 		return location.href; // we just provide the current URL
+	},
+
+	loadFromQueryParams: function() {
+		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
+		var isRun = Ext.isDefined(queryParams.run);
+		var spyralIdMatches = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
+		var isGithub = Ext.isDefined(queryParams.githubId);
+		if ("inputJsonArrayOfEncodedBase64" in queryParams) {
+			let json = Ext.decode(decodeURIComponent(atob(queryParams.inputJsonArrayOfEncodedBase64)));
+			json.forEach(function(block, index) {
+				let text = block;
+				if (text.trim().indexOf("<")==0) {
+					if (index === 0) {
+						// assume first text block is metadata
+						this.setMetadata(new Spyral.Metadata({
+							title: text
+						}));
+					} else {
+						this.addText(text);
+					}
+				} else {
+					this.addCode(text);
+				}
+			}, this);
+		} else if (queryParams.input) {
+			if (queryParams.input.indexOf("http")===0) {
+				this.loadFromUrl(queryParams.input, isRun);
+			}
+		} else if (spyralIdMatches) {
+			this.loadFromId(spyralIdMatches[1]);
+			this.setStorageSolution('voyant');
+		} else if (isGithub) {
+			this.githubDialogs.loadFileFromId(queryParams.githubId);
+			this.setStorageSolution('github');
+		} else {
+			this.addNew();
+			this.setIsEdited(false);
+		}
+		
+		if (isRun) {
+			var me = this;
+			Ext.defer(function() {
+				me.runAll()
+			}, 100)
+		}
 	},
 	
     loadFromString: function(text) {
@@ -679,7 +689,7 @@ Ext.define('Voyant.notebook.Notebook', {
  
     addCode: function(block, order, cellId, config) {
 		config = config || {};
-		config.docs = this.spyralTernDocs;
+		config.docs = [this.spyralTernDocs, this.ecmaTernDocs, this.browserTernDocs];
     	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
     },
 

@@ -61,7 +61,22 @@ CKEDITOR.on('dialogDefinition', function(ev) {
     }
 });
 </script>
-<script src="<%= base %>/resources/ace/1.4.12/src-min-noconflict/ace.js"></script>
+
+<!-- codemirror -->
+<link rel="stylesheet" type="text/css" href="<%= base %>/resources/codemirror/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/codemirror.css" />
+<script src="<%= base %>/resources/codemirror/lib/codemirror.js"></script>
+<script src="<%= base %>/resources/codemirror/mode/javascript/javascript.js"></script>
+<script src="<%= base %>/resources/codemirror/mode/xml/xml.js"></script>
+<script src="<%= base %>/resources/codemirror/addon/selection/active-line.js"></script>
+<script src="<%= base %>/resources/codemirror/addon/selection/mark-selection.js"></script>
+<!-- codemirror autocomplete-->
+<link rel="stylesheet" href="<%= base %>/resources/codemirror/addon/dialog/dialog.css">
+<link rel="stylesheet" href="<%= base %>/resources/codemirror/addon/hint/show-hint.css">
+<link rel="stylesheet" href="<%= base %>/resources/codemirror/addon/tern/tern.css">
+<script src="<%= base %>/resources/codemirror/addon/dialog/dialog.js"></script>
+<script src="<%= base %>/resources/codemirror/addon/hint/show-hint.js"></script>
+<script src="<%= base %>/resources/codemirror/addon/tern/tern.js"></script>
 
 
 <script>

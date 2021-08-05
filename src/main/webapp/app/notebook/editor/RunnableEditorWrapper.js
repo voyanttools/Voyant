@@ -44,8 +44,12 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 		
 		var runPromise = this.results.run(code, priorVariables);
 		runPromise.otherwise(function(eventData) {
-			if (eventData.error !== undefined && eventData.error.row !== undefined) {
-				this.editor.addLineMarker(eventData.error.row, 'error');
+			if (eventData.error !== undefined) {
+				var location = eventData.error.location;
+				if (location !== undefined) {
+					this.editor.addMarker(location, 'error');
+					this.editor.addLineMarker(location, 'error');
+				}
 			}
 		}, this);
 

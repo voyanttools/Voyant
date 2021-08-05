@@ -271,6 +271,21 @@ function Sandboxer(event) {
 						// console.log('prResult', prResult);
 						me.result.value = prResult;
 
+						if (Spyral.Util.isNode(me.result.value)) {
+							// fairly naive check for parsererror, consider something like https://stackoverflow.com/a/55756548
+							var parsererror = me.result.value.querySelector('parsererror');
+							if (parsererror !== null) {
+								var errorMsg = parsererror.textContent;
+								var lineNumber = parseInt(errorMsg.match(/line[\s\w]+?(\d+)/i)[1]);
+								var columnNumber = parseInt(errorMsg.match(/column[\s\w]+?(\d+)/i)[1]);
+								var error = new Error('parser error');
+								error.lineNumber = lineNumber;
+								error.columnNumber = columnNumber;
+								me.handleError(error);
+								return;
+							}
+						}
+
 						var newKeys = me.getNewWindowKeys();
 						var variables = [];
 						for (var i = 0; i < newKeys.length; i++) {
@@ -317,6 +332,26 @@ function Sandboxer(event) {
 		me.resolveEvent();
 	}
 
+	this.getErrorLocation = function(error) {
+		if (error.lineNumber !== undefined) {
+			var row = error.lineNumber;
+			var column = error.column !== undefined ? error.column : error.columnNumber !== undefined ? error.columnNumber : 0;
+			return [row, column];
+		} else if (error.stack !== undefined) {
+			var locationDetailsRegex = /<anonymous>:(\d+):(\d+)/;
+			if (navigator.userAgent.indexOf('Chrome') === -1) { // very naive browser detection
+				locationDetailsRegex = />\seval:(\d+):(\d+)/; // firefox style stack trace
+			}
+			var locationDetails = error.stack.match(locationDetailsRegex);
+			if (locationDetails !== null) {
+				var row = parseInt(locationDetails[1]);
+				var column = parseInt(locationDetails[2]);
+				return [row, column];
+			}
+		}
+		return undefined;
+	}
+
 	this.resolveEvent = function() {
 		try {
 			if (me.result.type === 'error') {
@@ -325,18 +360,11 @@ function Sandboxer(event) {
 				// event listener to adjust height when showing error details
 				document.body.querySelector('.error > pre > span:first-child').addEventListener('click', me.notifyHeightChange);
 
-				// try to determine error location in the code that was run
-				if (me.result.error.stack !== undefined) {
-					var locationDetailsRegex = /<anonymous>:(\d+):(\d+)/;
-					if (navigator.userAgent.indexOf('Chrome') === -1) { // very naive browser detection
-						locationDetailsRegex = />\seval:(\d+):(\d+)/; // firefox style stack trace
-					}
-					var locationDetails = me.result.error.stack.match(locationDetailsRegex);
-					if (locationDetails !== null) {
-						me.result.error.row = parseInt(locationDetails[1]);
-						me.result.error.column = parseInt(locationDetails[2]);
-					}
-				}
+				// replace error since firefox can't clone it
+				me.result.error = {
+					message: me.result.error.toString(),
+					location: me.getErrorLocation(me.result.error)
+				};
 			} else {
 				if (document.body.firstChild === null) {
 					// .tool() output check

@@ -27,7 +27,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs, // TODO
-			mode: 'ace/mode/'+config.mode,
+			mode: config.mode,
 			maxLines: 12,
 			hidden: isFile
 		});
@@ -199,7 +199,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "application/xml")';
 					break;
 				case 'html':
-					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "text/html")';
+					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "application/xml")'; // also use xml for strict validation
 					break;
 			}
 			// TODO handle parse errors for xml/html
@@ -225,8 +225,12 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			me.results.run(code, priorVariables).then(function(eventData) {
 				dfd.resolve(eventData);
 			}, function(eventData) {
-				if (eventData.error !== undefined && eventData.error.row !== undefined) {
-					me.editor.addLineMarker(eventData.error.row, 'error');
+				if (eventData.error !== undefined) {
+					var location = eventData.error.location;
+					if (location !== undefined) {
+						me.editor.addMarker(location, 'error');
+						me.editor.addLineMarker(location, 'error');
+					}
 				}
 				dfd.reject(eventData);
 			});

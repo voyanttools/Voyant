@@ -1,0 +1,9 @@
+/* tweaks for codemirror */
+
+/* hide line selection on blur */
+.CodeMirror-activeline-background {
+    background: transparent !important;
+}
+.CodeMirror-focused .CodeMirror-activeline-background {
+    background: #F5F9FF !important;
+}
