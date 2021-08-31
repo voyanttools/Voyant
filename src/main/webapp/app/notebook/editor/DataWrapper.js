@@ -28,7 +28,6 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs, // TODO
 			mode: config.mode,
-			maxLines: 12,
 			hidden: isFile
 		});
 
