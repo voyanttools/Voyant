@@ -59,7 +59,7 @@ class Notebook {
 		let json;
 		try {
 			json = await Spyral.Load.trombone({
-				tool: 'notebook.NotebookManager',
+				tool: 'notebook.GitNotebookManager',
 				action: 'load',
 				id: notebookId,
 				noCache: 1
@@ -68,34 +68,48 @@ class Notebook {
 			throw new Error('There was an error importing the notebook. Please ensure the URL and ID are correct.');
 		}
 
-		const notebook = json.notebook.data;
-		const parser = new DOMParser();
-		const htmlDoc = parser.parseFromString(notebook, 'text/html');
-		
-		let importedCode = [];
-		let error = undefined;
-		if (cellId !== undefined) {
-			const cell = htmlDoc.querySelector('#'+cellId);
-			if (cell !== null && cell.classList.contains('notebookcodeeditorwrapper')) {
-				importedCode.push(cell.querySelector('pre').textContent);
-			}
-		} else {
-			const allCells = htmlDoc.querySelectorAll('section.notebook-editor-wrapper')
-			if (cellIndex !== undefined) {
-				const cell = allCells[cellIndex];
-				if (cell !== undefined) {
-					importedCode.push(cell.querySelector('pre').textContent);
-				}
-			} else {
-				allCells.forEach((cell, i) => {
-					if (cell.classList.contains('notebookcodeeditorwrapper')) {
-						importedCode.push(cell.querySelector('pre').textContent);
-					}
-				});
-			}
-		}
+		const notebook = JSON.parse(json.notebook.data);
 
-		// console.log('imported:', importedCode);
+		function getCodeStringForDataCell(dataCellContent) {
+			let code = '';
+			switch(dataCellContent.mode) {
+				case 'text':
+					code = dataCellContent.dataName+'=`'+dataCellContent.input+'`';
+					break;
+				case 'json':
+					code = dataCellContent.dataName+'= JSON.parse(`'+dataCellContent.input+'`)';
+					break;
+				case 'xml':
+					code = dataCellContent.dataName+'= new DOMParser().parseFromString(`'+dataCellContent.input+'`, "application/xml")';
+					break;
+				case 'html':
+					code = dataCellContent.dataName+'= new DOMParser().parseFromString(`'+dataCellContent.input+'`, "application/xml")';
+					break;
+			}
+			return code;
+		}
+		
+		const cells2import = notebook.cells.filter((cell, index) => {
+			if (cell.type === 'code' || cell.type === 'data') {
+				if (cellId === undefined && cellIndex === undefined) {
+					return true;
+				} else if (cell.cellId === cellId) {
+					return true;
+				} else if (cellIndex !== undefined && cellIndex === index+1) { // the index shown notebook counter is one-based
+					return true;
+				}
+			}
+		});
+
+		const importedCode = cells2import.map((cell) => {
+			if (cell.type === 'data') {
+				return getCodeStringForDataCell(cell.content);
+			} else {
+				return cell.content.input;
+			}
+		})
+
+		console.log('imported:', importedCode);
 
 		async function __doRun(code) {
 			// console.log('running:',code);
