@@ -74,7 +74,6 @@ Ext.define('Voyant.notebook.Notebook', {
     constructor: function(config) {
     	Ext.apply(config, {
     		title: this.localize('title'),
-    	    autoScroll: true,
     		includeTools: {
 				'help': true,
 				'gear': true,
@@ -146,7 +145,6 @@ Ext.define('Voyant.notebook.Notebook', {
 								Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
 									text = text.trim();
 									if (btn=="ok") {
-										this.clear();
 										this.loadFromString(text);
 									}
 								}, this, true);
@@ -162,7 +160,6 @@ Ext.define('Voyant.notebook.Notebook', {
 							Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
 								text = text.trim();
 								if (btn=="ok") {
-									this.clear();
 									this.loadFromString(text);
 								}
 							}, this, true);
@@ -202,7 +199,17 @@ Ext.define('Voyant.notebook.Notebook', {
                     scope: this
                 }
     		},
-    			
+    		
+			scrollable: true,
+			layout: {
+				type: 'vbox',
+				align: 'middle',
+				padding: '50 0'
+			},
+			defaults: {
+				width: '100%',
+				maxWidth: 1100
+			},
     		items: [{
     			itemId: 'spyralHeader',
     			cls: 'spyral-header',
@@ -226,8 +233,8 @@ Ext.define('Voyant.notebook.Notebook', {
     			xtype: 'container',
     			itemId: 'cells',
 				defaults: {
-					margin: '0 0 12 0',
-					padding: '0 48 0 48'
+					margin: '10 0 10 0',
+					padding: '0 50 0 50'
 				}
     		},{
     			itemId: 'spyralFooter',
@@ -298,7 +305,6 @@ Ext.define('Voyant.notebook.Notebook', {
 			listeners: {
 				'fileLoaded': function(src, {owner, repo, ref, path, file}) {
 					this.githubDialogs.close();
-					this.clear();
 					this.loadFromString(file);
 
 					const id = encodeURIComponent(owner+'/'+repo+'/'+path);
@@ -337,7 +343,6 @@ Ext.define('Voyant.notebook.Notebook', {
 			listeners: {
 				notebookSelected: function(catalogue, notebookId) {
 					catalogue.hideWindow();
-					this.clear();
 					this.loadFromId(notebookId);
 					this.setNotebookId(notebookId);
 				},
@@ -378,7 +383,11 @@ Ext.define('Voyant.notebook.Notebook', {
     },
     
     
-    clear: function() {
+    reset: function() {
+		this.getScrollable().scrollTo(0, 0);
+		this.getScrollable().trackingScrollTop = 0;
+		this.getScrollable().trackingScrollLeft = 0;
+
 		this.setMetadata(new Spyral.Metadata());
 		this.voyantStorageDialogs.reset();
     	var cells = this.getComponent("cells");
@@ -476,7 +485,10 @@ Ext.define('Voyant.notebook.Notebook', {
 				icon: Ext.MessageBox.ERROR
 			});
 		} else {
-			this.importFromHtml(text); // old format
+			Ext.batchLayouts(function() {
+				this.reset();
+				this.importFromHtml(text); // old format
+			}, this);
 		}
 		return true;
     },
@@ -503,36 +515,39 @@ Ext.define('Voyant.notebook.Notebook', {
 			});
 		}
 
-		this.setMetadata(new Spyral.Metadata(json.metadata));
+		Ext.batchLayouts(function() {
+			this.reset();
+			this.setMetadata(new Spyral.Metadata(json.metadata));
 
-		var cells2Init = [];
-		json.cells.forEach(function(cell) {
-			var cell2Init = undefined;
-			switch(cell.type) {
-				case 'text':
-					this.addText(cell.content, undefined, cell.cellId);
-					break;
-				case 'code':
-					cell2Init = this.addCode(cell.content, undefined, cell.cellId);
-					break;
-				case 'data':
-					cell2Init = this.addData(cell.content, undefined, cell.cellId);
-					break;
-			}
-			if (cell2Init) {
-				cell2Init.on('initialized', function() {
-					var cellIndex = cells2Init.indexOf(cell2Init);
-					if (cellIndex !== -1) {
-						cells2Init.splice(cellIndex, 1);
-						if (cells2Init.length === 0) {
-							this.fireEvent('notebookInitialized', this);
+			var cells2Init = [];
+			json.cells.forEach(function(cell) {
+				var cell2Init = undefined;
+				switch(cell.type) {
+					case 'text':
+						this.addText(cell.content, undefined, cell.cellId);
+						break;
+					case 'code':
+						cell2Init = this.addCode(cell.content, undefined, cell.cellId);
+						break;
+					case 'data':
+						cell2Init = this.addData(cell.content, undefined, cell.cellId);
+						break;
+				}
+				if (cell2Init) {
+					cell2Init.on('initialized', function() {
+						var cellIndex = cells2Init.indexOf(cell2Init);
+						if (cellIndex !== -1) {
+							cells2Init.splice(cellIndex, 1);
+							if (cells2Init.length === 0) {
+								this.fireEvent('notebookInitialized', this);
+							}
+						} else {
+							console.error('unknown cell initialized', cell2Init);
 						}
-					} else {
-						console.error('unknown cell initialized', cell2Init);
-					}
-				}.bind(this));
-				cells2Init.push(cell2Init);
-			}
+					}.bind(this));
+					cells2Init.push(cell2Init);
+				}
+			}, this);
 		}, this);
 	},
 
