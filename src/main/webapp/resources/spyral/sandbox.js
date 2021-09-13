@@ -91,27 +91,38 @@ function Sandboxer(event) {
 
 
 	this.var2Blob = function(thing) {
-		if (thing instanceof Blob) {
-			return thing;
-		}
+		var me = this;
+		return new Promise(function(resolve, reject) {
+			if (thing instanceof Blob) {
+				resolve(thing);
+			}
 
-		var type = '';
-		var blobData = '';
-		if (Spyral.Util.isString(thing)) {
-			type = 'text/string';
-			blobData = thing;
-		} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
-			// TODO deep / recursive analysis
-			type = 'application/json';
-			blobData = JSON.stringify(thing);
-		} else if (Spyral.Util.isFunction(thing)) {
-			type = 'application/javascript';
-			blobData = thing.toString();
-		} else if (Spyral.Util.isNode(thing)) {
-			type = 'text/xml';
-			blobData = new XMLSerializer().serializeToString(thing);
-		}
-		return new Blob([blobData], {type: type});
+			var type = '';
+			var blobData = '';
+			if (Spyral.Util.isPromise(thing)) {
+				Promise.resolve(thing).then(function(prResult) {
+					resolve(me.var2Blob(prResult));
+				}, function(err) {
+					reject(err);
+				});
+			} else {
+				if (Spyral.Util.isString(thing)) {
+					type = 'text/string';
+					blobData = thing;
+				} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
+					// TODO deep / recursive analysis
+					type = 'application/json';
+					blobData = JSON.stringify(thing);
+				} else if (Spyral.Util.isFunction(thing)) {
+					type = 'application/javascript';
+					blobData = thing.toString();
+				} else if (Spyral.Util.isNode(thing)) {
+					type = 'text/xml';
+					blobData = new XMLSerializer().serializeToString(thing);
+				}
+				resolve(new Blob([blobData], {type: type}));
+			}
+		});
 	}
 
 	this.blob2Var = function(blob) {
@@ -134,7 +145,7 @@ function Sandboxer(event) {
 						} else if (blob.type === 'text/xml' || blob.type === 'text/html') {
 							data = new DOMParser().parseFromString(data, 'text/xml');
 						} else {
-							reject('unknown blob type: '+blob.type);
+							console.warn('unknown blob type: '+blob.type);
 						}
 						resolve(data);
 					} catch (err) {
@@ -288,6 +299,7 @@ function Sandboxer(event) {
 
 						var newKeys = me.getNewWindowKeys();
 						var variables = [];
+						var variableValues = [];
 						for (var i = 0; i < newKeys.length; i++) {
 							var varName = newKeys[i];
 							var varValue = window[varName];//eval.call(window, varName);
@@ -296,11 +308,20 @@ function Sandboxer(event) {
 								me.result.name = varName;
 							}
 
-							variables.push({name: varName, value: me.var2Blob(varValue), isSpyralClass: me.getSpyralClass(varValue)});
+							variables.push({name: varName, isSpyralClass: me.getSpyralClass(varValue)});
+							variableValues.push(me.var2Blob(varValue));
 						}
-						me.result.variables = variables;
 
-						me.resolveEvent();
+						Promise.all(variableValues).then(function(prValues) {
+							prValues.forEach(function(prValue, index) {
+								variables[index].value = prValue;
+							})
+							
+							me.result.variables = variables;
+							me.resolveEvent();
+						}, function(err) {
+							me.handleError(err);
+						})
 					}, function(err) {
 						me.handleError(err);
 					})
