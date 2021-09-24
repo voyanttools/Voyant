@@ -2,21 +2,26 @@ Ext.define('Voyant.util.Localization', {
 	statics: {
 		DEFAULT_LANGUAGE: 'en',
 		LANGUAGE: 'en',
+		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","sr"],
 		i18n: {
 		}
-		
 	},
 	
-    languageStore: Ext.create('Ext.data.ArrayStore', {
-        fields: ['code', 'language'],
-        data : [
-                ['en', 'English']
-        ]
-    }),
-	
 	getLanguage: function(code) {
-		var record = this.languageStore.findRecord(code.length==2 ? 'code' : 'language', code);
-		if (record) {return record.get(code.length==2 ? 'language' : 'code');}
+		if (code.length === 2) {
+			if (Voyant.util.Localization.AVAILABLE_LANGUAGES.indexOf(code) !== -1) {
+				return this.localize(code);
+			}
+		} else {
+			var langs = Voyant.util.Localization.AVAILABLE_LANGUAGES.map(function(lang) {
+				return {text: this.localize(lang).toLowerCase(), value: lang}
+			}, this);
+			var lowerCaseCode = code.toLowerCase();
+			var match = langs.find(function(lang) {
+				return lang.text === lowerCaseCode;
+			});
+			if (match) return match.value;
+		}
 	},
 	
 	localize: function(key, config) {
@@ -83,7 +88,7 @@ Ext.define('Voyant.util.Localization', {
 	
 	showLanguageOptions: function() {
 		var me = this;
-		var langs = ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","sr"].map(function(lang) {
+		var langs = Voyant.util.Localization.AVAILABLE_LANGUAGES.map(function(lang) {
 			return {text: this.localize(lang), value: lang}
 		}, this);
 		langs.sort(function(a,b) {
