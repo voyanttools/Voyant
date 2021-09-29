@@ -12,8 +12,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		isChangeRegistered: false,
 		editor: undefined,
 		editedTimeout: undefined,
-		lines: 1,
-		maxLines: Infinity,
+		lines: 1, // tracks the number of lines in the editor
 		markers: []
 	},
 	statics: {
@@ -40,7 +39,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				lineNumbers: true,
 				lineWrapping: true,
 				styleActiveLine: true,
-				viewportMargin: 50, // i.e. max lines
+				viewportMargin: 50, // lines rendered above and below current view
 				extraKeys: {
 					'Shift-Enter': function() {
 						me.up('notebookrunnableeditorwrapper').run();
@@ -68,12 +67,10 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				var lines = editor.lineCount();
 				if (lines !== me.getLines()) {
 					me.setLines(lines);
-					if (me.getMaxLines() === Infinity) {
-						setTimeout(function() {
-							var height = editor.getWrapperElement().offsetHeight;
-							me.setSize({height: height});
-						}, 0);
-					}
+					setTimeout(function() {
+						var height = editor.getWrapperElement().offsetHeight;
+						me.setSize({height: height});
+					}, 0);
 				}
 
 				if (me.getIsChangeRegistered() === false) {
