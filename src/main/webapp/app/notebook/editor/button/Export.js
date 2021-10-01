@@ -78,6 +78,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				openButton.setHidden(true);
 				fileName = input.fileName;
 				fileType = output.type;
+				fileContent = output;
 			} else if (mode === 'javascript') {
 				// corpus check
 				if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
