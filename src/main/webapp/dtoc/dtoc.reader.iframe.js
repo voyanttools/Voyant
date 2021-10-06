@@ -294,15 +294,11 @@ Ext.define('Voyant.panel.DToC.Reader', {
 		this.readerContainer.on('load', function() {
 			this.loading = false;
 
-			if (this.getApplication().isRegenerations) {
-				this.addStylesheetToReader('dtoc/css/tei.css');
-			} else {
-				var cssUrl = this.getCorpus().getDocument(params.docId).getCSS();
-				if ((cssUrl === undefined || cssUrl === '') && this.getStylesheetsInDoc().length === 0) {
-					cssUrl = 'dtoc/css/default.css';
-				}
-				this.addStylesheetToReader(cssUrl);
+			var cssUrl = this.getCorpus().getDocument(params.docId).getCSS();
+			if ((cssUrl === undefined || cssUrl === '') && this.getStylesheetsInDoc().length === 0) {
+				cssUrl = 'dtoc/css/default.css';
 			}
+			this.addStylesheetToReader(cssUrl);
 
 			var doc = this.readerContainer.getDoc();
             // need to add scroll every time doc is changed
