@@ -6,7 +6,8 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	isConsumptive: true,
     statics: {
     	i18n: {
-			corpusSortInitialOrder: 'initial order'
+			corpusSortInitialOrder: 'initial order',
+			dtocIndexDoc: 'DToC Index Document'
     	},
     	api: {
     		inputFormat: undefined,
@@ -408,7 +409,18 @@ Ext.define('Voyant.panel.CorpusCreator', {
 						    			}
 						    		},
 						    		scope: me
-						    	}
+						    	},
+								change: {
+									fn: function(combo, newval, oldval) {
+										var dtocIndexDocField = combo.up('form').down('[name=dtocIndexDoc]');
+										if (newval === 'dtoc') {
+											dtocIndexDocField.show();
+										} else {
+											dtocIndexDocField.hide();
+										}
+									},
+									scope: me
+								}
 						    }
 						},{
 							xtype: 'container',
@@ -431,7 +443,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 								},{
 									fieldLabel: me.localize('corpusSubTitle'),
 									name: 'subTitle'
-								}, {
+								},{
 									fieldLabel: me.localize("corpusSort"),
 									name: 'sort',
 								    xtype:'combo',
@@ -449,7 +461,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
 								    		scope: me
 								    	}
 								    }
-
+								},{
+									fieldLabel: me.localize('dtocIndexDoc'),
+									name: 'dtocIndexDoc',
+									xtype: 'numberfield',
+									value: -1,
+									minValue: -1,
+									maxValue: 99,
+									width: 180,
+									hidden: true
 								}
 							]
 						},{
