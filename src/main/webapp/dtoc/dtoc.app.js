@@ -85,7 +85,12 @@ Ext.define('VoyantDTOCApp', {
                     }
                     var docId = this.getApiParam('docId');
                     if (docId === undefined) {
-                        docId = this.getCorpus().getDocument(0).getId();
+                        this.getCorpus().getDocuments().each(function(doc) {
+							if (doc.get('extra.isDtocIndex') === undefined) {
+								docId = doc.getId();
+								return false;
+							}
+						});
                     }
                     this.dispatchEvent('corpusDocumentSelected', this, {docId: docId});
                 }, function() {
@@ -199,7 +204,7 @@ Ext.define('VoyantDTOCApp', {
         				textAlign: 'right'
         			},
         			html: '<div class="headerRow">'+
-        			'<a href="http://voyant-tools.org/" target="_blank"><img src="images/voyant_small.png" title="Voyant Logo" style="margin: 1px 0 1px 8px;" /></a>'+
+        			'<a href="https://voyant-tools.org/" target="_blank"><img src="images/voyant_small.png" title="Voyant Logo" style="margin: 1px 0 1px 8px;" /></a>'+
         			'</div>'
         		}],
         		listeners: {
