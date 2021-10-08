@@ -150,9 +150,11 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			case 'json':
 			case 'javascript':
 				options.autoCloseBrackets = true;
+				options.matchBrackets = true;
 				break;
 			default:
 				options.autoCloseBrackets = false;
+				options.matchBrackets = false;
 				break;
 		}
 		for (var key in options) {
