@@ -147,6 +147,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		metadata.id = notebookId;
 
 		return Spyral.Load.trombone({
+			method: 'POST',
 			tool: 'notebook.GitNotebookManager',
 			action: 'save',
 			id: notebookId,
