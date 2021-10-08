@@ -81,12 +81,29 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 		
 		var container = html.querySelector('.spyral-dv-container');
 		if (container !== null) {
-			// if dataviewer, parse the output and return the top level in the hierarchy
-			if (container.querySelectorAll('.spyral-dv-folder-icon').length > 0) {
-				container.querySelector('.spyral-dv-right .spyral-dv-right').remove();
+			// if dataviewer, trim the content that will be saved
+			function trimContent(parent, limit) {
+				var content = parent.querySelector('.spyral-dv-content .spyral-dv-right');
+				if (content !== null) {
+					var toRemove = [];
+					var wasTrimmed = false;
+					for (var i = 0; i < content.children.length; i++) {
+						if (i >= limit) {
+							toRemove.push(content.children[i]);
+							wasTrimmed = true;
+						} else {
+							trimContent(content.children[i], limit);
+						}
+					}
+					toRemove.forEach(function(node) { content.removeChild(node); });
+					if (wasTrimmed) {
+						content.insertAdjacentHTML('beforeend', '<span class="spyral-dv-content">...</span>')
+					}
+				}
 			}
+			trimContent(container, 10);
 
-			return container.outerHTML;
+			return container.outerHTML.replace(/spyral-dv-collapsed/g, 'spyral-dv-expanded'); // expand all nodes
 		} else {
 			return output;
 		}
