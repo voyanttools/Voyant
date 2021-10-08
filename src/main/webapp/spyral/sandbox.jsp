@@ -44,7 +44,8 @@ table.spyral-table td:last-child {
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/highcharts.js"></script>
 		<!-- <script type="text/javascript" src="<%=base %>/resources/highcharts/8/highcharts-more.js"></script> -->
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/data.js"></script>
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/networkgraph.js"></script>
+		
+		<script type="text/javascript" src="<%=base %>/resources/d3/current/d3.min.js"></script>
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
 
