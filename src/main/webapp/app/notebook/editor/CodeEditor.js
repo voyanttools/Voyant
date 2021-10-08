@@ -51,6 +51,12 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 					'Shift-Cmd-Enter': function() {
 						var wrapper = me.up('notebookrunnableeditorwrapper');
 						wrapper.up('notebook').runUntil(wrapper);
+					},
+					'Ctrl-/': function() {
+						editor.toggleComment();
+					},
+					'Cmd-/': function() {
+						editor.toggleComment();
 					}
 				}
 			});
@@ -108,6 +114,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 
 			this.setEditor(editor);
 
+			this._setModeOptions(this.getMode());
+
 			me.fireEvent('resize', me);
 
 		},
@@ -135,12 +143,29 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		}
 		return modeConfig;
 	},
+
+	_setModeOptions: function(mode) {
+		var options = {};
+		switch (mode) {
+			case 'json':
+			case 'javascript':
+				options.autoCloseBrackets = true;
+				break;
+			default:
+				options.autoCloseBrackets = false;
+				break;
+		}
+		for (var key in options) {
+			this.getEditor().setOption(key, options[key]);
+		}
+	},
 	
 	switchModes: function(mode) {
 		console.log('mode', mode);
 		this.setMode(mode);
 		if (this.rendered) {
 			this.getEditor().setOption('mode', this._getModeConfig(mode));
+			this._setModeOptions(mode);
 		}
 	},
 	

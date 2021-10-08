@@ -2,7 +2,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 	extend: "Voyant.notebook.editor.RunnableEditorWrapper",
 	requires: ["Voyant.notebook.editor.CodeEditor", "Voyant.notebook.editor.FileInput"],
 	alias: "widget.notebookdatawrapper",
-	cls: 'notebook-code-wrapper',
+	cls: 'notebook-data-wrapper',
 	statics: {
 		i18n: {
 			dataNameAlphanum: 'The data name must contain alphanumeric characters only',

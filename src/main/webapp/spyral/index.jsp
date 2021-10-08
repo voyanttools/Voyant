@@ -68,8 +68,10 @@ CKEDITOR.on('dialogDefinition', function(ev) {
 <script src="<%= base %>/resources/codemirror/lib/codemirror.js"></script>
 <script src="<%= base %>/resources/codemirror/mode/javascript/javascript.js"></script>
 <script src="<%= base %>/resources/codemirror/mode/xml/xml.js"></script>
+<script src="<%= base %>/resources/codemirror/addon/comment/comment.js"></script>
 <script src="<%= base %>/resources/codemirror/addon/selection/active-line.js"></script>
 <script src="<%= base %>/resources/codemirror/addon/selection/mark-selection.js"></script>
+<script src="<%= base %>/resources/codemirror/addon/edit/closebrackets.js"></script>
 <!-- codemirror autocomplete-->
 <link rel="stylesheet" href="<%= base %>/resources/codemirror/addon/dialog/dialog.css">
 <link rel="stylesheet" href="<%= base %>/resources/codemirror/addon/hint/show-hint.css">
