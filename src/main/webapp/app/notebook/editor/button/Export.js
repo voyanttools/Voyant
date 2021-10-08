@@ -154,7 +154,10 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 	glyph: 'xf08e@FontAwesome',
 	listeners: {
 		click: function(cmp) {
-			Voyant.notebook.editor.button.Export.getExportWindow(cmp).show();
+			var wrapper = cmp.up('notebookrunnableeditorwrapper');
+			wrapper.results.updateCachedOutput().then(function(output) {
+				Voyant.notebook.editor.button.Export.getExportWindow(cmp).show();
+			});
 		}
 	}
 })

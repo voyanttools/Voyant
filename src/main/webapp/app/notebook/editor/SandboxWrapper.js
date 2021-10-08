@@ -191,6 +191,21 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		return this.getCachedResultsValue();
 	},
 
+	updateCachedOutput: function() {
+		var me = this;
+		return new Ext.Promise(function (resolve, reject) {
+			me._sendMessage({type: 'command', command: 'getContents'});
+			me.on('sandboxMessage', function(eventData) {
+				if (eventData.command === 'getContents') {
+					me.setCachedResultsOutput(eventData.value);
+				} else {
+					console.warn('getOutput: received unexpected message',eventData);
+				}
+				resolve(me.getCachedResultsOutput());
+			}, me, {single: true});
+		});
+	},
+
 	getOutput: function() {
 		return this.getCachedResultsOutput();
 	},
@@ -258,6 +273,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 				if (eventData.height > 0) {
 					me._setHeight(eventData.height);
 				}
+
+				me.fireEvent('sandboxMessage', eventData);
 			} else {
 				console.warn('unrecognized message!', e);
 			}

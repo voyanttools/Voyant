@@ -398,25 +398,32 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		this.getMetadata().setDateNow("modified");
 
-		var data = this.generateExportJson();
-		var metadata = this.generateExportMetadata(this.getMetadata());
-
-		var storageSolution = this.getStorageSolution();
-		
-		if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.voyantStorageDialogs.getAccessCode() !== undefined) {
-			this.voyantStorageDialogs.doSave({
-				notebookId: this.getNotebookId(),
-				data: data,
-				metadata: metadata,
-				accessCode: this.voyantStorageDialogs.getAccessCode()
-			});
-		} else {
-			if (storageSolution === 'github') {
-				this.githubDialogs.showSave(data);
+		Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
+			return cmp.results.updateCachedOutput();
+		})).then(function(result) {	
+		}, function(err) {
+			console.warn('Error updating cached results');
+		}).finally(function() {
+			var data = this.generateExportJson();
+			var metadata = this.generateExportMetadata(this.getMetadata());
+	
+			var storageSolution = this.getStorageSolution();
+			
+			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.voyantStorageDialogs.getAccessCode() !== undefined) {
+				this.voyantStorageDialogs.doSave({
+					notebookId: this.getNotebookId(),
+					data: data,
+					metadata: metadata,
+					accessCode: this.voyantStorageDialogs.getAccessCode()
+				});
 			} else {
-				this.voyantStorageDialogs.showSave(data, metadata, saveAs ? undefined : this.getNotebookId());
+				if (storageSolution === 'github') {
+					this.githubDialogs.showSave(data);
+				} else {
+					this.voyantStorageDialogs.showSave(data, metadata, saveAs ? undefined : this.getNotebookId());
+				}
 			}
-		}
+		}.bind(this));
 	},
 	
 	// override toolable method

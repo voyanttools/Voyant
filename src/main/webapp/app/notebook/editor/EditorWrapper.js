@@ -49,5 +49,8 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 				this.body.removeCls("notebook-editor-wrapper-hover");
 			}
 		}
+	},
+	getContent: function() {
+		throw new Error('Subclass must override!');
 	}
 })
