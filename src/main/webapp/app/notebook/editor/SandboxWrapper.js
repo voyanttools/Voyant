@@ -76,6 +76,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						glyph: 'xf014@FontAwesome',
 						tooltip: 'Remove Results',
 						handler: function() {
+							this.resetResults();
 							this.clear();
 						},
 						scope: this
@@ -118,7 +119,6 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 
 			var me = this;
 			this.setInitIntervalID(setInterval(function() {
-				console.log('interval init');
 				me._sendMessage({type: 'command', command: 'init'});
 			}, 100));
 		}, this);
@@ -138,14 +138,19 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		this._sendMessage({type: 'command', command: 'clear'});
 	},
 
+	resetResults: function() {
+		this.setCachedResultsValue(undefined);
+		this.setCachedResultsOutput('');
+		this.setCachedResultsVariables([]);
+	},
+
 	run: function(code, priorVariables) {
 		if (priorVariables === undefined) {
 			priorVariables = [];
 		}
 
 		// reset
-		this.setCachedResultsOutput('');
-		this.setCachedResultsVariables([]);
+		this.resetResults();
 		this.setHasRunError(false);
 		this.getEl().removeCls(['error','success']);
 
