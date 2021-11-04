@@ -1,12 +1,12 @@
 package org.voyanttools.voyant;
 
-import static java.security.AccessController.doPrivileged;
-
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +21,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.voyanttools.trombone.input.source.InputSourcesBuilder;
 import org.voyanttools.trombone.util.FlexibleParameters;
-
-import sun.security.action.GetPropertyAction;
 
 /**
  * This is a utility class for instantiating {@link FlexibleParameters} from {@link HttpServletRequest}s.
@@ -76,7 +74,8 @@ public class FlexibleParametersFactory {
 		
 		if (ServletFileUpload.isMultipartContent(request) && !(request instanceof Voyant.PostedInputRequestWrapper)) {
 			final List<FileItem> items = getRequestItems(request);
-			Path tmpPath = Paths.get(Paths.get(doPrivileged(new GetPropertyAction("java.io.tmpdir"))).toString(), "tmp.voyant.uploads");
+			String tmpDir = AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty("java.io.tmpdir"));
+			Path tmpPath = Paths.get(tmpDir, "tmp.voyant.uploads");
 			if (!Files.exists(tmpPath)) {
 				Files.createDirectory(tmpPath);
 			}
