@@ -144,7 +144,7 @@
 		</repository>
 		<repository>
 			<id>trombone-mvn-repo</id>
-			<url>https://raw.github.com/voyanttools/trombone/mvn-repo/</url>
+			<url>https://maven.pkg.github.com/voyanttools/trombone</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
