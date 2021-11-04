@@ -32,6 +32,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<phase>install</phase>
@@ -51,6 +52,7 @@
 			<plugin>
 				<!-- http://maven.apache.org/plugins/maven-war-plugin/overlays.html -->
 				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.2</version>
 				<configuration>
 					<outputDirectory>${basedir}/target</outputDirectory>
 					<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
@@ -60,6 +62,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -69,6 +72,7 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
+				<version>11.0.7</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -77,10 +81,8 @@
 		<dependency>
 			<groupId>org.voyant-tools</groupId>
 			<artifactId>trombone</artifactId>
-			<version>5.2.1-SNAPSHOT</version>
+			<version>5.2.1</version>
 		</dependency>
-		<!-- <dependency> <groupId>caja</groupId> <artifactId>caja</artifactId> 
-			<version>r5127</version> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -92,7 +94,6 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
-
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -107,6 +108,26 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-maven-plugin</artifactId>
+			<version>11.0.7</version>
 		</dependency>
 	</dependencies>
 	<repositories>
