@@ -35,6 +35,13 @@ public class JSCacher {
 	
 	// Closure options
 	final static int SUMMARY_DETAIL_LEVEL = 1;
+
+
+	public static void main(String[] args) throws IOException {
+		File voyantRoot = new File(".").getCanonicalFile();
+		File basePath = new File(voyantRoot, "/src/main/webapp/");
+		doCache(basePath, false, true);
+	}
 	
 	public static void sendCache(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
@@ -42,25 +49,41 @@ public class JSCacher {
 		
 		// TODO add config for this?
 		boolean doSourceMap = true;
-		
-		File basePath = new File(request.getSession().getServletContext().getRealPath("/"));
-		
+
 		String debug = request.getParameter("debug");
+		if (debug!=null && debug.equals("true")) {
+			File basePath = new File(request.getSession().getServletContext().getRealPath("/"));
+			doCache(basePath, doSourceMap, false);
+			
+			response.sendRedirect(CACHED_FILENAME);
+		}
+		else {
+			response.sendRedirect(CACHED_FILENAME_MINIFIED);
+		}
+
+	}
+	
+	private static void doCache(File basePath, boolean doSourceMap, boolean forceUpdate) throws IOException {
 		
 		File cachedFile = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME);
-        File cachedFileMinified = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME_MINIFIED);
-        File sourceMapFile = new File(basePath, "/resources/voyant/current/"+SOURCE_MAP_FILENAME);
-        
-		if (debug!=null && debug.equals("true") && cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
+		File cachedFileMinified = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME_MINIFIED);
+		File sourceMapFile = new File(basePath, "/resources/voyant/current/"+SOURCE_MAP_FILENAME);
+		
+		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
+		
 			long lastModifiedCachedFile = cachedFile.lastModified();
 			List<File> files = getCacheableFiles(basePath);
-
+	
 			// look for any file that's been updated since last cache
 			boolean needsUpdate = false;
-			for (File file : files) {
-				if (file.lastModified() > lastModifiedCachedFile) {
-					needsUpdate = true;
-					break;
+			if (forceUpdate) {
+				needsUpdate = true;
+			} else {
+				for (File file : files) {
+					if (file.lastModified() > lastModifiedCachedFile) {
+						needsUpdate = true;
+						break;
+					}
 				}
 			}
 			
@@ -108,34 +131,29 @@ public class JSCacher {
 					
 					List<PrefixLocationMapping> prefixes = new ArrayList<>();
 					String baseLocation = basePath.toString().replaceAll("\\\\", "/");
-	                prefixes.add(new PrefixLocationMapping(baseLocation, ""));
+					prefixes.add(new PrefixLocationMapping(baseLocation, ""));
 					options.setSourceMapLocationMappings(prefixes);
 				}
 				
 				CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
-                Result result = compiler.compile(new ArrayList<SourceFile>(), sourceFiles, options);
-                
-                cache.setLength(0);
-                cache.append(header);
-                cache.append(compiler.toSource());
-                cache.append(footer);
-
-                FileUtils.writeStringToFile(cachedFileMinified, cache.toString(), Charset.forName(ENCODING));
-                
-                // source map
-                if (doSourceMap && result.sourceMap != null) {
-	                StringBuilder sourceMap = new StringBuilder();	                
-	                result.sourceMap.appendTo(sourceMap, SOURCE_MAP_FILENAME);
-	                FileUtils.writeStringToFile(sourceMapFile, sourceMap.toString(), Charset.forName(ENCODING));
-                }
-
-			}			
-			response.sendRedirect(CACHED_FILENAME);
+				Result result = compiler.compile(new ArrayList<SourceFile>(), sourceFiles, options);
+				
+				cache.setLength(0);
+				cache.append(header);
+				cache.append(compiler.toSource());
+				cache.append(footer);
+	
+				FileUtils.writeStringToFile(cachedFileMinified, cache.toString(), Charset.forName(ENCODING));
+				
+				// source map
+				if (doSourceMap && result.sourceMap != null) {
+					StringBuilder sourceMap = new StringBuilder();	                
+					result.sourceMap.appendTo(sourceMap, SOURCE_MAP_FILENAME);
+					FileUtils.writeStringToFile(sourceMapFile, sourceMap.toString(), Charset.forName(ENCODING));
+				}
+	
+			}
 		}
-		else {
-			response.sendRedirect(CACHED_FILENAME_MINIFIED);
-		}
-
 	}
 
 	private static List<File> getCacheableFiles(File basePath) throws IOException {
@@ -153,5 +171,6 @@ public class JSCacher {
 		}
 		return files;
 	}
+	
 
 }
