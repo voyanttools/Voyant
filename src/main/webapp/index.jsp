@@ -49,7 +49,6 @@ Ext.onReady(function(){
 		config: {
 			baseUrl: '<%= org.voyanttools.voyant.Voyant.getBaseUrlString(request) %>',
 			version: '<%= application.getInitParameter("version") %>',
-			build: '<%= application.getInitParameter("build") %>',
 			openMenu: '<%= System.getProperty("org.voyanttools.voyant.openmenu")==null ? "" : System.getProperty("org.voyanttools.voyant.openmenu") %>',
 			hasCorpusCreatorText: '<%= org.voyanttools.voyant.Trombone.hasVoyantServerResource("corpus-creator-text") ? "true" : "false" %>',
 			hasNoAllowInputText: '<%= org.voyanttools.voyant.Trombone.hasVoyantServerResource("no-allow-input-text") ? "true" : "false" %>',

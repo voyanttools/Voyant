@@ -7,11 +7,7 @@
 
 	<context-param>
 		<param-name>version</param-name>
-		<param-value>2.4</param-value>
-	</context-param>
-	<context-param>
-		<param-name>build</param-name>
-		<param-value>M55</param-value>
+		<param-value>2.5.0</param-value>
 	</context-param>
 	
 	<servlet>
