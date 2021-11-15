@@ -111,7 +111,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		var canvas = this.getTargetEl().dom.querySelector("canvas");
     		var me = this;
     		Ext.Ajax.request({
-    			url: this.getBaseUrl()+'resources/voyant/current/bubbles/bubbles.pjs'
+    			url: this.getBaseUrl()+'resources/bubbles/bubbles.pjs'
     		}).then(function(data) {
     			var canvas = me.getTargetEl().dom.querySelector("canvas");
     			me.bubbles = new Processing(canvas, data.responseText);

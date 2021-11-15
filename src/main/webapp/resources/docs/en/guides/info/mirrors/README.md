@@ -6,6 +6,6 @@ Having said that, there are good reasons to use one of the mirrors, particularly
 
 ## Known Mirrors
 
-<iframe src="../resources/voyant/current/docs/mirrors.html" style="width: 90%; height: 200px;"></iframe>
+<iframe src="../resources/docs/mirrors.jsp" style="width: 90%; height: 450px; border: 1px solid #999;"></iframe>
 
-If you're interested in mirroring Voyant, please let us know by submitting a ticket on the [VoyantServer Github](http://github.com/sgsinclair/VoyantServer)!
+If you're interested in mirroring Voyant, please let us know by submitting a ticket on the [VoyantServer Github](http://github.com/voyanttools/VoyantServer)!

@@ -111,7 +111,7 @@ Voyant provides some basic access management functions that are intended to help
 
 The access codes that can be specified in Voyant are an additional level of protection. These shouldn't be considered as passwords, not least because Voyant is not normally hosted on a secure server (with https traffic), so any access codes are transmitted in the clear. Still, under normal circumstances, the access codes can help further restrict access, if needed.
 
-If privacy and security are significant concerns for whatever reason (confidentiality of data, copyright, etc.), it's *strongly* recommended that you use a local, [standalone version of Voyant](https://github.com/sgsinclair/VoyantServer#voyant-server) – it can even be used while offline (while not connected to the internet).
+If privacy and security are significant concerns for whatever reason (confidentiality of data, copyright, etc.), it's *strongly* recommended that you use a local, [standalone version of Voyant](https://github.com/voyanttools/VoyantServer#voyant-server) – it can even be used while offline (while not connected to the internet).
 
 Access management must be specified during corpus creation, it can't be specified once a corpus is already created (that's because it would be much more difficult to determine who created the corpus and therefore who can manage it).
 

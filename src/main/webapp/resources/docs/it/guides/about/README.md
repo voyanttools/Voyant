@@ -12,7 +12,7 @@ What you can do with Voyant:
 
 ## License
 
-Voyant Tools is an open-source project and the code is available through [GitHub](http://github.com/sgsinclair/Voyant). The code is under a [GPL3 license](http://www.gnu.org/licenses/gpl-3.0.en.html) and the content of the web application (including this documentation) is under a [Creative Commons By Attribution license](https://creativecommons.org/licenses/by/4.0/). You have our permission to create and use screenshots and videos of Voyant Tools, though we always appreciate you letting us know (among other reasons, so that we can keep our gallery up-to-date)!
+Voyant Tools is an open-source project and the code is available through [GitHub](http://github.com/voyanttools/Voyant). The code is under a [GPL3 license](http://www.gnu.org/licenses/gpl-3.0.en.html) and the content of the web application (including this documentation) is under a [Creative Commons By Attribution license](https://creativecommons.org/licenses/by/4.0/). You have our permission to create and use screenshots and videos of Voyant Tools, though we always appreciate you letting us know (among other reasons, so that we can keep our gallery up-to-date)!
 
 ## Credits
 
