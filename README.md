@@ -15,7 +15,7 @@ Some of the important features of Voyant Tools include:
 * a full-text reader that support very large texts and includes interactive features
 * interaction between the the tools that facilitates navigation and exploration at diffent scales (from "close reading" to "distant reading")
 * a mechanism for bookmarking and sharing instances of Voyant Tools (specific texts and tools) through persistent URLs
-* access to a [hosted version of Voyant Tools](http://Voyant-tools.org/) or a [downloadable standalone version](https://github.com/voyanttools/VoyantServer)
+* access to a [hosted version of Voyant Tools](https://voyant-tools.org/) or a [downloadable standalone version](https://github.com/voyanttools/VoyantServer)
 * Voyant Tools is free and open source (GPLv3)
 
 # Documentation
