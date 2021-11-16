@@ -62,87 +62,103 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			var notebook = wrapper.up('notebook');
 			var notebookId = notebook.getNotebookId() || 'spyral';
 			
-			var input = wrapper.getInput();
-			var output = wrapper.getOutput();
 			var mode = wrapper.getMode();
 
-			var corpusButton = this.exportWin.down('#corpus');
-			var openButton = this.exportWin.down('#open');
-			corpusButton.setHidden(true);
-			openButton.setHidden(false);
+			var dfd = new Ext.Deferred();
 
-			var fileName;
-			var fileType;
-			var fileContent;
+			var outputPromise = null;
 			if (mode === 'file') {
-				openButton.setHidden(true);
-				fileName = input.fileName;
-				fileType = output.type;
-				fileContent = output;
-			} else if (mode === 'javascript') {
-				// corpus check
-				if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
-					corpusButton.setHidden(false);
-					corpusButton.setHandler(function(btn) {
-						var url = Voyant.application.getBaseUrlFull()+'?corpus='+output.corpusid;
-						window.open(url);
-					});
-				}
+				outputPromise = wrapper.fileInput.getBlob();
+			} else {
+				outputPromise = wrapper.results.updateCachedOutput();
+			}
 
-				if (Spyral.Util.isUndefined(output)) {
-					// output is probably a document and couldn't be sent from sandbox
-					// try getContent fallback
-					output = wrapper.getContent().output;
-				}
-				
-				if (Spyral.Util.isObject(output) || Spyral.Util.isArray(output)) {
-					fileName = notebookId+'_'+wrapper.getCellId()+'.json';
-					fileType = 'application/json';
-					fileContent = JSON.stringify(output);
-				} else if (Spyral.Util.isNode(output) || (Spyral.Util.isString(output) && output.match(/<\/?\w+.*?>/g) !== null)) {
-					fileName = notebookId+'_'+wrapper.getCellId()+'.html';
-					fileType = 'text/html';
-					if (Spyral.Util.isString(output)) {
-						fileContent = output;
+			outputPromise.then(function(output) {
+				var input = wrapper.getInput();
+	
+				var corpusButton = this.exportWin.down('#corpus');
+				var openButton = this.exportWin.down('#open');
+				corpusButton.setHidden(true);
+				openButton.setHidden(false);
+	
+				var fileName;
+				var fileType;
+				var fileContent;
+				if (mode === 'file') {
+					openButton.setHidden(true);
+					fileName = input.fileName;
+					fileType = output.type;
+					fileContent = output;
+				} else if (mode === 'javascript') {
+					// corpus check
+					if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
+						corpusButton.setHidden(false);
+						corpusButton.setHandler(function(btn) {
+							var url = Voyant.application.getBaseUrlFull()+'?corpus='+output.corpusid;
+							window.open(url);
+						});
+					}
+	
+					if (Spyral.Util.isUndefined(output)) {
+						// output is probably a document and couldn't be sent from sandbox
+						// try getContent fallback
+						output = wrapper.getContent().output;
+					}
+					
+					if (Spyral.Util.isObject(output) || Spyral.Util.isArray(output)) {
+						fileName = notebookId+'_'+wrapper.getCellId()+'.json';
+						fileType = 'application/json';
+						fileContent = JSON.stringify(output);
+					} else if (Spyral.Util.isNode(output) || (Spyral.Util.isString(output) && output.match(/<\/?\w+.*?>/g) !== null)) {
+						fileName = notebookId+'_'+wrapper.getCellId()+'.html';
+						fileType = 'text/html';
+						if (Spyral.Util.isString(output)) {
+							fileContent = output;
+						} else {
+							fileContent = new XMLSerializer().serializeToString(output);
+						}
 					} else {
-						fileContent = new XMLSerializer().serializeToString(output);
+						fileName = notebookId+'_'+wrapper.getCellId()+'.txt';
+						fileType = 'text/plain';
+						fileContent = output;
 					}
 				} else {
-					fileName = notebookId+'_'+wrapper.getCellId()+'.txt';
-					fileType = 'text/plain';
-					fileContent = output;
+					fileName = notebookId+'_'+wrapper.getDataName()+'.'+mode;
+					fileType = 'text/'+mode;
+					fileContent = input;
+					if (mode === 'json') {
+						fileType = 'application/json';
+					} else if (mode === 'text') {
+						fileName = notebookId+'_'+wrapper.getDataName()+'.txt';
+						fileType = 'text/plain';
+					}
 				}
-			} else {
-				fileName = notebookId+'_'+wrapper.getDataName()+'.'+mode;
-				fileType = 'text/'+mode;
-				fileContent = input;
-				if (mode === 'json') {
-					fileType = 'application/json';
-				} else if (mode === 'text') {
-					fileName = notebookId+'_'+wrapper.getDataName()+'.txt';
-					fileType = 'text/plain';
-				}
-			}
-			
-			var file = new File([fileContent], fileName, {lastModified: new Date().getTime(), type: fileType});
+				
+				var file = new File([fileContent], fileName, {lastModified: new Date().getTime(), type: fileType});
+	
+				this.exportWin.down('#open').setHandler(function(btn) {
+					var myWindow = window.open();
+					myWindow.document.write(fileContent);
+					myWindow.document.close();
+					myWindow.focus();
+					btn.up('window').close();
+				});
+	
+				this.exportWin.addListener('show', function() {
+					var url = URL.createObjectURL(file);
+					this.exportWin.down('#download').getEl().set({
+						download: fileName,
+						href: url
+					});
+				}, this, { single: true });
 
-			this.exportWin.down('#open').setHandler(function(btn) {
-				var myWindow = window.open();
-				myWindow.document.write(fileContent);
-				myWindow.document.close();
-				myWindow.focus();
-				btn.up('window').close();
+				dfd.resolve(this.exportWin);
+
+			}.bind(this), function(err) {
+				dfd.reject(err);
 			});
 
-			this.exportWin.addListener('show', function() {
-				var url = URL.createObjectURL(file);
-				this.exportWin.down('#download').getEl().set({
-					download: fileName,
-					href: url
-				});
-			}, this, { single: true });
-
-			return this.exportWin;
+			return dfd.promise;
 		}
 	},
 	constructor: function(config) {
@@ -154,9 +170,15 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 	glyph: 'xf08e@FontAwesome',
 	listeners: {
 		click: function(cmp) {
-			var wrapper = cmp.up('notebookrunnableeditorwrapper');
-			wrapper.results.updateCachedOutput().then(function(output) {
-				Voyant.notebook.editor.button.Export.getExportWindow(cmp).show();
+			Voyant.notebook.editor.button.Export.getExportWindow(cmp).then(function(exportWin) {
+				exportWin.show();
+			}, function(err) {
+				Ext.Msg.show({
+					title: 'Export Error',
+					msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
 			});
 		}
 	}

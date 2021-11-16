@@ -91,6 +91,18 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 		return dfd.promise;
 	},
 
+	getBlob: function() {
+		var dfd = new Ext.Deferred();
+
+		this.getDataUrl().then(function(dataUrl) {
+			dfd.resolve(Spyral.Util.dataUrlToBlob(dataUrl));
+		}, function(err) {
+			dfd.reject(err);
+		});
+
+		return dfd.promise;
+	},
+
 	storeFile: function() {
 		var dfd = new Ext.Deferred();
 
