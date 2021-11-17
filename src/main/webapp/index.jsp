@@ -50,9 +50,8 @@ Ext.onReady(function(){
 			baseUrl: '<%= org.voyanttools.voyant.Voyant.getBaseUrlString(request) %>',
 			version: '<%= application.getInitParameter("version") %>',
 			openMenu: '<%= System.getProperty("org.voyanttools.voyant.openmenu")==null ? "" : System.getProperty("org.voyanttools.voyant.openmenu") %>',
-			hasCorpusCreatorText: '<%= org.voyanttools.voyant.Trombone.hasVoyantServerResource("corpus-creator-text") ? "true" : "false" %>',
-			hasNoAllowInputText: '<%= org.voyanttools.voyant.Trombone.hasVoyantServerResource("no-allow-input-text") ? "true" : "false" %>',
-			allowInput: '<%= System.getProperty("org.voyanttools.server.allowinput")==null ? "" : System.getProperty("org.voyanttools.server.allowinput") %>'
+			allowInput: '<%= System.getProperty("org.voyanttools.server.allowinput")==null ? "" : System.getProperty("org.voyanttools.server.allowinput") %>',
+			allowDownload: '<%= System.getProperty("org.voyanttools.server.allowdownload")==null ? "" : System.getProperty("org.voyanttools.server.allowdownload") %>'
 		},
 		launch: function() {
 		   	var me = this;

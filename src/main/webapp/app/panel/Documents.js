@@ -275,32 +275,13 @@ Ext.define('Voyant.panel.Documents', {
             		this.store.load({params: this.getApiParams()});
     			}, this);
     		}
-    		if (this.hasCorpusAccess(corpus)==false) {
+
+			var app = this.getApplication();
+    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload && app.getAllowDownload() === 'false')) {
     			this.queryById('modifyButton').hide();
     			this.queryById('downloadButton').hide();
     		}
-    		/*
-    		var me = this;
-    		Ext.Ajax.request({
-    			url: this.getApplication().getTromboneUrl(),
-    			params: {
-    				corpus: corpus.getId(),
-    				tool: 'corpus.CorpusManager',
-    				getAccess: true
-    			},
-    		    success: function(response, opts) {
-    		        var obj = Ext.decode(response.responseText);
-    		        if (obj && obj)
-    		        debugger
-    		        console.dir(obj);
-    		        me
-    		    },
-    		    failure: function(response, opts) {
-    		    	me.showError(response);
-    		    }
-    		})
-    		*/
-    	})
+    	});
     	
     	this.on("activate", function() { // load after tab activate (if we're in a tab panel)
     		if (this.getStore().getCorpus()) {
