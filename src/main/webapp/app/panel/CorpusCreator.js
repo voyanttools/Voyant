@@ -119,13 +119,6 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    				        margin: '5,5,5,5',
 	    				        items: {
 	    				        	xtype: 'corpusselector'
-//	    				            xtype:'combo',
-//	    				            labelWidth: 150,
-//	    				            fieldLabel:'Choose a corpus:',
-//	    				            name:'corpus',
-//	    				            queryMode:'local',
-//	    				            store:[['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"]],				            
-//	    				            forceSelection:true
 	    				        },
 	    				        buttons: [
 	    				        	{
@@ -288,34 +281,16 @@ Ext.define('Voyant.panel.CorpusCreator', {
         me.on("boxready", function(panel) {
         	var app = this.getApplication();
         	if (app.getAllowInput && app.getAllowInput()=="false") {
-        		if (app.getNoAllowInputText && app.getNoAllowInputText().trim().length>0) {
-        			Ext.defer(function() {
-            			var parent = panel.up("container");
-            			parent.removeAll(); // input box and copyright message
-            			parent.add({
-            	    		frame: false,
-            	    		padding: 10,
-            	    		style: {
-            	    		    borderColor: '#aaa',
-            	    		    borderStyle: 'solid'
-            	    		},
-            				html: app.getNoAllowInputText()
-            			})
-        			}, 100);
-        		} else {
-            		panel.hide();
-            		Ext.create('Ext.window.Window', {
-            		    layout: 'fit',
-            		    header: false,
-            		    modal: true,
-            		    bodyPadding: 10,
-            		    items: {  // Let's put an empty grid in just to illustrate fit layout
-            		        html: "<p style='color: red;'>"+panel.localize('noAllowInputMessage')+"</p>"
-            		    }
-            		}).show();
-        		}
+				panel.getDockedItems().forEach(function(docked) {
+					panel.removeDocked(docked);
+				})
+        		panel.removeAll();
+				panel.add({
+					xtype: 'container',
+					html: "<p>"+panel.localize('noAllowInputMessage')+"</p>"
+				});
         	}
-        })
+        });
 
         me.callParent(arguments);
         
