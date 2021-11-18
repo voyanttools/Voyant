@@ -37,7 +37,7 @@ jobs:
     
     - name: Run JSCacher
       run: java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/target/
-      working-directory: "target/WEB-INF"
+      working-directory: "${{github.workspace}}/target/WEB-INF"
     
     - name: Archive JS artifacts
       uses: actions/upload-artifact@v2
