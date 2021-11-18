@@ -37,7 +37,7 @@ jobs:
     
     - name: Debug
       run: echo $(ls -l)
-      working-directory: "target/resources/voyant/current"
+      working-directory: "resources/voyant/current"
     
     - name: Run JSCacher
       run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/target/
