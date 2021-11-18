@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.Compiler;
@@ -38,9 +44,37 @@ public class JSCacher {
 
 
 	public static void main(String[] args) throws IOException {
-		File voyantRoot = new File(".").getCanonicalFile();
-		File basePath = new File(voyantRoot, "/src/main/webapp/");
-		doCache(basePath, false, true);
+		String webappPath = null;
+		boolean includeSrcMap = false;
+		
+		final Options options = new Options();
+		Option webappPathOption = new Option("p", "webappPath", true, "Path that points to the webapp directory");
+		Option includeSrcMapOption = new Option("m", "includeSrcMap", false, "Should the source map be included");
+		options.addOption(webappPathOption);
+		options.addOption(includeSrcMapOption);
+		
+		
+		CommandLineParser parser = new DefaultParser();
+		try {
+			CommandLine line = parser.parse(options, args);
+			if (line.hasOption(webappPathOption)) {
+				webappPath = line.getOptionValue(webappPathOption);
+			}
+			if (line.hasOption(includeSrcMapOption)) {
+				includeSrcMap = true;
+			}
+		} catch (ParseException e) {
+		}
+		
+		File basePath = null;
+		if (webappPath != null) {
+			basePath = new File(webappPath);
+		} else {
+			File voyantRoot = new File(".").getCanonicalFile();
+			basePath = new File(voyantRoot, "/src/main/webapp/");	
+		}
+		
+		doCache(basePath, includeSrcMap, true);
 	}
 	
 	public static void sendCache(HttpServletRequest request, HttpServletResponse response) throws IOException {
