@@ -75,6 +75,11 @@ public class JSCacher {
 			basePath = new File(voyantRoot, "/src/main/webapp/");	
 		}
 		
+		System.out.println("basePath contents:");
+		outputFilesForDirectory(basePath);
+		System.out.println("basePath resources contents:");
+		outputFilesForDirectory(new File(basePath, "resources"));
+		
 		doCache(basePath, includeSrcMap, true);
 	}
 	
@@ -217,5 +222,15 @@ public class JSCacher {
 		return files;
 	}
 	
+	private static void outputFilesForDirectory(File directory) {
+		File[] listOfFiles = directory.listFiles();
 
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				System.out.println("File " + listOfFiles[i].getName());
+			} else if (listOfFiles[i].isDirectory()) {
+				System.out.println("Directory " + listOfFiles[i].getName());
+			}
+		}
+	}
 }
