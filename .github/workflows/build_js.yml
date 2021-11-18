@@ -45,7 +45,7 @@ jobs:
         cp resources/voyant/current/voyant.min.js ${{github.workspace}}/src/main/webapp/resources/voyant/current/voyant.min.js
         git config --global user.name 'Voyant Tools'
         git config --global user.email 'voyanttools@users.noreply.github.com'
-        git add .
+        git add src/main/webapp/resources/voyant/current/voyant.js src/main/webapp/resources/voyant/current/voyant.min.js
         git commit -m "chore: add JS build files"
         git push
     
