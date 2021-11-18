@@ -108,7 +108,7 @@ public class JSCacher {
 		
 		System.out.println("cachedFile: "+cachedFile.getPath());
 		
-		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
+//		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
 		
 			long lastModifiedCachedFile = cachedFile.lastModified();
 			List<File> files = getCacheableFiles(basePath);
@@ -196,9 +196,9 @@ public class JSCacher {
 				}
 	
 			}
-		} else {
-			System.out.println("Can't write to files!");
-		}
+//		} else {
+//			System.out.println("Can't write to files!");
+//		}
 	}
 
 	private static List<File> getCacheableFiles(File basePath) throws IOException {
