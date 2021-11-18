@@ -1,8 +1,16 @@
 name: Build JS
 
 on:
-  #push:
-    #branches: [ master ]
+  push:
+    branches:
+      - master
+    paths:
+      - src/main/webapp/app/**
+      - src/main/webapp/resources/bubblelines/**
+      - src/main/webapp/resources/knots/**
+      - src/main/webapp/resources/cirrus/**
+      - src/main/webapp/resources/doubletree/**
+      - src/main/webapp/resources/termsradio/**
   workflow_dispatch:
 
 jobs:
