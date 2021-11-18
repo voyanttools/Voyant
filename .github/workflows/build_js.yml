@@ -41,6 +41,8 @@ jobs:
     
     - name: Commit JS files
       run: |
+        git config --global user.name 'Voyant Tools'
+        git config --global user.email 'voyanttools@users.noreply.github.com'
         git add resources/voyant/current/voyant.js resources/voyant/current/voyant.min.js
         git commit -m "chore: add JS build files"
         git push
