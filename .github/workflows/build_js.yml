@@ -39,10 +39,16 @@ jobs:
       run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/
       working-directory: "WEB-INF"
     
-    - name: Archive JS artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: js-files
-        path: |
-          resources/voyant/current/voyant.js
-          resources/voyant/current/voyant.min.js
+    - name: Commit JS files
+      run: |
+        git add resources/voyant/current/voyant.js resources/voyant/current/voyant.min.js
+        git commit -m "chore: add JS build files"
+        git push
+    
+#     - name: Archive JS artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: js-files
+#         path: |
+#           resources/voyant/current/voyant.js
+#           resources/voyant/current/voyant.min.js
