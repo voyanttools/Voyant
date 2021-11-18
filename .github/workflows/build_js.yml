@@ -35,9 +35,13 @@ jobs:
     - name: unzip WAR
       run: jar -xvf target/Voyant*.war
     
-    - name: Debug
+    - name: Debug chmod
       run: chmod a+w *.js; echo $(ls -l)
       working-directory: "resources/voyant/current"
+      
+    - name: More debug
+      run: echo $(ls); cd bubblelines; echo $(ls)
+      working-directory: "resources"
     
     - name: Run JSCacher
       run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/target/
