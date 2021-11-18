@@ -100,6 +100,8 @@ public class JSCacher {
 	
 	private static void doCache(File basePath, boolean doSourceMap, boolean forceUpdate) throws IOException {
 		
+		System.out.println("doCache - path: "+basePath.getPath()+", source: "+doSourceMap+", force: "+forceUpdate);
+		
 		File cachedFile = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME);
 		File cachedFileMinified = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME_MINIFIED);
 		File sourceMapFile = new File(basePath, "/resources/voyant/current/"+SOURCE_MAP_FILENAME);
@@ -108,6 +110,8 @@ public class JSCacher {
 		
 			long lastModifiedCachedFile = cachedFile.lastModified();
 			List<File> files = getCacheableFiles(basePath);
+			
+			System.out.println("Found "+files.size()+" files");
 	
 			// look for any file that's been updated since last cache
 			boolean needsUpdate = false;
@@ -121,6 +125,8 @@ public class JSCacher {
 					}
 				}
 			}
+			
+			System.out.println("Needs update: "+needsUpdate);
 			
 			if (needsUpdate) {
 				
@@ -182,12 +188,14 @@ public class JSCacher {
 				
 				// source map
 				if (doSourceMap && result.sourceMap != null) {
-					StringBuilder sourceMap = new StringBuilder();	                
+					StringBuilder sourceMap = new StringBuilder();
 					result.sourceMap.appendTo(sourceMap, SOURCE_MAP_FILENAME);
 					FileUtils.writeStringToFile(sourceMapFile, sourceMap.toString(), Charset.forName(ENCODING));
 				}
 	
 			}
+		} else {
+			System.out.println("Can't write to files!");
 		}
 	}
 
