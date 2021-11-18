@@ -44,6 +44,8 @@ public class JSCacher {
 
 
 	public static void main(String[] args) throws IOException {
+		System.out.println("Running JSCacher with: "+String.join(", ", args));
+		
 		String webappPath = null;
 		boolean includeSrcMap = false;
 		
@@ -52,7 +54,6 @@ public class JSCacher {
 		Option includeSrcMapOption = new Option("m", "includeSrcMap", false, "Should the source map be included");
 		options.addOption(webappPathOption);
 		options.addOption(includeSrcMapOption);
-		
 		
 		CommandLineParser parser = new DefaultParser();
 		try {
