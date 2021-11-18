@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Nov 11 13:53:58 EST 2021 */
+/* This file created by JSCacher. Last modified: Thu Nov 18 20:29:46 UTC 2021 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -15221,7 +15221,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		var canvas = this.getTargetEl().dom.querySelector("canvas");
     		var me = this;
     		Ext.Ajax.request({
-    			url: this.getBaseUrl()+'resources/voyant/current/bubbles/bubbles.pjs'
+    			url: this.getBaseUrl()+'resources/bubbles/bubbles.pjs'
     		}).then(function(data) {
     			var canvas = me.getTargetEl().dom.querySelector("canvas");
     			me.bubbles = new Processing(canvas, data.responseText);
@@ -18833,13 +18833,6 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    				        margin: '5,5,5,5',
 	    				        items: {
 	    				        	xtype: 'corpusselector'
-//	    				            xtype:'combo',
-//	    				            labelWidth: 150,
-//	    				            fieldLabel:'Choose a corpus:',
-//	    				            name:'corpus',
-//	    				            queryMode:'local',
-//	    				            store:[['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"]],				            
-//	    				            forceSelection:true
 	    				        },
 	    				        buttons: [
 	    				        	{
@@ -19002,34 +18995,16 @@ Ext.define('Voyant.panel.CorpusCreator', {
         me.on("boxready", function(panel) {
         	var app = this.getApplication();
         	if (app.getAllowInput && app.getAllowInput()=="false") {
-        		if (app.getNoAllowInputText && app.getNoAllowInputText().trim().length>0) {
-        			Ext.defer(function() {
-            			var parent = panel.up("container");
-            			parent.removeAll(); // input box and copyright message
-            			parent.add({
-            	    		frame: false,
-            	    		padding: 10,
-            	    		style: {
-            	    		    borderColor: '#aaa',
-            	    		    borderStyle: 'solid'
-            	    		},
-            				html: app.getNoAllowInputText()
-            			})
-        			}, 100);
-        		} else {
-            		panel.hide();
-            		Ext.create('Ext.window.Window', {
-            		    layout: 'fit',
-            		    header: false,
-            		    modal: true,
-            		    bodyPadding: 10,
-            		    items: {  // Let's put an empty grid in just to illustrate fit layout
-            		        html: "<p style='color: red;'>"+panel.localize('noAllowInputMessage')+"</p>"
-            		    }
-            		}).show();
-        		}
+				panel.getDockedItems().forEach(function(docked) {
+					panel.removeDocked(docked);
+				})
+        		panel.removeAll();
+				panel.add({
+					xtype: 'container',
+					html: "<p>"+panel.localize('noAllowInputMessage')+"</p>"
+				});
         	}
-        })
+        });
 
         me.callParent(arguments);
         
@@ -23084,32 +23059,13 @@ Ext.define('Voyant.panel.Documents', {
             		this.store.load({params: this.getApiParams()});
     			}, this);
     		}
-    		if (this.hasCorpusAccess(corpus)==false) {
+
+			var app = this.getApplication();
+    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload && app.getAllowDownload() === 'false')) {
     			this.queryById('modifyButton').hide();
     			this.queryById('downloadButton').hide();
     		}
-    		/*
-    		var me = this;
-    		Ext.Ajax.request({
-    			url: this.getApplication().getTromboneUrl(),
-    			params: {
-    				corpus: corpus.getId(),
-    				tool: 'corpus.CorpusManager',
-    				getAccess: true
-    			},
-    		    success: function(response, opts) {
-    		        var obj = Ext.decode(response.responseText);
-    		        if (obj && obj)
-    		        debugger
-    		        console.dir(obj);
-    		        me
-    		    },
-    		    failure: function(response, opts) {
-    		    	me.showError(response);
-    		    }
-    		})
-    		*/
-    	})
+    	});
     	
     	this.on("activate", function() { // load after tab activate (if we're in a tab panel)
     		if (this.getStore().getCorpus()) {
@@ -34839,87 +34795,103 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			var notebook = wrapper.up('notebook');
 			var notebookId = notebook.getNotebookId() || 'spyral';
 			
-			var input = wrapper.getInput();
-			var output = wrapper.getOutput();
 			var mode = wrapper.getMode();
 
-			var corpusButton = this.exportWin.down('#corpus');
-			var openButton = this.exportWin.down('#open');
-			corpusButton.setHidden(true);
-			openButton.setHidden(false);
+			var dfd = new Ext.Deferred();
 
-			var fileName;
-			var fileType;
-			var fileContent;
+			var outputPromise = null;
 			if (mode === 'file') {
-				openButton.setHidden(true);
-				fileName = input.fileName;
-				fileType = output.type;
-				fileContent = output;
-			} else if (mode === 'javascript') {
-				// corpus check
-				if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
-					corpusButton.setHidden(false);
-					corpusButton.setHandler(function(btn) {
-						var url = Voyant.application.getBaseUrlFull()+'?corpus='+output.corpusid;
-						window.open(url);
-					});
-				}
+				outputPromise = wrapper.fileInput.getBlob();
+			} else {
+				outputPromise = wrapper.results.updateCachedOutput();
+			}
 
-				if (Spyral.Util.isUndefined(output)) {
-					// output is probably a document and couldn't be sent from sandbox
-					// try getContent fallback
-					output = wrapper.getContent().output;
-				}
-				
-				if (Spyral.Util.isObject(output) || Spyral.Util.isArray(output)) {
-					fileName = notebookId+'_'+wrapper.getCellId()+'.json';
-					fileType = 'application/json';
-					fileContent = JSON.stringify(output);
-				} else if (Spyral.Util.isNode(output) || (Spyral.Util.isString(output) && output.match(/<\/?\w+.*?>/g) !== null)) {
-					fileName = notebookId+'_'+wrapper.getCellId()+'.html';
-					fileType = 'text/html';
-					if (Spyral.Util.isString(output)) {
-						fileContent = output;
+			outputPromise.then(function(output) {
+				var input = wrapper.getInput();
+	
+				var corpusButton = this.exportWin.down('#corpus');
+				var openButton = this.exportWin.down('#open');
+				corpusButton.setHidden(true);
+				openButton.setHidden(false);
+	
+				var fileName;
+				var fileType;
+				var fileContent;
+				if (mode === 'file') {
+					openButton.setHidden(true);
+					fileName = input.fileName;
+					fileType = output.type;
+					fileContent = output;
+				} else if (mode === 'javascript') {
+					// corpus check
+					if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
+						corpusButton.setHidden(false);
+						corpusButton.setHandler(function(btn) {
+							var url = Voyant.application.getBaseUrlFull()+'?corpus='+output.corpusid;
+							window.open(url);
+						});
+					}
+	
+					if (Spyral.Util.isUndefined(output)) {
+						// output is probably a document and couldn't be sent from sandbox
+						// try getContent fallback
+						output = wrapper.getContent().output;
+					}
+					
+					if (Spyral.Util.isObject(output) || Spyral.Util.isArray(output)) {
+						fileName = notebookId+'_'+wrapper.getCellId()+'.json';
+						fileType = 'application/json';
+						fileContent = JSON.stringify(output);
+					} else if (Spyral.Util.isNode(output) || (Spyral.Util.isString(output) && output.match(/<\/?\w+.*?>/g) !== null)) {
+						fileName = notebookId+'_'+wrapper.getCellId()+'.html';
+						fileType = 'text/html';
+						if (Spyral.Util.isString(output)) {
+							fileContent = output;
+						} else {
+							fileContent = new XMLSerializer().serializeToString(output);
+						}
 					} else {
-						fileContent = new XMLSerializer().serializeToString(output);
+						fileName = notebookId+'_'+wrapper.getCellId()+'.txt';
+						fileType = 'text/plain';
+						fileContent = output;
 					}
 				} else {
-					fileName = notebookId+'_'+wrapper.getCellId()+'.txt';
-					fileType = 'text/plain';
-					fileContent = output;
+					fileName = notebookId+'_'+wrapper.getDataName()+'.'+mode;
+					fileType = 'text/'+mode;
+					fileContent = input;
+					if (mode === 'json') {
+						fileType = 'application/json';
+					} else if (mode === 'text') {
+						fileName = notebookId+'_'+wrapper.getDataName()+'.txt';
+						fileType = 'text/plain';
+					}
 				}
-			} else {
-				fileName = notebookId+'_'+wrapper.getDataName()+'.'+mode;
-				fileType = 'text/'+mode;
-				fileContent = input;
-				if (mode === 'json') {
-					fileType = 'application/json';
-				} else if (mode === 'text') {
-					fileName = notebookId+'_'+wrapper.getDataName()+'.txt';
-					fileType = 'text/plain';
-				}
-			}
-			
-			var file = new File([fileContent], fileName, {lastModified: new Date().getTime(), type: fileType});
+				
+				var file = new File([fileContent], fileName, {lastModified: new Date().getTime(), type: fileType});
+	
+				this.exportWin.down('#open').setHandler(function(btn) {
+					var myWindow = window.open();
+					myWindow.document.write(fileContent);
+					myWindow.document.close();
+					myWindow.focus();
+					btn.up('window').close();
+				});
+	
+				this.exportWin.addListener('show', function() {
+					var url = URL.createObjectURL(file);
+					this.exportWin.down('#download').getEl().set({
+						download: fileName,
+						href: url
+					});
+				}, this, { single: true });
 
-			this.exportWin.down('#open').setHandler(function(btn) {
-				var myWindow = window.open();
-				myWindow.document.write(fileContent);
-				myWindow.document.close();
-				myWindow.focus();
-				btn.up('window').close();
+				dfd.resolve(this.exportWin);
+
+			}.bind(this), function(err) {
+				dfd.reject(err);
 			});
 
-			this.exportWin.addListener('show', function() {
-				var url = URL.createObjectURL(file);
-				this.exportWin.down('#download').getEl().set({
-					download: fileName,
-					href: url
-				});
-			}, this, { single: true });
-
-			return this.exportWin;
+			return dfd.promise;
 		}
 	},
 	constructor: function(config) {
@@ -34931,9 +34903,15 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 	glyph: 'xf08e@FontAwesome',
 	listeners: {
 		click: function(cmp) {
-			var wrapper = cmp.up('notebookrunnableeditorwrapper');
-			wrapper.results.updateCachedOutput().then(function(output) {
-				Voyant.notebook.editor.button.Export.getExportWindow(cmp).show();
+			Voyant.notebook.editor.button.Export.getExportWindow(cmp).then(function(exportWin) {
+				exportWin.show();
+			}, function(err) {
+				Ext.Msg.show({
+					title: 'Export Error',
+					msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
 			});
 		}
 	}
@@ -36232,6 +36210,18 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 		} else {
 			dfd.resolve(dataUrl);
 		}
+
+		return dfd.promise;
+	},
+
+	getBlob: function() {
+		var dfd = new Ext.Deferred();
+
+		this.getDataUrl().then(function(dataUrl) {
+			dfd.resolve(Spyral.Util.dataUrlToBlob(dataUrl));
+		}, function(err) {
+			dfd.reject(err);
+		});
 
 		return dfd.promise;
 	},
@@ -40146,8 +40136,12 @@ Ext.define('Voyant.VoyantDefaultApp', {
 					},{
 						xtype: 'container',
 						width: 800,
-						html: "<div id='voyantIs' style='font-style: italic; text-align: center; margin-top: 10px;'><div>"+this.localize('voyantIs')+"</div>" + (this.localize('translatedBy').indexOf("English") == -1 ? "<div>"+this.localize('translatedBy')+"</div>" : "") +
-							(this.getCorpusCreatorText &&  this.getCorpusCreatorText().trim().length>0 ?  "<div id='corpusCreatorText'>"+this.getCorpusCreatorText()+"</div>" : "")
+						html: ""+
+						"<div id='voyantIs' style='font-style: italic; text-align: center; margin-top: 10px;'>"+
+							"<div>"+this.localize('voyantIs')+"</div>"+
+							(this.localize('translatedBy').indexOf("English") == -1 ? "<div>"+this.localize('translatedBy')+"</div>" : "")+
+							(this.getCorpusCreatorText && this.getCorpusCreatorText().trim().length>0 ?  "<div id='corpusCreatorText'>"+this.getCorpusCreatorText()+"</div>" : "")+
+						"</div>"
 					}]	
 				},{
 					layout: 'fit',
