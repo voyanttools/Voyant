@@ -18,18 +18,16 @@ Ensure your computer has Java version 8 or the latest. Instructions for installi
 
 ### Downloading Voyant Server
 
-1. Go to [https://github.com/sgsinclair/VoyantServer/releases/tag/2.4.0-M45](https://github.com/sgsinclair/VoyantServer/releases/tag/2.4.0-M45)
-2. Scroll down to the bottom and click on _VoyantServer2\_4-M45.zip_ to download.
-	
-	Note: as of August 2021, _VoyantServer2\_4-M45.zip_ is the latest stable version, but this might change in the future. Hence, ensure you download the latest version available. You can tell the latest version from the name. E.g., _VoyantServer2\_4-M45.zip, VoyantServer2\_5-M45.zip, etc._
+1. Go to [https://github.com/voyanttools/VoyantServer/releases/latest](https://github.com/voyanttools/VoyantServer/releases/latest)
+2. Scroll down to the bottom and click on the _VoyantServer.zip_ to download.
 
 ### Preparing VoyantServer
 
-First, go to the folder to which you downloaded _VoyantServer2\_4-M45.zip_. The procedure for preparing VoyantServer is dependent on your computer's operating system (OS). Please see below and follow instructions for your respective OS.
+First, go to the folder to which you downloaded _VoyantServer.zip_. The procedure for preparing VoyantServer is dependent on your computer's operating system (OS). Please see below and follow instructions for your respective OS.
 
-1. **Mac:** You can double-click on the downloaded _VoyantServer2\_4-M45.zip_ file to decompress it. This should create a directory in the same folder as the zip file with a similar name to the downloaded file.
-2. **Windows:** Extract the _VoyantServer2\_4-M45.zip_ onto the computer. You can do the extraction by right-clicking on the _VoyantServer2\_4-M45.zip_ and then click on "_Extract All..._"
-3. **Linux:** You can double-click on the _VoyantServer2\_4-M45.zip_ file to decompress it. This should create a directory in the same folder as the zip file with a similar name to the downloaded file.
+1. **Mac:** You can double-click on the downloaded _VoyantServer.zip_ file to decompress it. This should create a directory in the same folder as the zip file with a similar name to the downloaded file.
+2. **Windows:** Extract the _VoyantServer.zip_ onto the computer. You can do the extraction by right-clicking on the _VoyantServer.zip_ and then click on "_Extract All..._"
+3. **Linux:** You can double-click on the _VoyantServer.zip_ file to decompress it. This should create a directory in the same folder as the zip file with a similar name to the downloaded file.
 
 Once you decompress the .zip file, you should see something like the following:
 

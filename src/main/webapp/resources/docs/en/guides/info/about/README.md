@@ -48,7 +48,9 @@ In addition to the [English](../?lang=en) interface, the following translations 
 * [Hebrew](../?lang=he): Sinai Rusinek
 * [Italian](../?lang=it): Fabio Ciotti and the AIUCD team: Alessandra Baldelli, Cristiana Bettella, Eleonora Durban, Federico Caria, Federico Meschini, Greta Franzini, Giorgio Guzzetta, Roberto Rosselli del Turco, Elena Spadini, Tiziana Mancinelli
 * [Japanese](../?lang=ja): 小風尚樹 (Naoki Kokaze), 佐藤正尚 (Masanao Sato), 杉浦清人 (Kiyoto Sugiura), 鈴木親彦 (Chikahiko Suzuki), 王一凡 (Yifan Wang), and 永崎研宣 (Kiyonori Nagasaki)
+* [Portuguese](../?lang=pt): Fernando Marineli
 * [Serbian](../?lang=sr): Téa Rokolj
+* [Spanish](../?lang=es): Manuel Vargas Alegría
 
 ## Software Libraries
 
