@@ -57,7 +57,7 @@
 					<outputDirectory>${basedir}/target</outputDirectory>
 					<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
 					<warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
-					<packagingExcludes>**/node_modules</packagingExcludes>
+					<packagingExcludes>**/node_modules/**</packagingExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
