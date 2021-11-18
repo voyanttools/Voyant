@@ -36,8 +36,7 @@ jobs:
       run: jar -xvf target/Voyant*.war
     
     - name: Run JSCacher
-#       run: java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/target/
-      run: echo "$(ls)"
+      run: java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/target/
       working-directory: "WEB-INF"
     
     - name: Archive JS artifacts
