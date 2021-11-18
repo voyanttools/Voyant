@@ -19,6 +19,16 @@ jobs:
         distribution: 'adopt'
         cache: 'maven'
     
+    - name: Create maven settings.xml
+      uses: whelk-io/maven-settings-xml-action@v20
+      with:
+        servers: |
+          [{
+            "id": "trombone-mvn-repo",
+            "username": "voyanttools",
+            "password": "${{secrets.GITHUB_TOKEN}}"
+          }]
+    
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       
