@@ -44,7 +44,7 @@ jobs:
       working-directory: "resources"
     
     - name: Run JSCacher
-      run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/target/
+      run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/
       working-directory: "WEB-INF"
     
     - name: Archive JS artifacts
