@@ -75,11 +75,6 @@ public class JSCacher {
 			basePath = new File(voyantRoot, "/src/main/webapp/");	
 		}
 		
-		System.out.println("basePath contents:");
-		outputFilesForDirectory(basePath);
-		System.out.println("basePath resources contents:");
-		outputFilesForDirectory(new File(basePath, "resources"));
-		
 		doCache(basePath, includeSrcMap, true);
 	}
 	
@@ -111,9 +106,7 @@ public class JSCacher {
 		File cachedFileMinified = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME_MINIFIED);
 		File sourceMapFile = new File(basePath, "/resources/voyant/current/"+SOURCE_MAP_FILENAME);
 		
-		System.out.println("cachedFile: "+cachedFile.getPath()+", exists: "+cachedFile.exists());
-		
-//		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
+		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
 		
 			long lastModifiedCachedFile = cachedFile.lastModified();
 			List<File> files = getCacheableFiles(basePath);
@@ -132,8 +125,6 @@ public class JSCacher {
 					}
 				}
 			}
-			
-			System.out.println("Needs update: "+needsUpdate);
 			
 			if (needsUpdate) {
 				
@@ -201,9 +192,9 @@ public class JSCacher {
 				}
 	
 			}
-//		} else {
-//			System.out.println("Can't write to files!");
-//		}
+		} else {
+			System.out.println("Can't write to files!");
+		}
 	}
 
 	private static List<File> getCacheableFiles(File basePath) throws IOException {
@@ -220,17 +211,5 @@ public class JSCacher {
 			}
 		}
 		return files;
-	}
-	
-	private static void outputFilesForDirectory(File directory) {
-		File[] listOfFiles = directory.listFiles();
-
-		for (int i = 0; i < listOfFiles.length; i++) {
-			if (listOfFiles[i].isFile()) {
-				System.out.println("File " + listOfFiles[i].getName());
-			} else if (listOfFiles[i].isDirectory()) {
-				System.out.println("Directory " + listOfFiles[i].getName());
-			}
-		}
 	}
 }
