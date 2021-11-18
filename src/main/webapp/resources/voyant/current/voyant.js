@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Nov 18 20:29:46 UTC 2021 */
+/* This file created by JSCacher. Last modified: Thu Nov 18 21:29:54 UTC 2021 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -17353,6 +17353,9 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     },
     
     idGet: function(term) {
+		if (term.search(/^\d+$/) === 0) {
+			return 'voyant_'+term;
+		}
     	return term.replace(/\W/g, '_');
     },
     
