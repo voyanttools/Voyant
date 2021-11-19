@@ -99,6 +99,10 @@ public class Trombone extends HttpServlet {
 
 		final FlexibleParameters parameters = getFlexibleParameters(req);
 		
+		if (parameters == null) {
+			return;
+		}
+		
 		// append accessIP in case it's needed
 		parameters.setParameter("accessIP", req.getRemoteAddr());
 	
@@ -136,10 +140,6 @@ public class Trombone extends HttpServlet {
 					}
 				}
 			}
-		}
-
-		if (parameters == null) {
-			return;
 		}
 
 		try {

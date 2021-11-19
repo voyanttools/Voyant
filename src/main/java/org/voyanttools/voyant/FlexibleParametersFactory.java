@@ -118,6 +118,10 @@ public class FlexibleParametersFactory {
 			throw new IllegalArgumentException("This server has been configured to refuse new input.");
 		}
 		
+		if (System.getProperty("org.voyanttools.server.allowdownload", "true").equals("false") && parameters.getParameterValue("tool", "").contains("corpus.CorpusExporter")) {
+			throw new IllegalArgumentException("This server has been configured to refuse corpus downloads.");
+		}
+		
 		return parameters;
 	
 	}
