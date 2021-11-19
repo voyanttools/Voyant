@@ -20,9 +20,9 @@ Voyant Tools is a labour of love. Its ancestry includes HyperPo and Taporware an
 
 ### Project Leads
 
-In memory of Stéfan Sinclair, McGill University, who imagined, designed, and programmed much of Voyant Tools until 2020 when he passed away. See [obituary](https://csdh-schn.org/stefan-sinclair-in-memoriam/).
+Stéfan Sinclair was the leader of the project, and the principal designer and programmer, until his passing in August of 2020. See his [obituary on the CSDH-SCHN web site](https://csdh-schn.org/stefan-sinclair-in-memoriam/).
 
-* Geoffrey Rockwell, University of Alberta
+Geoffrey Rockwell, University of Alberta, is currently the project leader. He is supported by Andrew MacDonald, now the principal programmer, and Cecily Raynor at McGill.
 
 We appreciate you citing Voyant Tools, it helps to demonstrate the value of the tool and our recognizes our efforts. Depending on the citation style you need, you could adapt the following:
 
