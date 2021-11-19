@@ -1,0 +1,34 @@
+name: Build Spyral
+
+on:
+  push:
+      branches:
+        - master
+      paths:
+        - src/main/webapp/resources/spyral/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      
+      - name: Node install
+        run: npm ci
+        working-directory: src/main/webapp/resources/spyral
+        
+      - name: Build Spyral
+        run: npm run-script build-spyral
+        working-directory: src/main/webapp/resources/spyral
+        
+      - name: Commit JS files
+        run: |
+          git config --global user.name 'Voyant Tools'
+          git config --global user.email 'voyanttools@users.noreply.github.com'
+          git add src/main/webapp/resources/spyral/build/spyral.js src/main/webapp/resources/spyral/build/spyral.js.map
+          git commit -m "chore: add Spyral build files"
+          git push
