@@ -13,17 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false # required to install dependencies on github
+#         with:
+#           persist-credentials: false # required to install dependencies on github
       - uses: actions/setup-node@v2
         with:
           node-version: 14
       
       # required to install dependencies on github
-      - name: Reconfigure git to use HTTP authentication
-        run: >
-          git config --global url."https://github.com/".insteadOf
-          ssh://git@github.com/
+#       - name: Reconfigure git to use HTTP authentication
+#         run: >
+#           git config --global url."https://github.com/".insteadOf
+#           ssh://git@github.com/
       
       - name: Node install
         run: npm ci
