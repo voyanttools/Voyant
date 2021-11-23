@@ -284,15 +284,6 @@ Ext.define('Voyant.data.model.Document', {
     	config = config || {};
     	config.docId = this.getId();
 		return this.getCorpus().getLemmasArray(config);
-//		if (this.then) {
-//			return Voyant.application.getDeferredNestedPromise(this, arguments);
-//		} else {
-//	    	config = config || {};
-//	    	Ext.apply(config, {
-//    			docId: this.getId()
-//	    	});
-//			return this.getCorpus().getLemmasArray(config);
-//		}
     },
     
     getEntities: function(config) {

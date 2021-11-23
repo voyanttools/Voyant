@@ -8,6 +8,7 @@ Ext.define('Voyant.panel.Summary', {
 	alias: 'widget.summary',
     statics: {
     	i18n: {
+			readabilityIndex: 'Readability Index:'
     	},
     	api: {
     		
@@ -147,10 +148,8 @@ Ext.define('Voyant.panel.Summary', {
     	
     	if (docs.length>1) {
     		
-    		docs.sort(function(d1, d2) {return d2.getLexicalTokensCount()-d1.getLexicalTokensCount()});
         	var docsLengthTpl = new Ext.XTemplate('<tpl for="." between="; "><a href="#" onclick="return false" class="document-id" voyant:val="{id}" data-qtip="{title}">{shortTitle}</a><span style="font-size: smaller"> (<span class="info-tip" data-qtip="{valTip}">{val}</span>)</span></a></tpl>')
 
-        	
         	var sparkWidth;
         	if (docs.length<25) {sparkWidth=docs.length*4;}
         	else if (docs.length<50) {sparkWidth=docs.length*2;}
@@ -160,124 +159,31 @@ Ext.define('Voyant.panel.Summary', {
         	}
         	
         	var numberOfTerms = this.localize('numberOfTerms');
-        	main.add({
-	    		cls: 'section',
-        		items: [{
-		    		layout: 'hbox',
-		    		align: 'bottom',
-		    		items: [{
-		    			html: this.localize('docsLength'),
-		    			cls: 'header'
-		    		}, {
-		    			xtype: 'sparklineline',
-		    			values: this.getCorpus().getDocuments().getRange().map(function(doc) {return doc.getLexicalTokensCount()}),
-		                tipTpl: new Ext.XTemplate('{[this.getDocumentTitle(values.x,values.y)]}', {
-		                	getDocumentTitle: function(docIndex, len) {
-		                		return '('+len+') '+this.panel.getCorpus().getDocument(docIndex).getTitle()
-		                	},
-		                	panel: me 
-		                }),
-		    			height: 16,
-		    			width: sparkWidth
-		    		}]
-		    	},{
-	    			html: '<ul><li>'+this.localize('longest')+" "+docsLengthTpl.apply(docs.slice(0, docs.length>limit ? limit : parseInt(docs.length/2)).map(function(doc) {return {
-						id: doc.getId(),
-						shortTitle: doc.getShortTitle(),
-						title: doc.getTitle(),
-						val: doc.getLexicalTokensCount(),
-						valTip: numberOfTerms
-					}}))+'</li>'+
-	    				'<li>'+this.localize('shortest')+" "+docsLengthTpl.apply(docs.slice(-(docs.length>limit ? limit : parseInt(docs.length/2))).reverse().map(function(doc) {return {
-	    					id: doc.getId(),
-	    					shortTitle: doc.getShortTitle(),
-	    					title: doc.getTitle(),
-	    					val: doc.getLexicalTokensCount(),
-	    					valTip: numberOfTerms
-	    				}}))+'</li>'
-	        	}]
-        	})
+
+			// document length
+			docs.sort(function(d1, d2) {return d2.getLexicalTokensCount()-d1.getLexicalTokensCount()});
+			main.add(this.showSparklineSection(
+				function(doc) { return doc.getLexicalTokensCount(); },
+				this.localize('docsLength'), this.localize('longest'), this.localize('shortest'),
+				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+			));
         	
+			// vocabulary density
     		docs.sort(function(d1, d2) {return d2.getLexicalTypeTokenRatio()-d1.getLexicalTypeTokenRatio()});
-        	main.add({
-        		cls: 'section',
-        		items: [{
-		    		layout: 'hbox',
-		    		align: 'bottom',
-		    		cls: 'section',
-		    		items: [{
-		    			html: this.localize("docsDensity"),
-		    			cls: 'header'
-		    		}, {
-		    			xtype: 'sparklineline',
-		    			values: this.getCorpus().getDocuments().getRange().map(function(doc) {return Ext.util.Format.number(doc.getLexicalTypeTokenRatio(),'0.000')}),
-		                tipTpl: new Ext.XTemplate('{[this.getDocumentTitle(values.x,values.y)]}', {
-		                	getDocumentTitle: function(docIndex, len) {
-		                		return '('+len+') '+this.panel.getCorpus().getDocument(docIndex).getTitle()
-		                	},
-		                	panel: me 
-		                }),
-		    			height: 16,
-		    			width: sparkWidth
-		    		}]
-		    	},{
-	    			html: '<ul><li>'+this.localize('highest')+docsLengthTpl.apply(docs.slice(0, docs.length>limit ? limit : parseInt(docs.length/2)).map(function(doc) {return {
-						id: doc.getId(),
-						shortTitle: doc.getShortTitle(),
-						title: doc.getTitle(),
-						val: Ext.util.Format.number(doc.getLexicalTypeTokenRatio(),'0.000'),
-						valTip: numberOfTerms
-					}}))+'</li>'+
-	    				'<li>'+this.localize('lowest')+docsLengthTpl.apply(docs.slice(-(docs.length>limit ? limit : parseInt(docs.length/2))).reverse().map(function(doc) {return {
-	    					id: doc.getId(),
-	    					shortTitle: doc.getShortTitle(),
-	    					title: doc.getTitle(),
-	    					val: Ext.util.Format.number(doc.getLexicalTypeTokenRatio(),'0.000'),
-	    					valTip: numberOfTerms
-	    				}}))+'</li>'
-	        	}]
-        	})
+			main.add(this.showSparklineSection(
+				function(doc) { return Ext.util.Format.number(doc.getLexicalTypeTokenRatio(),'0.000'); },
+				this.localize('docsDensity'), this.localize('highest'), this.localize('lowest'),
+				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+			));
  
         	// words per sentence
     		docs.sort(function(d1, d2) {return d2.getAverageWordsPerSentence()-d1.getAverageWordsPerSentence()});
-        	main.add({
-        		cls: 'section',
-        		items: [{
-		    		layout: 'hbox',
-		    		align: 'bottom',
-		    		cls: 'section',
-		    		items: [{
-		    			html: this.localize("averageWordsPerSentence"),
-		    			cls: 'header'
-		    		}, {
-		    			xtype: 'sparklineline',
-		    			values: this.getCorpus().getDocuments().getRange().map(function(doc) {return Ext.util.Format.number(doc.getAverageWordsPerSentence(),'0.0')}),
-		                tipTpl: new Ext.XTemplate('{[this.getDocumentTitle(values.x,values.y)]}', {
-		                	getDocumentTitle: function(docIndex, len) {
-		                		return '('+len+') '+this.panel.getCorpus().getDocument(docIndex).getTitle()
-		                	},
-		                	panel: me 
-		                }),
-		    			height: 16,
-		    			width: sparkWidth
-		    		}]
-		    	},{
-	    			html: '<ul><li>'+this.localize('highest')+docsLengthTpl.apply(docs.slice(0, docs.length>limit ? limit : parseInt(docs.length/2)).map(function(doc) {return {
-						id: doc.getId(),
-						shortTitle: doc.getShortTitle(),
-						title: doc.getTitle(),
-						val: Ext.util.Format.number(doc.getAverageWordsPerSentence(),'0.0'),
-						valTip: numberOfTerms
-					}}))+'</li>'+
-	    				'<li>'+this.localize('lowest')+docsLengthTpl.apply(docs.slice(-(docs.length>limit ? limit : parseInt(docs.length/2))).reverse().map(function(doc) {return {
-	    					id: doc.getId(),
-	    					shortTitle: doc.getShortTitle(),
-	    					title: doc.getTitle(),
-	    					val: Ext.util.Format.number(doc.getAverageWordsPerSentence(),'0.0'),
-	    					valTip: numberOfTerms
-	    				}}))+'</li>'
-	        	}]
-        	})        	
+			main.add(this.showSparklineSection(
+				function(doc) { return Ext.util.Format.number(doc.getAverageWordsPerSentence(),'0.0'); },
+				this.localize('averageWordsPerSentence'), this.localize('highest'), this.localize('lowest'),
+				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+			));
+
     	} else { // single document, we can still show word density and average words per sentence
     		var doc = docs[0];
     		if (doc) {
@@ -291,6 +197,32 @@ Ext.define('Voyant.panel.Summary', {
             	});    		
     		}
     	}
+
+		// readability
+		this.getCorpus().getReadability().then(function(data) {
+			docs.forEach(function(doc) {
+				var readDoc = data.find(function(dataDoc) {
+					return dataDoc.docId === doc.getId();
+				});
+				if (readDoc) {
+					doc.set('readability', readDoc.readability);
+				}
+			});
+
+			var sectionIndex = main.items.length-2;
+			if (docs.length>1) {
+				docs.sort(function(d1, d2) {return d2.get('readability')-d1.get('readability')});
+				main.insert(sectionIndex, me.showSparklineSection(function(doc) {
+					return Ext.util.Format.number(doc.get('readability'),'0.000');
+				}, me.localize('readabilityIndex'), me.localize('highest'), me.localize('lowest'), docs, limit, docsLengthTpl, sparkWidth, numberOfTerms));
+			} else {
+				main.insert(sectionIndex, {
+					cls: 'section',
+					html: '<b>'+me.localize('readabilityIndex')+'</b> '+ Ext.util.Format.number(docs[0].get('readability'),'0.000')
+				});
+			}
+		})
+		
     	
     	main.add({
     		html: this.localize("mostFrequentWords"),
@@ -340,6 +272,47 @@ Ext.define('Voyant.panel.Summary', {
     	}
     	
     },
+
+	showSparklineSection: function(docDataFunc, headerText, topText, bottomText, docs, limit, docsLengthTpl, sparkWidth, numberOfTerms) {
+		var me = this;
+		return {
+			cls: 'section',
+			items: [{
+				layout: 'hbox',
+				align: 'bottom',
+				items: [{
+					html: headerText,
+					cls: 'header'
+				}, {
+					xtype: 'sparklineline',
+					values: this.getCorpus().getDocuments().getRange().map(function(doc) {return docDataFunc.call(me, doc)}),
+					tipTpl: new Ext.XTemplate('{[this.getDocumentTitle(values.x,values.y)]}', {
+						getDocumentTitle: function(docIndex, len) {
+							return '('+len+') '+this.panel.getCorpus().getDocument(docIndex).getTitle()
+						},
+						panel: me 
+					}),
+					height: 16,
+					width: sparkWidth
+				}]
+			},{
+				html: '<ul><li>'+topText+" "+docsLengthTpl.apply(docs.slice(0, docs.length>limit ? limit : parseInt(docs.length/2)).map(function(doc) {return {
+					id: doc.getId(),
+					shortTitle: doc.getShortTitle(),
+					title: doc.getTitle(),
+					val: docDataFunc.call(me, doc),
+					valTip: numberOfTerms
+				}}))+'</li>'+
+					'<li>'+bottomText+" "+docsLengthTpl.apply(docs.slice(-(docs.length>limit ? limit : parseInt(docs.length/2))).reverse().map(function(doc) {return {
+						id: doc.getId(),
+						shortTitle: doc.getShortTitle(),
+						title: doc.getTitle(),
+						val: docDataFunc.call(me, doc),
+						valTip: numberOfTerms
+					}}))+'</li>'
+			}]
+		}
+	},
      
     showMoreDistinctiveWords: function() {
     	var distinctiveWordsContainer = this.queryById('distinctiveWords');

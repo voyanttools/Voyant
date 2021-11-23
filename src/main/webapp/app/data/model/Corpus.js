@@ -993,6 +993,86 @@ Ext.define('Voyant.data.model.Corpus', {
 		}
     	
     },
+
+	/**
+	 * Get the readability index for the documents in this corpus.
+	 * @param {String} indexType Which index to use: 'automated', 'coleman-liau', 'dale-chall', 'fog', 'lix', 'smog'
+	 * @param {Object} config A config object to limit the results to certain documents, using docIndex or docId keys
+	 * 
+	 * @returns {Ext.promise.Promise}
+	 */
+	 getReadability: function(indexType, config) {
+		indexType = indexType === undefined ? 'coleman-liau' : indexType;
+		config = config || {};
+		
+		var tool = 'corpus.';
+		switch (indexType) {
+			case 'automated':
+				tool += 'DocumentAutomatedReadabilityIndex';
+				break;
+			case 'coleman-liau':
+				tool += 'DocumentColemanLiauIndex';
+				break;
+			case 'dale-chall':
+				tool += 'DocumentDaleChallIndex';
+				break;
+			case 'fog':
+				tool += 'DocumentFOGIndex';
+				break;
+			case 'lix':
+				tool += 'DocumentLIXIndex';
+				break;
+			case 'smog':
+				tool += 'DocumentSMOGIndex';
+				break;
+		}
+
+		Ext.apply(config, {
+			corpus: this.getId(),
+			tool: tool
+		});
+
+		var dfd = Voyant.application.getDeferred(this);
+
+		var corpus = this.getId();
+		Ext.Ajax.request({
+			url: Voyant.application.getTromboneUrl(),
+			params: config
+		}).then(function(response) {
+			var data = Ext.JSON.decode(response.responseText);
+			// remove extraneous json data
+			var parentKey;
+			for (var key in data) {
+				if (key.indexOf('document') === 0) {
+					parentKey = key;
+					break;
+				}
+			}
+			if (parentKey) {
+				var indexKey;
+				for (var subkey in data[parentKey]) {
+					indexKey = subkey;
+					break;
+				}
+				var readabilityKey = indexKey.substring(0,indexKey.length-2); // assume the indexKey ends in Indexes, so remove the "es"
+				var indexData = data[parentKey][indexKey].map(function(item) {
+					return {
+						docIndex: item.docIndex,
+						docId: item.docId,
+						text: item.text,
+						readability: item[readabilityKey] // standardize the key for the readability score
+					}
+				})
+				dfd.resolve(indexData);
+			} else {
+				dfd.reject();
+			}
+		}, function(response){
+			dfd.reject();
+		});
+
+		return dfd.promise;
+	},
     
     /**
 	 * Shows a one-line summary of this corpus.
