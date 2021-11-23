@@ -15,24 +15,24 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/sgsinclair/Voyant.git"
+		"url": "https://github.com/voyanttools/Voyant.git"
 	},
 	"keywords": [
 		"voyant",
 		"text"
 	],
 	"contributors": [
-		"Stéfan Sinclair (http://stefansinclair.name)",
-		"Andrew MacDonald"
+		"Stéfan Sinclair (https://stefansinclair.name)",
+		"Andrew MacDonald (https://github.com/ajmacdonald)"
 	],
 	"license": "BSD-3-Clause",
 	"bugs": {
-		"url": "https://github.com/sgsinclair/Voyant/issues"
+		"url": "https://github.com/voyanttools/Voyant/issues"
 	},
-	"homepage": "https://github.com/sgsinclair/Voyant",
+	"homepage": "https://github.com/voyanttools/Voyant",
 	"dependencies": {
 		"js-cookie": "^2.2.1",
-		"voyant": "^2.0.2"
+		"voyant": "^2.1.7"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
