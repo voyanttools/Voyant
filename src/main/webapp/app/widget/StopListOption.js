@@ -22,6 +22,7 @@ Ext.define('Voyant.widget.StopListOption', {
     			ga: "stop.ga-irish-lucene.txt",
     			gl: "stop.ga.galician-lucene.txt",
     			grc: "stop.grc.ancient-greek.txt",
+				he: "stop.he.hebrew.txt",
     			hi: "stop.hi.hindi-lucene.txt",
     			hu: "stop.hu.hungarian.txt",
     			hy: "stop.hy.armenian-lucene.txt",
