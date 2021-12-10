@@ -9,6 +9,6 @@
 }
 
 /* this is used to set the max height for the entire cell */
-.CodeMirror-scroll {
+.notebook-data-wrapper .CodeMirror-scroll {
 	max-height: 400px;
 }
