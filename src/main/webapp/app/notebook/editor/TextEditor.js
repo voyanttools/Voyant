@@ -69,6 +69,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 			
 			extraPlugins: 'sourcedialog,justify,colorbutton',//,stopediting,inserthtml4x',
 			allowedContent: true,
+			disableNativeSpellChecker: false,
 			toolbarCanCollapse: false,
 			startupFocus: 'end'
 		});
