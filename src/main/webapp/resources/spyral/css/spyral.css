@@ -18,7 +18,7 @@ body.exported-notebook .notebook-code-editor {
 .notebook-text-wrapper .x-panel-body {
    border: 1px solid rgba(0,0,0,0) !important;
 }
-.notebook-code-wrapper .x-panel-body {
+.notebook-code-wrapper .x-panel-body, .notebook-data-wrapper .x-panel-body {
    border: 1px solid rgba(0,0,0,0) !important;
 }
 .x-panel .notebook-editor-wrapper-hover.x-panel-body, .editable .x-panel-body {
@@ -107,9 +107,6 @@ body.exported-notebook .notebook-code-editor {
 }
 .notebook-code-results .collapsed {
 	overflow: auto;
-}
-.spyral-header, .spyral-footer {
-	text-align: center
 }
 
 .catalogue-notebook {
