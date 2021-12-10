@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Nov 23 16:30:07 UTC 2021 */
+/* This file created by JSCacher. Last modified: Fri Dec 10 17:17:59 UTC 2021 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -11521,6 +11521,7 @@ Ext.define('Voyant.widget.StopListOption', {
     			ga: "stop.ga-irish-lucene.txt",
     			gl: "stop.ga.galician-lucene.txt",
     			grc: "stop.grc.ancient-greek.txt",
+				he: "stop.he.hebrew.txt",
     			hi: "stop.hi.hindi-lucene.txt",
     			hu: "stop.hu.hungarian.txt",
     			hy: "stop.hy.armenian-lucene.txt",
@@ -36062,6 +36063,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 			
 			extraPlugins: 'sourcedialog,justify,colorbutton',//,stopediting,inserthtml4x',
 			allowedContent: true,
+			disableNativeSpellChecker: false,
 			toolbarCanCollapse: false,
 			startupFocus: 'end'
 		});
