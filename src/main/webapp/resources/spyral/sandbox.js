@@ -176,6 +176,8 @@ function Sandboxer(event) {
 				if (cv.isSpyralClass) {
 					switch (cv.isSpyralClass) {
 						case 'Spyral.Categories':
+							window[cv.name] = new Spyral.Categories(data);
+							resolve();
 							break;
 						case 'Spyral.Chart':
 							break;
