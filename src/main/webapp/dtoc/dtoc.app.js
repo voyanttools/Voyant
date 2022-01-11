@@ -422,7 +422,7 @@ Ext.define('VoyantDTOCApp', {
 	updateWindowHistory: function() {
 		if (window.history.pushState) {
 			// add the docId to the url (for proper annotation storage)
-			var corpusId = this.getCorpus().getId();
+			var corpusId = this.getCorpus().getAliasOrId();
 			var docId = Ext.getCmp('dtcReader').getCurrentDocId();
 			var inkeTags = this.getApiParam('inkeTags');
 			var curatorId = this.getApiParam('curatorId');

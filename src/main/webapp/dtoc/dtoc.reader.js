@@ -273,7 +273,7 @@ Ext.define('Voyant.panel.DToC.Reader', {
 		if (window.history.pushState) {
 			// add the docId to the url (for proper annotation storage)
 			var app = this.getApplication();
-			var corpusId = app.getCorpus().getId();
+			var corpusId = app.getCorpus().getAliasOrId();
 			var docId = params.docId;
 			var inkeTags = app.getApiParam('inkeTags');
 			var curatorId = app.getApiParam('curatorId');
