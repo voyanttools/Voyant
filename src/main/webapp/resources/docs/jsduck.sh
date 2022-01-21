@@ -5,4 +5,4 @@
 python3 ../spyral/src-jsduck/jsdocs.py --input-dir ../spyral/node_modules/voyant/src ../spyral/src --output-file ../spyral/src-jsduck/spyral.js --exclude-file ../spyral/src/index.js
 #
 # generate docs (with spyral)
-/home/andrew/.gem/bin/solvas-jsduck --no-source --verbose --processes=1 --config ../docs/en/config.json --output ../../docs --ignore-global ../spyral/src-jsduck/; cp ../../docs/index.html ../../docs/index.jsp; chmod 644 docs/extjs/ext-all.js;
+/home/andrew/.gem/bin/solvas-jsduck --no-source --verbose --processes=1 --config ../docs/en/config.json --output ../../docs --ignore-global ../spyral/src-jsduck/; cp ../../docs/index.html ../../docs/index.jsp; cp mirrors.jsp ../../docs; cp servers.json ../../docs; chmod 644 docs/extjs/ext-all.js;
