@@ -762,7 +762,7 @@ Ext.define('Voyant.util.Toolable', {
 	exportGridAllJson: function(grid, form) {
 		Ext.Msg.confirm(this.localize('exportAllTitle'), this.localize('exportAllJsonWarning'), function(btn) {
 			if (btn=='yes') {
-				var params = {limit: 0, start: 0};
+				var params = {start: 0};
 				Ext.applyIf(params, grid.getStore().getProxy().getExtraParams());
 				this.openUrl(this.getTromboneUrl()+"?"+Ext.Object.toQueryString(params));
 			}
@@ -771,7 +771,7 @@ Ext.define('Voyant.util.Toolable', {
 	exportGridAllTsv: function(grid, form) {
 		Ext.Msg.confirm(this.localize('exportAllTitle'), this.localize('exportAllTsvWarning'), function(btn) {
 			if (btn=='yes') {
-				var params = {limit: 0, start: 0, template: this.getXType()+"2tsv"};
+				var params = {start: 0, template: this.getXType()+"2tsv"};
 				Ext.applyIf(params, grid.getStore().getProxy().getExtraParams());
 				this.openUrl(this.getTromboneUrl()+"?"+Ext.Object.toQueryString(params));
 			}
