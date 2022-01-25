@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Dec 10 17:17:59 UTC 2021 */
+/* This file created by JSCacher. Last modified: Tue Jan 25 19:33:02 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -7273,7 +7273,7 @@ Ext.define('Voyant.util.Toolable', {
 	exportGridAllJson: function(grid, form) {
 		Ext.Msg.confirm(this.localize('exportAllTitle'), this.localize('exportAllJsonWarning'), function(btn) {
 			if (btn=='yes') {
-				var params = {limit: 0, start: 0};
+				var params = {start: 0};
 				Ext.applyIf(params, grid.getStore().getProxy().getExtraParams());
 				this.openUrl(this.getTromboneUrl()+"?"+Ext.Object.toQueryString(params));
 			}
@@ -7282,7 +7282,7 @@ Ext.define('Voyant.util.Toolable', {
 	exportGridAllTsv: function(grid, form) {
 		Ext.Msg.confirm(this.localize('exportAllTitle'), this.localize('exportAllTsvWarning'), function(btn) {
 			if (btn=='yes') {
-				var params = {limit: 0, start: 0, template: this.getXType()+"2tsv"};
+				var params = {start: 0, template: this.getXType()+"2tsv"};
 				Ext.applyIf(params, grid.getStore().getProxy().getExtraParams());
 				this.openUrl(this.getTromboneUrl()+"?"+Ext.Object.toQueryString(params));
 			}
