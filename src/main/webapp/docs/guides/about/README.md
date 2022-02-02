@@ -41,8 +41,8 @@ In addition to the [English](../?lang=en) interface, the following translations 
 
 * [Arabic](../?lang=ar): D. J. Wrisley
 * [Bosnian](../?lang=bs): Téa Rokolj
-* [Czech](../?lang=cz): Radim Hladík
 * [Croatian](../?lang=hr): Téa Rokolj
+* [Czech](../?lang=cz): Radim Hladík
 * [French](../?lang=fr): Aurélien Berra
 * [German](../?lang=de): Jan Theurl
 * [Hebrew](../?lang=he): Sinai Rusinek
