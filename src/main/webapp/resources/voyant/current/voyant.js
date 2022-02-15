@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Feb 08 20:58:57 UTC 2022 */
+/* This file created by JSCacher. Last modified: Tue Feb 15 21:39:56 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -37432,7 +37432,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 
 		this.authToken = this.getCookieValue('access-token');
 		if (this.authToken === '') {
-			this.showAuthenticate();
+			this.showAuthenticate(this.showSave);
 			return;
 		} else if (this.octokitWrapper === undefined) {
 			this.initOctokitWrapper();
