@@ -20,9 +20,6 @@ String rtl_js = (String) request.getAttribute("rtl");
 <script type="text/javascript" src="<%= base_js %>/resources/d3/fisheye.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/cirrus/html5/d3.layout.cloud.js"></script>
 
-<!-- vis.js -->
-<script type="text/javascript" src="<%= base_js %>/resources/visjs/vis.min.js"></script>
-
 <!-- spectrum -->
 <script type="text/javascript" src="<%=base_js %>/resources/spectrum/spectrum.js"></script>
 
