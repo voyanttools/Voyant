@@ -28,10 +28,12 @@ Ext.define('Voyant.util.Colors', {
 			var cat20a = d3.scaleOrdinal(d3.schemeCategory20).range().map(function(val) { return this.hexToRgb(val); }, this);
 			var cat20b = d3.scaleOrdinal(d3.schemeCategory20b).range().map(function(val) { return this.hexToRgb(val); }, this);
 			var cat20c = d3.scaleOrdinal(d3.schemeCategory20c).range().map(function(val) { return this.hexToRgb(val); }, this);
+			var set3 = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f'].map(function(val) { return this.hexToRgb(val); }, this);
 			this.addColorPalette('d3_cat10', cat10);
 			this.addColorPalette('d3_cat20a', cat20a);
 			this.addColorPalette('d3_cat20b', cat20b);
 			this.addColorPalette('d3_cat20c', cat20c);
+			this.addColorPalette('d3_set3', set3);
 		}
         
         var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);
@@ -152,5 +154,39 @@ Ext.define('Voyant.util.Colors', {
 			color = this.hexToRgb(color);
 		}
 		this.getColorTermAssociations().replace(term, color);
+	},
+
+	getColorForEntityType: function(type, returnHex) {
+		var index;
+		switch(type) {
+			case 'person':
+				index = 5;
+				break;
+			case 'location':
+				index = 6;
+				break;
+			case 'organization':
+				index = 2;
+				break;
+			case 'misc':
+				index = 0;
+				break;
+			case 'time':
+			case 'date':
+			case 'duration':
+				index = 4;
+				break;
+			case 'money':
+				index = 1;
+				break;
+			default:
+				index = 8;
+		}
+
+		var color = this.getPalettes()['d3_set3'][index];
+		if (returnHex) {
+			color = this.rgbToHex(color);
+		}
+		return color;
 	}
 })
