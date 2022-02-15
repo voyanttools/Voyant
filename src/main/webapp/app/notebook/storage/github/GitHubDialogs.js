@@ -135,7 +135,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 
 		this.authToken = this.getCookieValue('access-token');
 		if (this.authToken === '') {
-			this.showAuthenticate();
+			this.showAuthenticate(this.showSave);
 			return;
 		} else if (this.octokitWrapper === undefined) {
 			this.initOctokitWrapper();
