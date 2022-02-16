@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Feb 15 22:37:22 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Feb 16 16:50:40 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -38531,7 +38531,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 		this.suggestedTemplate = new Ext.XTemplate(
 			'<tpl for=".">',
 				'<div class="catalogue-notebook">',
-					'<div class="title nowrap" title="{title}">{title}</div>',
+					'<div class="title" title="{title}">{title}</div>',
 					'<div class="description">{description}</div>',
 				'</div>',
 			'</tpl>'
