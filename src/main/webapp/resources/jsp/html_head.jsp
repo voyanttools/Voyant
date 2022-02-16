@@ -103,9 +103,6 @@
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/jquery/current/jquery-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/jquery/current/jquery-ui.theme.min.css" />
 
-<!-- vis.js -->
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/visjs/vis.min.css" />
-
 <!-- FontAwesome -->
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.4.0/font-awesome-all<%= rtl %>.css" />
 
