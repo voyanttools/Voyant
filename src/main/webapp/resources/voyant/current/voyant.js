@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Feb 16 16:50:40 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Feb 16 17:26:35 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -8603,9 +8603,14 @@ Ext.define('Voyant.data.model.Token', {
              {name: 'endOffset', type: 'int'}
         ],
     statics: {
-    	getInfoFromElement: function(arg) {
-    		if (arg && arg.getId) {
-    			var parts = arg.getId().split("_");
+		/**
+		 * Parse an element's ID and return doc index and position info.
+		 * @param {*} el Either an ExtJS element or an HTML element
+		 * @returns {Object}
+		 */
+    	getInfoFromElement: function(el) {
+    		if (el && el.id) {
+    			var parts = el.id.split("_");
     			return {
     				docIndex: parseInt(parts[1]),
     				position: parseInt(parts[2])
