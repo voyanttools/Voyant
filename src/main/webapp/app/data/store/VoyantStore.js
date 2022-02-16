@@ -34,6 +34,7 @@ Ext.define('Voyant.data.store.VoyantStore', {
 			type: 'ajax',
 			url: Voyant.application.getTromboneUrl(),
 			actionMethods: {read: 'POST'},
+			timeout: extras['proxy.timeout'] || 30000,
 			reader: {
 				type: 'json',
 				rootProperty: extras['proxy.reader.rootProperty'],

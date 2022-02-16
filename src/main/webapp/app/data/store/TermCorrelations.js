@@ -6,7 +6,8 @@ Ext.define('Voyant.data.store.TermCorrelationsMixin', {
 			'proxy.extraParams.tool': 'corpus.CorpusTermCorrelations',
 			'proxy.extraParams.withDistributions': 'true',
 			'proxy.reader.rootProperty': 'termCorrelations.correlations',
-			'proxy.reader.totalProperty': 'termCorrelations.total'
+			'proxy.reader.totalProperty': 'termCorrelations.total',
+			'proxy.timeout': 60000
 		}])
 	}
 });
