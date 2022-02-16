@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Feb 16 17:26:35 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Feb 16 17:42:27 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -8730,6 +8730,7 @@ Ext.define('Voyant.data.store.VoyantStore', {
 			type: 'ajax',
 			url: Voyant.application.getTromboneUrl(),
 			actionMethods: {read: 'POST'},
+			timeout: extras['proxy.timeout'] || 30000,
 			reader: {
 				type: 'json',
 				rootProperty: extras['proxy.reader.rootProperty'],
@@ -9319,7 +9320,8 @@ Ext.define('Voyant.data.store.TermCorrelationsMixin', {
 			'proxy.extraParams.tool': 'corpus.CorpusTermCorrelations',
 			'proxy.extraParams.withDistributions': 'true',
 			'proxy.reader.rootProperty': 'termCorrelations.correlations',
-			'proxy.reader.totalProperty': 'termCorrelations.total'
+			'proxy.reader.totalProperty': 'termCorrelations.total',
+			'proxy.timeout': 60000
 		}])
 	}
 });
