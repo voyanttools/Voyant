@@ -76,7 +76,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 		this.suggestedTemplate = new Ext.XTemplate(
 			'<tpl for=".">',
 				'<div class="catalogue-notebook">',
-					'<div class="title nowrap" title="{title}">{title}</div>',
+					'<div class="title" title="{title}">{title}</div>',
 					'<div class="description">{description}</div>',
 				'</div>',
 			'</tpl>'
