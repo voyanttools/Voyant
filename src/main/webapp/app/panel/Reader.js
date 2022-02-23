@@ -6,6 +6,8 @@ Ext.define('Voyant.panel.Reader', {
 	isConsumptive: true,
     statics: {
     	i18n: {
+			highlightEntities: 'Highlight Entities',
+			entityType: 'entity type'
     	},
     	api: {
     		start: 0,
@@ -20,6 +22,7 @@ Ext.define('Voyant.panel.Reader', {
     	tokensStore: undefined,
     	documentsStore: undefined,
     	documentTermsStore: undefined,
+		documentEntitiesStore: undefined,
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -89,6 +92,10 @@ Ext.define('Voyant.panel.Reader', {
 	    		if (keyword != '') {
 //	    			this.highlightKeywords(keyword);
 	    		}
+
+				if (this.getDocumentEntitiesStore() !== undefined) {
+					this.highlightEntities();
+				}
     		}
     	}, this);
     	this.setTokensStore(tokensStore);
@@ -252,7 +259,31 @@ Ext.define('Voyant.panel.Reader', {
             		scope: this
             	},{xtype: 'tbseparator'},{
                     xtype: 'querysearchfield'
-                }]
+                },'->',{
+					glyph: 'xf0eb@FontAwesome',
+					tooltip: this.localize('highlightEntities'),
+					handler: function() {
+						var docIndex = [];
+						var locationInfo = this.getLocationInfo();
+						if (locationInfo) {
+							for (var i = locationInfo[0].docIndex; i <= locationInfo[1].docIndex; i++) {
+								docIndex.push(i);
+							}
+						} else {
+							docIndex.push(0);
+						}
+
+						var me = this;
+						new Voyant.data.util.DocumentEntities({
+							includeEntities: true,
+							docIndex: docIndex
+						}).then(function(entities) {
+							me.setDocumentEntitiesStore(entities);
+							me.highlightEntities();
+						})
+					},
+					scope: this
+				}]
     		}],
     		listeners: {
     			loadedCorpus: function(src, corpus) {
@@ -380,6 +411,28 @@ Ext.define('Voyant.panel.Reader', {
 //		if (doScroll && spans[0] !== undefined) {
 //			Ext.get(nodes[0]).scrollIntoView(reader).frame("ff0000", 1, { duration: 2 });
 //		}
+	},
+
+	highlightEntities: function() {
+		var container = this.getInnerContainer().first();
+		var entities = this.getDocumentEntitiesStore();
+		var entityTypeStr = this.localize('entityType');
+		entities.forEach(function(entity) {
+			var positions = entity.positions;
+			if (positions) {
+				positions.forEach(function(position) {
+					var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
+					if (match) {
+						if (match.hasCls('entity') === false) {
+							match.addCls('entity '+entity.type);
+							match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<br/>'+entityTypeStr+': '+entity.type);
+						}
+					}
+				});
+			} else {
+				console.warn(entity);
+			}
+		});
 	},
     
 	fetchPrevious: function(scroll) {
@@ -525,15 +578,14 @@ Ext.define('Voyant.panel.Reader', {
 	},
 	
 	updateLocationMarker: function(amount, scrollDir) {
-		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
-		var firstWord = readerWords[0];
-		var lastWord = readerWords[readerWords.length-1];
-		if (firstWord !== undefined && lastWord !== undefined) {
+		var locationInfo = this.getLocationInfo();
+		if (locationInfo) {
+			var info1 = locationInfo[0];
+			var info2 = locationInfo[1];
+
 			var corpus = this.getCorpus();
 			var partialFirstDoc = false;
-			
-			var info1 = Voyant.data.model.Token.getInfoFromElement(Ext.get(firstWord));
-			var info2 = Voyant.data.model.Token.getInfoFromElement(Ext.get(lastWord));
+
 			if (info1.position !== 0) {
 				partialFirstDoc = true;
 			}
@@ -579,5 +631,18 @@ Ext.define('Voyant.panel.Reader', {
     
     updateChart: function() {
     	
-    }
+    },
+
+	getLocationInfo: function() {
+		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
+		var firstWord = readerWords[0];
+		var lastWord = readerWords[readerWords.length-1];
+		if (firstWord !== undefined && lastWord !== undefined) {
+			var info1 = Voyant.data.model.Token.getInfoFromElement(firstWord);
+			var info2 = Voyant.data.model.Token.getInfoFromElement(lastWord);
+			return [info1, info2];
+		} else {
+			return null;
+		}
+	}
 });

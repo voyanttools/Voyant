@@ -5,10 +5,12 @@ Ext.define('Voyant.data.model.DocumentEntity', {
              {name: 'docIndex', 'type': 'int'},
              {name: 'rawFreq', type: 'int'},
              {name: 'type'},
-             {name: 'positions'}
+             {name: 'positions'},
+			 {name: 'offsets'}
         ],
     getTerm: function() {return this.get('term');},
     getDocIndex: function() {return this.get('docIndex')},
     getRawFreq: function() {return this.get('rawFreq')},
-    getPositions: function() {return this.get('positions')}
+    getPositions: function() {return this.get('positions')},
+	getOffsets: function() {return this.get('offsets')}
 });
