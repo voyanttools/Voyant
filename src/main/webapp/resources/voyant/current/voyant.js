@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Feb 16 17:42:27 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Feb 23 21:05:18 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -38305,53 +38305,44 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 	},
 
 	generateExportHtml: function() {
-		var metadata = this.getMetadata();
-		var out = "<!DOCTYPE HTML>\n<html>\n<head>\n\t<meta charset='UTF-8'>\n"+
-			metadata.getHeaders();
-		var aceChromeEl = document.getElementById("ace-chrome");
-		if (aceChromeEl) {out+=aceChromeEl.outerHTML+"\n"}
-		
-		// TODO voyant-notebooks-styles has been removed
-		var stylesEl = document.getElementById("voyant-notebooks-styles");
-		if (stylesEl) {out+=stylesEl.outerHTML+"\n"}
+		var out = "<!DOCTYPE HTML>\n<html>\n<head>\n<meta charset='UTF-8'>\n";
 
-		out += "<script> // this script checks to see if embedded tools seem to be available\n"+
-			"window.addEventListener('load', function() {\n"+
-				"var hostnames = {}, warned = false;\n"+
-				"document.querySelectorAll('iframe').forEach(function(iframeEl) {\n"+
-					"let url = new URL(iframeEl.src);\n"+
-					"if (!(url.hostname in hostnames) && !warned) {\n"+
-						"hostnames[url.hostname] = true; // mark as fetched\n"+
-						"fetch(url).catch(response => {\n"+
-							"warned = true;\n"+
-							"alert('This notebook seems to contain one ore more tools that may not be able to load. Possible reasons include a server no longer being accessible (especially if the notebook was generated from a local server), or because of security restrictions.'+url)\n"+
-						"})\n"+
-					"}\n"+
-				"})\n"+
-			"})\n"+
-			"</script>\n"+
-			"</head>\n<body class='exported-notebook'>\n"+
-			"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"+
-			"<article class='spyralArticle'>\n";
+		var metadata = this.getMetadata();
+		out += metadata.getHeaders();
+
+		out += '<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/codemirror/lib/codemirror.css">'
+		+'<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/spyral/css/codemirror.css">'
+		+'<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/spyral/css/spyral.css">'
+		+'<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/spyral/css/dataviewer.css">';
+
+		out += "</head>\n"
+		+"<body class='exported-notebook'>\n"
+		+"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"
+		+"<article class='spyralArticle'>\n";
 
 		this.getComponent("cells").items.each(function(item, i) {
 			var content = item.getContent();
 			var counter = item.down("notebookwrappercounter");
 
-			// reminder that the parsing in of notebooks depends on the stability of this syntax
 			out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
 			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
 
 			if (item.isXType('notebooktexteditorwrapper')) {
 				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
 			} else {	
-				var codeTextLayer = item.getTargetEl().query('.ace_text-layer')[0].cloneNode(true);
-				codeTextLayer.style.setProperty('height', 'auto'); // fix for very large height set by ace
+				var codeTextLayer = item.getTargetEl().query('.CodeMirror-wrap')[0].cloneNode(true);
 
-				// reminder that the parsing in of notebooks depends on the stability of this syntax
-				out+="<div class='notebook-code-editor ace-chrome'>\n"+codeTextLayer.outerHTML+"\n</div>\n"+
-					"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n"+
-					"<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
+				// code editor UI
+				out += "<div class='notebook-code-editor'>\n"+codeTextLayer.outerHTML+"\n</div>\n"
+				// code editor code for importing (hidden by CSS)
+				+"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n";
+
+				// code editor results
+				var output = content.output;
+				if (output === '') {
+					item.results.getResultsEl();
+				}
+				out += "<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
 			}
 
 			out+="</section>\n"
@@ -38420,10 +38411,12 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 	 */
 	
 	getExtraExportItems: function() {
-		return [{
-			inputValue: 'html',
-			boxLabel: this.localize('exportHtml')
-		},{
+		return [
+		// {
+		// 	inputValue: 'html',
+		// 	boxLabel: this.localize('exportHtml')
+		// },
+		{
 			inputValue: 'htmlDownload',
 			boxLabel: '<a href="#">'+this.localize('exportHtmlDownload')+'</a>',
 			listeners: {
@@ -38450,16 +38443,17 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 				cmp.up("window").close();
 			}
 		}]
-	},
-	
-	exportHtml: function() {
-		var out = this.generateExportHtml();
-		var myWindow = window.open();
-		myWindow.document.write(out);
-		myWindow.document.close();
-		myWindow.focus();
 	}
-})
+	
+	// ,exportHtml: function() {
+	// 	var out = this.generateExportHtml();
+	// 	var myWindow = window.open();
+	// 	myWindow.document.write(out);
+	// 	myWindow.document.close();
+	// 	myWindow.focus();
+	// }
+});
+
 Ext.define('Voyant.notebook.Catalogue', {
 	extend: 'Ext.Component',
     mixins: ['Voyant.util.Localization'],
@@ -38896,7 +38890,8 @@ Ext.define('Voyant.notebook.Notebook', {
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
     		metadataSave: "Save",
-    		metadataCancel: "Cancel"
+    		metadataCancel: "Cancel",
+			preparingExport: "Preparing Export"
     	},
     	api: {
     		input: undefined,
@@ -39268,9 +39263,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		this.getMetadata().setDateNow("modified");
 
-		Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
-			return cmp.results.updateCachedOutput();
-		})).then(function(result) {	
+		this.updateCachedOutput().then(function(result) {	
 		}, function(err) {
 			console.warn('Error updating cached results');
 		}).finally(function() {
@@ -39294,6 +39287,20 @@ Ext.define('Voyant.notebook.Notebook', {
 				}
 			}
 		}.bind(this));
+	},
+
+	updateCachedOutput: function() {
+		return Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
+			return cmp.results.updateCachedOutput();
+		}));
+	},
+
+	exportToolClick: function(panel) {
+		panel.mask(panel.localize('preparingExport'));
+		panel.updateCachedOutput().finally(function() {
+			panel.unmask();
+			panel.mixins['Voyant.util.Toolable'].exportToolClick.call(this, panel);
+		});
 	},
 	
 	// override toolable method
