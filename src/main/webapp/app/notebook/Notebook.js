@@ -26,7 +26,8 @@ Ext.define('Voyant.notebook.Notebook', {
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
     		metadataSave: "Save",
-    		metadataCancel: "Cancel"
+    		metadataCancel: "Cancel",
+			preparingExport: "Preparing Export"
     	},
     	api: {
     		input: undefined,
@@ -398,9 +399,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		this.getMetadata().setDateNow("modified");
 
-		Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
-			return cmp.results.updateCachedOutput();
-		})).then(function(result) {	
+		this.updateCachedOutput().then(function(result) {	
 		}, function(err) {
 			console.warn('Error updating cached results');
 		}).finally(function() {
@@ -424,6 +423,20 @@ Ext.define('Voyant.notebook.Notebook', {
 				}
 			}
 		}.bind(this));
+	},
+
+	updateCachedOutput: function() {
+		return Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
+			return cmp.results.updateCachedOutput();
+		}));
+	},
+
+	exportToolClick: function(panel) {
+		panel.mask(panel.localize('preparingExport'));
+		panel.updateCachedOutput().finally(function() {
+			panel.unmask();
+			panel.mixins['Voyant.util.Toolable'].exportToolClick.call(this, panel);
+		});
 	},
 	
 	// override toolable method

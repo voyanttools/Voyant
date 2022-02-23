@@ -1,16 +1,3 @@
-body.exported-notebook {
-	font-family: helvetica, arial, verdana, sans-serif;
-	font-size: 13px;
-	font-weight: 300;
-	line-height: 17px;
-}
-body.exported-notebook .notebook-code-editor {
-	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-	font-size: 12px;
-	font-weight: normal;
-	line-height: normal;
-	white-space: pre;
-}
 .notebook-text-editor, .notebook-code-editor {
 	padding: 0px;
 	margin: 0px;
@@ -49,6 +36,16 @@ body.exported-notebook .notebook-code-editor {
 .cke_button__sourcedialog_label {
 	display: none !important;
 }
+
+body.exported-notebook {
+	font-family: helvetica, arial, verdana, sans-serif;
+	font-size: 13px;
+}
+.exported-notebook header, .exported-notebook section {
+	margin: 10px auto;
+	max-width: 1100px;
+}
+
 .exported-notebook .notebookwrappercounter {
 	float: right;
 }
@@ -57,8 +54,6 @@ body.exported-notebook .notebook-code-editor {
 }
 
 .notebookwrappercounter a {
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
 	border-radius: 3px;
 	background-color: #f5f5f5;
 	text-align: right;
@@ -77,34 +72,19 @@ body.exported-notebook .notebook-code-editor {
 	text-align: center;
 }
 
-.spyral-footer {
-	margin-top: 1em;
-	background-color: rgba(0,0,0,.01);
-	border-top: rgba(0,0,0,.05);
-}
-
 .catalogue .facets .x-panel-header {
 	cursor: pointer;
 }
 
 
-.ace_layer {
-	white-space: pre;
-	font-family: monospace;
-}
-
 .notebook-code-editor-raw {
 	display: none;
-}
-.notebookcodeeditorwrapper {
-	margin-left: 1em;
-	padding-left: .5em;
-	border: 1px solid rgba(0,0,0,.1);
 }
 .notebookcodeeditorwrapper .collapsed {
 	overflow: auto;
 	max-height: 120px;
 }
+
 .notebook-code-results .collapsed {
 	overflow: auto;
 }
