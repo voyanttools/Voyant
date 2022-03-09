@@ -30,7 +30,12 @@ Sinclair, Stéfan and Geoffrey Rockwell, 2016. _Voyant Tools_. Web. <http://voya
 
 ## Contributors
 
-* Andrew MacDonald (2008-present) a programmer who's worked on several tools including Bubblelines, Cirrus, Knots, ScatterPlot and skins including Dynamic Table of Contents
+* Andrew MacDonald (2008-present) a programmer who's worked on several tools including Bubblelines, Cirrus, Knots, ScatterPlot and skins including Dynamic Table of Contents, and now Spyral
+* Kaylin Land (2020-present) a research assistant at McGill working on training, documentation, testing and Spyral
+* Bennett Kuwan Tchoh (2020-present) a research assistant at UAlberta working on training, documentation, testing and Spyral
+* Ayushi Khemka (2022-present) a research assistant at UAlberta working on training, documentation, testing and Spyral
+* Catherine Bevan (2022-present) a research assistant at UAlberta working on sonnification and Spyral
+* Elliot Damasah (2021-present) at UAlberta working on documentation, testing and Spyral 
 * Cyril Briquet (2010-2011) a postdoctoral fellow who worked primarily on improving Trombone 2 (the back-end system in Java)
 * Lisa Goddard (2011-2012) a research assistant at UAlberta working on tool reviews and bug identification
 * Mark Turcato (2012-2013) a research assistant at McGill working on documentation
