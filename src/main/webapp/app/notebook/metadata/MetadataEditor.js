@@ -4,9 +4,9 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 	alias: 'widget.metadataeditor',
 	statics: {
 		i18n: {
+			metadataAuthor: "Author",
     		metadataTitle: "Title",
     		metadataTip: "Edit notebook metadata.",
-    		metadataAuthor: "Author(s)",
     		metadataKeywords: "Keywords",
     		metadataDescription: "Description",
     		metadataLicense: "Licence",
@@ -29,20 +29,15 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 
 				// The fields
 				defaultType: 'textfield',
-				items: [{
+				items: [
+				// {
+				// 	fieldLabel: this.localize("metadataAuthor"),
+				// 	name: 'author',
+				// 	editable: false
+				// },
+				{
 					fieldLabel: this.localize("metadataTitle"),
-					xtype: 'htmleditor',
-					name: 'title',
-					height: 100,
-					enableAlignments : false,
-					enableColors : false,
-					enableFont : false,
-					enableFontSize : false,
-					enableLinks : false,
-					enableLists : false
-				},{
-					fieldLabel: this.localize("metadataAuthor"),
-					name: 'author'
+					name: 'title'
 				},{
 					fieldLabel: this.localize("metadataKeywords"),
 					name: 'keywords',
@@ -75,13 +70,9 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 						}
 					}
 				},{
-					xtype: 'htmleditor',
+					xtype: 'textarea',
 					fieldLabel: this.localize("metadataDescription"),
-					name: 'description',
-					height: 100,
-					enableAlignments : false,
-					enableColors : false,
-					enableFont : false
+					name: 'description'
 				},{
 					xtype: 'combo',
 					fieldLabel: this.localize("metadataLicense"),
@@ -154,6 +145,7 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 		if (metadata instanceof Spyral.Metadata) {
 			this.loadRecord(Ext.create('Voyant.data.model.NotebookMetadata', {
 				title: metadata.title,
+				userId: metadata.userId,
 				author: metadata.author,
 				description: metadata.description,
 				keywords: metadata.keywords,
@@ -168,6 +160,7 @@ Ext.define('Voyant.data.model.NotebookMetadata', {
 	extend: 'Ext.data.Model',
 	fields: [
 		{name: 'title', type: 'string'},
+		{name: 'userId', type: 'string'},
 		{name: 'author', type: 'string'},
 		{name: 'description', type: 'string'},
 		{name: 'keywords', type: 'string'},

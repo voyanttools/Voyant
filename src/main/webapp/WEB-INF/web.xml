@@ -5,10 +5,7 @@
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-	<context-param>
-		<param-name>version</param-name>
-		<param-value>2.5.0</param-value>
-	</context-param>
+	<context-param><param-name>version</param-name><param-value>2.5.3</param-value></context-param>
 	
 	<servlet>
 		<servlet-name>tool</servlet-name>
@@ -50,6 +47,22 @@
 		<jsp-file>/spyral/index.jsp</jsp-file>
 	</servlet>
 	
+    <servlet-mapping>
+        <servlet-name>spyral-manager</servlet-name>
+        <url-pattern>/spyral/oauth/callback</url-pattern>
+        <url-pattern>/spyral/account</url-pattern>
+        <url-pattern>/spyral/account/logout</url-pattern>
+        <url-pattern>/spyral/account/save</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>spyral-manager</servlet-name>
+        <servlet-class>org.voyanttools.voyant.Spyral</servlet-class>
+        <init-param>
+			<param-name>oauthprops</param-name>
+			<param-value>oauth.properties</param-value>
+		</init-param>
+    </servlet>
+	
 	<servlet-mapping>
         <servlet-name>spyral-oauth</servlet-name>
         <url-pattern>/spyral/oauth</url-pattern>
@@ -57,19 +70,6 @@
 	<servlet>
         <servlet-name>spyral-oauth</servlet-name>
         <jsp-file>/spyral/oauth/index.jsp</jsp-file>
-        <init-param>
-			<param-name>oauthprops</param-name>
-			<param-value>oauth.properties</param-value>
-		</init-param>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>spyral-oauth-callback</servlet-name>
-        <url-pattern>/spyral/oauth/callback</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>spyral-oauth-callback</servlet-name>
-        <servlet-class>org.voyanttools.voyant.SpyralAuth</servlet-class>
         <init-param>
 			<param-name>oauthprops</param-name>
 			<param-value>oauth.properties</param-value>

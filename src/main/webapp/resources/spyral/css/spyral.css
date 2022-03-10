@@ -72,6 +72,13 @@ body.exported-notebook {
 	text-align: center;
 }
 
+.spyral-header .title {
+	font-size: 2em;
+	font-weight: bold;
+	display: block;
+	margin: 0.67em 0;
+}
+
 .catalogue .facets .x-panel-header {
 	cursor: pointer;
 }

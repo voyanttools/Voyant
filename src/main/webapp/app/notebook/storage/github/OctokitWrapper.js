@@ -8,7 +8,7 @@ Ext.define("Voyant.notebook.github.OctokitWrapper", {
 		const authToken = config.authToken;
 		this.octokit = new Octokit({
 			auth: authToken,
-			userAgent: 'https://github.com/sgsinclair/Voyant'
+			userAgent: 'https://github.com/voyanttools/Voyant'
 		});
 	},
 

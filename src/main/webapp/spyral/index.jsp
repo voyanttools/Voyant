@@ -81,6 +81,8 @@ CKEDITOR.on('dialogDefinition', function(ev) {
 <script src="<%= base %>/resources/codemirror/addon/hint/show-hint.js"></script>
 <script src="<%= base %>/resources/codemirror/addon/tern/tern.js"></script>
 
+<!-- google sign in-->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
 	Ext.Loader.setConfig({

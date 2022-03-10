@@ -6,7 +6,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	alternateClassName: ["Notebook"],
 	extend: 'Ext.panel.Panel',
 	requires: ['Voyant.notebook.editor.CodeEditorWrapper','Voyant.notebook.editor.TextEditorWrapper','Voyant.notebook.metadata.MetadataEditor','Voyant.notebook.StorageDialogs','Voyant.notebook.github.GitHubDialogs'],
-	mixins: ['Voyant.panel.Panel','Voyant.notebook.util.FormatConverter'],
+	mixins: ['Voyant.panel.Panel','Voyant.notebook.Authenticator','Voyant.notebook.util.FormatConverter'],
 	alias: 'widget.notebook',
     statics: {
     	i18n: {
@@ -23,10 +23,12 @@ Ext.define('Voyant.notebook.Notebook', {
     		openMsg: "Paste in Notebook ID, a URL or a Spyral data file (in HTML).",
     		exportHtmlDownload: "HTML (download)",
     		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags.",
+			metadataTip: "View and Edit the notebook metadata.",
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
     		metadataSave: "Save",
     		metadataCancel: "Cancel",
+			catalogueTip: "Search a catalogue of available notebooks.",
 			preparingExport: "Preparing Export"
     	},
     	api: {
@@ -38,8 +40,15 @@ Ext.define('Voyant.notebook.Notebook', {
     config: {
         /**
          * @private
+		 * This is a combination of username and notebook name, separated by $
+		 * username$notebookname
          */
     	notebookId: undefined,
+		/**
+		 * @private
+		 * The name of the notebook (distinct from the notebook title)
+		 */
+		notebookName: undefined,
         /**
          * @private
          */
@@ -58,7 +67,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		 */
 		storageSolution: 'voyant'
 	},
-	
+
 	metadataWindow: undefined,
 	voyantStorageDialogs: undefined,
 	githubDialogs: undefined,
@@ -84,40 +93,51 @@ Ext.define('Voyant.notebook.Notebook', {
     				itemId: 'saveItTool',
     				xtype: 'toolmenu',
     				glyph: 'xf0c2@FontAwesome',
-					disabled: true,
-					items: [{
-						text: 'Save',
-						xtype: 'menuitem',
-						glyph: 'xf0c2@FontAwesome',
-						handler: this.showSaveDialog.bind(this, false),
-						scope: this
-					},{
-						text: 'Save As...',
-						xtype: 'menuitem',
-						glyph: 'xf0c2@FontAwesome',
-						handler: this.showSaveDialog.bind(this, true),
-						scope: this
-					},'-',{
-						text: 'Storage',
-						xtype: 'menuitem',
-						menu: {
-							items: [{
-								text: 'Voyant',
-								xtype: 'menucheckitem',
-								group: 'storageSolution',
-								checked: true,
-								handler: this.setStorageSolution.bind(this, 'voyant'),
-								scope: this
+					callback: function(parent, menu) {
+						if (parent.isAuthenticated()) {
+							menu.items = [{
+								text: 'Save',
+								xtype: 'menuitem',
+								glyph: 'xf0c2@FontAwesome',
+								handler: parent.showSaveDialog.bind(parent, false),
+								scope: parent
 							},{
-								text: 'GitHub',
-								xtype: 'menucheckitem',
-								group: 'storageSolution',
-								checked: false,
-								handler: this.setStorageSolution.bind(this, 'github'),
-								scope: this
-							}]
+								text: 'Save As...',
+								xtype: 'menuitem',
+								glyph: 'xf0c2@FontAwesome',
+								handler: parent.showSaveDialog.bind(parent, true),
+								scope: parent
+							}];
+						} else {
+							menu.items = [{
+								xtype: 'component',
+								padding: 5,
+								html: 'Please sign in to save'
+							}];
 						}
-					}]
+
+						/*{
+							text: 'Storage',
+							xtype: 'menuitem',
+							menu: {
+								items: [{
+									text: 'Voyant',
+									xtype: 'menucheckitem',
+									group: 'storageSolution',
+									checked: true,
+									handler: this.setStorageSolution.bind(this, 'voyant'),
+									scope: this
+								},{
+									text: 'GitHub',
+									xtype: 'menucheckitem',
+									group: 'storageSolution',
+									checked: false,
+									handler: this.setStorageSolution.bind(this, 'github'),
+									scope: this
+								}]
+							}
+						}*/
+					}
     			},
     			'new': {
     				tooltip: this.localize("newTip"),
@@ -191,14 +211,29 @@ Ext.define('Voyant.notebook.Notebook', {
 					scope: this
     			},
                 'catalogue': {
-                    tooltip: 'catalogue',
+                    tooltip: this.localize("catalogueTip"),
                     callback: function() {
                         this.catalogueWindow.showWindow();
                     },
                     xtype: 'toolmenu',
                     glyph: 'xf00b@FontAwesome',
                     scope: this
-                }
+                },
+				'account': {
+					xtype: 'toolmenu',
+					glyph: 'xf007@FontAwesome',
+					callback: function(parent, menu) {
+						if (parent.isAuthenticated()) {
+							parent.showAccountWindow();
+							menu.items = [];
+						} else {
+							menu.items = [
+								parent.getGitHubAuthButton(parent.showAccountWindow)
+								// parent.getGoogleAuthButton(parent.showAccountWindow)
+							];
+						}
+					}
+				}
     		},
     		
 			scrollable: true,
@@ -273,6 +308,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mixins['Voyant.notebook.util.FormatConverter'].constructor.apply(this, arguments);
 
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
+			notebookParent: this,
 			listeners: {
 				'fileLoaded': function(src) {
 
@@ -303,6 +339,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		});
 
 		this.githubDialogs = new Voyant.notebook.github.GitHubDialogs({
+			parent: this,
 			listeners: {
 				'fileLoaded': function(src, {owner, repo, ref, path, file}) {
 					this.githubDialogs.close();
@@ -380,7 +417,9 @@ Ext.define('Voyant.notebook.Notebook', {
 			this.loadFromQueryParams();
 		}.bind(this), function() {
 			this.loadFromQueryParams();
-		}.bind(this))
+		}.bind(this));
+
+		this.retrieveAccountInfo();
     },
     
     
@@ -397,7 +436,9 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	showSaveDialog: function(saveAs) {
 		this.mask(this.localize('saving'));
-		this.getMetadata().setDateNow("modified");
+		
+		this.getMetadata().setDateNow('modified');
+		this.getMetadata().set({userId: this.accountInfo.id, author: this.accountInfo.name});
 
 		this.updateCachedOutput().then(function(result) {	
 		}, function(err) {
@@ -408,18 +449,17 @@ Ext.define('Voyant.notebook.Notebook', {
 	
 			var storageSolution = this.getStorageSolution();
 			
-			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.voyantStorageDialogs.getAccessCode() !== undefined) {
+			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined) {
 				this.voyantStorageDialogs.doSave({
-					notebookId: this.getNotebookId(),
+					notebookName: this.getNotebookName(),
 					data: data,
-					metadata: metadata,
-					accessCode: this.voyantStorageDialogs.getAccessCode()
+					metadata: metadata
 				});
 			} else {
 				if (storageSolution === 'github') {
 					this.githubDialogs.showSave(data);
 				} else {
-					this.voyantStorageDialogs.showSave(data, metadata, saveAs ? undefined : this.getNotebookId());
+					this.voyantStorageDialogs.showSave(data, metadata, saveAs ? undefined : this.getNotebookName());
 				}
 			}
 		}.bind(this));
@@ -446,9 +486,13 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	loadFromQueryParams: function() {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
-		var isRun = Ext.isDefined(queryParams.run);
-		var spyralIdMatches = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
+		var doRun = Ext.isDefined(queryParams.run);
+
+		var spyralIdMatches = /\/spyral\/(.*?@\w+)\/([\w-]+)\/?$/.exec(location.pathname);
+		var spyralIdMatchesOld = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
+
 		var isGithub = Ext.isDefined(queryParams.githubId);
+		
 		if ("inputJsonArrayOfEncodedBase64" in queryParams) {
 			let json = Ext.decode(decodeURIComponent(atob(queryParams.inputJsonArrayOfEncodedBase64)));
 			json.forEach(function(block, index) {
@@ -468,10 +512,13 @@ Ext.define('Voyant.notebook.Notebook', {
 			}, this);
 		} else if (queryParams.input) {
 			if (queryParams.input.indexOf("http")===0) {
-				this.loadFromUrl(queryParams.input, isRun);
+				this.loadFromUrl(queryParams.input, doRun);
 			}
 		} else if (spyralIdMatches) {
-			this.loadFromId(spyralIdMatches[1]);
+			this.loadFromId(spyralIdMatches[1]+'$'+spyralIdMatches[2]);
+			this.setStorageSolution('voyant');
+		} else if (spyralIdMatchesOld) {
+			this.loadFromId(spyralIdMatchesOld[1]);
 			this.setStorageSolution('voyant');
 		} else if (isGithub) {
 			this.githubDialogs.loadFileFromId(queryParams.githubId);
@@ -481,7 +528,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			this.setIsEdited(false);
 		}
 		
-		if (isRun) {
+		if (doRun) {
 			var me = this;
 			Ext.defer(function() {
 				me.runAll()
@@ -711,10 +758,10 @@ Ext.define('Voyant.notebook.Notebook', {
 	addNew: function() {
 		// TODO metadata defaults
 		this.setMetadata(new Spyral.Metadata({
-			title: "<h1>Spyral Notebook</h1>",
+			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can click on the blocks to edit them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
 		this.addCode('');
 	},
     
@@ -811,10 +858,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.setIsEdited(true);
     },
     
-    setIsEdited: function(val) {
+    applyIsEdited: function(val) {
     	// TODO: perhaps setup autosave
-    	if (this.getHeader()) {
-        	this.getHeader().down("#saveItTool").setDisabled(val === false);
+    	if (this.rendered) {
+        	// this.getHeader().down("#saveItTool").setDisabled(val === false);
         	if (!val) {
         		this.query("notebookcodeeditor").forEach(function(editor) {
         			editor.setIsChangeRegistered(false);
@@ -824,25 +871,45 @@ Ext.define('Voyant.notebook.Notebook', {
         		})
         	}
     	}
-		this.callParent(arguments);
+		return val;
     },
     
-    setNotebookId: function (id) {
+    applyNotebookId: function (id) {
     	if (id) {
-    		// update URL if needed
-    		if (location.pathname.indexOf("/spyral/"+id) === -1) {
-    			let url = this.getBaseUrl()+"spyral/"+id+"/";
-    			window.history.pushState({
-					url: url
-				}, '', url);
-    		}
+			if (id.indexOf('$') === -1) {
+				// old ID system
+				this.setNotebookName(id);
+			} else {
+				const notebookName = id.split('$')[1];
+				this.setNotebookName(notebookName);
+			}
+    		let url = this.getBaseUrl()+"spyral/"+id.replace('$', '/')+"/";
+			window.history.pushState({
+				url: url
+			}, '', url);
     	}
-		this.callParent(arguments);
+		return id;
     },
+
+	applyMetadata: function(metadata) {
+		if (metadata !== undefined) {
+			// remove tags from old notebooks
+			metadata.title = metadata.title.replace(/<\/?\w+.*?>/g, '');
+			metadata.description = metadata.description.replace(/<\/?\w+.*?>/g, '');
+			
+			// set user info if logged in
+			if (this.isAuthenticated() && metadata.userId === '' && metadata.author === '') {
+				metadata.userId = this.accountInfo.id;
+				metadata.author = this.accountInfo.name;
+			}
+		}
+		
+		return metadata;
+	},
 		
 	updateMetadata: function() {
 		var metadata = this.getMetadata();
-		document.title = metadata.title.replace(/<\/?\w+.*?>/g, '')+' - Spyral';
+		document.title = metadata.title+' - Spyral';
 
 		this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
 		this.getComponent("spyralFooter").update(this.getInnerFooterHtml());

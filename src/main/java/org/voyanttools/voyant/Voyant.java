@@ -88,7 +88,7 @@ public class Voyant {
 			HttpServletResponse response, FlexibleParameters params) throws IOException, TransformerException, ServletException {
 		
 		PostedInputResponseWrapper postedInputResponseWrapper = new PostedInputResponseWrapper(response);
-		request.getRequestDispatcher("/trombone").include(new PostedInputRequestWrapper(request, params), postedInputResponseWrapper);
+		request.getRequestDispatcher("/trombone").include(new PostedInputRequestWrapper(request, params, "corpus.CorpusCreator"), postedInputResponseWrapper);
 
 		String responseString = postedInputResponseWrapper.toString();
 		JSONObject obj= (JSONObject) JSONValue.parse(responseString);
@@ -127,12 +127,13 @@ public class Voyant {
 		return false;
 	}
 	
-	static class PostedInputRequestWrapper extends HttpServletRequestWrapper {
-		private final String TOOL = "corpus.CorpusCreator";
+	protected static class PostedInputRequestWrapper extends HttpServletRequestWrapper {
 		private FlexibleParameters params;
-		private PostedInputRequestWrapper(HttpServletRequest request, FlexibleParameters params) {
+		private String tool;
+		protected PostedInputRequestWrapper(HttpServletRequest request, FlexibleParameters params, String tool) {
 			super(request);
 			this.params = params;
+			this.tool = tool;
 		}
 		@Override
 		public Map<String,String[]> getParameterMap() {
@@ -154,7 +155,7 @@ public class Voyant {
 		}
 		@Override
 		public String getParameter(String name) {
-			return name.equals("tool") ? TOOL : params.getParameterValue(name);
+			return name.equals("tool") ? tool : params.getParameterValue(name);
 		}
 		@Override
 		public String[] getParameterValues(String name) {
@@ -162,10 +163,10 @@ public class Voyant {
 		}
 	}
 	
-	private static class PostedInputResponseWrapper extends HttpServletResponseWrapper {
+	protected static class PostedInputResponseWrapper extends HttpServletResponseWrapper {
 		private StringWriter stringWriter;
 		private PrintWriter writer;
-		private PostedInputResponseWrapper(HttpServletResponse response) {
+		protected PostedInputResponseWrapper(HttpServletResponse response) {
 			super(response);
 			stringWriter = new StringWriter();
 			writer = new PrintWriter(stringWriter);

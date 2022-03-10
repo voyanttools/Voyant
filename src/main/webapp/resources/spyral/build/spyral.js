@@ -10812,13 +10812,14 @@ var Spyral = (function () {
 		/**
 		 * The Metadata config object
 		 * @typedef {Object} MetadataConfig
-		 * @property {String} title The title of the Corpus
-		 * @property {String} author The author of the Corpus
-		 * @property {String} description The description of the Corpus
-		 * @property {Array} keywords The keywords for the Corpus
-		 * @property {String} created When the Corpus was created
-		 * @property {String} language The language of the Corpus
-		 * @property {String} license The license for the Corpus
+		 * @property {String} title The title of the Notebook
+		 * @property {String} userId The user ID of the author of the Notebook
+		 * @property {String} author The name of the author of the Notebook
+		 * @property {String} description The description of the Notebook
+		 * @property {Array} keywords The keywords for the Notebook
+		 * @property {String} created When the Notebook was created
+		 * @property {String} language The language of the Notebook
+		 * @property {String} license The license for the Notebook
 		 */
 
 		/** 
@@ -10827,7 +10828,7 @@ var Spyral = (function () {
 		 * @param {MetadataConfig} config The metadata config object
 		 */
 		constructor(config) {
-			['title', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
+			['title', 'userId', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
 				if (key === 'keywords') {
 					this[key] = [];
 				} else {

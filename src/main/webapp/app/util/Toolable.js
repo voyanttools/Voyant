@@ -862,12 +862,10 @@ Ext.define('Voyant.util.ToolMenu', {
             '</tpl>'],
     privates: {
         onClick: function() {
-        	
             var me = this,
             returnValue = me.callParent(arguments);
 
-
-            if (returnValue && me.items) {
+            if (returnValue && me.items && me.items.length > 0) {
                 if (!me.toolMenu) {
                     me.toolMenu = new Ext.menu.Menu({
                         items: me.items
@@ -876,7 +874,6 @@ Ext.define('Voyant.util.ToolMenu', {
                 me.toolMenu.showAt(0, 0);
                 me.toolMenu.showAt(me.getX() + me.getWidth() - me.toolMenu.getWidth(), me.getY() + me.getHeight() + 10);
             }
-
 
             return returnValue;
         },
