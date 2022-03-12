@@ -50,8 +50,8 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 					validator: function(val) {
 						if (val == '') {
 							return true;
-						} else if (val.match(/^[\w-]{4,16}$/) === null) {
-							return 'The ID must be between 4 and 16 alphanumeric characters.'
+						} else if (val.match(/^[A-Za-z0-9-]{4,32}$/) === null) {
+							return 'The ID must be between 4 and 32 characters. You may use alphanumeric characters and dash.'
 						} else {
 							return true;
 						}
@@ -113,13 +113,18 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		Spyral.Load.trombone({
 			tool: 'notebook.GitNotebookManager',
 			action: 'exists',
-			id: userId+'$'+notebookName,
+			id: userId+this.notebookParent.NOTEBOOK_ID_SEPARATOR+notebookName,
 			noCache: 1
 		}).then(function(json) {
-			var exists = json.notebook.data === 'true';
-			dfd.resolve(exists);
+			if (json.notebook.success) {
+				var exists = json.notebook.data === 'true';
+				dfd.resolve(exists);
+			} else {
+				console.warn(json.notebook.error);
+				dfd.resolve(false);
+			}
 		}).catch(function(err) {
-			console.log(err);
+			console.warn(err);
 		});
 
 		return dfd.promise;
@@ -130,9 +135,9 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 
 		const dfd = new Ext.Deferred();
 
-		if (notebookName.indexOf('$') !== -1) {
+		if (notebookName.indexOf(this.notebookParent.NOTEBOOK_ID_SEPARATOR) !== -1) {
 			console.warn('doSave: was sent notebookId instead of name');
-			notebookName = notebookName.split('$')[1];
+			notebookName = notebookName.split(this.notebookParent.NOTEBOOK_ID_SEPARATOR)[1];
 		}
 
 		Ext.Ajax.request({
@@ -144,17 +149,17 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 				metadata: JSON.stringify(metadata)
 			},
 			success: function(resp) {
-				try {
-					const json = JSON.parse(resp.responseText);
+				const json = JSON.parse(resp.responseText);
+				if (json.notebook.success) {
 					me.fireEvent('fileSaved', me, json.notebook.id);
 					dfd.resolve(true);
-				} catch (err) {
-					me.fireEvent('fileSaved', me, null);
+				} else {
+					me.fireEvent('fileSaved', me, null, json.notebook.error);
 					dfd.reject(false);
 				}
 			},
-			failure: function() {
-				me.fireEvent('fileSaved', me, null);
+			failure: function(resp) {
+				me.fireEvent('fileSaved', me, null, resp.responseText);
 				dfd.reject(false);
 			}
 		});

@@ -866,7 +866,7 @@ Ext.define('Voyant.util.ToolMenu', {
             returnValue = me.callParent(arguments);
 
             if (returnValue && me.items && me.items.length > 0) {
-                if (!me.toolMenu) {
+                if (!me.toolMenu || me.toolMenu.destroyed) {
                     me.toolMenu = new Ext.menu.Menu({
                         items: me.items
                     });

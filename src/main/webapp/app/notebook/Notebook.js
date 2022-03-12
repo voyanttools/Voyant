@@ -11,8 +11,10 @@ Ext.define('Voyant.notebook.Notebook', {
     statics: {
     	i18n: {
     		title: "Spyral",
-    		created: "Created",
-    		modified: "Modified",
+    		created: "Notebook Created",
+    		modified: "Notebook Modified",
+			saving: "Saving Notebook",
+			saved: "Notebook Saved",
     		clickToEdit: "Click to edit",
     		errorLoadingNotebook: "Error loading Spyral notebook",
     		cannotLoadJson: "Unable to parse JSON input.",
@@ -40,8 +42,7 @@ Ext.define('Voyant.notebook.Notebook', {
     config: {
         /**
          * @private
-		 * This is a combination of username and notebook name, separated by $
-		 * username$notebookname
+		 * This is a combination of username and notebook name, separated by NOTEBOOK_ID_SEPARATOR
          */
     	notebookId: undefined,
 		/**
@@ -67,6 +68,8 @@ Ext.define('Voyant.notebook.Notebook', {
 		 */
 		storageSolution: 'voyant'
 	},
+
+	NOTEBOOK_ID_SEPARATOR: '_',
 
 	metadataWindow: undefined,
 	voyantStorageDialogs: undefined,
@@ -94,6 +97,7 @@ Ext.define('Voyant.notebook.Notebook', {
     				xtype: 'toolmenu',
     				glyph: 'xf0c2@FontAwesome',
 					callback: function(parent, menu) {
+						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each to register item changes
 						if (parent.isAuthenticated()) {
 							menu.items = [{
 								text: 'Save',
@@ -223,6 +227,7 @@ Ext.define('Voyant.notebook.Notebook', {
 					xtype: 'toolmenu',
 					glyph: 'xf007@FontAwesome',
 					callback: function(parent, menu) {
+						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each to register item changes
 						if (parent.isAuthenticated()) {
 							parent.showAccountWindow();
 							menu.items = [];
@@ -313,7 +318,7 @@ Ext.define('Voyant.notebook.Notebook', {
 				'fileLoaded': function(src) {
 
 				},
-				'fileSaved': function(src, notebookId) {
+				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
 					if (notebookId !== null) {
 						var id = this.getNotebookId();
@@ -327,6 +332,7 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.setIsEdited(false);
 					} else {
 						// save error
+						this.showError("There was an error saving your notebook:\n"+error);
 					}
 				},
 				'saveCancelled': function() {
@@ -488,7 +494,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
 		var doRun = Ext.isDefined(queryParams.run);
 
-		var spyralIdMatches = /\/spyral\/(.*?@\w+)\/([\w-]+)\/?$/.exec(location.pathname);
+		var spyralIdMatches = /\/spyral\/(.*?@[a-z]{2})\/([A-Za-z0-9-]+)\/?$/.exec(location.pathname);
 		var spyralIdMatchesOld = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
 
 		var isGithub = Ext.isDefined(queryParams.githubId);
@@ -515,7 +521,7 @@ Ext.define('Voyant.notebook.Notebook', {
 				this.loadFromUrl(queryParams.input, doRun);
 			}
 		} else if (spyralIdMatches) {
-			this.loadFromId(spyralIdMatches[1]+'$'+spyralIdMatches[2]);
+			this.loadFromId(spyralIdMatches[1]+this.NOTEBOOK_ID_SEPARATOR+spyralIdMatches[2]);
 			this.setStorageSolution('voyant');
 		} else if (spyralIdMatchesOld) {
 			this.loadFromId(spyralIdMatchesOld[1]);
@@ -542,7 +548,8 @@ Ext.define('Voyant.notebook.Notebook', {
 			this.loadFromUrl(text);
 		} else if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
-		} else if (/^[\w-_]+$/.test(text)) {
+		} else if (/^[\w-]+$/.test(text)) {
+			console.log('loadFromString -> loadFromId', text);
 			this.loadFromId(text)
 		} else if (text.indexOf("<") !== 0 || text.indexOf("spyral") === -1) {
 			return Ext.Msg.show({
@@ -634,11 +641,20 @@ Ext.define('Voyant.notebook.Notebook', {
 	    	 noCache: 1
     	}).then(function(json) {
     		me.unmask();
-    		me.loadFromString(json.notebook.data);
-			if (json.notebook.id && json.notebook.id !== me.getNotebookId()) {
-				me.setNotebookId(json.notebook.id);
+			if (json.notebook.success) {
+				me.loadFromString(json.notebook.data);
+				if (json.notebook.id && json.notebook.id !== me.getNotebookId()) {
+					me.setNotebookId(json.notebook.id);
+				}
+				me.setIsEdited(false);
+			} else {
+				Ext.Msg.show({
+					title: me.localize('errorLoadingNotebook'),
+					msg: json.notebook.error,
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
 			}
-	    	me.setIsEdited(false);
     	}).catch(function(err) {
 			me.unmask();
 			Ext.Msg.show({
@@ -876,14 +892,14 @@ Ext.define('Voyant.notebook.Notebook', {
     
     applyNotebookId: function (id) {
     	if (id) {
-			if (id.indexOf('$') === -1) {
+			if (id.indexOf(this.NOTEBOOK_ID_SEPARATOR) === -1) {
 				// old ID system
 				this.setNotebookName(id);
 			} else {
-				const notebookName = id.split('$')[1];
+				const notebookName = id.split(this.NOTEBOOK_ID_SEPARATOR)[1];
 				this.setNotebookName(notebookName);
 			}
-    		let url = this.getBaseUrl()+"spyral/"+id.replace('$', '/')+"/";
+    		let url = this.getBaseUrl()+"spyral/"+id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
 			window.history.pushState({
 				url: url
 			}, '', url);
