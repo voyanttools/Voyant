@@ -1,3 +1,7 @@
+/**
+ * A class for calling corpus.DocumentEntities and displaying the progress of that call.
+ * This is usually a preliminary call before making use of the entities, e.g. corpus.EntityCollocationsGraph
+ */
 Ext.define('Voyant.data.util.DocumentEntities', {
 	extend: 'Ext.Base',
 	mixins: ['Voyant.util.Localization'],
@@ -21,6 +25,12 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		return this.load(params);
 	},
 
+	/**
+	 * Load the entities
+	 * @param {Object} params Additional params
+	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi'
+	 * @returns {Promise}
+	 */
 	load: function(params) {
 		var dfd = new Ext.Deferred();
 
@@ -41,7 +51,6 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			url: Voyant.application.getTromboneUrl(),
 			params: params
 		}).then(function(response) {
-			console.log('doLoad done');
 			var data = Ext.decode(response.responseText).documentEntities;
 			var isDone = me.updateProgress(data.status);
 			if (isDone) {
