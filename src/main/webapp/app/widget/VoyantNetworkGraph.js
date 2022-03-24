@@ -1,3 +1,11 @@
+/**
+ * This class is essentially a wrapper for a D3 force directed graph.
+ * It provides defaults for physics and styling and simplifies loading data.
+ * It fires the following events:
+ * 	nodeclicked, nodedblclicked, nodecontextclicked,
+ * 	edgeclicked,
+ * 	nodedragstart, nodedrag, nodedragend
+ */
 Ext.define('Voyant.widget.VoyantNetworkGraph', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
@@ -31,7 +39,7 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		zoom: undefined, // d3 zoom
 		zoomExtent: [0.25, 8],
 		
-		fixOnDrag: true, // fix node when dragged
+		dragging: false, // is the user currently dragging a node
 		
 		nodeScaling: {
 			minSize: 8,
@@ -84,6 +92,7 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 			collisionScale: 1.25 // 1 = default, 0 = no collision 
 		}
 	},
+	
 	constructor: function(config) {
 		config = config || {};
 		
@@ -110,6 +119,7 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 		this.loadJson(json);
 	},
+
 	initComponent: function(config) {
 		this.on('boxready', function(src, corpus) {
 			this.initGraph();
@@ -128,56 +138,22 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 					.force('x', d3.forceX(elWidth/2))
 					.force('y', d3.forceY(elHeight/2));
 				
-				if (this.getVisLayout().alpha() < 0.075) {
-					this.getVisLayout().alpha(-1); // trigger end/zoomToFit
-				}
+				Ext.Function.defer(this.zoomToFit, 100, this);
 			}
 		}, this);
 		
 		this.callParent(arguments);
 	},
 	
-	processJson: function(json) {
-		if (!json || !json.edges) {
-			if (json && json.links) {
-				json.edges = json.links;
-				delete json.links;
-			}
-			if (!json || !json.edges) {
-				json = json || {};
-				json.edges = [];
-			}
-		}
-		if (!json.nodes) {
-			json.nodes = [];
-		}
-		if (json.nodes.length === 0) {
-			var wordFreq = {};
-			json.edges.forEach(function(edge) {
-				['source', 'target'].forEach(function(loc) {
-					var term = edge[loc];
-					if (term in wordFreq == false) {
-						wordFreq[term] = 1;
-						json.nodes.push({term: term});
-					} else {
-						wordFreq[term]++;
-					}
-					edge.value = 1;
-				});
-			}, this);
-			json.nodes.forEach(function(node) {
-				var val = wordFreq[node.term] === undefined ? 1 : wordFreq[node.term];
-				Ext.applyIf(node, {value: val});
-			});
-		} else {
-			json.nodes.forEach(function(node) {
-				Ext.applyIf(node, {value: 1});
-			});
-		}
-		
-		return json;
-	},
-	
+	/**
+	 * Primary method for adding data to the graph.
+	 * @param {Object} json The json data to load
+	 * @param {Array} json.nodes An array of objects that will become nodes
+	 * @param {String} json.nodes[].term The only required node property (used as ID for edges)
+	 * @param {Array} json.edges An array of objects that will become edges
+	 * @param {String} json.edges[].source The term/ID of the source node
+	 * @param {String} json.edges[].target The term/ID of the target node
+	 */
 	loadJson: function(json) {
 		this.processJson(json);
 		
@@ -221,11 +197,61 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		this.refreshGraph();
 	},
 	
-	// get a DOM appropriate id
-	idGet: function(term) {
-		return term.replace(/\W/g, '_');
+	processJson: function(json) {
+		if (!json || !json.edges) {
+			if (json && json.links) {
+				json.edges = json.links;
+				delete json.links;
+			}
+			if (!json || !json.edges) {
+				json = json || {};
+				json.edges = [];
+			}
+		}
+		if (!json.nodes) {
+			json.nodes = [];
+		}
+		if (json.nodes.length === 0) {
+			var wordFreq = {};
+			json.edges.forEach(function(edge) {
+				['source', 'target'].forEach(function(loc) {
+					var term = edge[loc];
+					if (term in wordFreq == false) {
+						wordFreq[term] = 1;
+						json.nodes.push({term: term});
+					} else {
+						wordFreq[term]++;
+					}
+					edge.value = 1;
+				});
+			}, this);
+			json.nodes.forEach(function(node) {
+				var val = wordFreq[node.term] === undefined ? 1 : wordFreq[node.term];
+				Ext.applyIf(node, {value: val});
+			});
+		} else {
+			json.nodes.forEach(function(node) {
+				Ext.applyIf(node, {value: 1});
+			});
+		}
+		
+		return json;
 	},
 	
+	/**
+	 * Get a DOM appropriate ID
+	 * @param {String} term 
+	 * @returns {String}
+	 */
+	idGet: function(term) {
+		return 'vng_'+term.replace(/\W/g, '_');
+	},
+	
+	/**
+	 * Update the data for a specific node
+	 * @param {String} nodeId 
+	 * @param {Object} dataObj 
+	 */
 	updateDataForNode: function(nodeId, dataObj) {
 		var data = this.getNodeData();
 		for (var i = 0; i < data.length; i++) {
@@ -236,6 +262,11 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 	},
 	
+	/**
+	 * Update the data for a specific edge
+	 * @param {String} edgeId 
+	 * @param {Object} dataObj 
+	 */
 	updateDataForEdge: function(edgeId, dataObj) {
 		var data = this.getEdgeData();
 		for (var i = 0; i < data.length; i++) {
@@ -246,6 +277,10 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 	},
 	
+	/**
+	 * Add a new node to the graph
+	 * @param {Object|String} dataObj 
+	 */
 	addNode: function(dataObj) {
 		if (Ext.isString(dataObj)) {
 			dataObj = {term: dataObj};
@@ -255,6 +290,11 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 	},
 	
+	/**
+	 * Remove a node from the graph
+	 * @param {String} nodeId 
+	 * @param {Boolean} removeOrphans 
+	 */
 	removeNode: function(nodeId, removeOrphans) {
 		var data = this.getNodeData();
 		for (var i = 0; i < data.length; i++) {
@@ -298,12 +338,21 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		this.refreshGraph();
 	},
 	
+	/**
+	 * Add a new edge to the graph
+	 * @param {Object} dataObj 
+	 */
 	addEdge: function(dataObj) {
 		if (Ext.isObject(dataObj) && dataObj.source && dataObj.target) {
 			this.loadJson({edges: [dataObj]});
 		}
 	},
 	
+	/**
+	 * Remove a specific edge from the graph
+	 * @param {String} edgeId 
+	 * @param {Boolean} removeOrphans 
+	 */
 	removeEdge: function(edgeId, removeOrphans) {
 		var data = this.getEdgeData();
 		for (var i = data.length-1; i >= 0; i--) {
@@ -336,6 +385,9 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		this.refreshGraph();
 	},
 	
+	/**
+	 * Initialize graph
+	 */
 	initGraph: function() {
 		var el = this.getLayout().getRenderTarget();
 		el.update('');
@@ -351,25 +403,25 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 			.force('charge', d3.forceManyBody().strength(physics.nodeGravity))
 			.force('collide', d3.forceCollide().radius(function(d) { return Math.sqrt(d.bbox.width * d.bbox.height)*physics.collisionScale; }))
 			.on('tick', function() {
-				 this.getEdgeSelection()
+				this.getEdgeSelection()
 					.attr('x1', function(d) { return d.source.x; })
 					.attr('y1', function(d) { return d.source.y; })
 					.attr('x2', function(d) { return d.target.x; })
 					.attr('y2', function(d) { return d.target.y; });
 		
-				 this.getNodeSelection()
-				 	.attr('transform', function(d) {
-				 		var x = d.x - d.bbox.width*0.5;
-				 		var y = d.y - d.bbox.height*0.5;
-				 		return 'translate('+x+','+y+')';
-			 		});
-				 
-				 if (this.getVisLayout().alpha() < 0.075) {
+				this.getNodeSelection()
+					.attr('transform', function(d) {
+						var x = d.x - d.bbox.width*0.5;
+						var y = d.y - d.bbox.height*0.5;
+						return 'translate('+x+','+y+')';
+					});
+				
+				if (this.getVisLayout().alpha() < 0.075) {
  					this.getVisLayout().alpha(-1); // trigger end event
  				}
 			}.bind(this))
 			.on('end', function() {
-				this.zoomToFit();
+				Ext.Function.defer(this.zoomToFit, 100, this);
 			}.bind(this))
 		);
 		
@@ -377,10 +429,10 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		var g = svg.append('g');
 		
 		var zoom = d3.zoom()
-		.scaleExtent(this.getZoomExtent())
-		.on('zoom', function() {
-			g.attr('transform', d3.event.transform);
-		});
+			.scaleExtent(this.getZoomExtent())
+			.on('zoom', function() {
+				g.attr('transform', d3.event.transform);
+			});
 		this.setZoom(zoom);
 		svg.call(zoom);
 		
@@ -395,6 +447,9 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		this.refreshGraph();
 	},
 	
+	/**
+	 * Rebuild graph from data
+	 */
 	refreshGraph: function() {
 		if (this.getVisLayout() === undefined) return;
 		
@@ -402,9 +457,7 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		var nodeData = this.getNodeData();
 		
 		var nodeExtent = d3.extent(nodeData, function(d) { return d.value; });
-		var nodeSum = d3.sum(nodeData, function(d) { return d.value; });
 		var edgeExtent = d3.extent(edgeData, function(d) { return d.value; });
-		var edgeSum = d3.sum(edgeData, function(d) { return d.value; });
 
 		var edgeScaling = this.getEdgeScaling();
 		if (edgeScaling.scalingFunction === undefined) {
@@ -460,34 +513,40 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 			}.bind(this))
 			.call(d3.drag()
 				.on('start', function(d) {
-					if (!d3.event.active) this.getVisLayout().alphaTarget(0.3).restart();
-					if (this.getFixOnDrag()) {
-						d.fx = d.x;
-						d.fy = d.y;
+					this.setDragging(true);
+					if (!d3.event.active) {
+						this.getVisLayout().alpha(0.3).restart();
 					}
+					d.fx = d.x;
+					d.fy = d.y;
+					d.fixed = true;
 					this.fireEvent('nodedragstart', this, d);
 				}.bind(this))
 				.on('drag', function(d) {
-					if (this.getFixOnDrag()) {
-						d.fx = d3.event.x;
-						d.fy = d3.event.y;
-					} else {
-						d.x = d3.event.x;
-						d.y = d3.event.y;
-					}
+					this.getVisLayout().alpha(0.3); // don't let simulation end while the user is dragging
+					d.fx = d3.event.x;
+					d.fy = d3.event.y;
 					this.fireEvent('nodedrag', this, d);
 				}.bind(this))
 				.on('end', function(d) {
-					if (!d3.event.active) this.getVisLayout().alphaTarget(0);
+					this.setDragging(false);
+					// if (!d3.event.active) this.getVisLayout().alpha(0);
+					if (d.fixed != true) {
+						d.fx = null;
+						d.fy = null;
+					}
 					this.fireEvent('nodedragend', this, d);
 				}.bind(this))
 			);
+
+		// TODO detect title
+		// nodeEnter.append('title').text(function(d) { return d.title; });
 
 		nodeEnter.append('rect');
 				
 		nodeEnter.append('text')
 			.text(function(d) { return d.term; })
-//            .attr('font-family', function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('font', d.term); }.bind(this))
+			.attr('font-family', function(d) { return Voyant.application.getCategoriesManager().getFeatureForTerm('font', d.term); })
 			.attr('font-size', function(d) {return nodeScaling.scalingFunction(d.value)+'px';})
 //            .attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
@@ -527,6 +586,8 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		var fullHeight = svgRect.height;
 		var scale = (paddingPercent || 0.8) / Math.max(width/fullWidth, height/fullHeight);
 		var translate = [fullWidth/2 - scale*midX, fullHeight/2 - scale*midY];
+		if (width<1) {return} // FIXME: something strange with spyral
+		
 		d3.select(svg)
 			.transition()
 			.duration(transitionDuration || 500)
@@ -542,10 +603,16 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 	},
 	
+	/**
+	 * Method for styling nodes, using the default config.graphStyle.
+	 * Override this method for custom styling.
+	 * @param {*} sel D3 selection
+	 * @param {String} nodeState  The state of the node: 'normal' or 'highlight'
+	 */
 	applyNodeStyle: function(sel, nodeState) {
 		var state = nodeState === undefined ? 'normal' : nodeState;
 		var style = this.getGraphStyle().node[state];
-		sel.selectAll(':not(text)')
+		sel.selectAll('rect')
 			.style('fill', function(d) { return style.fill; }.bind(this))
 			.style('fill-opacity', function(d) { return style.fillOpacity; }.bind(this))
 			.style('stroke', function(d) { return style.stroke; }.bind(this))
@@ -553,6 +620,12 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 			.style('stroke-width', function(d) { return style.strokeWidth; }.bind(this));
 	},
 	
+	/**
+	 * Method for styling edges, using the default config.graphStyle.
+	 * Override this method for custom styling.
+	 * @param {*} sel D3 selection
+	 * @param {String} edgeState The state of the edge: 'normal' or 'highlight'
+	 */
 	applyEdgeStyle: function(sel, edgeState) {
 		var state = edgeState === undefined ? 'normal' : edgeState;
 		var style = this.getGraphStyle().edge[state];
