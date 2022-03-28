@@ -23,7 +23,7 @@ import javax.xml.transform.TransformerException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-//import org.voyanttools.trombone.tool.corpus.DocumentEntities;
+import org.voyanttools.trombone.tool.corpus.DocumentEntities;
 import org.voyanttools.trombone.util.FlexibleParameters;
 
 /**
@@ -195,7 +195,7 @@ public class Voyant implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("CONTEXT DESTROYED");
-//		DocumentEntities.shutdownThreadPools();
+		DocumentEntities.shutdownThreadPools();
 		
 	}
 }
