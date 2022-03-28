@@ -124,6 +124,75 @@ a {
 	background-color: yellow;
 }
 
+/*
+Entities
+palette from: https://github.com/d3/d3-scale-chromatic#schemeSet3
+8dd3c7 turq
+ffffb3 yellow
+bebada purp
+fb8072 red
+80b1d3 blue
+fdb462 orange
+b3de69 green
+fccde5 pink
+d9d9d9 grey
+bc80bd violet
+ccebc5 pale green
+ffed6f bright yellow
+*/
+
+
+.voyant-reader .x-panel-body .entity {
+	border: 2px solid #d9d9d9;
+	border-radius: 3px;
+}
+.voyant-reader .x-panel-body .entity:hover, .voyant-reader .x-panel-body .entity.keyword {
+	background-color: hsl(0, 0%, 95%) !important;
+}
+
+.voyant-reader .x-panel-body .entity.person {
+	border-color: #fdb462;
+}
+.voyant-reader .x-panel-body .entity.person:hover, .voyant-reader .x-panel-body .entity.person.keyword {
+	background-color: hsl(32, 97%, 79%) !important;
+}
+
+.voyant-reader .x-panel-body .entity.location {
+	border-color: #b3de69;
+}
+.voyant-reader .x-panel-body .entity.location:hover, .voyant-reader .x-panel-body .entity.location.keyword {
+	background-color: hsl(82, 64%, 74%) !important;
+}
+
+.voyant-reader .x-panel-body .entity.organization {
+	border-color: #bebada;
+}
+.voyant-reader .x-panel-body .entity.organization:hover, .voyant-reader .x-panel-body .entity.organization.keyword {
+	background-color: hsl(248, 30%, 89%) !important;
+}
+
+.voyant-reader .x-panel-body .entity.misc {
+	border-color: #8dd3c7;
+}
+.voyant-reader .x-panel-body .entity.misc:hover, .voyant-reader .x-panel-body .entity.misc.keyword {
+	background-color: hsl(170, 44%, 79%) !important;
+}
+
+.voyant-reader .x-panel-body .entity.time, .voyant-reader .x-panel-body .entity.date, .voyant-reader .x-panel-body .entity.duration  {
+	border-color: #80b1d3;
+}
+.voyant-reader .x-panel-body .entity.time:hover, .voyant-reader .x-panel-body .entity.date:hover, .voyant-reader .x-panel-body .entity.duration:hover,
+.voyant-reader .x-panel-body .entity.time.keyword, .voyant-reader .x-panel-body .entity.date.keyword, .voyant-reader .x-panel-body .entity.duration.keyword  {
+	background-color: hsl(205, 49%, 76%) !important;
+}
+
+.voyant-reader .x-panel-body .entity.money {
+	border-color: #ffffb3;
+}
+.voyant-reader .x-panel-body .entity.money:hover, .voyant-reader .x-panel-body .entity.money.keyword {
+	background-color: hsl(60, 100%, 95%) !important;
+}
+
 /* Cirrus */
 
 svg.cirrusGraph text {

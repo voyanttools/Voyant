@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -20,12 +23,14 @@ import javax.xml.transform.TransformerException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.voyanttools.trombone.tool.corpus.DocumentEntities;
 import org.voyanttools.trombone.util.FlexibleParameters;
 
 /**
  * @author Stéfan Sinclair
  */
-public class Voyant {
+@WebListener
+public class Voyant implements ServletContextListener {
 	
 	/**
 	 * Pre-process the request. At the moment this will look if there's a referer,
@@ -177,9 +182,21 @@ public class Voyant {
 		}
 		@Override
 		public String toString() {
-//			writer.flush();
 			writer.flush();
 			return stringWriter.toString();
 		}
+	}
+
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		System.out.println("CONTEXT INIT");
+		
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+		System.out.println("CONTEXT DESTROYED");
+		DocumentEntities.shutdownThreadPools();
+		
 	}
 }
