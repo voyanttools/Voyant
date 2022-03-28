@@ -164,7 +164,13 @@ public class Spyral extends HttpServlet {
 					JsonElement respJson = parser.parse(respString).getAsJsonObject();
 					JsonObject jsonObj = respJson.getAsJsonObject();
 					String login = jsonObj.get("login").getAsString();
-					String name = jsonObj.get("name").getAsString();
+					String name;
+					JsonElement nameElement = jsonObj.get("name");
+					if (nameElement.isJsonNull()) {
+						name = login;
+					} else {
+						name = nameElement.getAsString();
+					}
 					String avatarUrl = jsonObj.get("avatar_url").getAsString();
 					
 					setSpyralAccountInfo(req, login+"@gh", name, avatarUrl);
