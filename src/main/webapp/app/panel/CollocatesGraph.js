@@ -439,10 +439,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     },
     
     idGet: function(term) {
-		if (term.search(/^\d+$/) === 0) {
-			return 'voyant_'+term;
-		}
-    	return term.replace(/\W/g, '_');
+    	return 'links_'+term.replace(/\W/g, '_');
     },
     
     updateDataForNode: function(nodeId, dataObj) {
