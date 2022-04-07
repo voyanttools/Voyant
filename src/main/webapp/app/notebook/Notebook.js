@@ -71,6 +71,9 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	NOTEBOOK_ID_SEPARATOR: '_',
 
+	SPYRAL_ID_REGEX: /\/spyral\/(.*?@[a-z]{2})[\/_]([A-Za-z0-9-]+)\/?$/,
+	SPYRAL_ID_REGEX_OLD: /\/spyral\/([\w-]+)\/?$/,
+
 	metadataWindow: undefined,
 	voyantStorageDialogs: undefined,
 	githubDialogs: undefined,
@@ -494,8 +497,8 @@ Ext.define('Voyant.notebook.Notebook', {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
 		var doRun = Ext.isDefined(queryParams.run);
 
-		var spyralIdMatches = /\/spyral\/(.*?@[a-z]{2})\/([A-Za-z0-9-]+)\/?$/.exec(location.pathname);
-		var spyralIdMatchesOld = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
+		var spyralIdMatches = this.SPYRAL_ID_REGEX.exec(location.pathname);
+		var spyralIdMatchesOld = this.SPYRAL_ID_REGEX_OLD.exec(location.pathname);
 
 		var isGithub = Ext.isDefined(queryParams.githubId);
 		
@@ -542,9 +545,9 @@ Ext.define('Voyant.notebook.Notebook', {
     	text = text.trim();
 		if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
-		} else if (/^[\w-]+$/.test(text)) {
-			console.log('loadFromString -> loadFromId', text);
-			this.loadFromId(text)
+		} else if (this.SPYRAL_ID_REGEX.test('/spyral/'+text)) {
+			var spyralIdMatches = this.SPYRAL_ID_REGEX.exec('/spyral/'+text);
+			this.loadFromId(spyralIdMatches[1]+this.NOTEBOOK_ID_SEPARATOR+spyralIdMatches[2]);
 		} else if (text.indexOf("<") !== 0 || text.indexOf("spyral") === -1) {
 			return Ext.Msg.show({
 				title: this.localize('errorLoadingNotebook'),
