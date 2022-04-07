@@ -7,7 +7,9 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 	mixins: ['Voyant.util.Localization'],
 	statics: {
 		i18n: {
-			identifyingDocEnts: 'Identifying Document Entities'
+			identifyingDocEnts: 'Identifying Document Entities',
+			error: 'Error Identifying Document Entities',
+			done: 'Done'
 		}
 	},
 
@@ -54,12 +56,15 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			var data = Ext.decode(response.responseText).documentEntities;
 			var isDone = me.updateProgress(data.status);
 			if (isDone) {
-				me.getProgressWindow().close();
+				var win = me.getProgressWindow();
+				win.down('#identifyingMessage').getEl().down('div.x-mask-msg-text').setStyle('backgroundImage', 'none');
+				win.down('#doneButton').setHidden(false);
 				dfd.resolve(data.entities);
 			} else {
 				me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, dfd]));
 			}
 		}, function(err) {
+			Voyant.application.showError(me.localize('error'));
 			console.warn(err);
 			dfd.reject(err);
 		});
@@ -76,22 +81,53 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			this.setProgressWindow(Ext.create('Ext.window.Window', {
 				title: this.localize('identifyingDocEnts'),
 				width: 400,
-				height: 150,
+				height: 300,
 				minimizable: true,
 				closeAction: 'destroy',
 				layout: {
 					type: 'vbox',
 					align: 'middle',
-					pack: 'center'
+					pack: 'stretch',
 				},
 				items: [{
+					itemId: 'identifyingMessage',
 					xtype: 'container',
 					html: '<div class="x-mask-msg-text">'+this.localize('identifyingDocEnts')+'</div>',
+					flex: .5,
+					margin: '20 0 10 0'
+				},{
+					itemId: 'progressBar',
+					xtype: 'progressbar',
+					width: 300,
+					height: 20,
 					margin: '0 0 10 0'
 				},{
-					itemId: 'progress',
-					xtype: 'progressbar',
-					width: 300
+					xtype: 'dataview',
+					width: 300,
+					flex: 1,
+					margin: '0 0 10 0',
+					scrollable: 'y',
+					itemId: 'documentStatus',
+					store: Ext.create('Ext.data.ArrayStore', {
+						fields: ['docTitle', 'statusIcon']
+					}),
+					itemSelector: '.doc',
+					tpl: [
+					'<tpl for=".">',
+						'<div class="doc">',
+							'<i class="fa {statusIcon}" style="margin-right: 5px;"></i>',
+							'<span class="" style="">{docTitle}</span>',
+						'</div>',
+					'</tpl>']
+				},{
+					itemId: 'doneButton',
+					xtype: 'button',
+					text: this.localize('done'),
+					hidden: true,
+					margin: '0 0 10 0',
+					handler: function(btn) {
+						btn.up('window').close();
+					}
 				}],
 				tools: [{
 					type: 'restore',
@@ -121,7 +157,16 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 
 		var win = this.getProgressWindow();
 		
-		win.down('#progress').updateProgress(numDone/total, numDone+' / '+total);
+		win.down('#progressBar').updateProgress(numDone/total, numDone+' / '+total);
+		
+		var docsStore = Voyant.application.getCorpus().getDocuments();
+		var statusWithDocTitles = statusArray.map(function(status) {
+			var docTitle = docsStore.getById(status[0]).getShortTitle();
+			var statusIcon = status[1] === 'failed' ? 'fa-exclamation-triangle' : status[1] === 'done' ? 'fa-check' : 'fa-clock-o';
+			return [docTitle, statusIcon];
+		});
+		win.down('#documentStatus').getStore().loadData(statusWithDocTitles);
+
 		win.setTitle(this.localize('identifyingDocEnts')+' '+numDone+' / '+total);
 
 		win.show();
