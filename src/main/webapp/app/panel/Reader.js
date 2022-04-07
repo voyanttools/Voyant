@@ -74,7 +74,7 @@ Ext.define('Voyant.panel.Reader', {
 	    			}
 	    			if (record.isWord()) {
 	    				isLastNewLine = false;
-	    				contents += "<span class='word' id='"+ record.getId() + "' data-qtip='"+documentFrequency+" "+record.getDocumentRawFreq()+"'>"+ record.getTerm() + "</span>";
+	    				contents += "<span class='word' id='"+ record.getId() + "' data-qtip='<div class=\"freq\">"+documentFrequency+" "+record.getDocumentRawFreq()+"</div>'>"+ record.getTerm() + "</span>";
 	    			}
 	    			else {
 	    				var newContents = record.getTermWithLineSpacing(isPlainText);
@@ -262,27 +262,35 @@ Ext.define('Voyant.panel.Reader', {
                 },'->',{
 					glyph: 'xf0eb@FontAwesome',
 					tooltip: this.localize('highlightEntities'),
-					handler: function() {
-						var docIndex = [];
-						var locationInfo = this.getLocationInfo();
-						if (locationInfo) {
-							for (var i = locationInfo[0].docIndex; i <= locationInfo[1].docIndex; i++) {
-								docIndex.push(i);
-							}
-						} else {
-							docIndex.push(0);
+					menu: {
+						items: [{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: 'NER with NSSI',
+							itemId: 'nssi',
+							checked: false,
+							handler: this.nerSeviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: 'NER with Voyant',
+							itemId: 'stanford',
+							checked: true,
+							handler: this.nerSeviceHandler,
+							scope: this
 						}
-
-						var me = this;
-						new Voyant.data.util.DocumentEntities({
-							includeEntities: true,
-							docIndex: docIndex
-						}).then(function(entities) {
-							me.setDocumentEntitiesStore(entities);
-							me.highlightEntities();
-						})
-					},
-					scope: this
+						// ,{
+						// 	xtype: 'menucheckitem',
+						// 	group: 'nerService',
+						// 	text: 'NER with Voyant (OpenNLP)',
+						// 	itemId: 'opennlp',
+						// 	checked: false,
+						// 	handler: this.nerSeviceHandler,
+						// 	scope: this
+						// }
+						]
+					}
 				}]
     		}],
     		listeners: {
@@ -413,19 +421,82 @@ Ext.define('Voyant.panel.Reader', {
 //		}
 	},
 
+	nerSeviceHandler: function(menuitem) {
+		var annotator = menuitem.itemId;
+
+		var docIndex = [];
+		var locationInfo = this.getLocationInfo();
+		if (locationInfo) {
+			for (var i = locationInfo[0].docIndex; i <= locationInfo[1].docIndex; i++) {
+				docIndex.push(i);
+			}
+		} else {
+			docIndex.push(0);
+		}
+
+		this.clearEntityHighlights();
+
+		var me = this;
+		new Voyant.data.util.DocumentEntities({
+			annotator: annotator,
+			includeEntities: true,
+			docIndex: docIndex
+		}).then(function(entities) {
+			me.setDocumentEntitiesStore(entities);
+			me.highlightEntities();
+		});
+	},
+
+	clearEntityHighlights: function() {
+		var container = this.getInnerContainer().first();
+		container.select('.entity').each(function(el) {
+			el.removeCls('entity start middle end location person organization misc money time percent date duration set unknown');
+			el.dom.setAttribute('data-qtip', el.dom.getAttribute('data-qtip').replace(/<div class="entity">.*?<\/div>/g, ''));
+		});
+	},
+
 	highlightEntities: function() {
 		var container = this.getInnerContainer().first();
 		var entities = this.getDocumentEntitiesStore();
 		var entityTypeStr = this.localize('entityType');
 		entities.forEach(function(entity) {
-			var positions = entity.positions;
-			if (positions) {
-				positions.forEach(function(position) {
-					var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
-					if (match) {
-						if (match.hasCls('entity') === false) {
-							match.addCls('entity '+entity.type);
-							match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<br/>'+entityTypeStr+': '+entity.type);
+			var positionInstances = entity.positions;
+			if (positionInstances) {
+				positionInstances.forEach(function(positions) {
+					var multiTermEntity = positions.length === 2; // there is both a start and end position
+					if (multiTermEntity) {
+						// find the difference between start and end positions
+						if (positions[1]-positions[0] > 1) {
+							// more than two terms, so fill in the middle positions
+							var endPos = positions[1];
+							var curPos = positions[0]+1;
+							var curIndex = 1;
+							while (curPos < endPos) {
+								positions.splice(curIndex, 0, curPos);
+								curPos++;
+								curIndex++;
+							}
+						}
+					}
+
+					for (var i = 0, len = positions.length; i < len; i++) {
+						var position = positions[i];
+						
+						var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
+						if (match) {
+							var termEntityPosition = '';
+							if (multiTermEntity) {
+								if (i === 0) {
+									termEntityPosition = 'start ';
+								} else if (i === len-1) {
+									termEntityPosition = 'end ';	
+								} else {
+									termEntityPosition = 'middle ';
+								}
+							}
+
+							match.addCls('entity '+termEntityPosition+entity.type);
+							match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
 						}
 					}
 				});
