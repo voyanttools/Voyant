@@ -227,7 +227,7 @@ Ext.define('Voyant.notebook.Notebook', {
 					xtype: 'toolmenu',
 					glyph: 'xf007@FontAwesome',
 					callback: function(parent, menu) {
-						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each to register item changes
+						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
 						if (parent.isAuthenticated()) {
 							parent.showAccountWindow();
 							menu.items = [];
@@ -444,7 +444,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mask(this.localize('saving'));
 		
 		this.getMetadata().setDateNow('modified');
-		this.getMetadata().set({userId: this.accountInfo.id, author: this.accountInfo.name});
+		this.getMetadata().set({userId: this.accountInfo.id});
 
 		this.updateCachedOutput().then(function(result) {	
 		}, function(err) {

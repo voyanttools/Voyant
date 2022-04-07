@@ -4,7 +4,7 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 	alias: 'widget.metadataeditor',
 	statics: {
 		i18n: {
-			metadataAuthor: "Author",
+			metadataAuthor: "Author(s)",
     		metadataTitle: "Title",
     		metadataTip: "Edit notebook metadata.",
     		metadataKeywords: "Keywords",
@@ -29,13 +29,10 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 
 				// The fields
 				defaultType: 'textfield',
-				items: [
-				// {
-				// 	fieldLabel: this.localize("metadataAuthor"),
-				// 	name: 'author',
-				// 	editable: false
-				// },
-				{
+				items: [{
+					fieldLabel: this.localize("metadataAuthor"),
+					name: 'author'
+				},{
 					fieldLabel: this.localize("metadataTitle"),
 					name: 'title'
 				},{
