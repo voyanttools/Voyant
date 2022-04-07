@@ -22,7 +22,7 @@ Ext.define('Voyant.notebook.Notebook', {
     		cannotLoadUnrecognized: "Unable to recognize input.",
 			cannotLoadNotebookId: "Unable to load the Spyral Notebook. It may no longer exist.",
     		openTitle: "Open",
-    		openMsg: "Paste in Notebook ID, a URL or a Spyral data file (in HTML).",
+    		openMsg: "Paste in Notebook ID or a Spyral data file (in HTML).",
     		exportHtmlDownload: "HTML (download)",
     		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags.",
 			metadataTip: "View and Edit the notebook metadata.",
@@ -516,10 +516,6 @@ Ext.define('Voyant.notebook.Notebook', {
 					this.addCode(text);
 				}
 			}, this);
-		} else if (queryParams.input) {
-			if (queryParams.input.indexOf("http")===0) {
-				this.loadFromUrl(queryParams.input, doRun);
-			}
 		} else if (spyralIdMatches) {
 			this.loadFromId(spyralIdMatches[1]+this.NOTEBOOK_ID_SEPARATOR+spyralIdMatches[2]);
 			this.setStorageSolution('voyant');
@@ -544,9 +540,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	
     loadFromString: function(text) {
     	text = text.trim();
-		if (text.indexOf("http") === 0) {
-			this.loadFromUrl(text);
-		} else if (text.indexOf("{") === 0) {
+		if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
 		} else if (/^[\w-]+$/.test(text)) {
 			console.log('loadFromString -> loadFromId', text);
@@ -624,12 +618,6 @@ Ext.define('Voyant.notebook.Notebook', {
 			}, this);
 		}, this);
 	},
-
-	loadFromUrl: function(url, run) {
-    	var me = this;
-    	// load as string and not HTML in case it's an older JSON format
-    	Spyral.Load.text(url).then(function(text) {me.loadFromString(text)})
-    },
     
     loadFromId: function(id) {
     	this.mask(this.localize("loading"));
