@@ -89,7 +89,10 @@ public class Spyral extends HttpServlet {
 			// add spyral-id from session so it's available in GitNotebookManager
 			HttpSession session = req.getSession(false);
 			if (session != null) {
-				params.setParameter("spyral-id", (String) session.getAttribute("spyral-id"));
+				Object spyralIdObj = session.getAttribute("spyral-id");
+				if (spyralIdObj != null) {
+					params.setParameter("spyral-id", (String) spyralIdObj);
+				}
 			}
 			
 			Properties oauthprops = new Properties();
