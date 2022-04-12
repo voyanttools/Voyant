@@ -441,9 +441,12 @@ Ext.define('Voyant.panel.Reader', {
 			annotator: annotator,
 			includeEntities: true,
 			docIndex: docIndex
-		}).then(function(entities) {
-			me.setDocumentEntitiesStore(entities);
-			me.highlightEntities();
+		}, function(entities) {
+			if (entities) {
+				me.clearEntityHighlights(); // clear again in case failed documents were rerun
+				me.setDocumentEntitiesStore(entities);
+				me.highlightEntities();
+			}
 		});
 	},
 

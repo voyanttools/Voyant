@@ -243,9 +243,10 @@ Ext.define('Voyant.panel.RezoViz', {
 	},
 
 	preloadEntities: function() {
-		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')}).then(function() {
-			this.getEntities();
-		}.bind(this));
+		var me = this;
+		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')}, function() {
+			me.getEntities();
+		});
 	},
 
 	getEntities: function() {

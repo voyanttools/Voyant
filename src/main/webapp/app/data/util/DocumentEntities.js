@@ -20,35 +20,31 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		timeoutId: undefined
 	},
 	
-	constructor: function(params) {
+	constructor: function(params, callback) {
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 		this.initConfig();
 		this.callParent();
 
-		return this.load(params);
+		return this.load(params, callback);
 	},
 
 	/**
 	 * Load the entities
 	 * @param {Object} params Additional params
 	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi'
-	 * @returns {Promise}
+	 * @param {Function} callback A function to call when the entities are loaded
 	 */
-	load: function(params) {
-		var dfd = new Ext.Deferred();
-
+	load: function(params, callback) {
 		params = Ext.apply({
 			tool: 'corpus.DocumentEntities',
 			corpus: Voyant.application.getCorpus().getId(),
 			noCache: true
 		}, params || {});
 
-		this.doLoad(params, dfd);
-
-		return dfd.promise;
+		this.doLoad(params, callback);
 	},
 
-	doLoad: function(params, dfd) {
+	doLoad: function(params, callback) {
 		var me = this;
 		Ext.Ajax.request({
 			url: Voyant.application.getTromboneUrl(),
@@ -70,21 +66,22 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 
 				if (hasFailures) {
 					win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
-						me.load(Ext.apply({retryFailures: true}, params));
+						me.load(Ext.apply({retryFailures: true}, params), callback);
 						btn.setDisabled(true);
 					}, me);
 				} else {
 					win.down('#retryButton').setHidden(true);
 				}
 
-				dfd.resolve(data.entities);
+				callback.call(me, data.entities);
 			} else {
-				me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, dfd]));
+				delete params.retryFailures;
+				me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, callback]));
 			}
 		}, function(err) {
 			Voyant.application.showError(me.localize('error'));
 			console.warn(err);
-			dfd.reject(err);
+			callback.call(me, null);
 		});
 	},
 
