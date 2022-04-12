@@ -8,7 +8,10 @@ Ext.define('Voyant.panel.Summary', {
 	alias: 'widget.summary',
     statics: {
     	i18n: {
-			readabilityIndex: 'Readability Index:'
+			readabilityIndex: 'Readability Index:',
+			docsDensityTip: 'ratio of unique words in this document',
+			avgWordsPerSentenceTip: 'average words per sentence in this document',
+			readabilityTip: 'the Coleman-Liau readability index for this document'
     	},
     	api: {
     		
@@ -165,7 +168,7 @@ Ext.define('Voyant.panel.Summary', {
 			main.add(this.showSparklineSection(
 				function(doc) { return doc.getLexicalTokensCount(); },
 				this.localize('docsLength'), this.localize('longest'), this.localize('shortest'),
-				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+				docs, limit, docsLengthTpl, sparkWidth, this.localize('numberOfTerms')
 			));
         	
 			// vocabulary density
@@ -173,7 +176,7 @@ Ext.define('Voyant.panel.Summary', {
 			main.add(this.showSparklineSection(
 				function(doc) { return Ext.util.Format.number(doc.getLexicalTypeTokenRatio(),'0.000'); },
 				this.localize('docsDensity'), this.localize('highest'), this.localize('lowest'),
-				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+				docs, limit, docsLengthTpl, sparkWidth, this.localize('docsDensityTip')
 			));
  
         	// words per sentence
@@ -181,7 +184,7 @@ Ext.define('Voyant.panel.Summary', {
 			main.add(this.showSparklineSection(
 				function(doc) { return Ext.util.Format.number(doc.getAverageWordsPerSentence(),'0.0'); },
 				this.localize('averageWordsPerSentence'), this.localize('highest'), this.localize('lowest'),
-				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+				docs, limit, docsLengthTpl, sparkWidth, this.localize('avgWordsPerSentenceTip')
 			));
 
     	} else { // single document, we can still show word density and average words per sentence
@@ -214,7 +217,7 @@ Ext.define('Voyant.panel.Summary', {
 				docs.sort(function(d1, d2) {return d2.get('readability')-d1.get('readability')});
 				main.insert(sectionIndex, me.showSparklineSection(function(doc) {
 					return Ext.util.Format.number(doc.get('readability'),'0.000');
-				}, me.localize('readabilityIndex'), me.localize('highest'), me.localize('lowest'), docs, limit, docsLengthTpl, sparkWidth, numberOfTerms));
+				}, me.localize('readabilityIndex'), me.localize('highest'), me.localize('lowest'), docs, limit, docsLengthTpl, sparkWidth, me.localize('readabilityTip')));
 			} else {
 				main.insert(sectionIndex, {
 					cls: 'section',
@@ -273,7 +276,7 @@ Ext.define('Voyant.panel.Summary', {
     	
     },
 
-	showSparklineSection: function(docDataFunc, headerText, topText, bottomText, docs, limit, docsLengthTpl, sparkWidth, numberOfTerms) {
+	showSparklineSection: function(docDataFunc, headerText, topText, bottomText, docs, limit, docsLengthTpl, sparkWidth, valueTip) {
 		var me = this;
 		return {
 			cls: 'section',
@@ -301,14 +304,14 @@ Ext.define('Voyant.panel.Summary', {
 					shortTitle: doc.getShortTitle(),
 					title: doc.getTitle(),
 					val: docDataFunc.call(me, doc),
-					valTip: numberOfTerms
+					valTip: valueTip
 				}}))+'</li>'+
 					'<li>'+bottomText+" "+docsLengthTpl.apply(docs.slice(-(docs.length>limit ? limit : parseInt(docs.length/2))).reverse().map(function(doc) {return {
 						id: doc.getId(),
 						shortTitle: doc.getShortTitle(),
 						title: doc.getTitle(),
 						val: docDataFunc.call(me, doc),
-						valTip: numberOfTerms
+						valTip: valueTip
 					}}))+'</li>'
 			}]
 		}
