@@ -9,6 +9,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		i18n: {
 			identifyingDocEnts: 'Identifying Document Entities',
 			error: 'Error Identifying Document Entities',
+			retry: 'Retry Failed Documents',
 			done: 'Done'
 		}
 	},
@@ -55,10 +56,27 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		}).then(function(response) {
 			var data = Ext.decode(response.responseText).documentEntities;
 			var isDone = me.updateProgress(data.status);
+			var hasFailures = false;
+			for (var i = 0; i < data.status.length; i++) {
+				if (data.status[i][1].indexOf('failed') === 0) {
+					hasFailures = true;
+					break;
+				}
+			}
 			if (isDone) {
 				var win = me.getProgressWindow();
 				win.down('#identifyingMessage').getEl().down('div.x-mask-msg-text').setStyle('backgroundImage', 'none');
 				win.down('#doneButton').setHidden(false);
+
+				if (hasFailures) {
+					win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
+						me.load(Ext.apply({retryFailures: true}, params));
+						btn.setDisabled(true);
+					}, me);
+				} else {
+					win.down('#retryButton').setHidden(true);
+				}
+
 				dfd.resolve(data.entities);
 			} else {
 				me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, dfd]));
@@ -74,7 +92,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		var total = statusArray.length;
 		var numDone = 0;
 		statusArray.forEach(function(item) {
-			if (item[1] === 'done' || item[1] === 'failed') numDone++;
+			if (item[1] === 'done' || item[1].indexOf('failed') === 0) numDone++;
 		});
 
 		if (this.getProgressWindow() === undefined) {
@@ -119,15 +137,6 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 							'<span class="" style="">{docTitle}</span>',
 						'</div>',
 					'</tpl>']
-				},{
-					itemId: 'doneButton',
-					xtype: 'button',
-					text: this.localize('done'),
-					hidden: true,
-					margin: '0 0 10 0',
-					handler: function(btn) {
-						btn.up('window').close();
-					}
 				}],
 				tools: [{
 					type: 'restore',
@@ -138,6 +147,20 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 						win.expand();
 						win.anchorTo(Ext.getBody(), 'c-c', [0, -win.getBox().height], {duration: 250});
 						tool.hide();
+					}
+				}],
+				buttons: [{
+					itemId: 'retryButton',
+					xtype: 'button',
+					text: this.localize('retry'),
+					hidden: true
+				},{
+					itemId: 'doneButton',
+					xtype: 'button',
+					text: this.localize('done'),
+					hidden: true,
+					handler: function(btn) {
+						btn.up('window').close();
 					}
 				}],
 				listeners: {
@@ -162,7 +185,16 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		var docsStore = Voyant.application.getCorpus().getDocuments();
 		var statusWithDocTitles = statusArray.map(function(status) {
 			var docTitle = docsStore.getById(status[0]).getShortTitle();
-			var statusIcon = status[1] === 'failed' ? 'fa-exclamation-triangle' : status[1] === 'done' ? 'fa-check' : 'fa-clock-o';
+			var statusMsg = status[1];
+			var statusIcon = 'fa-spinner';
+			if (statusMsg.indexOf('failed') === 0) {
+				statusIcon = 'fa-exclamation-triangle';
+				console.log('ner: '+docTitle+', '+statusMsg);
+			} else if (statusMsg === 'done') {
+				statusIcon = 'fa-check';
+			} else if (statusMsg === 'queued') {
+				statusIcon = 'fa-clock-o';
+			}
 			return [docTitle, statusIcon];
 		});
 		win.down('#documentStatus').getStore().loadData(statusWithDocTitles);

@@ -211,6 +211,14 @@ ffed6f bright yellow
 	background-color: hsl(60, 100%, 95%) !important;
 }
 
+/* Document Entities Dialog */
+
+.doc .fa-spinner {
+	-webkit-animation: spin 2.5s linear infinite;
+    -moz-animation: spin 2.5s linear infinite;
+    animation: spin 2.5s linear infinite;
+}
+
 /* Cirrus */
 
 svg.cirrusGraph text {
