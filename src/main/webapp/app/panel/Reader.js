@@ -484,27 +484,30 @@ Ext.define('Voyant.panel.Reader', {
 
 					for (var i = 0, len = positions.length; i < len; i++) {
 						var position = positions[i];
-						
-						var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
-						if (match) {
-							var termEntityPosition = '';
-							if (multiTermEntity) {
-								if (i === 0) {
-									termEntityPosition = 'start ';
-								} else if (i === len-1) {
-									termEntityPosition = 'end ';	
-								} else {
-									termEntityPosition = 'middle ';
+						if (position === -1) {
+							console.warn('missing position for: '+entity.term);
+						} else {
+							var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
+							if (match) {
+								var termEntityPosition = '';
+								if (multiTermEntity) {
+									if (i === 0) {
+										termEntityPosition = 'start ';
+									} else if (i === len-1) {
+										termEntityPosition = 'end ';	
+									} else {
+										termEntityPosition = 'middle ';
+									}
 								}
-							}
 
-							match.addCls('entity '+termEntityPosition+entity.type);
-							match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								match.addCls('entity '+termEntityPosition+entity.type);
+								match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+							}
 						}
 					}
 				});
 			} else {
-				console.warn(entity);
+				console.warn('no positions for: '+entity.term);
 			}
 		});
 	},
