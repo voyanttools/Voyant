@@ -41,42 +41,51 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			noCache: true
 		}, params || {});
 
-		this.doLoad(params, callback);
+		this.doLoad(params, callback, true);
 	},
 
-	doLoad: function(params, callback) {
+	doLoad: function(params, callback, firstCall) {
 		var me = this;
 		Ext.Ajax.request({
 			url: Voyant.application.getTromboneUrl(),
 			params: params
 		}).then(function(response) {
 			var data = Ext.decode(response.responseText).documentEntities;
-			var isDone = me.updateProgress(data.status);
-			var hasFailures = false;
-			for (var i = 0; i < data.status.length; i++) {
-				if (data.status[i][1].indexOf('failed') === 0) {
-					hasFailures = true;
-					break;
-				}
-			}
-			if (isDone) {
+			
+			var progressArray = me._getProgressFromStatus(data.status);
+			var isDone = progressArray[0] === progressArray[1];
+			var hasFailures = progressArray[2];
+
+			if (firstCall && isDone && !hasFailures) {
 				var win = me.getProgressWindow();
-				win.down('#identifyingMessage').getEl().down('div.x-mask-msg-text').setStyle('backgroundImage', 'none');
-				win.down('#doneButton').setHidden(false);
-
-				if (hasFailures) {
-					win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
-						me.load(Ext.apply({retryFailures: true}, params), callback);
-						btn.setDisabled(true);
-					}, me);
-				} else {
-					win.down('#retryButton').setHidden(true);
+				if (win) {
+					win.close();
 				}
-
 				callback.call(me, data.entities);
 			} else {
-				delete params.retryFailures;
-				me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, callback]));
+				me.updateProgress(data.status, progressArray);
+				if (isDone) {
+					var win = me.getProgressWindow();
+					win.down('#identifyingMessage').getEl().down('div.x-mask-msg-text').setStyle('backgroundImage', 'none');
+					win.down('#doneButton').setHidden(false);
+	
+					if (hasFailures) {
+						win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
+							me.load(Ext.apply({retryFailures: true}, params), callback);
+							btn.setDisabled(true);
+						}, me);
+					} else {
+						win.down('#retryButton').setHidden(true);
+						if (firstCall) {
+							win.close();
+						}
+					}
+	
+					callback.call(me, data.entities);
+				} else {
+					delete params.retryFailures;
+					me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, callback, false]));
+				}
 			}
 		}, function(err) {
 			Voyant.application.showError(me.localize('error'));
@@ -85,13 +94,21 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		});
 	},
 
-	updateProgress: function(statusArray) {
+	_getProgressFromStatus: function(statusArray) {
 		var total = statusArray.length;
 		var numDone = 0;
+		var hasFailures = false;
 		statusArray.forEach(function(item) {
-			if (item[1] === 'done' || item[1].indexOf('failed') === 0) numDone++;
+			if (item[1] === 'done') numDone++;
+			else if (item[1].indexOf('failed') === 0) {
+				numDone++;
+				hasFailures = true;
+			}
 		});
+		return [numDone, total, hasFailures];
+	},
 
+	updateProgress: function(statusArray, progressArray) {
 		if (this.getProgressWindow() === undefined) {
 			this.setProgressWindow(Ext.create('Ext.window.Window', {
 				title: this.localize('identifyingDocEnts'),
@@ -175,6 +192,9 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			}));
 		}
 
+		var numDone = progressArray[0];
+		var total = progressArray[1];
+
 		var win = this.getProgressWindow();
 		
 		win.down('#progressBar').updateProgress(numDone/total, numDone+' / '+total);
@@ -199,8 +219,6 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		win.setTitle(this.localize('identifyingDocEnts')+' '+numDone+' / '+total);
 
 		win.show();
-
-		return numDone === total;
 	}
 
 
