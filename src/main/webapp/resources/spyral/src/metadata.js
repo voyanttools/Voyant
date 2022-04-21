@@ -3,23 +3,19 @@
  * @memberof Spyral
  */
 class Metadata {
-	/**
-	 * The Metadata config object
-	 * @typedef {Object} MetadataConfig
-	 * @property {String} title The title of the Notebook
-	 * @property {String} userId The user ID of the author of the Notebook
-	 * @property {String} author The name of the author of the Notebook
-	 * @property {String} description The description of the Notebook
-	 * @property {Array} keywords The keywords for the Notebook
-	 * @property {String} created When the Notebook was created
-	 * @property {String} language The language of the Notebook
-	 * @property {String} license The license for the Notebook
-	 */
-
+	
 	/** 
 	 * The metadata constructor.
 	 * @constructor
-	 * @param {MetadataConfig} config The metadata config object
+	 * @param {Object} config The metadata config object
+	 * @param {String} config.title The title of the Notebook
+	 * @param {String} config.userId The user ID of the author of the Notebook
+	 * @param {String} config.author The name of the author of the Notebook
+	 * @param {String} config.description The description of the Notebook
+	 * @param {Array} config.keywords The keywords for the Notebook
+	 * @param {String} config.created When the Notebook was created
+	 * @param {String} config.language The language of the Notebook
+	 * @param {String} config.license The license for the Notebook
 	 */
 	constructor(config) {
 		['title', 'userId', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
