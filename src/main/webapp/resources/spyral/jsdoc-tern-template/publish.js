@@ -26,6 +26,7 @@ exports.publish = function(data, opts, tutorials) {
             var type = typeObj.type.names.join('|');
             //pipes
             if (type.indexOf('|') !== -1) {
+                //ternjs doesn't support multiple types for a parameter
                 type = '?';
             }
             //arrays
@@ -48,6 +49,7 @@ exports.publish = function(data, opts, tutorials) {
             else if (type.indexOf('boolean') !== -1) {
                 type = 'bool';
             }
+            //constructors
             else if ((output[type] && output[type].prototype) || /[A-Z]/.test(type[0])) {
                 type = '+' + type;
             }
@@ -89,21 +91,46 @@ exports.publish = function(data, opts, tutorials) {
         }
     }
 
-    function convertParams(params) {
-        var ret = [];
-        if (params) {
+    function convertParams(doc) {
+        if (doc.params) {
 
-            // TODO add handling parameters with properties, tern doesn't support them so need to only show parent param
-            // https://discuss.ternjs.net/t/functions-optional-parameters-overloads/59
+            // tern doesn't support parameters with properties ( https://discuss.ternjs.net/t/functions-optional-parameters-overloads/59 )
+            // so, create type definitions for them
+            var definitions = undefined;
+            doc.params.forEach(param => {
+                if (param.name.indexOf('.') !== -1) {
+                    if (definitions === undefined) definitions = {};
 
-            // filter out param properties
-            var nonProps = params.filter(param => param.name.indexOf('.') === -1);
-
-            nonProps.forEach((param) => {
-                ret.push(param.name + (param.optional ? '?' : '') + ': ' + convertType(param, true));
+                    var [paramName, propName] = param.name.split('.');
+                    if (definitions[paramName] === undefined) {
+                        definitions[paramName] = {};
+                    }
+                    definitions[paramName][propName] = convertType(param);
+                }
             });
 
-            return 'fn(' + ret.join(', ') + ')';
+            var convertedParams = [];
+            doc.params
+                .filter(param => param.name.indexOf('.') === -1)
+                .forEach((param) => {
+                    if (definitions && definitions[param.name]) {
+                        // create the full type definition name, prepending class, method
+                        var paramTypeName = `${doc.longname.replace(/\.|#/g, '_')}_${param.name}`;
+                        convertedParams.push(`${param.name + (param.optional ? '?' : '')}: +${paramTypeName}`);
+                        // replace the old name with the new one
+                        definitions[paramTypeName] = definitions[param.name];
+                        delete definitions[param.name];
+                    } else {
+                        convertedParams.push(`${param.name + (param.optional ? '?' : '')}: ${convertType(param, true)}`);
+                    }
+                });
+
+            if (definitions) {
+                // add the new type definitions
+                Object.assign(output['!define'], definitions);
+            }
+
+            return 'fn(' + convertedParams.join(', ') + ')';
         }
         return 'fn()';
     }
@@ -139,7 +166,7 @@ exports.publish = function(data, opts, tutorials) {
 
                 var context = createEntriesForName(doc.longname, output);
 
-                context['!type'] = convertParams(doc.params);
+                context['!type'] = convertParams(doc);
                 context['prototype'] = {};
 
                 convertedEntry = context;
@@ -158,7 +185,7 @@ exports.publish = function(data, opts, tutorials) {
             } else if (doc.kind === 'typedef' && doc.params) {
 
                 output[doc.name] = {
-                    "!type": convertParams(doc.params) + convertReturns(doc.returns)
+                    "!type": convertParams(doc) + convertReturns(doc.returns)
                 };
 
                 convertedEntry = output[doc.name]
@@ -170,7 +197,7 @@ exports.publish = function(data, opts, tutorials) {
             var memberName = doc.memberof.replace('module:', '');
             if (memberName === pkg.name) {
                 library[doc.name] = {
-                    "!type": convertParams(doc.params) + convertReturns(doc.returns)
+                    "!type": convertParams(doc) + convertReturns(doc.returns)
                 };
                 convertedEntry = library[doc.name];
             } else {
@@ -187,7 +214,7 @@ exports.publish = function(data, opts, tutorials) {
                 }
                 
                 context[name] = {
-                    "!type": doc.kind === 'function' ? convertParams(doc.params) + convertReturns(doc.returns) : convertType(doc.type.names.join('|'))
+                    "!type": doc.kind === 'function' ? convertParams(doc) + convertReturns(doc.returns) : convertType(doc.type.names.join('|'))
                 }
 
                 convertedEntry = context[name];
@@ -204,11 +231,7 @@ exports.publish = function(data, opts, tutorials) {
 
             var url = convertSee(doc.see);
             if (url) {
-                // TODO ace tern doesn't support !url
-                // convertedEntry['!url'] = url;
-
-                // append to docs, for now
-                convertedEntry['!doc'] += "\n"+url;
+                convertedEntry['!url'] = url;
             }
         }
     }
