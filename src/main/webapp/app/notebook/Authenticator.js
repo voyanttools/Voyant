@@ -7,7 +7,8 @@ Ext.define('Voyant.notebook.Authenticator', {
 			logout: 'Logout',
 			yourNotebooks: 'Your Notebooks',
 			authenticateWithGithub: 'Authenticate with GitHub',
-			authorizeSpyralGithub: 'You must authorize Spyral to use GitHub on your behalf.'
+			authorizeSpyralGithub: 'You must authorize Spyral to use GitHub on your behalf.',
+			signInSuccess: 'Sign in successful!'
 		}
 	},
 

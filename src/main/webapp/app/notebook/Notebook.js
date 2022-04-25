@@ -236,8 +236,12 @@ Ext.define('Voyant.notebook.Notebook', {
 							menu.items = [];
 						} else {
 							menu.items = [
-								parent.getGitHubAuthButton(parent.showAccountWindow)
-								// parent.getGoogleAuthButton(parent.showAccountWindow)
+								parent.getGitHubAuthButton(function() {
+									parent.toastInfo({
+										html: parent.localize('signInSuccess'),
+										anchor: 'tr'
+									});
+								})
 							];
 						}
 					}
