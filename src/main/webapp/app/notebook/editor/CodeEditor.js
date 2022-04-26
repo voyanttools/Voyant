@@ -101,9 +101,27 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 						defs: defs,
 						useWorker: true,
 						workerScript: url+'resources/spyral/tern/worker.js',
-						workerDeps: ['tern_worker_deps.js']
+						workerDeps: ['tern_worker_deps.js'],
+						hintDelay: 5000
 					});
 				}
+
+				editor.on('keypress', function(ed, event) {
+					if (event.key === '.') {
+						Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+					} else if (event.key === '{') {
+						// many Spyral methods take a single config object
+						// so look out for that and display config object properties
+						var cursor = ed.getCursor();
+						var range = ed.getRange({line: cursor.line, ch: 0}, cursor);
+						if (range.match(/\(\s*$/)) {
+							// let closebrackets addon finish and then look for matches
+							setTimeout(function() {
+								Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+							}, 50);
+						}
+					}
+				});
 				
 				Object.assign(editor.getOption('extraKeys'), {
 					'Ctrl-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
