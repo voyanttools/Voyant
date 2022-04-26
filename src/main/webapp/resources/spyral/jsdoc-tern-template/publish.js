@@ -37,6 +37,13 @@ exports.publish = function(data, opts, tutorials) {
             else if (type.indexOf('ArrayLike.<') !== -1) {
                 type = '?';
             }
+			//promise
+			else if (type.indexOf('Promise') === 0) {
+				// remove promise resolve type ( https://stackoverflow.com/a/21714928 )
+				// which is not currently supported: https://github.com/ternjs/tern/issues/490
+				// prepend + so that the promise function info is not shown
+				type = '+Promise';
+			}
             //any
             else if (type === '*' || type === 'any') {
                 type = type.replace(/\*/g, '?');
@@ -46,10 +53,17 @@ exports.publish = function(data, opts, tutorials) {
                 type = type.replace(/function/g, 'fn()');
             }
             //boolean
-            else if (type.indexOf('boolean') !== -1) {
-                type = 'bool';
+            else if (type.search(/boolean/i) !== -1) {
+                type = type.replace(/boolean/ig, 'boolean')
             }
-            //constructors
+			else if (type.indexOf('String') !== -1) {
+				type = type.replace(/String/g, 'string')
+			}
+			else if (type.indexOf('Number') !== -1) {
+				type = type.replace(/Number/g, 'number')
+			}
+
+            // types with constructors
             else if ((output[type] && output[type].prototype) || /[A-Z]/.test(type[0])) {
                 type = '+' + type;
             }
