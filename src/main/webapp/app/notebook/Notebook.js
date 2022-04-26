@@ -782,7 +782,7 @@ Ext.define('Voyant.notebook.Notebook', {
  
     addCode: function(block, order, cellId, config) {
 		config = config || {};
-		config.docs = [this.spyralTernDocs, this.ecmaTernDocs, this.browserTernDocs];
+		config.docs = [this.ecmaTernDocs, this.browserTernDocs, this.spyralTernDocs];
     	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
     },
 
