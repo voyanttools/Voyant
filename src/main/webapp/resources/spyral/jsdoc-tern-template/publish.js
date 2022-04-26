@@ -106,6 +106,7 @@ exports.publish = function(data, opts, tutorials) {
     }
 
     function convertParams(doc) {
+		var paramsOutput = 'fn()';
         if (doc.params) {
 
             // tern doesn't support parameters with properties ( https://discuss.ternjs.net/t/functions-optional-parameters-overloads/59 )
@@ -144,9 +145,12 @@ exports.publish = function(data, opts, tutorials) {
                 Object.assign(output['!define'], definitions);
             }
 
-            return 'fn(' + convertedParams.join(', ') + ')';
+            paramsOutput = 'fn(' + convertedParams.join(', ') + ')';
         }
-        return 'fn()';
+		if (doc.returns) {
+			paramsOutput += convertReturns(doc.returns);
+		}
+        return paramsOutput;
     }
 
     function convertReturns(returns) {
@@ -199,7 +203,7 @@ exports.publish = function(data, opts, tutorials) {
             } else if (doc.kind === 'typedef' && doc.params) {
 
                 output[doc.name] = {
-                    "!type": convertParams(doc) + convertReturns(doc.returns)
+                    "!type": convertParams(doc)
                 };
 
                 convertedEntry = output[doc.name]
@@ -211,7 +215,7 @@ exports.publish = function(data, opts, tutorials) {
             var memberName = doc.memberof.replace('module:', '');
             if (memberName === pkg.name) {
                 library[doc.name] = {
-                    "!type": convertParams(doc) + convertReturns(doc.returns)
+                    "!type": convertParams(doc)
                 };
                 convertedEntry = library[doc.name];
             } else {
@@ -228,7 +232,7 @@ exports.publish = function(data, opts, tutorials) {
                 }
                 
                 context[name] = {
-                    "!type": doc.kind === 'function' ? convertParams(doc) + convertReturns(doc.returns) : convertType(doc.type.names.join('|'))
+                    "!type": doc.kind === 'function' ? convertParams(doc) : convertType(doc.type.names.join('|'))
                 }
 
                 convertedEntry = context[name];
