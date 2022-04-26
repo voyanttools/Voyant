@@ -147,8 +147,8 @@ body.exported-notebook {
 }
 
 .tern-doc {
-	display: inline-block;
+	display: block;
 }
 .tern-doc-url {
-	display: inline-block;
+	display: block;
 }
