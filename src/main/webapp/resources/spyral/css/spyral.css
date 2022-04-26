@@ -145,3 +145,10 @@ body.exported-notebook {
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
+
+.tern-doc {
+	display: inline-block;
+}
+.tern-doc-url {
+	display: inline-block;
+}
