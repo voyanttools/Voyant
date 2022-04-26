@@ -1,6 +1,8 @@
 var fs = require('fs');
 var helper = require("jsdoc/util/templateHelper");
 
+var apiUrlRoot = 'https://voyant-tools.org';
+
 /**
  * Publish hook for the JSDoc template.  Writes to JSON stdout.
  * @param {function} data The root of the Taffy DB containing doclet records.
@@ -251,6 +253,17 @@ exports.publish = function(data, opts, tutorials) {
             if (url) {
                 convertedEntry['!url'] = url;
             }
+
+			if ((doc.kind === 'function' || doc.kind === 'class') && desc && !url) {
+				// auto-generate API urls
+				if (doc.kind === 'class') {
+					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname+'-method-constructor';
+				} else if (doc.scope === 'instance') {
+					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace('#', '-method-'));
+				} else if (doc.scope === 'static') {
+					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace(/\.(\w+)$/, '-static-method-$1'));
+				}
+			}
         }
     }
 
