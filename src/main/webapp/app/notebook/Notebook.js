@@ -78,6 +78,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	voyantStorageDialogs: undefined,
 	githubDialogs: undefined,
 	catalogueWindow: undefined,
+	docsWindow: undefined,
 
 	// holds the content of the tern docs, for passing to the code editor
 	spyralTernDocs: undefined,
@@ -304,6 +305,7 @@ Ext.define('Voyant.notebook.Notebook', {
     				scope: this
     			}
     		}],
+			helpToolClick: this.showDocs.bind(this),
     		listeners: {
     			afterrender: this.init,
     			notebookWrapperMoveUp: this.notebookWrapperMoveUp,
@@ -997,5 +999,19 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.metadataEditor.loadMetadata(metadata);
 
 		this.metadataWindow.show();
+	},
+
+	showDocs: function() {
+		if (this.docsWindow === undefined) {
+			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
+		}
+		this.docsWindow.showDocs();
+	},
+
+	showDocsForClassMethod: function(docClass, docMethod) {
+		if (this.docsWindow === undefined) {
+			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
+		}
+		this.docsWindow.showDocsForClassMethod(docClass, docMethod);
 	}
 });

@@ -96,7 +96,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			if (this.getMode() === 'javascript') {
 				if (Voyant.notebook.editor.CodeEditor.ternServer === undefined) {
 					var defs = this.getDocs();
-					var url = this.up('notebook').getApplication().getBaseUrlFull();
+					var url = Voyant.application.getBaseUrlFull();
 					Voyant.notebook.editor.CodeEditor.ternServer = new CodeMirror.TernServer({
 						defs: defs,
 						useWorker: true,
@@ -125,7 +125,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				
 				Object.assign(editor.getOption('extraKeys'), {
 					'Ctrl-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
-					'Ctrl-O': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed); }
+					'Ctrl-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); }
 				});
 				editor.on('cursorActivity', function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.updateArgHints(ed); });
 			}
@@ -228,5 +228,29 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			}
 		});
 		this.setMarkers([]);
+	},
+
+	_showDocsCallback: function() {
+		var toolTipEl = this.getEditor().state.ternTooltip;
+		var docLink = toolTipEl.querySelector('a');
+		if (docLink) {
+			docLink.addEventListener('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				var docHref = docLink.getAttribute('href');
+				var matches = docHref.match(/.*?\/api\/(\w+.\w+)-?(.*)?/);
+				if (matches) {
+					var docClass = matches[1];
+					var docMethod = matches[2];
+					this.up('notebook').showDocsForClassMethod(docClass, docMethod);
+				} else {
+					if (docHref.indexOf('#!') === 0) {
+						window.open(Voyant.application.getBaseUrlFull()+'docs/'+docHref, '_spyral_docs');
+					} else {
+						window.open(docHref, '_external');
+					}
+				}
+			}.bind(this));
+		}
 	}
 })
