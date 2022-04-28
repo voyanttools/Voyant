@@ -152,3 +152,41 @@ body.exported-notebook {
 .tern-doc-url {
 	display: block;
 }
+#docsWindowParent {
+	padding: 6px 8px;
+}
+#docsWindowParent a.side.expandable, #docsWindowParent .title .meta, #docsWindowParent .members-title, #docsWindowParent .members-subtitle, #docsWindowParent .definedBy {
+	display: none;
+}
+#docsWindowParent h3 {
+	font-size: 14px;
+}
+#docsWindowParent .title {
+	font-size: 16px;
+}
+#docsWindowParent .title .new-keyword {
+	margin-right: 5px;
+}
+#docsWindowParent .title .name {
+	font-weight: bold;
+}
+#docsWindowParent .title .signature span {
+	font-size: 12px;
+	text-transform: uppercase;
+	color: #fff;
+	background-color: #484848;
+	border-radius: 2px;
+	margin-left: 6px;
+	padding: 0 6px;
+}
+#docsWindowParent .description .short {
+	display: none;
+}
+#docsWindowParent pre {
+	white-space: pre-wrap;
+	background-color: #f7f7f7;
+	padding: 4px 8px;
+}
+#docsWindowParent .pre {
+	font-family: monospace;
+}
