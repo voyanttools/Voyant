@@ -102,28 +102,39 @@ Ext.define('Voyant.notebook.Notebook', {
     				glyph: 'xf0c2@FontAwesome',
 					callback: function(parent, menu) {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each to register item changes
-						if (parent.isAuthenticated()) {
-							menu.items = [{
-								text: 'Save',
-								xtype: 'menuitem',
-								glyph: 'xf0c2@FontAwesome',
-								handler: parent.showSaveDialog.bind(parent, false),
-								scope: parent
-							},{
-								text: 'Save As...',
-								xtype: 'menuitem',
-								glyph: 'xf0c2@FontAwesome',
-								handler: parent.showSaveDialog.bind(parent, true),
-								scope: parent
-							}];
-						} else {
+						menu.items = [];
+
+						parent.isAuthenticated(true).then(function(isAuth) {
+							if (isAuth) {
+								menu.items = [{
+									text: 'Save',
+									xtype: 'menuitem',
+									glyph: 'xf0c2@FontAwesome',
+									handler: parent.showSaveDialog.bind(parent, false),
+									scope: parent
+								},{
+									text: 'Save As...',
+									xtype: 'menuitem',
+									glyph: 'xf0c2@FontAwesome',
+									handler: parent.showSaveDialog.bind(parent, true),
+									scope: parent
+								}];
+							} else {
+								menu.items = [{
+									xtype: 'component',
+									padding: 5,
+									html: 'Please sign in to save'
+								}];
+							}
+						}, function() {
 							menu.items = [{
 								xtype: 'component',
 								padding: 5,
 								html: 'Please sign in to save'
 							}];
-						}
-
+						}).always(function() {
+							menu.showToolMenu();
+						});
 						/*{
 							text: 'Storage',
 							xtype: 'menuitem',
@@ -232,10 +243,22 @@ Ext.define('Voyant.notebook.Notebook', {
 					glyph: 'xf007@FontAwesome',
 					callback: function(parent, menu) {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
-						if (parent.isAuthenticated()) {
-							parent.showAccountWindow();
-							menu.items = [];
-						} else {
+						menu.items = [];
+
+						parent.isAuthenticated(true).then(function(isAuth) {
+							if (isAuth) {
+								parent.showAccountWindow();
+							} else {
+								menu.items = [
+									parent.getGitHubAuthButton(function() {
+										parent.toastInfo({
+											html: parent.localize('signInSuccess'),
+											anchor: 'tr'
+										});
+									})
+								];
+							}
+						}, function() {
 							menu.items = [
 								parent.getGitHubAuthButton(function() {
 									parent.toastInfo({
@@ -244,7 +267,9 @@ Ext.define('Voyant.notebook.Notebook', {
 									});
 								})
 							];
-						}
+						}).always(function() {
+							menu.showToolMenu();
+						});
 					}
 				}
     		},

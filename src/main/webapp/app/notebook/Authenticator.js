@@ -201,7 +201,14 @@ Ext.define('Voyant.notebook.Authenticator', {
 		return dfd.promise;
 	},
 
-	isAuthenticated: function() {
+	isAuthenticated: function(refresh) {
+		if (refresh) {
+			return this.retrieveAccountInfo().then(function(info) {
+				return info !== undefined;
+			}, function() {
+				return false;
+			})
+		}
 		return this.accountInfo !== undefined;
 	},
 

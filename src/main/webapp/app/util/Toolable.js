@@ -862,17 +862,11 @@ Ext.define('Voyant.util.ToolMenu', {
             '</tpl>'],
     privates: {
         onClick: function() {
-            var me = this,
-            returnValue = me.callParent(arguments);
+            var me = this;
+            var returnValue = me.callParent(arguments);
 
-            if (returnValue && me.items && me.items.length > 0) {
-                if (!me.toolMenu || me.toolMenu.destroyed) {
-                    me.toolMenu = new Ext.menu.Menu({
-                        items: me.items
-                    });
-                }
-                me.toolMenu.showAt(0, 0);
-                me.toolMenu.showAt(me.getX() + me.getWidth() - me.toolMenu.getWidth(), me.getY() + me.getHeight() + 10);
+			if (returnValue) {
+                me.showToolMenu.call(me);
             }
 
             return returnValue;
@@ -881,7 +875,18 @@ Ext.define('Voyant.util.ToolMenu', {
             Ext.destroyMembers(this, 'toolMenu'); //destructor
             this.callParent();
         }
-    },   
+    },
+	showToolMenu: function() {
+		if (this.items && this.items.length > 0) {
+			if (!this.toolMenu || this.toolMenu.destroyed) {
+				this.toolMenu = new Ext.menu.Menu({
+					items: this.items
+				});
+			}
+			this.toolMenu.showAt(0, 0);
+			this.toolMenu.showAt(this.getX() + this.getWidth() - this.toolMenu.getWidth(), this.getY() + this.getHeight() + 10);
+		}
+	},
 	initComponent: function() {
 	    var me = this;
 	    me.callParent(arguments);
