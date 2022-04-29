@@ -468,6 +468,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.getScrollable().trackingScrollTop = 0;
 		this.getScrollable().trackingScrollLeft = 0;
 
+		this.setNotebookId(undefined);
 		this.setMetadata(new Spyral.Metadata());
 		this.voyantStorageDialogs.reset();
     	var cells = this.getComponent("cells");
@@ -934,8 +935,9 @@ Ext.define('Voyant.notebook.Notebook', {
 		return val;
     },
     
-    applyNotebookId: function (id) {
-    	if (id) {
+	applyNotebookId: function (id) {
+		let url = this.getBaseUrl()+"spyral/";
+		if (id) {
 			if (id.indexOf(this.NOTEBOOK_ID_SEPARATOR) === -1) {
 				// old ID system
 				this.setNotebookName(id);
@@ -943,11 +945,12 @@ Ext.define('Voyant.notebook.Notebook', {
 				const notebookName = id.split(this.NOTEBOOK_ID_SEPARATOR)[1];
 				this.setNotebookName(notebookName);
 			}
-    		let url = this.getBaseUrl()+"spyral/"+id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
-			window.history.pushState({
-				url: url
-			}, '', url);
-    	}
+			url += id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
+		}
+		window.history.pushState({
+			url: url
+		}, '', url);
+
 		return id;
     },
 
