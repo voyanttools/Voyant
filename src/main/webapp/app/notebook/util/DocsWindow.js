@@ -17,15 +17,31 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	lastDocEntryClass: undefined,
 	lastDocEntryMethod: undefined,
 
+	outlineTemplate: new Ext.XTemplate(
+		'<ul>',
+			'<tpl for="groups">',
+				'<tpl for="classes">',
+					'<li><a href="#!/api/{.}">{.}</a></li>',
+				'</tpl>',
+			'</tpl>',
+		'</ul>'
+	),
+	membersTemplate: new Ext.XTemplate(
+		'<div class="members">',
+			'<tpl for=".">',
+				'<div class="member"><a href="#!/api/{owner}-{id}">{name}</a></div>',
+			'</tpl>',
+		'</div>'
+	),
+
 	constructor: function(config) {
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 
 		config = config || {};
 		Ext.apply(config, {
-			title: 'Docs',
+			title: this.localize('docs'),
 			width: 500,
 			height: 500,
-			scrollable: 'y',
 			minimizable: true,
 			closeAction: 'hide',
 			tbar: [{
@@ -46,24 +62,35 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 				text: this.localize('configs'),
 				itemId: 'configsBtn',
 				glyph: 'xf013@FontAwesome',
-				menu: {
-					xtype: 'menu',
-					itemId: 'docsConfigs',
-					items: []
+				handler: function(btn) {
+					btn.up('window').getLayout().setActiveItem(1);
 				}
 			},{
 				text: this.localize('methods'),
 				itemId: 'methodsBtn',
 				glyph: 'xf1b2@FontAwesome',
-				menu: {
-					xtype: 'menu',
-					itemId: 'docsMethods',
-					items: []
+				handler: function(btn) {
+					btn.up('window').getLayout().setActiveItem(2);
 				}
 			}],
+			layout: 'card',
 			items: [{
-				xtype: 'container',
-				html: '<div id="docsWindowParent"><div></div></div>'
+				itemId: 'main',
+				cls: 'docsWindowContent',
+				scrollable: 'y',
+				html: ''
+			},{
+				itemId: 'configs',
+				cls: 'docsWindowContent',
+				scrollable: 'x',
+				layout: 'fit',
+				html: ''
+			},{
+				itemId: 'methods',
+				cls: 'docsWindowContent',
+				scrollable: 'x',
+				layout: 'fit',
+				html: ''
 			}],
 			tools: [{
 				type: 'help',
@@ -136,7 +163,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	_showDocEntry: function(entryId) {
-		var docsParentEl = this.getEl().getById('docsWindowParent', true);
+		var docsParentEl = this.down('#main').getEl().dom;
 		docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = true; });
 		this.lastDocEntryMethod = entryId;
 		if (entryId) {
@@ -144,8 +171,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		} else {
 			docsParentEl.querySelector('.doc-contents').hidden = false;
 		}
+		this.getLayout().setActiveItem(0);
 		setTimeout(function() {
-			this.body.scrollTo('top', 0, false);
+			this.down('#main').body.scrollTo('top', 0, false);
 		}.bind(this), 0);
 	},
 
@@ -157,22 +185,13 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.down('#restoreButton').hide();
 
 		var html = '<p>'+this.localize('outlineIntro')+'</p><p>'+this.localize('outlineApi')+'</p>';
+		html += this.outlineTemplate.apply(json);
 
-		var outlineTemplate = new Ext.XTemplate(
-			'<ul>',
-				'<tpl for="groups">',
-					'<tpl for="classes">',
-						'<li><a href="#!/api/{.}">{.}</a></li>',
-					'</tpl>',
-				'</tpl>',
-			'</ul>'
-		);
-		html += outlineTemplate.apply(json);
+		this._setHtmlForCard('main', html);
 
-		var docsParentEl = this.getEl().getById('docsWindowParent', true);
-		docsParentEl.innerHTML = html;
-		this._handleLinks(docsParentEl);
 		this.body.scrollTo('top', 0, false);
+
+		this.getLayout().setActiveItem(0);
 
 		this.down('#overviewBtn').hide();
 		this.down('#configsBtn').hide();
@@ -193,10 +212,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.down('#restoreButton').hide();
 
-		var docsParentEl = this.getEl().getById('docsWindowParent', true);
-		docsParentEl.innerHTML = json.html;
-		this._handleLinks(docsParentEl);
-		Ext.fly(docsParentEl).selectable();
+		this._setHtmlForCard('main', json.html);
 
 		this._showDocEntry(docMethod);
 
@@ -205,41 +221,21 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		var configMembers = [];
 		var methodMembers = [];
 		json.members.forEach(function(member) {
-			var menuItem = {
-				xtype: 'menuitem',
-				text: member.name,
-				data: member.id,
-				handler: function(item) {
-					item.up('window')._showDocEntry(member.id);
-				}
-			}
 			if (member.tagname === 'cfg') {
-				configMembers.push(menuItem);
+				configMembers.push(member);
 			} else if (member.tagname === 'method') {
 				if (member.meta.static) {
 					// TODO add icon to indicate it's static?
 				}
-				methodMembers.push(menuItem);
+				methodMembers.push(member);
 			}
 		});
 
-		if (configMembers.length > 0) {
-			this.down('#configsBtn').show();
-			var configsMenu = this.down('#docsConfigs');
-			configsMenu.removeAll();
-			configsMenu.add(configMembers);
-		} else {
-			this.down('#configsBtn').hide();
-		}
+		this._setHtmlForCard('configs', this.membersTemplate.apply(configMembers));
+		this.down('#configsBtn').setVisible(configMembers.length > 0);
 
-		if (methodMembers.length > 0) {
-			this.down('#methodsBtn').show();
-			var methodsMenu = this.down('#docsMethods');
-			methodsMenu.removeAll();
-			methodsMenu.add(methodMembers);
-		} else {
-			this.down('#methodsBtn').hide();
-		}
+		this._setHtmlForCard('methods', this.membersTemplate.apply(methodMembers));
+		this.down('#methodsBtn').setVisible(configMembers.length > 0);
 
 		if (this.getCollapsed()) {
 			this.expand(false);
@@ -247,6 +243,13 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 				this.anchorTo(Ext.getBody(), 'br-br');
 			}.bind(this), 10);
 		}
+	},
+
+	_setHtmlForCard: function(cardId, html) {
+		this.down('#'+cardId).setHtml(html);
+		var cardEl = this.down('#'+cardId).getEl().dom;
+		this._handleLinks(cardEl);
+		Ext.fly(cardEl).selectable();
 	},
 
 	_handleLinks: function(docsParentEl) {

@@ -152,25 +152,36 @@ body.exported-notebook {
 .tern-doc-url {
 	display: block;
 }
-#docsWindowParent {
+.docsWindowContent .x-panel-body > div {
 	padding: 6px 8px;
 }
-#docsWindowParent a.side.expandable, #docsWindowParent .title .meta, #docsWindowParent .members-title, #docsWindowParent .members-subtitle, #docsWindowParent .definedBy {
+.docsWindowContent .members {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	justify-content: flex-start;
+}
+.docsWindowContent .member {
+	padding: 6px 18px 0 0;
+}
+.docsWindowContent a.side.expandable, .docsWindowContent .title .meta, .docsWindowContent .members-title, .docsWindowContent .members-subtitle, .docsWindowContent .definedBy {
 	display: none;
 }
-#docsWindowParent h3 {
+.docsWindowContent h3 {
 	font-size: 14px;
 }
-#docsWindowParent .title {
+.docsWindowContent .title {
 	font-size: 16px;
 }
-#docsWindowParent .title .new-keyword {
+.docsWindowContent .title .new-keyword {
 	margin-right: 5px;
 }
-#docsWindowParent .title .name {
+.docsWindowContent .title .name {
 	font-weight: bold;
 }
-#docsWindowParent .title .signature span {
+.docsWindowContent .title .signature span {
 	font-size: 12px;
 	text-transform: uppercase;
 	color: #fff;
@@ -179,14 +190,14 @@ body.exported-notebook {
 	margin-left: 6px;
 	padding: 0 6px;
 }
-#docsWindowParent .description .short {
+.docsWindowContent .description .short {
 	display: none;
 }
-#docsWindowParent pre {
+.docsWindowContent pre {
 	white-space: pre-wrap;
 	background-color: #f7f7f7;
 	padding: 4px 8px;
 }
-#docsWindowParent .pre {
+.docsWindowContent .pre {
 	font-family: monospace;
 }
