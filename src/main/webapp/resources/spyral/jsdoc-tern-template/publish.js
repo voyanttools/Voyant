@@ -254,14 +254,19 @@ exports.publish = function(data, opts, tutorials) {
                 convertedEntry['!url'] = url;
             }
 
-			if ((doc.kind === 'function' || doc.kind === 'class') && desc && !url) {
+			if ((doc.kind === 'function' || doc.kind === 'class') && !url) {
 				// auto-generate API urls
-				if (doc.kind === 'class') {
-					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname+'-method-constructor';
-				} else if (doc.scope === 'instance') {
-					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace('#', '-method-'));
-				} else if (doc.scope === 'static') {
-					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace(/\.(\w+)$/, '-static-method-$1'));
+				if (!desc) {
+					// link to overview by default
+					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname;
+				} else {
+					if (doc.kind === 'class') {
+						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname+'-method-constructor';
+					} else if (doc.scope === 'instance') {
+						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace('#', '-method-'));
+					} else if (doc.scope === 'static') {
+						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace(/\.(\w+)$/, '-static-method-$1'));
+					}
 				}
 			}
         }
