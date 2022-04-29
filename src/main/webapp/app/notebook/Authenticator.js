@@ -147,9 +147,9 @@ Ext.define('Voyant.notebook.Authenticator', {
 						listeners: {
 							itemdblclick: function(view, record, el) {
 								const notebookId = record.get('id');
-								me.loadFromId(notebookId);
-								me.setNotebookId(notebookId);
-								view.up('window').close();
+								me.fireEvent('notebookSelected', me, notebookId, function() {
+									view.up('window').close()
+								});
 							}
 						}
 					}]

@@ -123,7 +123,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 						flex: 1,
 						listeners: {
 							itemdblclick: function(view, record, el) {
-								this.fireEvent('notebookSelected', this, record.get('id'));
+								this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow);
 							},
 							scope: this
 						}
@@ -196,7 +196,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 						selectedItemCls: 'catalogue-notebook-selected',
 						listeners: {
 							itemdblclick: function(view, record, el) {
-								this.fireEvent('notebookSelected', this, record.get('id'));
+								this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow);
 							},
 							scope: this
 						}
@@ -218,7 +218,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 							record = this.window.down('#suggestedNotebooks').getSelection()[0];
 						}
 						if (record) {
-							this.fireEvent('notebookSelected', this, record.get('id'))
+							this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow)
 						}
 					},
 					scope: this

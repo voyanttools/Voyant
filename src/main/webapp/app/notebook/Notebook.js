@@ -31,7 +31,8 @@ Ext.define('Voyant.notebook.Notebook', {
     		metadataSave: "Save",
     		metadataCancel: "Cancel",
 			catalogueTip: "Search a catalogue of available notebooks.",
-			preparingExport: "Preparing Export"
+			preparingExport: "Preparing Export",
+			notSavedWarning: "Changes to your notebook have not been saved. Are you sure you want to continue?"
     	},
     	api: {
     		input: undefined,
@@ -176,44 +177,21 @@ Ext.define('Voyant.notebook.Notebook', {
 						const storageSolution = this.getStorageSolution();
 						if (storageSolution === undefined) {
 						} else {
-							setTimeout(() => {
-								tool.toolMenu.hide()
-							})
 							if (storageSolution === 'github') {
 								this.githubDialogs.showLoad();
 							} else {
 								Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
 									text = text.trim();
 									if (btn=="ok") {
-										this.loadFromString(text);
+										this.checkIsEditedAndDoCallback(this, function() {
+											this.loadFromString(text);
+										});
 									}
 								}, this, true);
 							}
 						}
 					},
-					scope: this,
-					items: [{
-						text: 'Load',
-						xtype: 'menuitem',
-						glyph: 'xf115@FontAwesome',
-						handler: function() {
-							Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
-								text = text.trim();
-								if (btn=="ok") {
-									this.loadFromString(text);
-								}
-							}, this, true);
-						},
-						scope: this
-					},{
-						text: 'Load from GitHub',
-						xtype: 'menuitem',
-						glyph: 'xf115@FontAwesome',
-						handler: function() {
-							this.githubDialogs.showLoad();
-						},
-						scope: this
-					}]
+					scope: this
     			},
     			'runall': {
     				tooltip: this.localize("runallTip"),
@@ -338,6 +316,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			notebookWrapperRemove: this.notebookWrapperRemove,
 				notebookWrapperAdd: this.notebookWrapperAdd,
 				notebookInitialized: this.notebookInitialized,
+				notebookSelected: this.handleNotebookSelected,
     			scope: this
     		}
     	})
@@ -419,11 +398,7 @@ Ext.define('Voyant.notebook.Notebook', {
 
 		this.catalogueWindow = new Voyant.notebook.Catalogue({
 			listeners: {
-				notebookSelected: function(catalogue, notebookId) {
-					catalogue.hideWindow();
-					this.loadFromId(notebookId);
-					this.setNotebookId(notebookId);
-				},
+				notebookSelected: this.handleNotebookSelected,
 				scope: this
 			}
 		});
@@ -688,6 +663,33 @@ Ext.define('Voyant.notebook.Notebook', {
 			});
 		});
     },
+
+	checkIsEditedAndDoCallback: function(source, callback) {
+		if (this.getIsEdited()) {
+			Ext.Msg.show({
+				title: this.localize('openTitle'),
+				message: this.localize('notSavedWarning'),
+				buttons: Ext.Msg.YESNO,
+				icon: Ext.Msg.QUESTION,
+				fn: function(btn) {
+					if (btn==='yes') {
+						callback.call(source);
+					}
+				},
+				scope: this
+
+			});
+		} else {
+			callback.call(source);
+		}
+	},
+
+	handleNotebookSelected: function(source, notebookId, callback) {
+		this.checkIsEditedAndDoCallback(source, function() {
+			callback.call(source);
+			this.loadFromId(notebookId);
+		}.bind(this));
+	},
     
     runUntil: function(upToCmp) {
     	var containers = [];
