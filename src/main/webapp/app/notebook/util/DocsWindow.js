@@ -235,7 +235,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.down('#configsBtn').setVisible(configMembers.length > 0);
 
 		this._setHtmlForCard('methods', this.membersTemplate.apply(methodMembers));
-		this.down('#methodsBtn').setVisible(configMembers.length > 0);
+		this.down('#methodsBtn').setVisible(methodMembers.length > 0);
 
 		if (this.getCollapsed()) {
 			this.expand(false);
