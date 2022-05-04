@@ -28,7 +28,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	},
 
 	constructor: function(config) {
-		config.expandResults = config.expandResults !== undefined ? config.expandResults : this.getExpandResults();
+		config.expandResults = config.expandResults !== undefined ? config.expandResults : true;
 		var isExpanded = config.expandResults;
 		var sandboxSrcUrl = config.sandboxSrcUrl;
 
