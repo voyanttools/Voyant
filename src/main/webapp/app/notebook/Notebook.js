@@ -443,7 +443,6 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.getScrollable().trackingScrollTop = 0;
 		this.getScrollable().trackingScrollLeft = 0;
 
-		this.setNotebookId(undefined);
 		this.setMetadata(new Spyral.Metadata());
 		this.voyantStorageDialogs.reset();
     	var cells = this.getComponent("cells");
@@ -565,6 +564,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		} else {
 			Ext.batchLayouts(function() {
 				this.reset();
+				this.setNotebookId(undefined);
 				this.importFromHtml(text); // old format
 			}, this);
 		}
@@ -938,20 +938,22 @@ Ext.define('Voyant.notebook.Notebook', {
     },
     
 	applyNotebookId: function (id) {
-		let url = this.getBaseUrl()+"spyral/";
-		if (id) {
-			if (id.indexOf(this.NOTEBOOK_ID_SEPARATOR) === -1) {
-				// old ID system
-				this.setNotebookName(id);
-			} else {
-				const notebookName = id.split(this.NOTEBOOK_ID_SEPARATOR)[1];
-				this.setNotebookName(notebookName);
+		if (this.isConfiguring === false) { // don't (re)set url during initial config as this will clear the url's notebook id
+			let url = this.getBaseUrl()+"spyral/";
+			if (id) {
+				if (id.indexOf(this.NOTEBOOK_ID_SEPARATOR) === -1) {
+					// old ID system
+					this.setNotebookName(id);
+				} else {
+					const notebookName = id.split(this.NOTEBOOK_ID_SEPARATOR)[1];
+					this.setNotebookName(notebookName);
+				}
+				url += id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
 			}
-			url += id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
+			window.history.pushState({
+				url: url
+			}, '', url);
 		}
-		window.history.pushState({
-			url: url
-		}, '', url);
 
 		return id;
     },
