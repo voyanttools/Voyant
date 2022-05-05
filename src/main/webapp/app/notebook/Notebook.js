@@ -229,6 +229,7 @@ Ext.define('Voyant.notebook.Notebook', {
 							} else {
 								menu.items = [
 									parent.getGitHubAuthButton(function() {
+										parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
 										parent.toastInfo({
 											html: parent.localize('signInSuccess'),
 											anchor: 'tr'
@@ -239,6 +240,7 @@ Ext.define('Voyant.notebook.Notebook', {
 						}, function() {
 							menu.items = [
 								parent.getGitHubAuthButton(function() {
+									parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
 									parent.toastInfo({
 										html: parent.localize('signInSuccess'),
 										anchor: 'tr'
@@ -981,6 +983,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
 		this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
 
+		if (this.metadataEditor) {
+			this.metadataEditor.loadMetadata(metadata);
+		}
+
 		this.setIsEdited(true);
 	},
 
@@ -1019,7 +1025,7 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.up('window').close();
 					}
 				}]
-			})
+			});
 		}
 
 		var metadata = this.getMetadata();
