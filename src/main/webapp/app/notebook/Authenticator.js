@@ -26,8 +26,8 @@ Ext.define('Voyant.notebook.Authenticator', {
 					if (event.origin === window.location.origin && event.data === 'oauth_cookie_set') {
 						window.removeEventListener("message", postMessageHandler, false);
 						event.source.close();
-						me.retrieveAccountInfo().then(function() {
-							callback.call(me);
+						me.retrieveAccountInfo().then(function(info) {
+							callback.call(me, info);
 						});
 					} else {
 						console.warn('Error authenticating with GitHub');
