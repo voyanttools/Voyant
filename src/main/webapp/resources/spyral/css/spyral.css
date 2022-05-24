@@ -181,14 +181,19 @@ body.exported-notebook {
 .docsWindowContent .title .name {
 	font-weight: bold;
 }
-.docsWindowContent .title .signature span {
+.docsWindowContent .members .static, .docsWindowContent .title .signature span {
 	font-size: 12px;
 	text-transform: uppercase;
 	color: #fff;
 	background-color: #484848;
 	border-radius: 2px;
-	margin-left: 6px;
 	padding: 0 6px;
+}
+.docsWindowContent .members .static {
+	margin-right: 6px;
+}
+.docsWindowContent .title .signature span {
+	margin-left: 6px;
 }
 .docsWindowContent .description .short {
 	display: none;
