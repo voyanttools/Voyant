@@ -1051,5 +1051,12 @@ Ext.define('Voyant.notebook.Notebook', {
 			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
 		}
 		this.docsWindow.showDocsForClassMethod(docClass, docMethod);
+	},
+
+	handleDocLink: function(link) {
+		if (this.docsWindow === undefined) {
+			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
+		}
+		this.docsWindow.handleDocLink(link);
 	}
 });

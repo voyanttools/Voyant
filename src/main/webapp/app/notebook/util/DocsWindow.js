@@ -29,7 +29,12 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	membersTemplate: new Ext.XTemplate(
 		'<div class="members">',
 			'<tpl for=".">',
-				'<div class="member"><a href="#!/api/{owner}-{id}">{name}</a></div>',
+				'<div class="member">',
+					'<tpl if="meta.static">',
+						'<span class="static" title="static">s</span>',
+					'</tpl>',
+					'<a href="#!/api/{owner}-{id}">{name}</a>',
+				'</div>',
 			'</tpl>',
 		'</div>'
 	),
@@ -119,10 +124,21 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 				}
 			}],
 			listeners: {
+				boxready: function(win) {
+					win.body.addListener('click', function(evt) {
+						if (evt.target.tagName.toLowerCase() === 'a') {
+							evt.preventDefault();
+							evt.stopPropagation();
+							var link = evt.target.getAttribute('href');
+							this.handleDocLink(link);
+						}
+					}, this);
+				},
 				minimize: function(win) {
 					win.collapse(Ext.Component.DIRECTION_BOTTOM, false).anchorTo(Ext.getBody(), 'br-br');
 					win.down('#restoreButton').show();
-				}
+				},
+				scope: this
 			}
 		});
 
@@ -131,6 +147,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 
 	showDocs: function() {
 		Ext.Ajax.request({
+			// TODO inaccessible on server?
 			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
 		}).then(function(response) {
 			var json;
@@ -142,7 +159,55 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			if (json) {
 				this._loadExtOutline(json[0]);
 			}
+		}.bind(this), function() {
+			this._loadExtOutline({
+				"name": "Spyral",
+				"groups": [
+					{
+						"name": "Base",
+						"classes": [
+							"Spyral.Corpus",
+							"Spyral.Table",
+							"Spyral.Chart",
+							"Spyral.Load",
+							"Spyral.Util",
+							"Spyral.Categories"
+						]
+					},{
+						"name": "Notebook",
+						"classes": [
+							"Spyral.Metadata",
+							"Spyral.Notebook",
+							"Spyral.Util.Storage"
+						]
+					},{
+						"name": "Global",
+						"classes": [
+							"window"
+						]
+					}
+				]
+			})
 		}.bind(this));
+	},
+
+	handleDocLink: function(link) {
+		var matches = link.match(/.*?\/api\/([\w.]+)-?(.*)?/);
+		if (matches) {
+			var linkClass = matches[1];
+			var linkMethod = matches[2];
+			if (linkClass !== this.lastDocEntryClass) {
+				this.showDocsForClassMethod(linkClass, linkMethod);
+			} else {
+				this._showDocEntry(linkMethod);
+			}
+		} else {
+			if (link.indexOf('#!') === 0) {
+				window.open(Voyant.application.getBaseUrlFull()+'docs/'+link, '_spyral_docs');
+			} else {
+				window.open(link, '_external');
+			}
+		}
 	},
 
 	showDocsForClassMethod: function(docClass, docMethod) {
@@ -248,33 +313,6 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	_setHtmlForCard: function(cardId, html) {
 		this.down('#'+cardId).setHtml(html);
 		var cardEl = this.down('#'+cardId).getEl().dom;
-		this._handleLinks(cardEl);
 		Ext.fly(cardEl).selectable();
-	},
-
-	_handleLinks: function(docsParentEl) {
-		docsParentEl.addEventListener('click', function(e) {
-			if (e.target.tagName.toLowerCase() === 'a') {
-				e.preventDefault();
-				e.stopPropagation();
-				var link = e.target.getAttribute('href');
-				var matches = link.match(/.*?\/api\/(\w+.\w+)-?(.*)?/);
-				if (matches) {
-					var linkClass = matches[1];
-					var linkMethod = matches[2];
-					if (linkClass !== this.lastDocEntryClass) {
-						this.showDocsForClassMethod(linkClass, linkMethod);
-					} else {
-						this._showDocEntry(linkMethod);
-					}
-				} else {
-					if (link.indexOf('#!') === 0) {
-						window.open(Voyant.application.getBaseUrlFull()+'docs/'+link, '_spyral_docs');
-					} else {
-						window.open(link, '_external');
-					}
-				}
-			}
-		}.bind(this));
 	}
 });

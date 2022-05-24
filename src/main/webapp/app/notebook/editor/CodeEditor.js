@@ -238,18 +238,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				e.preventDefault();
 				e.stopPropagation();
 				var docHref = docLink.getAttribute('href');
-				var matches = docHref.match(/.*?\/api\/(\w+.\w+)-?(.*)?/);
-				if (matches) {
-					var docClass = matches[1];
-					var docMethod = matches[2];
-					this.up('notebook').showDocsForClassMethod(docClass, docMethod);
-				} else {
-					if (docHref.indexOf('#!') === 0) {
-						window.open(Voyant.application.getBaseUrlFull()+'docs/'+docHref, '_spyral_docs');
-					} else {
-						window.open(docHref, '_external');
-					}
-				}
+				this.up('notebook').handleDocLink(docHref);
 			}.bind(this));
 		}
 	}
