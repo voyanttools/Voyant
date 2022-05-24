@@ -1,11 +1,11 @@
 import Util from 'voyant/src/util';
 
-/**
- * Based on code from https://github.com/renhongl/json-viewer-js
- * 
- * TODO add function support
- */
+// Based on code from https://github.com/renhongl/json-viewer-js
+// TODO add function support
 
+/**
+ * @ignore
+ */
 class DataViewer {
 
 	constructor(options) {

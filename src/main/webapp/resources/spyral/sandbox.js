@@ -1,17 +1,3 @@
-window.Corpus = Spyral.Corpus;
-window.Table = Spyral.Table;
-
-window.loadCorpus = function() {
-	return Spyral.Corpus.load.apply(Spyral.Corpus.load, arguments)
-}
-
-window.createTable = function() {
-	return Spyral.Table.create.apply(Spyral.Table, arguments)
-}
-
-window.show = Spyral.Util.show;
-window.showError = Spyral.Util.showError;
-
 function Sandboxer(event) {
 	var me = this;
 

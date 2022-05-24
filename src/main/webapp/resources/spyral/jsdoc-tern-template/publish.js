@@ -164,18 +164,32 @@ exports.publish = function(data, opts, tutorials) {
     function createEntriesForName(name, context) {
         var namepath = name.split('.');
         namepath.forEach((namepart, index) => {
-            if (context[namepart] === undefined) {
-                context[namepart] = {}
-            }
-            context = context[namepart];
+			if (namepart !== '') {
+				if (context[namepart] === undefined) {
+					context[namepart] = {}
+				}
+				context = context[namepart];
+			}
         })
         return context;
     }
 
-    for (var d in docs) {
-        var doc = docs[d];
+	function convertDoc(doc) {
+		var convertedEntry = undefined;
 
-        var convertedEntry = undefined;
+		if (doc.ignore) {
+			return;
+		}
+
+		// @borrows creates 2 docs so we need special handling
+		if (doc.comment && doc.comment.indexOf('@borrows') !== -1) {
+			return; // skip @borrows entries
+		}
+		// special handling for borrowed entries that are members of window
+		if (doc.longname.indexOf('window.') === 0) {
+			doc.longname = doc.longname.substring(0, doc.longname.lastIndexOf('.'));
+			doc.memberof = 'window';
+		}
 
         if (doc.kind && doc.kind === 'namespace') {
             createEntriesForName(doc.longname, output);
@@ -212,7 +226,10 @@ exports.publish = function(data, opts, tutorials) {
 
             }
 
-        } else if (doc.memberof && (doc.kind === 'member' || doc.kind === 'function')) {
+        } else if (doc.kind === 'member' || doc.kind === 'function') {
+			if (doc.kind === 'member' && doc.type === undefined) {
+				return;
+			}
 
             var memberName = doc.memberof.replace('module:', '');
             if (memberName === pkg.name) {
@@ -224,9 +241,9 @@ exports.publish = function(data, opts, tutorials) {
                 var context = createEntriesForName(memberName, output);
                 
                 var name = doc.name.replace('exports.', '');
-                var isStatic = doc.scope === 'static';
                 
-                if (isStatic === false) {
+				var isInstance = doc.scope === 'instance';
+                if (isInstance === true) {
                     if (context.prototype === undefined) {
                         context.prototype = {};
                     }
@@ -270,6 +287,11 @@ exports.publish = function(data, opts, tutorials) {
 				}
 			}
         }
+	}
+
+    for (var d in docs) {
+        var doc = docs[d];
+		convertDoc(doc);
     }
 
     if (Object.keys(library).length > 0) {

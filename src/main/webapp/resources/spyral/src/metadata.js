@@ -16,6 +16,7 @@ class Metadata {
 	 * @param {String} config.created When the Notebook was created
 	 * @param {String} config.language The language of the Notebook
 	 * @param {String} config.license The license for the Notebook
+	 * @returns {Spyral.Metadata}
 	 */
 	constructor(config) {
 		['title', 'userId', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
