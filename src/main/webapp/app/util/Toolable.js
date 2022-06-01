@@ -116,58 +116,80 @@ Ext.define('Voyant.util.Toolable', {
 					            	flex: 1,
 					            	panel: panel,
 					        		handler: function(btn) {
-					        			function doGlobalUpdate(key, value) {
-					        				// set the api value for the app
-					        				if (app.setApiParam) {
-					        					app.setApiParam(key, value);
-					        				}
-					        				
-					        				// tell the panels, including this one
-					        				var panels = app.getViewport().query("panel,chart");
-					        				for (var i=0; i<panels.length; i++) {
-					        					if (panels[i].setApiParam) {
-					        						panels[i].setApiParam(key, value);
-					        					}
-					        				}
-					        				globalUpdate = true;
-					        			}
-					        			
-					        			var values = btn.up('form').getValues();
-					        			
-					        			// set api values (all of them, not just global ones)
-					        			this.setApiParams(values);
+										var values = btn.up('form').getValues();
+										
+										// set api values (all of them, not just global ones)
+										this.setApiParams(values);
 
-					        			var app = this.getApplication();
-					        			var corpus = app.getCorpus();
-					        			
-					        			var globalUpdate = false;
-					        			if (values['stopList'] != undefined && values['stopListGlobal'] != undefined && values.stopListGlobal) {
-					        				doGlobalUpdate('stopList', values['stopList']);
-					        			}
-					        			if (values['palette'] != undefined) {
-											app.resetColorTermAssociations();
-					        				doGlobalUpdate('palette', values['palette']);
+										var app = this.getApplication();
+										
+										var keyValuesForGlobalUpdate = [];
+										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
+											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
 										}
-										if (values['categories'] != undefined) {
-					        				doGlobalUpdate('categories', values['categories']);
-					        			}
-					        			
-					        			if (globalUpdate) {
-					        				// trigger a reloading of the app
-					        				if (corpus) {
-					        					app.dispatchEvent("loadedCorpus", this, corpus);
-					        				} else {
-					        					app.dispatchEvent("apiParamsUpdated", this, values);
-					        				}
-					        			}
-					        			// fire this even if we have global params since the app dispatch won't reach this tool
-					        			if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
-				        				else {this.fireEvent("apiParamsUpdated", this, values);}
+										if (values['categories'] !== undefined) {
+											keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+										}
+										
+										var paletteDfd = new Ext.Deferred(); // need a deferred since we might have to load a custom palette
+										if (values['palette'] !== undefined) {
+											app.resetColorTermAssociations();
+											if (app.getColorPalette(values['palette']).length === 0) {
+												// it's a custom palette that we need to load first
+												app.loadCustomColorPalette(values['palette']).then(function() {
+													// no errors
+												}, function() {
+													// error loading palette, so reset to default
+													values['palette'] = 'default';
+												}).always(function() {
+													keyValuesForGlobalUpdate.push(['palette', values['palette']]);
+													paletteDfd.resolve();
+												})
+											} else {
+												keyValuesForGlobalUpdate.push(['palette', values['palette']]);
+												paletteDfd.resolve();
+											}
+										} else {
+											paletteDfd.resolve();
+										}
 
-					        			btn.up('window').close();
-					        		},
-					        		scope: panel
-					            }]
+										paletteDfd.promise.always(function() {
+											var corpus = app.getCorpus();
+											if (keyValuesForGlobalUpdate.length > 0) {
+												var panels = app.getViewport().query("panel,chart");
+												keyValuesForGlobalUpdate.forEach(function(keyValue) {
+													var key = keyValue[0];
+													var value = keyValue[1];
+													
+													// set the api value for the app
+													if (app.setApiParam) {
+														app.setApiParam(key, value);
+													}
+													
+													// tell the panels, including this one
+													for (var i=0; i<panels.length; i++) {
+														if (panels[i].setApiParam) {
+															panels[i].setApiParam(key, value);
+														}
+													}
+												});
+
+												// trigger a reloading of the app
+												if (corpus) {
+													app.dispatchEvent("loadedCorpus", this, corpus);
+												} else {
+													app.dispatchEvent("apiParamsUpdated", this, values);
+												}
+											}
+											// fire this even if we have global params since the app dispatch won't reach this tool
+											if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
+											else {this.fireEvent("apiParamsUpdated", this, values);}
+
+											btn.up('window').close();
+										}.bind(this));
+									},
+									scope: panel
+								}]
 							},
 							bodyPadding: 5
 						}).show()

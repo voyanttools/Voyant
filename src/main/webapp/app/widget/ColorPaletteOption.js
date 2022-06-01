@@ -210,14 +210,23 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
 	},
 	
     loadPalette: function(paletteId) {
-    	var parentPanel = this.up('window').panel;
+    	var application = this.up('window').panel.getApplication();
     	
-    	var palette = parentPanel.getApplication().getColorPalette(paletteId);
-    	var paletteData = [];
-    	palette.forEach(function(c) {
-    		paletteData.push([Ext.id(), c]);
-    	}, this);
-    	this.paletteStore.loadData(paletteData);
+    	var palette = application.getColorPalette(paletteId);
+
+		if (palette == undefined) {
+			application.loadCustomColorPalette(paletteId).then(function(id) {
+				this.loadPalette(paletteId);
+			}.bind(this), function() {
+				// error loading palette
+			})
+		} else {
+			var paletteData = [];
+			palette.forEach(function(c) {
+				paletteData.push([Ext.id(), c]);
+			}, this);
+			this.paletteStore.loadData(paletteData);
+		}
     },
     
     savePalette: function() {
@@ -225,28 +234,14 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
     	this.paletteStore.each(function(c) {
     		value.push(c.get('color'));
     	});
-    	var valueString = Ext.encode(value);
-    	var parentPanel = this.up('window').panel;
-    	var corpusId = parentPanel.getCorpus().getId();
-    	Ext.Ajax.request({
-    	    url: parentPanel.getTromboneUrl(),
-    	    params: {
-        		tool: 'resource.StoredResource',
-    			storeResource: valueString,
-    			corpus: corpusId
-    	    },
-    	    success: function(response, req) {
-    	    	var json = Ext.util.JSON.decode(response.responseText);
-    	    	var id = json.storedResource.id;
-    	    	var combo = this.down('combo');
-    	    	var store = combo.getStore();
-    	    	store.add({name: id, value: id});
-    	    	combo.setValue(id);
-    	    	combo.updateLayout();
-    	    	
-    	    	parentPanel.getApplication().addColorPalette(id, value);
-    	    },
-    	    scope: this
-    	});
+    	
+		this.up('window').panel.getApplication()
+			.saveCustomColorPalette(value).then(function(id) {
+				var combo = this.down('combo');
+				var store = combo.getStore();
+				store.add({name: id, value: id});
+				combo.setValue(id);
+				combo.updateLayout();
+			}.bind(this));
     }
 });
