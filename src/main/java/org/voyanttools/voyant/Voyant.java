@@ -124,7 +124,15 @@ public class Voyant implements ServletContextListener {
 				referer = referer + String.valueOf(Calendar.getInstance().getTimeInMillis());
 			}
 			params.addParameter("input", referer);
-			final StringBuilder uri = new StringBuilder("./?"); // hoping this works
+			
+			String requestURL = request.getRequestURL().toString();
+			// need to check this way for https because it gets lost somehow
+			if (referer.startsWith("https")) {
+				requestURL = requestURL.replaceFirst("http:", "https:");
+			}
+
+			final StringBuilder uri = new StringBuilder(requestURL);
+			uri.append("?");
 			uri.append(params.getAsQueryString());
 			response.sendRedirect(uri.toString());
 			return true;
