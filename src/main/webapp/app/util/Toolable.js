@@ -295,8 +295,8 @@ Ext.define('Voyant.util.Toolable', {
 		if (panel.isXType('notebook')) {
 			exportViewItems.splice(2, 1); // remove redundant spyral export for spyral notebooks
 		}
-		if (panel.getExtraExportItems) {
-			panel.getExtraExportItems().forEach(function(item) {
+		if (panel.getExtraViewExportItems) {
+			panel.getExtraViewExportItems().forEach(function(item) {
 				Ext.applyIf(item, {
 					xtype: 'radio',
 					name: 'export'
@@ -324,20 +324,21 @@ Ext.define('Voyant.util.Toolable', {
 	       title: panel.localize('exportViewFieldset'),
 	       items: exportViewItems
 		})
+		var exportDataItems = [];
 		if (panel.isXType('grid')) {
-			var exportitems = [{
+			exportDataItems.push({
 	       		xtype: 'radio',
 	       		name: 'export',
 	       		inputValue: 'gridCurrentHtml',
 	       		boxLabel: panel.localize('exportGridCurrentHtml')
-    	   },{
+	        },{
 	       		xtype: 'radio',
 	       		name: 'export',
 	       		inputValue: 'gridCurrentTsv',
 	       		boxLabel: panel.localize('exportGridCurrentTsv')
-    	  	}];
+	        });
 			if (!panel.getExportGridAll || panel.getExportGridAll()!=false) {
-				exportitems.push({
+				exportDataItems.push({
 		       		xtype: 'radio',
 		       		name: 'export',
 		       		inputValue: 'gridAllJson',
@@ -349,13 +350,24 @@ Ext.define('Voyant.util.Toolable', {
 		       		boxLabel: panel.localize('exportGridAllTsv')
 	    	   })
 			}
-			items.push({
-		       xtype: 'fieldset',
-		       collapsible: true,
-		       collapsed: true,
-		       title: panel.localize('exportGridCurrent'),
-	    	   items: exportitems
+		}
+		if (panel.getExtraDataExportItems) {
+			panel.getExtraDataExportItems().forEach(function(item) {
+				Ext.applyIf(item, {
+					xtype: 'radio',
+					name: 'export'
+				})
+				exportDataItems.push(item)
 			})
+		}
+		if (exportDataItems.length > 0) {
+			items.push({
+				xtype: 'fieldset',
+				collapsible: true,
+				collapsed: true,
+				title: panel.localize('exportGridCurrent'),
+				items: exportDataItems
+			 });
 		}
 		if ((!panel.getExportVisualization || panel.getExportVisualization()) && panel.isXType("grid")==false && (panel.down("chart") || panel.getTargetEl().dom.querySelector("canvas") || panel.getTargetEl().dom.querySelector("svg"))) {
 			var formats = [{
