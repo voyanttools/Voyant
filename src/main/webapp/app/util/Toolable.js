@@ -717,7 +717,6 @@ Ext.define('Voyant.util.Toolable', {
 	},
 	exportGridCurrentTsv: function(grid, form) {
 		var store = grid.getStore();
-		var fields = store.getFields();
 		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns().filter(function(col) { return col.dataIndex && col.dataIndex.trim().length > 0 });
 		var fields = [];
 		visibleColumns.forEach(function(column) {
@@ -726,7 +725,7 @@ Ext.define('Voyant.util.Toolable', {
 		var value = fields.join("\t")+"\n";
 
 		function tsvCollector(row) {
-			cells = [];
+			var cells = [];
 			visibleColumns.forEach(function (column) {
 				var val = row.get(column.dataIndex);
 				if (Ext.isString(val)) {
