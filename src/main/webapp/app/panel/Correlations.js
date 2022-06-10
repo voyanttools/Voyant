@@ -33,7 +33,8 @@ Ext.define('Voyant.panel.Correlations', {
     		title: this.localize('title'),
     		emptyText: this.localize("emptyText"),
     		store: Ext.create("Voyant.data.store.TermCorrelationsBuffered", {
-            	parentPanel: this
+            	parentPanel: this,
+				leadingBufferZone: 100 // since these calls are expensive reduce buffer to 1 page
 	        }),
 
     		columns: [{

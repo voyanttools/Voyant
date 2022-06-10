@@ -90,7 +90,8 @@ Ext.define('Voyant.panel.Phrases', {
         var me = this;
 
         var store = Ext.create("Voyant.data.store.CorpusNgramsBuffered", {
-        	parentPanel: me
+        	parentPanel: me,
+			leadingBufferZone: 100 // since these calls are expensive reduce buffer to 1 page
         });
         
         store.on("beforeload", function(store) {

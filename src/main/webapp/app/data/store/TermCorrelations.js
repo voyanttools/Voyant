@@ -7,7 +7,7 @@ Ext.define('Voyant.data.store.TermCorrelationsMixin', {
 			'proxy.extraParams.withDistributions': 'true',
 			'proxy.reader.rootProperty': 'termCorrelations.correlations',
 			'proxy.reader.totalProperty': 'termCorrelations.total',
-			'proxy.timeout': 120000
+			'proxy.timeout': 90000
 		}])
 	}
 });

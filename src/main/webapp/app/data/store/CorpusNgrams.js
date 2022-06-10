@@ -5,7 +5,8 @@ Ext.define('Voyant.data.store.CorpusNgramsMixin', {
 		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {
 			'proxy.extraParams.tool': 'corpus.CorpusNgrams',
 			'proxy.reader.rootProperty': 'corpusNgrams.ngrams',
-			'proxy.reader.totalProperty': 'corpusNgrams.total'
+			'proxy.reader.totalProperty': 'corpusNgrams.total',
+			'proxy.timeout': 90000
 		}])
 	}
 });
