@@ -201,7 +201,6 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "application/xml")'; // also use xml for strict validation
 					break;
 			}
-			// TODO handle parse errors for xml/html
 			dfd.resolve(code);
 		}
 
