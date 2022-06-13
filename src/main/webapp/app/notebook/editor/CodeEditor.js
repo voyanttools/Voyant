@@ -125,7 +125,9 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				
 				Object.assign(editor.getOption('extraKeys'), {
 					'Ctrl-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
-					'Ctrl-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); }
+					'Ctrl-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); },
+					'Cmd-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
+					'Cmd-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); }
 				});
 				editor.on('cursorActivity', function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.updateArgHints(ed); });
 			}
