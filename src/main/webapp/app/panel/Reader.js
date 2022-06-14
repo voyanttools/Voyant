@@ -7,7 +7,9 @@ Ext.define('Voyant.panel.Reader', {
     statics: {
     	i18n: {
 			highlightEntities: 'Highlight Entities',
-			entityType: 'entity type'
+			entityType: 'entity type',
+			nerVoyant: 'Entity Identification with Voyant',
+			nerNssi: 'Entity Identification with NSSI'
     	},
     	api: {
     		start: 0,
@@ -262,21 +264,22 @@ Ext.define('Voyant.panel.Reader', {
                 },'->',{
 					glyph: 'xf0eb@FontAwesome',
 					tooltip: this.localize('highlightEntities'),
+					itemId: 'nerServiceParent',
 					menu: {
 						items: [{
 							xtype: 'menucheckitem',
 							group: 'nerService',
-							text: 'NER with NSSI',
+							text: this.localize('nerNssi'),
 							itemId: 'nssi',
-							checked: false,
+							checked: true,
 							handler: this.nerSeviceHandler,
 							scope: this
 						},{
 							xtype: 'menucheckitem',
 							group: 'nerService',
-							text: 'NER with Voyant',
+							text: this.localize('nerVoyant'),
 							itemId: 'stanford',
-							checked: true,
+							checked: false,
 							handler: this.nerSeviceHandler,
 							scope: this
 						}
@@ -300,7 +303,7 @@ Ext.define('Voyant.panel.Reader', {
     	    		
     	    		var docs = corpus.getDocuments();
     	    		this.setDocumentsStore(docs);
-    	    		
+					
     	    		if (this.rendered) {
     	    			this.load();
         	    		if (this.hasCorpusAccess(corpus)==false) {
