@@ -40,6 +40,8 @@ Ext.define('Voyant.panel.Reader', {
 	LOCATION_UPDATE_FREQ: 100,
 	
 	INITIAL_LIMIT: 1000, // need to keep track since limit can be changed when scrolling,
+
+	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
     
     constructor: function(config) {
         this.callParent(arguments);
@@ -672,9 +674,13 @@ Ext.define('Voyant.panel.Reader', {
 
 			var docTokens = {};
 			var totalTokens = 0;
+			var showNerButton = true;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
+				if (tokens > this.MAX_TOKENS_FOR_NER) {
+					showNerButton = false;
+				}
 				if (currIndex === info2.docIndex) {
 					tokens = info2.position; // only count tokens up until last displayed word
 				}
@@ -684,6 +690,14 @@ Ext.define('Voyant.panel.Reader', {
 				totalTokens += tokens;
 				docTokens[currIndex] = tokens;
 				currIndex++;
+			}
+
+			// TODO add message to indicate to user why button is disabled
+			var nerParent = this.down('#nerServiceParent');
+			if (showNerButton) {
+				nerParent.enable();
+			} else {
+				nerParent.disable();
 			}
 			
 			var tokenPos = Math.round(totalTokens * amount);
