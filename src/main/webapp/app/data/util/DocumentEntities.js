@@ -55,6 +55,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			var progressArray = me._getProgressFromStatus(data.status);
 			var isDone = progressArray[0] === progressArray[1];
 			var hasFailures = progressArray[2];
+			var has413Status = progressArray[3].indexOf('413') !== -1; // 413 = corpus too large
 
 			if (firstCall && isDone && !hasFailures) {
 				var win = me.getProgressWindow();
@@ -69,7 +70,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 					win.down('#identifyingMessage').getEl().down('div.x-mask-msg-text').setStyle('backgroundImage', 'none');
 					win.down('#doneButton').setHidden(false);
 	
-					if (hasFailures) {
+					if (hasFailures && !has413Status) {
 						win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
 							me.load(Ext.apply({retryFailures: true}, params), callback);
 							btn.setDisabled(true);
@@ -98,14 +99,19 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		var total = statusArray.length;
 		var numDone = 0;
 		var hasFailures = false;
+		var statusCodes = [];
 		statusArray.forEach(function(item) {
 			if (item[1] === 'done') numDone++;
 			else if (item[1].indexOf('failed') === 0) {
 				numDone++;
 				hasFailures = true;
+				var statusCode = item[1].match(/\d\d\d$/);
+				if (statusCode !== null) {
+					statusCodes.push(statusCode[0]);
+				}
 			}
 		});
-		return [numDone, total, hasFailures];
+		return [numDone, total, hasFailures, statusCodes];
 	},
 
 	updateProgress: function(statusArray, progressArray) {
