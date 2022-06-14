@@ -276,14 +276,17 @@ Ext.define('Voyant.panel.RezoViz', {
 				var obj = Ext.decode(response.responseText);
 				if (obj.entityCollocationsGraph.edges.length==0) {
 					this.showError({msg: this.localize('noEntities')});
-					Ext.Msg.confirm(this.localize('error'), this.localize('noEntitiesForEdgeCount'), function(button) {
-						if (button === 'yes') {
-							var newEdgeCount = Math.max(1, this.getApiParam('minEdgeCount')-1);
-							this.queryById('minEdgeCount').setRawValue(newEdgeCount);
-							this.setApiParam('minEdgeCount', newEdgeCount);
-							this.preloadEntities();
-						}
-					}, this);
+					var currMinEdgeCount = this.getApiParam('minEdgeCount');
+					if (currMinEdgeCount > 1) {
+						Ext.Msg.confirm(this.localize('error'), this.localize('noEntitiesForEdgeCount'), function(button) {
+							if (button === 'yes') {
+								var newEdgeCount = Math.max(1, currMinEdgeCount-1);
+								this.queryById('minEdgeCount').setRawValue(newEdgeCount);
+								this.setApiParam('minEdgeCount', newEdgeCount);
+								this.preloadEntities();
+							}
+						}, this);
+					}
 				}
 				else {
 					this.processEntities(obj.entityCollocationsGraph);
