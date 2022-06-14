@@ -6,7 +6,7 @@ Ext.define('Voyant.panel.RezoViz', {
 		i18n: {
 			timedOut: 'The entities call took too long and has timed out. Retry?',
 			maxLinks: 'Max. Links',
-			nerService: 'NER Service'
+			nerService: 'Entity Identification Service'
 		},
 		api: {
 			query: undefined,
