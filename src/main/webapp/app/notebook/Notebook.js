@@ -420,14 +420,6 @@ Ext.define('Voyant.notebook.Notebook', {
 			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'})
 		]).then(function(responses) {
 			this.spyralTernDocs = Ext.JSON.decode(responses[0].responseText);
-			// add docs for static / global functions TODO automate this at doc creation
-			this.spyralTernDocs.Corpus = this.spyralTernDocs.Spyral.Corpus;
-			this.spyralTernDocs.Table = this.spyralTernDocs.Spyral.Table;
-			this.spyralTernDocs.loadCorpus = this.spyralTernDocs.Spyral.Corpus.load;
-			this.spyralTernDocs.createTable = this.spyralTernDocs.Spyral.Table.create;
-			this.spyralTernDocs.show = this.spyralTernDocs.Spyral.Util.show;
-			this.spyralTernDocs.showError = this.spyralTernDocs.Spyral.Util.showError;
-			
 			this.ecmaTernDocs = Ext.JSON.decode(responses[1].responseText);
 			this.browserTernDocs = Ext.JSON.decode(responses[2].responseText);
 
