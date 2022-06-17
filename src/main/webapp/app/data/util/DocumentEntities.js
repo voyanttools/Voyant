@@ -10,7 +10,12 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			identifyingDocEnts: 'Identifying Document Entities',
 			error: 'Error Identifying Document Entities',
 			retry: 'Retry Failed Documents',
-			done: 'Done'
+			done: 'Done',
+			statusDone: 'Done',
+			statusFailed: 'Failed',
+			statusQueued: 'Queued',
+			statusStarted: 'Started',
+			status413: 'Your document is too large for this service'
 		}
 	},
 
@@ -124,30 +129,28 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 				closeAction: 'destroy',
 				layout: {
 					type: 'vbox',
-					align: 'middle',
-					pack: 'stretch',
+					align: 'stretch',
+					pack: 'center',
 				},
 				items: [{
 					itemId: 'identifyingMessage',
 					xtype: 'container',
-					html: '<div class="x-mask-msg-text">'+this.localize('identifyingDocEnts')+'</div>',
+					html: '<div style="text-align: center" class="x-mask-msg-text">'+this.localize('identifyingDocEnts')+'</div>',
 					flex: .5,
-					margin: '20 0 10 0'
+					margin: '20 10 10 10'
 				},{
 					itemId: 'progressBar',
 					xtype: 'progressbar',
-					width: 300,
 					height: 20,
-					margin: '0 0 10 0'
+					margin: '0 10 10 10'
 				},{
 					xtype: 'dataview',
-					width: 300,
 					flex: 1,
-					margin: '0 0 10 0',
+					margin: '0 10 10 10',
 					scrollable: 'y',
 					itemId: 'documentStatus',
 					store: Ext.create('Ext.data.ArrayStore', {
-						fields: ['docTitle', 'statusIcon']
+						fields: ['docTitle', 'statusIcon', 'statusText']
 					}),
 					itemSelector: '.doc',
 					tpl: [
@@ -155,6 +158,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 						'<div class="doc">',
 							'<i class="fa {statusIcon}" style="margin-right: 5px;"></i>',
 							'<span class="" style="">{docTitle}</span>',
+							'<span style="float: right">{statusText}</span>',
 						'</div>',
 					'</tpl>']
 				}],
@@ -206,20 +210,28 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		win.down('#progressBar').updateProgress(numDone/total, numDone+' / '+total);
 		
 		var docsStore = Voyant.application.getCorpus().getDocuments();
-		var statusWithDocTitles = statusArray.map(function(status) {
+		var statusWithDocTitles = statusArray.map(function(status, index) {
 			var docTitle = docsStore.getById(status[0]).getShortTitle();
 			var statusMsg = status[1];
 			var statusIcon = 'fa-spinner';
+			var statusText = '';//this.localize('statusStarted');
 			if (statusMsg.indexOf('failed') === 0) {
 				statusIcon = 'fa-exclamation-triangle';
+				if (statusMsg.indexOf('413') !== -1) {
+					statusText = this.localize('status413');
+				} else {
+					statusText = this.localize('statusFailed');
+				}
 				console.log('ner: '+docTitle+', '+statusMsg);
 			} else if (statusMsg === 'done') {
 				statusIcon = 'fa-check';
+				statusText = '';//this.localize('statusDone');
 			} else if (statusMsg === 'queued') {
 				statusIcon = 'fa-clock-o';
+				statusText = '';//this.localize('statusQueued');
 			}
-			return [docTitle, statusIcon];
-		});
+			return [docTitle, statusIcon, statusText];
+		}, this);
 		win.down('#documentStatus').getStore().loadData(statusWithDocTitles);
 
 		win.setTitle(this.localize('identifyingDocEnts')+' '+numDone+' / '+total);
