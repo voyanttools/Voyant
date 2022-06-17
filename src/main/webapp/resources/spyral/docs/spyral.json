@@ -1,36 +1,53 @@
 {
   "!name": "spyral",
   "!define": {
-    "MetadataConfig": {
+    "Spyral_Metadata_config": {
       "title": {
-        "!type": "+String",
-        "!doc": "The title of the Corpus"
+        "!type": "string",
+        "!doc": "The title of the Notebook"
+      },
+      "userId": {
+        "!type": "string",
+        "!doc": "The user ID of the author of the Notebook"
       },
       "author": {
-        "!type": "+String",
-        "!doc": "The author of the Corpus"
+        "!type": "string",
+        "!doc": "The name of the author of the Notebook"
       },
       "description": {
-        "!type": "+String",
-        "!doc": "The description of the Corpus"
+        "!type": "string",
+        "!doc": "The description of the Notebook"
       },
       "keywords": {
         "!type": "+Array",
-        "!doc": "The keywords for the Corpus"
+        "!doc": "The keywords for the Notebook"
       },
       "created": {
-        "!type": "+String",
-        "!doc": "When the Corpus was created"
+        "!type": "string",
+        "!doc": "When the Notebook was created"
       },
       "language": {
-        "!type": "+String",
-        "!doc": "The language of the Corpus"
+        "!type": "string",
+        "!doc": "The language of the Notebook"
       },
       "license": {
-        "!type": "+String",
-        "!doc": "The license for the Corpus"
+        "!type": "string",
+        "!doc": "The license for the Notebook"
+      }
+    },
+    "Spyral_Categories_config": {
+      "categories": {
+        "!type": "+Object"
       },
-      "!doc": "The Metadata config object"
+      "categoriesRanking": {
+        "!type": "+Array"
+      },
+      "features": {
+        "!type": "+Object"
+      },
+      "featureDefaults": {
+        "!type": "+Object"
+      }
     },
     "HighchartsConfig": {
       "title": {
@@ -52,12 +69,446 @@
         "!type": "+Object"
       },
       "series": {
-        "!type": "+Array"
+        "!type": "[HighchartsSeriesConfig]"
       },
       "plotOptions": {
         "!type": "+Object"
       },
       "!doc": "The Highcharts config object"
+    },
+    "HighchartsSeriesConfig": {
+      "data": {
+        "!type": "+Array"
+      },
+      "name": {
+        "!type": "string"
+      },
+      "!doc": "The series config object"
+    },
+    "Spyral_Corpus_titles_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start of the list"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "a limit to the number of items to return at a time"
+      },
+      "docIndex": {
+        "!type": "number",
+        "!doc": "a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma"
+      },
+      "docId": {
+        "!type": "string",
+        "!doc": "a set of document IDs; multiple documents can be separated by a comma"
+      },
+      "query": {
+        "!type": "string",
+        "!doc": "one or more term queries for the title, author or full-text"
+      },
+      "sort": {
+        "!type": "string",
+        "!doc": "one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      }
+    },
+    "Spyral_Corpus_documents_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start of the list"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "a limit to the number of items to return at a time"
+      },
+      "docIndex": {
+        "!type": "number",
+        "!doc": "a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma"
+      },
+      "docId": {
+        "!type": "string",
+        "!doc": "a set of document IDs; multiple documents can be separated by a comma"
+      },
+      "query": {
+        "!type": "string",
+        "!doc": "one or more term queries for the title, author or full-text"
+      },
+      "sort": {
+        "!type": "string",
+        "!doc": "one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      }
+    },
+    "Spyral_Corpus_text_config": {
+      "noMarkup": {
+        "!type": "boolean",
+        "!doc": "strips away the markup"
+      },
+      "compactSpace": {
+        "!type": "boolean",
+        "!doc": "strips away superfluous spaces and multiple new lines"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "a limit to the number of characters (per text)"
+      },
+      "format": {
+        "!type": "string",
+        "!doc": "`text` for plain text, any other value for the simplified Voyant markup"
+      }
+    },
+    "Spyral_Corpus_texts_config": {
+      "noMarkup": {
+        "!type": "boolean",
+        "!doc": "strips away the markup"
+      },
+      "compactSpace": {
+        "!type": "boolean",
+        "!doc": "strips away superfluous spaces and multiple new lines"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "a limit to the number of characters (per text)"
+      },
+      "format": {
+        "!type": "string",
+        "!doc": "`text` for plain text, any other value for the simplified Voyant markup"
+      }
+    },
+    "Spyral_Corpus_terms_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "minRawFreq": {
+        "!type": "number",
+        "!doc": "the minimum raw frequency of terms"
+      },
+      "query": {
+        "!type": "string",
+        "!doc": "a term query (see https://voyant-tools.org/docs/#!/guide/search)"
+      },
+      "stopList": {
+        "!type": "string",
+        "!doc": "a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)"
+      },
+      "withDistributions": {
+        "!type": "boolean",
+        "!doc": "a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)"
+      },
+      "whiteList": {
+        "!type": "string",
+        "!doc": "a keyword list – terms will be limited to this list"
+      },
+      "tokenType": {
+        "!type": "string",
+        "!doc": "the token type to use, by default `lexical` (other possible values might be `title` and `author`)"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      }
+    },
+    "Spyral_Corpus_tokens_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "stopList": {
+        "!type": "string",
+        "!doc": "a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)"
+      },
+      "whiteList": {
+        "!type": "string",
+        "!doc": "a keyword list – terms will be limited to this list"
+      },
+      "perDocLimit": {
+        "!type": "number",
+        "!doc": "the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document"
+      },
+      "noOthers": {
+        "!type": "boolean",
+        "!doc": "only include lexical forms, no other tokens"
+      },
+      "stripTags": {
+        "!type": "string",
+        "!doc": "one of the following: `ALL`, `BLOCKSONLY`, `NONE` (`BLOCKSONLY` tries to maintain blocks for line formatting)"
+      },
+      "withPosLemmas": {
+        "!type": "boolean",
+        "!doc": "include part-of-speech and lemma information when available (reliability of this may vary by instance)"
+      },
+      "docIndex": {
+        "!type": "number",
+        "!doc": "the zero-based index of the documents to include (use commas to separate multiple values)"
+      },
+      "docId": {
+        "!type": "string",
+        "!doc": "the document IDs to include (use commas to separate multiple values)"
+      }
+    },
+    "Spyral_Corpus_words_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "stopList": {
+        "!type": "string",
+        "!doc": "a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)"
+      },
+      "whiteList": {
+        "!type": "string",
+        "!doc": "a keyword list – terms will be limited to this list"
+      },
+      "perDocLimit": {
+        "!type": "number",
+        "!doc": "the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document"
+      },
+      "docIndex": {
+        "!type": "number",
+        "!doc": "the zero-based index of the documents to include (use commas to separate multiple values)"
+      },
+      "docId": {
+        "!type": "string",
+        "!doc": "the document IDs to include (use commas to separate multiple values)"
+      }
+    },
+    "Spyral_Corpus_contexts_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "query": {
+        "!type": "string",
+        "!doc": "a term query (see https://voyant-tools.org/docs/#!/guide/search)"
+      },
+      "sort": {
+        "!type": "string",
+        "!doc": "the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      },
+      "perDocLimit": {
+        "!type": "number",
+        "!doc": "the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document"
+      },
+      "stripTags": {
+        "!type": "string",
+        "!doc": "for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)"
+      },
+      "context": {
+        "!type": "number",
+        "!doc": "the size of the context (the number of words on each side of the keyword)"
+      },
+      "docIndex": {
+        "!type": "number",
+        "!doc": "the zero-based index of the documents to include (use commas to separate multiple values)"
+      },
+      "docId": {
+        "!type": "string",
+        "!doc": "the document IDs to include (use commas to separate multiple values)"
+      },
+      "overlapStrategy": {
+        "!type": "string",
+        "!doc": "determines how to handle cases where there's overlap between KWICs, such as \"to be or not to be\" when the keyword is \"be\""
+      }
+    },
+    "Spyral_Corpus_collocates_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "query": {
+        "!type": "string",
+        "!doc": "a term query (see https://voyant-tools.org/docs/#!/guide/search)"
+      },
+      "stopList": {
+        "!type": "string",
+        "!doc": "a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)"
+      },
+      "collocatesWhitelist": {
+        "!type": "string",
+        "!doc": "collocates will be limited to this list"
+      },
+      "context": {
+        "!type": "number",
+        "!doc": "the size of the context (the number of words on each side of the keyword)"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      }
+    },
+    "Spyral_Corpus_phrases_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "minLength": {
+        "!type": "number",
+        "!doc": "the minimum length of the phrase"
+      },
+      "maxLength": {
+        "!type": "number",
+        "!doc": "the maximum length of the phrase"
+      },
+      "minRawFreq": {
+        "!type": "number",
+        "!doc": "the minimum raw frequency of the phrase"
+      },
+      "sort": {
+        "!type": "string",
+        "!doc": "the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      },
+      "overlapFilter": {
+        "!type": "string",
+        "!doc": "it happens that phrases contain other phrases and we need a strategy for handling overlap"
+      }
+    },
+    "Spyral_Corpus_correlations_config": {
+      "start": {
+        "!type": "number",
+        "!doc": "the zero-based start index of the list (for paging)"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "the maximum number of terms to provide per request"
+      },
+      "minRawFreq": {
+        "!type": "number",
+        "!doc": "the minimum raw frequency of the collocate terms"
+      },
+      "termsOnly": {
+        "!type": "boolean",
+        "!doc": "a very compact data view of the correlations"
+      },
+      "sort": {
+        "!type": "string",
+        "!doc": "the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`"
+      },
+      "dir": {
+        "!type": "string",
+        "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
+      }
+    },
+    "Spyral_Corpus_lda_config": {
+      "numberTopics": {
+        "!type": "number",
+        "!doc": "the number of topics to get (default is 10)"
+      },
+      "sweeps": {
+        "!type": "number",
+        "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
+      },
+      "language": {
+        "!type": "string",
+        "!doc": "stopwords language to use, default is corpus language"
+      }
+    },
+    "Spyral_Corpus_ldaTopics_config": {
+      "numberTopics": {
+        "!type": "number",
+        "!doc": "the number of topics to get (default is 10)"
+      },
+      "sweeps": {
+        "!type": "number",
+        "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
+      },
+      "language": {
+        "!type": "string",
+        "!doc": "stopwords language to use, default is corpus language"
+      }
+    },
+    "Spyral_Corpus_ldaDocuments_config": {
+      "numberTopics": {
+        "!type": "number",
+        "!doc": "the number of topics to get (default is 10)"
+      },
+      "sweeps": {
+        "!type": "number",
+        "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
+      },
+      "language": {
+        "!type": "string",
+        "!doc": "stopwords language to use, default is corpus language"
+      }
+    },
+    "Spyral_Corpus_entities_config": {
+      "docIndex": {
+        "!type": "?",
+        "!doc": "document index to restrict to (can be comma-separated list)"
+      },
+      "annotator": {
+        "!type": "string",
+        "!doc": "the annotator to use: 'stanford' or 'nssi'"
+      }
+    },
+    "Spyral_NetworkGraph_config": {
+      "nodes": {
+        "!type": "+Array",
+        "!doc": "An array of nodes"
+      },
+      "links": {
+        "!type": "+Array",
+        "!doc": "An array of links"
+      },
+      "nodeIdField": {
+        "!type": "?"
+      },
+      "nodeLabelField": {
+        "!type": "?"
+      },
+      "nodeValueField": {
+        "!type": "?"
+      },
+      "nodeCategoryField": {
+        "!type": "?"
+      },
+      "linkSourceField": {
+        "!type": "?"
+      },
+      "linkTargetField": {
+        "!type": "?"
+      },
+      "linkValueField": {
+        "!type": "?"
+      }
     },
     "TableConfig": {
       "format": {
@@ -69,7 +520,7 @@
         "!doc": "The table headers"
       },
       "hasHeaders": {
-        "!type": "bool",
+        "!type": "boolean",
         "!doc": "True if the headers are the first item in the data"
       },
       "count": {
@@ -79,591 +530,844 @@
       "!doc": "The Table config object"
     }
   },
-  "DataViewer": {
-    "!type": "fn()",
-    "prototype": {}
-  },
   "Spyral": {
     "Metadata": {
-      "!type": "fn(config: +MetadataConfig)",
+      "!type": "fn(config: +Spyral_Metadata_config) -> +Spyral.Metadata",
       "prototype": {
         "set": {
           "!type": "fn(config: +Object)",
-          "!doc": "Set metadata properties."
+          "!doc": "Set metadata properties.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Metadata-method-set"
         },
         "setDateNow": {
-          "!type": "fn(field: +String)",
-          "!doc": "Sets the specified field to the current date and time."
+          "!type": "fn(field: string)",
+          "!doc": "Sets the specified field to the current date and time.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Metadata-method-setDateNow"
         },
         "shortDate": {
-          "!type": "fn(field: +String) -> ?",
-          "!doc": "Gets the specified field as a short date."
+          "!type": "fn(field: string) -> ?",
+          "!doc": "Gets the specified field as a short date.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Metadata-method-shortDate"
         },
         "getHeaders": {
-          "!type": "fn() -> +String",
-          "!doc": "Gets the fields as a set of HTML meta tags."
+          "!type": "fn() -> string",
+          "!doc": "Gets the fields as a set of HTML meta tags.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Metadata-method-getHeaders"
         },
         "clone": {
           "!type": "fn() -> +Spyral.Metadata",
-          "!doc": "Returns a clone of this Metadata"
+          "!doc": "Returns a clone of this Metadata",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Metadata-method-clone"
         }
       },
-      "!doc": "The metadata constructor."
+      "!doc": "The metadata constructor.",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Metadata-method-constructor"
     },
     "Notebook": {
       "!type": "fn()",
       "prototype": {},
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Notebook",
       "show": {
-        "!type": "fn(contents: ?, config: ?)"
+        "!type": "fn(contents: ?, config: ?)",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Notebook.show"
       },
       "getTarget": {
         "!type": "fn() -> element",
-        "!doc": "Returns the target element"
+        "!doc": "Returns the target element",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Notebook-static-method-getTarget"
+      },
+      "getPromise": {
+        "!type": "fn() -> +Promise",
+        "!doc": "Returns a new promise",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Notebook-static-method-getPromise"
       },
       "import": {
         "!type": "fn(url: string, cellIndex?: number)",
-        "!doc": "Fetch and return the content of a notebook or a particular cell in a notebook"
+        "!doc": "Fetch and return the content of a notebook or a particular cell in a notebook",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Notebook-static-method-import"
       }
     },
     "Util": {
       "show": {
         "!type": "fn(contents: ?, len: ?, mode: ?)",
-        "!doc": "Show contents in the results area."
+        "!doc": "Show contents in the results area.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-show"
       },
       "showError": {
         "!type": "fn(error: ?, more: ?)",
-        "!doc": "Show an error in the results area."
+        "!doc": "Show an error in the results area.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-showError"
       },
       "Storage": {
         "!type": "fn()",
         "prototype": {},
-        "!doc": "A class for simplying resource storage"
+        "!doc": "A class for simplying resource storage",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util.Storage-method-constructor",
+        "storeResource": {
+          "!type": "fn(id: string, data: ?) -> +Promise",
+          "!doc": "Store a resource",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util.Storage-static-method-storeResource"
+        },
+        "getTromboneUrl": {
+          "!type": "fn() -> string",
+          "!doc": "Get the URL for trombone",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util.Storage-static-method-getTromboneUrl"
+        },
+        "getStoredResource": {
+          "!type": "fn(id: string) -> +Promise",
+          "!doc": "Get a stored resource",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util.Storage-static-method-getStoredResource"
+        }
       },
       "!type": "fn()",
       "prototype": {},
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util",
       "id": {
-        "!type": "fn(len: +Number) -> +String",
-        "!doc": "Generates a random ID of the specified length."
+        "!type": "fn(len: number) -> string",
+        "!doc": "Generates a random ID of the specified length.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-id"
       },
       "toString": {
-        "!type": "fn(contents: ?) -> +String"
+        "!type": "fn(contents: ?) -> string",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util.toString"
       },
       "more": {
-        "!type": "fn(before: +String, more: +String, after: +String)"
+        "!type": "fn(before: string, more: string, after: string)",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util.more"
+      },
+      "dataUrlToBlob": {
+        "!type": "fn(dataUrl: string) -> +Blob",
+        "!doc": "Take a data URL and convert it to a Blob.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-dataUrlToBlob"
+      },
+      "blobToDataUrl": {
+        "!type": "fn(blob: +Blob) -> string",
+        "!doc": "Take a Blob and convert it to a data URL.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-blobToDataUrl"
+      },
+      "isString": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is a String.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isString"
+      },
+      "isNumber": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is a Number.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isNumber"
+      },
+      "isBoolean": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is a Boolean.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isBoolean"
+      },
+      "isUndefined": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is Undefined.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isUndefined"
+      },
+      "isArray": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is an Array.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isArray"
+      },
+      "isObject": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is an Object.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isObject"
+      },
+      "isNull": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is Null.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isNull"
+      },
+      "isNode": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is a Node.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isNode"
+      },
+      "isFunction": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is a Function.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isFunction"
+      },
+      "isPromise": {
+        "!type": "fn(val: ?) -> boolean",
+        "!doc": "Returns true if the value is a Promise.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-isPromise"
+      },
+      "getFileExtensionFromMimeType": {
+        "!type": "fn(mimeType: string) -> string",
+        "!doc": "Takes a MIME type and returns the related file extension.\nOnly handles file types supported by Voyant.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-getFileExtensionFromMimeType"
       }
     },
     "Categories": {
-      "!type": "fn()",
+      "!type": "fn(config: +Spyral_Categories_config) -> +Spyral.Categories",
       "prototype": {
         "getCategories": {
           "!type": "fn() -> +Object",
-          "!doc": "Get the categories"
+          "!doc": "Get the categories.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategories"
         },
         "getCategoryNames": {
           "!type": "fn() -> +Array",
-          "!doc": "Get category names as an array."
+          "!doc": "Get category names as an array.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoryNames"
         },
         "getCategoryTerms": {
           "!type": "fn(name: string) -> +Array",
-          "!doc": "Get the terms for a category"
+          "!doc": "Get the terms for a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoryTerms"
         },
         "addCategory": {
           "!type": "fn(name: string)",
-          "!doc": "Add a new category"
+          "!doc": "Add a new category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-addCategory"
         },
         "renameCategory": {
           "!type": "fn(oldName: string, newName: string)",
-          "!doc": "Rename a category"
+          "!doc": "Rename a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-renameCategory"
         },
         "removeCategory": {
           "!type": "fn(name: string)",
-          "!doc": "Remove a category"
+          "!doc": "Remove a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-removeCategory"
         },
         "getCategoryRanking": {
           "!type": "fn(name: string) -> number",
-          "!doc": "Gets the ranking for a category"
+          "!doc": "Gets the ranking for a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoryRanking"
         },
         "setCategoryRanking": {
           "!type": "fn(name: string, ranking: number)",
-          "!doc": "Sets the ranking for a category"
+          "!doc": "Sets the ranking for a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-setCategoryRanking"
         },
         "addTerm": {
           "!type": "fn(category: string, term: string)",
-          "!doc": "Add a term to a category"
+          "!doc": "Add a term to a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-addTerm"
         },
         "addTerms": {
           "!type": "fn(category: string, terms: +Array)",
-          "!doc": "Add multiple terms to a category"
+          "!doc": "Add multiple terms to a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-addTerms"
         },
         "removeTerm": {
           "!type": "fn(category: string, term: string)",
-          "!doc": "Remove a term from a category"
+          "!doc": "Remove a term from a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-removeTerm"
         },
         "removeTerms": {
           "!type": "fn(category: string, terms: +Array)",
-          "!doc": "Remove multiple terms from a category"
+          "!doc": "Remove multiple terms from a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-removeTerms"
         },
         "getCategoryForTerm": {
           "!type": "fn(term: string) -> string",
-          "!doc": "Get the category that a term belongs to, taking ranking into account"
+          "!doc": "Get the category that a term belongs to, taking ranking into account.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoryForTerm"
         },
         "getCategoriesForTerm": {
           "!type": "fn(term: string) -> +Array",
-          "!doc": "Get all the categories a term belongs to"
+          "!doc": "Get all the categories a term belongs to.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoriesForTerm"
         },
         "getFeatureForTerm": {
           "!type": "fn(feature: string, term: string) -> ?",
-          "!doc": "Get the feature for a term"
+          "!doc": "Get the feature for a term.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getFeatureForTerm"
         },
         "getFeatures": {
           "!type": "fn() -> +Object",
-          "!doc": "Get the features"
+          "!doc": "Get the features.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getFeatures"
         },
         "addFeature": {
           "!type": "fn(name: string, defaultValue: ?)",
-          "!doc": "Add a feature"
+          "!doc": "Add a feature.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-addFeature"
         },
         "removeFeature": {
           "!type": "fn(name: string)",
-          "!doc": "Remove a feature"
+          "!doc": "Remove a feature.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-removeFeature"
         },
         "setCategoryFeature": {
           "!type": "fn(categoryName: string, featureName: string, featureValue: ?)",
-          "!doc": "Set the feature for a category"
+          "!doc": "Set the feature for a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-setCategoryFeature"
         },
         "getCategoryFeature": {
           "!type": "fn(categoryName: string, featureName: string) -> ?",
-          "!doc": "Get the feature for a category"
+          "!doc": "Get the feature for a category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoryFeature"
         },
         "getCategoryExportData": {
           "!type": "fn() -> +Object",
-          "!doc": "Get a copy of the category and feature data"
+          "!doc": "Get a copy of the category and feature data.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-getCategoryExportData"
         },
         "save": {
           "!type": "fn(config: +Object) -> +Promise",
-          "!doc": "Save the categories (if we're in a recognized environment)."
+          "!doc": "Save the categories (if we're in a recognized environment).",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-save"
         },
         "load": {
           "!type": "fn(config: ?, api: +Object) -> +Promise",
-          "!doc": "Load the categories (if we're in a recognized environment).\n\nIn its simplest form this can be used with a single string ID to load:\n\tnew Spyral.Categories().load(\"categories.en.txt\")\n\nWhich is equivalent to:\n\tnew Spyral.Categories().load({retrieveResourceId: \"categories.en.txt\"});"
+          "!doc": "Load the categories (if we're in a recognized environment).\n\nIn its simplest form this can be used with a single string ID to load:\n\tnew Spyral.Categories().load(\"categories.en.txt\")\n\nWhich is equivalent to:\n\tnew Spyral.Categories().load({retrieveResourceId: \"categories.en.txt\"});",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-load"
         }
       },
-      "!doc": "Construct a new Categories class"
+      "!doc": "Construct a new Categories class.",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-constructor",
+      "load": {
+        "!type": "fn(config: ?, api: +Object) -> +Promise",
+        "!doc": "Load categories and return a promise that resolves to a new Spyral.Categories instance.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-static-method-load"
+      }
     },
     "Chart": {
-      "!type": "fn(target: +HTMLElement, data: +Array)",
+      "!type": "fn(target?: ?, data: +Array)",
       "prototype": {
         "create": {
-          "!type": "fn(target: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-          "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options."
+          "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-create"
         },
         "bar": {
           "!type": "fn(config?: +Object) -> +Highcharts.Chart",
-          "!doc": "Create a bar chart"
+          "!doc": "Create a bar chart",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-bar"
+        },
+        "column": {
+          "!type": "fn(config?: +Object) -> +Highcharts.Chart",
+          "!doc": "Create a column chart",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-column"
         },
         "line": {
           "!type": "fn(config?: +Object) -> +Highcharts.Chart",
-          "!doc": "Create a line chart"
+          "!doc": "Create a line chart",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-line"
         },
         "scatter": {
           "!type": "fn(config?: +Object) -> +Highcharts.Chart",
-          "!doc": "Create a scatter plot"
+          "!doc": "Create a scatter plot",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-scatter"
         },
         "networkgraph": {
-          "!type": "fn(config?: +Object) -> +Highcharts.Chart",
-          "!doc": "Create a network graph"
+          "!type": "fn(config?: +Object) -> +Spyral.NetworkGraph",
+          "!doc": "Create a network graph",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-networkgraph"
         }
       },
       "!doc": "Construct a new Chart class",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-constructor",
       "create": {
-        "!type": "fn(target: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-        "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options."
-      },
-      "setDefaultChartType": {
-        "!type": "fn(config: +Object, type: string)",
-        "!doc": "Sets the default chart type"
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-create"
       },
       "setSeriesData": {
         "!type": "fn(config: +Object, data: +Array)",
-        "!doc": "Add the provided data to the config as a series"
+        "!doc": "Add the provided data to the config as a series",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-setSeriesData"
       },
       "bar": {
-        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
-        "!doc": "Create a bar chart"
+        "!type": "fn(target?: ?, config: +Object) -> +Highcharts.Chart",
+        "!doc": "Create a bar chart",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-bar"
+      },
+      "column": {
+        "!type": "fn(target?: ?, config: +Object) -> +Highcharts.Chart",
+        "!doc": "Create a column chart",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-column"
       },
       "line": {
-        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
-        "!doc": "Create a line chart"
+        "!type": "fn(target?: ?, config: +Object) -> +Highcharts.Chart",
+        "!doc": "Create a line chart",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-line"
       },
       "scatter": {
-        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
-        "!doc": "Create a scatter plot"
+        "!type": "fn(target?: ?, config: +Object) -> +Highcharts.Chart",
+        "!doc": "Create a scatter plot",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-scatter"
       },
       "networkgraph": {
-        "!type": "fn(target: +HTMLElement, config: +Object) -> +Highcharts.Chart",
-        "!doc": "Create a network graph"
+        "!type": "fn(target?: ?, config: +Object) -> +Spyral.NetworkGraph",
+        "!doc": "Create a network graph",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-networkgraph"
       }
     },
     "Corpus": {
-      "!type": "fn()",
       "prototype": {
         "id": {
-          "!type": "fn() -> ?",
-          "!doc": "Get a Promise for the ID of the corpus."
+          "!type": "fn() -> +Promise",
+          "!doc": "Returns the ID of the corpus.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-id"
         },
         "metadata": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for the metadata object (of the corpus or document, depending on which mode is used).\n\nThe following is an example of the object return for the metadata of the Jane Austen corpus:\n\n\t{\n\t\t\"id\": \"b50407fd1cbbecec4315a8fc411bad3c\",\n\t\t\"alias\": \"austen\",\n\t\t\"title\": \"\",\n\t\t\"subTitle\": \"\",\n\t\t\"documentsCount\": 8,\n\t\t\"createdTime\": 1582429585984,\n\t\t\"createdDate\": \"2020-02-22T22:46:25.984-0500\",\n\t\t\"lexicalTokensCount\": 781763,\n\t\t\"lexicalTypesCount\": 15368,\n\t\t\"noPasswordAccess\": \"NORMAL\",\n\t\t\"languageCodes\": [\n\t\t\t\"en\"\n\t\t]\n\t}\n\nThe following is an example of what is returned as metadata for the first document:\n\n\t[\n\t\t{\n  \t\t\"id\": \"ddac6b12c3f4261013c63d04e8d21b45\",\n  \t\t\"extra.X-Parsed-By\": \"org.apache.tika.parser.DefaultParser\",\n  \t\t\"tokensCount-lexical\": \"33559\",\n  \t\t\"lastTokenStartOffset-lexical\": \"259750\",\n  \t\t\"parent_modified\": \"1548457455000\",\n  \t\t\"typesCount-lexical\": \"4235\",\n  \t\t\"typesCountMean-lexical\": \"7.924203\",\n  \t\t\"lastTokenPositionIndex-lexical\": \"33558\",\n  \t\t\"index\": \"0\",\n  \t\t\"language\": \"en\",\n  \t\t\"sentencesCount\": \"1302\",\n  \t\t\"source\": \"stream\",\n  \t\t\"typesCountStdDev-lexical\": \"46.626404\",\n  \t\t\"title\": \"1790 Love And Freindship\",\n  \t\t\"parent_queryParameters\": \"VOYANT_BUILD=M16&textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&VOYANT_REMOTE_ID=199.229.249.196&accessIP=199.229.249.196&VOYANT_VERSION=2.4&palette=default&suppressTools=false\",\n  \t\t\"extra.Content-Type\": \"text/plain; charset=windows-1252\",\n  \t\t\"parentType\": \"expansion\",\n  \t\t\"extra.Content-Encoding\": \"windows-1252\",\n  \t\t\"parent_source\": \"file\",\n  \t\t\"parent_id\": \"ae47e3a72cd3cad51e196e8a41e21aec\",\n  \t\t\"modified\": \"1432861756000\",\n  \t\t\"location\": \"1790 Love And Freindship.txt\",\n  \t\t\"parent_title\": \"Austen\",\n  \t\t\"parent_location\": \"Austen.zip\"\n\t\t}\n\t]\n\nIn Corpus mode there's no reason to specify arguments. In documents mode you\ncan request specific documents in the config object:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\n An example:\n \n \t// this would show the number 8 (the size of the corpus)\n \tloadCorpus(\"austen\").metadata().then(metadata => metadata.documentsCount)"
+          "!type": "fn(config: +Object) -> +Promise",
+          "!doc": "Returns the metadata object (of the corpus or document, depending on which mode is used).\n\nThe following is an example of the object return for the metadata of the Jane Austen corpus:\n\n\t{\n\t\t\"id\": \"b50407fd1cbbecec4315a8fc411bad3c\",\n\t\t\"alias\": \"austen\",\n\t\t\"title\": \"\",\n\t\t\"subTitle\": \"\",\n\t\t\"documentsCount\": 8,\n\t\t\"createdTime\": 1582429585984,\n\t\t\"createdDate\": \"2020-02-22T22:46:25.984-0500\",\n\t\t\"lexicalTokensCount\": 781763,\n\t\t\"lexicalTypesCount\": 15368,\n\t\t\"noPasswordAccess\": \"NORMAL\",\n\t\t\"languageCodes\": [\n\t\t\t\"en\"\n\t\t]\n\t}\n\nThe following is an example of what is returned as metadata for the first document:\n\n\t[\n\t\t{\n  \t\t\"id\": \"ddac6b12c3f4261013c63d04e8d21b45\",\n  \t\t\"extra.X-Parsed-By\": \"org.apache.tika.parser.DefaultParser\",\n  \t\t\"tokensCount-lexical\": \"33559\",\n  \t\t\"lastTokenStartOffset-lexical\": \"259750\",\n  \t\t\"parent_modified\": \"1548457455000\",\n  \t\t\"typesCount-lexical\": \"4235\",\n  \t\t\"typesCountMean-lexical\": \"7.924203\",\n  \t\t\"lastTokenPositionIndex-lexical\": \"33558\",\n  \t\t\"index\": \"0\",\n  \t\t\"language\": \"en\",\n  \t\t\"sentencesCount\": \"1302\",\n  \t\t\"source\": \"stream\",\n  \t\t\"typesCountStdDev-lexical\": \"46.626404\",\n  \t\t\"title\": \"1790 Love And Freindship\",\n  \t\t\"parent_queryParameters\": \"VOYANT_BUILD=M16&textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&VOYANT_REMOTE_ID=199.229.249.196&accessIP=199.229.249.196&VOYANT_VERSION=2.4&palette=default&suppressTools=false\",\n  \t\t\"extra.Content-Type\": \"text/plain; charset=windows-1252\",\n  \t\t\"parentType\": \"expansion\",\n  \t\t\"extra.Content-Encoding\": \"windows-1252\",\n  \t\t\"parent_source\": \"file\",\n  \t\t\"parent_id\": \"ae47e3a72cd3cad51e196e8a41e21aec\",\n  \t\t\"modified\": \"1432861756000\",\n  \t\t\"location\": \"1790 Love And Freindship.txt\",\n  \t\t\"parent_title\": \"Austen\",\n  \t\t\"parent_location\": \"Austen.zip\"\n\t\t}\n\t]\n\nIn Corpus mode there's no reason to specify arguments. In documents mode you\ncan request specific documents in the config object:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\n An example:\n \n \t// this would show the number 8 (the size of the corpus)\n \tloadCorpus(\"austen\").metadata().then(metadata => metadata.documentsCount)",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-metadata"
         },
         "summary": {
-          "!type": "fn() -> ?",
-          "!doc": "Get a Promise for a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) \n\nAn example:\n\n\tloadCorpus(\"austen\").summary();"
+          "!type": "fn() -> +Promise",
+          "!doc": "Returns a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) \n\nAn example:\n\n\tloadCorpus(\"austen\").summary();",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-summary"
         },
         "titles": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of the document titles.\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nAn example:\n\n\tloadCorpus(\"austen\").titles().then(titles => \"The last work is: \"+titles[titles.length-1])"
+          "!type": "fn(config: +Spyral_Corpus_titles_config) -> +Promise",
+          "!doc": "Returns an array of document titles for the corpus.\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nAn example:\n\n\tloadCorpus(\"austen\").titles().then(titles => \"The last work is: \"+titles[titles.length-1])",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-titles"
+        },
+        "documents": {
+          "!type": "fn(config: +Spyral_Corpus_documents_config) -> +Promise",
+          "!doc": "Returns an array of documents metadata for the corpus.\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start of the list\n * **limit**: a limit to the number of items to return at a time\n * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma\n * **docId**: a set of document IDs; multiple documents can be separated by a comma\n * **query**: one or more term queries for the title, author or full-text\n * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-documents"
         },
         "text": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for the text of the entire corpus.\n\nTexts are concatenated together with two new lines and three dashes (\\\\n\\\\n---\\\\n\\\\n)\n\nThe following are valid in the config parameter:\n\n* **noMarkup**: strips away the markup\n* **compactSpace**: strips away superfluous spaces and multiple new lines\n* **limit**: a limit to the number of characters (per text)\n* **format**: `text` for plain text, any other value for the simplified Voyant markup\n\nAn example:\n\n\t// fetch 1000 characters from each text in the corpus into a single string\n\tloadCorpus(\"austen\").text({limit:1000})"
+          "!type": "fn(config: +Spyral_Corpus_text_config) -> +Promise",
+          "!doc": "Returns the text of the entire corpus.\n\nTexts are concatenated together with two new lines and three dashes (\\\\n\\\\n---\\\\n\\\\n)\n\nThe following are valid in the config parameter:\n\n* **noMarkup**: strips away the markup\n* **compactSpace**: strips away superfluous spaces and multiple new lines\n* **limit**: a limit to the number of characters (per text)\n* **format**: `text` for plain text, any other value for the simplified Voyant markup\n\nAn example:\n\n\t// fetch 1000 characters from each text in the corpus into a single string\n\tloadCorpus(\"austen\").text({limit:1000})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-text"
         },
         "texts": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of texts from the entire corpus.\n\nThe following are valid in the config parameter:\n\n* **noMarkup**: strips away the markup\n* **compactSpace**: strips away superfluous spaces and multiple new lines\n* **limit**: a limit to the number of characters (per text)\n* **format**: `text` for plain text, any other value for the simplified Voyant markup\n\nAn example:\n\n\t// fetch 1000 characters from each text in the corpus into an Array\n\tloadCorpus(\"austen\").texts({limit:1000})"
+          "!type": "fn(config: +Spyral_Corpus_texts_config) -> +Promise",
+          "!doc": "Returns an array of texts from the entire corpus.\n\nThe following are valid in the config parameter:\n\n* **noMarkup**: strips away the markup\n* **compactSpace**: strips away superfluous spaces and multiple new lines\n* **limit**: a limit to the number of characters (per text)\n* **format**: `text` for plain text, any other value for the simplified Voyant markup\n\nAn example:\n\n\t// fetch 1000 characters from each text in the corpus into an Array\n\tloadCorpus(\"austen\").texts({limit:1000})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-texts"
         },
         "terms": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).\nThese terms are actually types, so information about each type is collected (as opposed to the {#link tokens}\nmethod which is for every occurrence in document order).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus Term (corpus mode):\n\n\t{\n\t\t\"term\": \"the\",\n\t\t\"inDocumentsCount\": 8,\n\t\t\"rawFreq\": 28292,\n\t\t\"relativeFreq\": 0.036189996,\n\t\t\"comparisonRelativeFreqDifference\": 0\n\t}\n\nThe following is an example of Document Term (documents mode):\n\n\t{\n\t\t\"term\": \"the\",\n\t\t\"rawFreq\": 1333,\n\t\t\"relativeFreq\": 39721.086,\n\t\t\"zscore\": 28.419,\n\t\t\"zscoreRatio\": -373.4891,\n\t\t\"tfidf\": 0.0,\n\t\t\"totalTermsCount\": 33559,\n\t\t\"docIndex\": 0,\n\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minRawFreq**: the minimum raw frequency of terms\n * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)\n * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **withDistributions**: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)\n * **whiteList**: a keyword list – terms will be limited to this list\n * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to corpus mode:\n\n * **bins**: by default there are the same number of bins as there are documents (for distribution values), this can be modified\n * **corpusComparison**: you can provide the ID of a corpus for comparison of frequency values\n * **inDocumentsCountOnly**: if you don't need term frequencies but only frequency per document set this to true\n * **sort**: the order of the terms, one of the following: `INDOCUMENTSCOUNT, RAWFREQ, TERM, RELATIVEPEAKEDNESS, RELATIVESKEWNESS, COMPARISONRELATIVEFREQDIFFERENCE`\n \n The following are specific to documents mode:\n\n * **bins**: by default the document is divided into 10 equal bins(for distribution values), this can be modified\n * **sort**: the order of the terms, one of the following: `RAWFREQ, RELATIVEFREQ, TERM, TFIDF, ZSCORE`\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// show top 5 terms\n\tloadCorpus(\"austen\").terms({stopList: 'auto', limit: 5}).then(terms => terms.map(term => term.term))\n\n\t// show top term for each document\n\tloadCorpus(\"austen\").terms({stopList: 'auto', perDocLimit: 1, mode: 'documents'}).then(terms => terms.map(term => term.term))"
+          "!type": "fn(config: +Spyral_Corpus_terms_config) -> +Promise",
+          "!doc": "Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).\nThese terms are actually types, so information about each type is collected (as opposed to the {#link tokens}\nmethod which is for every occurrence in document order).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus Term (corpus mode):\n\n\t{\n\t\t\"term\": \"the\",\n\t\t\"inDocumentsCount\": 8,\n\t\t\"rawFreq\": 28292,\n\t\t\"relativeFreq\": 0.036189996,\n\t\t\"comparisonRelativeFreqDifference\": 0\n\t}\n\nThe following is an example of Document Term (documents mode):\n\n\t{\n\t\t\"term\": \"the\",\n\t\t\"rawFreq\": 1333,\n\t\t\"relativeFreq\": 39721.086,\n\t\t\"zscore\": 28.419,\n\t\t\"zscoreRatio\": -373.4891,\n\t\t\"tfidf\": 0.0,\n\t\t\"totalTermsCount\": 33559,\n\t\t\"docIndex\": 0,\n\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minRawFreq**: the minimum raw frequency of terms\n * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)\n * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **withDistributions**: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)\n * **whiteList**: a keyword list – terms will be limited to this list\n * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to corpus mode:\n\n * **bins**: by default there are the same number of bins as there are documents (for distribution values), this can be modified\n * **corpusComparison**: you can provide the ID of a corpus for comparison of frequency values\n * **inDocumentsCountOnly**: if you don't need term frequencies but only frequency per document set this to true\n * **sort**: the order of the terms, one of the following: `INDOCUMENTSCOUNT, RAWFREQ, TERM, RELATIVEPEAKEDNESS, RELATIVESKEWNESS, COMPARISONRELATIVEFREQDIFFERENCE`\n \n The following are specific to documents mode:\n\n * **bins**: by default the document is divided into 10 equal bins(for distribution values), this can be modified\n * **sort**: the order of the terms, one of the following: `RAWFREQ, RELATIVEFREQ, TERM, TFIDF, ZSCORE`\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// show top 5 terms\n\tloadCorpus(\"austen\").terms({stopList: 'auto', limit: 5}).then(terms => terms.map(term => term.term))\n\n\t// show top term for each document\n\tloadCorpus(\"austen\").terms({stopList: 'auto', perDocLimit: 1, mode: 'documents'}).then(terms => terms.map(term => term.term))",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-terms"
         },
         "tokens": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of document tokens.\n\nThe promise returns an array of document token objects. A document token object can look something like this:\n\n\t\t{\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\",\n\t\t\t\"docIndex\": 0,\n\t\t\t\"term\": \"LOVE\",\n\t\t\t\"tokenType\": \"lexical\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"position\": 0,\n\t\t\t\"startOffset\": 3,\n\t\t\t\"endOffset\": 7\n\t\t}\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **whiteList**: a keyword list – terms will be limited to this list\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **noOthers**: only include lexical forms, no other tokens\n * **stripTags**: one of the following: `ALL`, `BLOCKSONLY`, `NONE` (`BLOCKSONLY` tries to maintain blocks for line formatting)\n * **withPosLemmas**: include part-of-speech and lemma information when available (reliability of this may vary by instance)\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n\nAn example:\n\n\t// load the first 20 tokens (don't include tags, spaces, etc.)\n\tloadCorpus(\"austen\").tokens({limit: 20, noOthers: true})"
+          "!type": "fn(config: +Spyral_Corpus_tokens_config) -> +Promise",
+          "!doc": "Returns an array of document tokens.\n\nThe promise returns an array of document token objects. A document token object can look something like this:\n\n\t\t{\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\",\n\t\t\t\"docIndex\": 0,\n\t\t\t\"term\": \"LOVE\",\n\t\t\t\"tokenType\": \"lexical\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"position\": 0,\n\t\t\t\"startOffset\": 3,\n\t\t\t\"endOffset\": 7\n\t\t}\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **whiteList**: a keyword list – terms will be limited to this list\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **noOthers**: only include lexical forms, no other tokens\n * **stripTags**: one of the following: `ALL`, `BLOCKSONLY`, `NONE` (`BLOCKSONLY` tries to maintain blocks for line formatting)\n * **withPosLemmas**: include part-of-speech and lemma information when available (reliability of this may vary by instance)\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n\nAn example:\n\n\t// load the first 20 tokens (don't include tags, spaces, etc.)\n\tloadCorpus(\"austen\").tokens({limit: 20, noOthers: true})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-tokens"
         },
         "words": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of words from the corpus.\n\nThe array of words are in document order, much like tokens.\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **whiteList**: a keyword list – terms will be limited to this list\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n\nAn example:\n\n\t// load the first 20 words in the corpus\n\tloadCorpus(\"austen\").tokens({limit: 20})"
+          "!type": "fn(config: +Spyral_Corpus_words_config) -> +Promise",
+          "!doc": "Returns an array of words from the corpus.\n\nThe array of words are in document order, much like tokens.\n\nThe following are valid in the config parameter:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **whiteList**: a keyword list – terms will be limited to this list\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n\nAn example:\n\n\t// load the first 20 words in the corpus\n\tloadCorpus(\"austen\").tokens({limit: 20})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-words"
         },
         "contexts": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of Objects that contain keywords in contexts (KWICs).\n\nAn individual KWIC Object looks something like this:\n\n\t{\n\t\t\t\"docIndex\": 0,\n\t\t\t\"query\": \"love\",\n\t\t\t\"term\": \"love\",\n\t\t\t\"position\": 0,\n\t\t\t\"left\": \"FREINDSHIP AND OTHER EARLY WORKS\",\n\t\t\t\"middle\": \"Love\",\n\t\t\t\"right\": \" And Friendship And Other Early\"\n\t}\n \nThe following are valid in the config parameter:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)\n * **sort**: the order of the contexts: `TERM,, DOCINDEX, POSITION, LEFT, RIGHT`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **stripTags**: for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)\n * **context**: the size of the context (the number of words on each size of the keyword)\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n * **overlapStrategy**: determines how to handle cases where there's overlap between KWICs, such as \"to be or not to be\" when the keyword is \"be\"; here are the options:\n     * **none**: nevermind the overlap, keep all words\n     \t* {left: \"to\", middle: \"be\", right: \"or not to be\"} \n     \t* {left: \"to be or not to\", middle: \"be\", right: \"\"} \n     * **first**: priority goes to the first occurrence (some may be dropped)\n     \t* {left: \"to\", middle: \"be\", right: \"or not to be\"} \n     * **merge**: balance the words between overlapping occurrences\n     \t* {left: \"to\", middle: \"be\", right: \"or\"} \n     \t* {left: \"not to\", middle: \"be\", right: \"\"} \n\nAn example:\n\n\t// load the first 20 words in the corpus\n\tloadCorpus(\"austen\").contexts({query: \"love\", limit: 10})"
+          "!type": "fn(config: +Spyral_Corpus_contexts_config) -> +Promise",
+          "!doc": "Returns an array of Objects that contain keywords in contexts (KWICs).\n\nAn individual KWIC Object looks something like this:\n\n\t{\n\t\t\t\"docIndex\": 0,\n\t\t\t\"query\": \"love\",\n\t\t\t\"term\": \"love\",\n\t\t\t\"position\": 0,\n\t\t\t\"left\": \"FREINDSHIP AND OTHER EARLY WORKS\",\n\t\t\t\"middle\": \"Love\",\n\t\t\t\"right\": \" And Friendship And Other Early\"\n\t}\n \nThe following are valid in the config parameter:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)\n * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document\n * **stripTags**: for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)\n * **context**: the size of the context (the number of words on each side of the keyword)\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n * **overlapStrategy**: determines how to handle cases where there's overlap between KWICs, such as \"to be or not to be\" when the keyword is \"be\"; here are the options:\n     * **none**: nevermind the overlap, keep all words\n     \t* {left: \"to\", middle: \"be\", right: \"or not to be\"} \n     \t* {left: \"to be or not to\", middle: \"be\", right: \"\"} \n     * **first**: priority goes to the first occurrence (some may be dropped)\n     \t* {left: \"to\", middle: \"be\", right: \"or not to be\"} \n     * **merge**: balance the words between overlapping occurrences\n     \t* {left: \"to\", middle: \"be\", right: \"or\"} \n     \t* {left: \"not to\", middle: \"be\", right: \"\"} \n\nAn example:\n\n\t// load the first 20 words in the corpus\n\tloadCorpus(\"austen\").contexts({query: \"love\", limit: 10})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-contexts"
         },
         "collocates": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of collocates (either document or corpus collocates, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus Collocate (corpus mode):\n\n\t{\n  \t\t\"term\": \"love\",\n  \t\t\"rawFreq\": 568,\n  \t\t\"contextTerm\": \"mr\",\n  \t\t\"contextTermRawFreq\": 24\n\t}\n\nThe following is an example of Document Collocate (documents mode):\n\n\t{\n\t\t\t\"docIndex\": 4,\n\t\t\t\"keyword\": \"love\",\n\t\t\t\"keywordContextRawFrequency\": 124,\n\t\t\t\"term\": \"fanny\",\n\t\t\t\"termContextRawFrequency\": 8,\n\t\t\t\"termContextRelativeFrequency\": 0.021680217,\n\t\t\t\"termDocumentRawFrequency\": 816,\n\t\t\t\"termDocumentRelativeFrequency\": 0.0050853477,\n\t\t\t\"termContextDocumentRelativeFrequencyDifference\": 0.01659487\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)\n * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **collocatesWhitelist**: collocates will be limited to this list\n * **context**: the size of the context (the number of words on each size of the keyword)\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to corpus mode:\n\n * **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, CONTEXTTERM, CONTEXTTERMRAWFREQ`\n \n The following are specific to documents mode:\n\n * **sort**: the order of the terms, one of the following: `TERM, REL, REL, RAW, DOCREL, DOCRAW, CONTEXTDOCRELDIFF`\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// show top 5 collocate terms\n\tloadCorpus(\"austen\").collocates({stopList: 'auto', limit: 5}).then(terms => terms.map(term => term.term))"
+          "!type": "fn(config: +Spyral_Corpus_collocates_config) -> +Promise",
+          "!doc": "Returns an array of collocates (either document or corpus collocates, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus Collocate (corpus mode):\n\n\t{\n  \t\t\"term\": \"love\",\n  \t\t\"rawFreq\": 568,\n  \t\t\"contextTerm\": \"mr\",\n  \t\t\"contextTermRawFreq\": 24\n\t}\n\nThe following is an example of Document Collocate (documents mode):\n\n\t{\n\t\t\t\"docIndex\": 4,\n\t\t\t\"keyword\": \"love\",\n\t\t\t\"keywordContextRawFrequency\": 124,\n\t\t\t\"term\": \"fanny\",\n\t\t\t\"termContextRawFrequency\": 8,\n\t\t\t\"termContextRelativeFrequency\": 0.021680217,\n\t\t\t\"termDocumentRawFrequency\": 816,\n\t\t\t\"termDocumentRelativeFrequency\": 0.0050853477,\n\t\t\t\"termContextDocumentRelativeFrequencyDifference\": 0.01659487\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)\n * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)\n * **collocatesWhitelist**: collocates will be limited to this list\n * **context**: the size of the context (the number of words on each side of the keyword)\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to corpus mode:\n\n * **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, CONTEXTTERM, CONTEXTTERMRAWFREQ`\n \n The following are specific to documents mode:\n\n * **sort**: the order of the terms, one of the following: `TERM, REL, REL, RAW, DOCREL, DOCRAW, CONTEXTDOCRELDIFF`\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// show top 5 collocate terms\n\tloadCorpus(\"austen\").collocates({stopList: 'auto', limit: 5}).then(terms => terms.map(term => term.term))",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-collocates"
         },
         "phrases": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus phrase (corpus mode), without distributions requested:\n\n\t{\n \t\t\"term\": \"love with\",\n \t\t\"rawFreq\": 103,\n \t\t\"length\": 2\n\t}\n\nThe following is an example of Document phrase (documents mode), without positions requested:\n\n\t{\n  \t\t\"term\": \"love with\",\n  \t\t\"rawFreq\": 31,\n  \t\t\"length\": 2,\n  \t\t\"docIndex\": 5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minLength**: the minimum length of the phrase\n * **maxLength**: the maximum length of the phrase\n * **minRawFreq**: the minimum raw frequency of the phrase\n\t* **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n * **overlapFilter**: it happens that phrases contain other phrases and we need a strategy for handling overlap:\n     * **NONE**: nevermind the overlap, keep all phrases\n     * **LENGTHFIRST**: priority goes to the longest phrases\n     * **RAWFREQFIRST**: priority goes to the highest frequency phrases\n     * **POSITIONFIRST**: priority goes to the first phrases\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 20 phrases in the corpus\n\tloadCorpus(\"austen\").phrases({query: \"love\", limit: 10})"
+          "!type": "fn(config: +Spyral_Corpus_phrases_config) -> +Promise",
+          "!doc": "Returns an array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus phrase (corpus mode), without distributions requested:\n\n\t{\n \t\t\"term\": \"love with\",\n \t\t\"rawFreq\": 103,\n \t\t\"length\": 2\n\t}\n\nThe following is an example of Document phrase (documents mode), without positions requested:\n\n\t{\n  \t\t\"term\": \"love with\",\n  \t\t\"rawFreq\": 31,\n  \t\t\"length\": 2,\n  \t\t\"docIndex\": 5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minLength**: the minimum length of the phrase\n * **maxLength**: the maximum length of the phrase\n * **minRawFreq**: the minimum raw frequency of the phrase\n\t* **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n * **overlapFilter**: it happens that phrases contain other phrases and we need a strategy for handling overlap:\n     * **NONE**: nevermind the overlap, keep all phrases\n     * **LENGTHFIRST**: priority goes to the longest phrases\n     * **RAWFREQFIRST**: priority goes to the highest frequency phrases\n     * **POSITIONFIRST**: priority goes to the first phrases\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 20 phrases in the corpus\n\tloadCorpus(\"austen\").phrases({query: \"love\", limit: 10})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-phrases"
         },
         "correlations": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get a Promise for an Array of correlations (either document or corpus correlations, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus correlation (corpus mode):\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"mrs\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 2531,\n\t\t\t\"relativePeakedness\": 0.46444246,\n\t\t\t\"relativeSkewness\": -0.44197384\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 568,\n\t\t\t\"relativePeakedness\": 5.763066,\n\t\t\t\"relativeSkewness\": 2.2536576\n\t\t},\n\t\t\"correlation\": -0.44287738,\n\t\t\"significance\": 0.08580014\n\t}\n\nThe following is an example of Document correlation (documents mode), without positions requested:\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"confide\",\n\t\t\t\"rawFreq\": 3,\n\t\t\t\"relativeFreq\": 89.3948,\n\t\t\t\"zscore\": -0.10560975,\n\t\t\t\"zscoreRatio\": -0.7541012,\n\t\t\t\"tfidf\": 1.1168874E-5,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"relativeFreq\": 1609.1063,\n\t\t\t\"zscore\": 53.830048,\n\t\t\t\"zscoreRatio\": -707.44696,\n\t\t\t\"tfidf\": 0.0,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"correlation\": 0.93527687,\n\t\t\"significance\": 7.0970666E-5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minRawFreq**: the minimum raw frequency of the collocate terms\n * **termsOnly**: a very compact data view of the correlations\n * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 10 phrases in the corpus\n\tloadCorpus(\"austen\").correlations({query: \"love\", limit: 10})"
+          "!type": "fn(config: +Spyral_Corpus_correlations_config) -> +Promise",
+          "!doc": "Returns an array of correlations (either document or corpus correlations, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus correlation (corpus mode):\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"mrs\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 2531,\n\t\t\t\"relativePeakedness\": 0.46444246,\n\t\t\t\"relativeSkewness\": -0.44197384\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 568,\n\t\t\t\"relativePeakedness\": 5.763066,\n\t\t\t\"relativeSkewness\": 2.2536576\n\t\t},\n\t\t\"correlation\": -0.44287738,\n\t\t\"significance\": 0.08580014\n\t}\n\nThe following is an example of Document correlation (documents mode), without positions requested:\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"confide\",\n\t\t\t\"rawFreq\": 3,\n\t\t\t\"relativeFreq\": 89.3948,\n\t\t\t\"zscore\": -0.10560975,\n\t\t\t\"zscoreRatio\": -0.7541012,\n\t\t\t\"tfidf\": 1.1168874E-5,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"relativeFreq\": 1609.1063,\n\t\t\t\"zscore\": 53.830048,\n\t\t\t\"zscoreRatio\": -707.44696,\n\t\t\t\"tfidf\": 0.0,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"correlation\": 0.93527687,\n\t\t\"significance\": 7.0970666E-5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minRawFreq**: the minimum raw frequency of the collocate terms\n * **termsOnly**: a very compact data view of the correlations\n * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 10 phrases in the corpus\n\tloadCorpus(\"austen\").correlations({query: \"love\", limit: 10})",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-correlations"
         },
         "lemmas": {
-          "!type": "fn(config: +Object) -> ?",
-          "!doc": "Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })"
+          "!type": "fn(config: +Object) -> +Promise",
+          "!doc": "Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-lemmas"
         },
         "lda": {
-          "!type": "fn(config: +Object) -> +Promise",
-          "!doc": "Get a promise for an LDA object that has two primary methods of use:\n\n\t* **getTopicWords**: get a list of topics (words organized into bunches of a specified size\n\t* **getDocuments**: get a list of documents and the signican words\n\nThe config object as parameter can contain the following:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
+          "!type": "fn(config: +Spyral_Corpus_lda_config) -> +Promise",
+          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:\n\n* **getTopicWords**: return a list of topics (words organized into bunches of a specified size\n* **getDocuments**: return a list of documents and the signican words\n\nThe config object as parameter can contain the following:\n\n* **numberTopics**: the number of topics to get (default is 10)\n* **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n* **language**: stopwords language to use, default is corpus language",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-lda"
         },
         "ldaTopics": {
-          "!type": "fn(config: +Object) -> +Promise",
-          "!doc": "Get a promise for a list of LDA topics from the corpus.\n\nThe config object as parameter can contain the following:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
+          "!type": "fn(config: +Spyral_Corpus_ldaTopics_config) -> +Promise",
+          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an array of LDA topics from the corpus.\n\nThe config object as parameter can contain the following:\n\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-ldaTopics"
         },
         "ldaDocuments": {
-          "!type": "fn(config: +Object) -> +Promise",
-          "!doc": "Get a promise for a list of documents and associated words\n\nThe config object as parameter can contain the following:\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language"
+          "!type": "fn(config: +Spyral_Corpus_ldaDocuments_config) -> +Promise",
+          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an array of documents and associated words\n\nThe config object as parameter can contain the following:\n\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-ldaDocuments"
+        },
+        "entities": {
+          "!type": "fn(config: +Spyral_Corpus_entities_config) -> +Promise",
+          "!doc": "Returns an array of entities.\n\nThe config object as parameter can contain the following:\n\n * **docIndex**: document index to restrict to (can be comma-separated list)\n * **annotator**: the annotator to use: 'stanford' or 'nssi'",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-entities"
         },
         "tool": {
-          "!type": "fn()",
-          "!doc": "Get a promise for the HTML snippet that will produce the specified Voyant tools to appear.\n\nIn its simplest form we can simply call the named tool:\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\");\n\nEach tool supports some options (that are summarized below), and those can be specified as options:\n\n\tloadCorpus(\"austen\").tool(\"Trends\", {query: \"love\"});\n\nThere are also parameters (width, height, style, float) that apply to the actual tool window:\n\n loadCorpus(\"austen\").tool(\"Trends\", {query: \"love\", style: \"width: 500px; height: 500px\"});\n\nIt's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\", \"Trends\");\n\nOne easy way to get connected tools is to use the `CustomSet` tool and experiment with the layout:\n\n\tloadCorpus(\"austen\").tool(\"CustomSet\", {tableLayout: \"Cirrus,Trends\", style: \"width:800px; height: 500px\"});\n\nHere's a partial list of the tools available as well as their significant parameters:\n\n * <a href=\"./#!/guide/bubblelines\" target=\"_blank\">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.\n \t* **bins**: number of bins to separate a document into\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **maxDocs**: maximum number of documents to show\n \t* **query**: a query to search for in the corpus\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/bubbles\" target=\"_blank\">Bubbles</a> is a playful visualization of term frequencies by document.\n \t* **audio**: whether or not to include audio\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **speed**: speed of the animation (0 to 60 lower is slower)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/cirrus\" target=\"_blank\">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.\n \t* **background**: set the background colour of the word cloud\n \t* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **fontFamily**: the default font to use for the words (default: \"Palatino Linotype\", \"Book Antiqua\", Palatino, serif),\n \t* **inlineData**: user-defined data, most easily expressed like this: love:20,like:15,dear:10\n \t* **limit**: the number of terms to load (that are available, see also `visible` which determines how many are displayed),\n \t* **stopList**: a named stopword list or comma-separated list of words\n \t* **visible**: the number of terms to display in the word cloud (default is 50)\n \t* **whiteList**: a keyword list – terms will be limited to this list\n * <a href=\"./#!/guide/collocatesgraph\" target=\"_blank\">CollocateGraphs</a> represents keywords and terms that occur in close proximity as a force directed network graph.\n \t* **centralize**: the term to use for centralize mode (where things are focused on a single word)\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **limit**: the number of collocates to load for each keyword\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/corpuscollocates\" target=\"_blank\">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/contexts\" target=\"_blank\">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n \t* **context**: the size of the context (the number of words on each size of the keyword)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/correlations\" target=\"_blank\">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n \t* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/documentterms\" target=\"_blank\">DocumentTerms</a> is a table view of document term frequencies.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/corpusterms\" target=\"_blank\">CorpusTerms</a> is a table view of term frequencies in the entire corpus.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"./#!/guide/documents\" target=\"_blank\">The</a> Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n * <a href=\"./#!/guide/knots\" target=\"_blank\">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.\n * <a href=\"./#!/guide/mandala\" target=\"_blank\">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.\n * <a href=\"./#!/guide/microsearch\" target=\"_blank\">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.\n * <a href=\"./#!/guide/phrases\" target=\"_blank\">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n * <a href=\"./#!/guide/reader\" target=\"_blank\">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.\n * <a href=\"./#!/guide/scatterplot\" target=\"_blank\">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.\n * <a href=\"./#!/guide/streamgraph\" target=\"_blank\">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"./#!/guide/summary\" target=\"_blank\">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.\n * <a href=\"./#!/guide/termsradio\" target=\"_blank\">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"./#!/guide/textualarc\" target=\"_blank\">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.\n * <a href=\"./#!/guide/topics\" target=\"_blank\">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n * <a href=\"./#!/guide/trends\" target=\"_blank\">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.\n * <a href=\"./#!/guide/veliza\" target=\"_blank\">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.\n * <a href=\"./#!/guide/wordtree\" target=\"_blank\">WordTree</a> is a tool that allows you to explore how words are used in phrases."
+          "!type": "fn(tool: string, config: +Object) -> +Promise",
+          "!doc": "Returns an HTML snippet that will produce the specified Voyant tools to appear.\n\nIn its simplest form we can simply call the named tool:\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\");\n\nEach tool supports some options (that are summarized below), and those can be specified as options:\n\n\tloadCorpus(\"austen\").tool(\"Trends\", {query: \"love\"});\n\nThere are also parameters (width, height, style, float) that apply to the actual tool window:\n\n\tloadCorpus(\"austen\").tool(\"Trends\", {query: \"love\", style: \"width: 500px; height: 500px\"});\n\nIt's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):\n\n\tloadCorpus(\"austen\").tool(\"Cirrus\", \"Trends\");\n\nOne easy way to get connected tools is to use the `CustomSet` tool and experiment with the layout:\n\n\tloadCorpus(\"austen\").tool(\"CustomSet\", {tableLayout: \"Cirrus,Trends\", style: \"width:800px; height: 500px\"});\n\nHere's a partial list of the tools available as well as their significant parameters:\n\n * <a href=\"#!/guide/bubblelines\">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.\n \t* **bins**: number of bins to separate a document into\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **maxDocs**: maximum number of documents to show\n \t* **query**: a query to search for in the corpus\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/bubbles\">Bubbles</a> is a playful visualization of term frequencies by document.\n \t* **audio**: whether or not to include audio\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **speed**: speed of the animation (0 to 60 lower is slower)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/cirrus\">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.\n \t* **background**: set the background colour of the word cloud\n \t* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **fontFamily**: the default font to use for the words (default: \"Palatino Linotype\", \"Book Antiqua\", Palatino, serif),\n \t* **inlineData**: user-defined data, most easily expressed like this: love:20,like:15,dear:10\n \t* **limit**: the number of terms to load (that are available, see also `visible` which determines how many are displayed),\n \t* **stopList**: a named stopword list or comma-separated list of words\n \t* **visible**: the number of terms to display in the word cloud (default is 50)\n \t* **whiteList**: a keyword list – terms will be limited to this list\n * <a href=\"#!/guide/collocatesgraph\">CollocatesGraph</a> represents keywords and terms that occur in close proximity as a force directed network graph.\n \t* **centralize**: the term to use for centralize mode (where things are focused on a single word)\n \t* **context**: the size of the context (the number of words on each side of the keyword)\n \t* **limit**: the number of collocates to load for each keyword\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/contexts\">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n \t* **context**: the size of the context (the number of words on each side of the keyword)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/corpuscollocates\">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n \t* **context**: the size of the context (the number of words on each side of the keyword)\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/corpusterms\">CorpusTerms</a> is a table view of term frequencies in the entire corpus.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/correlations\">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n \t* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/documentterms\">DocumentTerms</a> is a table view of document term frequencies.\n \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword \n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n * <a href=\"#!/guide/termsberry\">TermsBerry</a> provides a way of exploring high frequency terms and their collocates.\n \t* **query**: a query for the keywords (can be comma-separated list)\n \t* **stopList**: a named stopword list or comma-separated list of words\n \t* **docIndex**: document index to restrict to (can be comma-separated list)\n \t* **context**: the size of the context (the number of words on each side of the keyword)\n \t* **numInitialTerms**: the initial number of terms to display\n * <a href=\"#!/guide/trends\">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.\n  \t* **stopList**: a named stopword list or comma-separated list of words\n  \t* **query**: a query for the keywords (can be comma-separated list)\n  \t* **limit**: the number of terms to show\n  \t* **withDistributions**: the type of distribution frequency to show (\"raw\" or \"relative\"), default is \"relative\"\n  \t* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins\n  \t* **docIndex**: document index to restrict to (can be comma-separated list)\n  \t* **chartType**: the type of chart to show: \"barline\", \"bar\", \"line\", \"area\", \"stacked\"\n * <a href=\"#!/guide/documents\">Documents</a> is a tool that shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n * <a href=\"#!/guide/knots\">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.\n * <a href=\"#!/guide/mandala\">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.\n * <a href=\"#!/guide/microsearch\">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.\n * <a href=\"#!/guide/phrases\">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n * <a href=\"#!/guide/reader\">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.\n * <a href=\"#!/guide/scatterplot\">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.\n * <a href=\"#!/guide/streamgraph\">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"#!/guide/summary\">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.\n * <a href=\"#!/guide/termsradio\">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n * <a href=\"#!/guide/textualarc\">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.\n * <a href=\"#!/guide/topics\">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n * <a href=\"#!/guide/veliza\">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.\n * <a href=\"#!/guide/wordtree\">WordTree</a> is a tool that allows you to explore how words are used in phrases.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-tool"
         },
         "toString": {
           "!type": "fn()",
-          "!doc": "An alias for #summary."
+          "!doc": "An alias for #summary.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-toString"
         }
       },
       "load": {
-        "!type": "fn(config: +Object, api: +Object)",
-        "!doc": "Load a Corpus using the provided config and api"
+        "!type": "fn(config: +Object, api: +Object) -> +Promise",
+        "!doc": "Load a Corpus using the provided config and api",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-static-method-load"
       }
     },
     "Load": {
       "!type": "fn()",
       "prototype": {},
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load",
       "setBaseUrl": {
         "!type": "fn(baseUrl: string)",
-        "!doc": "Set the base URL for use with the Load class"
+        "!doc": "Set the base URL for use with the Load class",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-setBaseUrl"
       },
       "trombone": {
         "!type": "fn(config: +Object, params: +Object) -> +JSON",
-        "!doc": "Make a call to trombone"
+        "!doc": "Make a call to trombone",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-trombone"
       },
       "load": {
         "!type": "fn(urlToFetch: string, config: +Object) -> +Response",
-        "!doc": "Fetch content from a URL, often resolving cross-domain data constraints"
+        "!doc": "Fetch content from a URL, often resolving cross-domain data constraints",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-load"
       },
       "html": {
         "!type": "fn(url: string) -> +Document",
-        "!doc": "Fetch HTML content from a URL"
+        "!doc": "Fetch HTML content from a URL",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-html"
       },
       "xml": {
         "!type": "fn(url: string) -> +XMLDocument",
-        "!doc": "Fetch XML content from a URL"
+        "!doc": "Fetch XML content from a URL",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-xml"
       },
       "json": {
         "!type": "fn(url: string) -> +JSON",
-        "!doc": "Fetch JSON content from a URL"
+        "!doc": "Fetch JSON content from a URL",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-json"
       },
       "text": {
         "!type": "fn(url: string) -> string",
-        "!doc": "Fetch text content from a URL"
+        "!doc": "Fetch text content from a URL",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Load-static-method-text"
       }
     },
+    "NetworkGraph": {
+      "!type": "fn(target: +HTMLElement, config: +Spyral_NetworkGraph_config) -> +NetworkGraph",
+      "prototype": {},
+      "!doc": "Construct a new NetworkGraph class",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.NetworkGraph-method-constructor"
+    },
     "Table": {
-      "!type": "fn(data: ?, config: +TableConfig)",
+      "!type": "fn(data: ?, config: +TableConfig) -> +Spyral.Table",
       "prototype": {
         "setHeaders": {
-          "!type": "fn(data: ?) -> +Table",
-          "!doc": "Set the headers for the Table"
+          "!type": "fn(data: ?) -> +Spyral.Table",
+          "!doc": "Set the headers for the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-setHeaders"
         },
         "addRows": {
-          "!type": "fn(data: +Array) -> +Table",
-          "!doc": "Add rows to the Table"
+          "!type": "fn(data: +Array) -> +Spyral.Table",
+          "!doc": "Add rows to the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-addRows"
         },
         "addRow": {
-          "!type": "fn(data: ?) -> +Table",
-          "!doc": "Add a row to the Table"
+          "!type": "fn(data: ?) -> +Spyral.Table",
+          "!doc": "Add a row to the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-addRow"
         },
         "setRow": {
-          "!type": "fn(ind: ?, data: ?, create: bool) -> +Table",
-          "!doc": "Set a row"
+          "!type": "fn(ind: ?, data: ?, create: boolean) -> +Spyral.Table",
+          "!doc": "Set a row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-setRow"
         },
         "setColumn": {
-          "!type": "fn(ind: ?, data: ?, create: bool) -> +Table",
-          "!doc": "Set a column"
+          "!type": "fn(ind: ?, data: ?, create: boolean) -> +Spyral.Table",
+          "!doc": "Set a column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-setColumn"
         },
         "updateCell": {
-          "!type": "fn(row: ?, column: ?, value: number, overwrite: bool)",
-          "!doc": "Add to or set a cell value"
+          "!type": "fn(row: ?, column: ?, value: number, overwrite: boolean)",
+          "!doc": "Add to or set a cell value",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-updateCell"
         },
         "cell": {
           "!type": "fn(rowInd: ?, colInd: ?) -> number",
-          "!doc": "Get the value of a cell"
+          "!doc": "Get the value of a cell",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-cell"
         },
         "setCell": {
-          "!type": "fn(row: ?, column: ?, value: number) -> +Table",
-          "!doc": "Set the value of a cell"
+          "!type": "fn(row: ?, column: ?, value: number) -> +Spyral.Table",
+          "!doc": "Set the value of a cell",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-setCell"
         },
         "getRowIndex": {
-          "!type": "fn(ind: ?, create: bool) -> number",
-          "!doc": "Get (and create) the row index"
+          "!type": "fn(ind: ?, create: boolean) -> number",
+          "!doc": "Get (and create) the row index",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-getRowIndex"
         },
         "getColumnIndex": {
-          "!type": "fn(ind: ?, create: bool) -> number",
-          "!doc": "Get (and create) the column index"
+          "!type": "fn(ind: ?, create: boolean) -> number",
+          "!doc": "Get (and create) the column index",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-getColumnIndex"
         },
         "addColumn": {
-          "!type": "fn(config: ?, ind: ?)",
-          "!doc": "Add a column (at the specified index)"
+          "!type": "fn(config: ?, ind: ?) -> +Spyral.Table",
+          "!doc": "Add a column (at the specified index)",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-addColumn"
         },
         "rows": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of rows in this table.\nWhen the first argument is the boolean value `true` all rows are returned.\nWhen the first argument is a an array then the rows corresponding to the row\nindices or names are returned. When all arguments except are numbers or strings\nthen each of those is returned."
+          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of rows in this table.\nWhen the first argument is the boolean value `true` all rows are returned.\nWhen the first argument is a an array then the rows corresponding to the row\nindices or names are returned. When all arguments except are numbers or strings\nthen each of those is returned.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rows"
         },
         "row": {
-          "!type": "fn(ind: ?, asObj?: bool) -> ?",
-          "!doc": "Get the specified row"
+          "!type": "fn(ind: ?, asObj?: boolean) -> ?",
+          "!doc": "Get the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-row"
         },
         "columns": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of columns in this table.\nWhen the first argument is the boolean value `true` all columns are returned.\nWhen the first argument is a number a slice of the columns is returned and if\nthe second argument is a number it is treated as the length of the slice to\nreturn (note that it isn't the `end` index like with Array.slice())."
+          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of columns in this table.\nWhen the first argument is the boolean value `true` all columns are returned.\nWhen the first argument is a number a slice of the columns is returned and if\nthe second argument is a number it is treated as the length of the slice to\nreturn (note that it isn't the `end` index like with Array.slice()).",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columns"
         },
         "column": {
-          "!type": "fn(ind: ?, asObj?: bool) -> ?",
-          "!doc": "Get the specified column"
+          "!type": "fn(ind: ?, asObj?: boolean) -> ?",
+          "!doc": "Get the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-column"
         },
         "header": {
           "!type": "fn(ind: ?) -> ?",
-          "!doc": "Get the specified header"
+          "!doc": "Get the specified header",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-header"
         },
         "headers": {
           "!type": "fn(inds: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of headers in this table.\nWhen the first argument is the boolean value `true` all headers are returned.\nWhen the first argument is a number a slice of the headers is returned.\nWhen the first argument is an array the slices specified in the array are returned."
+          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of headers in this table.\nWhen the first argument is the boolean value `true` all headers are returned.\nWhen the first argument is a number a slice of the headers is returned.\nWhen the first argument is an array the slices specified in the array are returned.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-headers"
         },
         "hasColumn": {
           "!type": "fn(ind: ?) -> ?",
-          "!doc": "Does the specified column exist"
+          "!doc": "Does the specified column exist",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-hasColumn"
         },
         "forEach": {
           "!type": "fn(fn: fn())",
-          "!doc": "Runs the specified function on each row.\nThe function is passed the row and the row index."
+          "!doc": "Runs the specified function on each row.\nThe function is passed the row and the row index.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-forEach"
         },
         "rowMin": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the minimum value in the specified row"
+          "!doc": "Get the minimum value in the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowMin"
         },
         "rowMax": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the maximum value in the specified row"
+          "!doc": "Get the maximum value in the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowMax"
         },
         "columnMin": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the minimum value in the specified column"
+          "!doc": "Get the minimum value in the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnMin"
         },
         "columnMax": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the maximum value in the specified column"
+          "!doc": "Get the maximum value in the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnMax"
         },
         "rowSum": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the sum of the values in the specified row"
+          "!doc": "Get the sum of the values in the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowSum"
         },
         "columnSum": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the sum of the values in the specified column"
+          "!doc": "Get the sum of the values in the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnSum"
         },
         "rowMean": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the mean of the values in the specified row"
+          "!doc": "Get the mean of the values in the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowMean"
         },
         "columnMean": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the mean of the values in the specified column"
+          "!doc": "Get the mean of the values in the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnMean"
         },
         "rowCounts": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the count of each unique value in the specified row"
+          "!doc": "Get the count of each unique value in the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowCounts"
         },
         "columnCounts": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the count of each unique value in the specified column"
+          "!doc": "Get the count of each unique value in the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnCounts"
         },
         "rowRollingMean": {
-          "!type": "fn(ind: ?, neighbors: number, overwrite: bool) -> +Array",
-          "!doc": "Get the rolling mean for the specified row"
+          "!type": "fn(ind: ?, neighbors: number, overwrite: boolean) -> +Array",
+          "!doc": "Get the rolling mean for the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowRollingMean"
         },
         "columnRollingMean": {
-          "!type": "fn(ind: ?, neighbors: number, overwrite: bool) -> +Array",
-          "!doc": "Get the rolling mean for the specified column"
+          "!type": "fn(ind: ?, neighbors: number, overwrite: boolean) -> +Array",
+          "!doc": "Get the rolling mean for the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnRollingMean"
         },
         "rowVariance": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the variance for the specified row"
+          "!doc": "Get the variance for the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowVariance"
         },
         "columnVariance": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the variance for the specified column"
+          "!doc": "Get the variance for the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnVariance"
         },
         "rowStandardDeviation": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the standard deviation for the specified row"
+          "!doc": "Get the standard deviation for the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowStandardDeviation"
         },
         "columnStandardDeviation": {
           "!type": "fn(ind: ?) -> number",
-          "!doc": "Get the standard deviation for the specified column"
+          "!doc": "Get the standard deviation for the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnStandardDeviation"
         },
         "rowZScores": {
           "!type": "fn(ind: ?) -> +Array",
-          "!doc": "Get the z scores for the specified row"
+          "!doc": "Get the z scores for the specified row",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowZScores"
         },
         "columnZScores": {
           "!type": "fn(ind: ?) -> +Array",
-          "!doc": "Get the z scores for the specified column"
+          "!doc": "Get the z scores for the specified column",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnZScores"
         },
         "rowSort": {
-          "!type": "fn() -> +Table",
-          "!doc": "TODO\nSort the specified rows"
+          "!type": "fn() -> +Spyral.Table",
+          "!doc": "TODO\nSort the specified rows",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowSort"
         },
         "columnSort": {
-          "!type": "fn() -> +Table",
-          "!doc": "TODO\nSort the specified columns"
+          "!type": "fn() -> +Spyral.Table",
+          "!doc": "TODO\nSort the specified columns",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnSort"
         },
         "toCsv": {
           "!type": "fn(config?: +Object) -> string",
-          "!doc": "Get a CSV representation of the Table"
+          "!doc": "Get a CSV representation of the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-toCsv"
         },
         "toTsv": {
           "!type": "fn(config?: +Object) -> string",
-          "!doc": "Get a TSV representation of the Table"
+          "!doc": "Get a TSV representation of the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-toTsv"
         },
         "html": {
-          "!type": "fn(target: ?, config?: +Object) -> +Table",
-          "!doc": "Set the target's contents to an HTML representation of the Table"
+          "!type": "fn(target: ?, config?: +Object) -> +Spyral.Table",
+          "!doc": "Set the target's contents to an HTML representation of the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-html"
         },
         "toHtml": {
           "!type": "fn()",
-          "!doc": "Same as toString."
+          "!doc": "Same as toString.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-toHtml"
         },
         "toString": {
           "!type": "fn(config?: +Object) -> string",
-          "!doc": "Get an HTML representation of the Table"
+          "!doc": "Get an HTML representation of the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-toString"
         },
         "chart": {
           "!type": "fn(target?: ?, config?: +HighchartsConfig) -> +Highcharts.Chart",
-          "!doc": "Show a chart representing the Table"
+          "!doc": "Show a chart representing the Table",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-chart"
         }
       },
       "!doc": "Create a new Table",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-constructor",
       "create": {
-        "!type": "fn(data: ?, config: +TableConfig) -> +Table",
-        "!doc": "Create a new Table"
+        "!type": "fn(data: ?, config: +TableConfig) -> +Spyral.Table",
+        "!doc": "Create a new Table",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-create"
       },
       "fetch": {
         "!type": "fn(input: ?, api: +Object, config: +Object) -> +Promise",
-        "!doc": "Fetch a Table from a source"
+        "!doc": "Fetch a Table from a source",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-fetch"
       },
       "counts": {
         "!type": "fn(data: +Array) -> +Object",
-        "!doc": "Get the count of each unique value in the data"
+        "!doc": "Get the count of each unique value in the data",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-counts"
       },
       "cmp": {
         "!type": "fn(a: ?, b: ?) -> number",
-        "!doc": "Compare two values"
+        "!doc": "Compare two values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-cmp"
       },
       "sum": {
         "!type": "fn(data: +Array) -> number",
-        "!doc": "Get the sum of the provided values"
+        "!doc": "Get the sum of the provided values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-sum"
       },
       "mean": {
         "!type": "fn(data: +Array) -> number",
-        "!doc": "Get the mean of the provided values"
+        "!doc": "Get the mean of the provided values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-mean"
       },
       "rollingMean": {
         "!type": "fn(data: +Array, neighbors: number) -> +Array",
-        "!doc": "Get rolling mean for the provided values"
+        "!doc": "Get rolling mean for the provided values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-rollingMean"
       },
       "variance": {
         "!type": "fn(data: +Array) -> number",
-        "!doc": "Get the variance for the provided values"
+        "!doc": "Get the variance for the provided values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-variance"
       },
       "standardDeviation": {
         "!type": "fn(data: +Array) -> number",
-        "!doc": "Get the standard deviation for the provided values"
+        "!doc": "Get the standard deviation for the provided values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-standardDeviation"
       },
       "zScores": {
         "!type": "fn(data: +Array) -> +Array",
-        "!doc": "Get the z scores for the provided values"
+        "!doc": "Get the z scores for the provided values",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-zScores"
       },
       "zip": {
         "!type": "fn(data: +Array) -> +Array",
-        "!doc": "Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia](https://en.wikipedia.org/wiki/Convolution_%28computer_science%29)."
+        "!doc": "Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia](https://en.wikipedia.org/wiki/Convolution_%28computer_science%29).",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-static-method-zip"
       }
     }
   },
-  "Storage": {
-    "storeResource": {
-      "!type": "fn(id: +String, data: ?) -> +Promise",
-      "!doc": "Store a resource"
+  "window": {
+    "loadCorpus": {
+      "!type": "fn(config: +Object, api: +Object) -> +Promise",
+      "!doc": "Load a Corpus using the provided config and api",
+      "!url": "https://voyant-tools.org/docs/#!/api/window-static-method-loadCorpus"
     },
-    "getTromboneUrl": {
-      "!type": "fn() -> +String",
-      "!doc": "Get the URL for trombone"
+    "createTable": {
+      "!type": "fn(data: ?, config: +TableConfig) -> +Spyral.Table",
+      "!doc": "Create a new Table",
+      "!url": "https://voyant-tools.org/docs/#!/api/window-static-method-createTable"
     },
-    "getStoredResource": {
-      "!type": "fn(id: +String) -> +Promise",
-      "!doc": "Get a stored resource"
+    "show": {
+      "!type": "fn(contents: ?, len: ?, mode: ?)",
+      "!doc": "Show contents in the results area.",
+      "!url": "https://voyant-tools.org/docs/#!/api/window-static-method-show"
+    },
+    "showError": {
+      "!type": "fn(error: ?, more: ?)",
+      "!doc": "Show an error in the results area.",
+      "!url": "https://voyant-tools.org/docs/#!/api/window-static-method-showError"
     }
   }
 }
