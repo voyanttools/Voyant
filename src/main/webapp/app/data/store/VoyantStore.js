@@ -55,23 +55,25 @@ Ext.define('Voyant.data.store.VoyantStore', {
 					}
 				},
 				endprocessresponse: function(proxy, response, operation) {
-					// check for tool messages from the server
-					var config = proxy.getReader().initialConfig;
-					var rootPropertyParent = config.rootProperty.split('.')[0];
-					var json = JSON.parse(response.responseText);
-					var parent = json[rootPropertyParent];
-					if (parent && parent.messages) {
-						var message = '';
-						var firstMessage = parent.messages[0];
-						if (firstMessage.code === 'maxTime') {
-							message = me.localize('maxTime');
-						} else {
-							message = firstMessage.message;
-						}
-						if (me.parentPanel && me.parentPanel.toastInfo) {
-							me.parentPanel.toastInfo(message);
-						} else {
-							console.warn('VoyantStore server message: '+message);
+					if (operation.wasSuccessful()) {
+						// check for tool messages from the server
+						var config = proxy.getReader().initialConfig;
+						var rootPropertyParent = config.rootProperty.split('.')[0];
+						var json = JSON.parse(response.responseText);
+						var parent = json[rootPropertyParent];
+						if (parent && parent.messages) {
+							var message = '';
+							var firstMessage = parent.messages[0];
+							if (firstMessage.code === 'maxTime') {
+								message = me.localize('maxTime');
+							} else {
+								message = firstMessage.message;
+							}
+							if (me.parentPanel && me.parentPanel.toastInfo) {
+								me.parentPanel.toastInfo(message);
+							} else {
+								console.warn('VoyantStore server message: '+message);
+							}
 						}
 					}
 				}
