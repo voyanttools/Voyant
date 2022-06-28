@@ -85,16 +85,26 @@ public class JSCacher {
 		
 		// TODO add config for this?
 		boolean doSourceMap = true;
+		
+		String requestURL = request.getRequestURL().toString();
+		// reconstruct the url base to ensure that https is maintained
+		String redirectBase = requestURL.substring(0, requestURL.lastIndexOf("/"))+"/";
+		String serverName = request.getServerName();
+		// force https
+		if (serverName.contains("voyant-tools")) {
+			redirectBase = redirectBase.replaceFirst("http:", "https:");
+		}
+		
 
 		String debug = request.getParameter("debug");
 		if (debug!=null && debug.equals("true")) {
 			File basePath = new File(request.getSession().getServletContext().getRealPath("/"));
 			doCache(basePath, doSourceMap, false);
 			
-			response.sendRedirect(CACHED_FILENAME);
+			response.sendRedirect(redirectBase+CACHED_FILENAME);
 		}
 		else {
-			response.sendRedirect(CACHED_FILENAME_MINIFIED);
+			response.sendRedirect(redirectBase+CACHED_FILENAME_MINIFIED);
 		}
 
 	}
