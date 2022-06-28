@@ -122,7 +122,7 @@ Ext.define('Voyant.panel.Contexts', {
         		dataIndex: 'docIndex',
                 sortable: true,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store) {
-                	return store.getCorpus().getDocument(value).getTinyLabel();
+                	return store.getCorpus().getDocument(value).getTitle();
                 }
             },{
     			text: this.localize("left"),
