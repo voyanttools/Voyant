@@ -117,7 +117,7 @@ Ext.define('Voyant.panel.Contexts', {
             }],
     		columns: [{
     			text: this.localize("document"),
-    			toolTip: this.localize("documentTip"),
+    			tooltip: this.localize("documentTip"),
                 width: 'autoSize',
         		dataIndex: 'docIndex',
                 sortable: true,
