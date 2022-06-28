@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Feb 23 21:05:18 UTC 2022 */
+/* This file created by JSCacher. Last modified: Tue Jun 28 18:57:05 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -18030,12 +18030,12 @@ Ext.define('Voyant.panel.Contexts', {
             }],
     		columns: [{
     			text: this.localize("document"),
-    			toolTip: this.localize("documentTip"),
+    			tooltip: this.localize("documentTip"),
                 width: 'autoSize',
         		dataIndex: 'docIndex',
                 sortable: true,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store) {
-                	return store.getCorpus().getDocument(value).getTinyLabel();
+                	return store.getCorpus().getDocument(value).getTitle();
                 }
             },{
     			text: this.localize("left"),
