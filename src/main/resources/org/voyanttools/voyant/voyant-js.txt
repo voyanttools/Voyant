@@ -1,5 +1,6 @@
 # BUBBLELINES
 resources/bubblelines/Bubblelines.js
+#resources/bubblelines/BubblelinesD3.js
 
 # KNOTS
 resources/knots/Knots.js
