@@ -38,6 +38,7 @@ public class JSCacher {
 	final static String CACHED_FILENAME = "voyant.js";
 	final static String CACHED_FILENAME_MINIFIED = "voyant.min.js";
 	final static String SOURCE_MAP_FILENAME = "voyant.min.map.js";
+	final static String CACHED_FILE_PATH = "/resources/voyant/current/";
 	
 	// Closure options
 	final static int SUMMARY_DETAIL_LEVEL = 1;
@@ -102,9 +103,9 @@ public class JSCacher {
 		
 		System.out.println("doCache - path: "+basePath.getPath()+", source: "+doSourceMap+", force: "+forceUpdate);
 		
-		File cachedFile = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME);
-		File cachedFileMinified = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME_MINIFIED);
-		File sourceMapFile = new File(basePath, "/resources/voyant/current/"+SOURCE_MAP_FILENAME);
+		File cachedFile = new File(basePath, CACHED_FILE_PATH+CACHED_FILENAME);
+		File cachedFileMinified = new File(basePath, CACHED_FILE_PATH+CACHED_FILENAME_MINIFIED);
+		File sourceMapFile = new File(basePath, CACHED_FILE_PATH+SOURCE_MAP_FILENAME);
 		
 		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
 		
