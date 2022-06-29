@@ -4,6 +4,11 @@ Ext.define('Voyant.data.store.VoyantStore', {
 		corpus: undefined,
 		parentPanel: undefined
 	},
+	statics: {
+		i18n: {
+			maxTime: 'This tool has exceeded the maximum run time and has returned partial results.'
+		}
+	},
 	constructor: function(config, extras) {
 		var me = this;
 		config = config || {};
@@ -47,6 +52,29 @@ Ext.define('Voyant.data.store.VoyantStore', {
 					if (me.parentPanel && me.parentPanel.showError) {
 						// FIXME: this should probably send the request, not the operation
 						me.parentPanel.showError(operation)
+					}
+				},
+				endprocessresponse: function(proxy, response, operation) {
+					if (operation.wasSuccessful()) {
+						// check for tool messages from the server
+						var config = proxy.getReader().initialConfig;
+						var rootPropertyParent = config.rootProperty.split('.')[0];
+						var json = JSON.parse(response.responseText);
+						var parent = json[rootPropertyParent];
+						if (parent && parent.messages) {
+							var message = '';
+							var firstMessage = parent.messages[0];
+							if (firstMessage.code === 'maxTime') {
+								message = me.localize('maxTime');
+							} else {
+								message = firstMessage.message;
+							}
+							if (me.parentPanel && me.parentPanel.toastInfo) {
+								me.parentPanel.toastInfo(message);
+							} else {
+								console.warn('VoyantStore server message: '+message);
+							}
+						}
 					}
 				}
 			}

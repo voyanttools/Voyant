@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles-f789a1fcce47fbf76e228e9463cce202.css" type="text/css" />
 
   <script type="text/javascript" src="extjs/ext-all.js"></script>
-  <script type="text/javascript" src="data-6ac5794c5d98c2e3e21058b331e4c8c1.js"></script>
+  <script type="text/javascript" src="data-11f43db05c14866f979c6ff43a1c0953.js"></script>
 
   <script type="text/javascript" src="app-0c945a27f43452df695771ddb60b3d14.js"></script>
 
@@ -71,9 +71,9 @@
 <ul class='links'>
 <li><a href="#!/api/Spyral.Corpus" rel="Spyral.Corpus" class="docClass">Spyral.Corpus</a></li>
 <li><a href="#!/api/Spyral.Table" rel="Spyral.Table" class="docClass">Spyral.Table</a></li>
+<li><a href="#!/api/Spyral.Chart" rel="Spyral.Chart" class="docClass">Spyral.Chart</a></li>
 <li><a href="#!/api/Spyral.Load" rel="Spyral.Load" class="docClass">Spyral.Load</a></li>
 <li><a href="#!/api/Spyral.Util" rel="Spyral.Util" class="docClass">Spyral.Util</a></li>
-<li><a href="#!/api/Spyral.Chart" rel="Spyral.Chart" class="docClass">Spyral.Chart</a></li>
 <li><a href="#!/api/Spyral.Categories" rel="Spyral.Categories" class="docClass">Spyral.Categories</a></li>
 </ul>
 </div>
@@ -86,6 +86,10 @@
 </ul>
 </div>
 <div class='right-column'>
+<h3>Global</h3>
+<ul class='links'>
+<li><a href="#!/api/window" rel="window" class="docClass">window</a></li>
+</ul>
 </div>
 <div style='clear:both'></div>
 </div>

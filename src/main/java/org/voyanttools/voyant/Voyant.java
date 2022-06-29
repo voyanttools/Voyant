@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -20,12 +23,14 @@ import javax.xml.transform.TransformerException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.voyanttools.trombone.tool.corpus.DocumentEntities;
 import org.voyanttools.trombone.util.FlexibleParameters;
 
 /**
  * @author Stéfan Sinclair
  */
-public class Voyant {
+@WebListener
+public class Voyant implements ServletContextListener {
 	
 	/**
 	 * Pre-process the request. At the moment this will look if there's a referer,
@@ -88,7 +93,7 @@ public class Voyant {
 			HttpServletResponse response, FlexibleParameters params) throws IOException, TransformerException, ServletException {
 		
 		PostedInputResponseWrapper postedInputResponseWrapper = new PostedInputResponseWrapper(response);
-		request.getRequestDispatcher("/trombone").include(new PostedInputRequestWrapper(request, params), postedInputResponseWrapper);
+		request.getRequestDispatcher("/trombone").include(new PostedInputRequestWrapper(request, params, "corpus.CorpusCreator"), postedInputResponseWrapper);
 
 		String responseString = postedInputResponseWrapper.toString();
 		JSONObject obj= (JSONObject) JSONValue.parse(responseString);
@@ -119,7 +124,15 @@ public class Voyant {
 				referer = referer + String.valueOf(Calendar.getInstance().getTimeInMillis());
 			}
 			params.addParameter("input", referer);
-			final StringBuilder uri = new StringBuilder("./?"); // hoping this works
+			
+			String requestURL = request.getRequestURL().toString();
+			// need to check this way for https because it gets lost somehow
+			if (referer.startsWith("https")) {
+				requestURL = requestURL.replaceFirst("http:", "https:");
+			}
+
+			final StringBuilder uri = new StringBuilder(requestURL);
+			uri.append("?");
 			uri.append(params.getAsQueryString());
 			response.sendRedirect(uri.toString());
 			return true;
@@ -127,12 +140,13 @@ public class Voyant {
 		return false;
 	}
 	
-	static class PostedInputRequestWrapper extends HttpServletRequestWrapper {
-		private final String TOOL = "corpus.CorpusCreator";
+	protected static class PostedInputRequestWrapper extends HttpServletRequestWrapper {
 		private FlexibleParameters params;
-		private PostedInputRequestWrapper(HttpServletRequest request, FlexibleParameters params) {
+		private String tool;
+		protected PostedInputRequestWrapper(HttpServletRequest request, FlexibleParameters params, String tool) {
 			super(request);
 			this.params = params;
+			this.tool = tool;
 		}
 		@Override
 		public Map<String,String[]> getParameterMap() {
@@ -154,7 +168,7 @@ public class Voyant {
 		}
 		@Override
 		public String getParameter(String name) {
-			return name.equals("tool") ? TOOL : params.getParameterValue(name);
+			return name.equals("tool") ? tool : params.getParameterValue(name);
 		}
 		@Override
 		public String[] getParameterValues(String name) {
@@ -162,10 +176,10 @@ public class Voyant {
 		}
 	}
 	
-	private static class PostedInputResponseWrapper extends HttpServletResponseWrapper {
+	protected static class PostedInputResponseWrapper extends HttpServletResponseWrapper {
 		private StringWriter stringWriter;
 		private PrintWriter writer;
-		private PostedInputResponseWrapper(HttpServletResponse response) {
+		protected PostedInputResponseWrapper(HttpServletResponse response) {
 			super(response);
 			stringWriter = new StringWriter();
 			writer = new PrintWriter(stringWriter);
@@ -176,9 +190,21 @@ public class Voyant {
 		}
 		@Override
 		public String toString() {
-//			writer.flush();
 			writer.flush();
 			return stringWriter.toString();
 		}
+	}
+
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		System.out.println("CONTEXT INIT");
+		
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+		System.out.println("CONTEXT DESTROYED");
+		DocumentEntities.shutdownThreadPools();
+		
 	}
 }

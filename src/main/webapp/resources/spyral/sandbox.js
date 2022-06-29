@@ -1,17 +1,3 @@
-window.Corpus = Spyral.Corpus;
-window.Table = Spyral.Table;
-
-window.loadCorpus = function() {
-	return Spyral.Corpus.load.apply(Spyral.Corpus.load, arguments)
-}
-
-window.createTable = function() {
-	return Spyral.Table.create.apply(Spyral.Table, arguments)
-}
-
-window.show = Spyral.Util.show;
-window.showError = Spyral.Util.showError;
-
 function Sandboxer(event) {
 	var me = this;
 
@@ -67,7 +53,7 @@ function Sandboxer(event) {
 		if (thing != undefined) {
 			if (thing instanceof Spyral.Categories) {
 				return 'Spyral.Categories'
-			} else if (thing instanceof Spyral.Chart) {
+			} else if (thing instanceof Spyral.Chart || thing instanceof Highcharts.Chart) {
 				return 'Spyral.Chart'
 			} else if (thing instanceof Spyral.Corpus) {
 				return 'Spyral.Corpus'
@@ -106,7 +92,11 @@ function Sandboxer(event) {
 					reject(err);
 				});
 			} else {
-				if (Spyral.Util.isString(thing)) {
+				var spyralClass = me.getSpyralClass(thing);
+				if (spyralClass === 'Spyral.Chart') {
+					type = 'application/json';
+					blobData = JSON.stringify({userOptions: thing.userOptions, renderTo: thing.renderTo});
+				} else if (Spyral.Util.isString(thing)) {
 					type = 'text/string';
 					blobData = thing;
 				} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
@@ -180,6 +170,8 @@ function Sandboxer(event) {
 							resolve();
 							break;
 						case 'Spyral.Chart':
+							window[cv.name] = Spyral.Chart.create(data.renderTo, data.userOptions);
+							resolve();
 							break;
 						case 'Spyral.Corpus':
 							return Spyral.Corpus.load(data.corpusid).then(function(corpus) {

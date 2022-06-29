@@ -116,58 +116,80 @@ Ext.define('Voyant.util.Toolable', {
 					            	flex: 1,
 					            	panel: panel,
 					        		handler: function(btn) {
-					        			function doGlobalUpdate(key, value) {
-					        				// set the api value for the app
-					        				if (app.setApiParam) {
-					        					app.setApiParam(key, value);
-					        				}
-					        				
-					        				// tell the panels, including this one
-					        				var panels = app.getViewport().query("panel,chart");
-					        				for (var i=0; i<panels.length; i++) {
-					        					if (panels[i].setApiParam) {
-					        						panels[i].setApiParam(key, value);
-					        					}
-					        				}
-					        				globalUpdate = true;
-					        			}
-					        			
-					        			var values = btn.up('form').getValues();
-					        			
-					        			// set api values (all of them, not just global ones)
-					        			this.setApiParams(values);
+										var values = btn.up('form').getValues();
+										
+										// set api values (all of them, not just global ones)
+										this.setApiParams(values);
 
-					        			var app = this.getApplication();
-					        			var corpus = app.getCorpus();
-					        			
-					        			var globalUpdate = false;
-					        			if (values['stopList'] != undefined && values['stopListGlobal'] != undefined && values.stopListGlobal) {
-					        				doGlobalUpdate('stopList', values['stopList']);
-					        			}
-					        			if (values['palette'] != undefined) {
-											app.resetColorTermAssociations();
-					        				doGlobalUpdate('palette', values['palette']);
+										var app = this.getApplication();
+										
+										var keyValuesForGlobalUpdate = [];
+										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
+											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
 										}
-										if (values['categories'] != undefined) {
-					        				doGlobalUpdate('categories', values['categories']);
-					        			}
-					        			
-					        			if (globalUpdate) {
-					        				// trigger a reloading of the app
-					        				if (corpus) {
-					        					app.dispatchEvent("loadedCorpus", this, corpus);
-					        				} else {
-					        					app.dispatchEvent("apiParamsUpdated", this, values);
-					        				}
-					        			}
-					        			// fire this even if we have global params since the app dispatch won't reach this tool
-					        			if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
-				        				else {this.fireEvent("apiParamsUpdated", this, values);}
+										if (values['categories'] !== undefined) {
+											keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+										}
+										
+										var paletteDfd = new Ext.Deferred(); // need a deferred since we might have to load a custom palette
+										if (values['palette'] !== undefined) {
+											app.resetColorTermAssociations();
+											if (app.getColorPalette(values['palette']).length === 0) {
+												// it's a custom palette that we need to load first
+												app.loadCustomColorPalette(values['palette']).then(function() {
+													// no errors
+												}, function() {
+													// error loading palette, so reset to default
+													values['palette'] = 'default';
+												}).always(function() {
+													keyValuesForGlobalUpdate.push(['palette', values['palette']]);
+													paletteDfd.resolve();
+												})
+											} else {
+												keyValuesForGlobalUpdate.push(['palette', values['palette']]);
+												paletteDfd.resolve();
+											}
+										} else {
+											paletteDfd.resolve();
+										}
 
-					        			btn.up('window').close();
-					        		},
-					        		scope: panel
-					            }]
+										paletteDfd.promise.always(function() {
+											var corpus = app.getCorpus();
+											if (keyValuesForGlobalUpdate.length > 0) {
+												var panels = app.getViewport().query("panel,chart");
+												keyValuesForGlobalUpdate.forEach(function(keyValue) {
+													var key = keyValue[0];
+													var value = keyValue[1];
+													
+													// set the api value for the app
+													if (app.setApiParam) {
+														app.setApiParam(key, value);
+													}
+													
+													// tell the panels, including this one
+													for (var i=0; i<panels.length; i++) {
+														if (panels[i].setApiParam) {
+															panels[i].setApiParam(key, value);
+														}
+													}
+												});
+
+												// trigger a reloading of the app
+												if (corpus) {
+													app.dispatchEvent("loadedCorpus", this, corpus);
+												} else {
+													app.dispatchEvent("apiParamsUpdated", this, values);
+												}
+											}
+											// fire this even if we have global params since the app dispatch won't reach this tool
+											if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
+											else {this.fireEvent("apiParamsUpdated", this, values);}
+
+											btn.up('window').close();
+										}.bind(this));
+									},
+									scope: panel
+								}]
 							},
 							bodyPadding: 5
 						}).show()
@@ -273,8 +295,8 @@ Ext.define('Voyant.util.Toolable', {
 		if (panel.isXType('notebook')) {
 			exportViewItems.splice(2, 1); // remove redundant spyral export for spyral notebooks
 		}
-		if (panel.getExtraExportItems) {
-			panel.getExtraExportItems().forEach(function(item) {
+		if (panel.getExtraViewExportItems) {
+			panel.getExtraViewExportItems().forEach(function(item) {
 				Ext.applyIf(item, {
 					xtype: 'radio',
 					name: 'export'
@@ -302,20 +324,21 @@ Ext.define('Voyant.util.Toolable', {
 	       title: panel.localize('exportViewFieldset'),
 	       items: exportViewItems
 		})
+		var exportDataItems = [];
 		if (panel.isXType('grid')) {
-			var exportitems = [{
+			exportDataItems.push({
 	       		xtype: 'radio',
 	       		name: 'export',
 	       		inputValue: 'gridCurrentHtml',
 	       		boxLabel: panel.localize('exportGridCurrentHtml')
-    	   },{
+	        },{
 	       		xtype: 'radio',
 	       		name: 'export',
 	       		inputValue: 'gridCurrentTsv',
 	       		boxLabel: panel.localize('exportGridCurrentTsv')
-    	  	}];
+	        });
 			if (!panel.getExportGridAll || panel.getExportGridAll()!=false) {
-				exportitems.push({
+				exportDataItems.push({
 		       		xtype: 'radio',
 		       		name: 'export',
 		       		inputValue: 'gridAllJson',
@@ -327,13 +350,24 @@ Ext.define('Voyant.util.Toolable', {
 		       		boxLabel: panel.localize('exportGridAllTsv')
 	    	   })
 			}
-			items.push({
-		       xtype: 'fieldset',
-		       collapsible: true,
-		       collapsed: true,
-		       title: panel.localize('exportGridCurrent'),
-	    	   items: exportitems
+		}
+		if (panel.getExtraDataExportItems) {
+			panel.getExtraDataExportItems().forEach(function(item) {
+				Ext.applyIf(item, {
+					xtype: 'radio',
+					name: 'export'
+				})
+				exportDataItems.push(item)
 			})
+		}
+		if (exportDataItems.length > 0) {
+			items.push({
+				xtype: 'fieldset',
+				collapsible: true,
+				collapsed: true,
+				title: panel.localize('exportGridCurrent'),
+				items: exportDataItems
+			 });
 		}
 		if ((!panel.getExportVisualization || panel.getExportVisualization()) && panel.isXType("grid")==false && (panel.down("chart") || panel.getTargetEl().dom.querySelector("canvas") || panel.getTargetEl().dom.querySelector("svg"))) {
 			var formats = [{
@@ -683,7 +717,6 @@ Ext.define('Voyant.util.Toolable', {
 	},
 	exportGridCurrentTsv: function(grid, form) {
 		var store = grid.getStore();
-		var fields = store.getFields();
 		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns().filter(function(col) { return col.dataIndex && col.dataIndex.trim().length > 0 });
 		var fields = [];
 		visibleColumns.forEach(function(column) {
@@ -692,7 +725,7 @@ Ext.define('Voyant.util.Toolable', {
 		var value = fields.join("\t")+"\n";
 
 		function tsvCollector(row) {
-			cells = [];
+			var cells = [];
 			visibleColumns.forEach(function (column) {
 				var val = row.get(column.dataIndex);
 				if (Ext.isString(val)) {
@@ -862,21 +895,12 @@ Ext.define('Voyant.util.ToolMenu', {
             '</tpl>'],
     privates: {
         onClick: function() {
-        	
-            var me = this,
-            returnValue = me.callParent(arguments);
+            var me = this;
+            var returnValue = me.callParent(arguments);
 
-
-            if (returnValue && me.items) {
-                if (!me.toolMenu) {
-                    me.toolMenu = new Ext.menu.Menu({
-                        items: me.items
-                    });
-                }
-                me.toolMenu.showAt(0, 0);
-                me.toolMenu.showAt(me.getX() + me.getWidth() - me.toolMenu.getWidth(), me.getY() + me.getHeight() + 10);
+			if (returnValue) {
+                me.showToolMenu.call(me);
             }
-
 
             return returnValue;
         },
@@ -884,7 +908,18 @@ Ext.define('Voyant.util.ToolMenu', {
             Ext.destroyMembers(this, 'toolMenu'); //destructor
             this.callParent();
         }
-    },   
+    },
+	showToolMenu: function() {
+		if (this.items && this.items.length > 0) {
+			if (!this.toolMenu || this.toolMenu.destroyed) {
+				this.toolMenu = new Ext.menu.Menu({
+					items: this.items
+				});
+			}
+			this.toolMenu.showAt(0, 0);
+			this.toolMenu.showAt(this.getX() + this.getWidth() - this.toolMenu.getWidth(), this.getY() + this.getHeight() + 10);
+		}
+	},
 	initComponent: function() {
 	    var me = this;
 	    me.callParent(arguments);

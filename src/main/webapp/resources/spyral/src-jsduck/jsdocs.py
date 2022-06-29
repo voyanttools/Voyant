@@ -12,6 +12,7 @@ def parse_file(fullfilename):
     typeDefRe = re.compile(r'@typedef\s+\{(\w+)\}\s+(\w+)(.*)', re.S | re.M)
     typeDefs = {}
     paramRe = re.compile(r'@param\s+\{(\w+)\}\s+\[?(\w+)\]?\s*(\w*)')
+    borrowsRe = re.compile(r'@borrows\s+([\w\.]+)\sas\s([\w\.]+)')
     with open(fullfilename) as f:
         contents = f.read()
         for match in finditer(commentsRe, contents):
@@ -21,6 +22,9 @@ def parse_file(fullfilename):
                 code += "}"
             else:
                 code = ""
+            if "@see" in comments:
+                # match see links that are on their own line and remove them (since they are links to the API)
+                comments = re.sub(r'\s*\*\s+@see\s+\{@link.*?\}', "", comments)
             if "@typedef" in comments:
                 typeDefMatch = typeDefRe.search(comments)
                 typeDefType = typeDefMatch.group(1)
@@ -47,6 +51,18 @@ def parse_file(fullfilename):
             if "static" in code:
                 comments += "* @static\n"
                 code = code.replace("static", "")
+            if "@namespace" in comments:
+                comments = re.sub(r'@namespace\s\w+', "", comments)
+            if "@name" in comments:
+                comments = re.sub(r'@name\s[\w.]+', "", comments)
+            if "@function" in comments:
+                comments = re.sub(r'@function', "", comments)
+            if "@borrows" in comments:
+                borrowsMatch = borrowsRe.search(comments)
+                borrowsRoot = borrowsMatch.group(1)
+                borrowsTarget = borrowsMatch.group(2)
+                comments = re.sub(r'@borrows.*', "", comments)
+                comments += "* "+borrowsTarget+" is shorthand for "+borrowsRoot
             if "@cfg" not in comments and "function" not in code and "class" not in code and code.strip():
                 code = code.replace("async", "")
                 funcMatch = functionCodeRe.search(code)
@@ -54,7 +70,8 @@ def parse_file(fullfilename):
                     comments += " * @method "+funcMatch.group(1)
                     code = ""
                 else:
-                    raise Exception("Can't find function: "+code+"\n\ncomments: "+comments)
+                    code = ""
+                    # raise Exception("Can't find function: "+code+"\n\ncomments: "+comments)
             elif "@method" in comments:
                 code = ""
             memberOfMatch = memberOfRe.search(comments)

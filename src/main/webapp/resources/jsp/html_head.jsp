@@ -104,7 +104,7 @@
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/jquery/current/jquery-ui.theme.min.css" />
 
 <!-- FontAwesome -->
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.4.0/font-awesome-all<%= rtl %>.css" />
+<link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.7.0/font-awesome.min.css" />
 
 <!-- spectrum -->
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/spectrum/spectrum.css" />

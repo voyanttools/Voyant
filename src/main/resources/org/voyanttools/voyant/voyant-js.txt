@@ -72,8 +72,10 @@ app/data/store/NotebookFacets.js
 
 # TABLES
 app/data/util/Table.js
+
 app/data/util/NetworkGraph.js
 app/data/util/Geonames.js
+app/data/util/DocumentEntities.js
 
 # CORPUS (here because store is needed)
 app/data/model/Corpus.js
@@ -154,6 +156,7 @@ app/panel/WordTree.js
 app/panel/WordWall.js
 app/panel/Topics.js
 app/panel/Via.js
+app/panel/NSSI.js
 
 # NOTEBOOKS
 app/notebook/editor/button/Add.js
@@ -182,7 +185,10 @@ app/notebook/storage/github/GitHubDialogs.js
 app/notebook/storage/voyant/StorageDialogs.js
 app/notebook/metadata/MetadataEditor.js
 app/notebook/util/FormatConverter.js
+app/notebook/util/NotebooksList.js
+app/notebook/util/DocsWindow.js
 app/notebook/Catalogue.js
+app/notebook/Authenticator.js
 app/notebook/Notebook.js
 
 # APPS

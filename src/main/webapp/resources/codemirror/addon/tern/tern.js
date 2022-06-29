@@ -258,10 +258,9 @@
       } else {
         var tip = elt("span", null, elt("strong", null, data.type || "not found"));
         if (data.doc)
-          tip.appendChild(document.createTextNode(" — " + data.doc));
+          tip.appendChild(elt("span", "tern-doc", data.doc));
         if (data.url) {
-          tip.appendChild(document.createTextNode(" "));
-          var child = tip.appendChild(elt("a", null, "[docs]"));
+          var child = tip.appendChild(elt("a", "tern-doc-url", "[docs]"));
           child.href = data.url;
           child.target = "_blank";
         }

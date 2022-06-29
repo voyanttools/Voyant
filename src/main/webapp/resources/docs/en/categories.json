@@ -7,9 +7,9 @@
 				"classes": [
 					"Spyral.Corpus",
 					"Spyral.Table",
+					"Spyral.Chart",
 					"Spyral.Load",
 					"Spyral.Util",
-					"Spyral.Chart",
 					"Spyral.Categories"
 				]
 			},{
@@ -18,6 +18,11 @@
 					"Spyral.Metadata",
 					"Spyral.Notebook",
 					"Spyral.Util.Storage"
+				]
+			},{
+				"name": "Global",
+				"classes": [
+					"window"
 				]
 			}
 		]

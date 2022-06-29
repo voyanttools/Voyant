@@ -240,7 +240,7 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 	 * Export dialog options below
 	 */
 	
-	getExtraExportItems: function() {
+	getExtraViewExportItems: function() {
 		return [
 		// {
 		// 	inputValue: 'html',

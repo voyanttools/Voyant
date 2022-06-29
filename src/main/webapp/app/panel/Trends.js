@@ -749,7 +749,60 @@ Ext.define('Voyant.panel.Trends', {
     		});
     		this.fireEvent("termsClicked", this, terms);
     	}
-    }
+    },
 
+	getExtraDataExportItems: function() {
+		return [
+			{
+				name: 'export',
+				inputValue: 'dataAsTsv',
+				boxLabel: this.localize('exportGridCurrentTsv')
+			}
+		]
+	},
 
+	exportDataAsTsv: function(panel, form) {
+		var value = '';
+
+		var chart = panel.down('chart');
+		var store = chart.getStore();
+		var firstModel = store.first();
+		var data = firstModel.getData();
+
+		var fields = ['Index'];
+		
+		var termKeys = Object.keys(data).filter(function(key) {
+			return key.indexOf('term') === 0;
+		}).sort();
+		var terms = [];
+		termKeys.forEach(function(termKey) {
+			terms.push(data[termKey]);
+		});
+		
+		fields = fields.concat(terms);
+		value += fields.join("\t")+"\n";
+
+		var valueKeys = Object.keys(data).filter(function(key) {
+			return key.indexOf('_') === 0;
+		}).sort();
+
+		store.each(function(model) {
+			data = model.getData();
+			var entry = [data['index']];
+			valueKeys.forEach(function(valueKey) {
+				entry.push(data[valueKey]);
+			});
+			value += entry.join("\t")+"\n";
+		}, panel);
+
+		Ext.Msg.show({
+			title: panel.localize('exportDataTitle'),
+			message: panel.localize('exportDataTsvMessage'),
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO,
+			prompt: true,
+			multiline: true,
+			value: value
+		});
+	}
  });

@@ -3,25 +3,23 @@
  * @memberof Spyral
  */
 class Metadata {
-	/**
-	 * The Metadata config object
-	 * @typedef {Object} MetadataConfig
-	 * @property {String} title The title of the Corpus
-	 * @property {String} author The author of the Corpus
-	 * @property {String} description The description of the Corpus
-	 * @property {Array} keywords The keywords for the Corpus
-	 * @property {String} created When the Corpus was created
-	 * @property {String} language The language of the Corpus
-	 * @property {String} license The license for the Corpus
-	 */
-
+	
 	/** 
 	 * The metadata constructor.
 	 * @constructor
-	 * @param {MetadataConfig} config The metadata config object
+	 * @param {Object} config The metadata config object
+	 * @param {String} config.title The title of the Notebook
+	 * @param {String} config.userId The user ID of the author of the Notebook
+	 * @param {String} config.author The name of the author of the Notebook
+	 * @param {String} config.description The description of the Notebook
+	 * @param {Array} config.keywords The keywords for the Notebook
+	 * @param {String} config.created When the Notebook was created
+	 * @param {String} config.language The language of the Notebook
+	 * @param {String} config.license The license for the Notebook
+	 * @returns {Spyral.Metadata}
 	 */
 	constructor(config) {
-		['title', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
+		['title', 'userId', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
 			if (key === 'keywords') {
 				this[key] = [];
 			} else {

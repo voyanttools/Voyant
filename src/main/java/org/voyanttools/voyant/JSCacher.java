@@ -38,6 +38,7 @@ public class JSCacher {
 	final static String CACHED_FILENAME = "voyant.js";
 	final static String CACHED_FILENAME_MINIFIED = "voyant.min.js";
 	final static String SOURCE_MAP_FILENAME = "voyant.min.map.js";
+	final static String CACHED_FILE_PATH = "/resources/voyant/current/";
 	
 	// Closure options
 	final static int SUMMARY_DETAIL_LEVEL = 1;
@@ -84,16 +85,26 @@ public class JSCacher {
 		
 		// TODO add config for this?
 		boolean doSourceMap = true;
+		
+		String requestURL = request.getRequestURL().toString();
+		// reconstruct the url base to ensure that https is maintained
+		String redirectBase = requestURL.substring(0, requestURL.lastIndexOf("/"))+"/";
+		String serverName = request.getServerName();
+		// force https
+		if (serverName.contains("voyant-tools")) {
+			redirectBase = redirectBase.replaceFirst("http:", "https:");
+		}
+		
 
 		String debug = request.getParameter("debug");
 		if (debug!=null && debug.equals("true")) {
 			File basePath = new File(request.getSession().getServletContext().getRealPath("/"));
 			doCache(basePath, doSourceMap, false);
 			
-			response.sendRedirect(CACHED_FILENAME);
+			response.sendRedirect(redirectBase+CACHED_FILENAME);
 		}
 		else {
-			response.sendRedirect(CACHED_FILENAME_MINIFIED);
+			response.sendRedirect(redirectBase+CACHED_FILENAME_MINIFIED);
 		}
 
 	}
@@ -102,9 +113,9 @@ public class JSCacher {
 		
 		System.out.println("doCache - path: "+basePath.getPath()+", source: "+doSourceMap+", force: "+forceUpdate);
 		
-		File cachedFile = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME);
-		File cachedFileMinified = new File(basePath, "/resources/voyant/current/"+CACHED_FILENAME_MINIFIED);
-		File sourceMapFile = new File(basePath, "/resources/voyant/current/"+SOURCE_MAP_FILENAME);
+		File cachedFile = new File(basePath, CACHED_FILE_PATH+CACHED_FILENAME);
+		File cachedFileMinified = new File(basePath, CACHED_FILE_PATH+CACHED_FILENAME_MINIFIED);
+		File sourceMapFile = new File(basePath, CACHED_FILE_PATH+SOURCE_MAP_FILENAME);
 		
 		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
 		

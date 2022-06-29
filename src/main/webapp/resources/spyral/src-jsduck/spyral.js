@@ -1,6 +1,6 @@
 
 
-// *** Documentation extracted from: ..\..\..\..\voyantjs\src\categories.js ***
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\categories.js ***
 
 /**
 * Class for working with categories and features.
@@ -12,13 +12,20 @@
 
 
 /**
-* Construct a new Categories class
+* Construct a new Categories class.
+	 * @constructor
+	 * @param {Object} config
+	 * @param {Object} config.categories
+	 * @param {Array} config.categoriesRanking
+	 * @param {Object} config.features
+	 * @param {Object} config.featureDefaults
+	 * @returns {Spyral.Categories}
 	  * @method constructor
  */
 
 
 /**
-* Get the categories
+* Get the categories.
 	 * @returns {Object}
 	  * @method getCategories
  */
@@ -26,157 +33,156 @@
 
 /**
 * Get category names as an array.
-	 * 
-	 * @returns {Array} of category names
+	 * @returns {Array}
 	  * @method getCategoryNames
  */
 
 
 /**
-* Get the terms for a category
-	 * @param {string} name 
+* Get the terms for a category.
+	 * @param {string} name The category name
 	 * @returns {Array}
 	  * @method getCategoryTerms
  */
 
 
 /**
-* Add a new category
-	 * @param {string} name 
+* Add a new category.
+	 * @param {string} name The category name
 	  * @method addCategory
  */
 
 
 /**
-* Rename a category
-	 * @param {string} oldName 
-	 * @param {string} newName 
+* Rename a category.
+	 * @param {string} oldName The old category name
+	 * @param {string} newName The new category name
 	  * @method renameCategory
  */
 
 
 /**
-* Remove a category
-	 * @param {string} name 
+* Remove a category.
+	 * @param {string} name The category name
 	  * @method removeCategory
  */
 
 
 /**
-* Gets the ranking for a category
-	 * @param {string} name 
+* Gets the ranking for a category.
+	 * @param {string} name The category name
 	 * @returns {number}
 	  * @method getCategoryRanking
  */
 
 
 /**
-* Sets the ranking for a category
-	 * @param {string} name 
-	 * @param {number} ranking 
+* Sets the ranking for a category.
+	 * @param {string} name The category name
+	 * @param {number} ranking The category ranking
 	  * @method setCategoryRanking
  */
 
 
 /**
-* Add a term to a category
-	 * @param {string} category 
-	 * @param {string} term 
+* Add a term to a category.
+	 * @param {string} category The category name
+	 * @param {string} term The term
 	  * @method addTerm
  */
 
 
 /**
-* Add multiple terms to a category
-	 * @param {string} category 
-	 * @param {Array} terms 
+* Add multiple terms to a category.
+	 * @param {string} category The category name
+	 * @param {Array} terms An array of terms
 	  * @method addTerms
  */
 
 
 /**
-* Remove a term from a category
-	 * @param {string} category 
-	 * @param {string} term 
+* Remove a term from a category.
+	 * @param {string} category The category name
+	 * @param {string} term The term
 	  * @method removeTerm
  */
 
 
 /**
-* Remove multiple terms from a category
-	 * @param {string} category 
-	 * @param {Array} terms 
+* Remove multiple terms from a category.
+	 * @param {string} category The category name
+	 * @param {Array} terms An array of terms
 	  * @method removeTerms
  */
 
 
 /**
-* Get the category that a term belongs to, taking ranking into account
-	 * @param {string} term 
+* Get the category that a term belongs to, taking ranking into account.
+	 * @param {string} term The term
 	 * @returns {string}
 	  * @method getCategoryForTerm
  */
 
 
 /**
-* Get all the categories a term belongs to
-	 * @param {string} term 
+* Get all the categories a term belongs to.
+	 * @param {string} term The term
 	 * @returns {Array}
 	  * @method getCategoriesForTerm
  */
 
 
 /**
-* Get the feature for a term
-	 * @param {string} feature 
-	 * @param {string} term 
+* Get the feature for a term.
+	 * @param {string} feature The feature
+	 * @param {string} term The term
 	 * @returns {*}
 	  * @method getFeatureForTerm
  */
 
 
 /**
-* Get the features
+* Get the features.
 	 * @returns {Object}
 	  * @method getFeatures
  */
 
 
 /**
-* Add a feature
-	 * @param {string} name 
-	 * @param {*} defaultValue 
+* Add a feature.
+	 * @param {string} name The feature name
+	 * @param {*} defaultValue The default value
 	  * @method addFeature
  */
 
 
 /**
-* Remove a feature
-	 * @param {string} name 
+* Remove a feature.
+	 * @param {string} name The feature name
 	  * @method removeFeature
  */
 
 
 /**
-* Set the feature for a category
-	 * @param {string} categoryName 
-	 * @param {string} featureName 
-	 * @param {*} featureValue 
+* Set the feature for a category.
+	 * @param {string} categoryName The category name
+	 * @param {string} featureName The feature name
+	 * @param {*} featureValue The feature value
 	  * @method setCategoryFeature
  */
 
 
 /**
-* Get the feature for a category
-	 * @param {string} categoryName 
-	 * @param {string} featureName 
+* Get the feature for a category.
+	 * @param {string} categoryName The category name
+	 * @param {string} featureName The feature name
 	 * @returns {*}
 	  * @method getCategoryFeature
  */
 
 
 /**
-* Get a copy of the category and feature data
+* Get a copy of the category and feature data.
 	 * @returns {Object}
 	  * @method getCategoryExportData
  */
@@ -185,7 +191,7 @@
 /**
 * Save the categories (if we're in a recognized environment).
 	 * @param {Object} config for the network call (specifying if needed the location of Trombone, etc., see {@link Spyral.Load#trombone}
-	 * @returns {Promise} this returns a promise which eventually resolves to a string that is the ID reference for the stored categories
+	 * @returns {Promise<string>} this returns a promise which eventually resolves to a string that is the ID reference for the stored categories
 	  * @method save
  */
 
@@ -199,19 +205,54 @@
 	 * Which is equivalent to:
 	 * 	new Spyral.Categories().load({retrieveResourceId: "categories.en.txt"});
 	 * 
-	 * @param {Object|String} config an object specifying the parameters (see above)
+	 * @param {(Object|String)} config an object specifying the parameters (see above)
 	 * @param {Object} api an object specifying any parameters for the trombone call
-	 * @returns {Promise} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
+	 * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
 	  * @method load
+ */
+
+
+/**
+* Load categories and return a promise that resolves to a new Spyral.Categories instance.
+	 * 
+	 * @param {(Object|String)} config an object specifying the parameters (see above)
+	 * @param {Object} api an object specifying any parameters for the trombone call
+	 * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
+	 * @static
+ * @method load
  */
 
 
 
 
-// *** Documentation extracted from: ..\..\..\..\voyantjs\src\chart.js ***
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\chart.js ***
 
 /**
-* Class representing a Chart.
+* The Chart class in Spyral.
+ * This class provides methods for creating a variety of charts.
+ * Charts are created using the [Highcharts Library](https://api.highcharts.com/highcharts/).
+ * Highcharts have many configuration options and Spyral.Chart helps to streamline the process.
+ * A simple example:
+ * 
+ * 	Spyral.Chart.line({ series: [{ data: [0,2,1,3] }] })
+ * 
+ * A more complex example:
+ * 
+ * 	Spyral.Chart.column({
+ * 		title: 'Wildflowers',
+ * 		series: [{
+ * 			name: 'Ontario',
+ * 			data: [13, 39, 139, 38]
+ * 		},{
+ * 			name: 'Quebec',
+ * 			data: [14, 33, 94, 30]
+ * 		}],
+ * 		xAxis: {
+ * 			title: 'Number of Petals',
+ * 			categories: [3, 4, 5, 6]
+ * 		}
+ * 	})
+ * 
  * @class Spyral.Chart
  */
 
@@ -219,8 +260,8 @@
 /**
 * Construct a new Chart class
 	 * @constructor
-	 * @param {HTMLElement} target 
-	 * @param {Array} data 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	 * @param {Array} data An array of data to visualize.
 	  * @method constructor
  */
 
@@ -228,7 +269,7 @@
 /**
 * Create a new chart.
 	 * See [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.
-	 * @param {(String|HTMLElement)} target 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	 * @param {Object} config 
 	 * @returns {Highcharts.Chart}
 	 
@@ -238,7 +279,7 @@
 	 * @param {Object} config.xAxis
 	 * @param {Object} config.yAxis
 	 * @param {Object} config.chart
-	 * @param {Array} config.series
+	 * @param {Array<HighchartsSeriesConfig>} config.series
 	 * @param {Object} config.plotOptions
 	  * @method create
  */
@@ -247,7 +288,7 @@
 /**
 * Create a new chart.
 	 * See [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.
-	 * @param {(String|HTMLElement)} target 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	 * @param {Object} config 
 	 * @returns {Highcharts.Chart}
 	 
@@ -257,19 +298,10 @@
 	 * @param {Object} config.xAxis
 	 * @param {Object} config.yAxis
 	 * @param {Object} config.chart
-	 * @param {Array} config.series
+	 * @param {Array<HighchartsSeriesConfig>} config.series
 	 * @param {Object} config.plotOptions
 	 * @static
  * @method create
- */
-
-
-/**
-* Sets the default chart type
-	 * @param {Object} config The chart config object
-	 * @param {string} type The type of chart
-	 * @static
- * @method setDefaultChartType
  */
 
 
@@ -292,11 +324,29 @@
 
 /**
 * Create a bar chart
-	 * @param {HTMLElement} target 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	 * @param {Object} config 
 	 * @returns {Highcharts.Chart}
 	 * @static
  * @method bar
+ */
+
+
+/**
+* Create a column chart
+	 * @param {Object} [config]
+	 * @returns {Highcharts.Chart}
+	  * @method column
+ */
+
+
+/**
+* Create a column chart
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	 * @param {Object} config 
+	 * @returns {Highcharts.Chart}
+	 * @static
+ * @method column
  */
 
 
@@ -310,7 +360,7 @@
 
 /**
 * Create a line chart
-	 * @param {HTMLElement} target 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	 * @param {Object} config 
 	 * @returns {Highcharts.Chart}
 	 * @static
@@ -328,7 +378,7 @@
 
 /**
 * Create a scatter plot
-	 * @param {HTMLElement} target 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	 * @param {Object} config 
 	 * @returns {Highcharts.Chart}
 	 * @static
@@ -339,16 +389,16 @@
 /**
 * Create a network graph
 	 * @param {Object} [config]
-	 * @returns {Highcharts.Chart}
+	 * @returns {Spyral.NetworkGraph}
 	  * @method networkgraph
  */
 
 
 /**
 * Create a network graph
-	 * @param {HTMLElement} target 
+	 * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	 * @param {Object} config 
-	 * @returns {Highcharts.Chart}
+	 * @returns {Spyral.NetworkGraph}
 	 * @static
  * @method networkgraph
  */
@@ -356,7 +406,7 @@
 
 
 
-// *** Documentation extracted from: ..\..\..\..\voyantjs\src\corpus.js ***
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\corpus.js ***
 
 /**
 * The Corpus class in Spyral. Here's a simple example:
@@ -402,7 +452,7 @@
 
 
 /**
-* @cfg {String/String[]} input Input sources for the corpus.
+* @cfg {(String|String[])} input Input sources for the corpus.
  * 
  * The input sources can be either normal text or URLs (starting with `http`).
  * 
@@ -716,15 +766,24 @@
 
 
 /**
-* Get a Promise for the ID of the corpus.
+* Create a new Corpus using the specified Corpus ID
+	 * @ignore
+	 * @constructor
+	 * @param {string} id The Corpus ID
+	  * @method constructor
+ */
+
+
+/**
+* Returns the ID of the corpus.
 	 * 
-	 * @return {Promise|String} a Promise for the string ID of the corpus
+	 * @returns {Promise<string>} a Promise for the string ID of the corpus
 	  * @method id
  */
 
 
 /**
-* Get a Promise for the metadata object (of the corpus or document, depending on which mode is used).
+* Returns the metadata object (of the corpus or document, depending on which mode is used).
 	 * 
 	 * The following is an example of the object return for the metadata of the Jane Austen corpus:
 	 * 
@@ -792,25 +851,25 @@
 	 *  	loadCorpus("austen").metadata().then(metadata => metadata.documentsCount)
 	 *  
 	 * @param {Object} config an Object specifying parameters (see list above)
-	 * @return {Promise|Object} a Promise for an Object containing metadata
+	 * @returns {Promise<object>} a Promise for an Object containing metadata
 	  * @method metadata
  */
 
 
 /**
-* Get a Promise for a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) 
+* Returns a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) 
 	 * 
 	 * An example:
 	 * 
 	 * 	loadCorpus("austen").summary();
 	 * 
-	 * @return {Promise|String} a Promise for a string containing a brief summary of the corpus metadata
+	 * @returns {Promise<string>} a Promise for a string containing a brief summary of the corpus metadata
 	  * @method summary
  */
 
 
 /**
-* Get a Promise for an Array of the document titles.
+* Returns an array of document titles for the corpus.
 	 * 
 	 * The following are valid in the config parameter:
 	 * 
@@ -827,13 +886,46 @@
 	 * 	loadCorpus("austen").titles().then(titles => "The last work is: "+titles[titles.length-1])
 	 *
 	 * @param {Object} config an Object specifying parameters (see list above) 
-	 * @returns {Promise|Array} a Promise for an Array of document titles  
+	 * @param {number} config.start the zero-based start of the list
+	 * @param {number} config.limit a limit to the number of items to return at a time
+	 * @param {number} config.docIndex a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma
+	 * @param {string} config.docId a set of document IDs; multiple documents can be separated by a comma
+	 * @param {string} config.query one or more term queries for the title, author or full-text
+	 * @param {string} config.sort one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	 * @returns {Promise<Array>} a Promise for an Array of document titles
 	  * @method titles
  */
 
 
 /**
-* Get a Promise for the text of the entire corpus.
+* Returns an array of documents metadata for the corpus.
+	 * 
+	 * The following are valid in the config parameter:
+	 * 
+	 *  * **start**: the zero-based start of the list
+	 *  * **limit**: a limit to the number of items to return at a time
+	 *  * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma
+	 *  * **docId**: a set of document IDs; multiple documents can be separated by a comma
+	 *  * **query**: one or more term queries for the title, author or full-text
+	 *  * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
+	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	 * 
+	 * @param {Object} config an Object specifying parameters (see list above) 
+	 * @param {number} config.start the zero-based start of the list
+	 * @param {number} config.limit a limit to the number of items to return at a time
+	 * @param {number} config.docIndex a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma
+	 * @param {string} config.docId a set of document IDs; multiple documents can be separated by a comma
+	 * @param {string} config.query one or more term queries for the title, author or full-text
+	 * @param {string} config.sort one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	 * @returns {Promise<Array>} a Promise for an Array of documents metadata
+	  * @method documents
+ */
+
+
+/**
+* Returns the text of the entire corpus.
 	 * 
 	 * Texts are concatenated together with two new lines and three dashes (\\n\\n---\\n\\n)
 	 * 
@@ -850,13 +942,17 @@
 	 * 	loadCorpus("austen").text({limit:1000})
 	 * 
 	 * @param {Object} config an Object specifying parameters (see list above)
-	 * @returns {Promise|String} a Promise for a string of the corpus
+	 * @param {boolean} config.noMarkup strips away the markup
+	 * @param {boolean} config.compactSpace strips away superfluous spaces and multiple new lines
+	 * @param {number} config.limit a limit to the number of characters (per text)
+	 * @param {string} config.format `text` for plain text, any other value for the simplified Voyant markup
+	 * @returns {Promise<string>} a Promise for a string of the corpus
 	  * @method text
  */
 
 
 /**
-* Get a Promise for an Array of texts from the entire corpus.
+* Returns an array of texts from the entire corpus.
 	 * 
 	 * The following are valid in the config parameter:
 	 * 
@@ -871,13 +967,17 @@
 	 * 	loadCorpus("austen").texts({limit:1000})
 	 * 
 	 * @param {Object} config an Object specifying parameters (see list above)
-	 * @returns {Promise|String} a Promise for an Array of texts from the corpus
+	 * @param {boolean} config.noMarkup strips away the markup
+	 * @param {boolean} config.compactSpace strips away superfluous spaces and multiple new lines
+	 * @param {number} config.limit a limit to the number of characters (per text)
+	 * @param {string} config.format `text` for plain text, any other value for the simplified Voyant markup
+	 * @returns {Promise<Array>} a Promise for an Array of texts from the corpus
 	  * @method texts
  */
 
 
 /**
-* Get a Promise for an Array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).
+* Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).
 	 * These terms are actually types, so information about each type is collected (as opposed to the {#link tokens}
 	 * method which is for every occurrence in document order).
 	 * 
@@ -917,7 +1017,7 @@
 	 *  * **limit**: the maximum number of terms to provide per request
 	 *  * **minRawFreq**: the minimum raw frequency of terms
 	 *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	 *  * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
 	 *  * **withDistributions**: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	 *  * **whiteList**: a keyword list – terms will be limited to this list
 	 *  * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -947,13 +1047,22 @@
    	 * 	loadCorpus("austen").terms({stopList: 'auto', perDocLimit: 1, mode: 'documents'}).then(terms => terms.map(term => term.term))
    	 * 
 	 * @param {Object} config an Object specifying parameters (see list above)
-	 * @returns {Promise|Array} a Promise for a Array of Terms
+	 * @param {number} config.start the zero-based start index of the list (for paging)
+	 * @param {number} config.limit the maximum number of terms to provide per request
+	 * @param {number} config.minRawFreq the minimum raw frequency of terms
+	 * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
+	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
+	 * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	 * @returns {Promise<Array>} a Promise for a Array of Terms
 	  * @method terms
  */
 
 
 /**
-* Get a Promise for an Array of document tokens.
+* Returns an array of document tokens.
 	 * 
 	 * The promise returns an array of document token objects. A document token object can look something like this:
 	 * 
@@ -972,7 +1081,7 @@
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
 	 *  * **whiteList**: a keyword list – terms will be limited to this list
 	 *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	 *  * **noOthers**: only include lexical forms, no other tokens
@@ -987,13 +1096,23 @@
 	 * 	loadCorpus("austen").tokens({limit: 20, noOthers: true})
 	 *
 	 * @param {Object} config an Object specifying parameters (see above)
-	 * @returns {Promise|Array} a Promise for an Array of document tokens
+	 * @param {number} config.start the zero-based start index of the list (for paging)
+	 * @param {number} config.limit the maximum number of terms to provide per request
+	 * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
+	 * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
+	 * @param {boolean} config.noOthers only include lexical forms, no other tokens
+	 * @param {string} config.stripTags one of the following: `ALL`, `BLOCKSONLY`, `NONE` (`BLOCKSONLY` tries to maintain blocks for line formatting)
+	 * @param {boolean} config.withPosLemmas include part-of-speech and lemma information when available (reliability of this may vary by instance)
+	 * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	 * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
+	 * @returns {Promise<Array>} a Promise for an Array of document tokens
 	  * @method tokens
  */
 
 
 /**
-* Get a Promise for an Array of words from the corpus.
+* Returns an array of words from the corpus.
 	 * 
 	 * The array of words are in document order, much like tokens.
 	 * 
@@ -1001,7 +1120,7 @@
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
 	 *  * **whiteList**: a keyword list – terms will be limited to this list
 	 *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	 *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
@@ -1013,13 +1132,20 @@
 	 * 	loadCorpus("austen").tokens({limit: 20})
 	 *
 	 * @param {Object} config an Object specifying parameters (see above)
-	 * @returns {Promise|Array} a Promise for an Array of words
+	 * @param {number} config.start the zero-based start index of the list (for paging)
+	 * @param {number} config.limit the maximum number of terms to provide per request
+	 * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
+	 * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
+	 * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	 * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
+	 * @returns {Promise<Array>} a Promise for an Array of words
 	  * @method words
  */
 
 
 /**
-* Get a Promise for an Array of Objects that contain keywords in contexts (KWICs).
+* Returns an array of Objects that contain keywords in contexts (KWICs).
 	 * 
 	 * An individual KWIC Object looks something like this:
 	 * 
@@ -1037,12 +1163,12 @@
      * 
      *  * **start**: the zero-based start index of the list (for paging)
      *  * **limit**: the maximum number of terms to provide per request
-     *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-     *  * **sort**: the order of the contexts: `TERM,, DOCINDEX, POSITION, LEFT, RIGHT`
+     *  * **query**: a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     *  * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
      *  * **stripTags**: for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)
-     *  * **context**: the size of the context (the number of words on each size of the keyword)
+     *  * **context**: the size of the context (the number of words on each side of the keyword)
      *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
      *  * **docId**: the document IDs to include (use commas to separate multiple values)
      *  * **overlapStrategy**: determines how to handle cases where there's overlap between KWICs, such as "to be or not to be" when the keyword is "be"; here are the options:
@@ -1061,13 +1187,24 @@
      * 	loadCorpus("austen").contexts({query: "love", limit: 10})
      * 
      * @param {Object} config an Object specifying parameters (see above)
-     * @returns {Promise|Array} a Promise for an Array of KWIC Objects
+     * @param {number} config.start the zero-based start index of the list (for paging)
+     * @param {number} config.limit the maximum number of terms to provide per request
+     * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     * @param {string} config.sort the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+     * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
+     * @param {string} config.stripTags for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)
+     * @param {number} config.context the size of the context (the number of words on each side of the keyword)
+     * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+     * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
+     * @param {string} config.overlapStrategy determines how to handle cases where there's overlap between KWICs, such as "to be or not to be" when the keyword is "be"
+     * @returns {Promise<Array>} a Promise for an Array of KWIC Objects
       * @method contexts
  */
 
 
 /**
-* Get a Promise for an Array of collocates (either document or corpus collocates, depending on the specified mode).
+* Returns an array of collocates (either document or corpus collocates, depending on the specified mode).
 	 * 
 	 * The mode is set to "documents" when any of the following is true
 	 * 
@@ -1103,9 +1240,9 @@
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
 	 *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	 *  * **stopList** a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
 	 *  * **collocatesWhitelist**: collocates will be limited to this list
-     *  * **context**: the size of the context (the number of words on each size of the keyword)
+	 *  * **context**: the size of the context (the number of words on each side of the keyword)
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
 	 * 
 	 * The following are specific to corpus mode:
@@ -1124,13 +1261,20 @@
    	 * 	loadCorpus("austen").collocates({stopList: 'auto', limit: 5}).then(terms => terms.map(term => term.term))
    	 * 
 	 * @param {Object} config an Object specifying parameters (see list above)
-	 * @returns {Promise|Array} a Promise for a Array of Terms
+	 * @param {number} config.start the zero-based start index of the list (for paging)
+	 * @param {number} config.limit the maximum number of terms to provide per request
+	 * @param {string} config.query a term query (see https://voyant-tools.org/docs/#!/guide/search)
+	 * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 * @param {string} config.collocatesWhitelist collocates will be limited to this list
+	 * @param {number} config.context the size of the context (the number of words on each side of the keyword)
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	 * @returns {Promise<Array>} a Promise for a Array of Terms
 	  * @method collocates
  */
 
 
 /**
-* Get a Promise for an Array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).
+* Returns an array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).
 	 * 
 	 * The mode is set to "documents" when any of the following is true
 	 * 
@@ -1162,7 +1306,7 @@
 	 *  * **minLength**: the minimum length of the phrase
 	 *  * **maxLength**: the maximum length of the phrase
 	 *  * **minRawFreq**: the minimum raw frequency of the phrase
-     * 	* **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`
+	 * 	* **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
 	 *  * **overlapFilter**: it happens that phrases contain other phrases and we need a strategy for handling overlap:
      *      * **NONE**: nevermind the overlap, keep all phrases
@@ -1181,13 +1325,21 @@
      * 	loadCorpus("austen").phrases({query: "love", limit: 10})
      * 
      * @param {Object} config an Object specifying parameters (see above)
-     * @returns {Promise|Array} a Promise for an Array of phrase Objects
+	 * @param {number} config.start the zero-based start index of the list (for paging)
+	 * @param {number} config.limit the maximum number of terms to provide per request
+	 * @param {number} config.minLength the minimum length of the phrase
+	 * @param {number} config.maxLength the maximum length of the phrase
+	 * @param {number} config.minRawFreq the minimum raw frequency of the phrase
+	 * @param {string} config.sort the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	 * @param {string} config.overlapFilter it happens that phrases contain other phrases and we need a strategy for handling overlap
+     * @returns {Promise<Array>} a Promise for an Array of phrase Objects
       * @method phrases
  */
 
 
 /**
-* Get a Promise for an Array of correlations (either document or corpus correlations, depending on the specified mode).
+* Returns an array of correlations (either document or corpus correlations, depending on the specified mode).
 	 * 
 	 * The mode is set to "documents" when any of the following is true
 	 * 
@@ -1251,7 +1403,7 @@
 	 *  * **limit**: the maximum number of terms to provide per request
 	 *  * **minRawFreq**: the minimum raw frequency of the collocate terms
 	 *  * **termsOnly**: a very compact data view of the correlations
-     *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
+	 *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      * 
      * The following are specific to documents mode:
@@ -1265,7 +1417,13 @@
      * 	loadCorpus("austen").correlations({query: "love", limit: 10})
      * 
      * @param {Object} config an Object specifying parameters (see above)
-     * @returns {Promise|Array} a Promise for an Array of phrase Objects
+	 * @param {number} config.start the zero-based start index of the list (for paging)
+	 * @param {number} config.limit the maximum number of terms to provide per request
+	 * @param {number} config.minRawFreq the minimum raw frequency of the collocate terms
+	 * @param {boolean} config.termsOnly a very compact data view of the correlations
+	 * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
+	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+     * @returns {Promise<Array>} a Promise for an Array of phrase Objects
       * @method correlations
  */
 
@@ -1273,55 +1431,86 @@
 /**
 * Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })
 	 * @param {Object} config an Object specifying parameters (see above)
-     * @returns {Promise|Array} a Promise for an Array of lemma Objects
+     * @returns {Promise<Array>} a Promise for an Array of lemma Objects
 	  * @method lemmas
  */
 
 
 /**
-* Get a promise for an LDA object that has two primary methods of use:
+* Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:
 	 * 
-	 * 	* **getTopicWords**: get a list of topics (words organized into bunches of a specified size
-	 * 	* **getDocuments**: get a list of documents and the signican words
+	 * * **getTopicWords**: return a list of topics (words organized into bunches of a specified size
+	 * * **getDocuments**: return a list of documents and the signican words
 	 *
 	 * The config object as parameter can contain the following:
-	 *  * **numberTopics**: the number of topics to get (default is 10)
-	 *  * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 *  * **language**: stopwords language to use, default is corpus language
+	 * 
+	 * * **numberTopics**: the number of topics to get (default is 10)
+	 * * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
+	 * * **language**: stopwords language to use, default is corpus language
+	 * 
 	 * @param {Object} config (see above)
-	 * @return {Promise} a promise for an LDA object
+	 * @param {number} config.numberTopics the number of topics to get (default is 10)
+	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
+	 * @param {string} config.language stopwords language to use, default is corpus language
+	 * @returns {Promise<Object>} a promise for an LDA object
 	  * @method lda
  */
 
 
 /**
-* Get a promise for a list of LDA topics from the corpus.
+* Performs topic modelling using the latent Dirichlet allocation. Returns an array of LDA topics from the corpus.
 	 * 
 	 * The config object as parameter can contain the following:
+	 * 
 	 *  * **numberTopics**: the number of topics to get (default is 10)
 	 *  * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
 	 *  * **language**: stopwords language to use, default is corpus language
+	 * 
 	 * @param {Object} config (see above)
-	 * @return {Promise} a promise for an array of topics
+	 * @param {number} config.numberTopics the number of topics to get (default is 10)
+	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
+	 * @param {string} config.language stopwords language to use, default is corpus language
+	 * @returns {Promise<Array>} a promise for an array of topics
 	  * @method ldaTopics
  */
 
 
 /**
-* Get a promise for a list of documents and associated words
+* Performs topic modelling using the latent Dirichlet allocation. Returns an array of documents and associated words
 	 * 
 	 * The config object as parameter can contain the following:
+	 * 
 	 *  * **numberTopics**: the number of topics to get (default is 10)
 	 *  * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
 	 *  * **language**: stopwords language to use, default is corpus language
+	 * 
 	 * @param {Object} config (see above)
-	 * @return {Promise} a promise for an array of documents
+	 * @param {number} config.numberTopics the number of topics to get (default is 10)
+	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
+	 * @param {string} config.language stopwords language to use, default is corpus language
+	 * @returns {Promise<Array>} a promise for an array of documents
 	  * @method ldaDocuments
  */
 
 
 /**
-* Get a promise for the HTML snippet that will produce the specified Voyant tools to appear.
+* Returns an array of entities.
+	 * 
+	 * The config object as parameter can contain the following:
+	 * 
+	 *  * **docIndex**: document index to restrict to (can be comma-separated list)
+	 *  * **annotator**: the annotator to use: 'stanford' or 'nssi'
+	 * 
+	 * @param {Object} config
+	 * @param {(number|string)} config.docIndex document index to restrict to (can be comma-separated list)
+	 * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi'
+	 * @returns {Promise<Array>}
+	  * @method entities
+ */
+
+
+/**
+* Returns an HTML snippet that will produce the specified Voyant tools to appear.
 	 * 
 	 * In its simplest form we can simply call the named tool:
 	 * 
@@ -1333,7 +1522,7 @@
 	 * 
 	 * There are also parameters (width, height, style, float) that apply to the actual tool window:
 	 * 
-	 *  loadCorpus("austen").tool("Trends", {query: "love", style: "width: 500px; height: 500px"});
+	 * 	loadCorpus("austen").tool("Trends", {query: "love", style: "width: 500px; height: 500px"});
 	 * 
 	 * It's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):
 	 * 
@@ -1345,18 +1534,18 @@
 	 * 
 	 * Here's a partial list of the tools available as well as their significant parameters:
 	 * 
-	 *  * <a href="./#!/guide/bubblelines" target="_blank">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.
+	 *  * <a href="#!/guide/bubblelines">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.
 	 *  	* **bins**: number of bins to separate a document into
 	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
 	 *  	* **maxDocs**: maximum number of documents to show
 	 *  	* **query**: a query to search for in the corpus
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/bubbles" target="_blank">Bubbles</a> is a playful visualization of term frequencies by document.
+	 *  * <a href="#!/guide/bubbles">Bubbles</a> is a playful visualization of term frequencies by document.
 	 *  	* **audio**: whether or not to include audio
 	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
 	 *  	* **speed**: speed of the animation (0 to 60 lower is slower)
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/cirrus" target="_blank">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.
+	 *  * <a href="#!/guide/cirrus">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.
 	 *  	* **background**: set the background colour of the word cloud
 	 *  	* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)
 	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
@@ -1366,53 +1555,70 @@
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
 	 *  	* **visible**: the number of terms to display in the word cloud (default is 50)
 	 *  	* **whiteList**: a keyword list – terms will be limited to this list
-	 *  * <a href="./#!/guide/collocatesgraph" target="_blank">CollocatesGraph</a> represents keywords and terms that occur in close proximity as a force directed network graph.
- 	 *  	* **centralize**: the term to use for centralize mode (where things are focused on a single word)
-     *  	* **context**: the size of the context (the number of words on each size of the keyword)
+	 *  * <a href="#!/guide/collocatesgraph">CollocatesGraph</a> represents keywords and terms that occur in close proximity as a force directed network graph.
+	 *  	* **centralize**: the term to use for centralize mode (where things are focused on a single word)
+     *  	* **context**: the size of the context (the number of words on each side of the keyword)
 	 *  	* **limit**: the number of collocates to load for each keyword
 	 *  	* **query**: a query for the keywords (can be comma-separated list)
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/corpuscollocates" target="_blank">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
-     *  	* **context**: the size of the context (the number of words on each size of the keyword)
+	 *  * <a href="#!/guide/contexts">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
+     *  	* **context**: the size of the context (the number of words on each side of the keyword)
+	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
+	 *  	* **query**: a query for the keywords (can be comma-separated list)
+	 *  	* **stopList**: a named stopword list or comma-separated list of words
+	 *  * <a href="#!/guide/corpuscollocates">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
+     *  	* **context**: the size of the context (the number of words on each side of the keyword)
 	 *  	* **query**: a query for the keywords (can be comma-separated list)
 	 *  	* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/contexts" target="_blank">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
-     *  	* **context**: the size of the context (the number of words on each size of the keyword)
-	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword 
+	 *  * <a href="#!/guide/corpusterms">CorpusTerms</a> is a table view of term frequencies in the entire corpus.
+     *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
+	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
+	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
 	 *  	* **query**: a query for the keywords (can be comma-separated list)
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/correlations" target="_blank">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
+	 *  * <a href="#!/guide/correlations">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
 	 *  	* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear
 	 *  	* **query**: a query for the keywords (can be comma-separated list)
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/documentterms" target="_blank">DocumentTerms</a> is a table view of document term frequencies.
+	 *  * <a href="#!/guide/documentterms">DocumentTerms</a> is a table view of document term frequencies.
      *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
 	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword 
+	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
 	 *  	* **query**: a query for the keywords (can be comma-separated list)
 	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/corpusterms" target="_blank">CorpusTerms</a> is a table view of term frequencies in the entire corpus.
-     *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
+	 *  * <a href="#!/guide/termsberry">TermsBerry</a> provides a way of exploring high frequency terms and their collocates.
+	 *  	* **query**: a query for the keywords (can be comma-separated list)
+	 *  	* **stopList**: a named stopword list or comma-separated list of words
 	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each size of the keyword 
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * <a href="./#!/guide/documents" target="_blank">The</a> Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
-	 *  * <a href="./#!/guide/knots" target="_blank">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.
-	 *  * <a href="./#!/guide/mandala" target="_blank">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.
-	 *  * <a href="./#!/guide/microsearch" target="_blank">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.
-	 *  * <a href="./#!/guide/phrases" target="_blank">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
-	 *  * <a href="./#!/guide/reader" target="_blank">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.
-	 *  * <a href="./#!/guide/scatterplot" target="_blank">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.
-	 *  * <a href="./#!/guide/streamgraph" target="_blank">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
-	 *  * <a href="./#!/guide/summary" target="_blank">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.
-	 *  * <a href="./#!/guide/termsradio" target="_blank">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
-	 *  * <a href="./#!/guide/textualarc" target="_blank">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
-	 *  * <a href="./#!/guide/topics" target="_blank">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
-	 *  * <a href="./#!/guide/trends" target="_blank">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.
-	 *  * <a href="./#!/guide/veliza" target="_blank">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.
-	 *  * <a href="./#!/guide/wordtree" target="_blank">WordTree</a> is a tool that allows you to explore how words are used in phrases.
+	 *  	* **context**: the size of the context (the number of words on each side of the keyword)
+	 *  	* **numInitialTerms**: the initial number of terms to display
+	 *  * <a href="#!/guide/trends">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.
+	 *   	* **stopList**: a named stopword list or comma-separated list of words
+	 *   	* **query**: a query for the keywords (can be comma-separated list)
+	 *   	* **limit**: the number of terms to show
+	 *   	* **withDistributions**: the type of distribution frequency to show ("raw" or "relative"), default is "relative"
+	 *   	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
+	 *   	* **docIndex**: document index to restrict to (can be comma-separated list)
+	 *   	* **chartType**: the type of chart to show: "barline", "bar", "line", "area", "stacked"
+	 *  * <a href="#!/guide/documents">Documents</a> is a tool that shows a table of the documents in the corpus and includes functionality for modifying the corpus.
+	 *  * <a href="#!/guide/knots">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.
+	 *  * <a href="#!/guide/mandala">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.
+	 *  * <a href="#!/guide/microsearch">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.
+	 *  * <a href="#!/guide/phrases">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
+	 *  * <a href="#!/guide/reader">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.
+	 *  * <a href="#!/guide/scatterplot">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.
+	 *  * <a href="#!/guide/streamgraph">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
+	 *  * <a href="#!/guide/summary">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.
+	 *  * <a href="#!/guide/termsradio">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
+	 *  * <a href="#!/guide/textualarc">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
+	 *  * <a href="#!/guide/topics">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
+	 *  * <a href="#!/guide/veliza">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.
+	 *  * <a href="#!/guide/wordtree">WordTree</a> is a tool that allows you to explore how words are used in phrases.
+	 * 
+	 * @param {string} tool The tool to display
+	 * @param {Object} config The config object for the tool
+	 * @returns {Promise<string>}
 	  * @method tool
  */
 
@@ -1427,6 +1633,7 @@
 * Load a Corpus using the provided config and api
 	 * @param {Object} config the Corpus config
 	 * @param {Object} api any additional API values
+	 * @returns {Promise<Corpus>}
 	 * @static
  * @method load
  */
@@ -1434,7 +1641,7 @@
 
 
 
-// *** Documentation extracted from: ..\..\..\..\voyantjs\src\load.js ***
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\load.js ***
 
 /**
 * Class embodying Load functionality.
@@ -1508,7 +1715,36 @@
 
 
 
-// *** Documentation extracted from: ..\..\..\..\voyantjs\src\table.js ***
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\networkgraph.js ***
+
+/**
+* A d3 force directed layout with labeled nodes
+ * @class Spyral.NetworkGraph
+ */
+
+
+/**
+* Construct a new NetworkGraph class
+	 * @constructor
+	 * @param {HTMLElement} target 
+	 * @param {Object} config 
+	 * @param {Array} config.nodes An array of nodes
+	 * @param {Array} config.links An array of links
+	 * @param {String|Function} [config.nodeIdField]
+	 * @param {String|Function} [config.nodeLabelField]
+	 * @param {String|Function} [config.nodeValueField]
+	 * @param {String|Function} [config.nodeCategoryField]
+	 * @param {String|Function} [config.linkSourceField]
+	 * @param {String|Function} [config.linkTargetField]
+	 * @param {String|Function} [config.linkValueField]
+	 * @return {NetworkGraph}
+	  * @method constructor
+ */
+
+
+
+
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\table.js ***
 
 /**
 * The Spyral.Table class in Spyral provides convenience functions for working with tabular
@@ -1566,8 +1802,6 @@
  * 
  * Tables are convenient in Spyral because you can simply show them to preview a version in HTML.
  * 
- * @param {Array|String} data an array of data or a string with CSV or TSV.
- * @param {Object} config an Object for configuring the table initialization, see above
  * @class Spyral.Table
  */
 
@@ -1575,8 +1809,9 @@
 /**
 * Create a new Table
 	 * @constructor
-	 * @param {(Object|Array|String|Number)} data
-	 * @param {Object} config
+	 * @param {(Object|Array|String|Number)} data An array of data or a string with CSV or TSV.
+	 * @param {Object} config an Object for configuring the table initialization
+	 * @returns {Spyral.Table}
 	 
 	 * @param {string} config.format The format of the provided data, either "tsv" or "csv"
 	 * @param {(Object|Array)} config.headers The table headers
@@ -1589,7 +1824,7 @@
 /**
 * Set the headers for the Table
 	 * @param {(Object|Array)} data
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method setHeaders
  */
 
@@ -1597,7 +1832,7 @@
 /**
 * Add rows to the Table
 	 * @param {Array} data
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method addRows
  */
 
@@ -1605,7 +1840,7 @@
 /**
 * Add a row to the Table
 	 * @param {(Array|Object)} data
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method addRow
  */
 
@@ -1615,7 +1850,7 @@
 	 * @param {(number|string)} ind The row index
 	 * @param {(Object|Array)} data
 	 * @param {boolean} create
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method setRow
  */
 
@@ -1625,7 +1860,7 @@
 	 * @param {(number|string)} ind The column index
 	 * @param {(Object|Array)} data
 	 * @param {boolean} create
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method setColumn
  */
 
@@ -1654,7 +1889,7 @@
 	 * @param {(number|string)} row The row index
 	 * @param {(number|string)} column The column index
 	 * @param {number} value The value to set
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method setCell
  */
 
@@ -1681,6 +1916,7 @@
 * Add a column (at the specified index)
 	 * @param {(Object|String)} config
 	 * @param {(number|string)} ind
+	 * @returns {Spyral.Table}
 	  * @method addColumn
  */
 
@@ -1918,7 +2154,7 @@
 /**
 * TODO
 	 * Sort the specified rows
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method rowSort
  */
 
@@ -1926,7 +2162,7 @@
 /**
 * TODO
 	 * Sort the specified columns
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method columnSort
  */
 
@@ -1951,7 +2187,7 @@
 * Set the target's contents to an HTML representation of the Table
 	 * @param {(Function|String|Object)} target
 	 * @param {Object} [config]
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	  * @method html
  */
 
@@ -1983,7 +2219,7 @@
 * Create a new Table
 	 * @param {(Object|Array|String|Number)} data
 	 * @param {Object} config
-	 * @returns {Table}
+	 * @returns {Spyral.Table}
 	 
 	 * @param {string} config.format The format of the provided data, either "tsv" or "csv"
 	 * @param {(Object|Array)} config.headers The table headers
@@ -2090,7 +2326,7 @@
 
 
 
-// *** Documentation extracted from: ..\..\..\..\voyantjs\src\util.js ***
+// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\util.js ***
 
 /**
 * A helper for working with the Voyant Notebook app.
@@ -2217,6 +2453,24 @@
 
 
 /**
+* Returns true if the value is a Function.
+	 * @param {*} val 
+	 * @returns {Boolean}
+	 * @static
+ * @method isFunction
+ */
+
+
+/**
+* Returns true if the value is a Promise.
+	 * @param {*} val 
+	 * @returns {Boolean}
+	 * @static
+ * @method isPromise
+ */
+
+
+/**
 * Takes a MIME type and returns the related file extension.
 	 * Only handles file types supported by Voyant.
 	 * @param {String} mimeType 
@@ -2228,11 +2482,63 @@
 
 
 
-// *** Documentation extracted from: resources\spyral\src\dataviewer.js ***
+// *** Documentation extracted from: ..\spyral\src\dataviewer.js ***
+
+/**
+* @ignore
+ * @class .DataViewer
+ */
 
 
 
-// *** Documentation extracted from: resources\spyral\src\metadata.js ***
+
+// *** Documentation extracted from: ..\spyral\src\index.js ***
+
+/**
+* @class window
+ * These are helper methods that get added to global window variable.
+ */
+
+
+/**
+* 
+ * @member window
+ * @method loadCorpus
+ * @static
+ * loadCorpus is shorthand for Spyral.Corpus.load
+ */
+
+
+/**
+* 
+ * @member window
+ * @method createTable
+ * @static
+ * createTable is shorthand for Spyral.Table.create
+ */
+
+
+/**
+* 
+ * @member window
+ * @method show
+ * @static
+ * show is shorthand for Spyral.Util.show
+ */
+
+
+/**
+* 
+ * @member window
+ * @method showError
+ * @static
+ * showError is shorthand for Spyral.Util.showError
+ */
+
+
+
+
+// *** Documentation extracted from: ..\spyral\src\metadata.js ***
 
 /**
 * A class for storing Notebook metadata
@@ -2244,14 +2550,15 @@
 * The metadata constructor.
 	 * @constructor
 	 * @param {Object} config The metadata config object
-	 
-	 * @param {String} config.title The title of the Corpus
-	 * @param {String} config.author The author of the Corpus
-	 * @param {String} config.description The description of the Corpus
-	 * @param {Array} config.keywords The keywords for the Corpus
-	 * @param {String} config.created When the Corpus was created
-	 * @param {String} config.language The language of the Corpus
-	 * @param {String} config.license The license for the Corpus
+	 * @param {String} config.title The title of the Notebook
+	 * @param {String} config.userId The user ID of the author of the Notebook
+	 * @param {String} config.author The name of the author of the Notebook
+	 * @param {String} config.description The description of the Notebook
+	 * @param {Array} config.keywords The keywords for the Notebook
+	 * @param {String} config.created When the Notebook was created
+	 * @param {String} config.language The language of the Notebook
+	 * @param {String} config.license The license for the Notebook
+	 * @returns {Spyral.Metadata}
 	  * @method constructor
  */
 
@@ -2294,7 +2601,7 @@
 
 
 
-// *** Documentation extracted from: resources\spyral\src\notebook.js ***
+// *** Documentation extracted from: ..\spyral\src\notebook.js ***
 
 /**
 * A helper for working with the Voyant Notebook app.
@@ -2320,6 +2627,14 @@
 
 
 /**
+* Returns a new promise
+	 * @returns {Promise} A promise
+	 * @static
+ * @method getPromise
+ */
+
+
+/**
 * Fetch and return the content of a notebook or a particular cell in a notebook
 	 * @param {string} url The URL of the notebook to import
 	 * @param {number} [cellIndex] The index of the cell to import
@@ -2330,7 +2645,7 @@
 
 
 
-// *** Documentation extracted from: resources\spyral\src\show.js ***
+// *** Documentation extracted from: ..\spyral\src\show.js ***
 
 /**
 * Show contents in the results area.
@@ -2355,7 +2670,7 @@
 
 
 
-// *** Documentation extracted from: resources\spyral\src\storage.js ***
+// *** Documentation extracted from: ..\spyral\src\storage.js ***
 
 /**
 * A class for simplying resource storage
@@ -2365,6 +2680,8 @@
 
 /**
 * Store a resource
+	 * 
+	 * 
 	 * @param {String} id 
 	 * @param {*} data 
 	 * @returns {Promise}
@@ -2375,6 +2692,8 @@
 
 /**
 * Get the URL for trombone
+	 * 
+	 * 
 	 * @returns {String}
 	 * @static
  * @method getTromboneUrl
@@ -2383,6 +2702,8 @@
 
 /**
 * Get a stored resource
+	 * 
+	 * 
 	 * @param {String} id 
 	 * @returns {Promise}
 	 * @static

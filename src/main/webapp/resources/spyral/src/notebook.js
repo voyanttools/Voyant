@@ -28,6 +28,14 @@ class Notebook {
 	}
 
 	/**
+	 * Returns a new promise
+	 * @returns {Promise} A promise
+	 */
+	static getPromise() {
+		return new Promise();
+	}
+
+	/**
 	 * Fetch and return the content of a notebook or a particular cell in a notebook
 	 * @param {string} url The URL of the notebook to import
 	 * @param {number} [cellIndex] The index of the cell to import

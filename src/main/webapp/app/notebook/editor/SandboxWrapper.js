@@ -28,6 +28,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	},
 
 	constructor: function(config) {
+		config.expandResults = config.expandResults !== undefined ? config.expandResults : true;
 		var isExpanded = config.expandResults;
 		var sandboxSrcUrl = config.sandboxSrcUrl;
 
@@ -219,6 +220,18 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		return this.getCachedResultsVariables();
 	},
 
+	applyCachedResultsVariables: function(newVars, oldVars) {
+		var parentNotebook = this.up('notebook');
+		if (parentNotebook) {
+			// it isn't necessary to compare old and new vars since they all get removed prior to running in resetResults
+			// var toRemove = oldVars.filter(function(oldVar) {
+			// 	return newVars.find(function(newVar) { return newVar.name === oldVar.name }) === undefined;
+			// });
+			parentNotebook.updateTernServerVariables(newVars, oldVars);
+		}
+		return newVars;
+	},
+
 	getResultsEl: function() {
 		var doc = this.down('#resultsFrame');
 		if (doc) {
@@ -273,7 +286,9 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					me.setCachedResultsOutput(eventData.output);
 				}
 
-				me.setCachedResultsVariables(eventData.variables);
+				if (eventData.command !== 'getContents') { // don't overwrite variables when we just want to get sandbox contents
+					me.setCachedResultsVariables(eventData.variables);
+				}
 
 				if (eventData.height > 0) {
 					me._setHeight(eventData.height);

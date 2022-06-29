@@ -96,18 +96,38 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			if (this.getMode() === 'javascript') {
 				if (Voyant.notebook.editor.CodeEditor.ternServer === undefined) {
 					var defs = this.getDocs();
-					var url = this.up('notebook').getApplication().getBaseUrlFull();
+					var url = Voyant.application.getBaseUrlFull();
 					Voyant.notebook.editor.CodeEditor.ternServer = new CodeMirror.TernServer({
 						defs: defs,
 						useWorker: true,
 						workerScript: url+'resources/spyral/tern/worker.js',
-						workerDeps: ['tern_worker_deps.js']
+						workerDeps: ['tern_worker_deps.js'],
+						hintDelay: 5000
 					});
 				}
+
+				editor.on('keypress', function(ed, event) {
+					if (event.key === '.') {
+						Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+					} else if (event.key === '{') {
+						// many Spyral methods take a single config object
+						// so look out for that and display config object properties
+						var cursor = ed.getCursor();
+						var range = ed.getRange({line: cursor.line, ch: 0}, cursor);
+						if (range.match(/\(\s*$/)) {
+							// let closebrackets addon finish and then look for matches
+							setTimeout(function() {
+								Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+							}, 50);
+						}
+					}
+				});
 				
 				Object.assign(editor.getOption('extraKeys'), {
 					'Ctrl-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
-					'Ctrl-O': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed); }
+					'Ctrl-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); },
+					'Cmd-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
+					'Cmd-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); }
 				});
 				editor.on('cursorActivity', function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.updateArgHints(ed); });
 			}
@@ -210,5 +230,18 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			}
 		});
 		this.setMarkers([]);
+	},
+
+	_showDocsCallback: function() {
+		var toolTipEl = this.getEditor().state.ternTooltip;
+		var docLink = toolTipEl.querySelector('a');
+		if (docLink) {
+			docLink.addEventListener('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				var docHref = docLink.getAttribute('href');
+				this.up('notebook').handleDocLink(docHref);
+			}.bind(this));
+		}
 	}
 })

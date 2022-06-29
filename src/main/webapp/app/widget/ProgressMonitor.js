@@ -12,7 +12,7 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 		success: undefined,
 		failure: undefined,
 		args: undefined,
-		tool: undefined,
+		tool: undefined, // TODO unused?
 		delay: 1000,
 		maxMillisSinceStart: undefined
 	},
@@ -28,16 +28,20 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 	},
 
 	update: function() {
-		var progress = this.getProgress(), scope = this.getScope();
+		var progress = this.getProgress()
+		var scope = this.getScope();
+		
 		var msg = scope.localize ? scope.localize(progress.code) : this.localize(progress.code);
 		if (msg=="["+progress.code+"]") {msg=progress.message}
 		msg+=" ("+(parseInt(progress.completion*100))+"%)";
+		
 		var text = this.localize(progress.status.toLowerCase());
 		if (!this.msgbox || this.msgbox.msg.html!=msg || !this.msgbox.progressBar || this.msgbox.progressBar.getText()!=text) {
 			this.msgbox = Ext.Msg.wait(msg, this.localize("progress"), {
 				text: text
 			});
 		}
+
 		if (progress.status=="LAUNCH" || progress.status=="RUNNING") {
 			var me = this;
 			Ext.defer(function() {
@@ -69,7 +73,9 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 	finish: function(success, response) {
 		var callback = success ? this.getSuccess() : this.getFailure();
 		var args = this.getArgs(), progress = this.getProgress(), scope = this.getScope();
+		
 		this.close();
+		
 		if (callback && callback.apply) {
 			callback.apply(scope, [success ? args : response || progress]);
 		} else {
@@ -84,4 +90,4 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 		this.destroy();
 	}
 
-})
+});

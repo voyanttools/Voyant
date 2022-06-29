@@ -35,9 +35,9 @@ Ext.define('Voyant.util.Colors', {
 			this.addColorPalette('d3_cat20c', cat20c);
 			this.addColorPalette('d3_set3', set3);
 		}
-        
-        var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);
-        this.addColorPalette('extjs', extjs);
+		
+		var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);
+		this.addColorPalette('extjs', extjs);
 	},
 
 	resetColorTermAssociations: function() {
@@ -49,18 +49,18 @@ Ext.define('Voyant.util.Colors', {
 	},
 	
 	hexToRgb: function(hex) {
-	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-	        return r + r + g + g + b + b;
-	    });
+		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+		var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+		hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+			return r + r + g + g + b + b;
+		});
 
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? [
-	        parseInt(result[1], 16),
-	        parseInt(result[2], 16),
-	        parseInt(result[3], 16)
-	    ] : null;
+		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		return result ? [
+			parseInt(result[1], 16),
+			parseInt(result[2], 16),
+			parseInt(result[3], 16)
+		] : null;
 	},
 
 	/**
@@ -96,6 +96,61 @@ Ext.define('Voyant.util.Colors', {
 		}
 	},
 
+	saveCustomColorPalette: function(paletteArray) {
+		var dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			url: this.getTromboneUrl(),
+			params: {
+				tool: 'resource.StoredResource',
+				storeResource: Ext.encode(paletteArray)
+			},
+			success: function(response, req) {
+				var json = Ext.util.JSON.decode(response.responseText);
+				var id = json.storedResource.id;
+				this.addColorPalette(id, paletteArray);
+				
+				dfd.resolve(id, paletteArray);
+			},
+			failure: function(response) {
+				dfd.reject();
+			},
+			scope: this
+		});
+
+		return dfd.promise;
+	},
+	
+	loadCustomColorPalette: function(paletteId) {
+		var dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			url: this.getTromboneUrl(),
+			params: {
+				tool: 'resource.StoredResource',
+				retrieveResourceId: paletteId
+			},
+			success: function(response, req) {
+				var json = Ext.util.JSON.decode(response.responseText);
+				var value = json.storedResource.resource;
+				var palette = Ext.decode(value);
+				// TODO should palette api param be set here?
+				this.addColorPalette(paletteId, palette);
+
+				dfd.resolve(paletteId, palette);
+			},
+			failure: function(response) {
+				this.setApiParam('palette', undefined);
+
+				dfd.reject();
+			},
+			scope: this
+		});
+
+		return dfd.promise;
+	},
+
+
 	/**
 	 * Gets a particular color from the palette.
 	 * @param {String} key The palette key.
@@ -128,6 +183,11 @@ Ext.define('Voyant.util.Colors', {
 	getColorForTerm: function(key, term, returnHex) {
 		var paletteKey = key || 'default';
 		var palette = this.getPalettes()[paletteKey];
+
+		if (palette === undefined) {
+			console.warn('no palette found for',key);
+			palette = this.getPalettes()['default'];
+		}
 
 		if (term.indexOf(':') != -1) {
 			term = term.split(':')[1];

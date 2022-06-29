@@ -33,7 +33,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	},{
 			i18n: 'moreToolsTypeViz',
 			glyph: 'xf06e@FontAwesome',
-			items: ['cirrus','bubblelines','bubbles','collocatesgraph','dreamscape','loom','knots','mandala','microsearch','streamgraph','scatterplot','textualarc','trends','termsberry','termsradio','wordtree']
+			items: ['cirrus','bubblelines','bubbles','collocatesgraph','dreamscape','loom','knots','mandala','microsearch','rezoviz','streamgraph','scatterplot','textualarc','trends','termsberry','termsradio','wordtree']
 		},{
 			i18n: 'moreToolsTypeGrid',
 			glyph: 'xf0ce@FontAwesome',
@@ -64,7 +64,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
         	    	var palette = Ext.decode(queryParams.palette);
         	    	this.addColorPalette(queryParams.palette, palette);
         		} else {
-            		this.loadColorPaletteForCorpus(queryParams.corpus, queryParams.palette);
+            		this.loadCustomColorPalette(queryParams.palette);
         		}
         	}
     	} else {
@@ -230,27 +230,6 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	}
     	return params.corpus || params.input || (this.getCorpusId && this.getCorpusId()); // TODO: should this include "archive" from V1?
     },
-    
-    loadColorPaletteForCorpus: function(corpusId, paletteId) {
-		Ext.Ajax.request({
-    	    url: this.getTromboneUrl(),
-    	    params: {
-        		tool: 'resource.StoredResource',
-        		retrieveResourceId: paletteId,
-    			corpus: corpusId
-    	    },
-    	    success: function(response, req) {
-    	    	var json = Ext.util.JSON.decode(response.responseText);
-    	    	var value = json.storedResource.resource;
-    	    	var palette = Ext.decode(value);
-    	    	this.addColorPalette(paletteId, palette);
-    	    },
-    	    failure: function(response) {
-    	    	this.setApiParam('palette', undefined);
-    	    },
-    	    scope: this
-    	});
-	},
 	
 	loadCategoryData: function(id) {
 		return this.getCategoriesManager().load(id, {

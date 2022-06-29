@@ -6,6 +6,10 @@ Ext.define('Voyant.panel.Reader', {
 	isConsumptive: true,
     statics: {
     	i18n: {
+			highlightEntities: 'Highlight Entities',
+			entityType: 'entity type',
+			nerVoyant: 'Entity Identification with Voyant',
+			nerNssi: 'Entity Identification with NSSI'
     	},
     	api: {
     		start: 0,
@@ -20,6 +24,7 @@ Ext.define('Voyant.panel.Reader', {
     	tokensStore: undefined,
     	documentsStore: undefined,
     	documentTermsStore: undefined,
+		documentEntitiesStore: undefined,
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -35,6 +40,8 @@ Ext.define('Voyant.panel.Reader', {
 	LOCATION_UPDATE_FREQ: 100,
 	
 	INITIAL_LIMIT: 1000, // need to keep track since limit can be changed when scrolling,
+
+	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
     
     constructor: function(config) {
         this.callParent(arguments);
@@ -71,7 +78,7 @@ Ext.define('Voyant.panel.Reader', {
 	    			}
 	    			if (record.isWord()) {
 	    				isLastNewLine = false;
-	    				contents += "<span class='word' id='"+ record.getId() + "' data-qtip='"+documentFrequency+" "+record.getDocumentRawFreq()+"'>"+ record.getTerm() + "</span>";
+	    				contents += "<span class='word' id='"+ record.getId() + "' data-qtip='<div class=\"freq\">"+documentFrequency+" "+record.getDocumentRawFreq()+"</div>'>"+ record.getTerm() + "</span>";
 	    			}
 	    			else {
 	    				var newContents = record.getTermWithLineSpacing(isPlainText);
@@ -89,6 +96,10 @@ Ext.define('Voyant.panel.Reader', {
 	    		if (keyword != '') {
 //	    			this.highlightKeywords(keyword);
 	    		}
+
+				if (this.getDocumentEntitiesStore() !== undefined) {
+					this.highlightEntities();
+				}
     		}
     	}, this);
     	this.setTokensStore(tokensStore);
@@ -252,7 +263,40 @@ Ext.define('Voyant.panel.Reader', {
             		scope: this
             	},{xtype: 'tbseparator'},{
                     xtype: 'querysearchfield'
-                }]
+                },'->',{
+					glyph: 'xf0eb@FontAwesome',
+					tooltip: this.localize('highlightEntities'),
+					itemId: 'nerServiceParent',
+					menu: {
+						items: [{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: this.localize('nerNssi'),
+							itemId: 'nssi',
+							checked: true,
+							handler: this.nerSeviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: this.localize('nerVoyant'),
+							itemId: 'stanford',
+							checked: false,
+							handler: this.nerSeviceHandler,
+							scope: this
+						}
+						// ,{
+						// 	xtype: 'menucheckitem',
+						// 	group: 'nerService',
+						// 	text: 'NER with Voyant (OpenNLP)',
+						// 	itemId: 'opennlp',
+						// 	checked: false,
+						// 	handler: this.nerSeviceHandler,
+						// 	scope: this
+						// }
+						]
+					}
+				}]
     		}],
     		listeners: {
     			loadedCorpus: function(src, corpus) {
@@ -261,7 +305,7 @@ Ext.define('Voyant.panel.Reader', {
     	    		
     	    		var docs = corpus.getDocuments();
     	    		this.setDocumentsStore(docs);
-    	    		
+					
     	    		if (this.rendered) {
     	    			this.load();
         	    		if (this.hasCorpusAccess(corpus)==false) {
@@ -380,6 +424,97 @@ Ext.define('Voyant.panel.Reader', {
 //		if (doScroll && spans[0] !== undefined) {
 //			Ext.get(nodes[0]).scrollIntoView(reader).frame("ff0000", 1, { duration: 2 });
 //		}
+	},
+
+	nerSeviceHandler: function(menuitem) {
+		var annotator = menuitem.itemId;
+
+		var docIndex = [];
+		var locationInfo = this.getLocationInfo();
+		if (locationInfo) {
+			for (var i = locationInfo[0].docIndex; i <= locationInfo[1].docIndex; i++) {
+				docIndex.push(i);
+			}
+		} else {
+			docIndex.push(0);
+		}
+
+		this.clearEntityHighlights();
+
+		var me = this;
+		new Voyant.data.util.DocumentEntities({
+			annotator: annotator,
+			includeEntities: true,
+			docIndex: docIndex
+		}, function(entities) {
+			if (entities) {
+				me.clearEntityHighlights(); // clear again in case failed documents were rerun
+				me.setDocumentEntitiesStore(entities);
+				me.highlightEntities();
+			}
+		});
+	},
+
+	clearEntityHighlights: function() {
+		var container = this.getInnerContainer().first();
+		container.select('.entity').each(function(el) {
+			el.removeCls('entity start middle end location person organization misc money time percent date duration set unknown');
+			el.dom.setAttribute('data-qtip', el.dom.getAttribute('data-qtip').replace(/<div class="entity">.*?<\/div>/g, ''));
+		});
+	},
+
+	highlightEntities: function() {
+		var container = this.getInnerContainer().first();
+		var entities = this.getDocumentEntitiesStore();
+		var entityTypeStr = this.localize('entityType');
+		entities.forEach(function(entity) {
+			var positionInstances = entity.positions;
+			if (positionInstances) {
+				positionInstances.forEach(function(positions) {
+					var multiTermEntity = positions.length === 2; // there is both a start and end position
+					if (multiTermEntity) {
+						// find the difference between start and end positions
+						if (positions[1]-positions[0] > 1) {
+							// more than two terms, so fill in the middle positions
+							var endPos = positions[1];
+							var curPos = positions[0]+1;
+							var curIndex = 1;
+							while (curPos < endPos) {
+								positions.splice(curIndex, 0, curPos);
+								curPos++;
+								curIndex++;
+							}
+						}
+					}
+
+					for (var i = 0, len = positions.length; i < len; i++) {
+						var position = positions[i];
+						if (position === -1) {
+							console.warn('missing position for: '+entity.term);
+						} else {
+							var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
+							if (match) {
+								var termEntityPosition = '';
+								if (multiTermEntity) {
+									if (i === 0) {
+										termEntityPosition = 'start ';
+									} else if (i === len-1) {
+										termEntityPosition = 'end ';	
+									} else {
+										termEntityPosition = 'middle ';
+									}
+								}
+
+								match.addCls('entity '+termEntityPosition+entity.type);
+								match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+							}
+						}
+					}
+				});
+			} else {
+				console.warn('no positions for: '+entity.term);
+			}
+		});
 	},
     
 	fetchPrevious: function(scroll) {
@@ -525,24 +660,27 @@ Ext.define('Voyant.panel.Reader', {
 	},
 	
 	updateLocationMarker: function(amount, scrollDir) {
-		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
-		var firstWord = readerWords[0];
-		var lastWord = readerWords[readerWords.length-1];
-		if (firstWord !== undefined && lastWord !== undefined) {
+		var locationInfo = this.getLocationInfo();
+		if (locationInfo) {
+			var info1 = locationInfo[0];
+			var info2 = locationInfo[1];
+
 			var corpus = this.getCorpus();
 			var partialFirstDoc = false;
-			
-			var info1 = Voyant.data.model.Token.getInfoFromElement(Ext.get(firstWord));
-			var info2 = Voyant.data.model.Token.getInfoFromElement(Ext.get(lastWord));
+
 			if (info1.position !== 0) {
 				partialFirstDoc = true;
 			}
 
 			var docTokens = {};
 			var totalTokens = 0;
+			var showNerButton = true;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
+				if (tokens > this.MAX_TOKENS_FOR_NER) {
+					showNerButton = false;
+				}
 				if (currIndex === info2.docIndex) {
 					tokens = info2.position; // only count tokens up until last displayed word
 				}
@@ -552,6 +690,14 @@ Ext.define('Voyant.panel.Reader', {
 				totalTokens += tokens;
 				docTokens[currIndex] = tokens;
 				currIndex++;
+			}
+
+			// TODO add message to indicate to user why button is disabled
+			var nerParent = this.down('#nerServiceParent');
+			if (showNerButton) {
+				nerParent.enable();
+			} else {
+				nerParent.disable();
 			}
 			
 			var tokenPos = Math.round(totalTokens * amount);
@@ -579,5 +725,18 @@ Ext.define('Voyant.panel.Reader', {
     
     updateChart: function() {
     	
-    }
+    },
+
+	getLocationInfo: function() {
+		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
+		var firstWord = readerWords[0];
+		var lastWord = readerWords[readerWords.length-1];
+		if (firstWord !== undefined && lastWord !== undefined) {
+			var info1 = Voyant.data.model.Token.getInfoFromElement(firstWord);
+			var info2 = Voyant.data.model.Token.getInfoFromElement(lastWord);
+			return [info1, info2];
+		} else {
+			return null;
+		}
+	}
 });

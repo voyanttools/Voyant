@@ -52,9 +52,6 @@ Ext.define('Voyant.VoyantApp', {
 		this.getCategoriesManager().addFeature('color');
 		this.getCategoriesManager().addFeature('font', '"Palatino Linotype", "Book Antiqua", Palatino, serif');
 		
-		// call the parent constructor
-		this.callParent(arguments);
-		
 		// override Voyant.util.Colors methods to add palette api param
 		var _getColor = this.getColor;
 		this.getColor = function(index, returnHex) {
@@ -64,6 +61,9 @@ Ext.define('Voyant.VoyantApp', {
 		this.getColorForTerm = function(term, returnHex) {
 			return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
 		}
+
+		// call the parent constructor
+		this.callParent(arguments);
     },
     getBaseUrl: function() {
     	var baseUrl = this.callParent();

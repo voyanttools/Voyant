@@ -2,22 +2,23 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 	extend: "Ext.Component",
 	requires: [],
 	alias: "",
-	config: {
-		accessCode: undefined
-	},
+
+	notebookParent: undefined,
 
 	constructor: function(config) {
 		config = config || {};
     	this.callParent(arguments);
+
+		this.notebookParent = config.notebookParent;
     },
 
 	initComponent: function() {
 		this.callParent(arguments);
 	},
 	
-	showSave: function(data, metadata, notebookId='') {
+	showSave: function(data, metadata, notebookName='') {
 		const me = this;
-		const newNotebook = notebookId === '';
+		const newNotebook = notebookName === '';
 		const title = newNotebook ? 'Save New Notebook' : 'Overwrite Existing Notebook';
 		Ext.create('Ext.window.Window', {
 			title: title,
@@ -41,40 +42,20 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 				},
     	    	items: [{
 					fieldLabel: 'Notebook ID' + (newNotebook ? ' (optional)' : ''),
-					name: 'notebookId',
-					value: notebookId,
+					name: 'notebookName',
+					value: notebookName,
 					allowBlank: true,
 					readOnly: !newNotebook,
 					tooltip: 'An ID used to identify this notebook. If left blank, one will be generated for you.',
 					validator: function(val) {
 						if (val == '') {
 							return true;
-						} else if (val.match(/^[\w-]{4,16}$/) === null) {
-							return 'The ID must be between 4 and 16 alphanumeric characters.'
+						} else if (val.match(/^[A-Za-z0-9-]{4,32}$/) === null) {
+							return 'The ID must be between 4 and 32 characters. You may use alphanumeric characters and dash.'
 						} else {
 							return true;
 						}
 					}
-				},{
-					fieldLabel: 'Access Code',
-					name: 'accessCode',
-					allowBlank: false,
-					value: newNotebook ? this.generateAccessCode() : this.getAccessCode(),
-					tooltip: 'The Access Code is required to overwrite this notebook.',
-					validator: function(val) {
-						if (val.match(/^[\w-]{4,16}$/) === null) {
-							return 'The access code must be between 4 and 16 alphanumeric characters.'
-						} else {
-							return true;
-						}
-					}
-				},{
-					fieldLabel: 'Email (optional)',
-					name: 'email',
-					allowBlank: true,
-					vtype: 'email',
-					hidden: !newNotebook,
-					tooltip: 'An email will be sent to this address with the Notebook URL and Access Code.'
 				}]
 			}],
 			buttons: [{
@@ -93,10 +74,12 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 						const values = form.getValues();
 						values.data = data;
 						values.metadata = metadata;
-						if (newNotebook && values.notebookId !== '') {
-							me.doesNotebookIdExist(values.notebookId).then(function(exists) {
+						if (newNotebook && values.notebookName !== '') {
+							const info = me.notebookParent.accountInfo;
+							const userId = info.id;
+							me.doesNotebookExist(userId, values.notebookName).then(function(exists) {
 								if (exists) {
-									form.findField('notebookId').markInvalid('That Notebook ID already exists.');
+									form.findField('notebookName').markInvalid('That Notebook ID already exists.');
 								} else {
 									me.doSave(values);
 									win.close();
@@ -109,7 +92,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 								if (didSave) {
 									win.close();
 								} else {
-									form.findField('accessCode').markInvalid('Invalid access code.');
+									// TODO show error
 								}
 							});
 						}
@@ -124,70 +107,66 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		}).show();
 	},
 
-	doesNotebookIdExist: function(id) {
+	doesNotebookExist: function(userId, notebookName) {
 		const dfd = new Ext.Deferred();
 
 		Spyral.Load.trombone({
 			tool: 'notebook.GitNotebookManager',
 			action: 'exists',
-			id: id,
+			id: userId+this.notebookParent.NOTEBOOK_ID_SEPARATOR+notebookName,
 			noCache: 1
 		}).then(function(json) {
-			var exists = json.notebook.data === 'true';
-			dfd.resolve(exists);
+			if (json.notebook.success) {
+				var exists = json.notebook.data === 'true';
+				dfd.resolve(exists);
+			} else {
+				console.warn(json.notebook.error);
+				dfd.resolve(false);
+			}
 		}).catch(function(err) {
-			console.log(err);
+			console.warn(err);
 		});
 
 		return dfd.promise;
 	},
 
-	doSave: function({notebookId, accessCode, email, data, metadata}) {
+	doSave: function({notebookName, data, metadata}) {
 		const me = this;
-		metadata.id = notebookId;
 
-		return Spyral.Load.trombone({
-			method: 'POST',
-			tool: 'notebook.GitNotebookManager',
-			action: 'save',
-			id: notebookId,
-			accessCode: accessCode,
-			email: email,
-			data: data,
-			metadata: JSON.stringify(metadata)
-		}).then(function(json) {
-			if (json.notebook.data !== 'true') {
-				return false;
-			} else {
-				me.setAccessCode(accessCode);
-				const notebookId = json.notebook.id;
-				me.fireEvent('fileSaved', me, notebookId);
-				return true;
-			}
-		}).catch(function(err) {
-			me.fireEvent('fileSaved', me, null);
-			return false;
-		});
-	},
+		const dfd = new Ext.Deferred();
 
-	generateAccessCode: function() {
-		const alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-		let code = '';
-		while (code.length < 6) {
-			if (Math.random() < .3) {
-				code += Math.floor(Math.random()*9);
-			} else {
-				let letter = alphabet[Math.floor(Math.random()*alphabet.length)];
-				if (Math.random() < .5) {
-					letter = letter.toUpperCase();
-				}
-				code += letter;
-			}
+		if (notebookName.indexOf(this.notebookParent.NOTEBOOK_ID_SEPARATOR) !== -1) {
+			console.warn('doSave: was sent notebookId instead of name');
+			notebookName = notebookName.split(this.notebookParent.NOTEBOOK_ID_SEPARATOR)[1];
 		}
-		return code;
+
+		Ext.Ajax.request({
+			method: 'POST',
+			url: Voyant.application.getBaseUrlFull()+'spyral/account/save',
+			params: {
+				name: notebookName,
+				data: data,
+				metadata: JSON.stringify(metadata)
+			},
+			success: function(resp) {
+				const json = JSON.parse(resp.responseText);
+				if (json.notebook.success) {
+					me.fireEvent('fileSaved', me, json.notebook.id);
+					dfd.resolve(true);
+				} else {
+					me.fireEvent('fileSaved', me, null, json.notebook.error);
+					dfd.reject(false);
+				}
+			},
+			failure: function(resp) {
+				me.fireEvent('fileSaved', me, null, resp.responseText);
+				dfd.reject(false);
+			}
+		});
+
+		return dfd.promise;
 	},
 
 	reset: function() {
-		this.setAccessCode(undefined);
 	}
 })
