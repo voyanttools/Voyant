@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Jun 29 21:52:30 UTC 2022 */
+/* This file created by JSCacher. Last modified: Thu Jun 30 20:36:20 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -27234,6 +27234,7 @@ Ext.define('Voyant.panel.Reader', {
 					glyph: 'xf0eb@FontAwesome',
 					tooltip: this.localize('highlightEntities'),
 					itemId: 'nerServiceParent',
+					hidden: true,
 					menu: {
 						items: [{
 							xtype: 'menucheckitem',
@@ -27641,7 +27642,7 @@ Ext.define('Voyant.panel.Reader', {
 
 			var docTokens = {};
 			var totalTokens = 0;
-			var showNerButton = true;
+			var showNerButton = this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
@@ -27659,12 +27660,11 @@ Ext.define('Voyant.panel.Reader', {
 				currIndex++;
 			}
 
-			// TODO add message to indicate to user why button is disabled
 			var nerParent = this.down('#nerServiceParent');
 			if (showNerButton) {
-				nerParent.enable();
+				nerParent.show();
 			} else {
-				nerParent.disable();
+				nerParent.hide();
 			}
 			
 			var tokenPos = Math.round(totalTokens * amount);
@@ -41174,12 +41174,21 @@ Ext.define('Voyant.VoyantCorpusApp', {
     
 	constructor: function() {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-        this.callParent(arguments);
+
+		this.callParent(arguments);
+	},
+
+	init: function() {
+		if (this.getEntitiesEnabled() === true) {
+			var moreVizTools = this.getMoreTools()[2];
+			moreVizTools.items.push('rezoviz');
+		}
 	},
 	
     config: {
     	corpus: undefined,
     	corpusAccess: undefined,
+		entitiesEnabled: false,
     	moreTools: [{
 			i18n: 'moreToolsScaleCorpus',
 			glyph: 'xf065@FontAwesome',
@@ -41191,7 +41200,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	},{
 			i18n: 'moreToolsTypeViz',
 			glyph: 'xf06e@FontAwesome',
-			items: ['cirrus','bubblelines','bubbles','collocatesgraph','dreamscape','loom','knots','mandala','microsearch','rezoviz','streamgraph','scatterplot','textualarc','trends','termsberry','termsradio','wordtree']
+			items: ['cirrus','bubblelines','bubbles','collocatesgraph','dreamscape','loom','knots','mandala','microsearch','streamgraph','scatterplot','textualarc','trends','termsberry','termsradio','wordtree']
 		},{
 			i18n: 'moreToolsTypeGrid',
 			glyph: 'xf0ce@FontAwesome',
