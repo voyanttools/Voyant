@@ -180,14 +180,7 @@ Ext.define('Voyant.notebook.Notebook', {
 							if (storageSolution === 'github') {
 								this.githubDialogs.showLoad();
 							} else {
-								Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
-									text = text.trim();
-									if (btn=="ok") {
-										this.checkIsEditedAndDoCallback(this, function() {
-											this.loadFromString(text);
-										});
-									}
-								}, this, true);
+								this.voyantStorageDialogs.showLoad();
 							}
 						}
 					},
@@ -330,8 +323,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
 			notebookParent: this,
 			listeners: {
-				'fileLoaded': function(src) {
-
+				'fileLoaded': function(fileData) {
+					this.checkIsEditedAndDoCallback(this, function() {
+						this.loadFromString(fileData);
+					});
 				},
 				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
@@ -559,7 +554,16 @@ Ext.define('Voyant.notebook.Notebook', {
 			Ext.batchLayouts(function() {
 				this.reset();
 				this.setNotebookId(undefined);
-				this.importFromHtml(text); // old format
+				try {
+					this.importFromHtml(text); // old format
+				} catch (e) {
+					Ext.Msg.show({
+						title: this.localize('errorLoadingNotebook'),
+						msg: this.localize('cannotLoadUnrecognized'),
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					});
+				}
 			}, this);
 		}
 		return true;
@@ -818,7 +822,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can click on the blocks to edit them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>");
 		this.addCode('');
 	},
     

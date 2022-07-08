@@ -6,9 +6,9 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 		i18n: {
 			tip: "Run multiple cells",
 			runUntil: "Run up to here",
-			runUntilTip: "Run previous code blocks and this one.",
+			runUntilTip: "Run previous code cells and this one.",
 			runFrom: "Run from here onwards",
-			runFromTip: "Run this and following code blocks."
+			runFromTip: "Run this and following code cells."
 		}
 	},
 	glyph: 'xf050@FontAwesome',
