@@ -16,12 +16,21 @@ Ext.define('Voyant.VoyantCorpusApp', {
     
 	constructor: function() {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-        this.callParent(arguments);
+
+		this.callParent(arguments);
+	},
+
+	init: function() {
+		if (this.getEntitiesEnabled() === true) {
+			var moreVizTools = this.getMoreTools()[2];
+			moreVizTools.items.push('rezoviz');
+		}
 	},
 	
     config: {
     	corpus: undefined,
     	corpusAccess: undefined,
+		entitiesEnabled: false,
     	moreTools: [{
 			i18n: 'moreToolsScaleCorpus',
 			glyph: 'xf065@FontAwesome',
@@ -33,7 +42,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	},{
 			i18n: 'moreToolsTypeViz',
 			glyph: 'xf06e@FontAwesome',
-			items: ['cirrus','bubblelines','bubbles','collocatesgraph','dreamscape','loom','knots','mandala','microsearch','rezoviz','streamgraph','scatterplot','textualarc','trends','termsberry','termsradio','wordtree']
+			items: ['cirrus','bubblelines','bubbles','collocatesgraph','dreamscape','loom','knots','mandala','microsearch','streamgraph','scatterplot','textualarc','trends','termsberry','termsradio','wordtree']
 		},{
 			i18n: 'moreToolsTypeGrid',
 			glyph: 'xf0ce@FontAwesome',

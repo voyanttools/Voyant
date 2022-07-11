@@ -117,12 +117,12 @@ Ext.define('Voyant.panel.Contexts', {
             }],
     		columns: [{
     			text: this.localize("document"),
-    			toolTip: this.localize("documentTip"),
+    			tooltip: this.localize("documentTip"),
                 width: 'autoSize',
         		dataIndex: 'docIndex',
                 sortable: true,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store) {
-                	return store.getCorpus().getDocument(value).getTinyLabel();
+                	return store.getCorpus().getDocument(value).getTitle();
                 }
             },{
     			text: this.localize("left"),

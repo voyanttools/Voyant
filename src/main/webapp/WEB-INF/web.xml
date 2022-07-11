@@ -5,7 +5,9 @@
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-	<context-param><param-name>version</param-name><param-value>2.5.3</param-value></context-param>
+	<context-param><param-name>version</param-name><param-value>2.6.0</param-value></context-param>
+	<!-- whether or not to enable entities support on the frontend -->
+	<context-param><param-name>entitiesenabled</param-name><param-value>false</param-value></context-param>
 	
 	<session-config>
 		<session-timeout>30</session-timeout> <!-- session length in minutes -->

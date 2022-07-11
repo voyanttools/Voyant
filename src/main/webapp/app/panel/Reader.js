@@ -267,6 +267,7 @@ Ext.define('Voyant.panel.Reader', {
 					glyph: 'xf0eb@FontAwesome',
 					tooltip: this.localize('highlightEntities'),
 					itemId: 'nerServiceParent',
+					hidden: true,
 					menu: {
 						items: [{
 							xtype: 'menucheckitem',
@@ -674,7 +675,7 @@ Ext.define('Voyant.panel.Reader', {
 
 			var docTokens = {};
 			var totalTokens = 0;
-			var showNerButton = true;
+			var showNerButton = this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
@@ -692,12 +693,11 @@ Ext.define('Voyant.panel.Reader', {
 				currIndex++;
 			}
 
-			// TODO add message to indicate to user why button is disabled
 			var nerParent = this.down('#nerServiceParent');
 			if (showNerButton) {
-				nerParent.enable();
+				nerParent.show();
 			} else {
-				nerParent.disable();
+				nerParent.hide();
 			}
 			
 			var tokenPos = Math.round(totalTokens * amount);

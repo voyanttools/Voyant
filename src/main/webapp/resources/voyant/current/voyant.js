@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Feb 16 17:42:27 UTC 2022 */
+/* This file created by JSCacher. Last modified: Thu Jun 30 20:36:20 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6155,9 +6155,9 @@ Ext.define('Voyant.util.Colors', {
 			this.addColorPalette('d3_cat20c', cat20c);
 			this.addColorPalette('d3_set3', set3);
 		}
-        
-        var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);
-        this.addColorPalette('extjs', extjs);
+		
+		var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);
+		this.addColorPalette('extjs', extjs);
 	},
 
 	resetColorTermAssociations: function() {
@@ -6169,18 +6169,18 @@ Ext.define('Voyant.util.Colors', {
 	},
 	
 	hexToRgb: function(hex) {
-	    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-	    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-	        return r + r + g + g + b + b;
-	    });
+		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+		var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+		hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+			return r + r + g + g + b + b;
+		});
 
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? [
-	        parseInt(result[1], 16),
-	        parseInt(result[2], 16),
-	        parseInt(result[3], 16)
-	    ] : null;
+		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		return result ? [
+			parseInt(result[1], 16),
+			parseInt(result[2], 16),
+			parseInt(result[3], 16)
+		] : null;
 	},
 
 	/**
@@ -6216,6 +6216,61 @@ Ext.define('Voyant.util.Colors', {
 		}
 	},
 
+	saveCustomColorPalette: function(paletteArray) {
+		var dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			url: this.getTromboneUrl(),
+			params: {
+				tool: 'resource.StoredResource',
+				storeResource: Ext.encode(paletteArray)
+			},
+			success: function(response, req) {
+				var json = Ext.util.JSON.decode(response.responseText);
+				var id = json.storedResource.id;
+				this.addColorPalette(id, paletteArray);
+				
+				dfd.resolve(id, paletteArray);
+			},
+			failure: function(response) {
+				dfd.reject();
+			},
+			scope: this
+		});
+
+		return dfd.promise;
+	},
+	
+	loadCustomColorPalette: function(paletteId) {
+		var dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			url: this.getTromboneUrl(),
+			params: {
+				tool: 'resource.StoredResource',
+				retrieveResourceId: paletteId
+			},
+			success: function(response, req) {
+				var json = Ext.util.JSON.decode(response.responseText);
+				var value = json.storedResource.resource;
+				var palette = Ext.decode(value);
+				// TODO should palette api param be set here?
+				this.addColorPalette(paletteId, palette);
+
+				dfd.resolve(paletteId, palette);
+			},
+			failure: function(response) {
+				this.setApiParam('palette', undefined);
+
+				dfd.reject();
+			},
+			scope: this
+		});
+
+		return dfd.promise;
+	},
+
+
 	/**
 	 * Gets a particular color from the palette.
 	 * @param {String} key The palette key.
@@ -6248,6 +6303,11 @@ Ext.define('Voyant.util.Colors', {
 	getColorForTerm: function(key, term, returnHex) {
 		var paletteKey = key || 'default';
 		var palette = this.getPalettes()[paletteKey];
+
+		if (palette === undefined) {
+			console.warn('no palette found for',key);
+			palette = this.getPalettes()['default'];
+		}
 
 		if (term.indexOf(':') != -1) {
 			term = term.split(':')[1];
@@ -6663,58 +6723,80 @@ Ext.define('Voyant.util.Toolable', {
 					            	flex: 1,
 					            	panel: panel,
 					        		handler: function(btn) {
-					        			function doGlobalUpdate(key, value) {
-					        				// set the api value for the app
-					        				if (app.setApiParam) {
-					        					app.setApiParam(key, value);
-					        				}
-					        				
-					        				// tell the panels, including this one
-					        				var panels = app.getViewport().query("panel,chart");
-					        				for (var i=0; i<panels.length; i++) {
-					        					if (panels[i].setApiParam) {
-					        						panels[i].setApiParam(key, value);
-					        					}
-					        				}
-					        				globalUpdate = true;
-					        			}
-					        			
-					        			var values = btn.up('form').getValues();
-					        			
-					        			// set api values (all of them, not just global ones)
-					        			this.setApiParams(values);
+										var values = btn.up('form').getValues();
+										
+										// set api values (all of them, not just global ones)
+										this.setApiParams(values);
 
-					        			var app = this.getApplication();
-					        			var corpus = app.getCorpus();
-					        			
-					        			var globalUpdate = false;
-					        			if (values['stopList'] != undefined && values['stopListGlobal'] != undefined && values.stopListGlobal) {
-					        				doGlobalUpdate('stopList', values['stopList']);
-					        			}
-					        			if (values['palette'] != undefined) {
-											app.resetColorTermAssociations();
-					        				doGlobalUpdate('palette', values['palette']);
+										var app = this.getApplication();
+										
+										var keyValuesForGlobalUpdate = [];
+										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
+											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
 										}
-										if (values['categories'] != undefined) {
-					        				doGlobalUpdate('categories', values['categories']);
-					        			}
-					        			
-					        			if (globalUpdate) {
-					        				// trigger a reloading of the app
-					        				if (corpus) {
-					        					app.dispatchEvent("loadedCorpus", this, corpus);
-					        				} else {
-					        					app.dispatchEvent("apiParamsUpdated", this, values);
-					        				}
-					        			}
-					        			// fire this even if we have global params since the app dispatch won't reach this tool
-					        			if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
-				        				else {this.fireEvent("apiParamsUpdated", this, values);}
+										if (values['categories'] !== undefined) {
+											keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+										}
+										
+										var paletteDfd = new Ext.Deferred(); // need a deferred since we might have to load a custom palette
+										if (values['palette'] !== undefined) {
+											app.resetColorTermAssociations();
+											if (app.getColorPalette(values['palette']).length === 0) {
+												// it's a custom palette that we need to load first
+												app.loadCustomColorPalette(values['palette']).then(function() {
+													// no errors
+												}, function() {
+													// error loading palette, so reset to default
+													values['palette'] = 'default';
+												}).always(function() {
+													keyValuesForGlobalUpdate.push(['palette', values['palette']]);
+													paletteDfd.resolve();
+												})
+											} else {
+												keyValuesForGlobalUpdate.push(['palette', values['palette']]);
+												paletteDfd.resolve();
+											}
+										} else {
+											paletteDfd.resolve();
+										}
 
-					        			btn.up('window').close();
-					        		},
-					        		scope: panel
-					            }]
+										paletteDfd.promise.always(function() {
+											var corpus = app.getCorpus();
+											if (keyValuesForGlobalUpdate.length > 0) {
+												var panels = app.getViewport().query("panel,chart");
+												keyValuesForGlobalUpdate.forEach(function(keyValue) {
+													var key = keyValue[0];
+													var value = keyValue[1];
+													
+													// set the api value for the app
+													if (app.setApiParam) {
+														app.setApiParam(key, value);
+													}
+													
+													// tell the panels, including this one
+													for (var i=0; i<panels.length; i++) {
+														if (panels[i].setApiParam) {
+															panels[i].setApiParam(key, value);
+														}
+													}
+												});
+
+												// trigger a reloading of the app
+												if (corpus) {
+													app.dispatchEvent("loadedCorpus", this, corpus);
+												} else {
+													app.dispatchEvent("apiParamsUpdated", this, values);
+												}
+											}
+											// fire this even if we have global params since the app dispatch won't reach this tool
+											if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
+											else {this.fireEvent("apiParamsUpdated", this, values);}
+
+											btn.up('window').close();
+										}.bind(this));
+									},
+									scope: panel
+								}]
 							},
 							bodyPadding: 5
 						}).show()
@@ -6820,8 +6902,8 @@ Ext.define('Voyant.util.Toolable', {
 		if (panel.isXType('notebook')) {
 			exportViewItems.splice(2, 1); // remove redundant spyral export for spyral notebooks
 		}
-		if (panel.getExtraExportItems) {
-			panel.getExtraExportItems().forEach(function(item) {
+		if (panel.getExtraViewExportItems) {
+			panel.getExtraViewExportItems().forEach(function(item) {
 				Ext.applyIf(item, {
 					xtype: 'radio',
 					name: 'export'
@@ -6849,20 +6931,21 @@ Ext.define('Voyant.util.Toolable', {
 	       title: panel.localize('exportViewFieldset'),
 	       items: exportViewItems
 		})
+		var exportDataItems = [];
 		if (panel.isXType('grid')) {
-			var exportitems = [{
+			exportDataItems.push({
 	       		xtype: 'radio',
 	       		name: 'export',
 	       		inputValue: 'gridCurrentHtml',
 	       		boxLabel: panel.localize('exportGridCurrentHtml')
-    	   },{
+	        },{
 	       		xtype: 'radio',
 	       		name: 'export',
 	       		inputValue: 'gridCurrentTsv',
 	       		boxLabel: panel.localize('exportGridCurrentTsv')
-    	  	}];
+	        });
 			if (!panel.getExportGridAll || panel.getExportGridAll()!=false) {
-				exportitems.push({
+				exportDataItems.push({
 		       		xtype: 'radio',
 		       		name: 'export',
 		       		inputValue: 'gridAllJson',
@@ -6874,13 +6957,24 @@ Ext.define('Voyant.util.Toolable', {
 		       		boxLabel: panel.localize('exportGridAllTsv')
 	    	   })
 			}
-			items.push({
-		       xtype: 'fieldset',
-		       collapsible: true,
-		       collapsed: true,
-		       title: panel.localize('exportGridCurrent'),
-	    	   items: exportitems
+		}
+		if (panel.getExtraDataExportItems) {
+			panel.getExtraDataExportItems().forEach(function(item) {
+				Ext.applyIf(item, {
+					xtype: 'radio',
+					name: 'export'
+				})
+				exportDataItems.push(item)
 			})
+		}
+		if (exportDataItems.length > 0) {
+			items.push({
+				xtype: 'fieldset',
+				collapsible: true,
+				collapsed: true,
+				title: panel.localize('exportGridCurrent'),
+				items: exportDataItems
+			 });
 		}
 		if ((!panel.getExportVisualization || panel.getExportVisualization()) && panel.isXType("grid")==false && (panel.down("chart") || panel.getTargetEl().dom.querySelector("canvas") || panel.getTargetEl().dom.querySelector("svg"))) {
 			var formats = [{
@@ -7230,7 +7324,6 @@ Ext.define('Voyant.util.Toolable', {
 	},
 	exportGridCurrentTsv: function(grid, form) {
 		var store = grid.getStore();
-		var fields = store.getFields();
 		var visibleColumns = grid.getColumnManager().headerCt.getVisibleGridColumns().filter(function(col) { return col.dataIndex && col.dataIndex.trim().length > 0 });
 		var fields = [];
 		visibleColumns.forEach(function(column) {
@@ -7239,7 +7332,7 @@ Ext.define('Voyant.util.Toolable', {
 		var value = fields.join("\t")+"\n";
 
 		function tsvCollector(row) {
-			cells = [];
+			var cells = [];
 			visibleColumns.forEach(function (column) {
 				var val = row.get(column.dataIndex);
 				if (Ext.isString(val)) {
@@ -7409,21 +7502,12 @@ Ext.define('Voyant.util.ToolMenu', {
             '</tpl>'],
     privates: {
         onClick: function() {
-        	
-            var me = this,
-            returnValue = me.callParent(arguments);
+            var me = this;
+            var returnValue = me.callParent(arguments);
 
-
-            if (returnValue && me.items) {
-                if (!me.toolMenu) {
-                    me.toolMenu = new Ext.menu.Menu({
-                        items: me.items
-                    });
-                }
-                me.toolMenu.showAt(0, 0);
-                me.toolMenu.showAt(me.getX() + me.getWidth() - me.toolMenu.getWidth(), me.getY() + me.getHeight() + 10);
+			if (returnValue) {
+                me.showToolMenu.call(me);
             }
-
 
             return returnValue;
         },
@@ -7431,7 +7515,18 @@ Ext.define('Voyant.util.ToolMenu', {
             Ext.destroyMembers(this, 'toolMenu'); //destructor
             this.callParent();
         }
-    },   
+    },
+	showToolMenu: function() {
+		if (this.items && this.items.length > 0) {
+			if (!this.toolMenu || this.toolMenu.destroyed) {
+				this.toolMenu = new Ext.menu.Menu({
+					items: this.items
+				});
+			}
+			this.toolMenu.showAt(0, 0);
+			this.toolMenu.showAt(this.getX() + this.getWidth() - this.toolMenu.getWidth(), this.getY() + this.getHeight() + 10);
+		}
+	},
 	initComponent: function() {
 	    var me = this;
 	    me.callParent(arguments);
@@ -8466,12 +8561,14 @@ Ext.define('Voyant.data.model.DocumentEntity', {
              {name: 'docIndex', 'type': 'int'},
              {name: 'rawFreq', type: 'int'},
              {name: 'type'},
-             {name: 'positions'}
+             {name: 'positions'},
+			 {name: 'offsets'}
         ],
     getTerm: function() {return this.get('term');},
     getDocIndex: function() {return this.get('docIndex')},
     getRawFreq: function() {return this.get('rawFreq')},
-    getPositions: function() {return this.get('positions')}
+    getPositions: function() {return this.get('positions')},
+	getOffsets: function() {return this.get('offsets')}
 });
 Ext.define('Voyant.data.model.DocumentQueryMatch', {
     extend: 'Ext.data.Model',
@@ -8700,6 +8797,11 @@ Ext.define('Voyant.data.store.VoyantStore', {
 		corpus: undefined,
 		parentPanel: undefined
 	},
+	statics: {
+		i18n: {
+			maxTime: 'This tool has exceeded the maximum run time and has returned partial results.'
+		}
+	},
 	constructor: function(config, extras) {
 		var me = this;
 		config = config || {};
@@ -8743,6 +8845,29 @@ Ext.define('Voyant.data.store.VoyantStore', {
 					if (me.parentPanel && me.parentPanel.showError) {
 						// FIXME: this should probably send the request, not the operation
 						me.parentPanel.showError(operation)
+					}
+				},
+				endprocessresponse: function(proxy, response, operation) {
+					if (operation.wasSuccessful()) {
+						// check for tool messages from the server
+						var config = proxy.getReader().initialConfig;
+						var rootPropertyParent = config.rootProperty.split('.')[0];
+						var json = JSON.parse(response.responseText);
+						var parent = json[rootPropertyParent];
+						if (parent && parent.messages) {
+							var message = '';
+							var firstMessage = parent.messages[0];
+							if (firstMessage.code === 'maxTime') {
+								message = me.localize('maxTime');
+							} else {
+								message = firstMessage.message;
+							}
+							if (me.parentPanel && me.parentPanel.toastInfo) {
+								me.parentPanel.toastInfo(message);
+							} else {
+								console.warn('VoyantStore server message: '+message);
+							}
+						}
 					}
 				}
 			}
@@ -9256,7 +9381,8 @@ Ext.define('Voyant.data.store.CorpusNgramsMixin', {
 		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {
 			'proxy.extraParams.tool': 'corpus.CorpusNgrams',
 			'proxy.reader.rootProperty': 'corpusNgrams.ngrams',
-			'proxy.reader.totalProperty': 'corpusNgrams.total'
+			'proxy.reader.totalProperty': 'corpusNgrams.total',
+			'proxy.timeout': 90000
 		}])
 	}
 });
@@ -9321,7 +9447,7 @@ Ext.define('Voyant.data.store.TermCorrelationsMixin', {
 			'proxy.extraParams.withDistributions': 'true',
 			'proxy.reader.rootProperty': 'termCorrelations.correlations',
 			'proxy.reader.totalProperty': 'termCorrelations.total',
-			'proxy.timeout': 60000
+			'proxy.timeout': 90000
 		}])
 	}
 });
@@ -10185,6 +10311,249 @@ Ext.define('Voyant.data.util.Geonames', {
         }
         return occurences
     }
+});
+/**
+ * A class for calling corpus.DocumentEntities and displaying the progress of that call.
+ * This is usually a preliminary call before making use of the entities, e.g. corpus.EntityCollocationsGraph
+ */
+Ext.define('Voyant.data.util.DocumentEntities', {
+	extend: 'Ext.Base',
+	mixins: ['Voyant.util.Localization'],
+	statics: {
+		i18n: {
+			identifyingDocEnts: 'Identifying Document Entities',
+			error: 'Error Identifying Document Entities',
+			retry: 'Retry Failed Documents',
+			done: 'Done',
+			statusDone: 'Done',
+			statusFailed: 'Failed',
+			statusQueued: 'Queued',
+			statusStarted: 'Started',
+			status413: 'Your document is too large for this service'
+		}
+	},
+
+	config: {
+		progressWindow: undefined,
+		updateDelay: 5000,
+		timeoutId: undefined
+	},
+	
+	constructor: function(params, callback) {
+		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
+		this.initConfig();
+		this.callParent();
+
+		return this.load(params, callback);
+	},
+
+	/**
+	 * Load the entities
+	 * @param {Object} params Additional params
+	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi'
+	 * @param {Function} callback A function to call when the entities are loaded
+	 */
+	load: function(params, callback) {
+		params = Ext.apply({
+			tool: 'corpus.DocumentEntities',
+			corpus: Voyant.application.getCorpus().getId(),
+			noCache: true
+		}, params || {});
+
+		this.doLoad(params, callback, true);
+	},
+
+	doLoad: function(params, callback, firstCall) {
+		var me = this;
+		Ext.Ajax.request({
+			url: Voyant.application.getTromboneUrl(),
+			params: params
+		}).then(function(response) {
+			var data = Ext.decode(response.responseText).documentEntities;
+			
+			var progressArray = me._getProgressFromStatus(data.status);
+			var isDone = progressArray[0] === progressArray[1];
+			var hasFailures = progressArray[2];
+			var has413Status = progressArray[3].indexOf('413') !== -1; // 413 = corpus too large
+
+			if (firstCall && isDone && !hasFailures) {
+				var win = me.getProgressWindow();
+				if (win) {
+					win.close();
+				}
+				callback.call(me, data.entities);
+			} else {
+				me.updateProgress(data.status, progressArray);
+				if (isDone) {
+					var win = me.getProgressWindow();
+					win.down('#identifyingMessage').getEl().down('div.x-mask-msg-text').setStyle('backgroundImage', 'none');
+					win.down('#doneButton').setHidden(false);
+	
+					if (hasFailures && !has413Status) {
+						win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
+							me.load(Ext.apply({retryFailures: true}, params), callback);
+							btn.setDisabled(true);
+						}, me);
+					} else {
+						win.down('#retryButton').setHidden(true);
+						if (firstCall) {
+							win.close();
+						}
+					}
+	
+					callback.call(me, data.entities);
+				} else {
+					delete params.retryFailures;
+					me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, callback, false]));
+				}
+			}
+		}, function(err) {
+			Voyant.application.showError(me.localize('error'));
+			console.warn(err);
+			callback.call(me, null);
+		});
+	},
+
+	_getProgressFromStatus: function(statusArray) {
+		var total = statusArray.length;
+		var numDone = 0;
+		var hasFailures = false;
+		var statusCodes = [];
+		statusArray.forEach(function(item) {
+			if (item[1] === 'done') numDone++;
+			else if (item[1].indexOf('failed') === 0) {
+				numDone++;
+				hasFailures = true;
+				var statusCode = item[1].match(/\d\d\d$/);
+				if (statusCode !== null) {
+					statusCodes.push(statusCode[0]);
+				}
+			}
+		});
+		return [numDone, total, hasFailures, statusCodes];
+	},
+
+	updateProgress: function(statusArray, progressArray) {
+		if (this.getProgressWindow() === undefined) {
+			this.setProgressWindow(Ext.create('Ext.window.Window', {
+				title: this.localize('identifyingDocEnts'),
+				width: 400,
+				height: 300,
+				minimizable: true,
+				closeAction: 'destroy',
+				layout: {
+					type: 'vbox',
+					align: 'stretch',
+					pack: 'center',
+				},
+				items: [{
+					itemId: 'identifyingMessage',
+					xtype: 'container',
+					html: '<div style="text-align: center" class="x-mask-msg-text">'+this.localize('identifyingDocEnts')+'</div>',
+					flex: .5,
+					margin: '20 10 10 10'
+				},{
+					itemId: 'progressBar',
+					xtype: 'progressbar',
+					height: 20,
+					margin: '0 10 10 10'
+				},{
+					xtype: 'dataview',
+					flex: 1,
+					margin: '0 10 10 10',
+					scrollable: 'y',
+					itemId: 'documentStatus',
+					store: Ext.create('Ext.data.ArrayStore', {
+						fields: ['docTitle', 'statusIcon', 'statusText']
+					}),
+					itemSelector: '.doc',
+					tpl: [
+					'<tpl for=".">',
+						'<div class="doc">',
+							'<i class="fa {statusIcon}" style="margin-right: 5px;"></i>',
+							'<span class="" style="">{docTitle}</span>',
+							'<span style="float: right">{statusText}</span>',
+						'</div>',
+					'</tpl>']
+				}],
+				tools: [{
+					type: 'restore',
+					itemId: 'restoreButton',
+					hidden: true,
+					handler: function(evt, el, owner, tool) {
+						var win = owner.up('window');
+						win.expand();
+						win.anchorTo(Ext.getBody(), 'c-c', [0, -win.getBox().height], {duration: 250});
+						tool.hide();
+					}
+				}],
+				buttons: [{
+					itemId: 'retryButton',
+					xtype: 'button',
+					text: this.localize('retry'),
+					hidden: true
+				},{
+					itemId: 'doneButton',
+					xtype: 'button',
+					text: this.localize('done'),
+					hidden: true,
+					handler: function(btn) {
+						btn.up('window').close();
+					}
+				}],
+				listeners: {
+					minimize: function(win) {
+						win.collapse(Ext.Component.DIRECTION_BOTTOM, false);
+						win.anchorTo(Ext.getBody(), 'br-br', [0,0], {duration: 250});
+						win.down('#restoreButton').show();
+					},
+					destroy: function(win) {
+						clearTimeout(this.getTimeoutId());
+						this.setProgressWindow(undefined);
+					},
+					scope: this
+				}
+			}));
+		}
+
+		var numDone = progressArray[0];
+		var total = progressArray[1];
+
+		var win = this.getProgressWindow();
+		
+		win.down('#progressBar').updateProgress(numDone/total, numDone+' / '+total);
+		
+		var docsStore = Voyant.application.getCorpus().getDocuments();
+		var statusWithDocTitles = statusArray.map(function(status, index) {
+			var docTitle = docsStore.getById(status[0]).getShortTitle();
+			var statusMsg = status[1];
+			var statusIcon = 'fa-spinner';
+			var statusText = '';//this.localize('statusStarted');
+			if (statusMsg.indexOf('failed') === 0) {
+				statusIcon = 'fa-exclamation-triangle';
+				if (statusMsg.indexOf('413') !== -1) {
+					statusText = this.localize('status413');
+				} else {
+					statusText = this.localize('statusFailed');
+				}
+				console.log('ner: '+docTitle+', '+statusMsg);
+			} else if (statusMsg === 'done') {
+				statusIcon = 'fa-check';
+				statusText = '';//this.localize('statusDone');
+			} else if (statusMsg === 'queued') {
+				statusIcon = 'fa-clock-o';
+				statusText = '';//this.localize('statusQueued');
+			}
+			return [docTitle, statusIcon, statusText];
+		}, this);
+		win.down('#documentStatus').getStore().loadData(statusWithDocTitles);
+
+		win.setTitle(this.localize('identifyingDocEnts')+' '+numDone+' / '+total);
+
+		win.show();
+	}
+
+
 });
 /*
  * @class Corpus
@@ -12695,14 +13064,23 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
 	},
 	
     loadPalette: function(paletteId) {
-    	var parentPanel = this.up('window').panel;
+    	var application = this.up('window').panel.getApplication();
     	
-    	var palette = parentPanel.getApplication().getColorPalette(paletteId);
-    	var paletteData = [];
-    	palette.forEach(function(c) {
-    		paletteData.push([Ext.id(), c]);
-    	}, this);
-    	this.paletteStore.loadData(paletteData);
+    	var palette = application.getColorPalette(paletteId);
+
+		if (palette == undefined) {
+			application.loadCustomColorPalette(paletteId).then(function(id) {
+				this.loadPalette(paletteId);
+			}.bind(this), function() {
+				// error loading palette
+			})
+		} else {
+			var paletteData = [];
+			palette.forEach(function(c) {
+				paletteData.push([Ext.id(), c]);
+			}, this);
+			this.paletteStore.loadData(paletteData);
+		}
     },
     
     savePalette: function() {
@@ -12710,29 +13088,15 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
     	this.paletteStore.each(function(c) {
     		value.push(c.get('color'));
     	});
-    	var valueString = Ext.encode(value);
-    	var parentPanel = this.up('window').panel;
-    	var corpusId = parentPanel.getCorpus().getId();
-    	Ext.Ajax.request({
-    	    url: parentPanel.getTromboneUrl(),
-    	    params: {
-        		tool: 'resource.StoredResource',
-    			storeResource: valueString,
-    			corpus: corpusId
-    	    },
-    	    success: function(response, req) {
-    	    	var json = Ext.util.JSON.decode(response.responseText);
-    	    	var id = json.storedResource.id;
-    	    	var combo = this.down('combo');
-    	    	var store = combo.getStore();
-    	    	store.add({name: id, value: id});
-    	    	combo.setValue(id);
-    	    	combo.updateLayout();
-    	    	
-    	    	parentPanel.getApplication().addColorPalette(id, value);
-    	    },
-    	    scope: this
-    	});
+    	
+		this.up('window').panel.getApplication()
+			.saveCustomColorPalette(value).then(function(id) {
+				var combo = this.down('combo');
+				var store = combo.getStore();
+				store.add({name: id, value: id});
+				combo.setValue(id);
+				combo.updateLayout();
+			}.bind(this));
     }
 });
 Ext.define('Voyant.widget.VoyantChart', {
@@ -13015,7 +13379,7 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 		success: undefined,
 		failure: undefined,
 		args: undefined,
-		tool: undefined,
+		tool: undefined, // TODO unused?
 		delay: 1000,
 		maxMillisSinceStart: undefined
 	},
@@ -13031,16 +13395,20 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 	},
 
 	update: function() {
-		var progress = this.getProgress(), scope = this.getScope();
+		var progress = this.getProgress()
+		var scope = this.getScope();
+		
 		var msg = scope.localize ? scope.localize(progress.code) : this.localize(progress.code);
 		if (msg=="["+progress.code+"]") {msg=progress.message}
 		msg+=" ("+(parseInt(progress.completion*100))+"%)";
+		
 		var text = this.localize(progress.status.toLowerCase());
 		if (!this.msgbox || this.msgbox.msg.html!=msg || !this.msgbox.progressBar || this.msgbox.progressBar.getText()!=text) {
 			this.msgbox = Ext.Msg.wait(msg, this.localize("progress"), {
 				text: text
 			});
 		}
+
 		if (progress.status=="LAUNCH" || progress.status=="RUNNING") {
 			var me = this;
 			Ext.defer(function() {
@@ -13072,7 +13440,9 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 	finish: function(success, response) {
 		var callback = success ? this.getSuccess() : this.getFailure();
 		var args = this.getArgs(), progress = this.getProgress(), scope = this.getScope();
+		
 		this.close();
+		
 		if (callback && callback.apply) {
 			callback.apply(scope, [success ? args : response || progress]);
 		} else {
@@ -13087,7 +13457,8 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 		this.destroy();
 	}
 
-})
+});
+
 Ext.define('Voyant.widget.VoyantTableTransform', {
 	extend: 'Ext.panel.Panel',
     mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
@@ -13976,265 +14347,305 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     	}
     }
 });
+/**
+ * This class is essentially a wrapper for a D3 force directed graph.
+ * It provides defaults for physics and styling and simplifies loading data.
+ * It fires the following events:
+ * 	nodeclicked, nodedblclicked, nodecontextclicked,
+ * 	edgeclicked,
+ * 	nodedragstart, nodedrag, nodedragend
+ */
 Ext.define('Voyant.widget.VoyantNetworkGraph', {
-    extend: 'Ext.panel.Panel',
-    mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
-    embeddable: ['Voyant.widget.VoyantNetworkGraph'],
-    alias: 'widget.voyantnetworkgraph',
-    statics: {
-        i18n: {
-        },
-        api: {
-            jsonData: undefined,
-            docId: undefined,
-            docIndex: undefined,
-            json: undefined,
-            api: undefined
-        }
-    },
-    config: {
-        vis: undefined, // svg > g element
-        visLayout: undefined, // d3 layout algorithm
-        
-        // backing data. don't set through config, use config.nodes & config.edges
-        nodeData: undefined,
-        edgeData: undefined,
-        
-        nodeSelection: undefined, // d3 selection for nodes
-        edgeSelection: undefined, // d3 selection for edges
-        
-        currentNode: undefined,
-        currentEdge: undefined,
-        
-        zoom: undefined, // d3 zoom
-        zoomExtent: [0.25, 8],
-        
-        fixOnDrag: true, // fix node when dragged
-        
-        nodeScaling: {
-        	minSize: 8,
-        	maxSize: 36,
-        	scalingFunction: undefined
-        },
-        edgeScaling: {
-        	minSize: 1,
-        	maxSize: 10,
-        	scalingFunction: undefined
-        },
-        
-        graphStyle: {
-    		node: {
-    			normal: {
-    				fill: '#c6dbef',
-    				fillOpacity: 1,
-    				stroke: '#6baed6',
-    				strokeOpacity: 1,
-    				strokeWidth: 1
-    			},
-    			highlight: {
-    				fill: '#9ecae1',
-    				fillOpacity: 1,
-    				stroke: '#3182bd',
-    				strokeOpacity: 1,
-    				strokeWidth: 3
-    			}
-    		},
-    		edge: {
-    			normal: {
-    				stroke: '#000000',
-    				strokeOpacity: 0.25,
-    				strokeWidth: 1
-    			},
-    			highlight: {
-    				stroke: '#000000',
-    				strokeOpacity: 0.5,
-    				strokeWidth: 3
-    			}
-    		}
-    	},
-    	
-    	graphPhysics: {
-    		damping: 0.4, // 0 = no damping, 1 = full damping
-    		centralGravity: 0.1, // 0 = no grav, 1 = high grav
-    		nodeGravity: -50,  // negative = repel, positive = attract
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
+	embeddable: ['Voyant.widget.VoyantNetworkGraph'],
+	alias: 'widget.voyantnetworkgraph',
+	statics: {
+		i18n: {
+		},
+		api: {
+			jsonData: undefined,
+			docId: undefined,
+			docIndex: undefined,
+			json: undefined,
+			api: undefined
+		}
+	},
+	config: {
+		vis: undefined, // svg > g element
+		visLayout: undefined, // d3 layout algorithm
+		
+		// backing data. don't set through config, use config.nodes & config.edges
+		nodeData: undefined,
+		edgeData: undefined,
+		
+		nodeSelection: undefined, // d3 selection for nodes
+		edgeSelection: undefined, // d3 selection for edges
+		
+		currentNode: undefined,
+		currentEdge: undefined,
+		
+		zoom: undefined, // d3 zoom
+		zoomExtent: [0.25, 8],
+		
+		dragging: false, // is the user currently dragging a node
+		
+		nodeScaling: {
+			minSize: 8,
+			maxSize: 36,
+			scalingFunction: undefined
+		},
+		edgeScaling: {
+			minSize: 1,
+			maxSize: 10,
+			scalingFunction: undefined
+		},
+		
+		graphStyle: {
+			node: {
+				normal: {
+					fill: '#c6dbef',
+					fillOpacity: 1,
+					stroke: '#6baed6',
+					strokeOpacity: 1,
+					strokeWidth: 1
+				},
+				highlight: {
+					fill: '#9ecae1',
+					fillOpacity: 1,
+					stroke: '#3182bd',
+					strokeOpacity: 1,
+					strokeWidth: 3
+				}
+			},
+			edge: {
+				normal: {
+					stroke: '#000000',
+					strokeOpacity: 0.25,
+					strokeWidth: 1
+				},
+				highlight: {
+					stroke: '#000000',
+					strokeOpacity: 0.5,
+					strokeWidth: 3
+				}
+			}
+		},
+		
+		graphPhysics: {
+			damping: 0.4, // 0 = no damping, 1 = full damping
+			centralGravity: 0.1, // 0 = no grav, 1 = high grav
+			nodeGravity: -50,  // negative = repel, positive = attract
 			springLength: 100,
 			springStrength: 0.25, // 0 = not strong, >1 = probably too strong
 			collisionScale: 1.25 // 1 = default, 0 = no collision 
-    	}
-    },
-    constructor: function(config) {
-        config = config || {};
-        
-        this.setNodeData([]);
-        this.setEdgeData([]);
-        
-        this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-        this.callParent(arguments);
-        
-        var json = {};
-        if (this.getApiParam('jsonData')) {
-            json = Ext.decode(this.getApiParam('jsonData'));
-        } else if (this.getApiParam('json')) {
-        	json = this.getApiParam('json');
-        } else if (config.json) {
-        	json = config.json;
-        } else if (config.edges) {
-        	json.edges = config.edges;
-        	if (config.nodes) {
-        		json.nodes = config.nodes;
-        	}
-        } else if (config && config.jsonData) {
-        	json = JSON.parse(config.jsonData);
-        }
-        this.loadJson(json);
-    },
-    initComponent: function(config) {
-        this.on('boxready', function(src, corpus) {
-            this.initGraph();
-            this.refreshGraph();
-        }, this);
-        
-        this.on('resize', function(panel, width, height) {
-            var vis = this.body.down('svg');
-            if (vis) {
-                var el = this.body;
-                var elHeight = el.getHeight();
-                var elWidth = el.getWidth();
-                vis.dom.setAttribute('width', elWidth);
-                vis.dom.setAttribute('height', elHeight);
-                this.getVisLayout()
-                    .force('x', d3.forceX(elWidth/2))
-	    			.force('y', d3.forceY(elHeight/2));
-                
-                if (this.getVisLayout().alpha() < 0.075) {
-                	this.getVisLayout().alpha(-1); // trigger end/zoomToFit
-                }
-            }
-        }, this);
-        
-        this.callParent(arguments);
-    },
-    
-    processJson: function(json) {
-    	if (!json || !json.edges) {
-            if (json && json.links) {
-                json.edges = json.links;
-                delete json.links;
-            }
-            if (!json || !json.edges) {
-                json = json || {};
-                json.edges = [];
-            }
-        }
-    	if (!json.nodes) {
-    		json.nodes = [];
-    	}
-        if (json.nodes.length === 0) {
-            var wordFreq = {};
-            json.edges.forEach(function(edge) {
-                ['source', 'target'].forEach(function(loc) {
-                	var term = edge[loc];
-                    if (term in wordFreq == false) {
-                        wordFreq[term] = 1;
-                        json.nodes.push({term: term});
-                    } else {
-                        wordFreq[term]++;
-                    }
-                    edge.value = 1;
-                });
-            }, this);
-            json.nodes.forEach(function(node) {
-            	var val = wordFreq[node.term] === undefined ? 1 : wordFreq[node.term];
-                Ext.applyIf(node, {value: val});
-            });
-        } else {
-        	json.nodes.forEach(function(node) {
-        		Ext.applyIf(node, {value: 1});
-        	});
-        }
-        
-        return json;
-    },
-    
-    loadJson: function(json) {
-    	this.processJson(json);
-    	
-    	var existingTerms = {};
+		}
+	},
+	
+	constructor: function(config) {
+		config = config || {};
+		
+		this.setNodeData([]);
+		this.setEdgeData([]);
+		
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
+		this.callParent(arguments);
+		
+		var json = {};
+		if (this.getApiParam('jsonData')) {
+			json = Ext.decode(this.getApiParam('jsonData'));
+		} else if (this.getApiParam('json')) {
+			json = this.getApiParam('json');
+		} else if (config.json) {
+			json = config.json;
+		} else if (config.edges) {
+			json.edges = config.edges;
+			if (config.nodes) {
+				json.nodes = config.nodes;
+			}
+		} else if (config && config.jsonData) {
+			json = JSON.parse(config.jsonData);
+		}
+		this.loadJson(json);
+	},
+
+	initComponent: function(config) {
+		this.on('boxready', function(src, corpus) {
+			this.initGraph();
+			this.refreshGraph();
+		}, this);
+		
+		this.on('resize', function(panel, width, height) {
+			var vis = this.body.down('svg');
+			if (vis) {
+				var el = this.body;
+				var elHeight = el.getHeight();
+				var elWidth = el.getWidth();
+				vis.dom.setAttribute('width', elWidth);
+				vis.dom.setAttribute('height', elHeight);
+				this.getVisLayout()
+					.force('x', d3.forceX(elWidth/2))
+					.force('y', d3.forceY(elHeight/2));
+				
+				Ext.Function.defer(this.zoomToFit, 100, this);
+			}
+		}, this);
+		
+		this.callParent(arguments);
+	},
+	
+	/**
+	 * Primary method for adding data to the graph.
+	 * @param {Object} json The json data to load
+	 * @param {Array} json.nodes An array of objects that will become nodes
+	 * @param {String} json.nodes[].term The only required node property (used as ID for edges)
+	 * @param {Array} json.edges An array of objects that will become edges
+	 * @param {String} json.edges[].source The term/ID of the source node
+	 * @param {String} json.edges[].target The term/ID of the target node
+	 */
+	loadJson: function(json) {
+		this.processJson(json);
+		
+		var existingTerms = {};
 		this.getNodeData().forEach(function(node) {
 			existingTerms[node.term] = true;
 		}, this);
 		
-    	var newNodes = [];
-    	var newEdges = [];
-    	
-    	json.nodes.forEach(function(node) {
-            if (existingTerms[node.term] === undefined) {
-            	node.id = this.idGet(node.term);
-            	newNodes.push(node);
-            }
-        }, this);
-        json.edges.forEach(function(newedge) {
-            var sourceId = this.idGet(newedge.source);
-            var targetId = this.idGet(newedge.target);
-            var edges = this.getEdgeData();
-            var exists = false;
-            for (var i = 0; i < edges.length; i++) {
-            	var edge = edges[i];
-            	if ((edge.source.id == sourceId && edge.target.id == targetId) || (edge.target.id == sourceId && edge.source.id == targetId)) {
-            		exists = true;
-            		break;
-            	}
-            }
-            if (!exists) {
-            	newedge.source = sourceId;
-            	newedge.target = targetId;
-            	newedge.id = sourceId+'-'+targetId;
-	            newEdges.push(newedge);
-            }
-        }, this);
-        
-        this.setNodeData(this.getNodeData().concat(newNodes));
-        this.setEdgeData(this.getEdgeData().concat(newEdges));
-        
-        this.refreshGraph();
-    },
-    
-    // get a DOM appropriate id
-    idGet: function(term) {
-    	return term.replace(/\W/g, '_');
-    },
-    
-    updateDataForNode: function(nodeId, dataObj) {
-    	var data = this.getNodeData();
+		var newNodes = [];
+		var newEdges = [];
+		
+		json.nodes.forEach(function(node) {
+			if (existingTerms[node.term] === undefined) {
+				node.id = this.idGet(node.term);
+				newNodes.push(node);
+			}
+		}, this);
+		json.edges.forEach(function(newedge) {
+			var sourceId = this.idGet(newedge.source);
+			var targetId = this.idGet(newedge.target);
+			var edges = this.getEdgeData();
+			var exists = false;
+			for (var i = 0; i < edges.length; i++) {
+				var edge = edges[i];
+				if ((edge.source.id == sourceId && edge.target.id == targetId) || (edge.target.id == sourceId && edge.source.id == targetId)) {
+					exists = true;
+					break;
+				}
+			}
+			if (!exists) {
+				newedge.source = sourceId;
+				newedge.target = targetId;
+				newedge.id = sourceId+'-'+targetId;
+				newEdges.push(newedge);
+			}
+		}, this);
+		
+		this.setNodeData(this.getNodeData().concat(newNodes));
+		this.setEdgeData(this.getEdgeData().concat(newEdges));
+		
+		this.refreshGraph();
+	},
+	
+	processJson: function(json) {
+		if (!json || !json.edges) {
+			if (json && json.links) {
+				json.edges = json.links;
+				delete json.links;
+			}
+			if (!json || !json.edges) {
+				json = json || {};
+				json.edges = [];
+			}
+		}
+		if (!json.nodes) {
+			json.nodes = [];
+		}
+		if (json.nodes.length === 0) {
+			var wordFreq = {};
+			json.edges.forEach(function(edge) {
+				['source', 'target'].forEach(function(loc) {
+					var term = edge[loc];
+					if (term in wordFreq == false) {
+						wordFreq[term] = 1;
+						json.nodes.push({term: term});
+					} else {
+						wordFreq[term]++;
+					}
+					edge.value = 1;
+				});
+			}, this);
+			json.nodes.forEach(function(node) {
+				var val = wordFreq[node.term] === undefined ? 1 : wordFreq[node.term];
+				Ext.applyIf(node, {value: val});
+			});
+		} else {
+			json.nodes.forEach(function(node) {
+				Ext.applyIf(node, {value: 1});
+			});
+		}
+		
+		return json;
+	},
+	
+	/**
+	 * Get a DOM appropriate ID
+	 * @param {String} term 
+	 * @returns {String}
+	 */
+	idGet: function(term) {
+		return 'vng_'+term.replace(/\W/g, '_');
+	},
+	
+	/**
+	 * Update the data for a specific node
+	 * @param {String} nodeId 
+	 * @param {Object} dataObj 
+	 */
+	updateDataForNode: function(nodeId, dataObj) {
+		var data = this.getNodeData();
 		for (var i = 0; i < data.length; i++) {
 			if (data[i].id === nodeId) {
 				Ext.apply(data[i], dataObj);
 				break;
 			}
 		}
-    },
-    
-    updateDataForEdge: function(edgeId, dataObj) {
-    	var data = this.getEdgeData();
+	},
+	
+	/**
+	 * Update the data for a specific edge
+	 * @param {String} edgeId 
+	 * @param {Object} dataObj 
+	 */
+	updateDataForEdge: function(edgeId, dataObj) {
+		var data = this.getEdgeData();
 		for (var i = 0; i < data.length; i++) {
 			if (data[i].id === edgeId) {
 				Ext.apply(data[i], dataObj);
 				break;
 			}
 		}
-    },
-    
-    addNode: function(dataObj) {
-    	if (Ext.isString(dataObj)) {
-    		dataObj = {term: dataObj};
-    	}
-    	if (dataObj.term) {
-    		this.loadJson({nodes: [dataObj]});
-    	}
-    },
-    
-    removeNode: function(nodeId, removeOrphans) {
-    	var data = this.getNodeData();
+	},
+	
+	/**
+	 * Add a new node to the graph
+	 * @param {Object|String} dataObj 
+	 */
+	addNode: function(dataObj) {
+		if (Ext.isString(dataObj)) {
+			dataObj = {term: dataObj};
+		}
+		if (dataObj.term) {
+			this.loadJson({nodes: [dataObj]});
+		}
+	},
+	
+	/**
+	 * Remove a node from the graph
+	 * @param {String} nodeId 
+	 * @param {Boolean} removeOrphans 
+	 */
+	removeNode: function(nodeId, removeOrphans) {
+		var data = this.getNodeData();
 		for (var i = 0; i < data.length; i++) {
 			if (data[i].id === nodeId) {
 				data.splice(i, 1);
@@ -14274,17 +14685,26 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 		
 		this.refreshGraph();
-    },
-    
-    addEdge: function(dataObj) {
-    	if (Ext.isObject(dataObj) && dataObj.source && dataObj.target) {
-    		this.loadJson({edges: [dataObj]});
-    	}
-    },
-    
-    removeEdge: function(edgeId, removeOrphans) {
-    	var data = this.getEdgeData();
-    	for (var i = data.length-1; i >= 0; i--) {
+	},
+	
+	/**
+	 * Add a new edge to the graph
+	 * @param {Object} dataObj 
+	 */
+	addEdge: function(dataObj) {
+		if (Ext.isObject(dataObj) && dataObj.source && dataObj.target) {
+			this.loadJson({edges: [dataObj]});
+		}
+	},
+	
+	/**
+	 * Remove a specific edge from the graph
+	 * @param {String} edgeId 
+	 * @param {Boolean} removeOrphans 
+	 */
+	removeEdge: function(edgeId, removeOrphans) {
+		var data = this.getEdgeData();
+		for (var i = data.length-1; i >= 0; i--) {
 			if (data[i].id === edgeId) {
 				data.splice(i, 1);
 			}
@@ -14312,115 +14732,119 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}
 		
 		this.refreshGraph();
-    },
-    
-    initGraph: function() {
-        var el = this.getLayout().getRenderTarget();
-        el.update('');
-        var width = el.getWidth();
-        var height = el.getHeight();
-        
-        var physics = this.getGraphPhysics();
-        this.setVisLayout(d3.forceSimulation()
-        	.velocityDecay(physics.damping)
-    		.force('x', d3.forceX(width/2).strength(physics.centralGravity))
-    		.force('y', d3.forceY(height/2).strength(physics.centralGravity))
-            .force('link', d3.forceLink().id(function(d) { return d.id; }).distance(physics.springLength).strength(physics.springStrength))
-            .force('charge', d3.forceManyBody().strength(physics.nodeGravity))
-            .force('collide', d3.forceCollide().radius(function(d) { return Math.sqrt(d.bbox.width * d.bbox.height)*physics.collisionScale; }))
-            .on('tick', function() {
-            	 this.getEdgeSelection()
-	                .attr('x1', function(d) { return d.source.x; })
-	                .attr('y1', function(d) { return d.source.y; })
-	                .attr('x2', function(d) { return d.target.x; })
-	                .attr('y2', function(d) { return d.target.y; });
-	    
-            	 this.getNodeSelection()
-            	 	.attr('transform', function(d) {
-            	 		var x = d.x - d.bbox.width*0.5;
-            	 		var y = d.y - d.bbox.height*0.5;
-            	 		return 'translate('+x+','+y+')';
-        	 		});
-            	 
-            	 if (this.getVisLayout().alpha() < 0.075) {
- 	    			this.getVisLayout().alpha(-1); // trigger end event
- 	    		}
-	        }.bind(this))
-	        .on('end', function() {
-	    		this.zoomToFit();
-	    	}.bind(this))
-        );
-        
-        var svg = d3.select(el.dom).append('svg').attr('width', width).attr('height', height);
-        var g = svg.append('g');
-        
-        var zoom = d3.zoom()
-		.scaleExtent(this.getZoomExtent())
-		.on('zoom', function() {
-			g.attr('transform', d3.event.transform);
-		});
+	},
+	
+	/**
+	 * Initialize graph
+	 */
+	initGraph: function() {
+		var el = this.getLayout().getRenderTarget();
+		el.update('');
+		var width = el.getWidth();
+		var height = el.getHeight();
+		
+		var physics = this.getGraphPhysics();
+		this.setVisLayout(d3.forceSimulation()
+			.velocityDecay(physics.damping)
+			.force('x', d3.forceX(width/2).strength(physics.centralGravity))
+			.force('y', d3.forceY(height/2).strength(physics.centralGravity))
+			.force('link', d3.forceLink().id(function(d) { return d.id; }).distance(physics.springLength).strength(physics.springStrength))
+			.force('charge', d3.forceManyBody().strength(physics.nodeGravity))
+			.force('collide', d3.forceCollide().radius(function(d) { return Math.sqrt(d.bbox.width * d.bbox.height)*physics.collisionScale; }))
+			.on('tick', function() {
+				this.getEdgeSelection()
+					.attr('x1', function(d) { return d.source.x; })
+					.attr('y1', function(d) { return d.source.y; })
+					.attr('x2', function(d) { return d.target.x; })
+					.attr('y2', function(d) { return d.target.y; });
+		
+				this.getNodeSelection()
+					.attr('transform', function(d) {
+						var x = d.x - d.bbox.width*0.5;
+						var y = d.y - d.bbox.height*0.5;
+						return 'translate('+x+','+y+')';
+					});
+				
+				if (this.getVisLayout().alpha() < 0.075) {
+ 					this.getVisLayout().alpha(-1); // trigger end event
+ 				}
+			}.bind(this))
+			.on('end', function() {
+				Ext.Function.defer(this.zoomToFit, 100, this);
+			}.bind(this))
+		);
+		
+		var svg = d3.select(el.dom).append('svg').attr('width', width).attr('height', height);
+		var g = svg.append('g');
+		
+		var zoom = d3.zoom()
+			.scaleExtent(this.getZoomExtent())
+			.on('zoom', function() {
+				g.attr('transform', d3.event.transform);
+			});
 		this.setZoom(zoom);
 		svg.call(zoom);
-        
-        this.setEdgeSelection(g.append('g').attr('class', 'edges').selectAll('.edge'));
-        this.setNodeSelection(g.append('g').attr('class', 'nodes').selectAll('.node'));
-        this.setVis(g);
-    },
-    
-    resetGraph: function() {
-	    this.setNodeData([]);
+		
+		this.setEdgeSelection(g.append('g').attr('class', 'edges').selectAll('.edge'));
+		this.setNodeSelection(g.append('g').attr('class', 'nodes').selectAll('.node'));
+		this.setVis(g);
+	},
+	
+	resetGraph: function() {
+		this.setNodeData([]);
 		this.setEdgeData([]);
 		this.refreshGraph();
-    },
-    
-    refreshGraph: function() {
-    	if (this.getVisLayout() === undefined) return;
-    	
-        var edgeData = this.getEdgeData();
-        var nodeData = this.getNodeData();
-        
-        var nodeExtent = d3.extent(nodeData, function(d) { return d.value; });
-        var nodeSum = d3.sum(nodeData, function(d) { return d.value; });
-        var edgeExtent = d3.extent(edgeData, function(d) { return d.value; });
-        var edgeSum = d3.sum(edgeData, function(d) { return d.value; });
+	},
+	
+	/**
+	 * Rebuild graph from data
+	 */
+	refreshGraph: function() {
+		if (this.getVisLayout() === undefined) return;
+		
+		var edgeData = this.getEdgeData();
+		var nodeData = this.getNodeData();
+		
+		var nodeExtent = d3.extent(nodeData, function(d) { return d.value; });
+		var edgeExtent = d3.extent(edgeData, function(d) { return d.value; });
 
-        var edgeScaling = this.getEdgeScaling();
-        if (edgeScaling.scalingFunction === undefined) {
-        	edgeScaling.scalingFunction = d3.scaleLinear().domain(edgeExtent).range([edgeScaling.minSize, edgeScaling.maxSize]);
-        }
-        
-        var nodeScaling = this.getNodeScaling();
-        if (nodeScaling.scalingFunction === undefined) {
-        	nodeScaling.scalingFunction = d3.scaleLog().domain(nodeExtent).range([nodeScaling.minSize, nodeScaling.maxSize]);
-        }
-        
-        var edge = this.getEdgeSelection().data(edgeData, function(d) { return d.id; });
-        edge.exit().remove();
-        var edgeEnter = edge.enter().append('line')
-        	.attr('class', 'edge')
-        	.attr('id', function(d) { return d.id; })
-        	.style('cursor', 'pointer')
-        	.style('stroke-width', function(d) { return edgeScaling.scalingFunction(d.value); })
-        	.on('mouseover', this.edgeMouseOver.bind(this))
-            .on('mouseout', this.edgeMouseOut.bind(this))
-        	.on('click', function(d) {
-        		d3.event.stopImmediatePropagation();
+		var edgeScaling = this.getEdgeScaling();
+		if (edgeScaling.scalingFunction === undefined) {
+			edgeScaling.scalingFunction = d3.scaleLinear().domain(edgeExtent).range([edgeScaling.minSize, edgeScaling.maxSize]);
+		}
+		
+		var nodeScaling = this.getNodeScaling();
+		if (nodeScaling.scalingFunction === undefined) {
+			nodeScaling.scalingFunction = d3.scaleLog().domain(nodeExtent).range([nodeScaling.minSize, nodeScaling.maxSize]);
+		}
+		
+		var edge = this.getEdgeSelection().data(edgeData, function(d) { return d.id; });
+		edge.exit().remove();
+		var edgeEnter = edge.enter().append('line')
+			.attr('class', 'edge')
+			.attr('id', function(d) { return d.id; })
+			.style('cursor', 'pointer')
+			.style('stroke-width', function(d) { return edgeScaling.scalingFunction(d.value); })
+			.on('mouseover', this.edgeMouseOver.bind(this))
+			.on('mouseout', this.edgeMouseOut.bind(this))
+			.on('click', function(d) {
+				d3.event.stopImmediatePropagation();
 				d3.event.preventDefault();
 				this.setCurrentEdge(d);
 				this.fireEvent('edgeclicked', this, d);
-        	}.bind(this));
-        
-        this.setEdgeSelection(edgeEnter.merge(edge));
-        
-        var node = this.getNodeSelection().data(nodeData, function(d) { return d.id; });
-        node.exit().remove();
-        var nodeEnter = node.enter().append('g')
-            .attr('class', 'node')
-            .attr('id', function(d) { return d.id; })
-            .style('cursor', 'pointer')
-            .on('mouseover', this.nodeMouseOver.bind(this))
-            .on('mouseout', this.nodeMouseOut.bind(this))
-            .on('click', function(d) {
+			}.bind(this));
+		
+		this.setEdgeSelection(edgeEnter.merge(edge));
+		
+		var node = this.getNodeSelection().data(nodeData, function(d) { return d.id; });
+		node.exit().remove();
+		var nodeEnter = node.enter().append('g')
+			.attr('class', 'node')
+			.attr('id', function(d) { return d.id; })
+			.style('cursor', 'pointer')
+			.on('mouseover', this.nodeMouseOver.bind(this))
+			.on('mouseout', this.nodeMouseOut.bind(this))
+			.on('click', function(d) {
 				d3.event.stopImmediatePropagation();
 				d3.event.preventDefault();
 				this.setCurrentNode(d);
@@ -14436,122 +14860,142 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 				d3.event.preventDefault();
 				this.fireEvent('nodecontextclicked', this, d);
 			}.bind(this))
-            .call(d3.drag()
-                .on('start', function(d) {
-                    if (!d3.event.active) this.getVisLayout().alphaTarget(0.3).restart();
-                    if (this.getFixOnDrag()) {
-	                    d.fx = d.x;
-	                    d.fy = d.y;
-                    }
-                    this.fireEvent('nodedragstart', this, d);
-            	}.bind(this))
-                .on('drag', function(d) {
-                	if (this.getFixOnDrag()) {
-	                    d.fx = d3.event.x;
-	                    d.fy = d3.event.y;
-                	} else {
-                		d.x = d3.event.x;
-                		d.y = d3.event.y;
-                	}
-                    this.fireEvent('nodedrag', this, d);
-                }.bind(this))
-                .on('end', function(d) {
-                	if (!d3.event.active) this.getVisLayout().alphaTarget(0);
-                	this.fireEvent('nodedragend', this, d);
-                }.bind(this))
-            );
+			.call(d3.drag()
+				.on('start', function(d) {
+					this.setDragging(true);
+					if (!d3.event.active) {
+						this.getVisLayout().alpha(0.3).restart();
+					}
+					d.fx = d.x;
+					d.fy = d.y;
+					d.fixed = true;
+					this.fireEvent('nodedragstart', this, d);
+				}.bind(this))
+				.on('drag', function(d) {
+					this.getVisLayout().alpha(0.3); // don't let simulation end while the user is dragging
+					d.fx = d3.event.x;
+					d.fy = d3.event.y;
+					this.fireEvent('nodedrag', this, d);
+				}.bind(this))
+				.on('end', function(d) {
+					this.setDragging(false);
+					// if (!d3.event.active) this.getVisLayout().alpha(0);
+					if (d.fixed != true) {
+						d.fx = null;
+						d.fy = null;
+					}
+					this.fireEvent('nodedragend', this, d);
+				}.bind(this))
+			);
 
-        nodeEnter.append('rect');
-                
-        nodeEnter.append('text')
-            .text(function(d) { return d.term; })
-//            .attr('font-family', function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('font', d.term); }.bind(this))
-            .attr('font-size', function(d) {return nodeScaling.scalingFunction(d.value)+'px';})
+		// TODO detect title
+		// nodeEnter.append('title').text(function(d) { return d.title; });
+
+		nodeEnter.append('rect');
+				
+		nodeEnter.append('text')
+			.text(function(d) { return d.term; })
+			.attr('font-family', function(d) { return Voyant.application.getCategoriesManager().getFeatureForTerm('font', d.term); })
+			.attr('font-size', function(d) {return nodeScaling.scalingFunction(d.value)+'px';})
 //            .attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
 			.style('user-select', 'none')
-            .each(function(d) { d.bbox = this.getBBox(); });
-        
-        this.setNodeSelection(nodeEnter.merge(node));
-        
-        this.getNodeSelection().selectAll('rect')
-        	.attr('width', function(d) { return d.bbox.width+16; })
+			.each(function(d) { d.bbox = this.getBBox(); });
+		
+		this.setNodeSelection(nodeEnter.merge(node));
+		
+		this.getNodeSelection().selectAll('rect')
+			.attr('width', function(d) { return d.bbox.width+16; })
 			.attr('height', function(d) { return d.bbox.height+8; })
 			.attr('rx', function(d) { return Math.max(2, d.bbox.height * 0.2); })
 			.attr('ry', function(d) { return Math.max(2, d.bbox.height * 0.2); });
-        
-        this.getNodeSelection().selectAll('text')
-        	.attr('dx', 8)
+		
+		this.getNodeSelection().selectAll('text')
+			.attr('dx', 8)
 			.attr('dy', function(d) { return d.bbox.height*0.5+4; });
-        
+		
 
-        this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
-        this.getNodeSelection().call(this.applyNodeStyle.bind(this));
-        
-        this.getVisLayout().nodes(nodeData);
-        this.getVisLayout().force('link').links(edgeData);
-        this.getVisLayout().alpha(1).restart();
-    },
-    
-    zoomToFit: function(paddingPercent, transitionDuration) {
-    	var bounds = this.getVis().node().getBBox();
-    	var width = bounds.width;
-    	var height = bounds.height;
-    	var midX = bounds.x + width/2;
-    	var midY = bounds.y + height/2;
-    	var svg = this.getVis().node().parentElement;
-    	var svgRect = svg.getBoundingClientRect();
-        var fullWidth = svgRect.width;
-        var fullHeight = svgRect.height;
-    	var scale = (paddingPercent || 0.8) / Math.max(width/fullWidth, height/fullHeight);
-    	var translate = [fullWidth/2 - scale*midX, fullHeight/2 - scale*midY];
-    	d3.select(svg)
-    		.transition()
-    		.duration(transitionDuration || 500)
-    		.call(this.getZoom().transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale));
-    },
-    
-    nodeScaling: function(min, max, total, value) {
-    	if (min === max) {
-    		return 0.5;
-    	} else {
-    		var scale = 1 / (max - min);
-    		return Math.max(0, (value-min)*scale);
-    	}
-    },
-    
-    applyNodeStyle: function(sel, nodeState) {
+		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
+		this.getNodeSelection().call(this.applyNodeStyle.bind(this));
+		
+		this.getVisLayout().nodes(nodeData);
+		this.getVisLayout().force('link').links(edgeData);
+		this.getVisLayout().alpha(1).restart();
+	},
+	
+	zoomToFit: function(paddingPercent, transitionDuration) {
+		var bounds = this.getVis().node().getBBox();
+		var width = bounds.width;
+		var height = bounds.height;
+		var midX = bounds.x + width/2;
+		var midY = bounds.y + height/2;
+		var svg = this.getVis().node().parentElement;
+		var svgRect = svg.getBoundingClientRect();
+		var fullWidth = svgRect.width;
+		var fullHeight = svgRect.height;
+		var scale = (paddingPercent || 0.8) / Math.max(width/fullWidth, height/fullHeight);
+		var translate = [fullWidth/2 - scale*midX, fullHeight/2 - scale*midY];
+		if (width<1) {return} // FIXME: something strange with spyral
+		
+		d3.select(svg)
+			.transition()
+			.duration(transitionDuration || 500)
+			.call(this.getZoom().transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale));
+	},
+	
+	nodeScaling: function(min, max, total, value) {
+		if (min === max) {
+			return 0.5;
+		} else {
+			var scale = 1 / (max - min);
+			return Math.max(0, (value-min)*scale);
+		}
+	},
+	
+	/**
+	 * Method for styling nodes, using the default config.graphStyle.
+	 * Override this method for custom styling.
+	 * @param {*} sel D3 selection
+	 * @param {String} nodeState  The state of the node: 'normal' or 'highlight'
+	 */
+	applyNodeStyle: function(sel, nodeState) {
 		var state = nodeState === undefined ? 'normal' : nodeState;
 		var style = this.getGraphStyle().node[state];
-    	sel.selectAll(':not(text)')
-    		.style('fill', function(d) { return style.fill; }.bind(this))
-    		.style('fill-opacity', function(d) { return style.fillOpacity; }.bind(this))
-    		.style('stroke', function(d) { return style.stroke; }.bind(this))
-    		.style('stroke-opacity', function(d) { return style.strokeOpacity; }.bind(this))
-    		.style('stroke-width', function(d) { return style.strokeWidth; }.bind(this));
-    },
-    
-    applyEdgeStyle: function(sel, edgeState) {
-    	var state = edgeState === undefined ? 'normal' : edgeState;
-    	var style = this.getGraphStyle().edge[state];
-    	sel.style('stroke', function(d) { return style.stroke; }.bind(this))
-	    	.style('stroke-opacity', function(d) { return style.strokeOpacity; }.bind(this));
+		sel.selectAll('rect')
+			.style('fill', function(d) { return style.fill; }.bind(this))
+			.style('fill-opacity', function(d) { return style.fillOpacity; }.bind(this))
+			.style('stroke', function(d) { return style.stroke; }.bind(this))
+			.style('stroke-opacity', function(d) { return style.strokeOpacity; }.bind(this))
+			.style('stroke-width', function(d) { return style.strokeWidth; }.bind(this));
+	},
+	
+	/**
+	 * Method for styling edges, using the default config.graphStyle.
+	 * Override this method for custom styling.
+	 * @param {*} sel D3 selection
+	 * @param {String} edgeState The state of the edge: 'normal' or 'highlight'
+	 */
+	applyEdgeStyle: function(sel, edgeState) {
+		var state = edgeState === undefined ? 'normal' : edgeState;
+		var style = this.getGraphStyle().edge[state];
+		sel.style('stroke', function(d) { return style.stroke; }.bind(this))
+			.style('stroke-opacity', function(d) { return style.strokeOpacity; }.bind(this));
 //	    	.style('stroke-width', function(d) { return style.strokeWidth; }.bind(this));
-    },
+	},
 
-    edgeMouseOver: function(d) {
-    	this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
-    	this.getVis().select('#'+d.id).call(this.applyEdgeStyle.bind(this), 'highlight');
-    },
-    
-    edgeMouseOut: function(d) {
-    	this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
-    },
-    
-    nodeMouseOver: function(d) {
-    	this.setCurrentNode(d);
+	edgeMouseOver: function(d) {
+		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
+		this.getVis().select('#'+d.id).call(this.applyEdgeStyle.bind(this), 'highlight');
+	},
+	
+	edgeMouseOut: function(d) {
+		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
+	},
+	
+	nodeMouseOver: function(d) {
+		this.setCurrentNode(d);
 		
-    	this.getNodeSelection().call(this.applyNodeStyle.bind(this));
+		this.getNodeSelection().call(this.applyNodeStyle.bind(this));
 		
 		this.getEdgeSelection().each(function(link) {
 			var id;
@@ -14567,12 +15011,12 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		}.bind(this));
 		
 		this.getVis().select('#'+d.id).call(this.applyNodeStyle.bind(this), 'highlight');
-    },
-    
-    nodeMouseOut: function(d) {
-    	this.getNodeSelection().call(this.applyNodeStyle.bind(this));
-    	this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
-    }
+	},
+	
+	nodeMouseOut: function(d) {
+		this.getNodeSelection().call(this.applyNodeStyle.bind(this));
+		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
+	}
 });
 Ext.define('Voyant.widget.ReaderGraph', {
     extend: 'Ext.container.Container',
@@ -17468,10 +17912,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     },
     
     idGet: function(term) {
-		if (term.search(/^\d+$/) === 0) {
-			return 'voyant_'+term;
-		}
-    	return term.replace(/\W/g, '_');
+    	return 'links_'+term.replace(/\W/g, '_');
     },
     
     updateDataForNode: function(nodeId, dataObj) {
@@ -18030,12 +18471,12 @@ Ext.define('Voyant.panel.Contexts', {
             }],
     		columns: [{
     			text: this.localize("document"),
-    			toolTip: this.localize("documentTip"),
+    			tooltip: this.localize("documentTip"),
                 width: 'autoSize',
         		dataIndex: 'docIndex',
                 sortable: true,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store) {
-                	return store.getCorpus().getDocument(value).getTinyLabel();
+                	return store.getCorpus().getDocument(value).getTitle();
                 }
             },{
     			text: this.localize("left"),
@@ -18707,7 +19148,8 @@ Ext.define('Voyant.panel.Correlations', {
     		title: this.localize('title'),
     		emptyText: this.localize("emptyText"),
     		store: Ext.create("Voyant.data.store.TermCorrelationsBuffered", {
-            	parentPanel: this
+            	parentPanel: this,
+				leadingBufferZone: 100 // since these calls are expensive reduce buffer to 1 page
 	        }),
 
     		columns: [{
@@ -22214,7 +22656,8 @@ Ext.define('Voyant.panel.Phrases', {
         var me = this;
 
         var store = Ext.create("Voyant.data.store.CorpusNgramsBuffered", {
-        	parentPanel: me
+        	parentPanel: me,
+			leadingBufferZone: 100 // since these calls are expensive reduce buffer to 1 page
         });
         
         store.on("beforeload", function(store) {
@@ -24093,7 +24536,8 @@ Ext.define('Voyant.panel.RezoViz', {
 	statics: {
 		i18n: {
 			timedOut: 'The entities call took too long and has timed out. Retry?',
-			maxLinks: 'Max. Links'
+			maxLinks: 'Max. Links',
+			nerService: 'Entity Identification Service'
 		},
 		api: {
 			query: undefined,
@@ -24103,57 +24547,14 @@ Ext.define('Voyant.panel.RezoViz', {
 			minEdgeCount: 2,
 			terms: undefined,
 			stopList: 'auto',
-			docId: undefined
+			docId: undefined,
+			nerService: 'nssi'
 		},
 		glyph: 'xf1e0@FontAwesome'
 	},
 	
 	config: {
-		nodeData: undefined,
-		linkData: undefined,
-		
-		visId: undefined,
-		vis: undefined,
-		visLayout: undefined,
-		nodes: undefined,
-		links: undefined,
-		zoom: undefined,
-		
-		dragging: false,
-		
-		currentNode: undefined,
-		
 		graphStyle: {
-			// locationNode: {
-			// 	normal: {
-			// 		fill: '#c7e9c0',
-			// 		stroke: '#a1d99b'
-			// 	},
-			// 	highlight: {
-			// 		fill: '#74c476',
-			// 		stroke: '#31a354'
-			// 	}
-			// },
-			// personNode: {
-			// 	normal: {
-			// 		fill: '#fdd0a2',
-			// 		stroke: '#fdae6b'
-			// 	},
-			// 	highlight: {
-			// 		fill: '#fd8d3c',
-			// 		stroke: '#e6550d'
-			// 	}
-			// },
-			// organizationNode: {
-			// 	normal: {
-			// 		fill: '#dadaeb',
-			// 		stroke: '#bcbddc'
-			// 	},
-			// 	highlight: {
-			// 		fill: '#9e9ac8',
-			// 		stroke: '#756bb1'
-			// 	}
-			// },
 			link: {
 				normal: {
 					stroke: '#000000',
@@ -24165,25 +24566,11 @@ Ext.define('Voyant.panel.RezoViz', {
 				}
 			}
 		},
-		
-		graphPhysics: {
-			damping: 0.4, // 0 = no damping, 1 = full damping
-			centralGravity: 0.1, // 0 = no grav, 1 = high grav
-			nodeGravity: -50,  // negative = repel, positive = attract
-			springLength: 100,
-			springStrength: 0.1, // 0 = not strong, >1 = probably too strong
-			collisionScale: 1.25 // 1 = default, 0 = no collision 
-		},
 
 		options: [{xtype: 'stoplistoption'}]
 	},
 	
 	constructor: function(config) {
-		this.setNodeData([]);
-		this.setLinkData([]);
-		
-		this.setVisId(Ext.id(null, 'rezoviz_'));
-
 		this.callParent(arguments);
 		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
 	},
@@ -24218,6 +24605,25 @@ Ext.define('Voyant.panel.RezoViz', {
 
 		Ext.apply(me, {
 			title: this.localize('title'),
+			layout: 'fit',
+			items: {
+				xtype: 'voyantnetworkgraph',
+				applyNodeStyle: function(sel, nodeState) {
+					var state = nodeState === undefined ? 'normal' : nodeState;
+					var style = this.getGraphStyle().node[state];
+					sel.selectAll('rect')
+						.style('fill', function(d) { var type = d.type+'Node'; return me.getGraphStyle()[type][state].fill; })
+						.style('stroke', function(d) { var type = d.type+'Node'; return me.getGraphStyle()[type][state].stroke; });
+				},
+				listeners: {
+					nodeclicked: function(graph, node) {
+						me.dispatchEvent('termsClicked', me, [node.term]);
+					},
+					edgeclicked: function(graph, edge) {
+						me.dispatchEvent('termsClicked', me, ['"'+edge.source.term+' '+edge.target.term+'"~'+me.getApiParam('context')]);
+					}
+				}
+			},
 			dockedItems: [{
 				dock: 'bottom',
 				xtype: 'toolbar',
@@ -24248,6 +24654,28 @@ Ext.define('Voyant.panel.RezoViz', {
 							text: this.localize('reload'),
 							style: 'margin: 5px;',
 							handler: this.categoriesHandler,
+							scope: this
+						}]
+					}
+				},{
+					xtype: 'button',
+					text: this.localize('nerService'),
+					menu: {
+						items: [{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: 'NSSI',
+							itemId: 'nssi',
+							checked: true,
+							handler: this.serviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: 'Voyant',
+							itemId: 'voyant',
+							checked: false,
+							handler: this.serviceHandler,
 							scope: this
 						}]
 					}
@@ -24300,7 +24728,7 @@ Ext.define('Voyant.panel.RezoViz', {
 		
 		this.on('loadedCorpus', function(src, corpus) {
 			if (this.isVisible()) {
-				this.initLoad();
+				this.preloadEntities();
 			}
 		}, this);
 
@@ -24315,42 +24743,17 @@ Ext.define('Voyant.panel.RezoViz', {
 		
 		this.on('activate', function() { // load after tab activate (if we're in a tab panel)
 			if (this.getCorpus()) {
-				if (this.getNodeData().length === 0) { // only initLoad if there isn't already data
-					Ext.Function.defer(this.initLoad, 100, this);
+				// only preloadEntities if there isn't already data
+				if (this.down('voyantnetworkgraph').getNodeData().length === 0) {
+					Ext.Function.defer(this.preloadEntities, 100, this);
 				}
 			}
 		}, this);
 		
 		this.on('query', function(src, query) {this.loadFromQuery(query);}, this);
 		
-		this.on('resize', function(panel, width, height) {
-			var vis = Ext.get(this.getVisId());
-			if (vis) {
-				var el = this.body;//this.getLayout().getRenderTarget();
-				var elHeight = el.getHeight();
-				var elWidth = el.getWidth();
-				
-				vis.el.dom.setAttribute('width', elWidth);
-				vis.el.dom.setAttribute('height', elHeight);
-				this.getVisLayout()
-					.force('x', d3.forceX(elWidth/2))
-					.force('y', d3.forceY(elHeight/2));
-//        			.alpha(0.5).restart(); // restarting physics messes up zoomToFit
-				
-				Ext.Function.defer(this.zoomToFit, 100, this);
- //       		this.zoomToFit();
-			}
-		}, this);
-		
 		me.callParent(arguments);
 
-	},
-	
-	initLoad: function() {
-		this.initGraph();
-		this.initPhysics();
-		
-		this.preloadEntities();
 	},
 
 	categoriesHandler: function(item) {
@@ -24365,17 +24768,20 @@ Ext.define('Voyant.panel.RezoViz', {
 		this.preloadEntities();
 	},
 
+	serviceHandler: function(menuitem) {
+		this.setApiParam('nerService', menuitem.itemId);
+		this.preloadEntities();
+	},
+
 	preloadEntities: function() {
 		var me = this;
-		// TODO uncomment when new entities calls are in place
-		// new Voyant.data.util.DocumentEntities().then(function() {
-		// 	me.getEntities();
-		// });
-		me.getEntities();
+		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')}, function() {
+			me.getEntities();
+		});
 	},
 
 	getEntities: function() {
-		this.resetGraph();
+		this.down('voyantnetworkgraph').resetGraph();
 
 		var corpusId = this.getCorpus().getId();
 		var el = this.getLayout().getRenderTarget();
@@ -24386,6 +24792,7 @@ Ext.define('Voyant.panel.RezoViz', {
 			method: 'POST',
 			params: {
 				tool: 'corpus.EntityCollocationsGraph',
+				annotator: this.getApiParam('nerService'),
 				type: this.getApiParam('type'),
 				limit: this.getApiParam('limit'),
 				minEdgeCount: this.getApiParam('minEdgeCount'),
@@ -24400,14 +24807,17 @@ Ext.define('Voyant.panel.RezoViz', {
 				var obj = Ext.decode(response.responseText);
 				if (obj.entityCollocationsGraph.edges.length==0) {
 					this.showError({msg: this.localize('noEntities')});
-					Ext.Msg.confirm(this.localize('error'), this.localize('noEntitiesForEdgeCount'), function(button) {
-						if (button === 'yes') {
-							var newEdgeCount = Math.max(1, this.getApiParam('minEdgeCount')-1);
-							this.queryById('minEdgeCount').setRawValue(newEdgeCount);
-							this.setApiParam('minEdgeCount', newEdgeCount);
-							this.preloadEntities();
-						}
-					}, this);
+					var currMinEdgeCount = this.getApiParam('minEdgeCount');
+					if (currMinEdgeCount > 1) {
+						Ext.Msg.confirm(this.localize('error'), this.localize('noEntitiesForEdgeCount'), function(button) {
+							if (button === 'yes') {
+								var newEdgeCount = Math.max(1, currMinEdgeCount-1);
+								this.queryById('minEdgeCount').setRawValue(newEdgeCount);
+								this.setApiParam('minEdgeCount', newEdgeCount);
+								this.preloadEntities();
+							}
+						}, this);
+					}
 				}
 				else {
 					this.processEntities(obj.entityCollocationsGraph);
@@ -24438,7 +24848,6 @@ Ext.define('Voyant.panel.RezoViz', {
 			var n = nodes[i];
 
 			visNodes.push({
-				id: this.idGet(n),
 				term: n.term,
 				title: n.term + ' ('+n.rawFreq+')',
 				type: n.type,
@@ -24453,278 +24862,16 @@ Ext.define('Voyant.panel.RezoViz', {
 		for (var i = 0; i < edges.length; i++) {
 			var link = edges[i].nodes;
 
-			var sourceId = this.idGet(nodes[link[0]]);
-			var targetId = this.idGet(nodes[link[1]]);
+			var sourceId = nodes[link[0]].term;
+			var targetId = nodes[link[1]].term;
 			visEdges.push({
 				source: sourceId,
 				target: targetId,
-				// value: edges[i].count,
-				value: nodes[link[1]].rawFreq,
-				id: sourceId+'-'+targetId
+				rawFreq: nodes[link[1]].rawFreq // TODO
 			});
 		}
-		
-		this.setNodeData(visNodes);
-		this.setLinkData(visEdges);
 
-		this.refresh();
-	},
-	
-	idGet: function(ent) {
-		var term = ent.term;
-		var type = ent.type;
-		return type+'_'+term.replace(/\W/g, '_');
-	},
-	
-	initPhysics: function() {
-		if (this.getVisLayout()) {
-			var physics = this.getGraphPhysics();
-			this.getVisLayout()
-				.velocityDecay(physics.damping)
-				.force('link', d3.forceLink().id(function(d) { return d.id; }).distance(physics.springLength).strength(physics.springStrength))
-				.force('charge', d3.forceManyBody().strength(physics.nodeGravity))
-				.force('collide', d3.forceCollide(function(d) { return Math.sqrt(d.bbox.width * d.bbox.height) * physics.collisionScale; }));
-			this.getVisLayout().force('x').strength(physics.centralGravity);
-			this.getVisLayout().force('y').strength(physics.centralGravity);
-		}
-	},
-	
-	initGraph: function() {
-		var el = this.getLayout().getRenderTarget();
-		el.update('');
-		var width = el.getWidth();
-		var height = el.getHeight();
-		
-		this.setVisLayout(d3.forceSimulation()
-			.force('x', d3.forceX(width/2))
-			.force('y', d3.forceY(height/2))
-			.on('tick', function() {
-				this.getLinks()
-					.attr('x1', function(d) { return d.source.x; })
-					.attr('y1', function(d) { return d.source.y; })
-					.attr('x2', function(d) { return d.target.x; })
-					.attr('y2', function(d) { return d.target.y; });
-	//    		this.getLinks().attr('d', function(d) {
-	//				return 'M' + d[0].x + ',' + d[0].y
-	//						+ 'S' + d[1].x + ',' + d[1].y
-	//						+ ' ' + d[2].x + ',' + d[2].y;
-	//			});
-				this.getNodes().attr('transform', function(d) {
-					var x = d.x;
-					var y = d.y;
-					x -= d.bbox.width*0.5;
-					y -= d.bbox.height*0.5;
-					return 'translate('+x+','+y+')';
-				}.bind(this));
-				
-				if (!this.getDragging() && this.getVisLayout().alpha() < 0.005) {
-					this.getVisLayout().alpha(-1); // trigger end event
-				}
-			}.bind(this))
-			.on('end', function() {
-				Ext.Function.defer(this.zoomToFit, 100, this);
-			}.bind(this))
-		);
-		
-		var svg = d3.select(el.dom).append('svg').attr('id',this.getVisId()).attr('class', 'linksGraph').attr('width', width).attr('height', height);
-		var g = svg.append('g');
-		
-		var zoom = d3.zoom()
-			.scaleExtent([1/4, 4])
-			.on('zoom', function() {
-				g.attr('transform', d3.event.transform);
-			});
-		this.setZoom(zoom);
-		svg.call(zoom);
-		
-		this.setLinks(g.append('g').attr('class', 'links').selectAll('.link'));
-		this.setNodes(g.append('g').attr('class', 'nodes').selectAll('.node'));
-		this.setVis(g);
-	},
-	
-	resetGraph: function() {
-		this.setNodeData([]);
-		this.setLinkData([]);
-		this.refresh();
-	},
-	
-	refresh: function() {
-		var me = this;
-		
-		var nodeData = this.getNodeData();
-		var linkData = this.getLinkData();
-		
-		var link = this.getLinks().data(linkData, function(d) { return d.id; });
-		link.exit().remove();
-		var linkEnter = link.enter().append('line')
-			.attr('class', 'link')
-			.attr('id', function(d) { return d.id; })
-			.on('mouseover', me.linkMouseOver.bind(me))
-			.on('mouseout', me.linkMouseOut.bind(me))
-			.on('click', function(data) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
-				this.dispatchEvent('termsClicked', this, ['"'+data.source.term+' '+data.target.term+'"~'+this.getApiParam('context')]);
-			}.bind(me))
-//			.style('fill', 'none')
-			.style('cursor', 'pointer')
-			.style('stroke-width', function(d) {
-				return Math.max(1, Math.min(10, Math.log(d.value)) );
-			});
-			
-		this.setLinks(linkEnter.merge(link));
-
-		var node = this.getNodes().data(nodeData, function(d) { return d.id; });
-		node.exit().remove();
-		var nodeEnter = node.enter().append('g')
-			.attr('class', function(d) { return 'node '+d.type; })
-			.attr('id', function(d) { return d.id; })
-			.on('mouseover', me.nodeMouseOver.bind(me))
-			.on('mouseout', me.nodeMouseOut.bind(me))
-			.on('click', function(data) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
-				this.dispatchEvent('termsClicked', this, [data.term]);
-			}.bind(me))
-			.on('dblclick', function(data) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
-			}.bind(me))
-			.on('contextmenu', function(d, i) {
-				d3.event.preventDefault();
-//				me.getTip().hide();
-			})
-			.call(d3.drag()
-				.on('start', function(d) {
-					me.setDragging(true);
-					if (!d3.event.active) me.getVisLayout().alpha(0.3).restart();
-					d.fx = d.x;
-					d.fy = d.y;
-					d.fixed = true;
-				})
-				.on('drag', function(d) {
-					me.getVisLayout().alpha(0.3); // don't let simulation end while the user is dragging
-					d.fx = d3.event.x;
-					d.fy = d3.event.y;
-				})
-				.on('end', function(d) {
-					me.setDragging(false);
-//					if (!d3.event.active) me.getVisLayout().alpha(0);
-					if (d.fixed != true) {
-						d.fx = null;
-						d.fy = null;
-					}
-				})
-			);
-		
-		nodeEnter.append('title').text(function(d) { return d.title; });
-		
-		nodeEnter.append('rect')
-			.style('stroke-width', 1)
-			.style('stroke-opacity', 1);
-		
-		nodeEnter.append('text')
-			.attr('font-family', function(d) { return me.getApplication().getCategoriesManager().getFeatureForTerm('font', d.term); })
-			.attr('font-size', function(d) { return Math.max(1, Math.log(d.value))*10; })
-			.text(function(d) { return d.term; })
-			.each(function(d) { d.bbox = this.getBBox(); }) // set bounding box for later use
-			.style('cursor', 'pointer')
-			.style('user-select', 'none')
-			.attr('dominant-baseline', 'middle');
-		
-		this.setNodes(nodeEnter.merge(node));
-		
-		this.getVis().selectAll('rect')
-			.attr('width', function(d) { return d.bbox.width+16; })
-			.attr('height', function(d) { return d.bbox.height+8; })
-			.attr('rx', function(d) { return Math.max(2, d.bbox.height * 0.2); })
-			.attr('ry', function(d) { return Math.max(2, d.bbox.height * 0.2); })
-			.call(this.applyNodeStyle.bind(this));
-		this.getVis().selectAll('text')
-			.attr('dx', 8)
-			.attr('dy', function(d) { return d.bbox.height*0.5+4; });
-		
-		this.getVis().selectAll('line').call(this.applyLinkStyle.bind(this));
-		
-		
-		this.getVisLayout().nodes(nodeData);
-		this.getVisLayout().force('link').links(linkData);
-		this.getVisLayout().alpha(1).restart();
-	},
-	
-	zoomToFit: function(paddingPercent, transitionDuration) {
-		var bounds = this.getVis().node().getBBox();
-		var width = bounds.width;
-		var height = bounds.height;
-		var midX = bounds.x + width/2;
-		var midY = bounds.y + height/2;
-		var svg = this.getVis().node().parentElement;
-		var svgRect = svg.getBoundingClientRect();
-		var fullWidth = svgRect.width;
-		var fullHeight = svgRect.height;
-		var scale = (paddingPercent || 0.8) / Math.max(width/fullWidth, height/fullHeight);
-		var translate = [fullWidth/2 - scale*midX, fullHeight/2 - scale*midY];
-		if (width<1) {return} // FIXME: something strange with spyral
-	 	
-		d3.select(svg)
-			.transition()
-			.duration(transitionDuration || 500)
-			.call(this.getZoom().transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale));
-	},
- 
-	applyNodeStyle: function(sel, nodeState) {
-		var state = nodeState === undefined ? 'normal' : nodeState;
-		sel.style('fill', function(d) { var type = d.type+'Node'; return this.getGraphStyle()[type][state].fill; }.bind(this));
-		sel.style('stroke', function(d) { var type = d.type+'Node'; return this.getGraphStyle()[type][state].stroke; }.bind(this));
-	},
-	
-	applyLinkStyle: function(sel, linkState) {
-		var state = linkState === undefined ? 'normal' : linkState;
-		sel.style('stroke', function(d) { return this.getGraphStyle().link[state].stroke; }.bind(this));
-		sel.style('stroke-opacity', function(d) { return this.getGraphStyle().link[state].strokeOpacity; }.bind(this));
-	},
-	
-	linkMouseOver: function(d) {
-		this.getVis().selectAll('line').call(this.applyLinkStyle.bind(this));
-		this.getVis().select('#'+d.id).call(this.applyLinkStyle.bind(this), 'highlight');
-	},
-	
-	linkMouseOut: function(d) {
-		this.getVis().selectAll('line').call(this.applyLinkStyle.bind(this));
-	},
-	
-	nodeMouseOver: function(d) {
-		this.setCurrentNode(d);
-		
-		this.getVis().selectAll('rect').call(this.applyNodeStyle.bind(this));
-		
-		this.getLinks().each(function(link) {
-			var id;
-			if (link.source.id == d.id) {
-				id = link.target.id;
-			} else if (link.target.id == d.id) {
-				id = link.source.id;
-			}
-			if (id !== undefined) {
-				this.getVis().select('#'+id+' rect').call(this.applyNodeStyle.bind(this), 'highlight');
-				this.getVis().select('#'+link.id).call(this.applyLinkStyle.bind(this), 'highlight');
-			}
-		}.bind(this));
-		
-		this.getVis().select('#'+d.id+' rect')
-			.style('stroke-width', 3)
-			.call(this.applyNodeStyle.bind(this), 'highlight');
-	},
-	
-	nodeMouseOut: function(d) {
-		this.setCurrentNode(undefined);
-		
-		this.getVis().selectAll('rect')
-			.style('stroke-width', 1)
-			.call(this.applyNodeStyle.bind(this));
-		
-		this.getVis().selectAll('line')
-			.call(this.applyLinkStyle.bind(this));
+		this.down('voyantnetworkgraph').loadJson({nodes: visNodes, edges: visEdges});
 	}
 	
 });
@@ -26826,6 +26973,10 @@ Ext.define('Voyant.panel.Reader', {
 	isConsumptive: true,
     statics: {
     	i18n: {
+			highlightEntities: 'Highlight Entities',
+			entityType: 'entity type',
+			nerVoyant: 'Entity Identification with Voyant',
+			nerNssi: 'Entity Identification with NSSI'
     	},
     	api: {
     		start: 0,
@@ -26840,6 +26991,7 @@ Ext.define('Voyant.panel.Reader', {
     	tokensStore: undefined,
     	documentsStore: undefined,
     	documentTermsStore: undefined,
+		documentEntitiesStore: undefined,
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -26855,6 +27007,8 @@ Ext.define('Voyant.panel.Reader', {
 	LOCATION_UPDATE_FREQ: 100,
 	
 	INITIAL_LIMIT: 1000, // need to keep track since limit can be changed when scrolling,
+
+	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
     
     constructor: function(config) {
         this.callParent(arguments);
@@ -26891,7 +27045,7 @@ Ext.define('Voyant.panel.Reader', {
 	    			}
 	    			if (record.isWord()) {
 	    				isLastNewLine = false;
-	    				contents += "<span class='word' id='"+ record.getId() + "' data-qtip='"+documentFrequency+" "+record.getDocumentRawFreq()+"'>"+ record.getTerm() + "</span>";
+	    				contents += "<span class='word' id='"+ record.getId() + "' data-qtip='<div class=\"freq\">"+documentFrequency+" "+record.getDocumentRawFreq()+"</div>'>"+ record.getTerm() + "</span>";
 	    			}
 	    			else {
 	    				var newContents = record.getTermWithLineSpacing(isPlainText);
@@ -26909,6 +27063,10 @@ Ext.define('Voyant.panel.Reader', {
 	    		if (keyword != '') {
 //	    			this.highlightKeywords(keyword);
 	    		}
+
+				if (this.getDocumentEntitiesStore() !== undefined) {
+					this.highlightEntities();
+				}
     		}
     	}, this);
     	this.setTokensStore(tokensStore);
@@ -27072,7 +27230,41 @@ Ext.define('Voyant.panel.Reader', {
             		scope: this
             	},{xtype: 'tbseparator'},{
                     xtype: 'querysearchfield'
-                }]
+                },'->',{
+					glyph: 'xf0eb@FontAwesome',
+					tooltip: this.localize('highlightEntities'),
+					itemId: 'nerServiceParent',
+					hidden: true,
+					menu: {
+						items: [{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: this.localize('nerNssi'),
+							itemId: 'nssi',
+							checked: true,
+							handler: this.nerSeviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: this.localize('nerVoyant'),
+							itemId: 'stanford',
+							checked: false,
+							handler: this.nerSeviceHandler,
+							scope: this
+						}
+						// ,{
+						// 	xtype: 'menucheckitem',
+						// 	group: 'nerService',
+						// 	text: 'NER with Voyant (OpenNLP)',
+						// 	itemId: 'opennlp',
+						// 	checked: false,
+						// 	handler: this.nerSeviceHandler,
+						// 	scope: this
+						// }
+						]
+					}
+				}]
     		}],
     		listeners: {
     			loadedCorpus: function(src, corpus) {
@@ -27081,7 +27273,7 @@ Ext.define('Voyant.panel.Reader', {
     	    		
     	    		var docs = corpus.getDocuments();
     	    		this.setDocumentsStore(docs);
-    	    		
+					
     	    		if (this.rendered) {
     	    			this.load();
         	    		if (this.hasCorpusAccess(corpus)==false) {
@@ -27200,6 +27392,97 @@ Ext.define('Voyant.panel.Reader', {
 //		if (doScroll && spans[0] !== undefined) {
 //			Ext.get(nodes[0]).scrollIntoView(reader).frame("ff0000", 1, { duration: 2 });
 //		}
+	},
+
+	nerSeviceHandler: function(menuitem) {
+		var annotator = menuitem.itemId;
+
+		var docIndex = [];
+		var locationInfo = this.getLocationInfo();
+		if (locationInfo) {
+			for (var i = locationInfo[0].docIndex; i <= locationInfo[1].docIndex; i++) {
+				docIndex.push(i);
+			}
+		} else {
+			docIndex.push(0);
+		}
+
+		this.clearEntityHighlights();
+
+		var me = this;
+		new Voyant.data.util.DocumentEntities({
+			annotator: annotator,
+			includeEntities: true,
+			docIndex: docIndex
+		}, function(entities) {
+			if (entities) {
+				me.clearEntityHighlights(); // clear again in case failed documents were rerun
+				me.setDocumentEntitiesStore(entities);
+				me.highlightEntities();
+			}
+		});
+	},
+
+	clearEntityHighlights: function() {
+		var container = this.getInnerContainer().first();
+		container.select('.entity').each(function(el) {
+			el.removeCls('entity start middle end location person organization misc money time percent date duration set unknown');
+			el.dom.setAttribute('data-qtip', el.dom.getAttribute('data-qtip').replace(/<div class="entity">.*?<\/div>/g, ''));
+		});
+	},
+
+	highlightEntities: function() {
+		var container = this.getInnerContainer().first();
+		var entities = this.getDocumentEntitiesStore();
+		var entityTypeStr = this.localize('entityType');
+		entities.forEach(function(entity) {
+			var positionInstances = entity.positions;
+			if (positionInstances) {
+				positionInstances.forEach(function(positions) {
+					var multiTermEntity = positions.length === 2; // there is both a start and end position
+					if (multiTermEntity) {
+						// find the difference between start and end positions
+						if (positions[1]-positions[0] > 1) {
+							// more than two terms, so fill in the middle positions
+							var endPos = positions[1];
+							var curPos = positions[0]+1;
+							var curIndex = 1;
+							while (curPos < endPos) {
+								positions.splice(curIndex, 0, curPos);
+								curPos++;
+								curIndex++;
+							}
+						}
+					}
+
+					for (var i = 0, len = positions.length; i < len; i++) {
+						var position = positions[i];
+						if (position === -1) {
+							console.warn('missing position for: '+entity.term);
+						} else {
+							var match = container.selectNode('#_'+entity.docIndex+'_'+position, false);
+							if (match) {
+								var termEntityPosition = '';
+								if (multiTermEntity) {
+									if (i === 0) {
+										termEntityPosition = 'start ';
+									} else if (i === len-1) {
+										termEntityPosition = 'end ';	
+									} else {
+										termEntityPosition = 'middle ';
+									}
+								}
+
+								match.addCls('entity '+termEntityPosition+entity.type);
+								match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+							}
+						}
+					}
+				});
+			} else {
+				console.warn('no positions for: '+entity.term);
+			}
+		});
 	},
     
 	fetchPrevious: function(scroll) {
@@ -27345,24 +27628,27 @@ Ext.define('Voyant.panel.Reader', {
 	},
 	
 	updateLocationMarker: function(amount, scrollDir) {
-		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
-		var firstWord = readerWords[0];
-		var lastWord = readerWords[readerWords.length-1];
-		if (firstWord !== undefined && lastWord !== undefined) {
+		var locationInfo = this.getLocationInfo();
+		if (locationInfo) {
+			var info1 = locationInfo[0];
+			var info2 = locationInfo[1];
+
 			var corpus = this.getCorpus();
 			var partialFirstDoc = false;
-			
-			var info1 = Voyant.data.model.Token.getInfoFromElement(Ext.get(firstWord));
-			var info2 = Voyant.data.model.Token.getInfoFromElement(Ext.get(lastWord));
+
 			if (info1.position !== 0) {
 				partialFirstDoc = true;
 			}
 
 			var docTokens = {};
 			var totalTokens = 0;
+			var showNerButton = this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
+				if (tokens > this.MAX_TOKENS_FOR_NER) {
+					showNerButton = false;
+				}
 				if (currIndex === info2.docIndex) {
 					tokens = info2.position; // only count tokens up until last displayed word
 				}
@@ -27372,6 +27658,13 @@ Ext.define('Voyant.panel.Reader', {
 				totalTokens += tokens;
 				docTokens[currIndex] = tokens;
 				currIndex++;
+			}
+
+			var nerParent = this.down('#nerServiceParent');
+			if (showNerButton) {
+				nerParent.show();
+			} else {
+				nerParent.hide();
 			}
 			
 			var tokenPos = Math.round(totalTokens * amount);
@@ -27399,7 +27692,20 @@ Ext.define('Voyant.panel.Reader', {
     
     updateChart: function() {
     	
-    }
+    },
+
+	getLocationInfo: function() {
+		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
+		var firstWord = readerWords[0];
+		var lastWord = readerWords[readerWords.length-1];
+		if (firstWord !== undefined && lastWord !== undefined) {
+			var info1 = Voyant.data.model.Token.getInfoFromElement(firstWord);
+			var info2 = Voyant.data.model.Token.getInfoFromElement(lastWord);
+			return [info1, info2];
+		} else {
+			return null;
+		}
+	}
 });
 
 Ext.define('Voyant.panel.SimpleDocReader', {
@@ -29099,7 +29405,10 @@ Ext.define('Voyant.panel.Summary', {
 	alias: 'widget.summary',
     statics: {
     	i18n: {
-			readabilityIndex: 'Readability Index:'
+			readabilityIndex: 'Readability Index:',
+			docsDensityTip: 'ratio of unique words in this document',
+			avgWordsPerSentenceTip: 'average words per sentence in this document',
+			readabilityTip: 'the Coleman-Liau readability index for this document'
     	},
     	api: {
     		
@@ -29256,7 +29565,7 @@ Ext.define('Voyant.panel.Summary', {
 			main.add(this.showSparklineSection(
 				function(doc) { return doc.getLexicalTokensCount(); },
 				this.localize('docsLength'), this.localize('longest'), this.localize('shortest'),
-				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+				docs, limit, docsLengthTpl, sparkWidth, this.localize('numberOfTerms')
 			));
         	
 			// vocabulary density
@@ -29264,7 +29573,7 @@ Ext.define('Voyant.panel.Summary', {
 			main.add(this.showSparklineSection(
 				function(doc) { return Ext.util.Format.number(doc.getLexicalTypeTokenRatio(),'0.000'); },
 				this.localize('docsDensity'), this.localize('highest'), this.localize('lowest'),
-				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+				docs, limit, docsLengthTpl, sparkWidth, this.localize('docsDensityTip')
 			));
  
         	// words per sentence
@@ -29272,7 +29581,7 @@ Ext.define('Voyant.panel.Summary', {
 			main.add(this.showSparklineSection(
 				function(doc) { return Ext.util.Format.number(doc.getAverageWordsPerSentence(),'0.0'); },
 				this.localize('averageWordsPerSentence'), this.localize('highest'), this.localize('lowest'),
-				docs, limit, docsLengthTpl, sparkWidth, numberOfTerms
+				docs, limit, docsLengthTpl, sparkWidth, this.localize('avgWordsPerSentenceTip')
 			));
 
     	} else { // single document, we can still show word density and average words per sentence
@@ -29305,7 +29614,7 @@ Ext.define('Voyant.panel.Summary', {
 				docs.sort(function(d1, d2) {return d2.get('readability')-d1.get('readability')});
 				main.insert(sectionIndex, me.showSparklineSection(function(doc) {
 					return Ext.util.Format.number(doc.get('readability'),'0.000');
-				}, me.localize('readabilityIndex'), me.localize('highest'), me.localize('lowest'), docs, limit, docsLengthTpl, sparkWidth, numberOfTerms));
+				}, me.localize('readabilityIndex'), me.localize('highest'), me.localize('lowest'), docs, limit, docsLengthTpl, sparkWidth, me.localize('readabilityTip')));
 			} else {
 				main.insert(sectionIndex, {
 					cls: 'section',
@@ -29364,7 +29673,7 @@ Ext.define('Voyant.panel.Summary', {
     	
     },
 
-	showSparklineSection: function(docDataFunc, headerText, topText, bottomText, docs, limit, docsLengthTpl, sparkWidth, numberOfTerms) {
+	showSparklineSection: function(docDataFunc, headerText, topText, bottomText, docs, limit, docsLengthTpl, sparkWidth, valueTip) {
 		var me = this;
 		return {
 			cls: 'section',
@@ -29392,14 +29701,14 @@ Ext.define('Voyant.panel.Summary', {
 					shortTitle: doc.getShortTitle(),
 					title: doc.getTitle(),
 					val: docDataFunc.call(me, doc),
-					valTip: numberOfTerms
+					valTip: valueTip
 				}}))+'</li>'+
 					'<li>'+bottomText+" "+docsLengthTpl.apply(docs.slice(-(docs.length>limit ? limit : parseInt(docs.length/2))).reverse().map(function(doc) {return {
 						id: doc.getId(),
 						shortTitle: doc.getShortTitle(),
 						title: doc.getTitle(),
 						val: docDataFunc.call(me, doc),
-						valTip: numberOfTerms
+						valTip: valueTip
 					}}))+'</li>'
 			}]
 		}
@@ -31981,9 +32290,62 @@ Ext.define('Voyant.panel.Trends', {
     		});
     		this.fireEvent("termsClicked", this, terms);
     	}
-    }
+    },
 
+	getExtraDataExportItems: function() {
+		return [
+			{
+				name: 'export',
+				inputValue: 'dataAsTsv',
+				boxLabel: this.localize('exportGridCurrentTsv')
+			}
+		]
+	},
 
+	exportDataAsTsv: function(panel, form) {
+		var value = '';
+
+		var chart = panel.down('chart');
+		var store = chart.getStore();
+		var firstModel = store.first();
+		var data = firstModel.getData();
+
+		var fields = ['Index'];
+		
+		var termKeys = Object.keys(data).filter(function(key) {
+			return key.indexOf('term') === 0;
+		}).sort();
+		var terms = [];
+		termKeys.forEach(function(termKey) {
+			terms.push(data[termKey]);
+		});
+		
+		fields = fields.concat(terms);
+		value += fields.join("\t")+"\n";
+
+		var valueKeys = Object.keys(data).filter(function(key) {
+			return key.indexOf('_') === 0;
+		}).sort();
+
+		store.each(function(model) {
+			data = model.getData();
+			var entry = [data['index']];
+			valueKeys.forEach(function(valueKey) {
+				entry.push(data[valueKey]);
+			});
+			value += entry.join("\t")+"\n";
+		}, panel);
+
+		Ext.Msg.show({
+			title: panel.localize('exportDataTitle'),
+			message: panel.localize('exportDataTsvMessage'),
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO,
+			prompt: true,
+			multiline: true,
+			value: value
+		});
+	}
  });
 Ext.define('Voyant.panel.NoTool', {
 	extend: 'Ext.panel.Panel',
@@ -34900,6 +35262,144 @@ Ext.define('Voyant.panel.Via', {
     	});
     }
 });
+Ext.define('Voyant.panel.NSSI', {
+	extend: 'Ext.grid.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.nssi',
+
+	statics: {
+		i18n: {
+			title: 'NSSI Results',
+			entity: 'Entity',
+			lemma: 'Lemma',
+			classification: 'Classification',
+			document: 'Document',
+			start: 'Start',
+			end: 'End'
+		}
+	},
+	config: {
+	},
+
+	constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
+		this.callParent(arguments);
+		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+	},
+
+	initComponent: function() {
+		var me = this;
+
+		var store = Ext.create('Ext.data.JsonStore', {
+			fields: [
+				{name: 'entity'},
+				{name: 'lemma'},
+				{name: 'classification'},
+				{name: 'docId'},
+				{name: 'start', type: 'int'},
+				{name: 'end', type: 'int'}
+			]
+		});
+
+		Ext.apply(me, {
+			title: this.localize('title'),
+			emptyText: this.localize('emptyText'),
+			store : store,
+			columns: [{
+				text: this.localize('document'),
+				dataIndex: 'docIndex',
+				width: 'autoSize',
+				sortable: true
+			},{
+				text: this.localize('classification'),
+				dataIndex: 'classification',
+				flex: .5,
+				sortable: true
+			},{
+				text: this.localize('entity'),
+				dataIndex: 'entity',
+				flex: 1,
+				sortable: true
+			},{
+				text: this.localize('lemma'),
+				dataIndex: 'lemma',
+				flex: 1,
+				sortable: true
+			},{
+				text: this.localize('start'),
+				dataIndex: 'start',
+				width: 'autoSize',
+				sortable: false
+			},{
+				text: this.localize('end'),
+				dataIndex: 'end',
+				width: 'autoSize',
+				sortable: false
+			}]
+		});
+
+		me.on('loadedCorpus', function() {
+			var me = this;
+			if (this.isVisible()) {
+				this.load().then(function(data) {
+					var parsedData = [];
+					data.documents.forEach(function(doc) {
+						var docIndex = me.getCorpus().getDocument(doc.id).getIndex();
+						doc.entities.forEach(function(entity) {
+							parsedData.push(Object.assign({ docIndex: docIndex }, entity));
+						});
+					});
+					store.loadRawData(parsedData);
+				}, function(err) {
+					console.log(err);
+				})
+			}
+		}, me);
+
+		me.callParent(arguments);
+	},
+
+	load: function(params, dfd) {
+		dfd = dfd || Voyant.application.getDeferred(this);
+		var me = this;
+
+		Ext.Ajax.request({
+			url: Voyant.application.getTromboneUrl(),
+			params: {
+				corpus: this.getCorpus().getAliasOrId(),
+				tool: 'corpus.NSSI',
+				useCache: false,
+				noCache: true
+			},
+			scope: this
+		}).then(function(response) {
+			var data = Ext.JSON.decode(response.responseText);
+			if (data && data.nssi && data.nssi.progress) {
+				new Voyant.widget.ProgressMonitor({
+					progress: data.nssi.progress,
+					delay: 10000,
+					maxMillisSinceStart: 1000*60*60, // an hour (!)
+					success: function() {
+						console.log('NSSI progress monitor success');
+						me.load.call(me, params, dfd);
+					},
+					failure: function(responseOrProgress) {
+						Voyant.application.showResponseError(me.localize("failedToFetchGeonames"), responseOrProgress);
+					},
+					scope: me
+				});
+			}
+			if (data && data.nssi && !data.nssi.progress) {
+				dfd.resolve(data.nssi);
+			}
+		}, function(response) {
+			Voyant.application.showResponseError(me.localize('failedToFetchGeonames'), response);
+		});
+		return dfd.promise;
+	}
+});
+
+
 Ext.define("Voyant.notebook.editor.button.Add", {
 	extend: "Ext.button.Button",
 	mixins: ["Voyant.util.Localization"],
@@ -35641,6 +36141,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	},
 
 	constructor: function(config) {
+		config.expandResults = config.expandResults !== undefined ? config.expandResults : true;
 		var isExpanded = config.expandResults;
 		var sandboxSrcUrl = config.sandboxSrcUrl;
 
@@ -35832,6 +36333,18 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		return this.getCachedResultsVariables();
 	},
 
+	applyCachedResultsVariables: function(newVars, oldVars) {
+		var parentNotebook = this.up('notebook');
+		if (parentNotebook) {
+			// it isn't necessary to compare old and new vars since they all get removed prior to running in resetResults
+			// var toRemove = oldVars.filter(function(oldVar) {
+			// 	return newVars.find(function(newVar) { return newVar.name === oldVar.name }) === undefined;
+			// });
+			parentNotebook.updateTernServerVariables(newVars, oldVars);
+		}
+		return newVars;
+	},
+
 	getResultsEl: function() {
 		var doc = this.down('#resultsFrame');
 		if (doc) {
@@ -35886,7 +36399,9 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					me.setCachedResultsOutput(eventData.output);
 				}
 
-				me.setCachedResultsVariables(eventData.variables);
+				if (eventData.command !== 'getContents') { // don't overwrite variables when we just want to get sandbox contents
+					me.setCachedResultsVariables(eventData.variables);
+				}
 
 				if (eventData.height > 0) {
 					me._setHeight(eventData.height);
@@ -36063,18 +36578,38 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			if (this.getMode() === 'javascript') {
 				if (Voyant.notebook.editor.CodeEditor.ternServer === undefined) {
 					var defs = this.getDocs();
-					var url = this.up('notebook').getApplication().getBaseUrlFull();
+					var url = Voyant.application.getBaseUrlFull();
 					Voyant.notebook.editor.CodeEditor.ternServer = new CodeMirror.TernServer({
 						defs: defs,
 						useWorker: true,
 						workerScript: url+'resources/spyral/tern/worker.js',
-						workerDeps: ['tern_worker_deps.js']
+						workerDeps: ['tern_worker_deps.js'],
+						hintDelay: 5000
 					});
 				}
+
+				editor.on('keypress', function(ed, event) {
+					if (event.key === '.') {
+						Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+					} else if (event.key === '{') {
+						// many Spyral methods take a single config object
+						// so look out for that and display config object properties
+						var cursor = ed.getCursor();
+						var range = ed.getRange({line: cursor.line, ch: 0}, cursor);
+						if (range.match(/\(\s*$/)) {
+							// let closebrackets addon finish and then look for matches
+							setTimeout(function() {
+								Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+							}, 50);
+						}
+					}
+				});
 				
 				Object.assign(editor.getOption('extraKeys'), {
 					'Ctrl-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
-					'Ctrl-O': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed); }
+					'Ctrl-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); },
+					'Cmd-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
+					'Cmd-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); }
 				});
 				editor.on('cursorActivity', function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.updateArgHints(ed); });
 			}
@@ -36177,6 +36712,19 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			}
 		});
 		this.setMarkers([]);
+	},
+
+	_showDocsCallback: function() {
+		var toolTipEl = this.getEditor().state.ternTooltip;
+		var docLink = toolTipEl.querySelector('a');
+		if (docLink) {
+			docLink.addEventListener('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				var docHref = docLink.getAttribute('href');
+				this.up('notebook').handleDocLink(docHref);
+			}.bind(this));
+		}
 	}
 })
 Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
@@ -36813,7 +37361,6 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 					code = dataName+'= new DOMParser().parseFromString(`'+code+'`, "application/xml")'; // also use xml for strict validation
 					break;
 			}
-			// TODO handle parse errors for xml/html
 			dfd.resolve(code);
 		}
 
@@ -36881,7 +37428,7 @@ Ext.define("Voyant.notebook.github.OctokitWrapper", {
 		const authToken = config.authToken;
 		this.octokit = new Octokit({
 			auth: authToken,
-			userAgent: 'https://github.com/sgsinclair/Voyant'
+			userAgent: 'https://github.com/voyanttools/Voyant'
 		});
 	},
 
@@ -37580,13 +38127,15 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		currentFile: undefined
 	},
 
-	authToken: undefined,
 	octokitWrapper: undefined,
 
 	currentWindow: undefined,
 
+	parent: undefined,
+
 	constructor: function(config) {
 		config = config || {};
+		this.parent = config.parent;
     	this.callParent(arguments);
     },
 
@@ -37601,60 +38150,16 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		}
 	},
 
-	showAuthenticate: function(callback) {
-		const parent = this;
-
-		let authWin = undefined;
-		authWin = Ext.create('Ext.window.Window', {
-			title: 'Authenticate with GitHub',
-			width: 750,
-			height: 550,
-			closable: false,
-			layout: {
-				type: 'vbox',
-				align: 'middle',
-				pack: 'center'
-			},
-			items: [{
-				html: '<div style="margin-bottom: 10px;">You must authorize Spyral to use GitHub on your behalf.</div>'
-			},{
-				xtype: 'button',
-				text: 'Authorize with GitHub',
-				handler: function(button) {
-					function postMessageHandler(event) {
-						if (event.origin === window.location.origin && event.data === 'oauth_cookie_set') {
-							window.removeEventListener("message", postMessageHandler, false);
-							event.source.close();
-							parent.initOctokitWrapper();
-							button.up('window').close();
-							callback.call(parent);
-						}
-					}
-					window.open(Voyant.application.getBaseUrlFull()+'spyral/oauth', '_blank');
-					window.addEventListener("message", postMessageHandler, false);
-				}
-			}],
-			buttons: [{
-				text: 'Cancel',
-				handler: function() {
-					parent.close();
-				}
-			}]
-		});
-		authWin.show();
-
-		this.currentWindow = authWin;
-	},
-
 	showLoad: function() {
-		const parent = this;
+		const me = this;
 
-		this.authToken = this.getCookieValue('access-token');
-		if (this.authToken === '') {
-			this.showAuthenticate(this.showLoad);
+		if (this.parent.isAuthenticated) {
+			if (this.octokitWrapper === undefined) {
+				this.initOctokitWrapper(this.parent.githubAuthToken);
+			}
+		} else {
+			this.parent.showGitHubAuthentication(this.showLoad.bind(this));
 			return;
-		} else if (this.octokitWrapper === undefined) {
-			this.initOctokitWrapper();
 		}
 
 		let loadWin = undefined;
@@ -37694,7 +38199,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 			},{
 				text: 'Cancel',
 				handler: function() {
-					parent.close();
+					me.close();
 				}
 			}]
 		});
@@ -37704,14 +38209,15 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 	},
 
 	showSave: function(data) {
-		const parent = this;
+		const me = this;
 
-		this.authToken = this.getCookieValue('access-token');
-		if (this.authToken === '') {
-			this.showAuthenticate(this.showSave);
+		if (this.parent.isAuthenticated) {
+			if (this.octokitWrapper === undefined) {
+				this.initOctokitWrapper(this.parent.githubAuthToken);
+			}
+		} else {
+			this.parent.showGitHubAuthentication(this.showSave.bind(this));
 			return;
-		} else if (this.octokitWrapper === undefined) {
-			this.initOctokitWrapper();
 		}
 
 		let saveWin = undefined;
@@ -37733,7 +38239,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 						saveWin.queryById('save').setDisabled(!valid);
 					},
 					fileSaved: function(src, fileData) {
-						parent.fireEvent('fileSaved', parent, fileData);
+						me.fireEvent('fileSaved', me, fileData);
 					}
 				}
 			},
@@ -37748,8 +38254,8 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 			},{
 				text: 'Cancel',
 				handler: function() {
-					parent.close();
-					parent.fireEvent('saveCancelled', parent);
+					me.close();
+					me.fireEvent('saveCancelled', me);
 				}
 			}]
 		});
@@ -37758,17 +38264,9 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		this.currentWindow = saveWin;
 	},
 
-	getCookieValue: function(cookieName) {
-		const re = new RegExp('[; ]'+cookieName+'=([^\\s;]*)');
-		const sMatch = (' '+document.cookie).match(re);
-		if (cookieName && sMatch) return unescape(sMatch[1]);
-		return '';
-	},
-
-	initOctokitWrapper: function() {
-		this.authToken = this.getCookieValue('access-token');
+	initOctokitWrapper: function(authToken) {
 		this.octokitWrapper = new Voyant.notebook.github.OctokitWrapper({
-			authToken: this.authToken
+			authToken: authToken
 		});
 	},
 
@@ -37782,13 +38280,15 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 	},
 
 	loadFile: function(repoId, filePath) {
-		this.authToken = this.getCookieValue('access-token');
-		if (this.authToken === '') {
-			this.showAuthenticate(this.loadFile.bind(this, repoId, filePath));
+		if (this.parent.isAuthenticated) {
+			if (this.octokitWrapper === undefined) {
+				this.initOctokitWrapper(this.parent.githubAuthToken);
+			}
+		} else {
+			this.parent.showGitHubAuthentication(this.loadFile.bind(this));
 			return;
-		} else if (this.octokitWrapper === undefined) {
-			this.initOctokitWrapper();
 		}
+
 		this.octokitWrapper.loadFile(repoId, filePath).then((data) => {
 			this.setCurrentFile(data);
 			this.fireEvent('fileLoaded', this, data);
@@ -37800,22 +38300,23 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 	extend: "Ext.Component",
 	requires: [],
 	alias: "",
-	config: {
-		accessCode: undefined
-	},
+
+	notebookParent: undefined,
 
 	constructor: function(config) {
 		config = config || {};
     	this.callParent(arguments);
+
+		this.notebookParent = config.notebookParent;
     },
 
 	initComponent: function() {
 		this.callParent(arguments);
 	},
 	
-	showSave: function(data, metadata, notebookId='') {
+	showSave: function(data, metadata, notebookName='') {
 		const me = this;
-		const newNotebook = notebookId === '';
+		const newNotebook = notebookName === '';
 		const title = newNotebook ? 'Save New Notebook' : 'Overwrite Existing Notebook';
 		Ext.create('Ext.window.Window', {
 			title: title,
@@ -37839,40 +38340,20 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 				},
     	    	items: [{
 					fieldLabel: 'Notebook ID' + (newNotebook ? ' (optional)' : ''),
-					name: 'notebookId',
-					value: notebookId,
+					name: 'notebookName',
+					value: notebookName,
 					allowBlank: true,
 					readOnly: !newNotebook,
 					tooltip: 'An ID used to identify this notebook. If left blank, one will be generated for you.',
 					validator: function(val) {
 						if (val == '') {
 							return true;
-						} else if (val.match(/^[\w-]{4,16}$/) === null) {
-							return 'The ID must be between 4 and 16 alphanumeric characters.'
+						} else if (val.match(/^[A-Za-z0-9-]{4,32}$/) === null) {
+							return 'The ID must be between 4 and 32 characters. You may use alphanumeric characters and dash.'
 						} else {
 							return true;
 						}
 					}
-				},{
-					fieldLabel: 'Access Code',
-					name: 'accessCode',
-					allowBlank: false,
-					value: newNotebook ? this.generateAccessCode() : this.getAccessCode(),
-					tooltip: 'The Access Code is required to overwrite this notebook.',
-					validator: function(val) {
-						if (val.match(/^[\w-]{4,16}$/) === null) {
-							return 'The access code must be between 4 and 16 alphanumeric characters.'
-						} else {
-							return true;
-						}
-					}
-				},{
-					fieldLabel: 'Email (optional)',
-					name: 'email',
-					allowBlank: true,
-					vtype: 'email',
-					hidden: !newNotebook,
-					tooltip: 'An email will be sent to this address with the Notebook URL and Access Code.'
 				}]
 			}],
 			buttons: [{
@@ -37891,10 +38372,12 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 						const values = form.getValues();
 						values.data = data;
 						values.metadata = metadata;
-						if (newNotebook && values.notebookId !== '') {
-							me.doesNotebookIdExist(values.notebookId).then(function(exists) {
+						if (newNotebook && values.notebookName !== '') {
+							const info = me.notebookParent.accountInfo;
+							const userId = info.id;
+							me.doesNotebookExist(userId, values.notebookName).then(function(exists) {
 								if (exists) {
-									form.findField('notebookId').markInvalid('That Notebook ID already exists.');
+									form.findField('notebookName').markInvalid('That Notebook ID already exists.');
 								} else {
 									me.doSave(values);
 									win.close();
@@ -37907,7 +38390,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 								if (didSave) {
 									win.close();
 								} else {
-									form.findField('accessCode').markInvalid('Invalid access code.');
+									// TODO show error
 								}
 							});
 						}
@@ -37922,71 +38405,67 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		}).show();
 	},
 
-	doesNotebookIdExist: function(id) {
+	doesNotebookExist: function(userId, notebookName) {
 		const dfd = new Ext.Deferred();
 
 		Spyral.Load.trombone({
 			tool: 'notebook.GitNotebookManager',
 			action: 'exists',
-			id: id,
+			id: userId+this.notebookParent.NOTEBOOK_ID_SEPARATOR+notebookName,
 			noCache: 1
 		}).then(function(json) {
-			var exists = json.notebook.data === 'true';
-			dfd.resolve(exists);
+			if (json.notebook.success) {
+				var exists = json.notebook.data === 'true';
+				dfd.resolve(exists);
+			} else {
+				console.warn(json.notebook.error);
+				dfd.resolve(false);
+			}
 		}).catch(function(err) {
-			console.log(err);
+			console.warn(err);
 		});
 
 		return dfd.promise;
 	},
 
-	doSave: function({notebookId, accessCode, email, data, metadata}) {
+	doSave: function({notebookName, data, metadata}) {
 		const me = this;
-		metadata.id = notebookId;
 
-		return Spyral.Load.trombone({
-			method: 'POST',
-			tool: 'notebook.GitNotebookManager',
-			action: 'save',
-			id: notebookId,
-			accessCode: accessCode,
-			email: email,
-			data: data,
-			metadata: JSON.stringify(metadata)
-		}).then(function(json) {
-			if (json.notebook.data !== 'true') {
-				return false;
-			} else {
-				me.setAccessCode(accessCode);
-				const notebookId = json.notebook.id;
-				me.fireEvent('fileSaved', me, notebookId);
-				return true;
-			}
-		}).catch(function(err) {
-			me.fireEvent('fileSaved', me, null);
-			return false;
-		});
-	},
+		const dfd = new Ext.Deferred();
 
-	generateAccessCode: function() {
-		const alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-		let code = '';
-		while (code.length < 6) {
-			if (Math.random() < .3) {
-				code += Math.floor(Math.random()*9);
-			} else {
-				let letter = alphabet[Math.floor(Math.random()*alphabet.length)];
-				if (Math.random() < .5) {
-					letter = letter.toUpperCase();
-				}
-				code += letter;
-			}
+		if (notebookName.indexOf(this.notebookParent.NOTEBOOK_ID_SEPARATOR) !== -1) {
+			console.warn('doSave: was sent notebookId instead of name');
+			notebookName = notebookName.split(this.notebookParent.NOTEBOOK_ID_SEPARATOR)[1];
 		}
-		return code;
+
+		Ext.Ajax.request({
+			method: 'POST',
+			url: Voyant.application.getBaseUrlFull()+'spyral/account/save',
+			params: {
+				name: notebookName,
+				data: data,
+				metadata: JSON.stringify(metadata)
+			},
+			success: function(resp) {
+				const json = JSON.parse(resp.responseText);
+				if (json.notebook.success) {
+					me.fireEvent('fileSaved', me, json.notebook.id);
+					dfd.resolve(true);
+				} else {
+					me.fireEvent('fileSaved', me, null, json.notebook.error);
+					dfd.reject(false);
+				}
+			},
+			failure: function(resp) {
+				me.fireEvent('fileSaved', me, null, resp.responseText);
+				dfd.reject(false);
+			}
+		});
+
+		return dfd.promise;
 	},
 
 	reset: function() {
-		this.setAccessCode(undefined);
 	}
 })
 Ext.define('Voyant.notebook.metadata.MetadataEditor', {
@@ -37995,9 +38474,9 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 	alias: 'widget.metadataeditor',
 	statics: {
 		i18n: {
+			metadataAuthor: "Author(s)",
     		metadataTitle: "Title",
     		metadataTip: "Edit notebook metadata.",
-    		metadataAuthor: "Author(s)",
     		metadataKeywords: "Keywords",
     		metadataDescription: "Description",
     		metadataLicense: "Licence",
@@ -38021,19 +38500,11 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 				// The fields
 				defaultType: 'textfield',
 				items: [{
-					fieldLabel: this.localize("metadataTitle"),
-					xtype: 'htmleditor',
-					name: 'title',
-					height: 100,
-					enableAlignments : false,
-					enableColors : false,
-					enableFont : false,
-					enableFontSize : false,
-					enableLinks : false,
-					enableLists : false
-				},{
 					fieldLabel: this.localize("metadataAuthor"),
 					name: 'author'
+				},{
+					fieldLabel: this.localize("metadataTitle"),
+					name: 'title'
 				},{
 					fieldLabel: this.localize("metadataKeywords"),
 					name: 'keywords',
@@ -38066,13 +38537,9 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 						}
 					}
 				},{
-					xtype: 'htmleditor',
+					xtype: 'textarea',
 					fieldLabel: this.localize("metadataDescription"),
-					name: 'description',
-					height: 100,
-					enableAlignments : false,
-					enableColors : false,
-					enableFont : false
+					name: 'description'
 				},{
 					xtype: 'combo',
 					fieldLabel: this.localize("metadataLicense"),
@@ -38145,6 +38612,7 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 		if (metadata instanceof Spyral.Metadata) {
 			this.loadRecord(Ext.create('Voyant.data.model.NotebookMetadata', {
 				title: metadata.title,
+				userId: metadata.userId,
 				author: metadata.author,
 				description: metadata.description,
 				keywords: metadata.keywords,
@@ -38159,6 +38627,7 @@ Ext.define('Voyant.data.model.NotebookMetadata', {
 	extend: 'Ext.data.Model',
 	fields: [
 		{name: 'title', type: 'string'},
+		{name: 'userId', type: 'string'},
 		{name: 'author', type: 'string'},
 		{name: 'description', type: 'string'},
 		{name: 'keywords', type: 'string'},
@@ -38305,53 +38774,44 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 	},
 
 	generateExportHtml: function() {
-		var metadata = this.getMetadata();
-		var out = "<!DOCTYPE HTML>\n<html>\n<head>\n\t<meta charset='UTF-8'>\n"+
-			metadata.getHeaders();
-		var aceChromeEl = document.getElementById("ace-chrome");
-		if (aceChromeEl) {out+=aceChromeEl.outerHTML+"\n"}
-		
-		// TODO voyant-notebooks-styles has been removed
-		var stylesEl = document.getElementById("voyant-notebooks-styles");
-		if (stylesEl) {out+=stylesEl.outerHTML+"\n"}
+		var out = "<!DOCTYPE HTML>\n<html>\n<head>\n<meta charset='UTF-8'>\n";
 
-		out += "<script> // this script checks to see if embedded tools seem to be available\n"+
-			"window.addEventListener('load', function() {\n"+
-				"var hostnames = {}, warned = false;\n"+
-				"document.querySelectorAll('iframe').forEach(function(iframeEl) {\n"+
-					"let url = new URL(iframeEl.src);\n"+
-					"if (!(url.hostname in hostnames) && !warned) {\n"+
-						"hostnames[url.hostname] = true; // mark as fetched\n"+
-						"fetch(url).catch(response => {\n"+
-							"warned = true;\n"+
-							"alert('This notebook seems to contain one ore more tools that may not be able to load. Possible reasons include a server no longer being accessible (especially if the notebook was generated from a local server), or because of security restrictions.'+url)\n"+
-						"})\n"+
-					"}\n"+
-				"})\n"+
-			"})\n"+
-			"</script>\n"+
-			"</head>\n<body class='exported-notebook'>\n"+
-			"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"+
-			"<article class='spyralArticle'>\n";
+		var metadata = this.getMetadata();
+		out += metadata.getHeaders();
+
+		out += '<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/codemirror/lib/codemirror.css">'
+		+'<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/spyral/css/codemirror.css">'
+		+'<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/spyral/css/spyral.css">'
+		+'<link rel="stylesheet" type="text/css" href="https://voyant-tools.org/resources/spyral/css/dataviewer.css">';
+
+		out += "</head>\n"
+		+"<body class='exported-notebook'>\n"
+		+"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"
+		+"<article class='spyralArticle'>\n";
 
 		this.getComponent("cells").items.each(function(item, i) {
 			var content = item.getContent();
 			var counter = item.down("notebookwrappercounter");
 
-			// reminder that the parsing in of notebooks depends on the stability of this syntax
 			out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
 			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
 
 			if (item.isXType('notebooktexteditorwrapper')) {
 				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
 			} else {	
-				var codeTextLayer = item.getTargetEl().query('.ace_text-layer')[0].cloneNode(true);
-				codeTextLayer.style.setProperty('height', 'auto'); // fix for very large height set by ace
+				var codeTextLayer = item.getTargetEl().query('.CodeMirror-wrap')[0].cloneNode(true);
 
-				// reminder that the parsing in of notebooks depends on the stability of this syntax
-				out+="<div class='notebook-code-editor ace-chrome'>\n"+codeTextLayer.outerHTML+"\n</div>\n"+
-					"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n"+
-					"<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
+				// code editor UI
+				out += "<div class='notebook-code-editor'>\n"+codeTextLayer.outerHTML+"\n</div>\n"
+				// code editor code for importing (hidden by CSS)
+				+"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n";
+
+				// code editor results
+				var output = content.output;
+				if (output === '') {
+					item.results.getResultsEl();
+				}
+				out += "<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
 			}
 
 			out+="</section>\n"
@@ -38419,11 +38879,13 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 	 * Export dialog options below
 	 */
 	
-	getExtraExportItems: function() {
-		return [{
-			inputValue: 'html',
-			boxLabel: this.localize('exportHtml')
-		},{
+	getExtraViewExportItems: function() {
+		return [
+		// {
+		// 	inputValue: 'html',
+		// 	boxLabel: this.localize('exportHtml')
+		// },
+		{
 			inputValue: 'htmlDownload',
 			boxLabel: '<a href="#">'+this.localize('exportHtmlDownload')+'</a>',
 			listeners: {
@@ -38450,19 +38912,389 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 				cmp.up("window").close();
 			}
 		}]
-	},
-	
-	exportHtml: function() {
-		var out = this.generateExportHtml();
-		var myWindow = window.open();
-		myWindow.document.write(out);
-		myWindow.document.close();
-		myWindow.focus();
 	}
-})
+	
+	// ,exportHtml: function() {
+	// 	var out = this.generateExportHtml();
+	// 	var myWindow = window.open();
+	// 	myWindow.document.write(out);
+	// 	myWindow.document.close();
+	// 	myWindow.focus();
+	// }
+});
+
+Ext.define('Voyant.notebook.util.NotebooksList', {
+	extend: 'Ext.view.View',
+	alias: 'widget.notebookslist',
+
+	constructor: function(config) {
+		Ext.apply(config, {
+			width: '100%',
+			padding: 10,
+			scrollable: 'vertical',
+			store: Ext.create('Ext.data.JsonStore', {
+				fields: [
+					{name: 'id'},
+					{name: 'author'},
+					{name: 'title'},
+					{name: 'description'},
+					{name: 'keywords'},
+					{name: 'language'},
+					{name: 'license'},
+					{name: 'created', type: 'date'},
+					{name: 'modified', type: 'date'},
+					{name: 'version'}
+				]
+			}),
+			tpl: new Ext.XTemplate(
+				'<tpl for=".">',
+					'<div class="catalogue-notebook">',
+						'<div class="id">{id}</div>',
+						'<div class="title nowrap" title="{title}">{title}</div>',
+						'<div class="author nowrap"><i class="fa fa-user" aria-hidden="true"></i> {author}</div>',
+						'<div class="description">{description}</div>',
+						'<tpl if="keywords.length &gt; 0">',
+							'<div class="keywords nowrap">',
+								'<i class="fa fa-tags" aria-hidden="true"></i> ',
+								'<tpl for="keywords">',
+									'<span>{.}</span>',
+								'</tpl>',
+							'</div>',
+						'</tpl>',
+						'<div class="dates"><span class="date"><i class="fa fa-clock-o" aria-hidden="true"></i> {[Ext.Date.format(values.modified, "M j Y")]}</span></div>',
+					'</div>',
+				'</tpl>'
+			),
+			itemSelector: 'div.catalogue-notebook',
+			overItemCls: 'catalogue-notebook-over',
+			selectedItemCls: 'catalogue-notebook-selected'
+		});
+
+		this.callParent(arguments);
+	}
+});
+
+Ext.define('Voyant.notebook.util.DocsWindow', {
+	extend: 'Ext.window.Window',
+	mixins: ['Voyant.util.Localization'],
+	statics: {
+		i18n: {
+			home: 'Home',
+			overview: 'Overview',
+			configs: 'Configs',
+			methods: 'Methods',
+			docs: 'Docs',
+			openFull: 'Open Full Documentation',
+			outlineIntro: 'This is an inline version of the API documentation for <a href="#!/guide/notebook">Spyral Notebooks</a>. You can also <a href="#!/api">view the full documentation</a> in a new window.',
+			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:'
+		}
+	},
+
+	lastDocEntryClass: undefined,
+	lastDocEntryMethod: undefined,
+
+	outlineTemplate: new Ext.XTemplate(
+		'<ul>',
+			'<tpl for="groups">',
+				'<tpl for="classes">',
+					'<li><a href="#!/api/{.}">{.}</a></li>',
+				'</tpl>',
+			'</tpl>',
+		'</ul>'
+	),
+	membersTemplate: new Ext.XTemplate(
+		'<div class="members">',
+			'<tpl for=".">',
+				'<div class="member">',
+					'<tpl if="meta.static">',
+						'<span class="static" title="static">s</span>',
+					'</tpl>',
+					'<a href="#!/api/{owner}-{id}">{name}</a>',
+				'</div>',
+			'</tpl>',
+		'</div>'
+	),
+
+	constructor: function(config) {
+		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
+
+		config = config || {};
+		Ext.apply(config, {
+			title: this.localize('docs'),
+			width: 500,
+			height: 500,
+			minimizable: true,
+			closeAction: 'hide',
+			tbar: [{
+				text: this.localize('home'),
+				itemId: 'homeBtn',
+				glyph: 'xf015@FontAwesome',
+				handler: function(btn) {
+					this.showDocs();
+				}.bind(this)
+			},{
+				text: this.localize('overview'),
+				itemId: 'overviewBtn',
+				glyph: 'xf05a@FontAwesome',
+				handler: function(btn) {
+					this._showDocEntry();
+				}.bind(this)
+			},{
+				text: this.localize('configs'),
+				itemId: 'configsBtn',
+				glyph: 'xf013@FontAwesome',
+				handler: function(btn) {
+					btn.up('window').getLayout().setActiveItem(1);
+				}
+			},{
+				text: this.localize('methods'),
+				itemId: 'methodsBtn',
+				glyph: 'xf1b2@FontAwesome',
+				handler: function(btn) {
+					btn.up('window').getLayout().setActiveItem(2);
+				}
+			}],
+			layout: 'card',
+			items: [{
+				itemId: 'main',
+				cls: 'docsWindowContent',
+				scrollable: 'y',
+				html: ''
+			},{
+				itemId: 'configs',
+				cls: 'docsWindowContent',
+				scrollable: 'x',
+				layout: 'fit',
+				html: ''
+			},{
+				itemId: 'methods',
+				cls: 'docsWindowContent',
+				scrollable: 'x',
+				layout: 'fit',
+				html: ''
+			}],
+			tools: [{
+				type: 'help',
+				tooltip: this.localize('openFull'),
+				callback: function(parent, tool, event) {
+					var entryId = '';
+					if (this.lastDocEntryClass) {
+						entryId += '/'+this.lastDocEntryClass;
+					}
+					if (this.lastDocEntryMethod) {
+						entryId += '-'+this.lastDocEntryMethod;
+					}
+					window.open(Voyant.application.getBaseUrlFull()+'docs/#!/api'+entryId, '_spyral_docs');
+				}.bind(this)
+			},{
+				type: 'restore',
+				itemId: 'restoreButton',
+				hidden: true,
+				handler: function(evt, el, owner, tool) {
+					tool.hide();
+					var win = owner.up('window');
+					win.expand(false);
+					setTimeout(function() {
+						win.anchorTo(Ext.getBody(), 'br-br');
+					}, 10);
+				}
+			}],
+			listeners: {
+				boxready: function(win) {
+					win.body.addListener('click', function(evt) {
+						if (evt.target.tagName.toLowerCase() === 'a') {
+							evt.preventDefault();
+							evt.stopPropagation();
+							var link = evt.target.getAttribute('href');
+							this.handleDocLink(link);
+						}
+					}, this);
+				},
+				minimize: function(win) {
+					win.collapse(Ext.Component.DIRECTION_BOTTOM, false).anchorTo(Ext.getBody(), 'br-br');
+					win.down('#restoreButton').show();
+				},
+				scope: this
+			}
+		});
+
+		this.callParent([config]);
+	},
+
+	showDocs: function() {
+		Ext.Ajax.request({
+			// TODO inaccessible on server?
+			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
+		}).then(function(response) {
+			var json;
+			try {
+				json = JSON.parse(response.responseText);
+			} catch (e) {
+				console.warn('error parsing api doc json', e);
+			}
+			if (json) {
+				this._loadExtOutline(json[0]);
+			}
+		}.bind(this), function() {
+			this._loadExtOutline({
+				"name": "Spyral",
+				"groups": [
+					{
+						"name": "Base",
+						"classes": [
+							"Spyral.Corpus",
+							"Spyral.Table",
+							"Spyral.Chart",
+							"Spyral.Load",
+							"Spyral.Util",
+							"Spyral.Categories"
+						]
+					},{
+						"name": "Notebook",
+						"classes": [
+							"Spyral.Metadata",
+							"Spyral.Notebook",
+							"Spyral.Util.Storage"
+						]
+					},{
+						"name": "Global",
+						"classes": [
+							"window"
+						]
+					}
+				]
+			})
+		}.bind(this));
+	},
+
+	handleDocLink: function(link) {
+		var matches = link.match(/.*?\/api\/([\w.]+)-?(.*)?/);
+		if (matches) {
+			var linkClass = matches[1];
+			var linkMethod = matches[2];
+			if (linkClass !== this.lastDocEntryClass) {
+				this.showDocsForClassMethod(linkClass, linkMethod);
+			} else {
+				this._showDocEntry(linkMethod);
+			}
+		} else {
+			if (link.indexOf('#!') === 0) {
+				window.open(Voyant.application.getBaseUrlFull()+'docs/'+link, '_spyral_docs');
+			} else {
+				window.open(link, '_external');
+			}
+		}
+	},
+
+	showDocsForClassMethod: function(docClass, docMethod) {
+		Ext.Ajax.request({
+			url: Voyant.application.getBaseUrlFull()+'docs/output/'+docClass+'.js'
+		}).then(function(response) {
+			var jsonpText = response.responseText; // response has JSON-P wrapper which we'll need to remove
+			var json;
+			try {
+				json = JSON.parse(jsonpText.substring(jsonpText.indexOf('{'), jsonpText.length-2));
+			} catch (e) {
+				console.warn('error parsing api doc json', e);
+			}
+			if (json) {
+				this._loadExtDocs(json, docClass, docMethod);
+			}
+		}.bind(this));
+	},
+
+	_showDocEntry: function(entryId) {
+		var docsParentEl = this.down('#main').getEl().dom;
+		docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = true; });
+		this.lastDocEntryMethod = entryId;
+		if (entryId) {
+			docsParentEl.querySelector('#'+entryId).hidden = false;
+		} else {
+			docsParentEl.querySelector('.doc-contents').hidden = false;
+		}
+		this.getLayout().setActiveItem(0);
+		setTimeout(function() {
+			this.down('#main').body.scrollTo('top', 0, false);
+		}.bind(this), 0);
+	},
+
+	_loadExtOutline: function(json) {
+		this.lastDocEntryClass = undefined;
+		this.lastDocEntryMethod = undefined;
+		this.setTitle(this.localize('docs')+' '+this.localize('home'));
+		this.show().anchorTo(Ext.getBody(), 'br-br');
+		this.down('#restoreButton').hide();
+
+		var html = '<p>'+this.localize('outlineIntro')+'</p><p>'+this.localize('outlineApi')+'</p>';
+		html += this.outlineTemplate.apply(json);
+
+		this._setHtmlForCard('main', html);
+
+		this.body.scrollTo('top', 0, false);
+
+		this.getLayout().setActiveItem(0);
+
+		this.down('#overviewBtn').hide();
+		this.down('#configsBtn').hide();
+		this.down('#methodsBtn').hide();
+
+		if (this.getCollapsed()) {
+			this.expand(false);
+			setTimeout(function() {
+				this.anchorTo(Ext.getBody(), 'br-br');
+			}.bind(this), 10);
+		}
+	},
+
+	_loadExtDocs: function(json, docClass, docMethod) {
+		this.lastDocEntryClass = docClass;
+		this.lastDocEntryMethod = docMethod;
+		this.setTitle(this.localize('docs')+': '+json.name);
+		this.show().anchorTo(Ext.getBody(), 'br-br');
+		this.down('#restoreButton').hide();
+
+		this._setHtmlForCard('main', json.html);
+
+		this._showDocEntry(docMethod);
+
+		this.down('#overviewBtn').show();
+
+		var configMembers = [];
+		var methodMembers = [];
+		json.members.forEach(function(member) {
+			if (member.tagname === 'cfg') {
+				configMembers.push(member);
+			} else if (member.tagname === 'method') {
+				if (member.meta.static) {
+					// TODO add icon to indicate it's static?
+				}
+				methodMembers.push(member);
+			}
+		});
+
+		this._setHtmlForCard('configs', this.membersTemplate.apply(configMembers));
+		this.down('#configsBtn').setVisible(configMembers.length > 0);
+
+		this._setHtmlForCard('methods', this.membersTemplate.apply(methodMembers));
+		this.down('#methodsBtn').setVisible(methodMembers.length > 0);
+
+		if (this.getCollapsed()) {
+			this.expand(false);
+			setTimeout(function() {
+				this.anchorTo(Ext.getBody(), 'br-br');
+			}.bind(this), 10);
+		}
+	},
+
+	_setHtmlForCard: function(cardId, html) {
+		this.down('#'+cardId).setHtml(html);
+		var cardEl = this.down('#'+cardId).getEl().dom;
+		Ext.fly(cardEl).selectable();
+	}
+});
 Ext.define('Voyant.notebook.Catalogue', {
 	extend: 'Ext.Component',
-    mixins: ['Voyant.util.Localization'],
+    mixins: ['Voyant.util.Localization','Voyant.notebook.util.NotebooksList'],
 	alias: 'widget.notebookcatalogue',
 	statics: {
 		i18n: {
@@ -38481,46 +39313,10 @@ Ext.define('Voyant.notebook.Catalogue', {
 	},
 
 	window: undefined,
-	
-	store: undefined,
-	template: undefined,
 
 	gettingFacets: false,
 
 	constructor: function() {
-		this.store = Ext.create('Ext.data.JsonStore', {
-			fields: [
-				{name: 'id'},
-				{name: 'author'},
-				{name: 'title'},
-				{name: 'description'},
-				{name: 'keywords'},
-				{name: 'language'},
-				{name: 'license'},
-				{name: 'created', type: 'date'},
-				{name: 'modified', type: 'date'},
-				{name: 'version'}
-			]
-		});
-		this.template = new Ext.XTemplate(
-			'<tpl for=".">',
-				'<div class="catalogue-notebook">',
-					'<div class="id">{id}</div>',
-					'<div class="title nowrap" title="{title}">{title}</div>',
-					'<div class="author nowrap"><i class="fa fa-user" aria-hidden="true"></i> {author}</div>',
-					'<div class="description">{description}</div>',
-					'<tpl if="keywords.length &gt; 0">',
-						'<div class="keywords nowrap">',
-							'<i class="fa fa-tags" aria-hidden="true"></i> ',
-							'<tpl for="keywords">',
-								'<span>{.}</span>',
-							'</tpl>',
-						'</div>',
-					'</tpl>',
-					'<div class="dates"><span class="date"><i class="fa fa-clock-o" aria-hidden="true"></i> {[Ext.Date.format(values.modified, "M j Y")]}</span></div>',
-				'</div>',
-			'</tpl>'
-		);
 		this.suggestedStore = Ext.create('Ext.data.JsonStore', {
 			fields: [
 				{name: 'id'},
@@ -38616,20 +39412,12 @@ Ext.define('Voyant.notebook.Catalogue', {
 							}
 						},{xtype:'tbspacer', flex: .1}]
 					},{
-						xtype: 'dataview',
+						xtype: 'notebookslist',
+						itemId: 'notebookslist',
 						flex: 1,
-						width: '100%',
-						padding: 10,
-						scrollable: 'vertical',
-						itemId: 'catalogue',
-						store: this.store,
-						tpl: this.template,
-						itemSelector: 'div.catalogue-notebook',
-						overItemCls: 'catalogue-notebook-over',
-						selectedItemCls: 'catalogue-notebook-selected',
 						listeners: {
 							itemdblclick: function(view, record, el) {
-								this.fireEvent('notebookSelected', this, record.get('id'));
+								this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow);
 							},
 							scope: this
 						}
@@ -38702,7 +39490,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 						selectedItemCls: 'catalogue-notebook-selected',
 						listeners: {
 							itemdblclick: function(view, record, el) {
-								this.fireEvent('notebookSelected', this, record.get('id'));
+								this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow);
 							},
 							scope: this
 						}
@@ -38719,12 +39507,12 @@ Ext.define('Voyant.notebook.Catalogue', {
 				},{
 					text: this.localize('load'),
 					handler: function(but) {
-						var record = this.window.down('#catalogue').getSelection()[0];
+						var record = this.window.down('#notebookslist').getSelection()[0];
 						if (record === undefined) {
 							record = this.window.down('#suggestedNotebooks').getSelection()[0];
 						}
 						if (record) {
-							this.fireEvent('notebookSelected', this, record.get('id'))
+							this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow)
 						}
 					},
 					scope: this
@@ -38740,9 +39528,9 @@ Ext.define('Voyant.notebook.Catalogue', {
 				facetCmp.getSelectionModel().deselectAll();
 			});
 			this.window.down('#queryfield').setValue('');
-			this.window.down('#catalogue').getSelectionModel().deselectAll();
+			this.window.down('#notebookslist').getSelectionModel().deselectAll();
 			this.window.down('#suggestedNotebooks').getSelectionModel().deselectAll();
-			this.store.removeAll();
+			this.window.down('#notebookslist').getStore().removeAll();
 		}
 
 		if (this.suggestedStore.isLoaded() === false) {
@@ -38784,24 +39572,26 @@ Ext.define('Voyant.notebook.Catalogue', {
 			}).then(function(json) {
 				json.catalogue.facets.forEach(function(facetResult) {
 					var facetCmp = me.window.query('#facets > grid[facet='+facetResult.facet+']')[0];
-					var store = facetCmp.getStore();
-					store.clearFilter();
-					if (store.getCount() === 0) {
-						store.loadRawData(facetResult.results);
-					} else {
-						var matches = [];
-						store.each(function(record) {
-							var label = record.get('label');
-							for (var i = 0; i < facetResult.results.length; i++) {
-								var result = facetResult.results[i];
-								if (result.label === label) {
-									record.set('count', result.count);
-									matches.push(label);
-									break;
+					if (facetCmp) {
+						var store = facetCmp.getStore();
+						store.clearFilter();
+						if (store.getCount() === 0) {
+							store.loadRawData(facetResult.results);
+						} else {
+							var matches = [];
+							store.each(function(record) {
+								var label = record.get('label');
+								for (var i = 0; i < facetResult.results.length; i++) {
+									var result = facetResult.results[i];
+									if (result.label === label) {
+										record.set('count', result.count);
+										matches.push(label);
+										break;
+									}
 								}
-							}
-						});
-						store.filterBy(function(record) { return matches.indexOf(record.get('label')) !== -1 });
+							});
+							store.filterBy(function(record) { return matches.indexOf(record.get('label')) !== -1 });
+						}
 					}
 				});
 				me.window.down('#facets').unmask();
@@ -38829,13 +39619,13 @@ Ext.define('Voyant.notebook.Catalogue', {
 			return this.getNotebooks(queries);
     	}
 		if (queries.length === 0) {
-			this.window.down('#catalogue').getSelectionModel().deselectAll();
-			this.store.removeAll();
+			this.window.down('#notebookslist').getSelectionModel().deselectAll();
+			this.window.down('#notebookslist').getStore().removeAll();
 			return;
 		}
 
-		this.window.down('#catalogue').mask('Loading');
-		this.window.down('#catalogue').getSelectionModel().deselectAll();
+		this.window.down('#notebookslist').mask('Loading');
+		this.window.down('#notebookslist').getSelectionModel().deselectAll();
 
 		var me = this;
 		Spyral.Load.trombone({
@@ -38843,16 +39633,16 @@ Ext.define('Voyant.notebook.Catalogue', {
 			query: queries,
 			noCache: 1
 		}).then(function(json) {
-			me.window.down('#catalogue').unmask();
-			me.store.loadRawData(json.catalogue.notebooks);
-			me.store.sort('modified', 'DESC');
+			me.window.down('#notebookslist').unmask();
+			me.window.down('#notebookslist').getStore().loadRawData(json.catalogue.notebooks);
+			me.window.down('#notebookslist').getStore().sort('modified', 'DESC');
 		}).catch(function(err) {
 			me.window.unmask()
 		});
 	},
 
 	getSuggestedNotebooks: function() {
-		var notebookIds = ['aboutspyral', 'homeALTA', 'startALTA', 'createALTA', 'smallerALTA', 'tableALTA'];
+		var notebookIds = ['Tutorials', 'aboutspyral', 'DialogicaWelcome'];
 		var query = 'id:'+notebookIds.join('|id:');
 		var me = this;
 		Spyral.Load.trombone({
@@ -38868,6 +39658,233 @@ Ext.define('Voyant.notebook.Catalogue', {
 	}
 });
 
+Ext.define('Voyant.notebook.Authenticator', {
+	statics: {
+		i18n: {
+			account: 'Account',
+			signInWithGithub: 'Sign in with GitHub',
+			signInWithGoogle: 'Sign in with Google',
+			logout: 'Logout',
+			yourNotebooks: 'Your Notebooks',
+			authenticateWithGithub: 'Authenticate with GitHub',
+			authorizeSpyralGithub: 'You must authorize Spyral to use GitHub on your behalf.',
+			signInSuccess: 'Sign in successful!'
+		}
+	},
+
+	accountInfo: undefined,
+
+	getGitHubAuthButton: function(callback) {
+		const me = this;
+		return {
+			xtype: 'button',
+			glyph: 'xf09b@FontAwesome',
+			text: me.localize('signInWithGithub'),
+			margin: '5 15',
+			handler: function(button) {
+				function postMessageHandler(event) {
+					if (event.origin === window.location.origin && event.data === 'oauth_cookie_set') {
+						window.removeEventListener("message", postMessageHandler, false);
+						event.source.close();
+						me.retrieveAccountInfo().then(function(info) {
+							callback.call(me, info);
+						});
+					} else {
+						console.warn('Error authenticating with GitHub');
+					}
+				}
+				window.open(Voyant.application.getBaseUrlFull()+'spyral/oauth', '_blank');
+				window.addEventListener("message", postMessageHandler, false);
+			}
+		}
+	},
+
+	getGoogleAuthButton: function(callback) {
+		google.accounts.id.initialize({
+			client_id: "foobar",
+			ux_mode: "redirect",
+			login_uri: "http://localhost:8080/voyant/spyral/oauth/callback"
+		});
+
+		return {
+			xtype: 'component',
+			html: '<div id="signInWithGoogleButton"></div>',
+			margin: 5,
+			listeners: {
+				afterrender: function() {
+					google.accounts.id.renderButton(
+						document.getElementById("signInWithGoogleButton"),
+						{theme: "outline", size: "medium"}
+					);
+				}
+			}
+		}
+	},
+
+	showGitHubAuthentication: function(callback) {
+		const me = this;
+
+		Ext.create('Ext.window.Window', {
+			title: me.localize('authenticateWithGithub'),
+			width: 750,
+			height: 550,
+			closable: false,
+			layout: {
+				type: 'vbox',
+				align: 'middle',
+				pack: 'center'
+			},
+			items: [
+				{html: '<div style="margin-bottom: 10px;">'+me.localize('authorizeSpyralGithub')+'</div>'},
+				me.getGitHubAuthButton(callback)
+			],
+			buttons: [{
+				text: 'Cancel',
+				handler: function() {
+					me.close();
+				}
+			}]
+		}).show();
+	},
+
+	showAccountWindow: function() {
+		const me = this;
+
+		if (this.isAuthenticated()) {
+			const idInfo = this.accountInfo.id.split('@');
+			const id = idInfo[0];
+			const idType = idInfo[1];
+
+			const accountWin = Ext.create('Ext.window.Window', {
+				title: me.localize('account'),
+				width: 750,
+				height: 550,
+				modal: true,
+				maximizable: true,
+				closable: true,
+				layout: {
+					type: 'hbox',
+					align: 'stretch',
+					pack: 'center'
+				},
+				items: [{
+					width: 200,
+					layout: {
+						type: 'vbox',
+						align: 'middle',
+						pack: 'start'
+					},
+					items: [{
+						html:
+`<div style="padding: 10px">
+	<img src="${me.accountInfo.avatar}" width="100" height="100" style="display: block; margin-bottom: 5px" />
+	<div style="margin-bottom: 5px">${me.accountInfo.name}</div>
+	<div><i class="fa fa-${idType === 'gh' ? 'github' : 'google'}"></i> ${id}</div>
+</div>`
+					},{
+						xtype: 'button',
+						glyph: 'xf08b@FontAwesome',
+						text: me.localize('logout'),
+						handler: function(btn) {
+							Ext.Ajax.request({url: me.getApplication().getBaseUrlFull()+'spyral/account/logout'});
+							me.accountInfo = undefined;
+							btn.up('window').close();
+						}
+					}]
+				},{
+					flex: 1,
+					layout: {
+						type: 'vbox',
+						align: 'middle',
+						pack: 'start'
+					},
+					items:[{
+						html: '<h3>'+me.localize('yourNotebooks')+'</h3>'
+					},{
+						flex: 1,
+						itemId: 'notebookslist',
+						xtype: 'notebookslist',
+						listeners: {
+							itemdblclick: function(view, record, el) {
+								const notebookId = record.get('id');
+								me.fireEvent('notebookSelected', me, notebookId, function() {
+									view.up('window').close()
+								});
+							}
+						}
+					}]
+				}],
+				buttons: [{
+					text: 'Close',
+					handler: function(btn) {
+						btn.up('window').close();
+					}
+				}]
+			});
+			accountWin.show();
+
+			accountWin.down('#notebookslist').mask('Loading');
+			Spyral.Load.trombone({
+				tool: 'notebook.NotebookFinder',
+				query: 'facet.userId:'+this.accountInfo.id,
+				noCache: 1
+			}).then(function(json) {
+				accountWin.down('#notebookslist').unmask();
+				accountWin.down('#notebookslist').getStore().loadRawData(json.catalogue.notebooks);
+				accountWin.down('#notebookslist').getStore().sort('modified', 'DESC');
+			}).catch(function(err) {
+				accountWin.unmask()
+			});
+		}
+	},
+
+	retrieveAccountInfo: function() {
+		const me = this;
+		var dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			url: this.getApplication().getBaseUrlFull()+'spyral/account',
+			success: function(resp) {
+				if (resp.responseText === '') {
+					dfd.resolve(undefined);
+				} else {
+					var info = JSON.parse(resp.responseText);
+					me.accountInfo = info;
+					dfd.resolve(info);
+				}
+			},
+			failure: function() {
+				dfd.reject();
+			}
+		});
+
+		return dfd.promise;
+	},
+
+	isAuthenticated: function(refresh) {
+		if (refresh) {
+			return this.retrieveAccountInfo().then(function(info) {
+				return info !== undefined;
+			}, function() {
+				return false;
+			})
+		}
+		return this.accountInfo !== undefined;
+	},
+
+	getCookie: function(cookieName) {
+		const re = new RegExp('[; ]'+cookieName+'=([^\\s;]*)');
+		const sMatch = (' '+document.cookie).match(re);
+		if (cookieName && sMatch) return unescape(sMatch[1]);
+		return '';
+	},
+
+	deleteCookie: function(cookieName, cookiePath) {
+		cookiePath = cookiePath === undefined ? '/' : cookiePath;
+		document.cookie = cookieName +'=; Path='+cookiePath+'; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	}
+});
+
 /*
  * @class Notebook
  * A Spyral Notebook. This should never be instantiated directly.
@@ -38876,13 +39893,15 @@ Ext.define('Voyant.notebook.Notebook', {
 	alternateClassName: ["Notebook"],
 	extend: 'Ext.panel.Panel',
 	requires: ['Voyant.notebook.editor.CodeEditorWrapper','Voyant.notebook.editor.TextEditorWrapper','Voyant.notebook.metadata.MetadataEditor','Voyant.notebook.StorageDialogs','Voyant.notebook.github.GitHubDialogs'],
-	mixins: ['Voyant.panel.Panel','Voyant.notebook.util.FormatConverter'],
+	mixins: ['Voyant.panel.Panel','Voyant.notebook.Authenticator','Voyant.notebook.util.FormatConverter'],
 	alias: 'widget.notebook',
     statics: {
     	i18n: {
     		title: "Spyral",
-    		created: "Created",
-    		modified: "Modified",
+    		created: "Notebook Created",
+    		modified: "Notebook Modified",
+			saving: "Saving Notebook",
+			saved: "Notebook Saved",
     		clickToEdit: "Click to edit",
     		errorLoadingNotebook: "Error loading Spyral notebook",
     		cannotLoadJson: "Unable to parse JSON input.",
@@ -38890,13 +39909,17 @@ Ext.define('Voyant.notebook.Notebook', {
     		cannotLoadUnrecognized: "Unable to recognize input.",
 			cannotLoadNotebookId: "Unable to load the Spyral Notebook. It may no longer exist.",
     		openTitle: "Open",
-    		openMsg: "Paste in Notebook ID, a URL or a Spyral data file (in HTML).",
+    		openMsg: "Paste in Notebook ID or a Spyral data file (in HTML).",
     		exportHtmlDownload: "HTML (download)",
     		errorParsingDomInput: "An error occurred while parsing the input of the document. The results might still work, except if the code contained HTML tags.",
+			metadataTip: "View and Edit the notebook metadata.",
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
     		metadataSave: "Save",
-    		metadataCancel: "Cancel"
+    		metadataCancel: "Cancel",
+			catalogueTip: "Search a catalogue of available notebooks.",
+			preparingExport: "Preparing Export",
+			notSavedWarning: "Changes to your notebook have not been saved. Are you sure you want to continue?"
     	},
     	api: {
     		input: undefined,
@@ -38907,8 +39930,14 @@ Ext.define('Voyant.notebook.Notebook', {
     config: {
         /**
          * @private
+		 * This is a combination of username and notebook name, separated by NOTEBOOK_ID_SEPARATOR
          */
     	notebookId: undefined,
+		/**
+		 * @private
+		 * The name of the notebook (distinct from the notebook title)
+		 */
+		notebookName: undefined,
         /**
          * @private
          */
@@ -38927,11 +39956,17 @@ Ext.define('Voyant.notebook.Notebook', {
 		 */
 		storageSolution: 'voyant'
 	},
-	
+
+	NOTEBOOK_ID_SEPARATOR: '_',
+
+	SPYRAL_ID_REGEX: /\/spyral\/(.*?@[a-z]{2})[\/_]([A-Za-z0-9-]+)\/?$/,
+	SPYRAL_ID_REGEX_OLD: /\/spyral\/([\w-]+)\/?$/,
+
 	metadataWindow: undefined,
 	voyantStorageDialogs: undefined,
 	githubDialogs: undefined,
 	catalogueWindow: undefined,
+	docsWindow: undefined,
 
 	// holds the content of the tern docs, for passing to the code editor
 	spyralTernDocs: undefined,
@@ -38953,40 +39988,63 @@ Ext.define('Voyant.notebook.Notebook', {
     				itemId: 'saveItTool',
     				xtype: 'toolmenu',
     				glyph: 'xf0c2@FontAwesome',
-					disabled: true,
-					items: [{
-						text: 'Save',
-						xtype: 'menuitem',
-						glyph: 'xf0c2@FontAwesome',
-						handler: this.showSaveDialog.bind(this, false),
-						scope: this
-					},{
-						text: 'Save As...',
-						xtype: 'menuitem',
-						glyph: 'xf0c2@FontAwesome',
-						handler: this.showSaveDialog.bind(this, true),
-						scope: this
-					},'-',{
-						text: 'Storage',
-						xtype: 'menuitem',
-						menu: {
-							items: [{
-								text: 'Voyant',
-								xtype: 'menucheckitem',
-								group: 'storageSolution',
-								checked: true,
-								handler: this.setStorageSolution.bind(this, 'voyant'),
-								scope: this
-							},{
-								text: 'GitHub',
-								xtype: 'menucheckitem',
-								group: 'storageSolution',
-								checked: false,
-								handler: this.setStorageSolution.bind(this, 'github'),
-								scope: this
-							}]
-						}
-					}]
+					callback: function(parent, menu) {
+						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each to register item changes
+						menu.items = [];
+
+						parent.isAuthenticated(true).then(function(isAuth) {
+							if (isAuth) {
+								menu.items = [{
+									text: 'Save',
+									xtype: 'menuitem',
+									glyph: 'xf0c2@FontAwesome',
+									handler: parent.showSaveDialog.bind(parent, false),
+									scope: parent
+								},{
+									text: 'Save As...',
+									xtype: 'menuitem',
+									glyph: 'xf0c2@FontAwesome',
+									handler: parent.showSaveDialog.bind(parent, true),
+									scope: parent
+								}];
+							} else {
+								menu.items = [{
+									xtype: 'component',
+									padding: 5,
+									html: 'Please sign in to save'
+								}];
+							}
+						}, function() {
+							menu.items = [{
+								xtype: 'component',
+								padding: 5,
+								html: 'Please sign in to save'
+							}];
+						}).always(function() {
+							menu.showToolMenu();
+						});
+						/*{
+							text: 'Storage',
+							xtype: 'menuitem',
+							menu: {
+								items: [{
+									text: 'Voyant',
+									xtype: 'menucheckitem',
+									group: 'storageSolution',
+									checked: true,
+									handler: this.setStorageSolution.bind(this, 'voyant'),
+									scope: this
+								},{
+									text: 'GitHub',
+									xtype: 'menucheckitem',
+									group: 'storageSolution',
+									checked: false,
+									handler: this.setStorageSolution.bind(this, 'github'),
+									scope: this
+								}]
+							}
+						}*/
+					}
     			},
     			'new': {
     				tooltip: this.localize("newTip"),
@@ -39006,44 +40064,21 @@ Ext.define('Voyant.notebook.Notebook', {
 						const storageSolution = this.getStorageSolution();
 						if (storageSolution === undefined) {
 						} else {
-							setTimeout(() => {
-								tool.toolMenu.hide()
-							})
 							if (storageSolution === 'github') {
 								this.githubDialogs.showLoad();
 							} else {
 								Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
 									text = text.trim();
 									if (btn=="ok") {
-										this.loadFromString(text);
+										this.checkIsEditedAndDoCallback(this, function() {
+											this.loadFromString(text);
+										});
 									}
 								}, this, true);
 							}
 						}
 					},
-					scope: this,
-					items: [{
-						text: 'Load',
-						xtype: 'menuitem',
-						glyph: 'xf115@FontAwesome',
-						handler: function() {
-							Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
-								text = text.trim();
-								if (btn=="ok") {
-									this.loadFromString(text);
-								}
-							}, this, true);
-						},
-						scope: this
-					},{
-						text: 'Load from GitHub',
-						xtype: 'menuitem',
-						glyph: 'xf115@FontAwesome',
-						handler: function() {
-							this.githubDialogs.showLoad();
-						},
-						scope: this
-					}]
+					scope: this
     			},
     			'runall': {
     				tooltip: this.localize("runallTip"),
@@ -39060,14 +40095,50 @@ Ext.define('Voyant.notebook.Notebook', {
 					scope: this
     			},
                 'catalogue': {
-                    tooltip: 'catalogue',
+                    tooltip: this.localize("catalogueTip"),
                     callback: function() {
                         this.catalogueWindow.showWindow();
                     },
                     xtype: 'toolmenu',
                     glyph: 'xf00b@FontAwesome',
                     scope: this
-                }
+                },
+				'account': {
+					xtype: 'toolmenu',
+					glyph: 'xf007@FontAwesome',
+					callback: function(parent, menu) {
+						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
+						menu.items = [];
+
+						parent.isAuthenticated(true).then(function(isAuth) {
+							if (isAuth) {
+								parent.showAccountWindow();
+							} else {
+								menu.items = [
+									parent.getGitHubAuthButton(function() {
+										parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+										parent.toastInfo({
+											html: parent.localize('signInSuccess'),
+											anchor: 'tr'
+										});
+									})
+								];
+							}
+						}, function() {
+							menu.items = [
+								parent.getGitHubAuthButton(function() {
+									parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+									parent.toastInfo({
+										html: parent.localize('signInSuccess'),
+										anchor: 'tr'
+									});
+								})
+							];
+						}).always(function() {
+							menu.showToolMenu();
+						});
+					}
+				}
     		},
     		
 			scrollable: true,
@@ -39126,6 +40197,7 @@ Ext.define('Voyant.notebook.Notebook', {
     				scope: this
     			}
     		}],
+			helpToolClick: this.showDocs.bind(this),
     		listeners: {
     			afterrender: this.init,
     			notebookWrapperMoveUp: this.notebookWrapperMoveUp,
@@ -39133,6 +40205,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			notebookWrapperRemove: this.notebookWrapperRemove,
 				notebookWrapperAdd: this.notebookWrapperAdd,
 				notebookInitialized: this.notebookInitialized,
+				notebookSelected: this.handleNotebookSelected,
     			scope: this
     		}
     	})
@@ -39142,11 +40215,12 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.mixins['Voyant.notebook.util.FormatConverter'].constructor.apply(this, arguments);
 
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
+			notebookParent: this,
 			listeners: {
 				'fileLoaded': function(src) {
 
 				},
-				'fileSaved': function(src, notebookId) {
+				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
 					if (notebookId !== null) {
 						var id = this.getNotebookId();
@@ -39160,6 +40234,7 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.setIsEdited(false);
 					} else {
 						// save error
+						this.showError("There was an error saving your notebook:\n"+error);
 					}
 				},
 				'saveCancelled': function() {
@@ -39172,6 +40247,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		});
 
 		this.githubDialogs = new Voyant.notebook.github.GitHubDialogs({
+			parent: this,
 			listeners: {
 				'fileLoaded': function(src, {owner, repo, ref, path, file}) {
 					this.githubDialogs.close();
@@ -39211,11 +40287,7 @@ Ext.define('Voyant.notebook.Notebook', {
 
 		this.catalogueWindow = new Voyant.notebook.Catalogue({
 			listeners: {
-				notebookSelected: function(catalogue, notebookId) {
-					catalogue.hideWindow();
-					this.loadFromId(notebookId);
-					this.setNotebookId(notebookId);
-				},
+				notebookSelected: this.handleNotebookSelected,
 				scope: this
 			}
 		});
@@ -39235,21 +40307,15 @@ Ext.define('Voyant.notebook.Notebook', {
 			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'})
 		]).then(function(responses) {
 			this.spyralTernDocs = Ext.JSON.decode(responses[0].responseText);
-			// add docs for static / global functions TODO automate this at doc creation
-			this.spyralTernDocs.Corpus = this.spyralTernDocs.Spyral.Corpus;
-			this.spyralTernDocs.Table = this.spyralTernDocs.Spyral.Table;
-			this.spyralTernDocs.loadCorpus = this.spyralTernDocs.Spyral.Corpus.load;
-			this.spyralTernDocs.createTable = this.spyralTernDocs.Spyral.Table.create;
-			this.spyralTernDocs.show = this.spyralTernDocs.Spyral.Util.show;
-			this.spyralTernDocs.showError = this.spyralTernDocs.Spyral.Util.showError;
-			
 			this.ecmaTernDocs = Ext.JSON.decode(responses[1].responseText);
 			this.browserTernDocs = Ext.JSON.decode(responses[2].responseText);
 
 			this.loadFromQueryParams();
 		}.bind(this), function() {
 			this.loadFromQueryParams();
-		}.bind(this))
+		}.bind(this));
+
+		this.retrieveAccountInfo();
     },
     
     
@@ -39266,11 +40332,11 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	showSaveDialog: function(saveAs) {
 		this.mask(this.localize('saving'));
-		this.getMetadata().setDateNow("modified");
+		
+		this.getMetadata().setDateNow('modified');
+		this.getMetadata().set({userId: this.accountInfo.id});
 
-		Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
-			return cmp.results.updateCachedOutput();
-		})).then(function(result) {	
+		this.updateCachedOutput().then(function(result) {	
 		}, function(err) {
 			console.warn('Error updating cached results');
 		}).finally(function() {
@@ -39279,21 +40345,34 @@ Ext.define('Voyant.notebook.Notebook', {
 	
 			var storageSolution = this.getStorageSolution();
 			
-			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.voyantStorageDialogs.getAccessCode() !== undefined) {
+			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined) {
 				this.voyantStorageDialogs.doSave({
-					notebookId: this.getNotebookId(),
+					notebookName: this.getNotebookName(),
 					data: data,
-					metadata: metadata,
-					accessCode: this.voyantStorageDialogs.getAccessCode()
+					metadata: metadata
 				});
 			} else {
 				if (storageSolution === 'github') {
 					this.githubDialogs.showSave(data);
 				} else {
-					this.voyantStorageDialogs.showSave(data, metadata, saveAs ? undefined : this.getNotebookId());
+					this.voyantStorageDialogs.showSave(data, metadata, saveAs ? undefined : this.getNotebookName());
 				}
 			}
 		}.bind(this));
+	},
+
+	updateCachedOutput: function() {
+		return Ext.Promise.all(this.query('notebookrunnableeditorwrapper').map(function(cmp) {
+			return cmp.results.updateCachedOutput();
+		}));
+	},
+
+	exportToolClick: function(panel) {
+		panel.mask(panel.localize('preparingExport'));
+		panel.updateCachedOutput().finally(function() {
+			panel.unmask();
+			panel.mixins['Voyant.util.Toolable'].exportToolClick.call(this, panel);
+		});
 	},
 	
 	// override toolable method
@@ -39303,9 +40382,13 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	loadFromQueryParams: function() {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
-		var isRun = Ext.isDefined(queryParams.run);
-		var spyralIdMatches = /\/spyral\/([\w-]+)\/?$/.exec(location.pathname);
+		var doRun = Ext.isDefined(queryParams.run);
+
+		var spyralIdMatches = this.SPYRAL_ID_REGEX.exec(location.pathname);
+		var spyralIdMatchesOld = this.SPYRAL_ID_REGEX_OLD.exec(location.pathname);
+
 		var isGithub = Ext.isDefined(queryParams.githubId);
+		
 		if ("inputJsonArrayOfEncodedBase64" in queryParams) {
 			let json = Ext.decode(decodeURIComponent(atob(queryParams.inputJsonArrayOfEncodedBase64)));
 			json.forEach(function(block, index) {
@@ -39323,12 +40406,11 @@ Ext.define('Voyant.notebook.Notebook', {
 					this.addCode(text);
 				}
 			}, this);
-		} else if (queryParams.input) {
-			if (queryParams.input.indexOf("http")===0) {
-				this.loadFromUrl(queryParams.input, isRun);
-			}
 		} else if (spyralIdMatches) {
-			this.loadFromId(spyralIdMatches[1]);
+			this.loadFromId(spyralIdMatches[1]+this.NOTEBOOK_ID_SEPARATOR+spyralIdMatches[2]);
+			this.setStorageSolution('voyant');
+		} else if (spyralIdMatchesOld) {
+			this.loadFromId(spyralIdMatchesOld[1]);
 			this.setStorageSolution('voyant');
 		} else if (isGithub) {
 			this.githubDialogs.loadFileFromId(queryParams.githubId);
@@ -39338,7 +40420,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			this.setIsEdited(false);
 		}
 		
-		if (isRun) {
+		if (doRun) {
 			var me = this;
 			Ext.defer(function() {
 				me.runAll()
@@ -39348,12 +40430,11 @@ Ext.define('Voyant.notebook.Notebook', {
 	
     loadFromString: function(text) {
     	text = text.trim();
-		if (text.indexOf("http") === 0) {
-			this.loadFromUrl(text);
-		} else if (text.indexOf("{") === 0) {
+		if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
-		} else if (/^[\w-_]+$/.test(text)) {
-			this.loadFromId(text)
+		} else if (this.SPYRAL_ID_REGEX.test('/spyral/'+text)) {
+			var spyralIdMatches = this.SPYRAL_ID_REGEX.exec('/spyral/'+text);
+			this.loadFromId(spyralIdMatches[1]+this.NOTEBOOK_ID_SEPARATOR+spyralIdMatches[2]);
 		} else if (text.indexOf("<") !== 0 || text.indexOf("spyral") === -1) {
 			return Ext.Msg.show({
 				title: this.localize('errorLoadingNotebook'),
@@ -39364,6 +40445,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		} else {
 			Ext.batchLayouts(function() {
 				this.reset();
+				this.setNotebookId(undefined);
 				this.importFromHtml(text); // old format
 			}, this);
 		}
@@ -39427,12 +40509,6 @@ Ext.define('Voyant.notebook.Notebook', {
 			}, this);
 		}, this);
 	},
-
-	loadFromUrl: function(url, run) {
-    	var me = this;
-    	// load as string and not HTML in case it's an older JSON format
-    	Spyral.Load.text(url).then(function(text) {me.loadFromString(text)})
-    },
     
     loadFromId: function(id) {
     	this.mask(this.localize("loading"));
@@ -39444,11 +40520,20 @@ Ext.define('Voyant.notebook.Notebook', {
 	    	 noCache: 1
     	}).then(function(json) {
     		me.unmask();
-    		me.loadFromString(json.notebook.data);
-			if (json.notebook.id && json.notebook.id !== me.getNotebookId()) {
-				me.setNotebookId(json.notebook.id);
+			if (json.notebook.success) {
+				me.loadFromString(json.notebook.data);
+				if (json.notebook.id && json.notebook.id !== me.getNotebookId()) {
+					me.setNotebookId(json.notebook.id);
+				}
+				me.setIsEdited(false);
+			} else {
+				Ext.Msg.show({
+					title: me.localize('errorLoadingNotebook'),
+					msg: json.notebook.error,
+					buttons: Ext.MessageBox.OK,
+					icon: Ext.MessageBox.ERROR
+				});
 			}
-	    	me.setIsEdited(false);
     	}).catch(function(err) {
 			me.unmask();
 			Ext.Msg.show({
@@ -39459,6 +40544,33 @@ Ext.define('Voyant.notebook.Notebook', {
 			});
 		});
     },
+
+	checkIsEditedAndDoCallback: function(source, callback) {
+		if (this.getIsEdited()) {
+			Ext.Msg.show({
+				title: this.localize('openTitle'),
+				message: this.localize('notSavedWarning'),
+				buttons: Ext.Msg.YESNO,
+				icon: Ext.Msg.QUESTION,
+				fn: function(btn) {
+					if (btn==='yes') {
+						callback.call(source);
+					}
+				},
+				scope: this
+
+			});
+		} else {
+			callback.call(source);
+		}
+	},
+
+	handleNotebookSelected: function(source, notebookId, callback) {
+		this.checkIsEditedAndDoCallback(source, function() {
+			callback.call(source);
+			this.loadFromId(notebookId);
+		}.bind(this));
+	},
     
     runUntil: function(upToCmp) {
     	var containers = [];
@@ -39514,7 +40626,10 @@ Ext.define('Voyant.notebook.Notebook', {
 			}, function(error) {
 				// console.log('nb error', error);
 			});
-    	}
+    	} else {
+			this.updateTernServerVariables(this.getNotebookVariables());
+			this.fireEvent('notebookRun', this);
+		}
 	},
 
 	notebookInitialized: function() {
@@ -39524,6 +40639,25 @@ Ext.define('Voyant.notebook.Notebook', {
 		// 	containers.push(item);
     	// }, this);
     	// this._run(containers, []);
+	},
+
+	updateTernServerVariables: function(varsToAdd, varsToRemove) {
+		if (Voyant.notebook.editor.CodeEditor.ternServer) {
+			if (varsToRemove) {
+				varsToRemove.forEach(function(theVar) {
+					Voyant.notebook.editor.CodeEditor.ternServer.server.delFile(theVar.name);
+				})
+			}
+			varsToAdd.forEach(function(theVar) {
+				if (theVar.isSpyralClass) {
+					// many Spyral classes are created via helper methods, e.g. loadCorpus
+					// therefore add text that initializes the variable using the class constructor
+					// ensuring that the tern server is aware of the variable name and type
+					var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
+					Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+				}
+			})
+		}
 	},
 
 	getNotebookVariables: function(upToCmp) {
@@ -39568,10 +40702,10 @@ Ext.define('Voyant.notebook.Notebook', {
 	addNew: function() {
 		// TODO metadata defaults
 		this.setMetadata(new Spyral.Metadata({
-			title: "<h1>Spyral Notebook</h1>",
+			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can <span class='marker'>click on the blocks to edit</span> them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can click on the blocks to edit them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
 		this.addCode('');
 	},
     
@@ -39581,7 +40715,7 @@ Ext.define('Voyant.notebook.Notebook', {
  
     addCode: function(block, order, cellId, config) {
 		config = config || {};
-		config.docs = [this.spyralTernDocs, this.ecmaTernDocs, this.browserTernDocs];
+		config.docs = [this.ecmaTernDocs, this.browserTernDocs, this.spyralTernDocs];
     	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
     },
 
@@ -39668,10 +40802,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.setIsEdited(true);
     },
     
-    setIsEdited: function(val) {
+    applyIsEdited: function(val) {
     	// TODO: perhaps setup autosave
-    	if (this.getHeader()) {
-        	this.getHeader().down("#saveItTool").setDisabled(val === false);
+    	if (this.rendered) {
+        	// this.getHeader().down("#saveItTool").setDisabled(val === false);
         	if (!val) {
         		this.query("notebookcodeeditor").forEach(function(editor) {
         			editor.setIsChangeRegistered(false);
@@ -39681,28 +40815,56 @@ Ext.define('Voyant.notebook.Notebook', {
         		})
         	}
     	}
-		this.callParent(arguments);
+		return val;
     },
     
-    setNotebookId: function (id) {
-    	if (id) {
-    		// update URL if needed
-    		if (location.pathname.indexOf("/spyral/"+id) === -1) {
-    			let url = this.getBaseUrl()+"spyral/"+id+"/";
-    			window.history.pushState({
-					url: url
-				}, '', url);
-    		}
-    	}
-		this.callParent(arguments);
+	applyNotebookId: function (id) {
+		if (this.isConfiguring === false) { // don't (re)set url during initial config as this will clear the url's notebook id
+			let url = this.getBaseUrl()+"spyral/";
+			if (id) {
+				if (id.indexOf(this.NOTEBOOK_ID_SEPARATOR) === -1) {
+					// old ID system
+					this.setNotebookName(id);
+				} else {
+					const notebookName = id.split(this.NOTEBOOK_ID_SEPARATOR)[1];
+					this.setNotebookName(notebookName);
+				}
+				url += id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
+			}
+			window.history.pushState({
+				url: url
+			}, '', url);
+		}
+
+		return id;
     },
+
+	applyMetadata: function(metadata) {
+		if (metadata !== undefined) {
+			// remove tags from old notebooks
+			metadata.title = metadata.title.replace(/<\/?\w+.*?>/g, '');
+			metadata.description = metadata.description.replace(/<\/?\w+.*?>/g, '');
+			
+			// set user info if logged in
+			if (this.isAuthenticated() && metadata.userId === '' && metadata.author === '') {
+				metadata.userId = this.accountInfo.id;
+				metadata.author = this.accountInfo.name;
+			}
+		}
+		
+		return metadata;
+	},
 		
 	updateMetadata: function() {
 		var metadata = this.getMetadata();
-		document.title = metadata.title.replace(/<\/?\w+.*?>/g, '')+' - Spyral';
+		document.title = metadata.title+' - Spyral';
 
 		this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
 		this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
+
+		if (this.metadataEditor) {
+			this.metadataEditor.loadMetadata(metadata);
+		}
 
 		this.setIsEdited(true);
 	},
@@ -39742,7 +40904,7 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.up('window').close();
 					}
 				}]
-			})
+			});
 		}
 
 		var metadata = this.getMetadata();
@@ -39754,6 +40916,27 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.metadataEditor.loadMetadata(metadata);
 
 		this.metadataWindow.show();
+	},
+
+	showDocs: function() {
+		if (this.docsWindow === undefined) {
+			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
+		}
+		this.docsWindow.showDocs();
+	},
+
+	showDocsForClassMethod: function(docClass, docMethod) {
+		if (this.docsWindow === undefined) {
+			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
+		}
+		this.docsWindow.showDocsForClassMethod(docClass, docMethod);
+	},
+
+	handleDocLink: function(link) {
+		if (this.docsWindow === undefined) {
+			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
+		}
+		this.docsWindow.handleDocLink(link);
 	}
 });
 Ext.define('Voyant.VoyantApp', {
@@ -39810,9 +40993,6 @@ Ext.define('Voyant.VoyantApp', {
 		this.getCategoriesManager().addFeature('color');
 		this.getCategoriesManager().addFeature('font', '"Palatino Linotype", "Book Antiqua", Palatino, serif');
 		
-		// call the parent constructor
-		this.callParent(arguments);
-		
 		// override Voyant.util.Colors methods to add palette api param
 		var _getColor = this.getColor;
 		this.getColor = function(index, returnHex) {
@@ -39822,6 +41002,9 @@ Ext.define('Voyant.VoyantApp', {
 		this.getColorForTerm = function(term, returnHex) {
 			return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
 		}
+
+		// call the parent constructor
+		this.callParent(arguments);
     },
     getBaseUrl: function() {
     	var baseUrl = this.callParent();
@@ -39991,12 +41174,21 @@ Ext.define('Voyant.VoyantCorpusApp', {
     
 	constructor: function() {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-        this.callParent(arguments);
+
+		this.callParent(arguments);
+	},
+
+	init: function() {
+		if (this.getEntitiesEnabled() === true) {
+			var moreVizTools = this.getMoreTools()[2];
+			moreVizTools.items.push('rezoviz');
+		}
 	},
 	
     config: {
     	corpus: undefined,
     	corpusAccess: undefined,
+		entitiesEnabled: false,
     	moreTools: [{
 			i18n: 'moreToolsScaleCorpus',
 			glyph: 'xf065@FontAwesome',
@@ -40039,7 +41231,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
         	    	var palette = Ext.decode(queryParams.palette);
         	    	this.addColorPalette(queryParams.palette, palette);
         		} else {
-            		this.loadColorPaletteForCorpus(queryParams.corpus, queryParams.palette);
+            		this.loadCustomColorPalette(queryParams.palette);
         		}
         	}
     	} else {
@@ -40205,27 +41397,6 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	}
     	return params.corpus || params.input || (this.getCorpusId && this.getCorpusId()); // TODO: should this include "archive" from V1?
     },
-    
-    loadColorPaletteForCorpus: function(corpusId, paletteId) {
-		Ext.Ajax.request({
-    	    url: this.getTromboneUrl(),
-    	    params: {
-        		tool: 'resource.StoredResource',
-        		retrieveResourceId: paletteId,
-    			corpus: corpusId
-    	    },
-    	    success: function(response, req) {
-    	    	var json = Ext.util.JSON.decode(response.responseText);
-    	    	var value = json.storedResource.resource;
-    	    	var palette = Ext.decode(value);
-    	    	this.addColorPalette(paletteId, palette);
-    	    },
-    	    failure: function(response) {
-    	    	this.setApiParam('palette', undefined);
-    	    },
-    	    scope: this
-    	});
-	},
 	
 	loadCategoryData: function(id) {
 		return this.getCategoriesManager().load(id, {
@@ -40379,6 +41550,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 	},
 	statics: {
 		i18n: {
+			serverMessage: ' '
 		},
 		api: {
 			view: 'corpusset',
@@ -40466,6 +41638,13 @@ Ext.define('Voyant.VoyantDefaultApp', {
 							"<div>"+this.localize('voyantIs')+"</div>"+
 							(this.localize('translatedBy').indexOf("English") == -1 ? "<div>"+this.localize('translatedBy')+"</div>" : "")+
 							(this.getCorpusCreatorText && this.getCorpusCreatorText().trim().length>0 ?  "<div id='corpusCreatorText'>"+this.getCorpusCreatorText()+"</div>" : "")+
+						"</div>"
+					},{
+						xtype: 'container',
+						width: 'auto',
+						html: ""+
+						"<div style='font-style: italic; text-align: center; margin-top: 10px;'>"+
+							"<div>"+this.localize('serverMessage')+"</div>"+
 						"</div>"
 					}]	
 				},{

@@ -10698,6 +10698,14 @@ var Spyral = (function () {
 		}
 
 		/**
+		 * Returns a new promise
+		 * @returns {Promise} A promise
+		 */
+		static getPromise() {
+			return new Promise();
+		}
+
+		/**
 		 * Fetch and return the content of a notebook or a particular cell in a notebook
 		 * @param {string} url The URL of the notebook to import
 		 * @param {number} [cellIndex] The index of the cell to import
@@ -10809,23 +10817,20 @@ var Spyral = (function () {
 	 * @memberof Spyral
 	 */
 	class Metadata {
-		/**
-		 * The Metadata config object
-		 * @typedef {Object} MetadataConfig
-		 * @property {String} title The title of the Notebook
-		 * @property {String} userId The user ID of the author of the Notebook
-		 * @property {String} author The name of the author of the Notebook
-		 * @property {String} description The description of the Notebook
-		 * @property {Array} keywords The keywords for the Notebook
-		 * @property {String} created When the Notebook was created
-		 * @property {String} language The language of the Notebook
-		 * @property {String} license The license for the Notebook
-		 */
-
+		
 		/** 
 		 * The metadata constructor.
 		 * @constructor
-		 * @param {MetadataConfig} config The metadata config object
+		 * @param {Object} config The metadata config object
+		 * @param {String} config.title The title of the Notebook
+		 * @param {String} config.userId The user ID of the author of the Notebook
+		 * @param {String} config.author The name of the author of the Notebook
+		 * @param {String} config.description The description of the Notebook
+		 * @param {Array} config.keywords The keywords for the Notebook
+		 * @param {String} config.created When the Notebook was created
+		 * @param {String} config.language The language of the Notebook
+		 * @param {String} config.license The license for the Notebook
+		 * @returns {Spyral.Metadata}
 		 */
 		constructor(config) {
 			['title', 'userId', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
@@ -10937,6 +10942,8 @@ var Spyral = (function () {
 		
 		/**
 		 * Store a resource
+		 * @name Spyral.Util.Storage.storeResource
+		 * @function
 		 * @param {String} id 
 		 * @param {*} data 
 		 * @returns {Promise}
@@ -10983,6 +10990,8 @@ var Spyral = (function () {
 
 		/**
 		 * Get the URL for trombone
+		 * @name Spyral.Util.Storage.getTromboneUrl
+		 * @function
 		 * @returns {String}
 		 */
 		static getTromboneUrl() {
@@ -11003,6 +11012,8 @@ var Spyral = (function () {
 		
 		/**
 		 * Get a stored resource
+		 * @name Spyral.Util.Storage.getStoredResource
+		 * @function
 		 * @param {String} id 
 		 * @returns {Promise}
 		 */
@@ -11494,12 +11505,11 @@ var Spyral = (function () {
 	  return Util;
 	}();
 
-	/**
-	 * Based on code from https://github.com/renhongl/json-viewer-js
-	 * 
-	 * TODO add function support
-	 */
+	// Based on code from https://github.com/renhongl/json-viewer-js
 
+	/**
+	 * @ignore
+	 */
 	class DataViewer {
 
 		constructor(options) {
@@ -11707,6 +11717,36 @@ var Spyral = (function () {
 		Chart: voyantjs_5,
 		Categories: voyantjs_6
 	};
+
+	/**
+	 * @borrows Spyral.Corpus.load as loadCorpus
+	 * @memberof window
+	 * @method loadCorpus
+	 * @static
+	 */
+	window.loadCorpus = Spyral$1.Corpus.load;
+	/**
+	 * @borrows Spyral.Table.create as createTable
+	 * @memberof window
+	 * @method createTable
+	 * @static
+	 */
+	window.createTable = Spyral$1.Table.create;
+
+	/**
+	 * @borrows Spyral.Util.show as show
+	 * @memberof window
+	 * @method show
+	 * @static
+	 */
+	window.show = Spyral$1.Util.show;
+	/**
+	 * @borrows Spyral.Util.showError as showError
+	 * @memberof window
+	 * @method showError
+	 * @static
+	 */
+	window.showError = Spyral$1.Util.showError;
 
 	return Spyral$1;
 
