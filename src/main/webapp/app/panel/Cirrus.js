@@ -34,8 +34,6 @@ Ext.define('Voyant.panel.Cirrus', {
     		/**
     		 * @cfg {Number} limit Specify the number of terms to load (which is separate from the number of {@link #visible} terms to show) at a time).
     		 * @default 500
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
     		 */
     		limit: 500,
     		
