@@ -277,15 +277,8 @@ function Sandboxer(event) {
 						me.result.value = prResult;
 
 						if (Spyral.Util.isNode(me.result.value)) {
-							// fairly naive check for parsererror, consider something like https://stackoverflow.com/a/55756548
-							var parsererror = me.result.value.querySelector('parsererror');
-							if (parsererror !== null) {
-								var errorMsg = parsererror.textContent;
-								var lineNumber = parseInt(errorMsg.match(/line[\s\w]+?(\d+)/i)[1]);
-								var columnNumber = parseInt(errorMsg.match(/column[\s\w]+?(\d+)/i)[1]);
-								var error = new Error('parser error');
-								error.lineNumber = lineNumber;
-								error.columnNumber = columnNumber;
+							var error = Spyral.Util._getParserError(me.result.value, true);
+							if (error) {
 								me.handleError(error);
 								return;
 							}
