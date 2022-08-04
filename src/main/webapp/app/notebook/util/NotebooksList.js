@@ -18,6 +18,7 @@ Ext.define('Voyant.notebook.util.NotebooksList', {
 					{name: 'license'},
 					{name: 'created', type: 'date'},
 					{name: 'modified', type: 'date'},
+					{name: 'catalogue', type: 'boolean'},
 					{name: 'version'}
 				]
 			}),
@@ -25,7 +26,9 @@ Ext.define('Voyant.notebook.util.NotebooksList', {
 				'<tpl for=".">',
 					'<div class="catalogue-notebook">',
 						'<div class="id">{id}</div>',
-						'<div class="title nowrap" title="{title}">{title}</div>',
+						'<div class="title nowrap" title="{title}">',
+						'<tpl if="catalogue"><i class="fa fa-th-list published" aria-hidden="true" title="In Catalogue"></i> </tpl>',
+						'{title}</div>',
 						'<div class="author nowrap"><i class="fa fa-user" aria-hidden="true"></i> {author}</div>',
 						'<div class="description">{description}</div>',
 						'<tpl if="keywords.length &gt; 0">',

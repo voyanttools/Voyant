@@ -129,6 +129,13 @@ body.exported-notebook {
 	color: #333;
 	font-weight: 600;
 }
+.catalogue-notebook .published {
+	color: #157fcc;
+	margin-right: 2px;
+}
+.catalogue-window .catalogue-notebook .published {
+	display: none;
+}
 .catalogue-notebook .author, .catalogue-notebook .keywords, .catalogue-notebook .date {
 	color: #666;
 	font-size: 11px;

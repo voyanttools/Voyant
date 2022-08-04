@@ -13,8 +13,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 			search: 'Search within notebooks',
 			noResults: 'No matching notebooks',
 			suggested: 'Suggested Notebooks',
-			load: 'Load Selected Notebook',
-			cancel: 'Cancel'
+			load: 'Open Selected Notebook',
+			close: 'Close'
 		}
 	},
 
@@ -120,6 +120,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 					},{
 						xtype: 'notebookslist',
 						itemId: 'notebookslist',
+						cls: 'catalogue-window',
 						flex: 1,
 						listeners: {
 							itemdblclick: function(view, record, el) {
@@ -204,7 +205,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 				}],
 				closeAction: 'hide',
 				buttons: [{
-					text: this.localize('cancel'),
+					text: this.localize('close'),
 					ui: 'default-toolbar',
 					handler: function(but) {
 						this.window.close();
@@ -212,6 +213,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 					scope: this
 				},{
 					text: this.localize('load'),
+					glyph: 'xf115@FontAwesome',
 					handler: function(but) {
 						var record = this.window.down('#notebookslist').getSelection()[0];
 						if (record === undefined) {
@@ -329,6 +331,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 			this.window.down('#notebookslist').getStore().removeAll();
 			return;
 		}
+		
+		queries.push('facet.catalogue:true');
 
 		this.window.down('#notebookslist').mask('Loading');
 		this.window.down('#notebookslist').getSelectionModel().deselectAll();

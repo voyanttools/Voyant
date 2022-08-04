@@ -10,7 +10,9 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
     		metadataKeywords: "Keywords",
     		metadataDescription: "Description",
     		metadataLicense: "Licence",
-    		metadataLanguage: "Language"
+    		metadataLanguage: "Language",
+			metadataCatalogue: "Catalogue",
+			metadataCatalogueInclude: "Include this notebook in the public Catalogue?"
 		}
 	},
 
@@ -66,6 +68,12 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 							});
 						}
 					}
+				},{
+					xtype: 'checkbox',
+					fieldLabel: this.localize('metadataCatalogue'),
+					boxLabel: this.localize('metadataCatalogueInclude'),
+					name: 'catalogue',
+					inputValue: 'true'
 				},{
 					xtype: 'textarea',
 					fieldLabel: this.localize("metadataDescription"),
@@ -144,6 +152,7 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 				title: metadata.title,
 				userId: metadata.userId,
 				author: metadata.author,
+				catalogue: metadata.catalogue,
 				description: metadata.description,
 				keywords: metadata.keywords,
 				language: metadata.language,
@@ -159,6 +168,7 @@ Ext.define('Voyant.data.model.NotebookMetadata', {
 		{name: 'title', type: 'string'},
 		{name: 'userId', type: 'string'},
 		{name: 'author', type: 'string'},
+		{name: 'catalogue', type: 'boolean', defaultValue: false},
 		{name: 'description', type: 'string'},
 		{name: 'keywords', type: 'string'},
 		{name: 'language', type: 'string', defaultValue: 'English'},

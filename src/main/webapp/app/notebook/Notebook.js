@@ -28,7 +28,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			metadataTip: "View and Edit the notebook metadata.",
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
-    		metadataSave: "Save",
+    		metadataSave: "Save Metadata",
     		metadataCancel: "Cancel",
 			catalogueTip: "Search a catalogue of available notebooks.",
 			preparingExport: "Preparing Export",
@@ -1012,11 +1012,13 @@ Ext.define('Voyant.notebook.Notebook', {
 					handler: function() {
 						me.metadataEditor.reset();
 					}
-				}, " ", {
+				},{
 					text: this.localize('metadataSave'),
 					handler: function() {
 						var form = me.metadataEditor.getForm();
-						me.getMetadata().set(form.getValues());
+						var values = form.getValues();
+						values.catalogue = values.catalogue === 'true'; // convert to boolean
+						me.getMetadata().set(values);
 						me.updateMetadata();
 						this.up('window').close();
 					}
