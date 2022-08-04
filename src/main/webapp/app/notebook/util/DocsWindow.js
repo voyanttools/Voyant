@@ -240,6 +240,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	_showDocEntry: function(entryId) {
+		if (this.isHidden()) {
+			this.show().anchorTo(Ext.getBody(), 'br-br');
+		}
 		var docsParentEl = this.down('#main').getEl().dom;
 		docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = true; });
 		this.lastDocEntryMethod = entryId;
