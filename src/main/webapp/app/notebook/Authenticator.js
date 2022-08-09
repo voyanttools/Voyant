@@ -278,12 +278,18 @@ Ext.define('Voyant.notebook.Authenticator', {
 				id: notebookId
 			},
 			success: function(resp) {
-				me.fireEvent('fileDeleted', me, notebookId);
-				dfd.resolve(true);
+				const json = JSON.parse(resp.responseText);
+				if (json.notebook.success) {
+					me.fireEvent('fileDeleted', me, notebookId);
+					dfd.resolve(true);
+				} else {
+					me.fireEvent('fileDeleted', me, null, json.notebook.error);
+					dfd.reject(json.notebook.error);
+				}
 			},
 			failure: function(resp) {
 				me.fireEvent('fileDeleted', me, null, resp.responseText);
-				dfd.reject(false);
+				dfd.reject(resp.responseText);
 			}
 		});
 
