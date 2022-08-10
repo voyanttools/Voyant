@@ -216,29 +216,26 @@ Ext.define('Voyant.notebook.Notebook', {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
 						menu.items = [];
 
+						var handleSignIn = function() {
+							parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+							parent.setIsEdited(false);
+							parent.toastInfo({
+								html: parent.localize('signInSuccess'),
+								anchor: 'tr'
+							});
+						}
+
 						parent.isAuthenticated(true).then(function(isAuth) {
 							if (isAuth) {
 								parent.showAccountWindow();
 							} else {
 								menu.items = [
-									parent.getGitHubAuthButton(function() {
-										parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-										parent.toastInfo({
-											html: parent.localize('signInSuccess'),
-											anchor: 'tr'
-										});
-									})
+									parent.getGitHubAuthButton(handleSignIn)
 								];
 							}
 						}, function() {
 							menu.items = [
-								parent.getGitHubAuthButton(function() {
-									parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-									parent.toastInfo({
-										html: parent.localize('signInSuccess'),
-										anchor: 'tr'
-									});
-								})
+								parent.getGitHubAuthButton(handleSignIn)
 							];
 						}).always(function() {
 							menu.showToolMenu();
