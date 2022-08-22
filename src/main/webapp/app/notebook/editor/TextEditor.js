@@ -94,6 +94,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		}, this);
 
 		editor.on('change', function() {
+			editor.container.$.scrollIntoView(); // needed to counteract range.scrollIntoView by ckeditor
 			var editorHeight = editor.container.$.clientHeight;
 			if (editorHeight !== this.getCurrentHeight()) {
 				this.findParentByType('notebookeditorwrapper').setHeight(editorHeight);
