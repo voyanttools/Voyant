@@ -57,7 +57,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				});
 			}
 
-			var wrapper = instance.up('notebookrunnableeditorwrapper');
+			var wrapper = Voyant.notebook.editor.EditorWrapper.currentEditor;
 			
 			var notebook = wrapper.up('notebook');
 			var notebookId = notebook.getNotebookId() || 'spyral';

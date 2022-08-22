@@ -151,12 +151,10 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 		+"<article class='spyralArticle'>\n";
 
 		this.getComponent("cells").items.each(function(item, i) {
+			out+="<section id='"+item.getCellId()+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
+			"<div class='notebookwrappercounter'>"+(item.getIndex()+1)+"</div>";
+
 			var content = item.getContent();
-			var counter = item.down("notebookwrappercounter");
-
-			out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
-			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
-
 			if (item.isXType('notebooktexteditorwrapper')) {
 				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
 			} else {	

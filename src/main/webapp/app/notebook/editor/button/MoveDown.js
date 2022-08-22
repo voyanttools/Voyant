@@ -15,8 +15,10 @@ Ext.define("Voyant.notebook.editor.button.MoveDown", {
 	glyph: 'xf063@FontAwesome',
 	textAlign: 'left',
 	listeners: {
-		click: function() {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperMoveDown", this.findParentByType("notebookeditorwrapper"));
+		click: function(evt) {
+			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+        	ed.findParentByType('notebook').fireEvent("notebookWrapperMoveDown", ed);
+			Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
 		}
 	}
 })

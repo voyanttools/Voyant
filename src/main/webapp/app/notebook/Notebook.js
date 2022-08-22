@@ -823,33 +823,33 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.addCode('');
 	},
     
-    addText: function(block, order, cellId) {
-    	return this._add(block, order, 'notebooktexteditorwrapper', cellId);
-    },
+	addText: function(block, index, cellId) {
+		return this._add(block, index, 'notebooktexteditorwrapper', cellId);
+	},
  
-    addCode: function(block, order, cellId, config) {
+	addCode: function(block, index, cellId, config) {
 		config = config || {};
 		config.docs = [this.ecmaTernDocs, this.browserTernDocs, this.spyralTernDocs];
-    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
-    },
+		return this._add(block, index, 'notebookcodeeditorwrapper', cellId, config);
+	},
 
-	addData: function(block, order, cellId, config) {
-    	return this._add(block, order, 'notebookdatawrapper', cellId, config);
-    },
-    
-    _add: function(block, order, xtype, cellId, config) {
-    	if (Ext.isString(block)) {
-    		block = {input: block}
-    	}
-    	var cells = this.getComponent("cells");
-		order = (typeof order === 'undefined') ? cells.items.length : order;
+	addData: function(block, index, cellId, config) {
+		return this._add(block, index, 'notebookdatawrapper', cellId, config);
+	},
+		
+	_add: function(block, index, xtype, cellId, config) {
+		if (Ext.isString(block)) {
+			block = {input: block}
+		}
+		var cells = this.getComponent("cells");
+		index = (typeof index === 'undefined') ? cells.items.length : index;
 		cellId = (typeof cellId === 'undefined') ? Spyral.Util.id() : cellId;
-    	return cells.insert(order, Ext.apply(block, {
-    		xtype: xtype,
-    		order: order,
-    		cellId: cellId
-    	}, config))
-    },
+		return cells.insert(index, Ext.apply(block, {
+			xtype: xtype,
+			index: index,
+			cellId: cellId
+		}, config))
+	},
 
     
 	notebookWrapperMoveUp: function(wrapper) {
@@ -909,12 +909,12 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.redoOrder();
 	},
 
-    redoOrder: function() {
-    	this.query("notebookwrappercounter").forEach(function(counter, i) {
-    		counter.setOrder(i);
+	redoOrder: function() {
+		this.query("notebookeditorwrapper").forEach(function(cmp, i) {
+			cmp.setIndex(i);
 		})
 		this.setIsEdited(true);
-    },
+	},
     
     applyIsEdited: function(val) {
     	// TODO: perhaps setup autosave

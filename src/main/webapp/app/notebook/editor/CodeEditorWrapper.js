@@ -14,7 +14,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs,
-			mode: config.mode
+			mode: config.mode,
+			parentWrapper: this
 		});
 
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
@@ -35,39 +36,6 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 
 		Ext.apply(this, {
 			border: false,
-			dockedItems: [{
-			    xtype: 'toolbar',
-			    dock: 'left',
-			    defaults: {
-			    	textAlign: 'left'
-			    },
-			    items: [
-					{
-						xtype: 'notebookwrapperadd'
-					},{
-						xtype: 'notebookwrapperrun'
-					},{
-						xtype: 'notebookwrapperrununtil'
-					},{
-						xtype: 'notebookcodeconfig'
-					}
-			    ]
-			},{
-			    xtype: 'toolbar',
-			    dock: 'right',
-			    items: [{
-			    		xtype: 'notebookwrappercounter',
-			    		order: config.order,
-			    		name: config.cellId
-			    	},{
-		        		xtype: 'notebookwrapperremove'
-		        	},{
-			        	xtype: 'notebookwrappermoveup'
-			        },{
-			        	xtype: 'notebookwrappermovedown'
-			        }
-			    ]
-			}],
 			layout: 'anchor',
 			defaults: { anchor: '100%' },
 			items: [this.editor, this.results]
@@ -79,8 +47,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	switchModes: function(mode) {
 		if (mode !== 'javascript') {
 			var notebook = this.up('notebook');
-			var order = this.down('notebookwrappercounter').getOrder();
-			notebook.addData('', order, undefined, {mode: mode});
+			notebook.addData('', this.getIndex(), undefined, {mode: mode});
 			notebook.notebookWrapperRemove(this);
 		} else {
 			console.log('unhandled mode switch:',mode);

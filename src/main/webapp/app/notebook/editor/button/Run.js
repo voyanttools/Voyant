@@ -14,8 +14,8 @@ Ext.define("Voyant.notebook.editor.button.Run", {
 	},
 	listeners: {
 		click: function(btn, e) {
-			var rew = btn.findParentByType("notebookrunnableeditorwrapper");
-			rew.run.call(rew);
+			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+			ed.run.call(ed);
 		}
 	}
 })

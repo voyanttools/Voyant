@@ -13,6 +13,7 @@ Ext.define("Voyant.notebook.editor.button.Add", {
 	},
 	glyph: 'xf067@FontAwesome',
 	handler: function(btn, e) {
-		btn.findParentByType('notebook').fireEvent("notebookWrapperAdd", btn.findParentByType("notebookeditorwrapper"), e);
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		ed.findParentByType('notebook').fireEvent("notebookWrapperAdd", ed, e);
 	}
 })

@@ -13,7 +13,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		editor: undefined,
 		editedTimeout: undefined,
 		lines: 1, // tracks the number of lines in the editor
-		markers: []
+		markers: [],
+		parentWrapper: undefined
 	},
 	statics: {
 		i18n: {
@@ -24,7 +25,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		ternServer: undefined
 	},
 
-	MIN_LINES: 6,
+	MIN_LINES: 2,
 
 	constructor: function(config) {
 		this.callParent(arguments);
@@ -67,6 +68,13 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editorWrapperEl.style.minHeight = minHeight;
 			editor.getScrollerElement().style.minHeight = minHeight;
 			
+			editor.on('focus', function(editor, ev) {
+				me.getParentWrapper().setIsEditing(true);
+			});
+			editor.on('blur', function(editor, ev) {
+				me.getParentWrapper().setIsEditing(false);
+			});
+
 			editor.on('change', function(editor, ev) {
 				me.clearMarkers();
 				
@@ -91,7 +99,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 						}, 30000));
 					}
 				}
-			}, this);
+			});
 
 			if (this.getMode() === 'javascript') {
 				if (Voyant.notebook.editor.CodeEditor.ternServer === undefined) {
