@@ -80,7 +80,6 @@ app/data/util/DocumentEntities.js
 app/data/model/Corpus.js
 
 # WIDGETS
-app/widget/CodeEditor.js
 app/widget/CorpusSelector.js
 app/widget/ListEditor.js
 app/widget/StopListOption.js
