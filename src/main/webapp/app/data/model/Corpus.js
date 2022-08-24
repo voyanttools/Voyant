@@ -33,10 +33,9 @@
  */
 Ext.define('Voyant.data.model.Corpus', {
 	alternateClassName: ["Corpus"],
-    mixins: ['Voyant.notebook.util.Embed','Voyant.util.Transferable','Voyant.util.Localization'],
+    mixins: ['Voyant.util.Transferable','Voyant.util.Localization'],
     transferable: ['loadCorpusTerms','loadTokens','getPlainText','getText','getWords','getString','getLemmasArray'],
 //    transferable: ['getSize','getId','getDocument','getDocuments','getCorpusTerms','getDocumentsCount','getWordTokensCount','getWordTypesCount','getDocumentTerms'],
-    embeddable: ['Voyant.panel.Summary','Voyant.panel.Cirrus','Voyant.panel.Documents','Voyant.panel.CorpusTerms','Voyant.panel.Reader','Voyant.panel.Trends','Voyant.panel.TermsRadio','Voyant.panel.DocumentTerms','Voyant.panel.TermsBerry','Voyant.panel.CollocatesGraph','Voyant.panel.Contexts','Voyant.panel.WordTree','Voyant.panel.Veliza','Voyant.panel.ScatterPlot','Voyant.panel.Topics'],
 	requires: ['Voyant.util.ResponseError','Voyant.data.store.CorpusTerms','Voyant.data.store.Documents'/*,'Voyant.panel.Documents'*/],
     extend: 'Ext.data.Model',
     config: {
@@ -1075,33 +1074,12 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
     
     /**
-	 * Shows a one-line summary of this corpus.
+	 * Returns a one-line summary of this corpus.
 	 * 
-	 * 	new Corpus("Hello World!").show(true);
-	 * 
-	 * @method show
+	 * @method getString
 	 * @param {boolean} [withID] Includes the corpus ID in parentheses at the end, if true.
 	 */
-	
-	/**
-	 * @method embed
-	 * Embed the current corpus in the specified tool.
-	 * 
-	 * Because embed knows about promises, you don't need to handle promises when calling embed on a corpus.
-	 * 
-	 * 	new Corpus("Hello Voyant!").embed(); // use summary as a default
-	 * 	new Corpus("Hello Voyant!").embed("corpusterms"); // specify corpus terms tool
-	 * 	new Corpus("Hello Voyant!").embed("cirrus", {width: "300px"}); // with config
-	 *  
-	 * @param {String} [tool] Specify which tool to use for embedding this corpus.
-	 * The following are recognized tool values: {@link Voyant.panel.Summary summary} (default), {@link Voyant.panel.Cirrus cirrus}, {@link Voyant.panel.Documents documents}, {@link Voyant.panel.CorpusTerms corpusterms}.
-	 * @param {Object} [config] Additional configuration options to pass to the tool.
-	 * In addition to the configuration options available from each tool listed in the tool param (see above), options include:
-	 * 
-	 * - **width**: a CSS width value for the embedded tool (e.g. "500px", "80em", "50%")
-	 * - **height**: a CSS height value for the embedded tool (e.g. "300px", "10em", "30%")
-	 */
-    getString: function(config) {
+    getString: function(withID) {
 		var size = this.getDocumentsCount();
 		var message = this.localize('thisCorpus');
 		if (size==0) {message += ' '+this.localize('isEmpty')+'.';}
@@ -1141,7 +1119,7 @@ Ext.define('Voyant.data.model.Corpus', {
 			
 			message+='';
 		}
-		if (config===true) {message+=' ('+this.getId()+")";}
+		if (withID===true) {message+=' ('+this.getId()+")";}
 		return message;
     }
     

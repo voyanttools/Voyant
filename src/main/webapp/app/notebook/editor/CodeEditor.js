@@ -1,8 +1,7 @@
 Ext.define("Voyant.notebook.editor.CodeEditor", {
 	extend: "Ext.Component",
 	alias: "widget.notebookcodeeditor", 
-	mixins: ["Voyant.util.Localization",'Voyant.notebook.util.Embed'],
-	embeddable: ["Voyant.notebook.editor.CodeEditor"],
+	mixins: ["Voyant.util.Localization"],
 	cls: 'notebook-code-editor',
 	config: {
 		// theme: 'ace/theme/chrome',

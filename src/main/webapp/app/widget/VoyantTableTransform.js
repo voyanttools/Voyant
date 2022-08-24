@@ -1,6 +1,6 @@
 Ext.define('Voyant.widget.VoyantTableTransform', {
 	extend: 'Ext.panel.Panel',
-    mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
+    mixins: ['Voyant.util.Localization','Voyant.util.Api'],
 	alias: 'widget.voyanttabletransform',
     statics: {
     	i18n: {},

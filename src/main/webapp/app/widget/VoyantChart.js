@@ -1,6 +1,6 @@
 Ext.define('Voyant.widget.VoyantChart', {
     extend: 'Ext.chart.CartesianChart',
-    mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
+    mixins: ['Voyant.util.Localization','Voyant.util.Api'],
     alias: 'widget.voyantchart',
     statics: {
     	i18n: {

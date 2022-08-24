@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"Gráfico de flujo",
 "helpTip":"Gráfico de flujo es una visualización que representa el cambio de la frecuencia de las palabras en un corpus (o dentro de un solo documento).",
 "segments":"Segmentos "});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Prueba uno de los siguientes widgets",
-"widgetNotRecognized":"No se puede incrustar (no se ha especificado ninguna herramienta de inserción)."});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Cancelar ",
 "editList":"Editar Lista ",

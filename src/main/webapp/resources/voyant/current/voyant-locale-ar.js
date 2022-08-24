@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"ستريم غراف (عرض انسيابي)",
 "helpTip":"ستريم غراف هو عرض انسيابي مرئي يظهر التغير في تواترالكلمات في مكنز (او في مستند واحد)",
 "segments":"شرائح"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"اختيار احد هذه الودجات",
-"widgetNotRecognized":"التضمين غير متوفر"});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"الغاء",
 "editList":"تحرير القائمة",

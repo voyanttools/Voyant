@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"StreamGraph",
 "helpTip":"L’outil <i>StreamGraph</i> fournit une visualisation de la façon dont la fréquence des mots évolue au sein d’un corpus (ou dans un document unique).",
 "segments":"Segments"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Essayez l’un des outils intégrés (<i>widgets</i>) suivants&nbsp;:",
-"widgetNotRecognized":"L’encapsulage n’est pas possible (il n’est pas accepté ou bien aucun outil n’a été défini)."});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Annuler",
 "editList":"Modifier la liste",

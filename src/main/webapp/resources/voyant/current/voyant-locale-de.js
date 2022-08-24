@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"StreamGraph",
 "helpTip":"StreamGraph ist eine Visualisierung, die die Änderung der Häufigkeit von Wörtern in einem Korpus (oder in einem einzelnen Dokument) darstellt.",
 "segments":"Segmente"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Probieren Sie eines der folgenden Widgets aus:",
-"widgetNotRecognized":"Einbettung nicht möglich (ungültiges oder kein Tool zur Einbettung angegeben)."});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Abbrechen",
 "editList":"Liste bearbeiten",
