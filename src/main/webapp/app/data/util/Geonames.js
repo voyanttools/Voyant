@@ -19,7 +19,7 @@ Ext.define('Voyant.data.util.Geonames', {
 	},
 	load: function(params, dfd) {
 		this.setPreviousParams(params);
-		dfd = dfd || Voyant.application.getDeferred(this);
+		dfd = dfd || new Ext.Deferred();
 		var me = this, localParams = {
 			corpus: this.getCorpus().getAliasOrId(),
 			queries: this.getQueries(),
