@@ -137,19 +137,19 @@ Ext.define('Voyant.data.model.Document', {
     
     getTruncated: function(string, max) {
   		if (string.length > max) {
-				// maybe a file or URL?
-				var slash = string.lastIndexOf("/");
-				if (slash>-1) {
-					string = string.substr(slash+1);
+			// maybe a file or URL?
+			var slash = string.lastIndexOf("/");
+			if (slash>-1) {
+				string = string.substr(slash+1);
+			}
+			
+			if (string.length>max) {
+				var space = string.indexOf(" ", max-5);
+				if (space < 0 || space > max) {
+					space = max;
 				}
-				
-				if (string.length>max) {
-					var space = string.indexOf(" ", max-5);
-					if (space < 0 || space > max) {
-						space = max;
-					}
-					string = string.substring(0, space) + "…";
-				}
+				string = string.substring(0, space) + "…";
+			}
 		}
   		return string;
     	
@@ -231,26 +231,20 @@ Ext.define('Voyant.data.model.Document', {
     
     
     getText: function(config) {
-		var dfd = new Ext.Deferred();
 		config = config || {};
 		Ext.apply(config, {
-			tool: 'corpus.DocumentTokens',
-			corpus: this.getCorpusId()
-		})
-		this.getTokens(config).then(function(tokens) {
-			dfd.resolve(tokens);
+			docIndex: this.get('index')
 		});
-		return dfd.promise
+		return this.getCorpus().getText(config);
     },
     
     getPlainText: function(config) {
 		config = config || {};
 		Ext.apply(config, {
-			outputFormat: "text",
-			template: "docTokens2text",
-			noOthers: true
+			template: 'docTokens2plainText',
+			docIndex: this.get('index')
 		});
-		return this.getText();
+		return this.getCorpus().getText(config);
     },
     
     getLemmasArray: function(config) {
