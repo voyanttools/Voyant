@@ -477,6 +477,7 @@ Ext.define('Voyant.data.model.Corpus', {
 				return me;
 			}, function(response){
 				Voyant.application.showResponseError(me.localize('failedCreateCorpus'), response);
+				dfd.reject(me.localize('failedCreateCorpus'));
 			}).then(function(corpus) {
 				if (corpus.getDocumentsCount()==0) {
 					Voyant.application.showError(me.localize("thisCorpus")+" "+me.localize("isEmpty")+".");
