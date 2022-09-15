@@ -741,6 +741,7 @@ Ext.define('Voyant.notebook.Notebook', {
 				// console.log('nb error', error);
 			});
     	} else {
+			 // the notebook has finished running
 			this.updateTernServerVariables(this.getNotebookVariables());
 			this.fireEvent('notebookRun', this);
 		}
@@ -762,15 +763,19 @@ Ext.define('Voyant.notebook.Notebook', {
 					Voyant.notebook.editor.CodeEditor.ternServer.server.delFile(theVar.name);
 				})
 			}
-			varsToAdd.forEach(function(theVar) {
-				if (theVar.isSpyralClass) {
-					// many Spyral classes are created via helper methods, e.g. loadCorpus
-					// therefore add text that initializes the variable using the class constructor
-					// ensuring that the tern server is aware of the variable name and type
-					var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
-					Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
-				}
-			})
+			if (varsToAdd === undefined) {
+				console.warn('updateTernServerVariables: no varsToAdd!');
+			} else {
+				varsToAdd.forEach(function(theVar) {
+					if (theVar.isSpyralClass) {
+						// many Spyral classes are created via helper methods, e.g. loadCorpus
+						// therefore add text that initializes the variable using the class constructor
+						// ensuring that the tern server is aware of the variable name and type
+						var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
+						Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+					}
+				});
+			}
 		}
 	},
 
