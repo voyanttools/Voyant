@@ -914,6 +914,7 @@
       }
     },
     "Corpus": {
+      "!type": "fn(id: string)",
       "prototype": {
         "id": {
           "!type": "fn() -> +Promise",
@@ -1021,6 +1022,8 @@
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-toString"
         }
       },
+      "!doc": "Create a new Corpus using the specified Corpus ID",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-constructor",
       "load": {
         "!type": "fn(config: +Object, api: +Object) -> +Promise",
         "!doc": "Load a Corpus using the provided config and api",

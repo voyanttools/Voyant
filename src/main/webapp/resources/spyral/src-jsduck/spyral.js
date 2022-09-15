@@ -767,7 +767,6 @@
 
 /**
 * Create a new Corpus using the specified Corpus ID
-	 * @ignore
 	 * @constructor
 	 * @param {string} id The Corpus ID
 	  * @method constructor
