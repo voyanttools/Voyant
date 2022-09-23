@@ -15,13 +15,12 @@ Clicking on words in Cirrus will usually cause one or more other tools to react 
 
 ## Options
 
-Cirrus has a slider near the bottom (with the label "Show") that allows you to adjust the number of words displayed. By default the minimum value is 25 and the maximum value is 500, and the slider adjusts by increments of 25. The maximum value can be adjusted by clicking one the [Options](#!/guide/options) icon and adjusting the "Max terms" value.
+Cirrus has a slider near the bottom (with the label "Terms") that allows you to adjust the number of words displayed. The default value is 50.
 
 Clicking on the [Options](#!/guide/options) icon also allows produces a dialog box with additional settings that can be modified.
 
 - **Stopwords**: you can define a set of stopwords to exclude – see the [stopwords guide](#!/guide/stopwords) for more information
 - **White List**: you can define a set of allowed words (the opposite of a stopwords list), only terms in this list will be shown in Cirrus (note that the stopwords list is still active, so you may want to choose "None" from the stopwords menu to deactivate it)
-- **Max Terms**: you can specify the maximum number of terms to be fetched as data from the server (though the **Terms** slider described above determines how many of these terms are visible at once); note that setting this too high may slow things down considerably
 - **Font Family**: you can determine which font is used by Cirrus, a set of web safe fonts is provided, as well as [Lato](http://www.latofonts.com/); you can also specify a font installed on your computer, but of course it may not be available on other computers (in which case a default font is used)
 - **Palette**: you can [edit the colour palette](#!/guide/palette)
 
@@ -33,9 +32,9 @@ By default Cirrus shows the top frequency terms for the entire corpus. It's also
 
 ## Additional Information
 
-The current implementation of Cirrus uses [Jason Davies' D3-based Word Cloud library](https://github.com/jasondavies/d3-cloud), which in turn is inspired by [Wordle](http://www.wordle.net/).
+The current implementation of Cirrus uses [Jason Davies' D3-based Word Cloud library](https://github.com/jasondavies/d3-cloud).
 
-Word clouds can be effective at very quickly drawing attention to high frequency terms. They have also been harshly criticized as being highly reductive and even misleading, as [argued persuasively by Jacob Harris](http://www.niemanlab.org/2011/10/word-clouds-considered-harmful/) and others. However, the reduction of information can also be powerful (as in the example of [comparing stereotyped vocabulary from advertizing for toys](http://www.achilleseffect.com/2011/03/word-cloud-how-toy-ad-vocabulary-reinforces-gender-stereotypes/)), and Cirrus is perhaps best used in conjunction with other more exploratory and nuanced tools.
+Word clouds can be effective at very quickly drawing attention to high frequency terms. They have also been harshly criticized as being highly reductive and even misleading, as [argued persuasively by Jacob Harris](http://www.niemanlab.org/2011/10/word-clouds-considered-harmful/) and others. However, the reduction of information can also be powerful (as in the example of [comparing stereotyped vocabulary from advertizing for toys](http://crystalsmith.ca/word-cloud-toy-ad-vocabulary-reinforces-gender-stereotypes/)), and Cirrus is perhaps best used in conjunction with other more exploratory and nuanced tools.
 
 ## See Also
 

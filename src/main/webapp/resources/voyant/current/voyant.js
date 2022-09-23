@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Jun 30 20:36:20 UTC 2022 */
+/* This file created by JSCacher. Last modified: Mon Jul 25 18:59:24 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -16907,8 +16907,6 @@ Ext.define('Voyant.panel.Cirrus', {
     		/**
     		 * @cfg {Number} limit Specify the number of terms to load (which is separate from the number of {@link #visible} terms to show) at a time).
     		 * @default 500
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
     		 */
     		limit: 500,
     		

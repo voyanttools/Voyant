@@ -24,7 +24,7 @@ Stéfan Sinclair was the leader of the project, and the principal designer and p
 
 Geoffrey Rockwell, University of Alberta, is currently the project leader. He is supported by Andrew MacDonald, now the principal programmer, and Cecily Raynor at McGill.
 
-We appreciate you citing Voyant Tools, it helps to demonstrate the value of the tool and our recognizes our efforts. Depending on the citation style you need, you could adapt the following:
+We appreciate you citing Voyant Tools, it helps to demonstrate the value of the tool and recognizes our efforts. Depending on the citation style you need, you could adapt the following:
 
 Sinclair, Stéfan and Geoffrey Rockwell, 2016. _Voyant Tools_. Web. <http://voyant-tools.org/>.
 
@@ -95,7 +95,7 @@ Although text analysis tool developers might choose to highlight different aspec
 * **ubiquity**: tools should lend themselves to being embedded in content elsewhere on the web
 * **referenceability**: tools and their results should lend themselves to being referenced and cited as academic resources
 
-Though they have existed before to varying degrees in different tools, Voyant is an attempt to pull together these design principles into a single a package. In some cases the the principles may in fact be contradictory in practice (for instance, supporting large-scale immediate analysis) and compromises must be found. Working through those challenges is one of the aspects that make Voyant a worthy intellectual challenge.
+Though they have existed before to varying degrees in different tools, Voyant is an attempt to pull together these design principles into a single a package. In some cases the principles may in fact be contradictory in practice (for instance, supporting large-scale immediate analysis) and compromises must be found. Working through those challenges is one of the aspects that make Voyant a worthy intellectual challenge.
 
 HyperPo and TAPoRware are the tools with the strongest affinities to Voyant. but we have devoted considerable thought and attention to improving existing web-based tools in ways further described below.
 
