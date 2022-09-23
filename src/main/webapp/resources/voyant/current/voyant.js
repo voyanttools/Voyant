@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Jul 25 18:59:24 UTC 2022 */
+/* This file created by JSCacher. Last modified: Fri Sep 23 17:44:38 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6371,62 +6371,6 @@ Ext.define('Voyant.util.Colors', {
 	}
 })
 
-Ext.define('Voyant.util.Deferrable', {
-	deferredStack : [],
-
-	releaseAllDeferred : function() {
-		this.deferredStack = [];
-	},
-
-	getDeferredCount : function() {
-		return this.deferredStack.length;
-	},
-	
-	getDeferred: function(transferable) {
-
-//		var deferred = jQuery.Deferred();
-		var deferred = new Ext.Deferred();
-		
-		var pomise = deferred
-		// transfer methods to the promise
-//		var promise = this.getPromiseFromDeferred(deferred);
-
-		if (transferable && transferable.transfer) {
-			transferable.transfer(transferable, deferred.promise)
-		}
-
-		if (!deferred.promise.show && window.show) {deferred.promise.show=show}
-		
-		// make sure that this object can chain an assignment
-		// if (!deferred.promise.assign) {
-		// 	Ext.apply(deferred.promise, {assign: new Voyant.util.Assignable().assign});
-		// }
-
-		this.deferredStack.push(deferred);
-		
-		var me = this;
-		deferred.promise.always(function() {
-			me.deferredStack.pop();
-		});
-		return deferred;
-	},
-	
-	getPromiseFromDeferred: function(dfd) {
-		return typeof dfd.promise === "object" ? dfd.promise : dfd.promise();
-	},
-	
-	getDeferredNestedPromise: function(promise, args, transferable) {
-		var callee = arguments.callee.caller; // TODO: is callee.caller in terms of nested functions?
-		var dfd = Voyant.application.getDeferred(transferable);
-		promise.then(function(promised) {
-			dfd.resolve(callee.apply(promised, args))
-		})/*.fail(function() {
-			dfd.reject.apply(this, arguments)
-		})*/;
-		return dfd.promise;
-	}
-});
-
 Ext.define("Voyant.util.DetailedError", {
 	extend: "Ext.Error",
 	mixins: ['Voyant.util.Localization'],
@@ -7931,163 +7875,6 @@ Ext.define("Voyant.util.DiacriticsRemover", {
     }
 
 });
-Ext.define("Voyant.notebook.util.Embed", {
-	transferable: ['embed'],
-	embed: function() { // this is for instances
-		embed.apply(this, arguments);
-	},
-	constructor: function(config) {
-		var me = this;
-	},
-	statics: {
-		i18n: {},
-		api: {
-			embeddedParameters: undefined,
-			embeddedConfig: undefined
-		},
-		embed: function(cmp, config) {
-			if (this.then) {
-				this.then(function(embedded) {
-					embed.call(embedded, cmp, config)
-				})
-			} else if (Ext.isArray(cmp)) {
-				Voyant.notebook.util.Show.SINGLE_LINE_MODE=true;
-				show("<table><tr>");
-				cmp.forEach(function(embeddable) {
-					show("<td>");
-					if (Ext.isArray(embeddable)) {
-						if (embeddable[0].embeddable) {
-							embeddable[0].embed.apply(embeddable[0], embeddable.slice(1))
-						} else {
-							embed.apply(this, embeddable)
-						}
-					} else {
-						embed.apply(this, embeddable);
-					}
-					show("</td>")
-					
-				})
-//				for (var i=0; i<arguments.length; i++) {
-//					var unit = arguments[i];
-//					show("<td>")
-//					unit[0].embed.call(unit[0], unit[1], unit[2]);
-//					show("</td>")
-//				}
-				show("</tr></table>")
-				Voyant.notebook.util.Show.SINGLE_LINE_MODE=false;
-				return
-			} else {
-				// use the default (first) embeddable panel if no panel is specified
-				if (this.embeddable && (!cmp || Ext.isObject(cmp))) {
-					// if the first argument is an object, use it as config instead
-					if (Ext.isObject(cmp)) {config = cmp;}
-					cmp = this.embeddable[0];
-				}
-				if (Ext.isString(cmp)) {
-					cmp = Ext.ClassManager.getByAlias('widget.'+cmp.toLowerCase()) || Ext.ClassManager.get(cmp);
-				}
-				var isEmbedded = false;
-				if (Ext.isFunction(cmp)) {
-					var name = cmp.getName();
-					if (this.embeddable && Ext.Array.each(this.embeddable, function(item) {
-							if (item==name) {
-								config = config || {};
-								var embeddedParams = {};
-								
-								for (key in Ext.ClassManager.get(Ext.getClassName(cmp)).api) {
-									if (key in config) {
-										embeddedParams[key] = config[key]
-									}
-								}
-								if (!embeddedParams.corpus) {
-									if (Ext.getClassName(this)=='Voyant.data.model.Corpus') {
-										embeddedParams.corpus = this.getId();
-									} else if (this.getCorpus) {
-										var corpus = this.getCorpus();
-										if (corpus) {
-											embeddedParams.corpus = this.getCorpus().getId();
-										}
-									}
-								}
-								Ext.applyIf(config, {
-									style: 'width: '+(config.width || '90%') + (Ext.isNumber(config.width) ? 'px' : '')+
-										'; height: '+(config.height  || '400px') + (Ext.isNumber(config.height) ? 'px' : '')
-								});
-								delete config.width;
-								delete config.height;
-								
-								var corpus = embeddedParams.corpus;
-								delete embeddedParams.corpus;
-								
-		    	    	    	Ext.applyIf(embeddedParams, Voyant.application.getModifiedApiParams());
-								
-		    	    	    	
-								var embeddedConfigParamEncodded = Ext.encode(embeddedParams);
-								var embeddedConfigParam = encodeURIComponent(embeddedConfigParamEncodded);
-
-								var iframeId = Ext.id();
-								var url = Voyant.application.getBaseUrlFull()+"tool/"+name.substring(name.lastIndexOf(".")+1)+'/?';
-								if (true || embeddedConfigParam.length>1800) {
-									show('<iframe style="'+config.style+'" id="'+iframeId+'" name="'+iframeId+'"></iframe>');
-									var dfd = Voyant.application.getDeferred(this);
-					    	    	Ext.Ajax.request({
-					    	    	    url: Voyant.application.getTromboneUrl(),
-					    	    	    params: {
-					    	        		tool: 'resource.StoredResource',
-					    	        		storeResource: embeddedConfigParam
-					    	    	    }
-					    	    	}).then(function(response) {
-				    	    	    	var json = Ext.util.JSON.decode(response.responseText);
-				    	    	    	var params = {
-				    	    	    		minimal: true,
-				    	    	    		embeddedApiId: json.storedResource.id
-				    	    	    	}
-				    	    	    	if (corpus) {
-				    	    	    		params.corpus = corpus;
-				    	    	    	}
-				    	    	    	Ext.applyIf(params, Voyant.application.getModifiedApiParams());
-				    	    	    	document.getElementById(iframeId).setAttribute("src",url+Ext.Object.toQueryString(params));
-										dfd.resolve();
-					    	    	}).otherwise(function(response) {
-					    	    		showError(response);
-					    	    		dfd.reject();
-					    	    	})
-								} else {
-									show('<iframe src="'+url+embeddedConfigParam+'" style="'+config.style+'" id="'+iframeId+'" name="'+iframeId+'"></iframe>');
-								}
-								isEmbedded = true;
-								return false;
-							}
-						}, this)===true) {
-						Voyant.notebook.util.Embed.showWidgetNotRecognized.call(this);
-					}
-					if (!isEmbedded) {
-						var embedded = Ext.create(cmp, config);
-						embedded.embed(config);
-						isEmbedded = true;
-					}
-				}
-				if (!isEmbedded) {
-					
-					Voyant.notebook.util.Embed.showWidgetNotRecognized.call(this);
-				}
-			}
-		},
-		showWidgetNotRecognized: function() {
-			var msg = Voyant.notebook.util.Embed.i18n.widgetNotRecognized;
-			if (this.embeddable) {
-				msg += Voyant.notebook.util.Embed.i18n.tryWidget+'<ul>'+this.embeddable.map(function(cmp) {
-					var widget = cmp.substring(cmp.lastIndexOf(".")+1).toLowerCase()
-					return "\"<a href='../../docs/#!/guide/"+widget+"' target='voyantdocs'>"+widget+"</a>\""
-				}).join(", ")+"</ul>"
-			}
-			showError(msg)
-		}
-
-	}
-})
-
-embed = Voyant.notebook.util.Embed.embed
 Ext.define('Voyant.data.model.AnalysisToken', {
     extend: 'Ext.data.Model',
     idProperty: 'term',
@@ -8264,101 +8051,83 @@ Ext.define('Voyant.data.model.Document', {
     },
     
     loadDocumentTerms: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var documentTerms = this.getDocumentTerms();
-			documentTerms.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(documentTerms)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
-    	
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var documentTerms = this.getDocumentTerms();
+		documentTerms.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(documentTerms)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
     },
     
     loadTokens: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var tokens = this.getTokens({});
-			tokens.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(tokens)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
-    	
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var tokens = this.getTokens({});
+		tokens.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(tokens)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
     },
     
     getTokens: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	Ext.applyIf(config, {
-	    		proxy: {}
-	    	});
-	    	Ext.applyIf(config.proxy, {
-	    		extraParams: {}
-	    	})
-	    	Ext.applyIf(config.proxy.extraParams, {
-	    		docIndex: this.get('index')
-	    	})
-	    	Ext.apply(config, {
-	    		docId: this.get('id')
-	    	});
-	    	return this.get('corpus').getTokens(config);
-		}
+		config = config || {};
+		Ext.applyIf(config, {
+			proxy: {}
+		});
+		Ext.applyIf(config.proxy, {
+			extraParams: {}
+		})
+		Ext.applyIf(config.proxy.extraParams, {
+			docIndex: this.get('index')
+		})
+		Ext.apply(config, {
+			docId: this.get('id')
+		});
+		return this.get('corpus').getTokens(config);
     },
 
     getDocumentTerms: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	Ext.applyIf(config, {
-	    		proxy: {}
-	    	});
-	    	Ext.applyIf(config.proxy, {
-	    		extraParams: {}
-	    	})
-	    	Ext.applyIf(config.proxy.extraParams, {
-	    		docIndex: this.get('index')
-	    	})
-	    	if (config.corpus) {
-	    		return config.corpus.getDocumentTerms(config);
-	    	}
-	    	return this.get('corpus').getDocumentTerms(config); // FIXME: when does this happen?
+		config = config || {};
+		Ext.applyIf(config, {
+			proxy: {}
+		});
+		Ext.applyIf(config.proxy, {
+			extraParams: {}
+		})
+		Ext.applyIf(config.proxy.extraParams, {
+			docIndex: this.get('index')
+		})
+		if (config.corpus) {
+			return config.corpus.getDocumentTerms(config);
 		}
+		return this.get('corpus').getDocumentTerms(config); // FIXME: when does this happen?
     },
     
     getIndex: function() {
@@ -8384,19 +8153,19 @@ Ext.define('Voyant.data.model.Document', {
     
     getTruncated: function(string, max) {
   		if (string.length > max) {
-				// maybe a file or URL?
-				var slash = string.lastIndexOf("/");
-				if (slash>-1) {
-					string = string.substr(slash+1);
+			// maybe a file or URL?
+			var slash = string.lastIndexOf("/");
+			if (slash>-1) {
+				string = string.substr(slash+1);
+			}
+			
+			if (string.length>max) {
+				var space = string.indexOf(" ", max-5);
+				if (space < 0 || space > max) {
+					space = max;
 				}
-				
-				if (string.length>max) {
-					var space = string.indexOf(" ", max-5);
-					if (space < 0 || space > max) {
-						space = max;
-					}
-					string = string.substring(0, space) + "…";
-				}
+				string = string.substring(0, space) + "…";
+			}
 		}
   		return string;
     	
@@ -8478,35 +8247,20 @@ Ext.define('Voyant.data.model.Document', {
     
     
     getText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-	    	config = config || {};
-	    	Ext.apply(config, {
-        		tool: 'corpus.DocumentTokens',
-        		corpus: this.getCorpusId()
-	    	})
-	    	this.getTokens(config).then(function(tokens) {
-	    		dfd.resolve(tokens);
-	    	});
-	    	return dfd.promise
-		}
+		config = config || {};
+		Ext.apply(config, {
+			docIndex: this.get('index')
+		});
+		return this.getCorpus().getText(config);
     },
     
     getPlainText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	Ext.apply(config, {
-    			outputFormat: "text",
-    			template: "docTokens2text",
-    			noOthers: true
-	    	});
-			return this.getText();
-		}
-    	
+		config = config || {};
+		Ext.apply(config, {
+			template: 'docTokens2plainText',
+			docIndex: this.get('index')
+		});
+		return this.getCorpus().getText(config);
     },
     
     getLemmasArray: function(config) {
@@ -8530,23 +8284,18 @@ Ext.define('Voyant.data.model.Document', {
     },
     
     loadEntities: function(config) {
-		var me = this;
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			this.getEntities().load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(records)
-					} else {
-						dfd.reject(operation.error.response);
-					}
+		var dfd = new Ext.Deferred();
+		this.getEntities().load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(records)
+				} else {
+					dfd.reject(operation.error.response);
 				}
-			})
-			return dfd.promise
-		}
+			}
+		})
+		return dfd.promise
 	},
 	
 	getCSS: function() {
@@ -8792,7 +8541,7 @@ Ext.define('Voyant.data.model.TermCorrelation', {
 	}
 });
 Ext.define('Voyant.data.store.VoyantStore', {
-	mixins: ['Voyant.util.Localization','Voyant.notebook.util.Embed'],
+	mixins: ['Voyant.util.Localization'],
 	config: {
 		corpus: undefined,
 		parentPanel: undefined
@@ -8932,34 +8681,11 @@ Ext.define('Voyant.data.store.VoyantStore', {
 	getString: function(config) {
 		var count = this.getCount();
 		return "This store contains "+this.getCount()+" items"+(count>0 ? " with these fields: "+this.getAt(0).getFields().map(function(field) {return field.getName()}).join(", ") : "")+"."
-	},
-	
-	embed: function(cmp, config) {
-		if (!config && Ext.isObject(cmp)) {
-			config = cmp;
-			cmp = this.embeddable[0];
-		}
-		config = config || {};
-		
-		var data = [];
-		this.each(function(record) {
-			data.push(record.data);
-		}, this);
-		
-		Ext.apply(config, {
-			storeJson: JSON.stringify({
-				storeClass: Ext.getClassName(this),
-				storeData: data
-			})
-		});
-		
-		embed.call(this, cmp, config);
 	}
 	
 });
 Ext.define('Voyant.data.store.CAAnalysisMixin', {
 	mixins: ['Voyant.data.store.VoyantStore'],
-	embeddable: ['Voyant.panel.ScatterPlot'],
     model: 'Voyant.data.model.StatisticalAnalysis',
 	constructor : function(config) {
 		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {
@@ -9311,7 +9037,6 @@ Ext.define('Voyant.data.store.DocumentsBuffered', {
 
 Ext.define('Voyant.data.store.PCAAnalysisMixin', {
 	mixins: ['Voyant.data.store.VoyantStore'],
-	embeddable: ['Voyant.panel.ScatterPlot'],
     model: 'Voyant.data.model.StatisticalAnalysis',
 	constructor : function(config) {
 		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {
@@ -9504,7 +9229,6 @@ Ext.define('Voyant.data.store.TokensBuffered', {
 });
 Ext.define('Voyant.data.store.TSNEAnalysisMixin', {
 	mixins: ['Voyant.data.store.VoyantStore'],
-	embeddable: ['Voyant.panel.ScatterPlot'],
     model: 'Voyant.data.model.StatisticalAnalysis',
 	constructor : function(config) {
 		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {
@@ -9614,8 +9338,6 @@ Ext.define('Voyant.data.store.NotebookFacetsBuffered', {
  */
 Ext.define('Voyant.data.table.Table', {
 	alternateClassName: ["VoyantTable"],
-	mixins: ['Voyant.notebook.util.Embed'],
-	embeddable: ['Voyant.widget.VoyantTableTransform','Voyant.widget.VoyantChart','Voyant.widget.CodeEditor'],
 	config: {
 		
 		/**
@@ -9977,31 +9699,27 @@ Ext.define('Voyant.data.table.Table', {
 	},
 	
 	_doAnalysisLoad: function(tool, storeType, config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-			var dfd = Voyant.application.getDeferred(this);
-			Ext.apply(config, {
-		        columnHeaders: true,
-		        rowHeaders: true,
-		        tool: tool,
-		        analysisInput: this.toTsv(),
-		        inputFormat: 'tsv'
-			});
-			var store = Ext.create(storeType, {noCorpus: true});
-			store.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(store, records)
-					} else {
-						dfd.reject(operation.error.response);
-					}
+		config = config || {};
+		var dfd = new Ext.Deferred();
+		Ext.apply(config, {
+			columnHeaders: true,
+			rowHeaders: true,
+			tool: tool,
+			analysisInput: this.toTsv(),
+			inputFormat: 'tsv'
+		});
+		var store = Ext.create(storeType, {noCorpus: true});
+		store.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(store, records)
+				} else {
+					dfd.reject(operation.error.response);
 				}
-			})
-			return dfd.promise
-		}
+			}
+		})
+		return dfd.promise
 	},
 	
 	embed: function(cmp, config) {
@@ -10098,8 +9816,6 @@ Ext.define('Voyant.data.table.Table', {
  */
 Ext.define('Voyant.data.util.NetworkGraph', {
 	alternateClassName: ["NetworkGraph"],
-	mixins: ['Voyant.notebook.util.Embed'],
-	embeddable: ["Voyant.widget.VoyantNetworkGraph"],
 	config: {
 		
 		/**
@@ -10186,7 +9902,7 @@ Ext.define('Voyant.data.util.Geonames', {
 	},
 	load: function(params, dfd) {
 		this.setPreviousParams(params);
-		dfd = dfd || Voyant.application.getDeferred(this);
+		dfd = dfd || new Ext.Deferred();
 		var me = this, localParams = {
 			corpus: this.getCorpus().getAliasOrId(),
 			queries: this.getQueries(),
@@ -10590,10 +10306,9 @@ Ext.define('Voyant.data.util.DocumentEntities', {
  */
 Ext.define('Voyant.data.model.Corpus', {
 	alternateClassName: ["Corpus"],
-    mixins: ['Voyant.notebook.util.Embed','Voyant.util.Transferable','Voyant.util.Localization'],
+    mixins: ['Voyant.util.Transferable','Voyant.util.Localization'],
     transferable: ['loadCorpusTerms','loadTokens','getPlainText','getText','getWords','getString','getLemmasArray'],
 //    transferable: ['getSize','getId','getDocument','getDocuments','getCorpusTerms','getDocumentsCount','getWordTokensCount','getWordTypesCount','getDocumentTerms'],
-    embeddable: ['Voyant.panel.Summary','Voyant.panel.Cirrus','Voyant.panel.Documents','Voyant.panel.CorpusTerms','Voyant.panel.Reader','Voyant.panel.Trends','Voyant.panel.TermsRadio','Voyant.panel.DocumentTerms','Voyant.panel.TermsBerry','Voyant.panel.CollocatesGraph','Voyant.panel.Contexts','Voyant.panel.WordTree','Voyant.panel.Veliza','Voyant.panel.ScatterPlot','Voyant.panel.Topics'],
 	requires: ['Voyant.util.ResponseError','Voyant.data.store.CorpusTerms','Voyant.data.store.Documents'/*,'Voyant.panel.Documents'*/],
     extend: 'Ext.data.Model',
     config: {
@@ -10980,7 +10695,7 @@ Ext.define('Voyant.data.model.Corpus', {
 				
 		this.callParent([]); // only send config, not source
 		
-		var dfd = Voyant.application.getDeferred(this);
+		var dfd = new Ext.Deferred();
 		
 		if (Ext.isString(source)) { // a string could be a corpus ID or an input string (text or URL)
 			if (/\s/.test(source)==false && source.indexOf(":")==-1) { // looks like a corpus ID
@@ -11035,6 +10750,7 @@ Ext.define('Voyant.data.model.Corpus', {
 				return me;
 			}, function(response){
 				Voyant.application.showResponseError(me.localize('failedCreateCorpus'), response);
+				dfd.reject(me.localize('failedCreateCorpus'));
 			}).then(function(corpus) {
 				if (corpus.getDocumentsCount()==0) {
 					Voyant.application.showError(me.localize("thisCorpus")+" "+me.localize("isEmpty")+".");
@@ -11069,13 +10785,13 @@ Ext.define('Voyant.data.model.Corpus', {
 	
 	getId: function() {
 		// overrides the getId() function from the model to handle promises
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('id');		
+    	return this.get('id');		
 	},
 	
 	
 	getAliasOrId: function() {
 		// overrides the getId() function from the model to handle promises
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : (this.get('alias') || this.get('id'));		
+    	return (this.get('alias') || this.get('id'));		
 	},
 	
 	/**
@@ -11098,30 +10814,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * corpus terms as an argument, as per the example above).
 	 */
 	loadCorpusTerms: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var corpusTerms = this.getCorpusTerms();
-			corpusTerms.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(corpusTerms)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var corpusTerms = this.getCorpusTerms();
+		corpusTerms.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(corpusTerms)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
 	},
 	
 	/**
@@ -11154,30 +10866,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * tokens as an argument, as per the example above).
 	 */
 	loadTokens: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var tokens = this.getTokens();
-			tokens.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(tokens)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var tokens = this.getTokens();
+		tokens.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(tokens)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
 	},
 	
 	getCorpusTerms: function(config) {
@@ -11218,31 +10926,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
 	
 	loadContexts: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var contexts = this.getContexts();
-			contexts.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(contexts)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
-		
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var contexts = this.getContexts();
+		contexts.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(contexts)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
 	},
 	
 	getContexts: function(config) {
@@ -11251,7 +10954,6 @@ Ext.define('Voyant.data.model.Corpus', {
 	
 	getDocuments: function(config) {
 		return this.getDocumentsStore() ? this.getDocumentsStore() : Ext.create("Voyant.data.store.Documents", Ext.apply(config || {}, {corpus: this}));
-		//this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.getDocumentsStore();
 	},
 	
 	getDocument: function(config) {
@@ -11266,23 +10968,23 @@ Ext.define('Voyant.data.model.Corpus', {
 				return this.getDocumentsStore().getById(config)
 			}
 		}
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.getDocumentsStore().getDocument(config);
+		return this.getDocumentsStore().getDocument(config);
 	},
 	
 	getDocumentsCount: function() {
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('documentsCount');
+		return this.get('documentsCount');
 	},
 	
 	getWordTokensCount: function() {
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('lexicalTokensCount');
+    	return this.get('lexicalTokensCount');
 	},
 	
 	getWordTypesCount: function() {
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('lexicalTypesCount');
+    	return this.get('lexicalTypesCount');
 	},
 	
 	getCreatedTime: function() {
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('createdTime');		
+    	return this.get('createdTime');		
 	},
 	
 	requiresPassword: function() {
@@ -11292,15 +10994,15 @@ Ext.define('Voyant.data.model.Corpus', {
 	
 	getNoPasswordAccess: function() {
 		// overrides the getId() function from the model to handle promises
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('noPasswordAccess');		
+    	return this.get('noPasswordAccess');		
 	},
 	
 	getTitle: function() {
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('title');		
+		return this.get('title');		
 	},
 	
 	getSubTitle: function() {
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('subTitle');		
+		return this.get('subTitle');		
 	},
 	
 	getRelatedWords : function(config) {
@@ -11308,31 +11010,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
 	
 	loadRelatedWords : function(config) {
-		var me = this;
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var relatedTerms = this.getRelatedWords();
-			relatedTerms.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(records)
-					} else {
-						dfd.reject(operation.error.response);
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var relatedTerms = this.getRelatedWords();
+		relatedTerms.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(records)
+				} else {
+					dfd.reject(operation.error.response);
+				}
+			}
+		})
+		return dfd.promise
 	},
 		
 	/**
@@ -11364,46 +11061,42 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * text as an argument, as per the example above).
 	 */
 	getText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments, this);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-	    	config = config || {};
-	    	if (Ext.isNumber(config)) {
-	    		config = {limit: config}
-	    	} else if (Ext.isString(config)) {
-	    		config = {limit: parseInt(config)}
-	    	};
-	    	Ext.applyIf(config, {
-        		limit: 0,
-    			outputFormat: "text",
-    			template: "docTokens2text"
-	    	});
-	    	Ext.apply(config, {
-        		tool: 'corpus.DocumentTokens',
-        		corpus: this.getAliasOrId()
-	    	});
-        	Ext.Ajax.request({
-        	    url: Voyant.application.getTromboneUrl(),
-        	    params: config,
-        	    success: function(response, opts) {
-        	    	var text = response.responseText.trim();
-        	    	if (config.transformCase) {
-        	    		if (config.transformCase.indexOf("lower")>-1) {
-        	    			text = text.toLowerCase();
-        	    		} else if (config.transformCase.indexOf("upper")>-1) {
-        	    			text = text.toUpperCase();
-        	    		}
-        	    	}
-        	    	dfd.resolve(text);
-        	    },
-        	    failure: function(response, opts) {
-        	    	dfd.reject(response);
-        	    },
-        	    scope: this
-        	})
-	    	return dfd.promise
-		}
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config}
+		} else if (Ext.isString(config)) {
+			config = {limit: parseInt(config)}
+		};
+		Ext.applyIf(config, {
+			limit: 0,
+			outputFormat: "text",
+			template: "docTokens2text"
+		});
+		Ext.apply(config, {
+			tool: 'corpus.DocumentTokens',
+			corpus: this.getAliasOrId()
+		});
+		Ext.Ajax.request({
+			url: Voyant.application.getTromboneUrl(),
+			params: config,
+			success: function(response, opts) {
+				var text = response.responseText.trim();
+				if (config.transformCase) {
+					if (config.transformCase.indexOf("lower")>-1) {
+						text = text.toLowerCase();
+					} else if (config.transformCase.indexOf("upper")>-1) {
+						text = text.toUpperCase();
+					}
+				}
+				dfd.resolve(text);
+			},
+			failure: function(response, opts) {
+				dfd.reject(response);
+			},
+			scope: this
+		})
+		return dfd.promise
     },
     
 	/**
@@ -11426,21 +11119,16 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * text as an argument, as per the example above).
 	 */
     getPlainText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	if (Ext.isNumber(config)) {
-	    		config = {limit: config}
-	    	} else if (Ext.isString(config)) {
-	    		config = {limit: parseInt(config)}
-	    	}
-	    	Ext.apply(config, {
-    			template: "docTokens2plainText"
-	    	});
-			return this.getText(config);
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config}
+		} else if (Ext.isString(config)) {
+			config = {limit: parseInt(config)}
 		}
-    	
+		Ext.apply(config, {
+			template: "docTokens2plainText"
+		});
+		return this.getText(config);
     },
 
 	/**
@@ -11463,21 +11151,16 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * words as a string argument, as per the example above).
 	 */
     getWords: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	if (Ext.isNumber(config)) {
-	    		config = {limit: config}
-	    	} else if (Ext.isString(config)) {
-	    		config = {limit: parseInt(config)}
-	    	};
-	    	Ext.applyIf(config, {
-    			template: "docTokens2words"
-	    	});
-			return this.getText(config);
-		}
-    	
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config}
+		} else if (Ext.isString(config)) {
+			config = {limit: parseInt(config)}
+		};
+		Ext.applyIf(config, {
+			template: "docTokens2words"
+		});
+		return this.getText(config);
     },
 	
 	/**
@@ -11500,16 +11183,11 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * words as a string argument, as per the example above).
 	 */
     getWordsArray: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-	    	this.getWords(config).then(function(text) {
-				dfd.resolve(text.split(" "));
-			})
-			return dfd.promise
-		}
-    	
+		var dfd = new Ext.Deferred();
+		this.getWords(config).then(function(text) {
+			dfd.resolve(text.split(" "));
+		})
+		return dfd.promise
     },
     
 	/**
@@ -11533,22 +11211,17 @@ Ext.define('Voyant.data.model.Corpus', {
 	 */
     getLemmasArray: function(config) {
     	config = config || {};
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			Ext.applyIf(config, {
-				template: "docTokens2lemmas",
-				withPosLemmas: true,
-				noOthers: true
-			})
-	    	this.getWords(config).then(function(text) {
-	    		var lemmas = text.split(" ").map(function(word) {return word.substring(0, word.indexOf("/"))})
-				dfd.resolve(lemmas);
-			})
-			return dfd.promise
-		}
-    	
+		var dfd = new Ext.Deferred();
+		Ext.applyIf(config, {
+			template: "docTokens2lemmas",
+			withPosLemmas: true,
+			noOthers: true
+		})
+		this.getWords(config).then(function(text) {
+			var lemmas = text.split(" ").map(function(word) {return word.substring(0, word.indexOf("/"))})
+			dfd.resolve(lemmas);
+		})
+		return dfd.promise
     },
 
 	/**
@@ -11589,7 +11262,7 @@ Ext.define('Voyant.data.model.Corpus', {
 			tool: tool
 		});
 
-		var dfd = Voyant.application.getDeferred(this);
+		var dfd = new Ext.Deferred();
 
 		var corpus = this.getId();
 		Ext.Ajax.request({
@@ -11632,33 +11305,12 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
     
     /**
-	 * Shows a one-line summary of this corpus.
+	 * Returns a one-line summary of this corpus.
 	 * 
-	 * 	new Corpus("Hello World!").show(true);
-	 * 
-	 * @method show
+	 * @method getString
 	 * @param {boolean} [withID] Includes the corpus ID in parentheses at the end, if true.
 	 */
-	
-	/**
-	 * @method embed
-	 * Embed the current corpus in the specified tool.
-	 * 
-	 * Because embed knows about promises, you don't need to handle promises when calling embed on a corpus.
-	 * 
-	 * 	new Corpus("Hello Voyant!").embed(); // use summary as a default
-	 * 	new Corpus("Hello Voyant!").embed("corpusterms"); // specify corpus terms tool
-	 * 	new Corpus("Hello Voyant!").embed("cirrus", {width: "300px"}); // with config
-	 *  
-	 * @param {String} [tool] Specify which tool to use for embedding this corpus.
-	 * The following are recognized tool values: {@link Voyant.panel.Summary summary} (default), {@link Voyant.panel.Cirrus cirrus}, {@link Voyant.panel.Documents documents}, {@link Voyant.panel.CorpusTerms corpusterms}.
-	 * @param {Object} [config] Additional configuration options to pass to the tool.
-	 * In addition to the configuration options available from each tool listed in the tool param (see above), options include:
-	 * 
-	 * - **width**: a CSS width value for the embedded tool (e.g. "500px", "80em", "50%")
-	 * - **height**: a CSS height value for the embedded tool (e.g. "300px", "10em", "30%")
-	 */
-    getString: function(config) {
+    getString: function(withID) {
 		var size = this.getDocumentsCount();
 		var message = this.localize('thisCorpus');
 		if (size==0) {message += ' '+this.localize('isEmpty')+'.';}
@@ -11698,78 +11350,35 @@ Ext.define('Voyant.data.model.Corpus', {
 			
 			message+='';
 		}
-		if (config===true) {message+=' ('+this.getId()+")";}
+		if (withID===true) {message+=' ('+this.getId()+")";}
 		return message;
     }
     
     
 
 });
-Ext.define('Voyant.widget.CodeEditor', {
-	extend: 'Ext.panel.Panel',
-    mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
-	alias: 'widget.codeeditor',
-    statics: {
-    	i18n: {},
-		api: {
-			tableJson: undefined,
-			content: '',
-			mode: 'ace/mode/text',
-			width: undefined
-		}
-    },
-	constructor: function(config) {
-    	config = config || {};
-		var me = this;
-    	me.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-    	me.buildFromParams();
-    	Ext.apply(me, {
-    		items: {
-    			xtype: 'notebookcodeeditor',
-    			content: config.content ? config.content : this.getApiParam('content'),
-    			mode: config.mode ? config.mode : this.getApiParam("mode")
-    		}
-    	})
-        me.callParent(arguments);
-	},
-	initComponent: function(config) {
-    	var me = this, config = config || {};
-    	me.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-    	me.callParent(arguments);
-	},
-	
-	buildFromParams: function() {
-		var me = this, tableJson = this.getApiParam('tableJson');
-		if (tableJson) {
-			var json = Ext.decode(tableJson);
-			var text = json.headers.join("\t") + "\n"+
-				json.rows.map(function(row) {return row.join("\t")}).join("\n");
-			this.setApiParam('content', text);
-		}
-	}
-})
 Ext.define('Voyant.widget.CorpusSelector', {
-    extend: 'Ext.form.field.ComboBox',
-    mixins: ['Voyant.util.Localization', 'Voyant.util.Api'],
-    alias: 'widget.corpusselector',
-    statics: {
-	    	i18n: {
-	    	},
-	    	api: {
-	    		openMenu: undefined
-	    	}
-    },
-    
-    constructor: function(config) {
-        config = config || {};
-        
-        // need to call here to get openMenu
+	extend: 'Ext.form.field.ComboBox',
+	mixins: ['Voyant.util.Localization', 'Voyant.util.Api'],
+	alias: 'widget.corpusselector',
+	statics: {
+		i18n: {
+		},
+		api: {
+			openMenu: undefined
+		}
+	},
+
+	constructor: function(config) {
+		config = config || {};
+		
+		// need to call here to get openMenu
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
 
-	    	var data = [['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"]];	
-	    	// check API and server option for open menu values
-	    	if (this.getApiParam("openMenu")) {
-				data = this.getStoreItemsFromDefinition(this.getApiParam("openMenu"));
+		var data = [['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"]];	
+		// check API and server option for open menu values
+		if (this.getApiParam("openMenu")) {
+			data = this.getStoreItemsFromDefinition(this.getApiParam("openMenu"));
 		} else if (Voyant.application && Voyant.application.getOpenMenu && Voyant.application.getOpenMenu()) {
 			var arg = Voyant.application.getOpenMenu();
 			arg = decodeURIComponent(arg);
@@ -11778,34 +11387,35 @@ Ext.define('Voyant.widget.CorpusSelector', {
 				arg = arg.substring(1, arg.length-1);
 			}
 			data = this.getStoreItemsFromDefinition(arg);
-	    	}
+		}
 	
-	    	Ext.applyIf(config, {
-	    		fieldLabel: this.localize('chooseCorpus'),
-	            labelWidth: 125,
-	            labelAlign: 'right',
-	            name:'corpus',
-	            queryMode:'local',
-	            store: data
-	    	});
-        this.callParent([config]);
-    },
+		Ext.applyIf(config, {
+			fieldLabel: this.localize('chooseCorpus'),
+			labelWidth: 125,
+			width: 330,
+			labelAlign: 'right',
+			name:'corpus',
+			queryMode:'local',
+			store: data
+		});
+		this.callParent([config]);
+	},
 
-    	initComponent: function(config) {
-    		config = config || {};
-        this.callParent([config]);
-    },
-    
-    getStoreItemsFromDefinition: function(definition) {
-	    	var data = [], items = definition.split(";");
-	    	for (var i=0; i<items.length; i++) {
-	    		var nameValue = items[i].split(":");
-	    		if (nameValue[0]) {
-	        		data.push([nameValue[0],nameValue[1] ? nameValue[1] : nameValue[0]]);
-	    		}
-	    	}
-	    	return data;
-    }
+	initComponent: function(config) {
+		config = config || {};
+		this.callParent([config]);
+	},
+		
+	getStoreItemsFromDefinition: function(definition) {
+		var data = [], items = definition.split(";");
+		for (var i=0; i<items.length; i++) {
+			var nameValue = items[i].split(":");
+			if (nameValue[0]) {
+				data.push([nameValue[0],nameValue[1] ? nameValue[1] : nameValue[0]]);
+			}
+		}
+		return data;
+	}
 })
 Ext.define('Voyant.widget.ListEditor', {
     extend: 'Ext.container.Container',
@@ -13101,7 +12711,7 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
 });
 Ext.define('Voyant.widget.VoyantChart', {
     extend: 'Ext.chart.CartesianChart',
-    mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
+    mixins: ['Voyant.util.Localization','Voyant.util.Api'],
     alias: 'widget.voyantchart',
     statics: {
     	i18n: {
@@ -13461,7 +13071,7 @@ Ext.define('Voyant.widget.ProgressMonitor', {
 
 Ext.define('Voyant.widget.VoyantTableTransform', {
 	extend: 'Ext.panel.Panel',
-    mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
+    mixins: ['Voyant.util.Localization','Voyant.util.Api'],
 	alias: 'widget.voyanttabletransform',
     statics: {
     	i18n: {},
@@ -14357,8 +13967,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
  */
 Ext.define('Voyant.widget.VoyantNetworkGraph', {
 	extend: 'Ext.panel.Panel',
-	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
-	embeddable: ['Voyant.widget.VoyantNetworkGraph'],
+	mixins: ['Voyant.util.Localization','Voyant.util.Api'],
 	alias: 'widget.voyantnetworkgraph',
 	statics: {
 		i18n: {
@@ -35358,7 +34967,7 @@ Ext.define('Voyant.panel.NSSI', {
 	},
 
 	load: function(params, dfd) {
-		dfd = dfd || Voyant.application.getDeferred(this);
+		dfd = dfd || new Ext.Deferred();
 		var me = this;
 
 		Ext.Ajax.request({
@@ -35413,7 +35022,8 @@ Ext.define("Voyant.notebook.editor.button.Add", {
 	},
 	glyph: 'xf067@FontAwesome',
 	handler: function(btn, e) {
-		btn.findParentByType('notebook').fireEvent("notebookWrapperAdd", btn.findParentByType("notebookeditorwrapper"), e);
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		ed.findParentByType('notebook').fireEvent("notebookWrapperAdd", ed, e);
 	}
 })
 Ext.define("Voyant.notebook.editor.button.CodeConfig", {
@@ -35548,7 +35158,7 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 	glyph: 'xf013@FontAwesome',
 	listeners: {
 		click: function(btn, e) {
-			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(btn.findParentByType("notebookeditorwrapper"));
+			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(Voyant.notebook.editor.EditorWrapper.currentEditor);
 		}
 	}
 });
@@ -35612,7 +35222,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				});
 			}
 
-			var wrapper = instance.up('notebookrunnableeditorwrapper');
+			var wrapper = Voyant.notebook.editor.EditorWrapper.currentEditor;
 			
 			var notebook = wrapper.up('notebook');
 			var notebookId = notebook.getNotebookId() || 'spyral';
@@ -35625,7 +35235,9 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			if (mode === 'file') {
 				outputPromise = wrapper.fileInput.getBlob();
 			} else {
-				outputPromise = wrapper.results.updateCachedOutput();
+				outputPromise = wrapper.results.updateCachedOutput().then(function() {
+					return Ext.Promise.resolve(wrapper.getOutput());
+				});
 			}
 
 			outputPromise.then(function(output) {
@@ -35655,7 +35267,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 					}
 	
 					if (Spyral.Util.isUndefined(output)) {
-						// output is probably a document and couldn't be sent from sandbox
+						// code output is either a document or hasn't been run yet
 						// try getContent fallback
 						output = wrapper.getContent().output;
 					}
@@ -35785,8 +35397,10 @@ Ext.define("Voyant.notebook.editor.button.MoveDown", {
 	glyph: 'xf063@FontAwesome',
 	textAlign: 'left',
 	listeners: {
-		click: function() {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperMoveDown", this.findParentByType("notebookeditorwrapper"));
+		click: function(evt) {
+			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+        	ed.findParentByType('notebook').fireEvent("notebookWrapperMoveDown", ed);
+			Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
 		}
 	}
 })
@@ -35807,8 +35421,10 @@ Ext.define("Voyant.notebook.editor.button.MoveUp", {
 	glyph: 'xf062@FontAwesome',
 	textAlign: 'left',
 	listeners: {
-		click: function() {
-        	this.findParentByType('notebook').fireEvent("notebookWrapperMoveUp", this.findParentByType("notebookeditorwrapper"));
+		click: function(evt) {
+			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+        	ed.findParentByType('notebook').fireEvent("notebookWrapperMoveUp", ed);
+			Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
 		}
 	}
 })
@@ -35829,15 +35445,17 @@ Ext.define("Voyant.notebook.editor.button.Remove", {
 	glyph: 'xf014@FontAwesome',
 	textAlign: 'left',
 	listeners: {
-		click: function() {
+		click: function(evt) {
+			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
 			Ext.Msg.show({
 				buttons: Ext.Msg.OKCANCEL,
 				icon: Ext.MessageBox.QUESTION,
 				msg: this.localize("confirmRemove"),
 				title: this.localize("confirmRemoveTitle"),
 				fn: function(buttonId) {
-					if (buttonId=='ok') {
-			        	this.findParentByType('notebook').fireEvent("notebookWrapperRemove", this.findParentByType("notebookeditorwrapper"));
+					if (buttonId === 'ok') {
+			        	ed.findParentByType('notebook').fireEvent("notebookWrapperRemove", ed);
+						Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
 					}
 				},
 				scope: this
@@ -35861,8 +35479,8 @@ Ext.define("Voyant.notebook.editor.button.Run", {
 	},
 	listeners: {
 		click: function(btn, e) {
-			var rew = btn.findParentByType("notebookrunnableeditorwrapper");
-			rew.run.call(rew);
+			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+			ed.run.call(ed);
 		}
 	}
 })
@@ -35889,9 +35507,9 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 		i18n: {
 			tip: "Run multiple cells",
 			runUntil: "Run up to here",
-			runUntilTip: "Run previous code blocks and this one.",
+			runUntilTip: "Run previous code cells and this one.",
 			runFrom: "Run from here onwards",
-			runFromTip: "Run this and following code blocks."
+			runFromTip: "Run this and following code cells."
 		}
 	},
 	glyph: 'xf050@FontAwesome',
@@ -35906,16 +35524,14 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 				tooltip: this.localize("runUntilTip"),
 				glyph: 'xf049@FontAwesome',
 				handler: function() {
-					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
-					btn.up('notebook').runUntil(rew);
+					btn.runMenu.editor.up('notebook').runUntil(btn.runMenu.editor);
 				}
 			},{
 				text: this.localize("runFrom"),
 				tooltip: this.localize("runFromTip"),
 				glyph: 'xf050@FontAwesome',
 				handler: function() {
-					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
-					btn.up('notebook').runFrom(rew);
+					btn.runMenu.editor.up('notebook').runFrom(btn.runMenu.editor);
 				}
 			}]
 		});
@@ -35923,6 +35539,8 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 		this.callParent(arguments);
 	},
 	handler: function(btn, ev) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		btn.runMenu.editor = ed;
 		btn.runMenu.showAt(ev.pageX, ev.pageY)
 	}
 })
@@ -35933,53 +35551,132 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 	cls: "notebook-editor-wrapper",
 	config: {
 		cellId: undefined,
+		index: undefined,
 		content: '',
 		isEditing: false
+	},
+	statics: {
+		currentEditor: undefined, // used primarily by toolbar buttons to determine the target of their actions
+		toolbarLeft: undefined,
+		toolbarRight: undefined,
+		showToolbars: function(editor) {
+			Voyant.notebook.editor.EditorWrapper.currentEditor = editor;
+			Voyant.notebook.editor.EditorWrapper.currentEditor.body.addCls('notebook-editor-wrapper-hover');
+
+			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft === undefined) {
+				Voyant.notebook.editor.EditorWrapper.toolbarLeft = Ext.create('Ext.container.Container', {
+					floating: true,
+					shadow: false,
+					layout: { type: 'vbox', align: 'middle', pack: 'start' },
+					defaults: { margin: 3, cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
+					items: [{
+						xtype: 'notebookwrapperadd'
+					},{
+						xtype: 'notebookwrapperrun'
+					},{
+						xtype: 'notebookwrapperrununtil'
+					},{
+						xtype: 'notebookcodeconfig'
+					},{
+						xtype: 'notebookwrapperexport'
+					}],
+					listeners: {
+						boxready: function(cmp) {
+							cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
+						}
+					}
+				});
+			}
+			if (Voyant.notebook.editor.EditorWrapper.toolbarRight === undefined) {
+				Voyant.notebook.editor.EditorWrapper.toolbarRight = Ext.create('Ext.container.Container', {
+					floating: true,
+					shadow: false,
+					layout: { type: 'vbox', align: 'middle', pack: 'start' },
+					defaults: { margin: 3, cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
+					items: [{
+						xtype: 'notebookwrappercounter'
+					},{
+						xtype: 'notebookwrapperremove'
+					},{
+						xtype: 'notebookwrappermoveup'
+					},{
+						xtype: 'notebookwrappermovedown'
+					}],
+					listeners: {
+						boxready: function(cmp) {
+							cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
+						}
+					}
+				});
+			}
+
+			var showButtons = [];
+			if (editor.xtype === 'notebookcodeeditorwrapper') {
+				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig'];
+			} else if (editor.xtype === 'notebookdatawrapper') {
+				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexport'];
+			} else {
+				showButtons = ['notebookwrapperadd'];
+			}
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.query('button').forEach(function(button) {
+				button.setVisible(showButtons.indexOf(button.xtype) !== -1);
+			});
+
+			var counter = Voyant.notebook.editor.EditorWrapper.toolbarRight.down('notebookwrappercounter');
+			counter.setName(editor.getCellId());
+			counter.setOrder(editor.getIndex());
+
+			var box = editor.body.getBox();
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-33, box.y, false);
+			Voyant.notebook.editor.EditorWrapper.toolbarRight.showAt(box.x+box.width+3, box.y, false);
+		},
+		hideToolbars: function(evt, force) {
+			if (Voyant.notebook.editor.EditorWrapper.currentEditor) {
+				var doHide = force ? true : false;
+				if (!doHide) {
+					var box = Voyant.notebook.editor.EditorWrapper.currentEditor.body.getBox();
+					doHide = evt.pageX < box.x-33 || evt.pageX >= box.x+box.width+33 || evt.pageY < box.y || evt.pageY >= box.y+box.height;
+				}
+				if (doHide) {
+					Voyant.notebook.editor.EditorWrapper.currentEditor.body.removeCls('notebook-editor-wrapper-hover');
+					Voyant.notebook.editor.EditorWrapper.currentEditor = undefined;
+
+					if (Voyant.notebook.editor.EditorWrapper.toolbarLeft !== undefined) {
+						Voyant.notebook.editor.EditorWrapper.toolbarLeft.hide();
+					}
+					if (Voyant.notebook.editor.EditorWrapper.toolbarRight !== undefined) {
+						Voyant.notebook.editor.EditorWrapper.toolbarRight.hide();
+					}
+				}
+			}
+		}
 	},
 	border: false,
 	bodyBorder: false,
 	initComponent: function() {
 		this.setCellId(this.config.cellId);
 		this.on("afterrender", function(){
-			this.getDockedItems().forEach(function(tb) {
-				tb.getTargetEl().setVisibilityMode(Ext.dom.Element.VISIBILITY);
-			});
-			this.setActiveMode(false);
-			this.body.on("click", function() {
-				this.removeCls("notebook-editor-wrapper-hover");
-				this.setActiveMode(true); // added for touch devices
-			}, this);
 			this.mon(this.getEl(), "mouseover", function() {
-				this.setActiveMode(true);
+				Voyant.notebook.editor.EditorWrapper.showToolbars(this);
 			}, this);
-			this.mon(this.getEl(), "mouseout", function() {
-				this.setActiveMode(false);
-			}, this);			
+			this.mon(this.getEl(), "mouseleave", function(evt) {
+				Voyant.notebook.editor.EditorWrapper.hideToolbars(evt);
+			}, this);
 		}, this);
 		this.callParent(arguments);
 	},
-	setActiveMode: function(mode) {
-		this.getDockedItems().forEach(function(tb) {
-			if (tb.dock=='right') {
-				tb.items.each(function(item) {
-					if (item.hasCls("notebookwrappercounter")==false) {
-						item.getTargetEl().setVisibility(mode);
-					}
-				})
-			} else {
-				tb.getTargetEl().setVisibility(mode);
-			}
-		}, this);
-		if (!this.getIsEditing()) {
-			if (mode) {
-				this.body.addCls("notebook-editor-wrapper-hover");
-			} else {
-				this.body.removeCls("notebook-editor-wrapper-hover");
-			}
-		}
-	},
 	getContent: function() {
 		throw new Error('Subclass must override!');
+	},
+	applyIsEditing: function(val) {
+		if (this.rendered) {
+			if (val) {
+				this.body.addCls('notebook-editor-wrapper-editing');
+			} else {
+				this.body.removeCls('notebook-editor-wrapper-editing');
+			}
+		}
+		return val;
 	}
 })
 Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
@@ -36390,15 +36087,15 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						break;
 				}
 
-				if (eventData.value) {
-					me.setCachedResultsValue(eventData.value);
-				}
-				if (eventData.output) {
-					me.setCachedResultsOutput(eventData.output);
+				if (eventData.command !== 'getContents') { // don't overwrite value or variables when we just want to get sandbox contents, i.e. dom output
+					if (eventData.value) {
+						me.setCachedResultsValue(eventData.value);
+					}
+					me.setCachedResultsVariables(eventData.variables);
 				}
 
-				if (eventData.command !== 'getContents') { // don't overwrite variables when we just want to get sandbox contents
-					me.setCachedResultsVariables(eventData.variables);
+				if (eventData.output) {
+					me.setCachedResultsOutput(eventData.output);
 				}
 
 				if (eventData.height > 0) {
@@ -36481,8 +36178,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 Ext.define("Voyant.notebook.editor.CodeEditor", {
 	extend: "Ext.Component",
 	alias: "widget.notebookcodeeditor", 
-	mixins: ["Voyant.util.Localization",'Voyant.notebook.util.Embed'],
-	embeddable: ["Voyant.notebook.editor.CodeEditor"],
+	mixins: ["Voyant.util.Localization"],
 	cls: 'notebook-code-editor',
 	config: {
 		// theme: 'ace/theme/chrome',
@@ -36493,7 +36189,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		editor: undefined,
 		editedTimeout: undefined,
 		lines: 1, // tracks the number of lines in the editor
-		markers: []
+		markers: [],
+		parentWrapper: undefined
 	},
 	statics: {
 		i18n: {
@@ -36504,7 +36201,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		ternServer: undefined
 	},
 
-	MIN_LINES: 6,
+	MIN_LINES: 2,
 
 	constructor: function(config) {
 		this.callParent(arguments);
@@ -36547,6 +36244,13 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editorWrapperEl.style.minHeight = minHeight;
 			editor.getScrollerElement().style.minHeight = minHeight;
 			
+			editor.on('focus', function(editor, ev) {
+				me.getParentWrapper().setIsEditing(true);
+			});
+			editor.on('blur', function(editor, ev) {
+				me.getParentWrapper().setIsEditing(false);
+			});
+
 			editor.on('change', function(editor, ev) {
 				me.clearMarkers();
 				
@@ -36571,7 +36275,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 						}, 30000));
 					}
 				}
-			}, this);
+			});
 
 			if (this.getMode() === 'javascript') {
 				if (Voyant.notebook.editor.CodeEditor.ternServer === undefined) {
@@ -36741,7 +36445,8 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 		this.editor = Ext.create("Voyant.notebook.editor.CodeEditor", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs,
-			mode: config.mode
+			mode: config.mode,
+			parentWrapper: this
 		});
 
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
@@ -36762,39 +36467,6 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 
 		Ext.apply(this, {
 			border: false,
-			dockedItems: [{
-			    xtype: 'toolbar',
-			    dock: 'left',
-			    defaults: {
-			    	textAlign: 'left'
-			    },
-			    items: [
-					{
-						xtype: 'notebookwrapperadd'
-					},{
-						xtype: 'notebookwrapperrun'
-					},{
-						xtype: 'notebookwrapperrununtil'
-					},{
-						xtype: 'notebookcodeconfig'
-					}
-			    ]
-			},{
-			    xtype: 'toolbar',
-			    dock: 'right',
-			    items: [{
-			    		xtype: 'notebookwrappercounter',
-			    		order: config.order,
-			    		name: config.cellId
-			    	},{
-		        		xtype: 'notebookwrapperremove'
-		        	},{
-			        	xtype: 'notebookwrappermoveup'
-			        },{
-			        	xtype: 'notebookwrappermovedown'
-			        }
-			    ]
-			}],
 			layout: 'anchor',
 			defaults: { anchor: '100%' },
 			items: [this.editor, this.results]
@@ -36806,8 +36478,7 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 	switchModes: function(mode) {
 		if (mode !== 'javascript') {
 			var notebook = this.up('notebook');
-			var order = this.down('notebookwrappercounter').getOrder();
-			notebook.addData('', order, undefined, {mode: mode});
+			notebook.addData('', this.getIndex(), undefined, {mode: mode});
 			notebook.notebookWrapperRemove(this);
 		} else {
 			console.log('unhandled mode switch:',mode);
@@ -36824,7 +36495,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		isEditRegistered: false,
 		currentHeight: 0,
 		isFresh: undefined,
-		isEnabled: false
+		parentWrapper: undefined
 	},
 	statics: {
 		i18n: {
@@ -36842,7 +36513,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		boxready: function(cmp) {
 			this.ownerCt.getTargetEl().on('click', function(e, t) {
 				if (t.tagName !== 'A') {
-					this.handleClick();
+					this._handleClick();
 				}
 			}, this);
 		},
@@ -36855,11 +36526,11 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		}
 	},
 	
-	handleClick: function() {
-		if (!this.getEditor()) {
+	_handleClick: function() {
+		if (this.getEditor() === undefined) {
 			this._initEditor();
 		} else {
-			if (this.getIsEnabled() === false) {
+			if (this.getParentWrapper().getIsEditing() === false) {
 				this._enable();
 			}
 		}
@@ -36871,23 +36542,22 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 
 	_initEditor: function() {
 		var el = this.getTargetEl();
-		// when upgrading ckeditor, remember to copy stopediting and inserthtml4x plugins
 		var editor = CKEDITOR.inline(el.dom, {
 			toolbar: [
 				{ name: 'basicstyles', items: [ 'Bold', 'Italic', '-', 'RemoveFormat' ] },
 				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Justify', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
 				{ name: 'styles', items: [ 'Styles', 'Format' ] },
-				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor'] },
+				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
 				{ name: 'insert', items: [ 'Image', 'Table' ] },
-				{ name: 'document', items: [ /*'inserthtml4x',*/ 'Sourcedialog', /*'Stopediting'*/] }
+				{ name: 'document', items: [ 'Sourcedialog' ] }
 			],
 			
-			extraPlugins: 'sourcedialog,justify,colorbutton',//,stopediting,inserthtml4x',
+			extraPlugins: 'sourcedialog,justify',
 			allowedContent: true,
 			disableNativeSpellChecker: false,
 			toolbarCanCollapse: false,
-			startupFocus: 'end'
+			startupFocus: 'end',
+			baseFloatZIndex: 20000 // EditorWrapper toolbars are 19000
 		});
 		
 		editor.on('contentDom', function() {
@@ -36911,6 +36581,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		}, this);
 
 		editor.on('change', function() {
+			editor.container.$.scrollIntoView(); // needed to counteract range.scrollIntoView by ckeditor
 			var editorHeight = editor.container.$.clientHeight;
 			if (editorHeight !== this.getCurrentHeight()) {
 				this.findParentByType('notebookeditorwrapper').setHeight(editorHeight);
@@ -36932,18 +36603,19 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 	},
 
 	_enable: function() {
-		this.getEditor().setReadOnly(false);
-		this.getEditor().focus();
+		var editor = this.getEditor();
+		editor.setReadOnly(false);
 
-		this.findParentByType('notebookeditorwrapper').setIsEditing(true);
-		this.setIsEnabled(true);
+		// need timeout before focusing otherwise FF throws error
+		setTimeout(function() {
+			editor.focus();
+			this.getParentWrapper().setIsEditing(true);
+		}.bind(this), 0);
 	},
 
 	_disable: function() {
 		this.getEditor().setReadOnly(true);
-
-		this.findParentByType('notebookeditorwrapper').setIsEditing(false);
-		this.setIsEnabled(false);
+		this.getParentWrapper().setIsEditing(false);
 	}
 })
 Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
@@ -36953,35 +36625,13 @@ Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	cls: 'notebook-text-wrapper',
 	config: {
 	},
-	minHeight: 85,
+	minHeight: 50,
 	constructor: function(config) {
 		Ext.apply(this, {
 			items: [{
 				xtype: 'notebooktexteditor',
-				content: Ext.Array.from(config.input).join("")
-			}],
-			dockedItems: [{
-			    xtype: 'toolbar',
-			    dock: 'left',
-			    items: [{
-				    	xtype: 'notebookwrapperadd'
-					}
-			    ]
-			},{
-			    xtype: 'toolbar',
-			    dock: 'right',
-			    items: [{
-			    		xtype: 'notebookwrappercounter',
-			    		order: config.order,
-			    		name: config.cellId
-			    	},{
-		        		xtype: 'notebookwrapperremove'
-		        	},{
-			        	xtype: 'notebookwrappermoveup'
-			        },{
-			        	xtype: 'notebookwrappermovedown'
-			        }
-			    ]
+				content: Ext.Array.from(config.input).join(""),
+				parentWrapper: this
 			}]
 		});
         this.callParent(arguments);
@@ -37186,7 +36836,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs, // TODO
 			mode: config.mode,
-			hidden: isFile
+			hidden: isFile,
+			parentWrapper: this
 		});
 
 		this.fileInput = Ext.create('Voyant.notebook.editor.FileInput', {
@@ -37213,41 +36864,6 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 
 		Ext.apply(this, {
 			border: false,
-			dockedItems: [{
-			    xtype: 'toolbar',
-			    dock: 'left',
-			    defaults: {
-			    	textAlign: 'left'
-			    },
-			    items: [
-					{
-						xtype: 'notebookwrapperadd'
-					},{
-						xtype: 'notebookwrapperrun'
-					},{
-						xtype: 'notebookwrapperrununtil'
-					},{
-						xtype: 'notebookcodeconfig'
-					},{
-						xtype: "notebookwrapperexport"
-					}
-			    ]
-			},{
-			    xtype: 'toolbar',
-			    dock: 'right',
-			    items: [{
-			    		xtype: 'notebookwrappercounter',
-			    		order: config.order,
-			    		name: config.cellId
-			    	},{
-		        		xtype: 'notebookwrapperremove'
-		        	},{
-			        	xtype: 'notebookwrappermoveup'
-			        },{
-			        	xtype: 'notebookwrappermovedown'
-			        }
-			    ]
-			}],
 			layout: 'anchor',
 			defaults: { anchor: '100%' },
 			items: [this.editor, this.fileInput, {
@@ -37308,8 +36924,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 	switchModes: function(mode) {
 		if (mode === 'javascript') {
 			var notebook = this.up('notebook');
-			var order = this.down('notebookwrappercounter').getOrder();
-			notebook.addCode('', order, undefined, {mode: 'javascript'});
+			notebook.addCode('', this.getIndex(), undefined, {mode: 'javascript'});
 			notebook.notebookWrapperRemove(this);
 		} else {
 			this.setMode(mode);
@@ -38296,8 +37911,20 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 
 Ext.define("Voyant.notebook.StorageDialogs", {
 	extend: "Ext.Component",
-	requires: [],
+	mixins: ["Voyant.util.Localization"],
 	alias: "",
+	statics: {
+		i18n: {
+			saveNewNotebook: 'Save New Notebook',
+			overwriteNotebook: 'Overwrite Existing Notebook',
+			open: 'Open',
+			notebookFile: 'Notebook File',
+			selectFile: 'Select File',
+			openFile: 'Open File',
+			cancel: 'Cancel',
+			mustSelect: 'You must select a file.'
+		}
+	},
 
 	notebookParent: undefined,
 
@@ -38315,7 +37942,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 	showSave: function(data, metadata, notebookName='') {
 		const me = this;
 		const newNotebook = notebookName === '';
-		const title = newNotebook ? 'Save New Notebook' : 'Overwrite Existing Notebook';
+		const title = newNotebook ? this.localize('saveNewNotebook') : this.localize('overwriteNotebook');
 		Ext.create('Ext.window.Window', {
 			title: title,
 			items: [{
@@ -38403,6 +38030,58 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		}).show();
 	},
 
+	showLoad: function() {
+		const me = this;
+		Ext.create('Ext.window.Window', {
+			title: me.localize('open'),
+			items: [{
+				xtype: 'form',
+				width: 450,
+				bodyPadding: 5,
+				layout: 'anchor',
+				defaults: {
+					labelAlign: 'right',
+					labelWidth: 160,
+					width: 360
+				},
+				items: [{
+					xtype: 'voyantfilefield',
+					name: 'file',
+					fieldLabel: me.localize('notebookFile'),
+					allowBlank: false,
+					buttonText: me.localize('selectFile'),
+					accept: 'text/html'
+				}],
+				buttons: [{
+					text: me.localize('cancel'),
+					ui: 'default-toolbar',
+					handler: function() {
+						this.up('window').close();
+					}
+				},{
+					text: me.localize('openFile'),
+					handler: function(button) {
+						const win = button.up('window');
+						const form = win.down('form').getForm();
+						const field = form.findField('file');
+						if (form.isValid()) {
+							const file = field.fileInputEl.dom.files[0];
+							const fr = new FileReader();
+							fr.onload = function(evt) {
+								const data = evt.target.result;
+								me.fireEvent('fileLoaded', data);
+								win.close();
+							}
+							fr.readAsText(file);
+						} else {
+							field.markInvalid(me.localize('mustSelect'));
+						}
+					}
+				}]
+			}]
+		}).show();
+	},
+
 	doesNotebookExist: function(userId, notebookName) {
 		const dfd = new Ext.Deferred();
 
@@ -38478,7 +38157,9 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
     		metadataKeywords: "Keywords",
     		metadataDescription: "Description",
     		metadataLicense: "Licence",
-    		metadataLanguage: "Language"
+    		metadataLanguage: "Language",
+			metadataCatalogue: "Catalogue",
+			metadataCatalogueInclude: "Include this notebook in the public Catalogue?"
 		}
 	},
 
@@ -38534,6 +38215,12 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 							});
 						}
 					}
+				},{
+					xtype: 'checkbox',
+					fieldLabel: this.localize('metadataCatalogue'),
+					boxLabel: this.localize('metadataCatalogueInclude'),
+					name: 'catalogue',
+					inputValue: 'true'
 				},{
 					xtype: 'textarea',
 					fieldLabel: this.localize("metadataDescription"),
@@ -38612,6 +38299,7 @@ Ext.define('Voyant.notebook.metadata.MetadataEditor', {
 				title: metadata.title,
 				userId: metadata.userId,
 				author: metadata.author,
+				catalogue: metadata.catalogue,
 				description: metadata.description,
 				keywords: metadata.keywords,
 				language: metadata.language,
@@ -38627,6 +38315,7 @@ Ext.define('Voyant.data.model.NotebookMetadata', {
 		{name: 'title', type: 'string'},
 		{name: 'userId', type: 'string'},
 		{name: 'author', type: 'string'},
+		{name: 'catalogue', type: 'boolean', defaultValue: false},
 		{name: 'description', type: 'string'},
 		{name: 'keywords', type: 'string'},
 		{name: 'language', type: 'string', defaultValue: 'English'},
@@ -38788,12 +38477,10 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 		+"<article class='spyralArticle'>\n";
 
 		this.getComponent("cells").items.each(function(item, i) {
+			out+="<section id='"+item.getCellId()+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
+			"<div class='notebookwrappercounter'>"+(item.getIndex()+1)+"</div>";
+
 			var content = item.getContent();
-			var counter = item.down("notebookwrappercounter");
-
-			out+="<section id='"+counter.name+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
-			"<div class='notebookwrappercounter'>"+counter.getTargetEl().dom.innerHTML+"</div>";
-
 			if (item.isXType('notebooktexteditorwrapper')) {
 				out+="<div class='notebook-text-editor'>"+content+"</div>\n";
 			} else {	
@@ -38941,6 +38628,7 @@ Ext.define('Voyant.notebook.util.NotebooksList', {
 					{name: 'license'},
 					{name: 'created', type: 'date'},
 					{name: 'modified', type: 'date'},
+					{name: 'catalogue', type: 'boolean'},
 					{name: 'version'}
 				]
 			}),
@@ -38948,7 +38636,9 @@ Ext.define('Voyant.notebook.util.NotebooksList', {
 				'<tpl for=".">',
 					'<div class="catalogue-notebook">',
 						'<div class="id">{id}</div>',
-						'<div class="title nowrap" title="{title}">{title}</div>',
+						'<div class="title nowrap" title="{title}">',
+						'<tpl if="catalogue"><i class="fa fa-th-list published" aria-hidden="true" title="In Catalogue"></i> </tpl>',
+						'{title}</div>',
 						'<div class="author nowrap"><i class="fa fa-user" aria-hidden="true"></i> {author}</div>',
 						'<div class="description">{description}</div>',
 						'<tpl if="keywords.length &gt; 0">',
@@ -38984,7 +38674,8 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			docs: 'Docs',
 			openFull: 'Open Full Documentation',
 			outlineIntro: 'This is an inline version of the API documentation for <a href="#!/guide/notebook">Spyral Notebooks</a>. You can also <a href="#!/api">view the full documentation</a> in a new window.',
-			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:'
+			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
+			loadingDocs: 'Loading Docs'
 		}
 	},
 
@@ -39120,6 +38811,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	showDocs: function() {
+		this.show().anchorTo(Ext.getBody(), 'br-br');
+		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
+
 		Ext.Ajax.request({
 			// TODO inaccessible on server?
 			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
@@ -39162,6 +38856,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 					}
 				]
 			})
+		}.bind(this)).always(function() {
+			this.getLayout().setActiveItem(0);
+			this.getLayout().getRenderTarget().unmask();
 		}.bind(this));
 	},
 
@@ -39185,6 +38882,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	showDocsForClassMethod: function(docClass, docMethod) {
+		this.show().anchorTo(Ext.getBody(), 'br-br');
+		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
+
 		Ext.Ajax.request({
 			url: Voyant.application.getBaseUrlFull()+'docs/output/'+docClass+'.js'
 		}).then(function(response) {
@@ -39198,10 +38898,15 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			if (json) {
 				this._loadExtDocs(json, docClass, docMethod);
 			}
+		}.bind(this)).always(function() {
+			this.getLayout().getRenderTarget().unmask();
 		}.bind(this));
 	},
 
 	_showDocEntry: function(entryId) {
+		if (this.isHidden()) {
+			this.show().anchorTo(Ext.getBody(), 'br-br');
+		}
 		var docsParentEl = this.down('#main').getEl().dom;
 		docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = true; });
 		this.lastDocEntryMethod = entryId;
@@ -39219,9 +38924,12 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	_loadExtOutline: function(json) {
 		this.lastDocEntryClass = undefined;
 		this.lastDocEntryMethod = undefined;
+
 		this.setTitle(this.localize('docs')+' '+this.localize('home'));
-		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.down('#restoreButton').hide();
+		this.down('#overviewBtn').hide();
+		this.down('#configsBtn').hide();
+		this.down('#methodsBtn').hide();
 
 		var html = '<p>'+this.localize('outlineIntro')+'</p><p>'+this.localize('outlineApi')+'</p>';
 		html += this.outlineTemplate.apply(json);
@@ -39229,12 +38937,6 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this._setHtmlForCard('main', html);
 
 		this.body.scrollTo('top', 0, false);
-
-		this.getLayout().setActiveItem(0);
-
-		this.down('#overviewBtn').hide();
-		this.down('#configsBtn').hide();
-		this.down('#methodsBtn').hide();
 
 		if (this.getCollapsed()) {
 			this.expand(false);
@@ -39247,8 +38949,8 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	_loadExtDocs: function(json, docClass, docMethod) {
 		this.lastDocEntryClass = docClass;
 		this.lastDocEntryMethod = docMethod;
+
 		this.setTitle(this.localize('docs')+': '+json.name);
-		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.down('#restoreButton').hide();
 
 		this._setHtmlForCard('main', json.html);
@@ -39305,8 +39007,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 			search: 'Search within notebooks',
 			noResults: 'No matching notebooks',
 			suggested: 'Suggested Notebooks',
-			load: 'Load Selected Notebook',
-			cancel: 'Cancel'
+			load: 'Open Selected Notebook',
+			close: 'Close'
 		}
 	},
 
@@ -39412,6 +39114,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 					},{
 						xtype: 'notebookslist',
 						itemId: 'notebookslist',
+						cls: 'catalogue-window',
 						flex: 1,
 						listeners: {
 							itemdblclick: function(view, record, el) {
@@ -39496,7 +39199,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 				}],
 				closeAction: 'hide',
 				buttons: [{
-					text: this.localize('cancel'),
+					text: this.localize('close'),
 					ui: 'default-toolbar',
 					handler: function(but) {
 						this.window.close();
@@ -39504,6 +39207,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 					scope: this
 				},{
 					text: this.localize('load'),
+					glyph: 'xf115@FontAwesome',
 					handler: function(but) {
 						var record = this.window.down('#notebookslist').getSelection()[0];
 						if (record === undefined) {
@@ -39621,6 +39325,8 @@ Ext.define('Voyant.notebook.Catalogue', {
 			this.window.down('#notebookslist').getStore().removeAll();
 			return;
 		}
+		
+		queries.push('facet.catalogue:true');
 
 		this.window.down('#notebookslist').mask('Loading');
 		this.window.down('#notebookslist').getSelectionModel().deselectAll();
@@ -39657,6 +39363,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 });
 
 Ext.define('Voyant.notebook.Authenticator', {
+	mixins: ['Voyant.util.Localization','Voyant.notebook.util.NotebooksList'],
 	statics: {
 		i18n: {
 			account: 'Account',
@@ -39666,7 +39373,12 @@ Ext.define('Voyant.notebook.Authenticator', {
 			yourNotebooks: 'Your Notebooks',
 			authenticateWithGithub: 'Authenticate with GitHub',
 			authorizeSpyralGithub: 'You must authorize Spyral to use GitHub on your behalf.',
-			signInSuccess: 'Sign in successful!'
+			signInSuccess: 'Sign in successful!',
+			close: 'Close',
+			openSelected: 'Open Selected Notebook',
+			deleteSelected: 'Delete Selected Notebook',
+			notebookDeleted: 'Notebook deleted',
+			errorDeletingNotebook: 'Error deleting notebook'
 		}
 	},
 
@@ -39813,26 +39525,59 @@ Ext.define('Voyant.notebook.Authenticator', {
 					}]
 				}],
 				buttons: [{
-					text: 'Close',
+					text: me.localize('close'),
+					ui: 'default-toolbar',
 					handler: function(btn) {
 						btn.up('window').close();
+					}
+				},{
+					text: me.localize('deleteSelected'),
+					ui: 'default-toolbar',
+					glyph: 'xf1f8@FontAwesome',
+					handler: function(btn) {
+						const win = btn.up('window');
+						const sel = win.down('#notebookslist').getSelection();
+						if (sel[0]) {
+							Ext.Msg.confirm('Delete', 'Are you sure you want to permanently delete the selected notebook?', function(button) {
+								if (button === 'yes') {
+									const notebookId = sel[0].get('id');
+									me.deleteNotebook(notebookId).then(function() {
+										win.down('#notebookslist').getStore().remove(sel[0]);
+										me.toastInfo({
+											html: me.localize('notebookDeleted'),
+											anchor: 'tr'
+										});
+									}, function(err) {
+										Ext.Msg.show({
+											title: me.localize('errorDeletingNotebook'),
+											msg: err,
+											buttons: Ext.MessageBox.OK,
+											icon: Ext.MessageBox.ERROR
+										});
+									});
+								}
+							}, me);
+							
+						}
+					}
+				},{
+					text: me.localize('openSelected'),
+					glyph: 'xf115@FontAwesome',
+					handler: function(btn) {
+						const win = btn.up('window');
+						const sel = win.down('#notebookslist').getSelection();
+						if (sel[0]) {
+							const notebookId = sel[0].get('id');
+							me.fireEvent('notebookSelected', me, notebookId, function() {
+								win.close()
+							});
+						}
 					}
 				}]
 			});
 			accountWin.show();
 
-			accountWin.down('#notebookslist').mask('Loading');
-			Spyral.Load.trombone({
-				tool: 'notebook.NotebookFinder',
-				query: 'facet.userId:'+this.accountInfo.id,
-				noCache: 1
-			}).then(function(json) {
-				accountWin.down('#notebookslist').unmask();
-				accountWin.down('#notebookslist').getStore().loadRawData(json.catalogue.notebooks);
-				accountWin.down('#notebookslist').getStore().sort('modified', 'DESC');
-			}).catch(function(err) {
-				accountWin.unmask()
-			});
+			this.populateNotebookList(accountWin);
 		}
 	},
 
@@ -39868,6 +39613,51 @@ Ext.define('Voyant.notebook.Authenticator', {
 			})
 		}
 		return this.accountInfo !== undefined;
+	},
+
+	populateNotebookList: function(accountWin) {
+		accountWin.down('#notebookslist').mask('Loading');
+		Spyral.Load.trombone({
+			tool: 'notebook.NotebookFinder',
+			query: 'facet.userId:'+this.accountInfo.id,
+			noCache: 1
+		}).then(function(json) {
+			accountWin.down('#notebookslist').unmask();
+			accountWin.down('#notebookslist').getStore().loadRawData(json.catalogue.notebooks);
+			accountWin.down('#notebookslist').getStore().sort('modified', 'DESC');
+		}).catch(function(err) {
+			accountWin.unmask()
+		});
+	},
+
+	deleteNotebook: function(notebookId) {
+		const me = this;
+
+		const dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			method: 'POST',
+			url: Voyant.application.getBaseUrlFull()+'spyral/account/delete',
+			params: {
+				id: notebookId
+			},
+			success: function(resp) {
+				const json = JSON.parse(resp.responseText);
+				if (json.notebook.success) {
+					me.fireEvent('fileDeleted', me, notebookId);
+					dfd.resolve(true);
+				} else {
+					me.fireEvent('fileDeleted', me, null, json.notebook.error);
+					dfd.reject(json.notebook.error);
+				}
+			},
+			failure: function(resp) {
+				me.fireEvent('fileDeleted', me, null, resp.responseText);
+				dfd.reject(resp.responseText);
+			}
+		});
+
+		return dfd.promise;
 	},
 
 	getCookie: function(cookieName) {
@@ -39913,7 +39703,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			metadataTip: "View and Edit the notebook metadata.",
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
-    		metadataSave: "Save",
+    		metadataSave: "Save Metadata",
     		metadataCancel: "Cancel",
 			catalogueTip: "Search a catalogue of available notebooks.",
 			preparingExport: "Preparing Export",
@@ -40065,14 +39855,7 @@ Ext.define('Voyant.notebook.Notebook', {
 							if (storageSolution === 'github') {
 								this.githubDialogs.showLoad();
 							} else {
-								Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
-									text = text.trim();
-									if (btn=="ok") {
-										this.checkIsEditedAndDoCallback(this, function() {
-											this.loadFromString(text);
-										});
-									}
-								}, this, true);
+								this.voyantStorageDialogs.showLoad();
 							}
 						}
 					},
@@ -40108,29 +39891,26 @@ Ext.define('Voyant.notebook.Notebook', {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
 						menu.items = [];
 
+						var handleSignIn = function() {
+							parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+							parent.setIsEdited(false);
+							parent.toastInfo({
+								html: parent.localize('signInSuccess'),
+								anchor: 'tr'
+							});
+						}
+
 						parent.isAuthenticated(true).then(function(isAuth) {
 							if (isAuth) {
 								parent.showAccountWindow();
 							} else {
 								menu.items = [
-									parent.getGitHubAuthButton(function() {
-										parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-										parent.toastInfo({
-											html: parent.localize('signInSuccess'),
-											anchor: 'tr'
-										});
-									})
+									parent.getGitHubAuthButton(handleSignIn)
 								];
 							}
 						}, function() {
 							menu.items = [
-								parent.getGitHubAuthButton(function() {
-									parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-									parent.toastInfo({
-										html: parent.localize('signInSuccess'),
-										anchor: 'tr'
-									});
-								})
+								parent.getGitHubAuthButton(handleSignIn)
 							];
 						}).always(function() {
 							menu.showToolMenu();
@@ -40215,8 +39995,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
 			notebookParent: this,
 			listeners: {
-				'fileLoaded': function(src) {
-
+				'fileLoaded': function(fileData) {
+					this.checkIsEditedAndDoCallback(this, function() {
+						this.loadFromString(fileData);
+					});
 				},
 				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
@@ -40444,7 +40226,16 @@ Ext.define('Voyant.notebook.Notebook', {
 			Ext.batchLayouts(function() {
 				this.reset();
 				this.setNotebookId(undefined);
-				this.importFromHtml(text); // old format
+				try {
+					this.importFromHtml(text); // old format
+				} catch (e) {
+					Ext.Msg.show({
+						title: this.localize('errorLoadingNotebook'),
+						msg: this.localize('cannotLoadUnrecognized'),
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					});
+				}
 			}, this);
 		}
 		return true;
@@ -40625,6 +40416,7 @@ Ext.define('Voyant.notebook.Notebook', {
 				// console.log('nb error', error);
 			});
     	} else {
+			 // the notebook has finished running
 			this.updateTernServerVariables(this.getNotebookVariables());
 			this.fireEvent('notebookRun', this);
 		}
@@ -40646,15 +40438,19 @@ Ext.define('Voyant.notebook.Notebook', {
 					Voyant.notebook.editor.CodeEditor.ternServer.server.delFile(theVar.name);
 				})
 			}
-			varsToAdd.forEach(function(theVar) {
-				if (theVar.isSpyralClass) {
-					// many Spyral classes are created via helper methods, e.g. loadCorpus
-					// therefore add text that initializes the variable using the class constructor
-					// ensuring that the tern server is aware of the variable name and type
-					var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
-					Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
-				}
-			})
+			if (varsToAdd === undefined) {
+				console.warn('updateTernServerVariables: no varsToAdd!');
+			} else {
+				varsToAdd.forEach(function(theVar) {
+					if (theVar.isSpyralClass) {
+						// many Spyral classes are created via helper methods, e.g. loadCorpus
+						// therefore add text that initializes the variable using the class constructor
+						// ensuring that the tern server is aware of the variable name and type
+						var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
+						Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+					}
+				});
+			}
 		}
 	},
 
@@ -40703,37 +40499,37 @@ Ext.define('Voyant.notebook.Notebook', {
 			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can click on the blocks to edit them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>");
 		this.addCode('');
 	},
     
-    addText: function(block, order, cellId) {
-    	return this._add(block, order, 'notebooktexteditorwrapper', cellId);
-    },
+	addText: function(block, index, cellId) {
+		return this._add(block, index, 'notebooktexteditorwrapper', cellId);
+	},
  
-    addCode: function(block, order, cellId, config) {
+	addCode: function(block, index, cellId, config) {
 		config = config || {};
 		config.docs = [this.ecmaTernDocs, this.browserTernDocs, this.spyralTernDocs];
-    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
-    },
+		return this._add(block, index, 'notebookcodeeditorwrapper', cellId, config);
+	},
 
-	addData: function(block, order, cellId, config) {
-    	return this._add(block, order, 'notebookdatawrapper', cellId, config);
-    },
-    
-    _add: function(block, order, xtype, cellId, config) {
-    	if (Ext.isString(block)) {
-    		block = {input: block}
-    	}
-    	var cells = this.getComponent("cells");
-		order = (typeof order === 'undefined') ? cells.items.length : order;
+	addData: function(block, index, cellId, config) {
+		return this._add(block, index, 'notebookdatawrapper', cellId, config);
+	},
+		
+	_add: function(block, index, xtype, cellId, config) {
+		if (Ext.isString(block)) {
+			block = {input: block}
+		}
+		var cells = this.getComponent("cells");
+		index = (typeof index === 'undefined') ? cells.items.length : index;
 		cellId = (typeof cellId === 'undefined') ? Spyral.Util.id() : cellId;
-    	return cells.insert(order, Ext.apply(block, {
-    		xtype: xtype,
-    		order: order,
-    		cellId: cellId
-    	}, config))
-    },
+		return cells.insert(index, Ext.apply(block, {
+			xtype: xtype,
+			index: index,
+			cellId: cellId
+		}, config))
+	},
 
     
 	notebookWrapperMoveUp: function(wrapper) {
@@ -40793,12 +40589,12 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.redoOrder();
 	},
 
-    redoOrder: function() {
-    	this.query("notebookwrappercounter").forEach(function(counter, i) {
-    		counter.setOrder(i);
+	redoOrder: function() {
+		this.query("notebookeditorwrapper").forEach(function(cmp, i) {
+			cmp.setIndex(i);
 		})
 		this.setIsEdited(true);
-    },
+	},
     
     applyIsEdited: function(val) {
     	// TODO: perhaps setup autosave
@@ -40893,11 +40689,13 @@ Ext.define('Voyant.notebook.Notebook', {
 					handler: function() {
 						me.metadataEditor.reset();
 					}
-				}, " ", {
+				},{
 					text: this.localize('metadataSave'),
 					handler: function() {
 						var form = me.metadataEditor.getForm();
-						me.getMetadata().set(form.getValues());
+						var values = form.getValues();
+						values.catalogue = values.catalogue === 'true'; // convert to boolean
+						me.getMetadata().set(values);
 						me.updateMetadata();
 						this.up('window').close();
 					}
@@ -40940,7 +40738,7 @@ Ext.define('Voyant.notebook.Notebook', {
 Ext.define('Voyant.VoyantApp', {
 	
     extend: 'Ext.app.Application',
-	mixins: ['Voyant.util.Deferrable','Voyant.util.Localization','Voyant.util.Api','Voyant.util.Colors'],
+	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.util.Colors'],
 	requires: ['Voyant.util.ResponseError'],
     
     name: 'VoyantApp',
@@ -41225,7 +41023,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
         	this.loadCorpusFromParams(queryParams);
         	
         	if (queryParams.palette) {
-        		if (queryParams.palette.indexOf(",")>-1) { // treat as inline
+        		if (queryParams.palette.indexOf(",") > -1) { // treat as inline
         	    	var palette = Ext.decode(queryParams.palette);
         	    	this.addColorPalette(queryParams.palette, palette);
         		} else {
@@ -41262,6 +41060,12 @@ Ext.define('Voyant.VoyantCorpusApp', {
     
     loadCorpusFromParams: function(params) {
 		var me = this;
+
+		if (this.errorLoadingCorpus) {
+			delete params.corpus; // remove corpus ID so that it's not used erroneously
+			delete this.errorLoadingCorpus;
+		}
+
 		var view = me.getViewport()
 		view.mask(this.localize("fetchingCorpus"));
 		if (params.archive) { // fix a few URLs we know about
@@ -41281,6 +41085,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				me.dispatchEvent('loadedCorpus', this, corpus);
 			}
 		}).otherwise(function() {
+			me.errorLoadingCorpus = true; // track error so we can remove corpus ID from params on subsequent load
 			view.unmask();
 		})
     },
@@ -41746,7 +41551,7 @@ Ext.define('Voyant.VoyantToolApp', {
 	        listeners: {
 	        	afterrender: function(container) {
 	        		if (me.getApiParam('embeddedApiId')) {
-	    				var dfd = me.getDeferred(this);
+	    				var dfd = new Ext.Deferred();
 	    	    		container.mask(this.localize('loadingConfiguration'));
 	        	    	Ext.Ajax.request({
 	        	    	    url: me.getTromboneUrl(),
