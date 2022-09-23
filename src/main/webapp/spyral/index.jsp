@@ -37,7 +37,7 @@ if (request.getServletPath().equals("/spiral")) {
 
 <script src="<%= base %>/resources/spyral/build/spyral.js"></script>
 
-<script src="<%= base %>/resources/ckeditor/ckeditor4.15.0/ckeditor.js"></script>
+<script src="<%= base %>/resources/ckeditor/ckeditor4.19.1/ckeditor.js"></script>
 <script>
 // adapted from http://handsomedogstudio.com/ckeditor-set-default-target-blank
 CKEDITOR.on('dialogDefinition', function(ev) {

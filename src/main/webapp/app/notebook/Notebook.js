@@ -28,7 +28,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			metadataTip: "View and Edit the notebook metadata.",
 			metadataEditor: "Edit Metadata",
     		metadataReset: "Reset",
-    		metadataSave: "Save",
+    		metadataSave: "Save Metadata",
     		metadataCancel: "Cancel",
 			catalogueTip: "Search a catalogue of available notebooks.",
 			preparingExport: "Preparing Export",
@@ -180,14 +180,7 @@ Ext.define('Voyant.notebook.Notebook', {
 							if (storageSolution === 'github') {
 								this.githubDialogs.showLoad();
 							} else {
-								Ext.Msg.prompt(this.localize("openTitle"),this.localize("openMsg"),function(btn, text) {
-									text = text.trim();
-									if (btn=="ok") {
-										this.checkIsEditedAndDoCallback(this, function() {
-											this.loadFromString(text);
-										});
-									}
-								}, this, true);
+								this.voyantStorageDialogs.showLoad();
 							}
 						}
 					},
@@ -223,29 +216,26 @@ Ext.define('Voyant.notebook.Notebook', {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
 						menu.items = [];
 
+						var handleSignIn = function() {
+							parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+							parent.setIsEdited(false);
+							parent.toastInfo({
+								html: parent.localize('signInSuccess'),
+								anchor: 'tr'
+							});
+						}
+
 						parent.isAuthenticated(true).then(function(isAuth) {
 							if (isAuth) {
 								parent.showAccountWindow();
 							} else {
 								menu.items = [
-									parent.getGitHubAuthButton(function() {
-										parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-										parent.toastInfo({
-											html: parent.localize('signInSuccess'),
-											anchor: 'tr'
-										});
-									})
+									parent.getGitHubAuthButton(handleSignIn)
 								];
 							}
 						}, function() {
 							menu.items = [
-								parent.getGitHubAuthButton(function() {
-									parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-									parent.toastInfo({
-										html: parent.localize('signInSuccess'),
-										anchor: 'tr'
-									});
-								})
+								parent.getGitHubAuthButton(handleSignIn)
 							];
 						}).always(function() {
 							menu.showToolMenu();
@@ -330,8 +320,10 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.voyantStorageDialogs = new Voyant.notebook.StorageDialogs({
 			notebookParent: this,
 			listeners: {
-				'fileLoaded': function(src) {
-
+				'fileLoaded': function(fileData) {
+					this.checkIsEditedAndDoCallback(this, function() {
+						this.loadFromString(fileData);
+					});
 				},
 				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
@@ -559,7 +551,16 @@ Ext.define('Voyant.notebook.Notebook', {
 			Ext.batchLayouts(function() {
 				this.reset();
 				this.setNotebookId(undefined);
-				this.importFromHtml(text); // old format
+				try {
+					this.importFromHtml(text); // old format
+				} catch (e) {
+					Ext.Msg.show({
+						title: this.localize('errorLoadingNotebook'),
+						msg: this.localize('cannotLoadUnrecognized'),
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					});
+				}
 			}, this);
 		}
 		return true;
@@ -740,6 +741,7 @@ Ext.define('Voyant.notebook.Notebook', {
 				// console.log('nb error', error);
 			});
     	} else {
+			 // the notebook has finished running
 			this.updateTernServerVariables(this.getNotebookVariables());
 			this.fireEvent('notebookRun', this);
 		}
@@ -761,15 +763,19 @@ Ext.define('Voyant.notebook.Notebook', {
 					Voyant.notebook.editor.CodeEditor.ternServer.server.delFile(theVar.name);
 				})
 			}
-			varsToAdd.forEach(function(theVar) {
-				if (theVar.isSpyralClass) {
-					// many Spyral classes are created via helper methods, e.g. loadCorpus
-					// therefore add text that initializes the variable using the class constructor
-					// ensuring that the tern server is aware of the variable name and type
-					var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
-					Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
-				}
-			})
+			if (varsToAdd === undefined) {
+				console.warn('updateTernServerVariables: no varsToAdd!');
+			} else {
+				varsToAdd.forEach(function(theVar) {
+					if (theVar.isSpyralClass) {
+						// many Spyral classes are created via helper methods, e.g. loadCorpus
+						// therefore add text that initializes the variable using the class constructor
+						// ensuring that the tern server is aware of the variable name and type
+						var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
+						Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+					}
+				});
+			}
 		}
 	},
 
@@ -818,37 +824,37 @@ Ext.define('Voyant.notebook.Notebook', {
 			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text blocks (like this one) and code blocks (like the one below). You can click on the blocks to edit them and add new blocks by clicking add icon that appears in the left column when hovering over a block.</p>");
+		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>");
 		this.addCode('');
 	},
     
-    addText: function(block, order, cellId) {
-    	return this._add(block, order, 'notebooktexteditorwrapper', cellId);
-    },
+	addText: function(block, index, cellId) {
+		return this._add(block, index, 'notebooktexteditorwrapper', cellId);
+	},
  
-    addCode: function(block, order, cellId, config) {
+	addCode: function(block, index, cellId, config) {
 		config = config || {};
 		config.docs = [this.ecmaTernDocs, this.browserTernDocs, this.spyralTernDocs];
-    	return this._add(block, order, 'notebookcodeeditorwrapper', cellId, config);
-    },
+		return this._add(block, index, 'notebookcodeeditorwrapper', cellId, config);
+	},
 
-	addData: function(block, order, cellId, config) {
-    	return this._add(block, order, 'notebookdatawrapper', cellId, config);
-    },
-    
-    _add: function(block, order, xtype, cellId, config) {
-    	if (Ext.isString(block)) {
-    		block = {input: block}
-    	}
-    	var cells = this.getComponent("cells");
-		order = (typeof order === 'undefined') ? cells.items.length : order;
+	addData: function(block, index, cellId, config) {
+		return this._add(block, index, 'notebookdatawrapper', cellId, config);
+	},
+		
+	_add: function(block, index, xtype, cellId, config) {
+		if (Ext.isString(block)) {
+			block = {input: block}
+		}
+		var cells = this.getComponent("cells");
+		index = (typeof index === 'undefined') ? cells.items.length : index;
 		cellId = (typeof cellId === 'undefined') ? Spyral.Util.id() : cellId;
-    	return cells.insert(order, Ext.apply(block, {
-    		xtype: xtype,
-    		order: order,
-    		cellId: cellId
-    	}, config))
-    },
+		return cells.insert(index, Ext.apply(block, {
+			xtype: xtype,
+			index: index,
+			cellId: cellId
+		}, config))
+	},
 
     
 	notebookWrapperMoveUp: function(wrapper) {
@@ -908,12 +914,12 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.redoOrder();
 	},
 
-    redoOrder: function() {
-    	this.query("notebookwrappercounter").forEach(function(counter, i) {
-    		counter.setOrder(i);
+	redoOrder: function() {
+		this.query("notebookeditorwrapper").forEach(function(cmp, i) {
+			cmp.setIndex(i);
 		})
 		this.setIsEdited(true);
-    },
+	},
     
     applyIsEdited: function(val) {
     	// TODO: perhaps setup autosave
@@ -1008,11 +1014,13 @@ Ext.define('Voyant.notebook.Notebook', {
 					handler: function() {
 						me.metadataEditor.reset();
 					}
-				}, " ", {
+				},{
 					text: this.localize('metadataSave'),
 					handler: function() {
 						var form = me.metadataEditor.getForm();
-						me.getMetadata().set(form.getValues());
+						var values = form.getValues();
+						values.catalogue = values.catalogue === 'true'; // convert to boolean
+						me.getMetadata().set(values);
 						me.updateMetadata();
 						this.up('window').close();
 					}

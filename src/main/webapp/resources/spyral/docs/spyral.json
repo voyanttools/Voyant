@@ -14,6 +14,10 @@
         "!type": "string",
         "!doc": "The name of the author of the Notebook"
       },
+      "catalogue": {
+        "!type": "boolean",
+        "!doc": "Whether to include the Notebook in the Catalogue"
+      },
       "description": {
         "!type": "string",
         "!doc": "The description of the Notebook"
@@ -446,6 +450,10 @@
         "!type": "number",
         "!doc": "the number of topics to get (default is 10)"
       },
+      "wordsPerTopic": {
+        "!type": "number",
+        "!doc": "the number of words per topic (default is 10)"
+      },
       "sweeps": {
         "!type": "number",
         "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
@@ -644,6 +652,11 @@
         "!type": "fn(blob: +Blob) -> string",
         "!doc": "Take a Blob and convert it to a data URL.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-blobToDataUrl"
+      },
+      "transformXml": {
+        "!type": "fn(xmlDoc: ?, xslStylesheet: ?, returnDoc?: boolean) -> +Document",
+        "!doc": "Takes an XML document and XSL stylesheet and returns the resulting transformation.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-transformXml"
       },
       "isString": {
         "!type": "fn(val: ?) -> boolean",
@@ -901,6 +914,7 @@
       }
     },
     "Corpus": {
+      "!type": "fn(id: string)",
       "prototype": {
         "id": {
           "!type": "fn() -> +Promise",
@@ -979,7 +993,7 @@
         },
         "lda": {
           "!type": "fn(config: +Spyral_Corpus_lda_config) -> +Promise",
-          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:\n\n* **getTopicWords**: return a list of topics (words organized into bunches of a specified size\n* **getDocuments**: return a list of documents and the signican words\n\nThe config object as parameter can contain the following:\n\n* **numberTopics**: the number of topics to get (default is 10)\n* **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n* **language**: stopwords language to use, default is corpus language",
+          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:\n\n* **getTopicWords**: return a list of topics (words organized into bunches of a specified size\n* **getDocuments**: return a list of documents and the signicant words\n\nThe config object as parameter can contain the following:\n\n* **numberTopics**: the number of topics to get (default is 10)\n* **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n* **language**: stopwords language to use, default is corpus language",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-lda"
         },
         "ldaTopics": {
@@ -1008,6 +1022,8 @@
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-toString"
         }
       },
+      "!doc": "Create a new Corpus using the specified Corpus ID",
+      "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-constructor",
       "load": {
         "!type": "fn(config: +Object, api: +Object) -> +Promise",
         "!doc": "Load a Corpus using the provided config and api",

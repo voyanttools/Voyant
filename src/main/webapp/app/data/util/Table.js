@@ -14,8 +14,6 @@
  */
 Ext.define('Voyant.data.table.Table', {
 	alternateClassName: ["VoyantTable"],
-	mixins: ['Voyant.notebook.util.Embed'],
-	embeddable: ['Voyant.widget.VoyantTableTransform','Voyant.widget.VoyantChart','Voyant.widget.CodeEditor'],
 	config: {
 		
 		/**
@@ -377,31 +375,27 @@ Ext.define('Voyant.data.table.Table', {
 	},
 	
 	_doAnalysisLoad: function(tool, storeType, config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-			var dfd = Voyant.application.getDeferred(this);
-			Ext.apply(config, {
-		        columnHeaders: true,
-		        rowHeaders: true,
-		        tool: tool,
-		        analysisInput: this.toTsv(),
-		        inputFormat: 'tsv'
-			});
-			var store = Ext.create(storeType, {noCorpus: true});
-			store.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(store, records)
-					} else {
-						dfd.reject(operation.error.response);
-					}
+		config = config || {};
+		var dfd = new Ext.Deferred();
+		Ext.apply(config, {
+			columnHeaders: true,
+			rowHeaders: true,
+			tool: tool,
+			analysisInput: this.toTsv(),
+			inputFormat: 'tsv'
+		});
+		var store = Ext.create(storeType, {noCorpus: true});
+		store.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(store, records)
+				} else {
+					dfd.reject(operation.error.response);
 				}
-			})
-			return dfd.promise
-		}
+			}
+		})
+		return dfd.promise
 	},
 	
 	embed: function(cmp, config) {

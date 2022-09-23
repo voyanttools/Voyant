@@ -96,7 +96,7 @@ Ext.define('Voyant.panel.NSSI', {
 	},
 
 	load: function(params, dfd) {
-		dfd = dfd || Voyant.application.getDeferred(this);
+		dfd = dfd || new Ext.Deferred();
 		var me = this;
 
 		Ext.Ajax.request({

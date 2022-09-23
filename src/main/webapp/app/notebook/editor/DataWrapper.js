@@ -28,7 +28,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs, // TODO
 			mode: config.mode,
-			hidden: isFile
+			hidden: isFile,
+			parentWrapper: this
 		});
 
 		this.fileInput = Ext.create('Voyant.notebook.editor.FileInput', {
@@ -55,41 +56,6 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 
 		Ext.apply(this, {
 			border: false,
-			dockedItems: [{
-			    xtype: 'toolbar',
-			    dock: 'left',
-			    defaults: {
-			    	textAlign: 'left'
-			    },
-			    items: [
-					{
-						xtype: 'notebookwrapperadd'
-					},{
-						xtype: 'notebookwrapperrun'
-					},{
-						xtype: 'notebookwrapperrununtil'
-					},{
-						xtype: 'notebookcodeconfig'
-					},{
-						xtype: "notebookwrapperexport"
-					}
-			    ]
-			},{
-			    xtype: 'toolbar',
-			    dock: 'right',
-			    items: [{
-			    		xtype: 'notebookwrappercounter',
-			    		order: config.order,
-			    		name: config.cellId
-			    	},{
-		        		xtype: 'notebookwrapperremove'
-		        	},{
-			        	xtype: 'notebookwrappermoveup'
-			        },{
-			        	xtype: 'notebookwrappermovedown'
-			        }
-			    ]
-			}],
 			layout: 'anchor',
 			defaults: { anchor: '100%' },
 			items: [this.editor, this.fileInput, {
@@ -150,8 +116,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 	switchModes: function(mode) {
 		if (mode === 'javascript') {
 			var notebook = this.up('notebook');
-			var order = this.down('notebookwrappercounter').getOrder();
-			notebook.addCode('', order, undefined, {mode: 'javascript'});
+			notebook.addCode('', this.getIndex(), undefined, {mode: 'javascript'});
 			notebook.notebookWrapperRemove(this);
 		} else {
 			this.setMode(mode);

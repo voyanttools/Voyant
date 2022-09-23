@@ -1,6 +1,5 @@
 Ext.define('Voyant.data.store.CAAnalysisMixin', {
 	mixins: ['Voyant.data.store.VoyantStore'],
-	embeddable: ['Voyant.panel.ScatterPlot'],
     model: 'Voyant.data.model.StatisticalAnalysis',
 	constructor : function(config) {
 		this.mixins['Voyant.data.store.VoyantStore'].constructor.apply(this, [config, {

@@ -6,9 +6,9 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 		i18n: {
 			tip: "Run multiple cells",
 			runUntil: "Run up to here",
-			runUntilTip: "Run previous code blocks and this one.",
+			runUntilTip: "Run previous code cells and this one.",
 			runFrom: "Run from here onwards",
-			runFromTip: "Run this and following code blocks."
+			runFromTip: "Run this and following code cells."
 		}
 	},
 	glyph: 'xf050@FontAwesome',
@@ -23,16 +23,14 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 				tooltip: this.localize("runUntilTip"),
 				glyph: 'xf049@FontAwesome',
 				handler: function() {
-					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
-					btn.up('notebook').runUntil(rew);
+					btn.runMenu.editor.up('notebook').runUntil(btn.runMenu.editor);
 				}
 			},{
 				text: this.localize("runFrom"),
 				tooltip: this.localize("runFromTip"),
 				glyph: 'xf050@FontAwesome',
 				handler: function() {
-					var rew = btn.findParentByType("notebookrunnableeditorwrapper");
-					btn.up('notebook').runFrom(rew);
+					btn.runMenu.editor.up('notebook').runFrom(btn.runMenu.editor);
 				}
 			}]
 		});
@@ -40,6 +38,8 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 		this.callParent(arguments);
 	},
 	handler: function(btn, ev) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		btn.runMenu.editor = ed;
 		btn.runMenu.showAt(ev.pageX, ev.pageY)
 	}
 })

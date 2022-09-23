@@ -20,7 +20,6 @@ resources/termsradio/TermsRadio.js
 app/util/Api.js
 app/util/Localization.js
 app/util/Colors.js
-app/util/Deferrable.js
 app/util/DetailedError.js
 app/util/ResponseError.js
 app/util/SparkLine.js
@@ -30,7 +29,6 @@ app/util/Variants.js
 app/util/Downloadable.js
 app/util/Storage.js
 app/util/DiacriticsRemover.js
-app/notebook/util/Embed.js
 
 # MODELS
 app/data/model/AnalysisToken.js
@@ -81,7 +79,6 @@ app/data/util/DocumentEntities.js
 app/data/model/Corpus.js
 
 # WIDGETS
-app/widget/CodeEditor.js
 app/widget/CorpusSelector.js
 app/widget/ListEditor.js
 app/widget/StopListOption.js

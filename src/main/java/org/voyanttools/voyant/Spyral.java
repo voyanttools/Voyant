@@ -75,7 +75,7 @@ public class Spyral extends HttpServlet {
 		} else if (path.endsWith("spyral/account/logout")) {
 			clearAccountInfo(req);
 			resp.flushBuffer();
-		} else if (path.endsWith("spyral/account/save")) {
+		} else if (path.endsWith("spyral/account/save") || path.endsWith("spyral/account/delete")) {
 
 			final FlexibleParametersFactory flexibleParametersFactory = new FlexibleParametersFactory(req.getSession().getServletContext());
 			FlexibleParameters params;
@@ -100,7 +100,14 @@ public class Spyral extends HttpServlet {
 			oauthprops.load(getClass().getClassLoader().getResourceAsStream(propfile));
 			params.setParameter("key", oauthprops.getProperty("localKey"));
 			
-			params.setParameter("action", "save");
+			String action = "save";
+			if (path.endsWith("delete")) {
+				action = "delete";
+			}
+			
+			params.setParameter("action", action);
+			
+			params.setParameter("noCache", 1);
 			
 			PostedInputResponseWrapper postedInputResponseWrapper = new PostedInputResponseWrapper(resp);
 			req.getRequestDispatcher("/trombone").include(new PostedInputRequestWrapper(req, params, "notebook.GitNotebookManager"), postedInputResponseWrapper);

@@ -35,101 +35,83 @@ Ext.define('Voyant.data.model.Document', {
     },
     
     loadDocumentTerms: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var documentTerms = this.getDocumentTerms();
-			documentTerms.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(documentTerms)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
-    	
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var documentTerms = this.getDocumentTerms();
+		documentTerms.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(documentTerms)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
     },
     
     loadTokens: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var tokens = this.getTokens({});
-			tokens.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(tokens)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
-    	
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var tokens = this.getTokens({});
+		tokens.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(tokens)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
     },
     
     getTokens: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	Ext.applyIf(config, {
-	    		proxy: {}
-	    	});
-	    	Ext.applyIf(config.proxy, {
-	    		extraParams: {}
-	    	})
-	    	Ext.applyIf(config.proxy.extraParams, {
-	    		docIndex: this.get('index')
-	    	})
-	    	Ext.apply(config, {
-	    		docId: this.get('id')
-	    	});
-	    	return this.get('corpus').getTokens(config);
-		}
+		config = config || {};
+		Ext.applyIf(config, {
+			proxy: {}
+		});
+		Ext.applyIf(config.proxy, {
+			extraParams: {}
+		})
+		Ext.applyIf(config.proxy.extraParams, {
+			docIndex: this.get('index')
+		})
+		Ext.apply(config, {
+			docId: this.get('id')
+		});
+		return this.get('corpus').getTokens(config);
     },
 
     getDocumentTerms: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	Ext.applyIf(config, {
-	    		proxy: {}
-	    	});
-	    	Ext.applyIf(config.proxy, {
-	    		extraParams: {}
-	    	})
-	    	Ext.applyIf(config.proxy.extraParams, {
-	    		docIndex: this.get('index')
-	    	})
-	    	if (config.corpus) {
-	    		return config.corpus.getDocumentTerms(config);
-	    	}
-	    	return this.get('corpus').getDocumentTerms(config); // FIXME: when does this happen?
+		config = config || {};
+		Ext.applyIf(config, {
+			proxy: {}
+		});
+		Ext.applyIf(config.proxy, {
+			extraParams: {}
+		})
+		Ext.applyIf(config.proxy.extraParams, {
+			docIndex: this.get('index')
+		})
+		if (config.corpus) {
+			return config.corpus.getDocumentTerms(config);
 		}
+		return this.get('corpus').getDocumentTerms(config); // FIXME: when does this happen?
     },
     
     getIndex: function() {
@@ -155,19 +137,19 @@ Ext.define('Voyant.data.model.Document', {
     
     getTruncated: function(string, max) {
   		if (string.length > max) {
-				// maybe a file or URL?
-				var slash = string.lastIndexOf("/");
-				if (slash>-1) {
-					string = string.substr(slash+1);
+			// maybe a file or URL?
+			var slash = string.lastIndexOf("/");
+			if (slash>-1) {
+				string = string.substr(slash+1);
+			}
+			
+			if (string.length>max) {
+				var space = string.indexOf(" ", max-5);
+				if (space < 0 || space > max) {
+					space = max;
 				}
-				
-				if (string.length>max) {
-					var space = string.indexOf(" ", max-5);
-					if (space < 0 || space > max) {
-						space = max;
-					}
-					string = string.substring(0, space) + "…";
-				}
+				string = string.substring(0, space) + "…";
+			}
 		}
   		return string;
     	
@@ -249,35 +231,20 @@ Ext.define('Voyant.data.model.Document', {
     
     
     getText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-	    	config = config || {};
-	    	Ext.apply(config, {
-        		tool: 'corpus.DocumentTokens',
-        		corpus: this.getCorpusId()
-	    	})
-	    	this.getTokens(config).then(function(tokens) {
-	    		dfd.resolve(tokens);
-	    	});
-	    	return dfd.promise
-		}
+		config = config || {};
+		Ext.apply(config, {
+			docIndex: this.get('index')
+		});
+		return this.getCorpus().getText(config);
     },
     
     getPlainText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	Ext.apply(config, {
-    			outputFormat: "text",
-    			template: "docTokens2text",
-    			noOthers: true
-	    	});
-			return this.getText();
-		}
-    	
+		config = config || {};
+		Ext.apply(config, {
+			template: 'docTokens2plainText',
+			docIndex: this.get('index')
+		});
+		return this.getCorpus().getText(config);
     },
     
     getLemmasArray: function(config) {
@@ -301,23 +268,18 @@ Ext.define('Voyant.data.model.Document', {
     },
     
     loadEntities: function(config) {
-		var me = this;
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			this.getEntities().load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(records)
-					} else {
-						dfd.reject(operation.error.response);
-					}
+		var dfd = new Ext.Deferred();
+		this.getEntities().load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(records)
+				} else {
+					dfd.reject(operation.error.response);
 				}
-			})
-			return dfd.promise
-		}
+			}
+		})
+		return dfd.promise
 	},
 	
 	getCSS: function() {

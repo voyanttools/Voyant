@@ -10,7 +10,8 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			docs: 'Docs',
 			openFull: 'Open Full Documentation',
 			outlineIntro: 'This is an inline version of the API documentation for <a href="#!/guide/notebook">Spyral Notebooks</a>. You can also <a href="#!/api">view the full documentation</a> in a new window.',
-			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:'
+			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
+			loadingDocs: 'Loading Docs'
 		}
 	},
 
@@ -146,6 +147,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	showDocs: function() {
+		this.show().anchorTo(Ext.getBody(), 'br-br');
+		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
+
 		Ext.Ajax.request({
 			// TODO inaccessible on server?
 			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
@@ -188,6 +192,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 					}
 				]
 			})
+		}.bind(this)).always(function() {
+			this.getLayout().setActiveItem(0);
+			this.getLayout().getRenderTarget().unmask();
 		}.bind(this));
 	},
 
@@ -211,6 +218,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	showDocsForClassMethod: function(docClass, docMethod) {
+		this.show().anchorTo(Ext.getBody(), 'br-br');
+		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
+
 		Ext.Ajax.request({
 			url: Voyant.application.getBaseUrlFull()+'docs/output/'+docClass+'.js'
 		}).then(function(response) {
@@ -224,10 +234,15 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			if (json) {
 				this._loadExtDocs(json, docClass, docMethod);
 			}
+		}.bind(this)).always(function() {
+			this.getLayout().getRenderTarget().unmask();
 		}.bind(this));
 	},
 
 	_showDocEntry: function(entryId) {
+		if (this.isHidden()) {
+			this.show().anchorTo(Ext.getBody(), 'br-br');
+		}
 		var docsParentEl = this.down('#main').getEl().dom;
 		docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = true; });
 		this.lastDocEntryMethod = entryId;
@@ -245,9 +260,12 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	_loadExtOutline: function(json) {
 		this.lastDocEntryClass = undefined;
 		this.lastDocEntryMethod = undefined;
+
 		this.setTitle(this.localize('docs')+' '+this.localize('home'));
-		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.down('#restoreButton').hide();
+		this.down('#overviewBtn').hide();
+		this.down('#configsBtn').hide();
+		this.down('#methodsBtn').hide();
 
 		var html = '<p>'+this.localize('outlineIntro')+'</p><p>'+this.localize('outlineApi')+'</p>';
 		html += this.outlineTemplate.apply(json);
@@ -255,12 +273,6 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this._setHtmlForCard('main', html);
 
 		this.body.scrollTo('top', 0, false);
-
-		this.getLayout().setActiveItem(0);
-
-		this.down('#overviewBtn').hide();
-		this.down('#configsBtn').hide();
-		this.down('#methodsBtn').hide();
 
 		if (this.getCollapsed()) {
 			this.expand(false);
@@ -273,8 +285,8 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	_loadExtDocs: function(json, docClass, docMethod) {
 		this.lastDocEntryClass = docClass;
 		this.lastDocEntryMethod = docMethod;
+
 		this.setTitle(this.localize('docs')+': '+json.name);
-		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.down('#restoreButton').hide();
 
 		this._setHtmlForCard('main', json.html);

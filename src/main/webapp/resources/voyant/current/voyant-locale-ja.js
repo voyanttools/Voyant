@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"ストリームグラフ",
 "helpTip":"ストリームグラフは、コーパス（もしくはひとつのドキュメント）の中での語の使用頻度の変化を視覚化するものです。",
 "segments":"区切り"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"以下のウィジェットの一つを試してください；",
-"widgetNotRecognized":"このファイルを埋め込むことはできません（無効か、指定されたツールで埋め込まれていません）。"});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"キャンセル",
 "editList":"リストの編集",

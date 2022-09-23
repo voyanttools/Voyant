@@ -33,10 +33,9 @@
  */
 Ext.define('Voyant.data.model.Corpus', {
 	alternateClassName: ["Corpus"],
-    mixins: ['Voyant.notebook.util.Embed','Voyant.util.Transferable','Voyant.util.Localization'],
+    mixins: ['Voyant.util.Transferable','Voyant.util.Localization'],
     transferable: ['loadCorpusTerms','loadTokens','getPlainText','getText','getWords','getString','getLemmasArray'],
 //    transferable: ['getSize','getId','getDocument','getDocuments','getCorpusTerms','getDocumentsCount','getWordTokensCount','getWordTypesCount','getDocumentTerms'],
-    embeddable: ['Voyant.panel.Summary','Voyant.panel.Cirrus','Voyant.panel.Documents','Voyant.panel.CorpusTerms','Voyant.panel.Reader','Voyant.panel.Trends','Voyant.panel.TermsRadio','Voyant.panel.DocumentTerms','Voyant.panel.TermsBerry','Voyant.panel.CollocatesGraph','Voyant.panel.Contexts','Voyant.panel.WordTree','Voyant.panel.Veliza','Voyant.panel.ScatterPlot','Voyant.panel.Topics'],
 	requires: ['Voyant.util.ResponseError','Voyant.data.store.CorpusTerms','Voyant.data.store.Documents'/*,'Voyant.panel.Documents'*/],
     extend: 'Ext.data.Model',
     config: {
@@ -423,7 +422,7 @@ Ext.define('Voyant.data.model.Corpus', {
 				
 		this.callParent([]); // only send config, not source
 		
-		var dfd = Voyant.application.getDeferred(this);
+		var dfd = new Ext.Deferred();
 		
 		if (Ext.isString(source)) { // a string could be a corpus ID or an input string (text or URL)
 			if (/\s/.test(source)==false && source.indexOf(":")==-1) { // looks like a corpus ID
@@ -478,6 +477,7 @@ Ext.define('Voyant.data.model.Corpus', {
 				return me;
 			}, function(response){
 				Voyant.application.showResponseError(me.localize('failedCreateCorpus'), response);
+				dfd.reject(me.localize('failedCreateCorpus'));
 			}).then(function(corpus) {
 				if (corpus.getDocumentsCount()==0) {
 					Voyant.application.showError(me.localize("thisCorpus")+" "+me.localize("isEmpty")+".");
@@ -512,13 +512,13 @@ Ext.define('Voyant.data.model.Corpus', {
 	
 	getId: function() {
 		// overrides the getId() function from the model to handle promises
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('id');		
+    	return this.get('id');		
 	},
 	
 	
 	getAliasOrId: function() {
 		// overrides the getId() function from the model to handle promises
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : (this.get('alias') || this.get('id'));		
+    	return (this.get('alias') || this.get('id'));		
 	},
 	
 	/**
@@ -541,30 +541,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * corpus terms as an argument, as per the example above).
 	 */
 	loadCorpusTerms: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var corpusTerms = this.getCorpusTerms();
-			corpusTerms.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(corpusTerms)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var corpusTerms = this.getCorpusTerms();
+		corpusTerms.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(corpusTerms)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
 	},
 	
 	/**
@@ -597,30 +593,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * tokens as an argument, as per the example above).
 	 */
 	loadTokens: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var tokens = this.getTokens();
-			tokens.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(tokens)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var tokens = this.getTokens();
+		tokens.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(tokens)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
 	},
 	
 	getCorpusTerms: function(config) {
@@ -661,31 +653,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
 	
 	loadContexts: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var contexts = this.getContexts();
-			contexts.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(contexts)
-					} else {
-						dfd.reject(operation)
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
-		
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var contexts = this.getContexts();
+		contexts.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(contexts)
+				} else {
+					dfd.reject(operation)
+				}
+			}
+		})
+		return dfd.promise
 	},
 	
 	getContexts: function(config) {
@@ -694,7 +681,6 @@ Ext.define('Voyant.data.model.Corpus', {
 	
 	getDocuments: function(config) {
 		return this.getDocumentsStore() ? this.getDocumentsStore() : Ext.create("Voyant.data.store.Documents", Ext.apply(config || {}, {corpus: this}));
-		//this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.getDocumentsStore();
 	},
 	
 	getDocument: function(config) {
@@ -709,23 +695,23 @@ Ext.define('Voyant.data.model.Corpus', {
 				return this.getDocumentsStore().getById(config)
 			}
 		}
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.getDocumentsStore().getDocument(config);
+		return this.getDocumentsStore().getDocument(config);
 	},
 	
 	getDocumentsCount: function() {
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('documentsCount');
+		return this.get('documentsCount');
 	},
 	
 	getWordTokensCount: function() {
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('lexicalTokensCount');
+    	return this.get('lexicalTokensCount');
 	},
 	
 	getWordTypesCount: function() {
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('lexicalTypesCount');
+    	return this.get('lexicalTypesCount');
 	},
 	
 	getCreatedTime: function() {
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('createdTime');		
+    	return this.get('createdTime');		
 	},
 	
 	requiresPassword: function() {
@@ -735,15 +721,15 @@ Ext.define('Voyant.data.model.Corpus', {
 	
 	getNoPasswordAccess: function() {
 		// overrides the getId() function from the model to handle promises
-    	return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('noPasswordAccess');		
+    	return this.get('noPasswordAccess');		
 	},
 	
 	getTitle: function() {
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('title');		
+		return this.get('title');		
 	},
 	
 	getSubTitle: function() {
-		return this.then ? Voyant.application.getDeferredNestedPromise(this, arguments) : this.get('subTitle');		
+		return this.get('subTitle');		
 	},
 	
 	getRelatedWords : function(config) {
@@ -751,31 +737,26 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
 	
 	loadRelatedWords : function(config) {
-		var me = this;
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			config = config || {};
-			if (Ext.isNumber(config)) {
-				config = {limit: config};
-			}
-			Ext.applyIf(config, {
-				limit: 0
-			})
-			var relatedTerms = this.getRelatedWords();
-			relatedTerms.load({
-				params: config,
-				callback: function(records, operation, success) {
-					if (success) {
-						dfd.resolve(records)
-					} else {
-						dfd.reject(operation.error.response);
-					}
-				}
-			})
-			return dfd.promise
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config};
 		}
+		Ext.applyIf(config, {
+			limit: 0
+		})
+		var relatedTerms = this.getRelatedWords();
+		relatedTerms.load({
+			params: config,
+			callback: function(records, operation, success) {
+				if (success) {
+					dfd.resolve(records)
+				} else {
+					dfd.reject(operation.error.response);
+				}
+			}
+		})
+		return dfd.promise
 	},
 		
 	/**
@@ -807,46 +788,42 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * text as an argument, as per the example above).
 	 */
 	getText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments, this);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-	    	config = config || {};
-	    	if (Ext.isNumber(config)) {
-	    		config = {limit: config}
-	    	} else if (Ext.isString(config)) {
-	    		config = {limit: parseInt(config)}
-	    	};
-	    	Ext.applyIf(config, {
-        		limit: 0,
-    			outputFormat: "text",
-    			template: "docTokens2text"
-	    	});
-	    	Ext.apply(config, {
-        		tool: 'corpus.DocumentTokens',
-        		corpus: this.getAliasOrId()
-	    	});
-        	Ext.Ajax.request({
-        	    url: Voyant.application.getTromboneUrl(),
-        	    params: config,
-        	    success: function(response, opts) {
-        	    	var text = response.responseText.trim();
-        	    	if (config.transformCase) {
-        	    		if (config.transformCase.indexOf("lower")>-1) {
-        	    			text = text.toLowerCase();
-        	    		} else if (config.transformCase.indexOf("upper")>-1) {
-        	    			text = text.toUpperCase();
-        	    		}
-        	    	}
-        	    	dfd.resolve(text);
-        	    },
-        	    failure: function(response, opts) {
-        	    	dfd.reject(response);
-        	    },
-        	    scope: this
-        	})
-	    	return dfd.promise
-		}
+		var dfd = new Ext.Deferred();
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config}
+		} else if (Ext.isString(config)) {
+			config = {limit: parseInt(config)}
+		};
+		Ext.applyIf(config, {
+			limit: 0,
+			outputFormat: "text",
+			template: "docTokens2text"
+		});
+		Ext.apply(config, {
+			tool: 'corpus.DocumentTokens',
+			corpus: this.getAliasOrId()
+		});
+		Ext.Ajax.request({
+			url: Voyant.application.getTromboneUrl(),
+			params: config,
+			success: function(response, opts) {
+				var text = response.responseText.trim();
+				if (config.transformCase) {
+					if (config.transformCase.indexOf("lower")>-1) {
+						text = text.toLowerCase();
+					} else if (config.transformCase.indexOf("upper")>-1) {
+						text = text.toUpperCase();
+					}
+				}
+				dfd.resolve(text);
+			},
+			failure: function(response, opts) {
+				dfd.reject(response);
+			},
+			scope: this
+		})
+		return dfd.promise
     },
     
 	/**
@@ -869,21 +846,16 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * text as an argument, as per the example above).
 	 */
     getPlainText: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	if (Ext.isNumber(config)) {
-	    		config = {limit: config}
-	    	} else if (Ext.isString(config)) {
-	    		config = {limit: parseInt(config)}
-	    	}
-	    	Ext.apply(config, {
-    			template: "docTokens2plainText"
-	    	});
-			return this.getText(config);
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config}
+		} else if (Ext.isString(config)) {
+			config = {limit: parseInt(config)}
 		}
-    	
+		Ext.apply(config, {
+			template: "docTokens2plainText"
+		});
+		return this.getText(config);
     },
 
 	/**
@@ -906,21 +878,16 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * words as a string argument, as per the example above).
 	 */
     getWords: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-	    	config = config || {};
-	    	if (Ext.isNumber(config)) {
-	    		config = {limit: config}
-	    	} else if (Ext.isString(config)) {
-	    		config = {limit: parseInt(config)}
-	    	};
-	    	Ext.applyIf(config, {
-    			template: "docTokens2words"
-	    	});
-			return this.getText(config);
-		}
-    	
+		config = config || {};
+		if (Ext.isNumber(config)) {
+			config = {limit: config}
+		} else if (Ext.isString(config)) {
+			config = {limit: parseInt(config)}
+		};
+		Ext.applyIf(config, {
+			template: "docTokens2words"
+		});
+		return this.getText(config);
     },
 	
 	/**
@@ -943,16 +910,11 @@ Ext.define('Voyant.data.model.Corpus', {
 	 * words as a string argument, as per the example above).
 	 */
     getWordsArray: function(config) {
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-	    	this.getWords(config).then(function(text) {
-				dfd.resolve(text.split(" "));
-			})
-			return dfd.promise
-		}
-    	
+		var dfd = new Ext.Deferred();
+		this.getWords(config).then(function(text) {
+			dfd.resolve(text.split(" "));
+		})
+		return dfd.promise
     },
     
 	/**
@@ -976,22 +938,17 @@ Ext.define('Voyant.data.model.Corpus', {
 	 */
     getLemmasArray: function(config) {
     	config = config || {};
-		if (this.then) {
-			return Voyant.application.getDeferredNestedPromise(this, arguments);
-		} else {
-			var dfd = Voyant.application.getDeferred(this);
-			Ext.applyIf(config, {
-				template: "docTokens2lemmas",
-				withPosLemmas: true,
-				noOthers: true
-			})
-	    	this.getWords(config).then(function(text) {
-	    		var lemmas = text.split(" ").map(function(word) {return word.substring(0, word.indexOf("/"))})
-				dfd.resolve(lemmas);
-			})
-			return dfd.promise
-		}
-    	
+		var dfd = new Ext.Deferred();
+		Ext.applyIf(config, {
+			template: "docTokens2lemmas",
+			withPosLemmas: true,
+			noOthers: true
+		})
+		this.getWords(config).then(function(text) {
+			var lemmas = text.split(" ").map(function(word) {return word.substring(0, word.indexOf("/"))})
+			dfd.resolve(lemmas);
+		})
+		return dfd.promise
     },
 
 	/**
@@ -1032,7 +989,7 @@ Ext.define('Voyant.data.model.Corpus', {
 			tool: tool
 		});
 
-		var dfd = Voyant.application.getDeferred(this);
+		var dfd = new Ext.Deferred();
 
 		var corpus = this.getId();
 		Ext.Ajax.request({
@@ -1075,33 +1032,12 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
     
     /**
-	 * Shows a one-line summary of this corpus.
+	 * Returns a one-line summary of this corpus.
 	 * 
-	 * 	new Corpus("Hello World!").show(true);
-	 * 
-	 * @method show
+	 * @method getString
 	 * @param {boolean} [withID] Includes the corpus ID in parentheses at the end, if true.
 	 */
-	
-	/**
-	 * @method embed
-	 * Embed the current corpus in the specified tool.
-	 * 
-	 * Because embed knows about promises, you don't need to handle promises when calling embed on a corpus.
-	 * 
-	 * 	new Corpus("Hello Voyant!").embed(); // use summary as a default
-	 * 	new Corpus("Hello Voyant!").embed("corpusterms"); // specify corpus terms tool
-	 * 	new Corpus("Hello Voyant!").embed("cirrus", {width: "300px"}); // with config
-	 *  
-	 * @param {String} [tool] Specify which tool to use for embedding this corpus.
-	 * The following are recognized tool values: {@link Voyant.panel.Summary summary} (default), {@link Voyant.panel.Cirrus cirrus}, {@link Voyant.panel.Documents documents}, {@link Voyant.panel.CorpusTerms corpusterms}.
-	 * @param {Object} [config] Additional configuration options to pass to the tool.
-	 * In addition to the configuration options available from each tool listed in the tool param (see above), options include:
-	 * 
-	 * - **width**: a CSS width value for the embedded tool (e.g. "500px", "80em", "50%")
-	 * - **height**: a CSS height value for the embedded tool (e.g. "300px", "10em", "30%")
-	 */
-    getString: function(config) {
+    getString: function(withID) {
 		var size = this.getDocumentsCount();
 		var message = this.localize('thisCorpus');
 		if (size==0) {message += ' '+this.localize('isEmpty')+'.';}
@@ -1141,7 +1077,7 @@ Ext.define('Voyant.data.model.Corpus', {
 			
 			message+='';
 		}
-		if (config===true) {message+=' ('+this.getId()+")";}
+		if (withID===true) {message+=' ('+this.getId()+")";}
 		return message;
     }
     

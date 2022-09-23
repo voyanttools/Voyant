@@ -1,6 +1,14 @@
-.notebook-text-editor, .notebook-code-editor {
+.notebook-code-editor {
 	padding: 0px;
 	margin: 0px;
+}
+.notebook-text-editor {
+	padding: 6px;
+	margin: 0px;
+}
+.notebook-text-editor p {
+	padding: 0 0 0 0;
+	margin: 0 0 1em 0;
 }
 .notebook-text-wrapper .x-panel-body {
    border: 1px solid rgba(0,0,0,0) !important;
@@ -10,6 +18,10 @@
 }
 .x-panel .notebook-editor-wrapper-hover.x-panel-body, .editable .x-panel-body {
 	outline: 1px dashed rgba(0,0,0,.2) !important;
+	outline-offset: -1px !important;
+}
+.x-panel .notebook-editor-wrapper-editing.x-panel-body {
+	outline: 1px solid rgba(0,0,0,.2) !important;
 	outline-offset: -1px !important;
 }
 .notebook-code-editor {
@@ -128,6 +140,13 @@ body.exported-notebook {
 .catalogue-notebook .title {
 	color: #333;
 	font-weight: 600;
+}
+.catalogue-notebook .published {
+	color: #157fcc;
+	margin-right: 2px;
+}
+.catalogue-window .catalogue-notebook .published {
+	display: none;
 }
 .catalogue-notebook .author, .catalogue-notebook .keywords, .catalogue-notebook .date {
 	color: #666;

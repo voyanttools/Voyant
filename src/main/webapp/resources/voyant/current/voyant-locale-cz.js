@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"Tokový graf",
 "helpTip":"Tokový graf (StreamGraph) je vizualizace, která zobrazuje změny frekvence slov v korpusu (nebo v jednom dokumentu).",
 "segments":"Segmenty"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Zkuste jednu z následujících pomůcek (widgetů):",
-"widgetNotRecognized":"Vložení se nezdařilo (nebyl zvolen žádný nástroj pro vložení nebo je neplatný)."});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Zrušit",
 "editList":"Editovat seznam",

@@ -130,7 +130,7 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 	glyph: 'xf013@FontAwesome',
 	listeners: {
 		click: function(btn, e) {
-			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(btn.findParentByType("notebookeditorwrapper"));
+			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(Voyant.notebook.editor.EditorWrapper.currentEditor);
 		}
 	}
 });

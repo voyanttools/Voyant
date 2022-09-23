@@ -8,7 +8,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		isEditRegistered: false,
 		currentHeight: 0,
 		isFresh: undefined,
-		isEnabled: false
+		parentWrapper: undefined
 	},
 	statics: {
 		i18n: {
@@ -26,7 +26,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		boxready: function(cmp) {
 			this.ownerCt.getTargetEl().on('click', function(e, t) {
 				if (t.tagName !== 'A') {
-					this.handleClick();
+					this._handleClick();
 				}
 			}, this);
 		},
@@ -39,11 +39,11 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		}
 	},
 	
-	handleClick: function() {
-		if (!this.getEditor()) {
+	_handleClick: function() {
+		if (this.getEditor() === undefined) {
 			this._initEditor();
 		} else {
-			if (this.getIsEnabled() === false) {
+			if (this.getParentWrapper().getIsEditing() === false) {
 				this._enable();
 			}
 		}
@@ -55,23 +55,22 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 
 	_initEditor: function() {
 		var el = this.getTargetEl();
-		// when upgrading ckeditor, remember to copy stopediting and inserthtml4x plugins
 		var editor = CKEDITOR.inline(el.dom, {
 			toolbar: [
 				{ name: 'basicstyles', items: [ 'Bold', 'Italic', '-', 'RemoveFormat' ] },
 				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Justify', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
 				{ name: 'styles', items: [ 'Styles', 'Format' ] },
-				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor'] },
+				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
 				{ name: 'insert', items: [ 'Image', 'Table' ] },
-				{ name: 'document', items: [ /*'inserthtml4x',*/ 'Sourcedialog', /*'Stopediting'*/] }
+				{ name: 'document', items: [ 'Sourcedialog' ] }
 			],
 			
-			extraPlugins: 'sourcedialog,justify,colorbutton',//,stopediting,inserthtml4x',
+			extraPlugins: 'sourcedialog,justify',
 			allowedContent: true,
 			disableNativeSpellChecker: false,
 			toolbarCanCollapse: false,
-			startupFocus: 'end'
+			startupFocus: 'end',
+			baseFloatZIndex: 20000 // EditorWrapper toolbars are 19000
 		});
 		
 		editor.on('contentDom', function() {
@@ -95,6 +94,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		}, this);
 
 		editor.on('change', function() {
+			editor.container.$.scrollIntoView(); // needed to counteract range.scrollIntoView by ckeditor
 			var editorHeight = editor.container.$.clientHeight;
 			if (editorHeight !== this.getCurrentHeight()) {
 				this.findParentByType('notebookeditorwrapper').setHeight(editorHeight);
@@ -116,17 +116,18 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 	},
 
 	_enable: function() {
-		this.getEditor().setReadOnly(false);
-		this.getEditor().focus();
+		var editor = this.getEditor();
+		editor.setReadOnly(false);
 
-		this.findParentByType('notebookeditorwrapper').setIsEditing(true);
-		this.setIsEnabled(true);
+		// need timeout before focusing otherwise FF throws error
+		setTimeout(function() {
+			editor.focus();
+			this.getParentWrapper().setIsEditing(true);
+		}.bind(this), 0);
 	},
 
 	_disable: function() {
 		this.getEditor().setReadOnly(true);
-
-		this.findParentByType('notebookeditorwrapper').setIsEditing(false);
-		this.setIsEnabled(false);
+		this.getParentWrapper().setIsEditing(false);
 	}
 })

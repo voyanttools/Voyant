@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"Diagrama de fluxo",
 "helpTip":"Diagrama de fluxo é uma visualização que representa a evolução da frequência das palavras em um corpus (ou em um documento único).",
 "segments":"Segmentos"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Experimente uma das ferramentas seguintes:",
-"widgetNotRecognized":"Impossível incorporar (inválido ou sem ferramenta especificada)"});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Cancelar",
 "editList":"Editar lista",

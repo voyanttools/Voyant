@@ -110,25 +110,25 @@
 		<dependency>
 			<groupId>com.google.javascript</groupId>
 			<artifactId>closure-compiler</artifactId>
-			<version>v20190929</version>
+			<version>v20220905</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.4</version>
+			<version>4.4.1</version>
 		</dependency>
 		
 		<!--  Spyral Auth dependencies -->
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
-			<version>1.33.2</version>
+			<version>1.33.4</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-dependency-plugin</artifactId>
-			<version>3.2.0</version>
+			<version>3.3.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -140,13 +140,13 @@
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.8.1</version>
+			<version>3.9.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-maven-plugin</artifactId>
-			<version>11.0.7</version>
+			<version>11.0.8</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

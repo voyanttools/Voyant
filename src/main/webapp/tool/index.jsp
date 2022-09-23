@@ -99,7 +99,8 @@ if (isNotRealTool || !toolFound) {
 			version: '<%= application.getInitParameter("version") %>',
 			build: '<%= application.getInitParameter("build") %>',
 			tool: '<%= tool.toLowerCase() %>',
-			allowInput: '<%= System.getProperty("org.voyanttools.server.allowinput")==null ? "" : System.getProperty("org.voyanttools.server.allowinput") %>'
+			allowInput: '<%= System.getProperty("org.voyanttools.server.allowinput")==null ? "" : System.getProperty("org.voyanttools.server.allowinput") %>',
+			entitiesEnabled: <%= application.getInitParameter("entitiesenabled") %>
 		},
 		launch: function() {
 			if (document.location.search.length==0) {

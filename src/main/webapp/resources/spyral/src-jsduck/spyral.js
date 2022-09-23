@@ -767,7 +767,6 @@
 
 /**
 * Create a new Corpus using the specified Corpus ID
-	 * @ignore
 	 * @constructor
 	 * @param {string} id The Corpus ID
 	  * @method constructor
@@ -1440,7 +1439,7 @@
 * Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:
 	 * 
 	 * * **getTopicWords**: return a list of topics (words organized into bunches of a specified size
-	 * * **getDocuments**: return a list of documents and the signican words
+	 * * **getDocuments**: return a list of documents and the signicant words
 	 *
 	 * The config object as parameter can contain the following:
 	 * 
@@ -1468,6 +1467,7 @@
 	 * 
 	 * @param {Object} config (see above)
 	 * @param {number} config.numberTopics the number of topics to get (default is 10)
+	 * @param {number} config.wordsPerTopic the number of words per topic (default is 10)
 	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
 	 * @param {string} config.language stopwords language to use, default is corpus language
 	 * @returns {Promise<Array>} a promise for an array of topics
@@ -2381,6 +2381,28 @@
 
 
 /**
+* Takes an XML document and XSL stylesheet and returns the resulting transformation.
+	 * @param {(Document|String)} xmlDoc The XML document to transform
+	 * @param {(Document|String)} xslStylesheet The XSL to use for the transformation
+	 * @param {Boolean} [returnDoc=false] True to return a Document, false to return a DocumentFragment
+	 * @returns {Document}
+	 * @static
+ * @method transformXml
+ */
+
+
+/**
+* Checks the Document for a parser error and returns an Error if found, or null.
+	 * @ignore
+	 * @param {Document} doc 
+	 * @param {Boolean} [includePosition=false] True to include the error position information
+	 * @returns {Error|null}
+	 * @static
+ * @method _getParserError
+ */
+
+
+/**
 * Returns true if the value is a String.
 	 * @param {*} val 
 	 * @returns {Boolean} 
@@ -2553,6 +2575,7 @@
 	 * @param {String} config.title The title of the Notebook
 	 * @param {String} config.userId The user ID of the author of the Notebook
 	 * @param {String} config.author The name of the author of the Notebook
+	 * @param {Boolean} config.catalogue Whether to include the Notebook in the Catalogue
 	 * @param {String} config.description The description of the Notebook
 	 * @param {Array} config.keywords The keywords for the Notebook
 	 * @param {String} config.created When the Notebook was created

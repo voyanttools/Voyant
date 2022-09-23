@@ -57,7 +57,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				});
 			}
 
-			var wrapper = instance.up('notebookrunnableeditorwrapper');
+			var wrapper = Voyant.notebook.editor.EditorWrapper.currentEditor;
 			
 			var notebook = wrapper.up('notebook');
 			var notebookId = notebook.getNotebookId() || 'spyral';
@@ -70,7 +70,9 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			if (mode === 'file') {
 				outputPromise = wrapper.fileInput.getBlob();
 			} else {
-				outputPromise = wrapper.results.updateCachedOutput();
+				outputPromise = wrapper.results.updateCachedOutput().then(function() {
+					return Ext.Promise.resolve(wrapper.getOutput());
+				});
 			}
 
 			outputPromise.then(function(output) {
@@ -100,7 +102,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 					}
 	
 					if (Spyral.Util.isUndefined(output)) {
-						// output is probably a document and couldn't be sent from sandbox
+						// code output is either a document or hasn't been run yet
 						// try getContent fallback
 						output = wrapper.getContent().output;
 					}

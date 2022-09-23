@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"StreamGraph",
 "helpTip":"StreamGraph è una visualizzazione che mostra la variazione di frequenza di parole in un corpus (o all'interno di un singolo documento).",
 "segments":"Segmenti"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Prova uno dei seguenti widget:",
-"widgetNotRecognized":"Impossibile incorporare"});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Cancel",
 "editList":"Edit List",

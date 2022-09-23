@@ -1,4 +1,5 @@
 Ext.define('Voyant.notebook.Authenticator', {
+	mixins: ['Voyant.util.Localization','Voyant.notebook.util.NotebooksList'],
 	statics: {
 		i18n: {
 			account: 'Account',
@@ -8,7 +9,12 @@ Ext.define('Voyant.notebook.Authenticator', {
 			yourNotebooks: 'Your Notebooks',
 			authenticateWithGithub: 'Authenticate with GitHub',
 			authorizeSpyralGithub: 'You must authorize Spyral to use GitHub on your behalf.',
-			signInSuccess: 'Sign in successful!'
+			signInSuccess: 'Sign in successful!',
+			close: 'Close',
+			openSelected: 'Open Selected Notebook',
+			deleteSelected: 'Delete Selected Notebook',
+			notebookDeleted: 'Notebook deleted',
+			errorDeletingNotebook: 'Error deleting notebook'
 		}
 	},
 
@@ -155,26 +161,59 @@ Ext.define('Voyant.notebook.Authenticator', {
 					}]
 				}],
 				buttons: [{
-					text: 'Close',
+					text: me.localize('close'),
+					ui: 'default-toolbar',
 					handler: function(btn) {
 						btn.up('window').close();
+					}
+				},{
+					text: me.localize('deleteSelected'),
+					ui: 'default-toolbar',
+					glyph: 'xf1f8@FontAwesome',
+					handler: function(btn) {
+						const win = btn.up('window');
+						const sel = win.down('#notebookslist').getSelection();
+						if (sel[0]) {
+							Ext.Msg.confirm('Delete', 'Are you sure you want to permanently delete the selected notebook?', function(button) {
+								if (button === 'yes') {
+									const notebookId = sel[0].get('id');
+									me.deleteNotebook(notebookId).then(function() {
+										win.down('#notebookslist').getStore().remove(sel[0]);
+										me.toastInfo({
+											html: me.localize('notebookDeleted'),
+											anchor: 'tr'
+										});
+									}, function(err) {
+										Ext.Msg.show({
+											title: me.localize('errorDeletingNotebook'),
+											msg: err,
+											buttons: Ext.MessageBox.OK,
+											icon: Ext.MessageBox.ERROR
+										});
+									});
+								}
+							}, me);
+							
+						}
+					}
+				},{
+					text: me.localize('openSelected'),
+					glyph: 'xf115@FontAwesome',
+					handler: function(btn) {
+						const win = btn.up('window');
+						const sel = win.down('#notebookslist').getSelection();
+						if (sel[0]) {
+							const notebookId = sel[0].get('id');
+							me.fireEvent('notebookSelected', me, notebookId, function() {
+								win.close()
+							});
+						}
 					}
 				}]
 			});
 			accountWin.show();
 
-			accountWin.down('#notebookslist').mask('Loading');
-			Spyral.Load.trombone({
-				tool: 'notebook.NotebookFinder',
-				query: 'facet.userId:'+this.accountInfo.id,
-				noCache: 1
-			}).then(function(json) {
-				accountWin.down('#notebookslist').unmask();
-				accountWin.down('#notebookslist').getStore().loadRawData(json.catalogue.notebooks);
-				accountWin.down('#notebookslist').getStore().sort('modified', 'DESC');
-			}).catch(function(err) {
-				accountWin.unmask()
-			});
+			this.populateNotebookList(accountWin);
 		}
 	},
 
@@ -210,6 +249,51 @@ Ext.define('Voyant.notebook.Authenticator', {
 			})
 		}
 		return this.accountInfo !== undefined;
+	},
+
+	populateNotebookList: function(accountWin) {
+		accountWin.down('#notebookslist').mask('Loading');
+		Spyral.Load.trombone({
+			tool: 'notebook.NotebookFinder',
+			query: 'facet.userId:'+this.accountInfo.id,
+			noCache: 1
+		}).then(function(json) {
+			accountWin.down('#notebookslist').unmask();
+			accountWin.down('#notebookslist').getStore().loadRawData(json.catalogue.notebooks);
+			accountWin.down('#notebookslist').getStore().sort('modified', 'DESC');
+		}).catch(function(err) {
+			accountWin.unmask()
+		});
+	},
+
+	deleteNotebook: function(notebookId) {
+		const me = this;
+
+		const dfd = new Ext.Deferred();
+
+		Ext.Ajax.request({
+			method: 'POST',
+			url: Voyant.application.getBaseUrlFull()+'spyral/account/delete',
+			params: {
+				id: notebookId
+			},
+			success: function(resp) {
+				const json = JSON.parse(resp.responseText);
+				if (json.notebook.success) {
+					me.fireEvent('fileDeleted', me, notebookId);
+					dfd.resolve(true);
+				} else {
+					me.fireEvent('fileDeleted', me, null, json.notebook.error);
+					dfd.reject(json.notebook.error);
+				}
+			},
+			failure: function(resp) {
+				me.fireEvent('fileDeleted', me, null, resp.responseText);
+				dfd.reject(resp.responseText);
+			}
+		});
+
+		return dfd.promise;
 	},
 
 	getCookie: function(cookieName) {

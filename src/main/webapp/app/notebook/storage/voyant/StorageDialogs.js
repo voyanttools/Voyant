@@ -1,7 +1,19 @@
 Ext.define("Voyant.notebook.StorageDialogs", {
 	extend: "Ext.Component",
-	requires: [],
+	mixins: ["Voyant.util.Localization"],
 	alias: "",
+	statics: {
+		i18n: {
+			saveNewNotebook: 'Save New Notebook',
+			overwriteNotebook: 'Overwrite Existing Notebook',
+			open: 'Open',
+			notebookFile: 'Notebook File',
+			selectFile: 'Select File',
+			openFile: 'Open File',
+			cancel: 'Cancel',
+			mustSelect: 'You must select a file.'
+		}
+	},
 
 	notebookParent: undefined,
 
@@ -19,7 +31,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 	showSave: function(data, metadata, notebookName='') {
 		const me = this;
 		const newNotebook = notebookName === '';
-		const title = newNotebook ? 'Save New Notebook' : 'Overwrite Existing Notebook';
+		const title = newNotebook ? this.localize('saveNewNotebook') : this.localize('overwriteNotebook');
 		Ext.create('Ext.window.Window', {
 			title: title,
 			items: [{
@@ -104,6 +116,58 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 					me.fireEvent('close', me); // need an additional close event in case the user uses the close tool / esc button
 				}
 			}
+		}).show();
+	},
+
+	showLoad: function() {
+		const me = this;
+		Ext.create('Ext.window.Window', {
+			title: me.localize('open'),
+			items: [{
+				xtype: 'form',
+				width: 450,
+				bodyPadding: 5,
+				layout: 'anchor',
+				defaults: {
+					labelAlign: 'right',
+					labelWidth: 160,
+					width: 360
+				},
+				items: [{
+					xtype: 'voyantfilefield',
+					name: 'file',
+					fieldLabel: me.localize('notebookFile'),
+					allowBlank: false,
+					buttonText: me.localize('selectFile'),
+					accept: 'text/html'
+				}],
+				buttons: [{
+					text: me.localize('cancel'),
+					ui: 'default-toolbar',
+					handler: function() {
+						this.up('window').close();
+					}
+				},{
+					text: me.localize('openFile'),
+					handler: function(button) {
+						const win = button.up('window');
+						const form = win.down('form').getForm();
+						const field = form.findField('file');
+						if (form.isValid()) {
+							const file = field.fileInputEl.dom.files[0];
+							const fr = new FileReader();
+							fr.onload = function(evt) {
+								const data = evt.target.result;
+								me.fireEvent('fileLoaded', data);
+								win.close();
+							}
+							fr.readAsText(file);
+						} else {
+							field.markInvalid(me.localize('mustSelect'));
+						}
+					}
+				}]
+			}]
 		}).show();
 	},
 

@@ -5,35 +5,13 @@ Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	cls: 'notebook-text-wrapper',
 	config: {
 	},
-	minHeight: 85,
+	minHeight: 50,
 	constructor: function(config) {
 		Ext.apply(this, {
 			items: [{
 				xtype: 'notebooktexteditor',
-				content: Ext.Array.from(config.input).join("")
-			}],
-			dockedItems: [{
-			    xtype: 'toolbar',
-			    dock: 'left',
-			    items: [{
-				    	xtype: 'notebookwrapperadd'
-					}
-			    ]
-			},{
-			    xtype: 'toolbar',
-			    dock: 'right',
-			    items: [{
-			    		xtype: 'notebookwrappercounter',
-			    		order: config.order,
-			    		name: config.cellId
-			    	},{
-		        		xtype: 'notebookwrapperremove'
-		        	},{
-			        	xtype: 'notebookwrappermoveup'
-			        },{
-			        	xtype: 'notebookwrappermovedown'
-			        }
-			    ]
+				content: Ext.Array.from(config.input).join(""),
+				parentWrapper: this
 			}]
 		});
         this.callParent(arguments);

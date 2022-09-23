@@ -279,15 +279,15 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						break;
 				}
 
-				if (eventData.value) {
-					me.setCachedResultsValue(eventData.value);
-				}
-				if (eventData.output) {
-					me.setCachedResultsOutput(eventData.output);
+				if (eventData.command !== 'getContents') { // don't overwrite value or variables when we just want to get sandbox contents, i.e. dom output
+					if (eventData.value) {
+						me.setCachedResultsValue(eventData.value);
+					}
+					me.setCachedResultsVariables(eventData.variables);
 				}
 
-				if (eventData.command !== 'getContents') { // don't overwrite variables when we just want to get sandbox contents
-					me.setCachedResultsVariables(eventData.variables);
+				if (eventData.output) {
+					me.setCachedResultsOutput(eventData.output);
 				}
 
 				if (eventData.height > 0) {

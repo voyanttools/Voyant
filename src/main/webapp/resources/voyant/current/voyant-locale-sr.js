@@ -650,9 +650,6 @@ Ext.apply(Voyant.panel.StreamGraph.i18n, {
 "title":"Дијаграм тока",
 "helpTip":"Дијаграм тока визуализира промену у учесталости речи унутар корпуса (или унутар појединачног документа).",
 "segments":"Сегменти"});
-Ext.apply(Voyant.notebook.util.Embed.i18n, {
-"tryWidget":"Пробајте један од следећих widget-а:",
-"widgetNotRecognized":"Уградња није могућа (неисправна или недефинисана алатка)."});
 Ext.apply(Voyant.widget.ListEditor.i18n, {
 "cancel":"Поништити",
 "editList":"Pевизија листе",

@@ -25,7 +25,7 @@ Ext.define('Voyant.VoyantToolApp', {
 	        listeners: {
 	        	afterrender: function(container) {
 	        		if (me.getApiParam('embeddedApiId')) {
-	    				var dfd = me.getDeferred(this);
+	    				var dfd = new Ext.Deferred();
 	    	    		container.mask(this.localize('loadingConfiguration'));
 	        	    	Ext.Ajax.request({
 	        	    	    url: me.getTromboneUrl(),

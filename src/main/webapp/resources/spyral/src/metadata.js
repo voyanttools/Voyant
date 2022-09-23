@@ -11,6 +11,7 @@ class Metadata {
 	 * @param {String} config.title The title of the Notebook
 	 * @param {String} config.userId The user ID of the author of the Notebook
 	 * @param {String} config.author The name of the author of the Notebook
+	 * @param {Boolean} config.catalogue Whether to include the Notebook in the Catalogue
 	 * @param {String} config.description The description of the Notebook
 	 * @param {Array} config.keywords The keywords for the Notebook
 	 * @param {String} config.created When the Notebook was created
@@ -19,9 +20,11 @@ class Metadata {
 	 * @returns {Spyral.Metadata}
 	 */
 	constructor(config) {
-		['title', 'userId', 'author', 'description', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
+		['title', 'userId', 'author', 'description', 'catalogue', 'keywords', 'modified', 'created', 'language', 'license'].forEach(key => {
 			if (key === 'keywords') {
 				this[key] = [];
+			} else if (key === 'catalogue') {
+				this[key] = false;
 			} else {
 				this[key] = '';
 			}
@@ -41,6 +44,8 @@ class Metadata {
 							} else {
 								content = content.split(',');
 							}
+						} else if (name === 'catalogue') {
+							content = content.toLowerCase() === 'true';
 						}
 						this[name] = content;
 					}
@@ -90,12 +95,13 @@ class Metadata {
 			headers = "<title>"+(this.title || "").replace(tags,"")+"</title>\n"
 		for (var key in this) {
 			if (this[key]) {
-				if (typeof this[key] === 'string') {
-					headers+='<meta name="'+key+'" content="'+this[key].replace(quotes, "&quot;").replace(newlines, " ")+'">';
-				} else {
-					// assume array
+				if (Array.isArray(this[key])) {
 					const array2string = this[key].join(',');
 					headers+='<meta name="'+key+'" content="'+array2string.replace(quotes, "&quot;").replace(newlines, " ")+'">';
+				} else if (typeof this[key] === 'boolean') {
+					headers+='<meta name="'+key+'" content="'+this[key]+'">';
+				} else {
+					headers+='<meta name="'+key+'" content="'+this[key].replace(quotes, "&quot;").replace(newlines, " ")+'">';
 				}
 			}
 		}

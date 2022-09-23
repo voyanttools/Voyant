@@ -59,6 +59,7 @@
         <url-pattern>/spyral/account</url-pattern>
         <url-pattern>/spyral/account/logout</url-pattern>
         <url-pattern>/spyral/account/save</url-pattern>
+        <url-pattern>/spyral/account/delete</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>spyral-manager</servlet-name>

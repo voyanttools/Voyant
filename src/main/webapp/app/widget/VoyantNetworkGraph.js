@@ -8,8 +8,7 @@
  */
 Ext.define('Voyant.widget.VoyantNetworkGraph', {
 	extend: 'Ext.panel.Panel',
-	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.notebook.util.Embed'],
-	embeddable: ['Voyant.widget.VoyantNetworkGraph'],
+	mixins: ['Voyant.util.Localization','Voyant.util.Api'],
 	alias: 'widget.voyantnetworkgraph',
 	statics: {
 		i18n: {
