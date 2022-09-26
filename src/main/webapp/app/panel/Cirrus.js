@@ -412,7 +412,13 @@ Ext.define('Voyant.panel.Cirrus', {
 						.size([width, height])
 						.overflow(true)
 						.padding(1)
-						.rotate(function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('orientation', d.text); }.bind(this))
+						.rotate(function(d) {
+							var orientation = this.getApplication().getCategoriesManager().getFeatureForTerm('orientation', d.text);
+							if (orientation === undefined) {
+								orientation = ~~(Math.random() * 2) * 90;
+							}
+							return orientation;
+						}.bind(this))
 						.spiral('archimedean')
 						.font(function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('font', d.text); }.bind(this))
 						.fontSize(function(d) {return d.fontSize; }.bind(this))
