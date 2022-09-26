@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Sep 23 17:44:38 UTC 2022 */
+/* This file created by JSCacher. Last modified: Mon Sep 26 21:06:54 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -16894,7 +16894,13 @@ Ext.define('Voyant.panel.Cirrus', {
 						.size([width, height])
 						.overflow(true)
 						.padding(1)
-						.rotate(function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('orientation', d.text); }.bind(this))
+						.rotate(function(d) {
+							var orientation = this.getApplication().getCategoriesManager().getFeatureForTerm('orientation', d.text);
+							if (orientation === undefined) {
+								orientation = ~~(Math.random() * 2) * 90;
+							}
+							return orientation;
+						}.bind(this))
 						.spiral('archimedean')
 						.font(function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('font', d.text); }.bind(this))
 						.fontSize(function(d) {return d.fontSize; }.bind(this))
