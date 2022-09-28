@@ -395,12 +395,8 @@ Ext.define('Voyant.panel.Reader', {
     	if (queryTerms && queryTerms.length > 0) {
 			this.getDocumentTermsStore().load({
 				params: {
-					query: queryTerms/*,
-    				docIndex: undefined,
-    				docId: undefined,
-    				page: undefined,
-    				start: undefined,
-    				limit: undefined*/
+					query: queryTerms,
+					categories: this.getApiParam('categories')
     			}
 			});
 			this.down('readergraph').loadQueryTerms(queryTerms);
