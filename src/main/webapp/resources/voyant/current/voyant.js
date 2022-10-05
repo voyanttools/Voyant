@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Oct 05 21:05:05 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Oct 05 22:08:09 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -5368,6 +5368,7 @@ TermsRadio.prototype = {
 		if (legendAdd === true) {
 			var legend = this.parent.query('[xtype=legend]')[0];
 			legend.getStore().add({name: term, mark: color});
+			legend.refresh();
 		} else {
 			var legend = this.parent.query('[xtype=legend]')[0];
 			var record = legend.getStore().findRecord('name', term);
@@ -5414,6 +5415,7 @@ TermsRadio.prototype = {
 			var legend = this.parent.query('[xtype=legend]')[0];
 			var index = legend.getStore().findExact('name', term);
 			legend.getStore().removeAt(index);
+			legend.refresh();
 		}
 		
 		var updateApi = this.parent.getApiParam('selectedWords');
@@ -6314,6 +6316,8 @@ Ext.define('Voyant.util.Colors', {
 		if (term.indexOf(':') != -1) {
 			term = term.split(':')[1];
 		}
+		term = term.toLowerCase();
+
 		var color = this.getColorTermAssociations().get(term);
 		if (color == null) {
 			var index = this.getColorTermAssociations().getCount() % palette.length;
@@ -6335,6 +6339,7 @@ Ext.define('Voyant.util.Colors', {
 		if (Array.isArray(color) === false) {
 			color = this.hexToRgb(color);
 		}
+		term = term.toLowerCase();
 		this.getColorTermAssociations().replace(term, color);
 	},
 
@@ -13867,6 +13872,16 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		var features = this.categoriesManager.getFeatures();
 		var featuresConfigs = Ext.ClassManager.getClass(this).features;
 		
+		// populate with default features if there are none (can happen when creating categories programmatically)
+		if (Object.entries(features).length === 0) {
+			for (var feature in featuresConfigs) {
+				features[feature] = {};
+				for (var category in this.categoriesManager.getCategories()) {
+					features[feature][category] = undefined;
+				}
+			}
+		}
+
 		for (var feature in features) {
 			fields.push(feature);
 			
@@ -17350,6 +17365,10 @@ Ext.define('Voyant.panel.CollocatesGraph', {
         		Ext.Function.defer(this.zoomToFit, 100, this);
  //       		this.zoomToFit();
         	}
+		}, this);
+
+		this.on('beforedestroy', function(panel) {
+			this.getVisLayout().stop(); // make sure force simulation isn't running when removed
 		}, this);
         
         me.callParent(arguments);
@@ -30866,7 +30885,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 		            		
 		            		this.legendMenu.on('click', function(menu, item) {
 		            			if (item !== undefined) {
-		            				this.doTermDeselect(term, true);
+		            				this.getTermsRadio().doTermDeselect(term, true);
 		            			}
 		            		}, this, {single: true});
 		            		this.legendMenu.showAt(xy);
