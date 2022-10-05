@@ -409,7 +409,7 @@ Ext.define('Voyant.panel.TermsRadio', {
         			var t = term.getTerm();
         			this.setApiParams({query: t});
         			this.loadStore();
-        		});
+        		}, this);
 			}
 		});
 		
@@ -420,7 +420,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     			var t = term.getTerm();
     			this.setApiParams({query: t});
     			this.loadStore();
-    		});
+    		}, this);
 		});
 		
 		this.on('query', function(src, query){

@@ -72,13 +72,15 @@ TermsRadio.prototype = {
 	constructor: TermsRadio
 	
 	,loadRecords: function(records) {
-		this.initData(records);
-		this.prepareData();
-		//for shiftcount > 0 exclusively
-		var len = this.shiftCount;
-		while(len-- > 0){
-		//for(var j = 0; j < this.shiftCount; j++){
-			this.displayData.shift();
+		if (records.length > 0) {
+			this.initData(records);
+			this.prepareData();
+			//for shiftcount > 0 exclusively
+			var len = this.shiftCount;
+			while(len-- > 0){
+			//for(var j = 0; j < this.shiftCount; j++){
+				this.displayData.shift();
+			}
 		}
 		if (this.chart != null) {
 			this.redraw();
