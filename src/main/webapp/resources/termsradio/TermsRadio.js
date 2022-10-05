@@ -1207,6 +1207,7 @@ TermsRadio.prototype = {
 		if (legendAdd === true) {
 			var legend = this.parent.query('[xtype=legend]')[0];
 			legend.getStore().add({name: term, mark: color});
+			legend.refresh();
 		} else {
 			var legend = this.parent.query('[xtype=legend]')[0];
 			var record = legend.getStore().findRecord('name', term);
@@ -1253,6 +1254,7 @@ TermsRadio.prototype = {
 			var legend = this.parent.query('[xtype=legend]')[0];
 			var index = legend.getStore().findExact('name', term);
 			legend.getStore().removeAt(index);
+			legend.refresh();
 		}
 		
 		var updateApi = this.parent.getApiParam('selectedWords');

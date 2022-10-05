@@ -205,7 +205,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 		            		
 		            		this.legendMenu.on('click', function(menu, item) {
 		            			if (item !== undefined) {
-		            				this.doTermDeselect(term, true);
+		            				this.getTermsRadio().doTermDeselect(term, true);
 		            			}
 		            		}, this, {single: true});
 		            		this.legendMenu.showAt(xy);
