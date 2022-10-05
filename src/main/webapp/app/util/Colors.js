@@ -192,6 +192,8 @@ Ext.define('Voyant.util.Colors', {
 		if (term.indexOf(':') != -1) {
 			term = term.split(':')[1];
 		}
+		term = term.toLowerCase();
+
 		var color = this.getColorTermAssociations().get(term);
 		if (color == null) {
 			var index = this.getColorTermAssociations().getCount() % palette.length;
@@ -213,6 +215,7 @@ Ext.define('Voyant.util.Colors', {
 		if (Array.isArray(color) === false) {
 			color = this.hexToRgb(color);
 		}
+		term = term.toLowerCase();
 		this.getColorTermAssociations().replace(term, color);
 	},
 
