@@ -263,6 +263,10 @@ Ext.define('Voyant.panel.CollocatesGraph', {
  //       		this.zoomToFit();
         	}
 		}, this);
+
+		this.on('beforedestroy', function(panel) {
+			this.getVisLayout().stop(); // make sure force simulation isn't running when removed
+		}, this);
         
         me.callParent(arguments);
 
