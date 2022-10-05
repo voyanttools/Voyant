@@ -609,6 +609,16 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		var features = this.categoriesManager.getFeatures();
 		var featuresConfigs = Ext.ClassManager.getClass(this).features;
 		
+		// populate with default features if there are none (can happen when creating categories programmatically)
+		if (Object.entries(features).length === 0) {
+			for (var feature in featuresConfigs) {
+				features[feature] = {};
+				for (var category in this.categoriesManager.getCategories()) {
+					features[feature][category] = undefined;
+				}
+			}
+		}
+
 		for (var feature in features) {
 			fields.push(feature);
 			
