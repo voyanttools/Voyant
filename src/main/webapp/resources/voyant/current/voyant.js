@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Sep 26 21:06:54 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Sep 28 20:19:07 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -17366,7 +17366,12 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			var limit = 3;
 			var query = this.getApiParam('query');
 			if (query !== undefined) {
-				limit = Ext.isArray(query) ? query.length : query.split(',').length;
+				if (query.indexOf('^@') === 0) {
+					// it's a category so increase limit so that we get most/all of the terms
+					limit = 20;
+				} else {
+					limit = Ext.isArray(query) ? query.length : query.split(',').length;
+				}
 			}
 			this.getCorpus().getCorpusTerms({autoLoad: false}).load({
 				params: {
@@ -26975,12 +26980,8 @@ Ext.define('Voyant.panel.Reader', {
     	if (queryTerms && queryTerms.length > 0) {
 			this.getDocumentTermsStore().load({
 				params: {
-					query: queryTerms/*,
-    				docIndex: undefined,
-    				docId: undefined,
-    				page: undefined,
-    				start: undefined,
-    				limit: undefined*/
+					query: queryTerms,
+					categories: this.getApiParam('categories')
     			}
 			});
 			this.down('readergraph').loadQueryTerms(queryTerms);
@@ -30317,6 +30318,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     getTopTerms: function(query) {
     	var limit = parseInt(this.getApiParam('numInitialTerms'));
     	var stopList = this.getApiParam('stopList');
+		var categories = this.getApiParam('categories');
     	if (query !== undefined) {
     		limit = undefined;
     		stopList = undefined;
@@ -30324,6 +30326,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     	this.getCorpus().getCorpusTerms().load({
     		params: {
     			query: query,
+				categories: categories,
  				limit: limit,
  				stopList: stopList
  			},
@@ -30339,6 +30342,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     getDistinctTerms: function(query) {
     	var limit = parseInt(this.getApiParam('numInitialTerms'));
     	var stopList = this.getApiParam('stopList');
+		var categories = this.getApiParam('categories');
     	if (query !== undefined) {
     		limit = undefined;
     		stopList = undefined;
@@ -30347,6 +30351,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     	this.getCorpus().getDocumentTerms().load({
 			params: {
 				query: query,
+				categories: categories,
 				limit: limit,
 				perDocLimit: perDocLimit,
 				stopList: stopList,
@@ -33391,7 +33396,8 @@ Ext.define('Voyant.panel.WordTree', {
     		    params: {
     				limit: 1,
     				query: this.getApiParam('query'),
-    				stopList: this.getApiParam('stopList')
+    				stopList: this.getApiParam('stopList'),
+					categories: this.getApiParam('categories')
     			}
         	});
         }, this);
