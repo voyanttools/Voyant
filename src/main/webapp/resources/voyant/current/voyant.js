@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Sep 28 20:19:07 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Oct 05 21:05:05 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -4233,13 +4233,15 @@ TermsRadio.prototype = {
 	constructor: TermsRadio
 	
 	,loadRecords: function(records) {
-		this.initData(records);
-		this.prepareData();
-		//for shiftcount > 0 exclusively
-		var len = this.shiftCount;
-		while(len-- > 0){
-		//for(var j = 0; j < this.shiftCount; j++){
-			this.displayData.shift();
+		if (records.length > 0) {
+			this.initData(records);
+			this.prepareData();
+			//for shiftcount > 0 exclusively
+			var len = this.shiftCount;
+			while(len-- > 0){
+			//for(var j = 0; j < this.shiftCount; j++){
+				this.displayData.shift();
+			}
 		}
 		if (this.chart != null) {
 			this.redraw();
@@ -31068,7 +31070,7 @@ Ext.define('Voyant.panel.TermsRadio', {
         			var t = term.getTerm();
         			this.setApiParams({query: t});
         			this.loadStore();
-        		});
+        		}, this);
 			}
 		});
 		
@@ -31079,7 +31081,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     			var t = term.getTerm();
     			this.setApiParams({query: t});
     			this.loadStore();
-    		});
+    		}, this);
 		});
 		
 		this.on('query', function(src, query){
