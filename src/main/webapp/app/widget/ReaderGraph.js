@@ -10,9 +10,9 @@ Ext.define('Voyant.widget.ReaderGraph', {
         parentPanel: undefined,
         corpus: undefined,
         documentsStore: undefined,
-        documentTermsStore: undefined,
     	locationMarker: undefined,
-    	isDetailedGraph: true
+    	isDetailedGraph: true,
+		seriesToolTip: undefined
     },
     
     locationMarkerColor: '#157fcc',
@@ -36,66 +36,6 @@ Ext.define('Voyant.widget.ReaderGraph', {
             items: []
         });
 
-        this.setDocumentTermsStore(Ext.create("Ext.data.Store", {
-			model: "Voyant.data.model.DocumentTerm",
-    		autoLoad: false,
-    		remoteSort: false,
-    		proxy: {
-				type: 'ajax',
-				url: Voyant.application.getTromboneUrl(),
-				extraParams: {
-					tool: 'corpus.DocumentTerms',
-					withDistributions: true,
-					// TODO handle positions
-					withPositions: true,
-					bins: 25,
-					forTool: 'reader'
-				},
-				reader: {
-					type: 'json',
-		            rootProperty: 'documentTerms.terms',
-		            totalProperty: 'documentTerms.total'
-				},
-				simpleSortMode: true
-   		    },
-   		    listeners: {
-                load: function(store, records, successful, opts) {
-                    store.sort('docIndex', 'ASC');
-                    var graphDatas = {};
-                    var maxValue = 0;
-                    store.each(function(r) {
-                        var graphData = [];
-                        var dist = r.get('distributions');
-                        var docId = r.get('docId');
-                        var docIndex = r.get('docIndex');
-                        var term = r.get('term');
-                        for (var i = 0; i < dist.length; i++) {
-                            var bin = i;//docIndex * dist.length + i;
-                            var val = dist[i];
-                            if (val > maxValue) maxValue = val;
-                            graphData.push([docId, docIndex, bin, val, term]);
-                        }
-                        graphDatas[docIndex] = graphData;
-                    }, this);
-                    
-                    if (this.getIsDetailedGraph()) {
-                        var graphs = this.query('cartesian');
-                        for (var i = 0; i < graphs.length; i++) {
-                            var graph = graphs[i];
-                            var data = graphDatas[i];
-                            if (data !== undefined) {
-                                graph.getAxes()[0].setMaximum(maxValue);
-                                graph.getStore().loadData(data);
-                            } else {
-                                graph.getStore().removeAll();
-                            }
-                        }
-                    }
-   		    	},
-   		    	scope: this
-   		    }
-    	}));
-
         this.callParent(arguments);
 
         var parentPanel = this.findParentBy(function(clz) {
@@ -114,6 +54,11 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 this.hasCorpusLoadedListener = true;
     		}
         }
+
+		this.setSeriesToolTip(Ext.create('Ext.tip.ToolTip', {
+			style: 'background: #fff',
+			dismissDelay: 0
+		}));
         
         this.on('boxready', function() {
             if (this.getLocationMarker() == undefined) {
@@ -125,28 +70,71 @@ Ext.define('Voyant.widget.ReaderGraph', {
     updateCorpus: function(corpus) {
         var docs = corpus.getDocuments();
         this.setDocumentsStore(docs);
-        this.getDocumentTermsStore().getProxy().setExtraParam('corpus', corpus.getId());
         this.setIsDetailedGraph(docs.getTotalCount() < this.DETAILED_GRAPH_DOC_LIMIT);
 
-        this.generateChart(corpus, this);
+        this.generateChart();
     },
 
-    loadQueryTerms: function(queryTerms) {
-    	if (queryTerms && queryTerms.length > 0) {
-			this.getDocumentTermsStore().load({
-				params: {
-					query: queryTerms
-    			}
-			});
+	populateChart: function(docTermRecords) {
+		var graphDatas = {};
+		var maxValue = 0;
+		docTermRecords.forEach(function(r) {
+			var graphData = [];
+			var dist = r.get('distributions');
+			var docId = r.get('docId');
+			var docIndex = r.get('docIndex');
+			var term = r.get('term');
+			for (var i = 0; i < dist.length; i++) {
+				var bin = i;//docIndex * dist.length + i;
+				var val = dist[i];
+				if (val > maxValue) maxValue = val;
+				graphData.push([docId, docIndex, bin, val, term]);
+			}
+			if (graphDatas[docIndex] === undefined) {
+				graphDatas[docIndex] = {};
+			}
+			graphDatas[docIndex][term] = graphData;
+		});
+		
+		if (this.getIsDetailedGraph()) {
+			var graphs = this.query('cartesian');
+			for (var i = 0; i < graphs.length; i++) {
+				var graph = graphs[i];
+
+				var docData = graphDatas[i];
+				if (docData !== undefined) {
+					var series = [];
+					for (var term in docData) {
+						var termData = docData[term];
+						var sColor = this.getParentPanel().getApplication().getColorForTerm(term, true);
+						var theCorpus = this.getCorpus();
+						series.push({
+							type: 'line',
+							xField: 'bin',
+							yField: 'distribution',
+							style: { lineWidth: 1, strokeStyle: sColor },
+							store: Ext.create('Ext.data.ArrayStore', {
+								fields: ['docId', 'docIndex', 'bin', 'distribution', 'term'],
+								data: termData
+							})
+						});
+					}
+					graph.getAxes()[0].setMaximum(maxValue);
+					graph.setSeries(series);
+				}
+			}
 		}
-    },
+		
+	},
 
-    generateChart: function(corpus, container) {
-        function getColor(index, alpha) {
-            var c = this.getParentPanel().getApplication().getColor(index);
-            return 'rgba('+c[0]+','+c[1]+','+c[2]+','+alpha+')';
-        }
-        
+	getColor: function(index, alpha) {
+		var c = this.getParentPanel().getApplication().getColor(index);
+		return 'rgba('+c.join(',')+','+alpha+')';
+	},
+
+    generateChart: function() {
+		var me = this;
+
         function map(value, istart, istop, ostart, ostop) {
             return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
         }
@@ -155,9 +143,8 @@ Ext.define('Voyant.widget.ReaderGraph', {
             var index = docInfo.index;
             var fraction = docInfo.fraction;
             var height = docInfo.relativeHeight;
-            var bColor = getColor.call(this, index, 0.3);
-            var sColor = getColor.call(this, index, 1.0);
-            var chart = container.add({
+            var bColor = this.getColor(index, 0.3);
+            var chart = me.add({
                 xtype: 'cartesian',
                 plugins: {
                     ptype: 'chartitemevents'
@@ -193,39 +180,28 @@ Ext.define('Voyant.widget.ReaderGraph', {
                     fields: 'bin',
                     hidden: true
                 }],
-                series: [{
-                    type: 'line',
-                    xField: 'bin',
-                    yField: 'distribution',
-                    style: {
-                        lineWidth: 2,
-                        strokeStyle: sColor
-                    },
-                    tooltip: {
-                        corpus: corpus,
-                        trackMouse: true,
-                        style: 'background: #fff',
-                        showDelay: 0,
-                        dismissDelay: 500,
-                        hideDelay: 5,
-                        renderer: function(toolTip, record, ctx) {
-                            toolTip.setHtml(corpus.getDocument(record.get('docIndex')).getTitle()+"<br>"+record.get('term') + ': ' + record.get('distribution'));
-                        }
-                    }
-                }],
-                store: Ext.create('Ext.data.ArrayStore', {
-                    fields: ['docId', 'docIndex', 'bin', 'distribution', 'term'],
-                    data: []
-                }),
-                listeners: {
-                    itemclick: function(chart, item, event) {
-                        // var data = item.record.data;
-                        // var doc = this.getDocumentsStore().getAt(data.docIndex);
-                        // this.getParentPanel().getApplication().dispatchEvent('documentsClicked', this, [doc]);
-                    },
-                    scope: this
-                }
+				listeners: {
+					itemmouseover: function(chart, item, event) {
+						var tooltipHtml = this.getCorpus().getDocument(item.record.get('docIndex')).getTitle();
+						chart.getSeries().forEach(function(series) {
+							var seriesItem = series.getItemByIndex(item.index);
+							var term = seriesItem.record.get('term');
+							var dist = seriesItem.record.get('distribution');
+							tooltipHtml += '<br>'+term+': '+dist;
+						}, this);
+						this.getSeriesToolTip().setHtml(tooltipHtml);
+						var xy = event.getXY();
+						xy[0] += 15;
+						xy[1] += 18;
+						this.getSeriesToolTip().showAt(xy);
+					},
+					scope: this
+				}
             });
+
+			chart.body.on('mouseleave', function(event, target) {
+				this.getSeriesToolTip().hide();
+			}, this);
             
             chart.body.on('click', function(event, target) {
                 var el = Ext.get(target);
@@ -243,10 +219,10 @@ Ext.define('Voyant.widget.ReaderGraph', {
             }, this);
         }
         
-        container.removeAll();
+        me.removeAll();
         
-        var docs = corpus.getDocuments();
-        var tokensTotal = corpus.getWordTokensCount();
+        var docs = me.getCorpus().getDocuments();
+        var tokensTotal = me.getCorpus().getWordTokensCount();
         var docInfos = [];
         var docMinSize = Number.MAX_VALUE;
         var docMaxSize = -1;
@@ -272,7 +248,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 addChart.call(this, d);
             }
         } else {
-            var chart = container.add({
+            var chart = me.add({
                 xtype: 'cartesian',
                 plugins: {
                     ptype: 'chartitemevents'
@@ -302,7 +278,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                         strokeStyle: 'none'
                     },
                     renderer: function (sprite, config, rendererData, index) {
-                        return {fillStyle: getColor.call(this, index, 0.3)};
+                        return {fillStyle: this.getColor.call(this, index, 0.3)};
                     }.bind(this)
                 }],
                 store: Ext.create('Ext.data.JsonStore', {
