@@ -59,7 +59,16 @@ Ext.define('Voyant.VoyantApp', {
 		}
 		var _getColorForTerm = this.getColorForTerm;
 		this.getColorForTerm = function(term, returnHex) {
-			return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
+			if (term.indexOf('@') === 0) {
+				var catColor = this.getCategoriesManager().getCategoryFeature(term.substring(1), 'color');
+				if (returnHex) {
+					return catColor;
+				} else {
+					return this.hexToRgb(catColor);
+				}
+			} else {
+				return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
+			}
 		}
 
 		// call the parent constructor
