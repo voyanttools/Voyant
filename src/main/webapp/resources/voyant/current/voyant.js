@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Oct 06 19:20:48 UTC 2022 */
+/* This file created by JSCacher. Last modified: Wed Oct 19 15:57:26 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -17344,7 +17344,9 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 		}, this);
 
 		this.on('beforedestroy', function(panel) {
-			this.getVisLayout().stop(); // make sure force simulation isn't running when removed
+			if (this.getVisLayout()) {
+				this.getVisLayout().stop(); // make sure force simulation isn't running when removed
+			}
 		}, this);
         
         me.callParent(arguments);
