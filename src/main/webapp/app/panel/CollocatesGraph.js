@@ -265,7 +265,9 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 		}, this);
 
 		this.on('beforedestroy', function(panel) {
-			this.getVisLayout().stop(); // make sure force simulation isn't running when removed
+			if (this.getVisLayout()) {
+				this.getVisLayout().stop(); // make sure force simulation isn't running when removed
+			}
 		}, this);
         
         me.callParent(arguments);
