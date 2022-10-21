@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Oct 21 17:42:24 UTC 2022 */
+/* This file created by JSCacher. Last modified: Fri Oct 21 22:06:51 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6140,6 +6140,8 @@ Ext.define('Voyant.util.Colors', {
 		colorTermAssociations: undefined
 	},
 
+	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
+
 	constructor: function(config) {
 		this.setPalettes({
 			'default': [[0, 0, 255], [51, 197, 51], [255, 0, 255], [121, 51, 255], [28, 255, 255], [255, 174, 0], [30, 177, 255], [182, 242, 58], [255, 0, 164], [51, 102, 153], [34, 111, 52], [155, 20, 104], [109, 43, 157], [128, 130, 33], [111, 76, 10], [119, 115, 165], [61, 177, 169], [202, 135, 115], [194, 169, 204], [181, 212, 228], [182, 197, 174], [255, 197, 197], [228, 200, 124], [197, 179, 159]]
@@ -6165,6 +6167,7 @@ Ext.define('Voyant.util.Colors', {
 	},
 
 	resetColorTermAssociations: function() {
+		this.lastUsedPaletteIndex = -1;
 		this.setColorTermAssociations(new Ext.util.MixedCollection());
 	},
 
@@ -6320,9 +6323,11 @@ Ext.define('Voyant.util.Colors', {
 
 		var color = this.getColorTermAssociations().get(term);
 		if (color == null) {
-			var index = this.getColorTermAssociations().getCount() % palette.length;
+			var index = this.lastUsedPaletteIndex+1;
+			index %= palette.length;
 			color = palette[index];
 			this.getColorTermAssociations().add(term, color);
+			this.lastUsedPaletteIndex = index;
 		}
 		if (returnHex) {
 			color = this.rgbToHex(color);
@@ -6685,8 +6690,19 @@ Ext.define('Voyant.util.Toolable', {
 										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
 											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
 										}
-										if (values['categories'] !== undefined) {
-											keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+
+										var categoriesDfd = new Ext.Deferred();
+										if (values['categories'] && values['categories'] !== '') {
+											app.loadCategoryData(values['categories']).then(function() {
+												// no errors
+											}, function() {
+												values['categories'] = undefined;
+											}).finally(function() { // this returns a ES6 Promise instead of Ext so used finally
+												keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+												categoriesDfd.resolve();
+											})
+										} else {
+											categoriesDfd.resolve();
 										}
 										
 										var paletteDfd = new Ext.Deferred(); // need a deferred since we might have to load a custom palette
@@ -6699,7 +6715,7 @@ Ext.define('Voyant.util.Toolable', {
 												}, function() {
 													// error loading palette, so reset to default
 													values['palette'] = 'default';
-												}).always(function() {
+												}).always(function() { // this returns a Ext Promise instead of ES6 so used always
 													keyValuesForGlobalUpdate.push(['palette', values['palette']]);
 													paletteDfd.resolve();
 												})
@@ -6711,7 +6727,7 @@ Ext.define('Voyant.util.Toolable', {
 											paletteDfd.resolve();
 										}
 
-										paletteDfd.promise.always(function() {
+										Ext.Promise.all([categoriesDfd, paletteDfd]).then(function() {
 											var corpus = app.getCorpus();
 											if (keyValuesForGlobalUpdate.length > 0) {
 												var panels = app.getViewport().query("panel,chart");
@@ -6740,8 +6756,11 @@ Ext.define('Voyant.util.Toolable', {
 												}
 											}
 											// fire this even if we have global params since the app dispatch won't reach this tool
-											if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
-											else {this.fireEvent("apiParamsUpdated", this, values);}
+											if (corpus) {
+												this.fireEvent("loadedCorpus", this, corpus);
+											} else {
+												this.fireEvent("apiParamsUpdated", this, values);
+											}
 
 											btn.up('window').close();
 										}.bind(this));
@@ -13275,6 +13294,9 @@ Ext.define('Voyant.widget.CategoriesOption', {
 	initComponent: function() {
 		var value = this.up('window').panel.getApiParam('categories');
     	var data = value ? [{name: value, value: value}] : [];
+		if (value !== 'auto') {
+			data.push({name: 'auto', value: 'auto'});
+		}
 		
 		Ext.apply(this, {
     		layout: 'hbox',
@@ -40789,7 +40811,7 @@ Ext.define('Voyant.VoyantApp', {
     	},
     	api: {
 			palette: 'default',
-			categories: 'auto',
+			categories: undefined,
     		lang: undefined,
     		debug: undefined
     	}
@@ -40815,19 +40837,8 @@ Ext.define('Voyant.VoyantApp', {
 		this.mixins['Voyant.util.Colors'].constructor.apply(this, arguments);
 
 		this.setCategoriesManager(new Spyral.Categories());
-		// inheritance/mixin hack
-		// var catProps = Object.getOwnPropertyNames(categories).concat(Object.getOwnPropertyNames(Object.getPrototypeOf(categories)));
-		// catProps.forEach(function(propName) {
-		// 	if (this[propName] === undefined) {
-		// 		if (typeof categories[propName] === 'function') {
-		// 			this[propName] = categories[propName].bind(this);
-		// 		} else {
-		// 			this[propName] = categories[propName];
-		// 		}
-		// 	}
-		// }, this)
 		
-		this.getCategoriesManager().addFeature('color');
+		this.getCategoriesManager().addFeature('color', '#BF1B2C'); // default color is Voyant red
 		this.getCategoriesManager().addFeature('font', '"Palatino Linotype", "Book Antiqua", Palatino, serif');
 		
 		// override Voyant.util.Colors methods to add palette api param
@@ -40880,6 +40891,10 @@ Ext.define('Voyant.VoyantApp', {
     	    showDelay: 50 // shorten the delay before showing
     	});
     	
+		if (this.getApiParam("categories")) {
+			this.loadCategoryData(this.getApiParam("categories"));
+		}
+
 		this.callParent(arguments);
     },
     
@@ -40998,9 +41013,30 @@ Ext.define('Voyant.VoyantApp', {
 				buttons: Ext.Msg.OK
 			});
 		}
-	}
+	},
+	
+	loadCategoryData: function(id) {
+		return this.getCategoriesManager().load(id, {
+			trombone: Voyant.application.getTromboneUrl()
+		}).then(function() {
+			for (var category in this.getCategoriesManager().getCategories()) {
+				var color = this.getCategoriesManager().getCategoryFeature(category, 'color');
+				if (color !== undefined) {
+					var rgb = this.hexToRgb(color);
+					var terms = this.getCategoriesManager().getCategoryTerms(category);
+					for (var i = 0; i < terms.length; i++) {
+						this.setColorForTerm(terms[i], rgb);
+					}
+				}
+			}
+		}.bind(this));
+	},
 
-    
+	saveCategoryData: function(data) {
+		return this.getCategoriesManager().save({}, {
+			trombone: Voyant.application.getTromboneUrl()
+		});
+	}
 });
 Ext.define('Voyant.VoyantCorpusApp', {
 	
@@ -41077,9 +41113,11 @@ Ext.define('Voyant.VoyantCorpusApp', {
         	    	var palette = Ext.decode(queryParams.palette);
         	    	this.addColorPalette(queryParams.palette, palette);
         		} else {
-            		this.loadCustomColorPalette(queryParams.palette);
-        		}
-        	}
+					if (this.getPalettes()[queryParams.palette] === undefined) {
+						this.loadCustomColorPalette(queryParams.palette);
+					}
+				}
+			}
     	} else {
     		var viewport = this.getViewport();
     		if (viewport) {
@@ -41250,40 +41288,10 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	}
     	return params.corpus || params.input || (this.getCorpusId && this.getCorpusId()); // TODO: should this include "archive" from V1?
     },
-	
-	loadCategoryData: function(id) {
-		return this.getCategoriesManager().load(id, {
-			trombone: Voyant.application.getTromboneUrl()
-		});
-	},
-
-	saveCategoryData: function(data) {
-		return this.getCategoriesManager().save({}, {
-			trombone: Voyant.application.getTromboneUrl()
-		});
-	},
     
     listeners: {
     	loadedCorpus: function(src, corpus) {
     		this.setCorpus(corpus);
-    		
-    		// let's load the categories based on the corpus
-        	if (this.getApiParam("categories")) {
-				this.loadCategoryData(this.getApiParam("categories")).then(function() {
-					// assign colors
-					for (var category in this.getCategoriesManager().getCategories()) {
-						var color = this.getCategoriesManager().getCategoryFeature(category, 'color');
-						if (color !== undefined) {
-							var rgb = this.hexToRgb(color);
-							var terms = this.getCategoriesManager().getCategoryTerms(category);
-							for (var i = 0; i < terms.length; i++) {
-								this.setColorForTerm(terms[i], rgb);
-							}
-						}
-					}
-				}.bind(this));
-        	}    	
-
     		
     		this.on("unhandledEvent", function(src, eventName, data) {
 				var url = this.getBaseUrl() + '?corpus='+corpus.getAliasOrId();
