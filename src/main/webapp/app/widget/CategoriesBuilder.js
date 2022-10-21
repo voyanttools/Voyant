@@ -12,6 +12,9 @@ Ext.define('Voyant.widget.CategoriesOption', {
 	initComponent: function() {
 		var value = this.up('window').panel.getApiParam('categories');
     	var data = value ? [{name: value, value: value}] : [];
+		if (value !== 'auto') {
+			data.push({name: 'auto', value: 'auto'});
+		}
 		
 		Ext.apply(this, {
     		layout: 'hbox',
