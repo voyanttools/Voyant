@@ -248,40 +248,10 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	}
     	return params.corpus || params.input || (this.getCorpusId && this.getCorpusId()); // TODO: should this include "archive" from V1?
     },
-	
-	loadCategoryData: function(id) {
-		return this.getCategoriesManager().load(id, {
-			trombone: Voyant.application.getTromboneUrl()
-		});
-	},
-
-	saveCategoryData: function(data) {
-		return this.getCategoriesManager().save({}, {
-			trombone: Voyant.application.getTromboneUrl()
-		});
-	},
     
     listeners: {
     	loadedCorpus: function(src, corpus) {
     		this.setCorpus(corpus);
-    		
-    		// let's load the categories based on the corpus
-        	if (this.getApiParam("categories")) {
-				this.loadCategoryData(this.getApiParam("categories")).then(function() {
-					// assign colors
-					for (var category in this.getCategoriesManager().getCategories()) {
-						var color = this.getCategoriesManager().getCategoryFeature(category, 'color');
-						if (color !== undefined) {
-							var rgb = this.hexToRgb(color);
-							var terms = this.getCategoriesManager().getCategoryTerms(category);
-							for (var i = 0; i < terms.length; i++) {
-								this.setColorForTerm(terms[i], rgb);
-							}
-						}
-					}
-				}.bind(this));
-        	}    	
-
     		
     		this.on("unhandledEvent", function(src, eventName, data) {
 				var url = this.getBaseUrl() + '?corpus='+corpus.getAliasOrId();
