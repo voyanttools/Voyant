@@ -73,9 +73,11 @@ Ext.define('Voyant.VoyantCorpusApp', {
         	    	var palette = Ext.decode(queryParams.palette);
         	    	this.addColorPalette(queryParams.palette, palette);
         		} else {
-            		this.loadCustomColorPalette(queryParams.palette);
-        		}
-        	}
+					if (this.getPalettes()[queryParams.palette] === undefined) {
+						this.loadCustomColorPalette(queryParams.palette);
+					}
+				}
+			}
     	} else {
     		var viewport = this.getViewport();
     		if (viewport) {
