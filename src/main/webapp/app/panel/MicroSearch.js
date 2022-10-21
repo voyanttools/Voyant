@@ -129,37 +129,47 @@ Ext.define('Voyant.panel.MicroSearch', {
     
     updateSearchResults: function() {
     	query = this.getApiParam('query');
-    	if (Ext.Array.from(query).length==0) { // draw simple lines
-        	this.getCorpus().getDocuments().each(function(document) {
-        		var distributions = this.redistributeDistributions(document, new Array(this.getMaxSegments()));
-        		this.drawDocumentDistributions(document, distributions);
-        	}, this)
-    	} else {
+    	
+		// draw background
+		this.getCorpus().getDocuments().each(function(document) {
+			var distributions = this.redistributeDistributions(document, new Array(this.getMaxSegments()));
+			this.drawDocumentDistributions(document, null, distributions);
+		}, this);
+
+    	if (Ext.Array.from(query).length > 0) {
     		this.mask(this.localize('loading'))
     		this.getCorpus().getDocumentTerms().load({
     			params: {
-    				query: Ext.Array.from(query).join('|'), // treat as one query
+    				query: Ext.Array.from(query),
         			withDistributions: 'relative',
         			bins: this.getMaxSegments(),
         			categories: this.getApiParam('categories')
     			},
     			callback: function(records, operation, success) {
     				this.unmask();
-    				var max = 0, min = Number.MAX_VALUE, docs = [], m;
+    				var max = 0;
+					var min = Number.MAX_VALUE;
+					var docs = [];
     				records.forEach(function(record) {
     					var doc = this.getCorpus().getDocument(record.getDocIndex());
-    					var distributions = this.redistributeDistributions(doc, record.getDistributions())
-    					m = Ext.Array.max(distributions);
+    					var distributions = this.redistributeDistributions(doc, record.getDistributions());
+    					var m = Ext.Array.max(distributions);
     					if (m>max) {max=m;}
     					distributions.forEach(function(d) {
     						if (d && d<min) {
     							min = d;
     						}
     					})
-    					docs[record.getDocIndex()] = this.redistributeDistributions(doc, record.getDistributions());
+						if (docs[record.getDocIndex()] === undefined) {
+							docs[record.getDocIndex()] = {};
+						}
+						docs[record.getDocIndex()][record.getTerm()] = this.redistributeDistributions(doc, record.getDistributions());
     				}, this);
-    				docs.forEach(function(distributions, i) {
-                    	this.drawDocumentDistributions(this.getCorpus().getDocument(i), distributions, min || Ext.Array.min(distributions), max || Ext.Array.max(distributions));
+    				docs.forEach(function(termDistributions, i) {
+						for (var term in termDistributions) {
+							var distributions = termDistributions[term];
+                    		this.drawDocumentDistributions(this.getCorpus().getDocument(i), term, distributions, min || Ext.Array.min(distributions), max || Ext.Array.max(distributions));
+						}
     				}, this)
     			},
     			scope: this
@@ -186,13 +196,26 @@ Ext.define('Voyant.panel.MicroSearch', {
     	return distributions;
     },
     
-    drawDocumentDistributions: function(doc, distributions, min, max) {
+    drawDocumentDistributions: function(doc, term, distributions, min, max) {
     	var canvas = this.getTargetEl().dom.querySelector("#"+this.body.id+"-"+doc.getIndex());
     	var c = canvas.getContext('2d');
     	var x = 0, w = canvas.clientWidth, y = 0;
+		
+		var isBlank = term === null;
+		var color = [230, 230, 230];
+		if (!isBlank) {
+			color = this.getApplication().getColorForTerm(term);
+		}
+
     	for (var j=0; j<distributions.length;j++) {
-    		c.fillStyle = distributions[j] ? "rgba(250,0,0,"+(((distributions[j]-min)*.8/(max-min))+.2)+")" : "rgb(230,230,230)";
-    		c.fillRect(x,y,3,3)
+			if (isBlank) {
+				c.fillStyle = "rgb(230,230,230)";
+				c.fillRect(x,y,3,3);
+			} else if (distributions[j]) {
+				var alpha = ((distributions[j]-min)*.7/(max-min))+.3;
+				c.fillStyle = "rgba("+color[0]+","+color[1]+","+color[2]+","+alpha+")";
+				c.fillRect(x,y,3,3);
+			}
     		x+=3;
     		if (x>=w) {x=0; y+=5}
     	}
