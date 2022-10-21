@@ -16,6 +16,8 @@ Ext.define('Voyant.util.Colors', {
 		colorTermAssociations: undefined
 	},
 
+	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
+
 	constructor: function(config) {
 		this.setPalettes({
 			'default': [[0, 0, 255], [51, 197, 51], [255, 0, 255], [121, 51, 255], [28, 255, 255], [255, 174, 0], [30, 177, 255], [182, 242, 58], [255, 0, 164], [51, 102, 153], [34, 111, 52], [155, 20, 104], [109, 43, 157], [128, 130, 33], [111, 76, 10], [119, 115, 165], [61, 177, 169], [202, 135, 115], [194, 169, 204], [181, 212, 228], [182, 197, 174], [255, 197, 197], [228, 200, 124], [197, 179, 159]]
@@ -41,6 +43,7 @@ Ext.define('Voyant.util.Colors', {
 	},
 
 	resetColorTermAssociations: function() {
+		this.lastUsedPaletteIndex = -1;
 		this.setColorTermAssociations(new Ext.util.MixedCollection());
 	},
 
@@ -196,9 +199,11 @@ Ext.define('Voyant.util.Colors', {
 
 		var color = this.getColorTermAssociations().get(term);
 		if (color == null) {
-			var index = this.getColorTermAssociations().getCount() % palette.length;
+			var index = this.lastUsedPaletteIndex+1;
+			index %= palette.length;
 			color = palette[index];
 			this.getColorTermAssociations().add(term, color);
+			this.lastUsedPaletteIndex = index;
 		}
 		if (returnHex) {
 			color = this.rgbToHex(color);
