@@ -38,7 +38,7 @@ Ext.define('Voyant.VoyantApp', {
 
 		this.setCategoriesManager(new Spyral.Categories());
 		
-		this.getCategoriesManager().addFeature('color');
+		this.getCategoriesManager().addFeature('color', '#BF1B2C'); // default color is Voyant red
 		this.getCategoriesManager().addFeature('font', '"Palatino Linotype", "Book Antiqua", Palatino, serif');
 		
 		// override Voyant.util.Colors methods to add palette api param
