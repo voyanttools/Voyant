@@ -127,8 +127,19 @@ Ext.define('Voyant.util.Toolable', {
 										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
 											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
 										}
-										if (values['categories'] !== undefined) {
-											keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+
+										var categoriesDfd = new Ext.Deferred();
+										if (values['categories'] && values['categories'] !== '') {
+											app.loadCategoryData(values['categories']).then(function() {
+												// no errors
+											}, function() {
+												values['categories'] = undefined;
+											}).finally(function() { // this returns a ES6 Promise instead of Ext so used finally
+												keyValuesForGlobalUpdate.push(['categories', values['categories']]);
+												categoriesDfd.resolve();
+											})
+										} else {
+											categoriesDfd.resolve();
 										}
 										
 										var paletteDfd = new Ext.Deferred(); // need a deferred since we might have to load a custom palette
@@ -141,7 +152,7 @@ Ext.define('Voyant.util.Toolable', {
 												}, function() {
 													// error loading palette, so reset to default
 													values['palette'] = 'default';
-												}).always(function() {
+												}).always(function() { // this returns a Ext Promise instead of ES6 so used always
 													keyValuesForGlobalUpdate.push(['palette', values['palette']]);
 													paletteDfd.resolve();
 												})
@@ -153,7 +164,7 @@ Ext.define('Voyant.util.Toolable', {
 											paletteDfd.resolve();
 										}
 
-										paletteDfd.promise.always(function() {
+										Ext.Promise.all([categoriesDfd, paletteDfd]).then(function() {
 											var corpus = app.getCorpus();
 											if (keyValuesForGlobalUpdate.length > 0) {
 												var panels = app.getViewport().query("panel,chart");
@@ -182,8 +193,11 @@ Ext.define('Voyant.util.Toolable', {
 												}
 											}
 											// fire this even if we have global params since the app dispatch won't reach this tool
-											if (corpus) {this.fireEvent("loadedCorpus", this, corpus);}
-											else {this.fireEvent("apiParamsUpdated", this, values);}
+											if (corpus) {
+												this.fireEvent("loadedCorpus", this, corpus);
+											} else {
+												this.fireEvent("apiParamsUpdated", this, values);
+											}
 
 											btn.up('window').close();
 										}.bind(this));
