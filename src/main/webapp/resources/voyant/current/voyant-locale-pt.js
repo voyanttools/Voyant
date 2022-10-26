@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"Ano(s)",
 "animate":"Animar",
 "citiesMinPopulation":"população mínima",
-"viewOccurrencesTip":"Selecionar isto para ver a localização no Voyant.",
+"viewOccurrencesTip":"Selecionar isto para ver uma lista das ocorrências desta localização",
 "annotationsUpdateFailed":"Um erro ocorreu durante o armazenamento das anotações.",
 "wms4326":"WMS 4326",
 "mapTip":"Definir camada e projeção de base",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"Esse caderno localizava-se aparentemente em outra URL. Se tem certeza de que esta URL está correta, é melhor executar novamente todos os blocos de código para assegurar que tudo funciona corretamente. Gostaria de executar todos os blocos de código? </p><pre>esta URL: {1}\n URL deste caderno: {0}",
 "cannotMoveHigher":"O bloco já está no topo e não pode ser movido para cima.",
 "fetchingNotebook":"Recuperação do caderno...",
+"error":"Erro",
 "exportHtml":"HTML (para salvar ou imprimir)",
 "exportJson":"Formato de dados do Caderno Spytal (JSON)",
 "failedNotebookParse":"O caderno aberto parece possuir um erro de sintaxe e provavelmente não poderá ser executado desta forma.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Caderno proveniente de outra URL",
 "autoSaveAvailable":"Há um salvamento automático mais recente. Você gostaria de abrir o documento salvo automaticamente?",
 "helpTip":"A ferramenta Caderno Spyral consiste em documentos dinâmicos que combinam texto, códigos e ferramentas interativas em uma forma de <a href=\"https://en.wikipedia.org/wiki/Literate_programming\" target=\"_blank\"> programação literária (letrada)</a>.",
-"eror":"Erro",
 "runallTip":"Executar todos os blocos de código neste caderno"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"Novo corpus Voyant",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant Tools",
 "privacy":"Privacidade",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyant Tools</a>",
-"privacyMsg":"Os desenvolvedores do Voyant Tools recolhem dados do site referentes a quais ferramentas são executadas e seus parâmetros (endereços IP também são identificados com o objetivo de identificar requisições múltiplas durante uma mesma sessão). Voyant Tools também utiliza o Google Analytics (ver a Política de Privacidade do Google e a seção das <em>Informações de Log </em> em particular). As informações locais de log e os dados do Google Analytics serão utilizados pela equipe de desenvolvimento com o objetivo de realizar correções e aprimorar as ferramentas, assim como para a compreensão de como os pesquisadores as utilizam. Esses dados também podem ser utilizados para fins de pesquisa em formatos agregados e anônimos. Por favor observe que os textos enviados ao Voyant Tools ficam armazenados para permitir o acesso permanente durante uma sessão de trabalho e entre as sessões de trabalho. Caso possua dúvidas sobre a forma como os dados são coletados e sobre como estão sendo utilizados, ou ainda para demandar a remoção de um corpus, por favor contate Stéfan Sinclair. Clique aqui para maiores informações."});
+"privacyMsg":"Os desenvolvedores do Voyant Tools recolhem dados do site referentes a quais ferramentas são executadas e seus parâmetros (endereços IP também são identificados com o objetivo de identificar requisições múltiplas durante uma mesma sessão). Voyant Tools também utiliza o Google Analytics (ver a Política de Privacidade do Google e a seção das <em>Informações de Log </em> em particular). As informações locais de log e os dados do Google Analytics serão utilizados pela equipe de desenvolvimento com o objetivo de realizar correções e aprimorar as ferramentas, assim como para a compreensão de como os pesquisadores as utilizam. Esses dados também podem ser utilizados para fins de pesquisa em formatos agregados e anônimos. Por favor observe que os textos enviados ao Voyant Tools ficam armazenados para permitir o acesso permanente durante uma sessão de trabalho e entre as sessões de trabalho. Caso possua dúvidas sobre a forma como os dados são coletados e sobre como estão sendo utilizados, ou ainda para demandar a remoção de um corpus, por favor contate Geoffrey Rockwell. Clique aqui para maiores informações."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"Nenhum valor encontrado."});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"Este é o número de documentos que correspondem ao critério de busca (cada documento contém ao menos um dos termos buscados)"});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"Alemão",
+"ru":"Russo",
 "pt":"Português",
 "thisLanguage":"Português",
 "autoRecommended":"Detecção automática (recomendado)",

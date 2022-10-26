@@ -168,7 +168,7 @@ Ext.apply(Voyant.panel.Documents.i18n, {
 "matchingDocuments":"Übereinstimmende Dokumente: {count}",
 "id":"ID",
 "documentTitle":"Titel",
-"helpTip":"<p> Documents (Dokumente) ist eine Tabellenansicht der Dokumente im Korpus. Zu den Funktionen gehören: </p> <ul> <li> Neuanordnung nach <i> Titel </i>, <i> Anzahl der Wörter </i> (Token), Anzahl der Wortformen (<i> Typen </i>) , und Ratio (Typen/ Tokenverhältnis) (klicken Sie auf die Spaltenüberschriften)  ein Suchfeld für Abfragen (standardmäßig in den Feldern Volltext, Titel und Autor —&nbsp;Bewegen Sie den Mauszeiger über das Fragezeichen, um Hilfe bei der Syntax zu erhalten. </li> </ul>",
+"helpTip":"<p> Documents (Dokumente) ist eine Tabellenansicht der Dokumente im Korpus. Zu den Funktionen gehören: </p> <ul> <li> Neuanordnung nach <i> Titel </i>, <i> Anzahl der Wörter </i> (Token), Anzahl der Wortformen (<i> Typen </i>) , und Ratio (Typen/ Tokenverhältnis) (klicken Sie auf die Spaltenüberschriften) ein Suchfeld für Abfragen (standardmäßig in den Feldern Volltext, Titel und Autor —&nbsp;Bewegen Sie den Mauszeiger über das Fragezeichen, um Hilfe bei der Syntax zu erhalten. </li> </ul>",
 "add":"Hinzufügen",
 "downloadButton":"Herunterladen",
 "newCorpus":"Neuer Korpus",
@@ -295,7 +295,7 @@ Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
 "releaseToRemove":"Lassen Sie los, um diesen Begriff zu entfernen",
 "clearTerms":"Leeren",
 "title":"Links",
-"helpTip":"<p>Collocates graph (Kollokationsdiagramm) zeigt ein Netzwerkdiagramm mit häufig vorkommenden Begriffen, die nah zueinander vorkommen. Schlagworte werden blau angezeigt und Kollokationen (Wörter in der Nähe) werden orange angezeigt.  Zu den Funktionen gehören: </p> <ul> <li> Wenn Sie mit der Maus über Schlagwörter fahren, wird deren Häufigkeit im Korpus angezeigt. </li> <li> Wenn Sie mit der Maus über Kollokationen fahren, wird die Häufigkeit ihres nahen Vorkommens (nicht die Gesamthäufigkeit) angezeigt. </li> <li>  Durch Doppelklicken auf ein Wort werden weitere Ergebnisse angezeigt. </li> <li> Ein Suchfeld für Abfragen (Bewegen Sie den Mauszeiger über das Fragezeichen, um Hilfe bei der Syntax zu erhalten) </li> </ul>"});
+"helpTip":"<p>Collocates graph (Kollokationsdiagramm) zeigt ein Netzwerkdiagramm mit häufig vorkommenden Begriffen, die nah zueinander vorkommen. Schlagworte werden blau angezeigt und Kollokationen (Wörter in der Nähe) werden orange angezeigt. Zu den Funktionen gehören: </p> <ul> <li> Wenn Sie mit der Maus über Schlagwörter fahren, wird deren Häufigkeit im Korpus angezeigt. </li> <li> Wenn Sie mit der Maus über Kollokationen fahren, wird die Häufigkeit ihres nahen Vorkommens (nicht die Gesamthäufigkeit) angezeigt. </li> <li> Durch Doppelklicken auf ein Wort werden weitere Ergebnisse angezeigt. </li> <li> Ein Suchfeld für Abfragen (Bewegen Sie den Mauszeiger über das Fragezeichen, um Hilfe bei der Syntax zu erhalten) </li> </ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Abbrechen",
 "accessModeWithoutPassword":"anderer Zugang",
@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"Jahr(e)",
 "animate":"Animieren",
 "citiesMinPopulation":"Mindestpopulation",
-"viewOccurrencesTip":"Auswählen, um den Ort in Voyant anzuzeigen.",
+"viewOccurrencesTip":"Auswählen, um eine Liste der Treffer zu diesem Ort anzuzeigen",
 "annotationsUpdateFailed":"Während dem Speichern der Anmerkungen ist ein Fehler aufgetreten.",
 "wms4326":"WMS 4326",
 "mapTip":"Wählen Sie einen Basis-Layer und eine Kartenansicht aus",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"Dieses Notebook scheint an einer anderen URL lokalisiert worden zu sein. Wenn Sie sicher sind, dass die URL korrekt ist, können Sie alle Codeblocks erneut durchführen lassen, um eine korrekte Funktionsweise sicherzustellen. Möchten Sie alle Codeblocks durchführen?</p><pre>diese URL: {1}\nURL dieses Notebooks: {0}",
 "cannotMoveHigher":"Dieser Block ist bereits ganz oben und kann nicht weiter nach oben bewegt werden.",
 "fetchingNotebook":"Notebook wird wiederhergestellt...",
+"error":"Fehler",
 "exportHtml":"HTML (zum Speichern oder Drucken)",
 "exportJson":"Datenformat von Spyral Notebook (JSON)",
 "failedNotebookParse":"Das geladene Notebook scheint einen Syntax-Fehler aufzuweisen und kann in dieser Form vermutlich nicht durchgeführt werden.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Notebook von einer anderen URL",
 "autoSaveAvailable":"Eine neuerer Autosave ist verfügbar, möchten Sie zu diesem Dokument wechseln?",
 "helpTip":"Spyral Notebooks sind dynamische Dokumente, die Text, Code und interaktive Tools kombinieren. Sie sind eine Art des <a href=\"https://de.wikipedia.org/wiki/Literate_programming\" target=\"_blank\">literate programming</a>.",
-"eror":"Fehler",
 "runallTip":"Alle Codeblocks in diesem Notebook durchführen."});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"Neuer Voyant Korpus",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant Tools",
 "privacy":"Privacy",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\"> Voyant Tools </a>",
-"privacyMsg":"Die Entwickler von Voyant Tools sammeln auf der Website Daten darüber, welche Tools mit welchen Parametern aufgerufen werden (IP-Adressen werden ebenfalls protokolliert, um mehrere Anfragen während derselben Sitzung identifizieren zu können). Darüber hinaus verwendet Voyant Tools Google Analytics (siehe insbesondere die Datenschutzbestimmungen von Google und den Abschnitt <em> Protokollinformationen </em>). Lokal protokollierte Daten und Google Analytics-Daten werden vom Entwicklungsteam verwendet, um die Tools zu debuggen und zu verbessern sowie um besser zu verstehen, wie Forscher sie verwenden. Diese Daten können auch zu Forschungszwecken in anonymer und aggregierter Form verwendet werden. Bitte beachten Sie, dass an Voyant Tools gesendete Texte gespeichert werden, um einen dauerhaften Zugriff während einer Arbeitssitzung und zwischen Arbeitssitzungen zu ermöglichen. Wenn Sie Fragen zu den gesammelten Daten und deren Verwendung haben oder die Entfernung eines Korpus beantragen möchten, wenden Sie sich bitte an Stéfan Sinclair. Klicken Sie auf diesen Link, um weitere Informationen zu erhalten."});
+"privacyMsg":"Die Entwickler von Voyant Tools sammeln auf der Website Daten darüber, welche Tools mit welchen Parametern aufgerufen werden (IP-Adressen werden ebenfalls protokolliert, um mehrere Anfragen während derselben Sitzung identifizieren zu können). Darüber hinaus verwendet Voyant Tools Google Analytics (siehe insbesondere die Datenschutzbestimmungen von Google und den Abschnitt <em> Protokollinformationen </em>). Lokal protokollierte Daten und Google Analytics-Daten werden vom Entwicklungsteam verwendet, um die Tools zu debuggen und zu verbessern sowie um besser zu verstehen, wie Forscher sie verwenden. Diese Daten können auch zu Forschungszwecken in anonymer und aggregierter Form verwendet werden. Bitte beachten Sie, dass an Voyant Tools gesendete Texte gespeichert werden, um einen dauerhaften Zugriff während einer Arbeitssitzung und zwischen Arbeitssitzungen zu ermöglichen. Wenn Sie Fragen zu den gesammelten Daten und deren Verwendung haben oder die Entfernung eines Korpus beantragen möchten, wenden Sie sich bitte an Geoffrey Rockwell. Klicken Sie auf diesen Link, um weitere Informationen zu erhalten."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"Keine Werte gefunden."});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"Dies ist die Anzahl der Dokumente, die die Suchkriterien erfüllen (jedes gezählte Dokument enthält mindestens einen der Suchbegriffe)."});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"Deutsch",
+"ru":"Russisch",
 "pt":"Portugiesisch",
 "thisLanguage":"Deutsche",
 "autoRecommended":"Automatische Erkennung (empfohlen)",

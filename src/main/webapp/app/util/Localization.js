@@ -2,7 +2,7 @@ Ext.define('Voyant.util.Localization', {
 	statics: {
 		DEFAULT_LANGUAGE: 'en',
 		LANGUAGE: 'en',
-		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","sr"],
+		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","ru","sr"],
 		i18n: {
 		}
 	},

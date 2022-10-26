@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"année(s)",
 "animate":"Animer",
 "citiesMinPopulation":"population minimale",
-"viewOccurrencesTip":"Sélectionner ceci pour voir cette localisation dans Voyant",
+"viewOccurrencesTip":"Sélectionner ceci pour voir une liste des occurrences de cette localisation",
 "annotationsUpdateFailed":"Une erreur s’est produite pendant l’enregistrement des annotations.",
 "wms4326":"WMS 4326",
 "mapTip":"Définir la couche et la projection de base",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"Ce carnet se trouvait apparemment à une autre URL. Si vous êtes certain(e) que cette URL est exacte, il vaut peut-être mieux exécuter à nouveau tous les blocs de code pour vous assurer que tout fonctionne normalement. Voulez-vous exécuter tous les blocs de code ?</p><pre>Cette URL : {1}\nURL de ce carnet : {0}",
 "cannotMoveHigher":"Ce bloc est déjà tout en haut.",
 "fetchingNotebook":"Récupération du carnet…",
+"error":"Erreur",
 "exportHtml":"HTML (pour sauvegarder ou imprimer)",
 "exportJson":"Format de données des carnets Spyral (JSON)",
 "failedNotebookParse":"Le carnet qui a été chargé semble comporter une erreur de syntaxe et ne pourra probablement pas être exécuté sous cette forme.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Carnet venant d’une autre URL",
 "autoSaveAvailable":"Il existe une sauvegarde automatique plus récente. Voulez-vous revenir au document de cette sauvegarde ?",
 "helpTip":"Les carnets Spyral sont des documents dynamiques qui combinent du texte, du code et des outils interactifs. Ils sont un exemple de <a href=\"https://fr.wikipedia.org/wiki/Programmation_lettr%C3%A9e\" target=\"_blank\"><em>literate programming</em></a>.",
-"eror":"Erreur",
 "runallTip":"Exécuter tous les blocs de code de ce carnet"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"Nouveau corpus de Voyant",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant Tools",
 "privacy":"Respect de la vie privée",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyant Tools</a>",
-"privacyMsg":"Les développeurs de Voyant Tools extraient du site un certain nombre de données sur l’utilisation des outils et sur les paramètres avec lesquels ils sont employés (les adresses IP sont également enregistrées afin de pouvoir identifier les requêtes multiples faites durant une même session de travail). En outre, Voyant Tools utilise le système Google Analytics (voir la « Privacy Policy » de Google, en particulier la section <em>Log Information</em>). Les données enregistrées localement et les données de Google Analytics seront utilisées par l’équipe de développement du logiciel pour déboguer et améliorer les outils, ainsi que pour comprendre comment les chercheurs s’en servent. Ces données sont également susceptibles d’être analysées à des fins scientifiques, une fois agrégées et rendues anonymes. Veuillez noter que les textes envoyés à Voyant Tools sont stockés pour permettre un accès continu au cours d’une même session de travail et entre les sessions. Si vous souhaitez poser une question relative à la collecte et à l’usage des données, ou si vous voulez demander la suppression d’un corpus, nous vous prions de contacter <a href=\"http://stefansinclair.name/contact/\">Stéfan Sinclair</a>. Pour plus d’informations, cliquez sur ce lien."});
+"privacyMsg":"Les développeurs de Voyant Tools extraient du site un certain nombre de données sur l’utilisation des outils et sur les paramètres avec lesquels ils sont employés (les adresses IP sont également enregistrées afin de pouvoir identifier les requêtes multiples faites durant une même session de travail). En outre, Voyant Tools utilise le système Google Analytics (voir la « Privacy Policy » de Google, en particulier la section <em>Log Information</em>). Les données enregistrées localement et les données de Google Analytics seront utilisées par l’équipe de développement du logiciel pour déboguer et améliorer les outils, ainsi que pour comprendre comment les chercheurs s’en servent. Ces données sont également susceptibles d’être analysées à des fins scientifiques, une fois agrégées et rendues anonymes. Veuillez noter que les textes envoyés à Voyant Tools sont stockés pour permettre un accès continu au cours d’une même session de travail et entre les sessions. Si vous souhaitez poser une question relative à la collecte et à l’usage des données, ou si vous voulez demander la suppression d’un corpus, nous vous prions de contacter Geoffrey Rockwell. Pour plus d’informations, cliquez sur ce lien."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"Aucun résultat"});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"Nombre de documents qui correspondent aux critères de la recherche (chaque document pris en compte contient au moins l’un des termes de la requête)."});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"Allemand",
+"ru":"Russe",
 "pt":"Portugais",
 "thisLanguage":"français",
 "autoRecommended":"Détection automatique (recommandée)",

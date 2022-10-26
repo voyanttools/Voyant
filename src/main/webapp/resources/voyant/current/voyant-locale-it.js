@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"years'",
 "animate":"Animate",
 "citiesMinPopulation":"minimum population",
-"viewOccurrencesTip":"Select this to see the location in Voyant.",
+"viewOccurrencesTip":"Select this to see a list of occurrences of this location",
 "annotationsUpdateFailed":"An error occured while trying to store the annotations.",
 "wms4326":"WMS 4326",
 "mapTip":"Define base layer and projection",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"This notebook seems to be have been located at a different URL. If you’re sure this URL is correct, you may want to rerun all the code blocks to ensure that everything is functioning correctly. Do you wish to run all the code blocks?</p><pre>this URL: {1}\nthis notebook’s URL: {0}",
 "cannotMoveHigher":"This block is already at the top and cannot be moved higher.",
 "fetchingNotebook":"Fetching notebook…",
+"error":"Error",
 "exportHtml":"HTML (suitable for saving or printing)",
 "exportJson":"Spyral Notebook data format (JSON)",
 "failedNotebookParse":"The loaded notebook appears to have a syntax error and will probably not run as is.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Notebook from different URL",
 "autoSaveAvailable":"A more recent autosave is available, do you wish to switch to the auto-saved document?",
 "helpTip":"Spyral Notebooks are dynamic documents that combine text, code and interactive tools, they are a form of <a href=\"https://en.wikipedia.org/wiki/Literate_programming\" target=\"_blank\">literate programming</a>.",
-"eror":"Error",
 "runallTip":"Run all code blocks in this notebook"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"Nuovo corpus di Voyant",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant tools",
 "privacy":"Privacy",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyant Tools</a>",
-"privacyMsg":"Gli sviluppatori di Voyant raccolgono relativi all'uso dei vari strumenti e dei relativi parametri (viene tracciato anche l'indirizzo IP per identificare richieste multiple durante la stessa sessione). Inoltre, Voyant Tools usa Google Analytics (si vedano le sezioni &lt;a href=\"http://www.google.ca/intl/en/policies/privacy/\" target=\"_blank\"&gt;Google's Privacy Policy&lt;/a&gt; e &lt;em&gt;Log Information&lt;/em&gt; in particolare). I dati tracciati localmente e Google Analytics saranno utilizzati dal gruppo di sviluppatori per il debug e il miglioramento degli strumenti,  e anche per capire come i ricercatori li utilizzano. Questi dati possono essere utilizzati anche a fini di ricerca in forma anonima e aggregata. Si noti che i testi inviati a Voyant Tools sono archiviati per permettere un accesso stabile durante e tra sessioni di lavoro. Se hai domande su come i dati sono conservati e usati o se vuoi che un corpus di dati sia eliminato, contattaci: &lt;a href=\"http://stefansinclair.name/contact/\"&gt;Stéfan Sinclair&lt;/a&gt;."});
+"privacyMsg":"Gli sviluppatori di Voyant raccolgono relativi all'uso dei vari strumenti e dei relativi parametri (viene tracciato anche l'indirizzo IP per identificare richieste multiple durante la stessa sessione). Inoltre, Voyant Tools usa Google Analytics (si vedano le sezioni &lt;a href=\"http://www.google.ca/intl/en/policies/privacy/\" target=\"_blank\"&gt;Google's Privacy Policy&lt;/a&gt; e &lt;em&gt;Log Information&lt;/em&gt; in particolare). I dati tracciati localmente e Google Analytics saranno utilizzati dal gruppo di sviluppatori per il debug e il miglioramento degli strumenti,  e anche per capire come i ricercatori li utilizzano. Questi dati possono essere utilizzati anche a fini di ricerca in forma anonima e aggregata. Si noti che i testi inviati a Voyant Tools sono archiviati per permettere un accesso stabile durante e tra sessioni di lavoro. Se hai domande su come i dati sono conservati e usati o se vuoi che un corpus di dati sia eliminato, contattaci: Geoffrey Rockwell."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"Valori non trovati."});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":" Questo è il numero di documenti che soddisfa i criteri di ricerca (ogni documento contato contiene almeno uno dei termini di ricerca)."});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"Tedesco",
+"ru":"Russian",
 "pt":"Portuguese",
 "thisLanguage":"Italiano",
 "autoRecommended":"Rilevamento Automatico (raccomandato)",

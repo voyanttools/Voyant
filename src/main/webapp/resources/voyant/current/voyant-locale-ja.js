@@ -201,7 +201,7 @@ Ext.apply(Voyant.panel.CorpusCollocates.i18n, {
 Ext.apply(Voyant.panel.Bubbles.i18n, {
 "soundTip":"サウンドを切り替える",
 "sound":"サウンド",
-"adaptation":" <a href=\"https://www.m-i-b.com.ar/letters/en/\" target=\"_blank\">Martin Ignacio Bereciartuaの<i>レター・ペア</i></a>を適用する。",
+"adaptation":"<a href=\"https://www.m-i-b.com.ar/letters/en/\" target=\"_blank\">Martin Ignacio Bereciartuaの<i>レター・ペア</i></a>を適用する。",
 "speedTip":"視覚化の速度を調整する",
 "title":"バブルズ",
 "helpTip":"バブルズはドキュメント中の頻出単語を楽しく視覚化します。",
@@ -404,7 +404,7 @@ Ext.apply(Voyant.panel.Summary.i18n, {
 "more":"さらに表示",
 "averageWordsPerSentence":"Average Words Per Sentence:",
 "mostFrequentWords":"コーパスの中で<b>最も頻度の高い語</b>は：",
-"title":" コーパスの概要",
+"title":"コーパスの概要",
 "lowest":"最少:",
 "numberOfTerms":"ドキュメント中の語数",
 "docsLength":"ドキュメントの長さ",
@@ -474,15 +474,15 @@ Ext.apply(Voyant.panel.DocumentTerms.i18n, {
 "zscoreTip":"Zスコア（標準得点）は語の粗頻度を同じドキュメントの中の他の語の頻度と比較するために一般化した値です。"});
 Ext.apply(Voyant.data.model.Corpus.i18n, {
 "hasNdocuments":"は{count}個のドキュメントを含みます。",
-"daysAgo":"およそ {count}  日前",
-"monthsAgo":"およそ {count}  カ月前",
+"daysAgo":"およそ {count} 日前",
+"monthsAgo":"およそ {count} カ月前",
 "thisCorpus":"このコーパス",
 "created":"生成されたのは",
 "isEmpty":"は空です。",
 "widthNwordsAndNTypes":"のべ語数 {words} <span class=\"info-tip\" data-qtip=\"every occurrence of every word (like multiple occurrences of &quot;the&quot;) is counted\">語</span>、異なり語数 {types} <span class=\"info-tip\" data-qtip=\"multiple occurrences of words (like &quot;the&quot;) are counted once\">語</span>",
 "noCorpusOrInput":"No corpus ID or input specified.",
-"hoursAgo":"およそ {count}  時間前",
-"minutesAgo":"およそ {count}  分前",
+"hoursAgo":"およそ {count} 時間前",
+"minutesAgo":"およそ {count} 分前",
 "minuteAgo":"およそ1分前",
 "hourAgo":"およそ1時間前",
 "monthAgo":"およそ1カ月前",
@@ -492,7 +492,7 @@ Ext.apply(Voyant.data.model.Corpus.i18n, {
 "yearsAgo":"およそ {count} 年前",
 "now":"現在",
 "badDataTypeCorpus":"Unable to recognize a valid data type for this corpus: ",
-"secondsAgo":" {count}  秒前",
+"secondsAgo":"{count} 秒前",
 "yearAgo":"およそ1年前",
 "dayAgo":"およそ1日前"});
 Ext.apply(Voyant.notebook.editor.button.Add.i18n, {
@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"years'",
 "animate":"Animate",
 "citiesMinPopulation":"minimum population",
-"viewOccurrencesTip":"Select this to see the location in Voyant.",
+"viewOccurrencesTip":"Select this to see a list of occurrences of this location",
 "annotationsUpdateFailed":"An error occured while trying to store the annotations.",
 "wms4326":"WMS 4326",
 "mapTip":"Define base layer and projection",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"This notebook seems to be have been located at a different URL. If you’re sure this URL is correct, you may want to rerun all the code blocks to ensure that everything is functioning correctly. Do you wish to run all the code blocks?</p><pre>this URL: {1}\nthis notebook’s URL: {0}",
 "cannotMoveHigher":"This block is already at the top and cannot be moved higher.",
 "fetchingNotebook":"Fetching notebook…",
+"error":"Error",
 "exportHtml":"HTML (suitable for saving or printing)",
 "exportJson":"Spyral Notebook data format (JSON)",
 "failedNotebookParse":"The loaded notebook appears to have a syntax error and will probably not run as is.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Notebook from different URL",
 "autoSaveAvailable":"A more recent autosave is available, do you wish to switch to the auto-saved document?",
 "helpTip":"Spyral Notebooks are dynamic documents that combine text, code and interactive tools, they are a form of <a href=\"https://en.wikipedia.org/wiki/Literate_programming\" target=\"_blank\">literate programming</a>.",
-"eror":"Error",
 "runallTip":"Run all code blocks in this notebook"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"新しいVoyantコーパス",
@@ -939,7 +939,7 @@ Ext.apply(Voyant.VoyantDefaultApp.i18n, {
 "convertSkinMsg":"コンバート・スキンはドキュメントのエクスポートに使います。これはドキュメントツールから機能的に用いることができます。",
 "noViewErrorTitle":"指定されたビューはありません",
 "helpTip":"Voyantツールは、デジタルテキストの読解と分析のためのウェブ上の環境です。<p></p>",
-"noViewErrorTpl":" \"<i>{view}</i>\"という名前のビューはありません。デフォルトのビューが代わりに使われています。."});
+"noViewErrorTpl":"\"<i>{view}</i>\"という名前のビューはありません。デフォルトのビューが代わりに使われています。."});
 Ext.apply(Voyant.panel.ScatterPlot.i18n, {
 "tsne":"t-SNE",
 "relFreq":"相対頻度",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyantツール",
 "privacy":"プライバシー",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyantツール</a>",
-"privacyMsg":"Voyant ツールの開発者は、どのツールがどのパラメータで呼び出されたかのデータを収集します（同一セッション内の複数リクエストを識別するためにIPアドレスも記録されます）。加えて、Google Analytics も使用します（Google のプライバシーポリシー、特に<em>ログ情報</em>の項を参照）。サイト側で記録されたデータと Google Analytics データは開発チームによって、デバッグやツールの改善、研究者にどう使われているかを理解するために使われます。また、このデータは匿名化された統計データとして研究目的に使用されます。Voyant ツールに送信されたテキストは作業セッション中やセッションにまたがるアクセスを維持するために保存されることに留意してください。収集されるデータと用途についての質問、コーパスの除外申請は Stéfan Sinclair までご連絡ください。詳細情報はこのリンクをクリックしてください。"});
+"privacyMsg":"Voyant ツールの開発者は、どのツールがどのパラメータで呼び出されたかのデータを収集します（同一セッション内の複数リクエストを識別するためにIPアドレスも記録されます）。加えて、Google Analytics も使用します（Google のプライバシーポリシー、特に<em>ログ情報</em>の項を参照）。サイト側で記録されたデータと Google Analytics データは開発チームによって、デバッグやツールの改善、研究者にどう使われているかを理解するために使われます。また、このデータは匿名化された統計データとして研究目的に使用されます。Voyant ツールに送信されたテキストは作業セッション中やセッションにまたがるアクセスを維持するために保存されることに留意してください。収集されるデータと用途についての質問、コーパスの除外申請は Geoffrey Rockwell までご連絡ください。詳細情報はこのリンクをクリックしてください。"});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"該当なし"});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"検索基準を満たすドキュメントの数です（計上されたドキュメントは、少なくとも検索語を一つ含んでいます）。"});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"ドイツ語",
+"ru":"Russian",
 "pt":"Portuguese",
 "thisLanguage":"日本語",
 "autoRecommended":"自動判別（推奨）",

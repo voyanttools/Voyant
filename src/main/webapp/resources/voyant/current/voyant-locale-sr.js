@@ -518,7 +518,7 @@ Ext.apply(Voyant.widget.DownloadFileFormat.i18n, {
 "fieldLabel":"Формат датотеке",
 "plainText":"обичан текст",
 "voyantXml":"Voyant XML",
-"SOURCETip":"Ово је покушај да се изворни документи покажу у свом оригиналном формату. У неким случајевима то може да бyде  поједина архива, нпр. ZIP датотека.",
+"SOURCETip":"Ово је покушај да се изворни документи покажу у свом оригиналном формату. У неким случајевима то може да бyде поједина архива, нпр. ZIP датотека.",
 "TXTTip":"Ово ће да произведе сваки документ у облику обичног текста."});
 Ext.apply(Voyant.panel.ScatterSet.i18n, {
 "title":"Дисперзија",
@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"years'",
 "animate":"Animate",
 "citiesMinPopulation":"minimum population",
-"viewOccurrencesTip":"Select this to see the location in Voyant.",
+"viewOccurrencesTip":"Select this to see a list of occurrences of this location",
 "annotationsUpdateFailed":"An error occured while trying to store the annotations.",
 "wms4326":"WMS 4326",
 "mapTip":"Define base layer and projection",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"This notebook seems to be have been located at a different URL. If you’re sure this URL is correct, you may want to rerun all the code blocks to ensure that everything is functioning correctly. Do you wish to run all the code blocks?</p><pre>this URL: {1}\nthis notebook’s URL: {0}",
 "cannotMoveHigher":"This block is already at the top and cannot be moved higher.",
 "fetchingNotebook":"Fetching notebook…",
+"error":"Error",
 "exportHtml":"HTML (suitable for saving or printing)",
 "exportJson":"Spyral Notebook data format (JSON)",
 "failedNotebookParse":"The loaded notebook appears to have a syntax error and will probably not run as is.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Notebook from different URL",
 "autoSaveAvailable":"A more recent autosave is available, do you wish to switch to the auto-saved document?",
 "helpTip":"Spyral Notebooks are dynamic documents that combine text, code and interactive tools, they are a form of <a href=\"https://en.wikipedia.org/wiki/Literate_programming\" target=\"_blank\">literate programming</a>.",
-"eror":"Error",
 "runallTip":"Run all code blocks in this notebook"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"Нови Voyant корпус",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant Tools",
 "privacy":"Приватност",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyant Tools</a>",
-"privacyMsg":"Програмери Voyant Tools прикупљају податке о параментрима употребе алатки (региструју се IP адресе како би се утврдили вишеструки упити унутар исте сесије). Додатно, Voyant Tools користи Google Analytics (погледајте Google's Privacy Policy, а посебно секцију <em>Log Information</em>). Локално регистровани подаци и Google Analytics користиће развојном тиму за исправљање грешака и усавршавање алатки, као и увид у како их истраживачи користе. Ови подаци се такођер могу користити у истраживачке сврхе, у анонимном и агрегатном облику. Имајте у виду да се текстови додати у Voyant похрањују како би се омогућио неометан приступ током једне или између више сесија. Ако имате питања како се сакупљају и користе подаци или желите да повучете одређени корпус, слободно се обратите Стефану Синклеру. Кликните на овај линк за додатне информације."});
+"privacyMsg":"Програмери Voyant Tools прикупљају податке о параментрима употребе алатки (региструју се IP адресе како би се утврдили вишеструки упити унутар исте сесије). Додатно, Voyant Tools користи Google Analytics (погледајте Google's Privacy Policy, а посебно секцију <em>Log Information</em>). Локално регистровани подаци и Google Analytics користиће развојном тиму за исправљање грешака и усавршавање алатки, као и увид у како их истраживачи користе. Ови подаци се такођер могу користити у истраживачке сврхе, у анонимном и агрегатном облику. Имајте у виду да се текстови додати у Voyant похрањују како би се омогућио неометан приступ током једне или између више сесија. Ако имате питања како се сакупљају и користе подаци или желите да повучете одређени корпус, слободно се обратите Геоффреи Роцквелл. Кликните на овај линк за додатне информације."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"Нису пронађене вредности"});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"Број документата који задовољавају критеријуме претраге (убројени документи садрже барем један тражени термин)."});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"немачки",
+"ru":"Russian",
 "pt":"Portuguese",
 "thisLanguage":"Serbian",
 "autoRecommended":"аутоматско препознавање (препоручљиво)",

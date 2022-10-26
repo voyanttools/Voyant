@@ -30,7 +30,7 @@ Ext.apply(Voyant.panel.Topics.i18n, {
 "numTopics":"Topics",
 "title":"Topics",
 "loadingStopWords":"Loading stopwords…",
-"limitTerms":"Terms",
+"limitTerms":"הגבלת מונחים",
 "search":"Search",
 "perDocLimit":"Terms/Doc",
 "runIterations":"run {0} iterations",
@@ -45,7 +45,7 @@ Ext.apply(Voyant.panel.Topics.i18n, {
 "runningIterations":"Performing topic modelling.",
 "perDocLimitTip":"The maximum number of terms to include from the start of a document (set this to a very high number or to zero to have no limit, but beware that high values can cause problems on the server or in your browser).",
 "runningIterationsCount":"Running {0} iterations.",
-"limitTermsTip":"Determine the number of terms to show for each topic.",
+"limitTermsTip":"טיפ להגבלת מונחים",
 "totalDone":"({0} iterations done)",
 "numTopicsTip":"Determine the number of topics (or term clusters) to produce. Note that changing this value will regenerate topics (and that results will be different even with the same number of topics).",
 "iterationsTip":"The number of iterations to run each time.",
@@ -244,7 +244,7 @@ Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 Ext.apply(Voyant.panel.Reader.i18n, {
 "documentFrequency":"document frequency:",
 "limitedAccess":"This is a limited access corpus and this tool’s functionality is restricted.",
-"title":"Reader",
+"title":"מקראה",
 "helpTip":"<p>The Reader tool provides a view of text from the corpus. Features include:</p><ul><li>frequency information appears when hovering over a word</li><li>distribution information appears in a graph at the bottom when clicking on a word</li><li>a bar graph at the bottom indicates the relative size of each document in the corpus</li><li>a search box for queries (hover over the magnifying icon for help with the syntax)</li></ul>"});
 Ext.apply(Voyant.panel.CorpusTerms.i18n, {
 "corpusComparisonDifference":"Comparison",
@@ -400,22 +400,22 @@ Ext.apply(Voyant.util.DetailedError.i18n, {
 "error":"טעות"});
 Ext.apply(Voyant.panel.Summary.i18n, {
 "longest":"הארוך ביותר:",
-"documentType":"<tpl for=\"types\"><a href=\"#\" onclick=\"return false\" class=\"document-type keyword\" voyant:recordid=\"{id}\" voyant:docindex=\"{docIndex}\">{type}</a> ({val})<tpl if=\"xindex < xcount\">, </tpl></tpl>",
+"documentType":"סוג המסמך",
 "more":"עוד...",
-"averageWordsPerSentence":"Average Words Per Sentence:",
-"mostFrequentWords":"Most <b>frequent words</b> in the corpus: ",
-"title":"סיכום",
+"averageWordsPerSentence":"מספר מילים ממוצע למשפט:",
+"mostFrequentWords":"המילים הנפוצות ביותר",
+"title":"כותרת",
 "lowest":"הנמוך ביותר:",
-"numberOfTerms":"מספר המלים במסמך זה",
-"docsLength":"אורך המסמך:",
-"corpusType":"<tpl for=\"types\"><a href=\"#\" onclick=\"return false\" class=\"corpus-type keyword\" voyant:recordid=\"{id}\">{type}</a> ({val})<tpl if=\"xindex < xcount\">, </tpl></tpl>",
+"numberOfTerms":"מספר המילים במסמך זה",
+"docsLength":"אורך המסמך",
+"corpusType":"סוג הקורפוס",
 "highest":"הגבוה ביותר:",
-"seeAll":"הכל...",
-"distinctiveWords":"<b>Distinctive words</b> (compared to the rest of the corpus): ",
-"docsDensity":"Vocabulary Density: ",
-"helpTip":"<p>The <i>Summary</i> tool provides general information about the corpus. Many elements in the tool are links that trigger other views. Features include:</p><ul><li>total words (tokens) and word forms (types) and age of the corpus</li><li>most frequent terms in the corpus</li><li>for corpora with more than one document<ul><li>documents ordered by length and vocabulary density</li><li>distinctive words for each document (by TF-IDF score)</li></ul></li></ul>",
+"seeAll":"ראה הכל",
+"distinctiveWords":"מילים ייחודיות",
+"docsDensity":"צפיפות אוצר המילים",
+"helpTip":"כלי הסיכום מספק מידע כללי בנוגע לקורפוס. אלמנטים רבים בכלי הם קישורים שגורמים לתצוגות נוספות. תכונות כוללות: • סך כל המילים (מופע) וצורת המילים (סוגים) והגיל של הקורפוס. • ביטויים בעלי התדירות הגובה ביותר. • עבור קורפוס עם יותר ממסמך אחד: o המסמכים מסודרים לפי אורך וצפיפות (התפלגות) אוצר המילים. o מילים ייחודיות עבור כל מסמך (ע\"י מדד TF-IDF).",
 "items":"פריטים",
-"moreDistinctiveWords":"<a href=\"#\" onclick=\"return false\">Next {0} of {1} remaining</a>",
+"moreDistinctiveWords":"עוד מילים ייחודיות",
 "shortest":"הקצר ביותר:"});
 Ext.apply(Voyant.panel.CorpusSet.i18n, {
 "title":"Corpus View",
@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"years'",
 "animate":"Animate",
 "citiesMinPopulation":"minimum population",
-"viewOccurrencesTip":"Select this to see the location in Voyant.",
+"viewOccurrencesTip":"Select this to see a list of occurrences of this location",
 "annotationsUpdateFailed":"An error occured while trying to store the annotations.",
 "wms4326":"WMS 4326",
 "mapTip":"Define base layer and projection",
@@ -692,7 +692,7 @@ Ext.apply(Voyant.panel.Trends.i18n, {
 "line":"Line",
 "scale":"Scale",
 "relativeTitle":"Relative Frequencies",
-"title":"Trends",
+"title":"מגמות",
 "toggleTip":"Click to toggle the visibility of this series.",
 "segments":"מקטעי המסמך",
 "resetTip":"Reset to initial view.",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"This notebook seems to be have been located at a different URL. If you’re sure this URL is correct, you may want to rerun all the code blocks to ensure that everything is functioning correctly. Do you wish to run all the code blocks?</p><pre>this URL: {1}\nthis notebook’s URL: {0}",
 "cannotMoveHigher":"This block is already at the top and cannot be moved higher.",
 "fetchingNotebook":"Fetching notebook…",
+"error":"Error",
 "exportHtml":"HTML (suitable for saving or printing)",
 "exportJson":"Spyral Notebook data format (JSON)",
 "failedNotebookParse":"The loaded notebook appears to have a syntax error and will probably not run as is.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Notebook from different URL",
 "autoSaveAvailable":"A more recent autosave is available, do you wish to switch to the auto-saved document?",
 "helpTip":"Spyral Notebooks are dynamic documents that combine text, code and interactive tools, they are a form of <a href=\"https://en.wikipedia.org/wiki/Literate_programming\" target=\"_blank\">literate programming</a>.",
-"eror":"Error",
 "runallTip":"Run all code blocks in this notebook"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"קורפוס וויאנט חדש",
@@ -893,7 +893,7 @@ Ext.apply(Voyant.panel.Knots.i18n, {
 Ext.apply(Voyant.VoyantApp.i18n, {
 "serverResponseError":"The server error reponse:",
 "error":"טעות",
-"translatedBy":"התרגום לעברית ע\"י סיני רוסינק"});
+"translatedBy":"התרגום לעברית ע\"י סיני רוסינק ועפרי שילה"});
 Ext.apply(Voyant.panel.RezoViz.i18n, {
 "noEntitiesForEdgeCount":"No entities were found. Would you like to reduce the minimum edge count to improve results?",
 "loadingEntities":"Loading entities…",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant Tools",
 "privacy":"Privacy",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyant Tools</a>",
-"privacyMsg":"The developers of Voyant Tools gather data from the site about what tools are invoked and with what parameters (IP addresses are also logged in order to be able to identify multiple requests during a same session). In addition, Voyant Tools uses Google Analytics (see Google’s Privacy Policy and the <em>Log Information</em> section in particular). Locally logged data and Google Analytics data will be used by the development team in order to debug and improve the tools, as well as to understand how researchers are using them. This data may also be used for research purposes in anonymous and aggregate forms. Please note that texts submitted to Voyant Tools are stored in order to allow persistent access during a work session and between work sessions. If you have questions about the data being collected and how it is being used, or to request that a corpus be removed, please contact Stéfan Sinclair. Click on this link for more information."});
+"privacyMsg":"The developers of Voyant Tools gather data from the site about what tools are invoked and with what parameters (IP addresses are also logged in order to be able to identify multiple requests during a same session). In addition, Voyant Tools uses Google Analytics (see Google’s Privacy Policy and the <em>Log Information</em> section in particular). Locally logged data and Google Analytics data will be used by the development team in order to debug and improve the tools, as well as to understand how researchers are using them. This data may also be used for research purposes in anonymous and aggregate forms. Please note that texts submitted to Voyant Tools are stored in order to allow persistent access during a work session and between work sessions. If you have questions about the data being collected and how it is being used, or to request that a corpus be removed, please contact Geoffrey Rockwell. Click on this link for more information."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"לא נמצאו ערכים."});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"This is the number of documents that satisfy the search criteria (every counted document contains at least one of the search terms)."});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"German",
+"ru":"Russian",
 "pt":"Portuguese",
 "thisLanguage":"English",
 "autoRecommended":"Auto-Detect (recommended)",

@@ -590,7 +590,7 @@ Ext.apply(Voyant.panel.DreamScape.i18n, {
 "pubDateLabel":"years'",
 "animate":"Animate",
 "citiesMinPopulation":"minimum population",
-"viewOccurrencesTip":"Select this to see the location in Voyant.",
+"viewOccurrencesTip":"Select this to see a list of occurrences of this location",
 "annotationsUpdateFailed":"An error occured while trying to store the annotations.",
 "wms4326":"WMS 4326",
 "mapTip":"Define base layer and projection",
@@ -780,6 +780,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrl":"This notebook seems to be have been located at a different URL. If you’re sure this URL is correct, you may want to rerun all the code blocks to ensure that everything is functioning correctly. Do you wish to run all the code blocks?</p><pre>this URL: {1}\nthis notebook’s URL: {0}",
 "cannotMoveHigher":"This block is already at the top and cannot be moved higher.",
 "fetchingNotebook":"Fetching notebook…",
+"error":"Error",
 "exportHtml":"HTML (suitable for saving or printing)",
 "exportJson":"Spyral Notebook data format (JSON)",
 "failedNotebookParse":"The loaded notebook appears to have a syntax error and will probably not run as is.",
@@ -790,7 +791,6 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "differentUrlTitle":"Notebook from different URL",
 "autoSaveAvailable":"A more recent autosave is available, do you wish to switch to the auto-saved document?",
 "helpTip":"Spyral Notebooks are dynamic documents that combine text, code and interactive tools, they are a form of <a href=\"https://en.wikipedia.org/wiki/Literate_programming\" target=\"_blank\">literate programming</a>.",
-"eror":"Error",
 "runallTip":"Run all code blocks in this notebook"});
 Ext.apply(Voyant.panel.Catalogue.i18n, {
 "sendToVoyantButton":"Nuevo corpus Voyant ",
@@ -992,7 +992,7 @@ Ext.apply(Voyant.panel.VoyantFooter.i18n, {
 "voyantTools":"Voyant Tools ",
 "privacy":"Privacidad ",
 "voyantLink":"<a href=\"http://docs.voyant-tools.org/\" target=\"_blank\">Voyant Tools</a>",
-"privacyMsg":"Los desarrolladores de Voyant Tools recopilan datos del sitio con relación a los parametros con que las herramientas son invocadas  (las direcciones IP también se registran para identificar múltiples solicitudes durante una misma sesión). Además, Voyant Tools utiliza Google Analytics (consulte la Política de privacidad de Google y la sección <em> Información de registro </ em> en particular). Los datos registrados localmente y los datos de Google Analytics serán utilizados por el equipo de desarrollo con el fin de depurar y mejorar las herramientas, así como para entender cómo los investigadores la utilizan. Estos datos también pueden emplearse para fines de investigación en forma anónima y agregada. Tenga en cuenta que los textos enviados a Voyant Tools se almacenan para permitir el acceso persistente durante una sesión de trabajo y entre sesiones de trabajo. Si tiene preguntas sobre los datos que se están recopilando y cómo se utilizan, o para solicitar que se elimine un corpus, póngase en contacto con Stéfan Sinclair. Haga clic en este link para mas información."});
+"privacyMsg":"Los desarrolladores de Voyant Tools recopilan datos del sitio con relación a los parametros con que las herramientas son invocadas  (las direcciones IP también se registran para identificar múltiples solicitudes durante una misma sesión). Además, Voyant Tools utiliza Google Analytics (consulte la Política de privacidad de Google y la sección <em> Información de registro </ em> en particular). Los datos registrados localmente y los datos de Google Analytics serán utilizados por el equipo de desarrollo con el fin de depurar y mejorar las herramientas, así como para entender cómo los investigadores la utilizan. Estos datos también pueden emplearse para fines de investigación en forma anónima y agregada. Tenga en cuenta que los textos enviados a Voyant Tools se almacenan para permitir el acceso persistente durante una sesión de trabajo y entre sesiones de trabajo. Si tiene preguntas sobre los datos que se están recopilando y cómo se utilizan, o para solicitar que se elimine un corpus, póngase en contacto con Geoffrey Rockwell. Haga clic en este link para mas información."});
 Ext.apply(Voyant.widget.Facet.i18n, {
 "emptyText":"No se encontrarón valores"});
 Ext.apply(Voyant.widget.QuerySearchField.i18n, {
@@ -1002,6 +1002,7 @@ Ext.apply(Voyant.widget.QuerySearchField.i18n, {
 "aggregateInDocumentsCount":"Este es el número de documento que satisface los criterios de búsqueda (cada documento contiene al menos uno de los términos búscados)"});
 Ext.apply(Voyant.util.Localization.i18n, {
 "de":"Alemán ",
+"ru":"Russian",
 "pt":"Portuguese",
 "thisLanguage":"Español",
 "autoRecommended":"Auto-Detección (Recomendado) ",

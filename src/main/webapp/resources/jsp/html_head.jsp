@@ -17,7 +17,7 @@
 	String lang = "en";
 	
 	//hard-coded for now
-	String[] langs = new String[]{"ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","sr"};
+	String[] langs = new String[]{"ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","ru","sr"};
 	
 	//try first with parameter
 	if (request.getParameter("lang")!=null) {
