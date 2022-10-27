@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Oct 26 20:37:58 UTC 2022 */
+/* This file created by JSCacher. Last modified: Thu Oct 27 19:53:05 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -4848,7 +4848,7 @@ TermsRadio.prototype = {
     		.data(function(d) { return d.frequencyArray; })
 		  .enter().append('text')
 	        .attr('class', function(d) {
-	        	return me.removeFilteredCharacters(d.wordString);
+	        	return me.getSelectorFromTerm(d.wordString);
 	        })
 	    	.attr('x', function (d) {
 	    		var startPoint = (0.5 / d.numInSeries) - 0.5
@@ -5230,8 +5230,8 @@ TermsRadio.prototype = {
 
 		if ( this.parent.getApiParam('mode') === 'document') { // set position
 			docId = info.docId;
-			var totalTokens = this.parent.getCorpus().getDocument(docId).get('totalTokens') - 1;
-			params.tokenIdStart = parseInt(this.category * totalTokens / this.numDataPoints);
+			var totalTokens = this.parent.getCorpus().getDocument(docId).getLexicalTokensCount() - 1;
+			params.tokenIdStart = parseInt(totalTokens / this.numDataPoints);
 			params.docIdType = docId + ':' + type;
 		} else {
 		}
@@ -5245,7 +5245,7 @@ TermsRadio.prototype = {
 
 		//console.log('fn: manageOverlaySlippery')
 		var string = paramsBundle.type
-			,selector = this.removeFilteredCharacters(paramsBundle.type) 
+			,selector = this.getSelectorFromTerm(paramsBundle.type) 
 			,checkOn = 'on'
 			,index;
 		
@@ -5341,7 +5341,7 @@ TermsRadio.prototype = {
 	
 	getTermIndex: function(term) {
 		var index = -1;
-		var selector = selector = this.removeFilteredCharacters(term);
+		var selector = this.getSelectorFromTerm(term);
 		var len = this.overlayQueue.length;
 		while(--len >= 0){
 			if(selector === this.overlayQueue[len].selector){ 
@@ -5356,7 +5356,7 @@ TermsRadio.prototype = {
 	},
 	
 	doTermSelect: function(term, legendAdd) {
-		var selector = selector = this.removeFilteredCharacters(term);
+		var selector = this.getSelectorFromTerm(term);
 		//finish updating API array of selected words
 		var apiArray = this.parent.getApiParam('selectedWords');
 		apiArray.push(term);
@@ -5367,7 +5367,7 @@ TermsRadio.prototype = {
 		
 		if (legendAdd === true) {
 			var legend = this.parent.query('[xtype=legend]')[0];
-			legend.getStore().add({name: term, mark: color});
+			legend.getStore().add({name: term, mark: color, selector: selector});
 			legend.refresh();
 		} else {
 			var legend = this.parent.query('[xtype=legend]')[0];
@@ -5398,7 +5398,7 @@ TermsRadio.prototype = {
 		}
 		
 		//make sure there is no path already present
-		this.chart.select('g[class=frequency-line-' + selector.replace(/'/g, "\\'") + ']').remove();
+		this.chart.select('g[class=frequency-line-' + selector + ']').remove();
 
 		this.overlayQueue.push(lineObject);
 		this.chartOverlayOn(lineObject);
@@ -5408,7 +5408,7 @@ TermsRadio.prototype = {
 	},
 	
 	doTermDeselect: function(term, legendRemove) {
-		var selector = this.removeFilteredCharacters(term);
+		var selector = this.getSelectorFromTerm(term);
 		var index = this.getTermIndex(term);
 		
 		if (legendRemove === true) {
@@ -5489,7 +5489,7 @@ TermsRadio.prototype = {
 		//draw path
 		this.chart.append('g')
 			.attr('class', 'slider')
-			.attr('id', 'slider-line-' + objectToSelect.word)
+			.attr('id', 'slider-line-' + objectToSelect.selector)
 			.append('path')
 			.attr("d", this.buildSliderPath(objectToSelect.fullPath))
 			.style('stroke', objectToSelect.colour)
@@ -5501,7 +5501,7 @@ TermsRadio.prototype = {
 	}
 	
 	,sliderOverlayOff: function (selector) {
-	    this.chart.selectAll('g[id=slider-line-' + selector.replace(/'/g, "\\'") + ']')
+	    this.chart.selectAll('g[id=slider-line-' + selector + ']')
 	    	.remove();
 	    
 	    //update slider overlay axis
@@ -5526,7 +5526,7 @@ TermsRadio.prototype = {
 		//transition all other paths
 		var lenA = this.overlayQueue.length;
 		while(lenA-- > 0){
-			this.chart.selectAll('g#slider-line-' + this.overlayQueue[lenA].selector.replace(/'/g, "\\'"))
+			this.chart.selectAll('g#slider-line-' + this.overlayQueue[lenA].selector)
 				.select('path')
 				.transition().duration(300)
 				.ease(d3.easeLinear)
@@ -5651,11 +5651,11 @@ TermsRadio.prototype = {
 	,chartOverlayOff: function(selector){
 		var me = this;
 		
-		this.chart.selectAll('text.' + selector.replace(/'/g, "\\'"))
+		this.chart.selectAll('text.' + selector)
 	    	.style('fill', 'black')
 	    	.style('fill-opacity', function(d) { return me.opacityScale(d.freq); });
 	    
-	    this.chart.select('g.frequency-line-' + selector.replace(/'/g, "\\'"))
+	    this.chart.select('g.frequency-line-' + selector)
 	    	.remove();
 	}
 	
@@ -5813,27 +5813,17 @@ TermsRadio.prototype = {
 		return callOffset;
 	}
 	
-	,removeFilteredCharacters: function (string) {
-		//console.log('fn: removeFilteredCharacters')
-		return string || '';
-		
+	,getSelectorFromTerm: function (string) {
+		//console.log('fn: getSelectorFromTerm')
+		// return string || ''; // https://github.com/voyanttools/Voyant/commit/9b675b325fd1b4968d7b8285a65650fd26577f40
+
 		if (string !== undefined) {
-			return string.replace("'","apostrophe-")
-				.replace("#","pound-")
-				.replace("&","ampersand-")
-				.replace("@","atsign-")
-				.replace("!","exclamation-")
-				.replace("0","num-o")
-				.replace("1","num-a")
-				.replace("2","num-b")
-				.replace("3","num-c")
-				.replace("4","num-d")
-				.replace("5","num-e")		
-				.replace("6","num-f")
-				.replace("7","num-g")
-				.replace("8","num-h")
-				.replace("9","num-i")
-				.replace(/[^a-zA-Z]+/g,'-'); //then anything else...
+			// construct valid css selector
+			var charCodeStr = 'tr';
+			for (var i = 0; i < string.length; i++) {
+				charCodeStr += '-'+string.charCodeAt(i);
+			}
+			return charCodeStr;
 		} else {
 			return '';
 		}
@@ -30894,7 +30884,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 				items: {
 					xtype: 'legend',
 					store: new Ext.data.JsonStore({
-						fields : ['name', 'mark']
+						fields : ['name', 'mark', 'selector']
 					}),
 					listeners: {
 						itemclick: function(view, record, el, index) {
