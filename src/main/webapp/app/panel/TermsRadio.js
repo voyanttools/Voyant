@@ -184,7 +184,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 				items: {
 					xtype: 'legend',
 					store: new Ext.data.JsonStore({
-						fields : ['name', 'mark']
+						fields : ['name', 'mark', 'selector']
 					}),
 					listeners: {
 						itemclick: function(view, record, el, index) {
