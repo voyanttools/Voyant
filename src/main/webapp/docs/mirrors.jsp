@@ -108,7 +108,7 @@ Voyant.Mirrors = {
 	}
 }
 $(function() {
-	Voyant.Mirrors.buildMirrorsList(Voyant.Mirrors.local);
+	Voyant.Mirrors.buildMirrorsList(Voyant.Mirrors.remote); // try remote first
 });
 </script>
 </head>
