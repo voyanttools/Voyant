@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Oct 27 19:53:05 UTC 2022 */
+/* This file created by JSCacher. Last modified: Tue Nov 01 20:48:11 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -39818,6 +39818,15 @@ Ext.define('Voyant.notebook.Notebook', {
      * @private
      */
     constructor: function(config) {
+		var handleSignIn = function() {
+			parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+			parent.setIsEdited(false);
+			parent.toastInfo({
+				html: parent.localize('signInSuccess'),
+				anchor: 'tr'
+			});
+		}
+
     	Ext.apply(config, {
     		title: this.localize('title'),
     		includeTools: {
@@ -39849,18 +39858,14 @@ Ext.define('Voyant.notebook.Notebook', {
 									scope: parent
 								}];
 							} else {
-								menu.items = [{
-									xtype: 'component',
-									padding: 5,
-									html: 'Please sign in to save'
-								}];
+								menu.items = [
+									parent.getGitHubAuthButton(handleSignIn)
+								];
 							}
 						}, function() {
-							menu.items = [{
-								xtype: 'component',
-								padding: 5,
-								html: 'Please sign in to save'
-							}];
+							menu.items = [
+								parent.getGitHubAuthButton(handleSignIn)
+							];
 						}).always(function() {
 							menu.showToolMenu();
 						});
@@ -39943,15 +39948,6 @@ Ext.define('Voyant.notebook.Notebook', {
 					callback: function(parent, menu) {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
 						menu.items = [];
-
-						var handleSignIn = function() {
-							parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-							parent.setIsEdited(false);
-							parent.toastInfo({
-								html: parent.localize('signInSuccess'),
-								anchor: 'tr'
-							});
-						}
 
 						parent.isAuthenticated(true).then(function(isAuth) {
 							if (isAuth) {
