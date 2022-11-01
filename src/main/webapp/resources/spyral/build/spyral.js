@@ -10820,8 +10820,13 @@ var Spyral = (function () {
 	     */},{key:"dataUrlToBlob",value:function dataUrlToBlob(dataUrl){var parts=dataUrl.split(',');var byteString=atob(parts[1]);var mimeString=parts[0].split(':')[1].split(';')[0];var ab=new ArrayBuffer(byteString.length);var ia=new Uint8Array(ab);for(var i=0;i<byteString.length;i++){ia[i]=byteString.charCodeAt(i);}return new Blob([ab],{type:mimeString});}/**
 	     * Take a Blob and convert it to a data URL.
 	     * @param {Blob} blob 
-	     * @returns {String}
+	     * @returns {Promise<String>} a Promise for a data URL
 	     */},{key:"blobToDataUrl",value:function blobToDataUrl(blob){return new Promise(function(resolve,reject){var fr=new FileReader();fr.onload=function(e){resolve(e.target.result);};try{fr.readAsDataURL(blob);}catch(e){reject(e);}});}/**
+	     * Take a Blob and convert it to a String.
+	     * @param {Blob} blob 
+	     * @returns {Promise<String>} a Promise for a String
+	     */},{key:"blobToString",value:function blobToString(blob){return new Promise(function(resolve,reject){if(blob.type.search(/application\/(?!json|javascript)/)===0){// probably a non-browser file type
+	reject();}else {var reader=new FileReader();reader.addEventListener('loadend',function(ev){try{var td=new TextDecoder();var data=td.decode(ev.target.result);resolve(data);}catch(err){reject(err);}});reader.readAsArrayBuffer(blob);}});}/**
 	     * Takes an XML document and XSL stylesheet and returns the resulting transformation.
 	     * @param {(Document|String)} xmlDoc The XML document to transform
 	     * @param {(Document|String)} xslStylesheet The XSL to use for the transformation
@@ -11531,7 +11536,7 @@ var Spyral = (function () {
 	    /**
 	     * Take a Blob and convert it to a data URL.
 	     * @param {Blob} blob 
-	     * @returns {String}
+	     * @returns {Promise<String>} a Promise for a data URL
 	     */
 
 	  }, {
@@ -11548,6 +11553,34 @@ var Spyral = (function () {
 	          fr.readAsDataURL(blob);
 	        } catch (e) {
 	          reject(e);
+	        }
+	      });
+	    }
+	    /**
+	     * Take a Blob and convert it to a String.
+	     * @param {Blob} blob 
+	     * @returns {Promise<String>} a Promise for a String
+	     */
+
+	  }, {
+	    key: "blobToString",
+	    value: function blobToString(blob) {
+	      return new Promise(function (resolve, reject) {
+	        if (blob.type.search(/application\/(?!json|javascript)/) === 0) {
+	          // probably a non-browser file type
+	          reject();
+	        } else {
+	          var reader = new FileReader();
+	          reader.addEventListener('loadend', function (ev) {
+	            try {
+	              var td = new TextDecoder();
+	              var data = td.decode(ev.target.result);
+	              resolve(data);
+	            } catch (err) {
+	              reject(err);
+	            }
+	          });
+	          reader.readAsArrayBuffer(blob);
 	        }
 	      });
 	    }

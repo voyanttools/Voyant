@@ -2374,9 +2374,18 @@
 /**
 * Take a Blob and convert it to a data URL.
 	 * @param {Blob} blob 
-	 * @returns {String}
+	 * @returns {Promise<String>} a Promise for a data URL
 	 * @static
  * @method blobToDataUrl
+ */
+
+
+/**
+* Take a Blob and convert it to a String.
+	 * @param {Blob} blob 
+	 * @returns {Promise<String>} a Promise for a String
+	 * @static
+ * @method blobToString
  */
 
 
