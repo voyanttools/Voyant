@@ -22,16 +22,10 @@ if (request.getServletPath().equals("/spiral")) {
 </style>
 <!--script src="<%= base %>/resources/ace/1.4.12/src-min-noconflict/ext-language_tools.js"></script-->
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/spyral/css/spyral.css" />
-	
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/8/highcharts.css" />
+
 
 <%@ include file="../resources/jsp/head_body.jsp" %>
 
-<!-- highcharts -->	
-<script type="text/javascript" src="<%=base %>/resources/highcharts/8/highcharts.js"></script>
-<!-- <script type="text/javascript" src="<%=base %>/resources/highcharts/8/highcharts-more.js"></script> -->
-<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/data.js"></script>
-<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/networkgraph.js"></script>
 
 <script src="<%= base %>/resources/octokitrest/octokit-rest-17.10.0.js"></script>
 
