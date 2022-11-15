@@ -83,8 +83,6 @@ function Sandboxer(event) {
 				resolve(thing);
 			}
 
-			var type = '';
-			var blobData = '';
 			if (Spyral.Util.isPromise(thing)) {
 				Promise.resolve(thing).then(function(prResult) {
 					resolve(me.var2Blob(prResult));
@@ -92,6 +90,9 @@ function Sandboxer(event) {
 					reject(err);
 				});
 			} else {
+				var type = 'application/javascript';
+				var blobData = thing;
+
 				var spyralClass = me.getSpyralClass(thing);
 				if (spyralClass === 'Spyral.Chart') {
 					type = 'application/json';
@@ -109,7 +110,13 @@ function Sandboxer(event) {
 				} else if (Spyral.Util.isNode(thing)) {
 					type = 'text/xml';
 					blobData = new XMLSerializer().serializeToString(thing);
+				} else if (Spyral.Util.isNumber(thing) || Spyral.Util.isBoolean(thing) || Spyral.Util.isUndefined(thing) || Spyral.Util.isNull(thing)) {
+					type = 'application/javascript';
+					blobData = thing;
+				} else {
+					console.warn('unrecognized var type', thing);
 				}
+				
 				resolve(new Blob([blobData], {type: type}));
 			}
 		});
