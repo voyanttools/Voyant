@@ -18,9 +18,12 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			parentWrapper: this
 		});
 
+		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
+
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
 			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
 			expandResults: config.expandResults,
+			hidden: hideResults,
 			listeners: {
 				initialized: function() {
 					// pass along initialized

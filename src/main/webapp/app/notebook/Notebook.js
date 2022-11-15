@@ -278,7 +278,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			itemId: 'cells',
 				defaults: {
 					margin: '10 0 10 0',
-					padding: '0 50 0 50'
+					padding: '0 65 0 65'
 				}
     		},{
     			itemId: 'spyralFooter',
@@ -533,8 +533,8 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 	},
 	
-    loadFromString: function(text) {
-    	text = text.trim();
+	loadFromString: function(text) {
+		text = text.trim();
 		if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
 		} else if (this.SPYRAL_ID_REGEX.test('/spyral/'+text)) {
@@ -718,7 +718,7 @@ Ext.define('Voyant.notebook.Notebook', {
     	if (containers.length>0) {
     		var container = containers.shift();
 			var me = this;
-    		container.run(true, prevVars).then(function(result) {
+    		container.run(prevVars).then(function(result) {
 				// check for and remove older duplicates
 				var newVars = container.getVariables();
 				if (prevVars === undefined) {

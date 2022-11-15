@@ -1,6 +1,6 @@
 Ext.define("Voyant.notebook.editor.DataWrapper", {
 	extend: "Voyant.notebook.editor.RunnableEditorWrapper",
-	requires: ["Voyant.notebook.editor.CodeEditor", "Voyant.notebook.editor.FileInput"],
+	requires: ["Voyant.notebook.editor.CodeEditor", "Voyant.notebook.editor.FileInput", "Voyant.notebook.editor.CorpusInput"],
 	alias: "widget.notebookdatawrapper",
 	cls: 'notebook-data-wrapper',
 	statics: {
@@ -16,10 +16,11 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 	constructor: function(config) {
 		config.mode = config.mode !== undefined ? config.mode : 'json';
 
-		var isFile = config.mode === 'file';
+		var hasCachedInput = config.mode === 'file' || config.mode === 'corpus';
+
 		var resourceId = undefined;
 		var fileName = undefined;
-		if (isFile) {
+		if (hasCachedInput) {
 			resourceId = config.input.resourceId;
 			fileName = config.input.fileName;
 		}
@@ -28,19 +29,22 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs, // TODO
 			mode: config.mode,
-			hidden: isFile,
+			hidden: hasCachedInput,
 			parentWrapper: this
 		});
 
-		this.fileInput = Ext.create('Voyant.notebook.editor.FileInput', {
-			resourceId: resourceId,
-			fileName: fileName,
-			hidden: !isFile
-		});
+		if (config.mode === 'corpus') {
+			this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', config.input);
+		} else {
+			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(config.input, {hidden: !hasCachedInput}));
+		}
+
+		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
 
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
 			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
 			expandResults: config.expandResults,
+			hidden: hideResults,
 			listeners: {
 				initialized: function() {
 					// pass along initialized
@@ -58,7 +62,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			border: false,
 			layout: 'anchor',
 			defaults: { anchor: '100%' },
-			items: [this.editor, this.fileInput, {
+			items: [this.editor, this.cachedInput, {
 				xtype: 'form',
 				cls: 'notebook-data-input',
 				bodyPadding: 6,
@@ -123,9 +127,22 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			
 			if (mode === 'file') {
 				this.editor.hide();
-				this.fileInput.show();
+				if (this.cachedInput.isXType('notebookcorpusinput')) {
+					this.cachedInput.destroy();
+					this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', {});
+					this.insert(1, this.cachedInput);
+				}
+				this.cachedInput.show();
+			} else if (mode === 'corpus') {
+				this.editor.hide();
+				if (this.cachedInput.isXType('notebookfileinput')) {
+					this.cachedInput.destroy();
+					this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', {});
+					this.insert(1, this.cachedInput);
+				}
+				this.cachedInput.show();
 			} else {
-				this.fileInput.hide();
+				this.cachedInput.hide();
 				this.editor.switchModes(mode);
 				this.editor.show();
 			}
@@ -143,9 +160,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		}
 
 		var mode = this.getMode();
-		if (mode === 'file') {
-			this.fileInput.getDataUrl().then(function(dataUrl) {
-				var code = dataName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
+		if (mode === 'file' || mode === 'corpus') {
+			this.cachedInput.getCode(dataName).then(function(code) {
 				dfd.resolve(code);
 			}, function() {
 				dfd.reject();
@@ -179,7 +195,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		this._getCode().then(function(code) {
 			me.results.clear();
 
-			if (me.getMode() !== 'file') {
+			if (me.getMode() !== 'file' && me.getMode() !== 'corpus') {
 				me.editor.clearMarkers();
 			}
 
@@ -206,13 +222,10 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 
 	getInput: function() {
 		var mode = this.getMode();
-		if (mode !== 'file') {
-			return this.editor.getValue();
+		if (mode === 'file' || mode === 'corpus') {
+			return this.cachedInput.getInput();
 		} else {
-			return {
-				resourceId: this.fileInput.getResourceId(),
-				fileName: this.fileInput.getFileName()
-			}
+			return this.editor.getValue();
 		}
 	},
 

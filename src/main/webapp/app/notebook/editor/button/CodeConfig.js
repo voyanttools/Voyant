@@ -1,9 +1,10 @@
 Ext.define("Voyant.notebook.editor.button.CodeConfig", {
-	extend: "Ext.button.Button",
+	extend: "Ext.menu.Item",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookcodeconfig',
 	statics: {
 		i18n: {
+			text: 'Config',
 			tip: "Configuration Options",
 			title: "Cell Mode",
 			modeCode: 'Code',
@@ -46,6 +47,12 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 							xtype: 'fieldset',
 							title: buttonInstance.localize("modeData"),
 							items: [{
+								xtype : 'radiofield',
+								boxLabel : 'Corpus',
+								name  : 'codeMode',
+								inputValue: 'corpus',
+								flex  : 1
+							},{
 								xtype : 'radiofield',
 								boxLabel : buttonInstance.localize('modeFile'),
 								name  : 'codeMode',
@@ -120,7 +127,8 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 	},
 	constructor: function(config) {
 		Ext.apply(this, {
-			tooltip: this.localize('tip')
+			text: this.localize('text'),
+			// tooltip: this.localize('tip')
 		})
 		
 		Voyant.notebook.editor.button.CodeConfig.initWindow(this);
@@ -128,9 +136,7 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 		this.callParent(arguments);
 	},
 	glyph: 'xf013@FontAwesome',
-	listeners: {
-		click: function(btn, e) {
-			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(Voyant.notebook.editor.EditorWrapper.currentEditor);
-		}
+	handler: function(btn, e) {
+		Voyant.notebook.editor.button.CodeConfig.showConfigWindow(Voyant.notebook.editor.EditorWrapper.currentEditor);
 	}
 });

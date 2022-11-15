@@ -11,9 +11,10 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		isChangeRegistered: false,
 		editor: undefined,
 		editedTimeout: undefined,
-		lines: 1, // tracks the number of lines in the editor
+		lines: 2, // tracks the number of lines in the editor
 		markers: [],
-		parentWrapper: undefined
+		parentWrapper: undefined,
+		isCollapsed: false
 	},
 	statics: {
 		i18n: {
@@ -61,11 +62,12 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				}
 			});
 
-			var minHeight = ((this.MIN_LINES+1) * editor.defaultTextHeight()) + 'px';
-			var editorWrapperEl = editor.getWrapperElement();
-			editorWrapperEl.style.height = 'auto';
-			editorWrapperEl.style.minHeight = minHeight;
-			editor.getScrollerElement().style.minHeight = minHeight;
+			// var minHeight = ((this.MIN_LINES+1) * editor.defaultTextHeight()) + 'px';
+			// var editorWrapperEl = editor.getWrapperElement();
+			// editorWrapperEl.style.height = 'auto';
+			// editorWrapperEl.style.minHeight = minHeight;
+			// editor.getScrollerElement().style.minHeight = minHeight;
+			
 			
 			editor.on('focus', function(editor, ev) {
 				me.getParentWrapper().setIsEditing(true);
@@ -142,6 +144,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			this.setEditor(editor);
 
 			this._setModeOptions(this.getMode());
+
+			this.expand();
 
 			me.fireEvent('resize', me);
 
@@ -250,5 +254,48 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				this.up('notebook').handleDocLink(docHref);
 			}.bind(this));
 		}
+	},
+
+	expand: function() {
+		var editor = this.getEditor();
+		var minHeight = ((this.MIN_LINES+1) * editor.defaultTextHeight()) + 'px';
+
+		var editorWrapperEl = editor.getWrapperElement();
+		editorWrapperEl.style.setProperty('min-height', minHeight);
+		editor.getScrollerElement().style.setProperty('min-height', minHeight);
+		editor.setSize(null, 'auto');
+
+		Ext.fly(editorWrapperEl).unmask();
+
+		this.setSize({height: editor.getWrapperElement().offsetHeight});
+
+		this.setIsCollapsed(false);
+	},
+
+	collapse: function() {
+		var editor = this.getEditor();
+		var height = editor.defaultTextHeight()+8;
+
+		var editorWrapperEl = editor.getWrapperElement();
+		editorWrapperEl.style.removeProperty('min-height');
+		editor.getScrollerElement().style.removeProperty('min-height');
+		editor.setSize(null, height);
+		editorWrapperEl.querySelector('.CodeMirror-vscrollbar').style.setProperty('display', 'none');
+
+		var mask = Ext.fly(editorWrapperEl).mask();
+		mask.setStyle({cursor: 'pointer', background: 'none'});
+		mask.down('.x-mask-msg').hide();
+		mask.on('click', function(evt) {
+			this.expand();
+			this.getEditor().focus();
+		}.bind(this))
+
+		this.setSize({height: editor.getWrapperElement().offsetHeight});
+
+		this.setIsCollapsed(true);
+		
+		setTimeout(function() {
+			editor.display.input.blur();
+		}, 0);
 	}
 })

@@ -19,80 +19,134 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 
 			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft === undefined) {
 				Voyant.notebook.editor.EditorWrapper.toolbarLeft = Ext.create('Ext.container.Container', {
-					floating: true,
+					floating: true, // TODO toolbars float above notebook header
 					shadow: false,
-					layout: { type: 'vbox', align: 'middle', pack: 'start' },
-					defaults: { margin: 3, cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
+					preventRefocus: true, // prevents focusing on collapsed/blurred CodeEditor when hiding toolbar
+					layout: 'auto',
+					defaults: { margin: '0 0 3px 3px', cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
 					items: [{
-						xtype: 'notebookwrapperadd'
+						style: {float: 'left'},
+						xtype: 'notebookwrapperexpandcollapse'
 					},{
+						style: {float: 'left'},
 						xtype: 'notebookwrapperrun'
 					},{
-						xtype: 'notebookwrapperrununtil'
-					},{
-						xtype: 'notebookcodeconfig'
-					},{
-						xtype: 'notebookwrapperexport'
-					}],
-					listeners: {
-						boxready: function(cmp) {
-							cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
+						style: {float: 'right', clear: 'both'},
+						xtype: 'button',
+						glyph: 'xf0c9@FontAwesome',
+						arrowVisible: false,
+						menuAlign: 'tr-br?',
+						menu: {
+							items: [{
+								text: 'Add',
+								glyph: 'xf067@FontAwesome',
+								menu: {
+									items: [{
+										text: 'Add Text',
+										glyph: 'xf0f6@FontAwesome',
+										handler: function() {
+											var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+											var notebook = ed.findParentByType('notebook');
+											var cmp = notebook.addText('',ed.getIndex()+1);
+											cmp.getTargetEl().scrollIntoView(notebook.getTargetEl(), null, true, true);
+											notebook.redoOrder();
+										}
+									},{
+										text: 'Add Code',
+										glyph: 'xf121@FontAwesome',
+										handler: function() {
+											var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+											var notebook = ed.findParentByType('notebook');
+											var cmp = notebook.addCode('',ed.getIndex()+1);
+											cmp.getTargetEl().scrollIntoView(notebook.getTargetEl(), null, true, true);
+											notebook.redoOrder();
+										}
+									}]
+								}
+							},{
+								xtype: 'notebookwrapperrununtil'
+							},{
+								xtype: 'notebookcodeconfig'
+							},{
+								xtype: 'notebookwrapperexport'
+							},'-',{
+								text: 'Move',
+								glyph: 'xf07d@FontAwesome',
+								menu: {
+									items: [{
+										xtype: 'notebookwrappermoveup'
+									},{
+										xtype: 'notebookwrappermovedown'
+									}]
+								}
+							},{
+								xtype: 'notebookwrapperremove'
+							}]
 						}
-					}
+					}]
 				});
 			}
 			if (Voyant.notebook.editor.EditorWrapper.toolbarRight === undefined) {
 				Voyant.notebook.editor.EditorWrapper.toolbarRight = Ext.create('Ext.container.Container', {
 					floating: true,
 					shadow: false,
+					preventRefocus: true,
 					layout: { type: 'vbox', align: 'middle', pack: 'start' },
-					defaults: { margin: 3, cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
+					defaults: { margin: '0 3px 3px 3px', cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
 					items: [{
 						xtype: 'notebookwrappercounter'
-					},{
-						xtype: 'notebookwrapperremove'
-					},{
-						xtype: 'notebookwrappermoveup'
-					},{
-						xtype: 'notebookwrappermovedown'
 					}],
 					listeners: {
 						boxready: function(cmp) {
-							cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
+							// cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
 						}
 					}
 				});
 			}
 
+			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('menu').isVisible()) return; // don't change toolbars when menu is open
+
 			var showButtons = [];
 			if (editor.xtype === 'notebookcodeeditorwrapper') {
-				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig'];
+				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexpandcollapse', 'notebookwrapperremove'];
 			} else if (editor.xtype === 'notebookdatawrapper') {
-				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexport'];
+				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexport', 'notebookwrapperexpandcollapse', 'notebookwrapperremove'];
 			} else {
-				showButtons = ['notebookwrapperadd'];
+				showButtons = ['notebookwrapperadd', 'notebookwrapperremove'];
 			}
-			Voyant.notebook.editor.EditorWrapper.toolbarLeft.query('button').forEach(function(button) {
-				button.setVisible(showButtons.indexOf(button.xtype) !== -1);
-			});
+
+			var isTextEditor = editor.xtype === 'notebooktexteditorwrapper';
+			var expandCollapseBtn = Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('notebookwrapperexpandcollapse');
+			if (isTextEditor) {
+				expandCollapseBtn.setVisible(false);
+			} else {
+				expandCollapseBtn.setCollapsed(editor.editor.getIsCollapsed());
+				expandCollapseBtn.setVisible(true);
+			}
 
 			var counter = Voyant.notebook.editor.EditorWrapper.toolbarRight.down('notebookwrappercounter');
 			counter.setName(editor.getCellId());
 			counter.setOrder(editor.getIndex());
 
 			var box = editor.body.getBox();
-			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-33, box.y, false);
-			Voyant.notebook.editor.EditorWrapper.toolbarRight.showAt(box.x+box.width+3, box.y, false);
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-(isTextEditor ? 31 : 58), box.y, false);
+			Voyant.notebook.editor.EditorWrapper.toolbarRight.showAt(box.x+box.width, box.y, false);
 		},
 		hideToolbars: function(evt, force) {
+			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('menu').isVisible()) return; // don't change toolbars when menu is open
+
 			if (Voyant.notebook.editor.EditorWrapper.currentEditor) {
 				var doHide = force ? true : false;
 				if (!doHide) {
-					var box = Voyant.notebook.editor.EditorWrapper.currentEditor.body.getBox();
-					doHide = evt.pageX < box.x-33 || evt.pageX >= box.x+box.width+33 || evt.pageY < box.y || evt.pageY >= box.y+box.height;
+					if (evt.relatedTarget !== null) {
+						var isAncestor = Voyant.notebook.editor.EditorWrapper.toolbarLeft.getEl().isAncestor(evt.relatedTarget) || Voyant.notebook.editor.EditorWrapper.toolbarRight.getEl().isAncestor(evt.relatedTarget)
+						doHide = !isAncestor;
+					}
 				}
 				if (doHide) {
-					Voyant.notebook.editor.EditorWrapper.currentEditor.body.removeCls('notebook-editor-wrapper-hover');
+					if (Voyant.notebook.editor.EditorWrapper.currentEditor.body) {
+						Voyant.notebook.editor.EditorWrapper.currentEditor.body.removeCls('notebook-editor-wrapper-hover');
+					}
 					Voyant.notebook.editor.EditorWrapper.currentEditor = undefined;
 
 					if (Voyant.notebook.editor.EditorWrapper.toolbarLeft !== undefined) {

@@ -18,10 +18,9 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 
 	/**
 	 * Run the code in this editor.
-	 * @param {boolean} forceRun True to force the code to run, otherwise a check is performed to see if previous editors have already run.
 	 * @param {array} priorVariables Variables from prior cells that should be eval'd before this cell's code
 	 */
-	run: function(forceRun, priorVariables) {
+	run: function(priorVariables) {
 		if (this.results.getIsInitialized()) {
 			if (priorVariables === undefined) {
 				console.log('fetching prior vars');
@@ -107,6 +106,14 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 		} else {
 			return output;
 		}
+	},
+
+	// override Ext.Panel expand/collapse
+	expand: function() {
+		this.editor.expand();
+	},
+	collapse: function() {
+		this.editor.collapse();
 	},
 
 	/**

@@ -159,6 +159,7 @@ app/panel/NSSI.js
 app/notebook/editor/button/Add.js
 app/notebook/editor/button/CodeConfig.js
 app/notebook/editor/button/Export.js
+app/notebook/editor/button/ExpandCollapse.js
 app/notebook/editor/button/Counter.js
 app/notebook/editor/button/MoveDown.js
 app/notebook/editor/button/MoveUp.js
@@ -173,7 +174,9 @@ app/notebook/editor/CodeEditor.js
 app/notebook/editor/CodeEditorWrapper.js
 app/notebook/editor/TextEditor.js
 app/notebook/editor/TextEditorWrapper.js
+app/notebook/editor/CachedInput.js
 app/notebook/editor/FileInput.js
+app/notebook/editor/CorpusInput.js
 app/notebook/editor/DataWrapper.js
 app/notebook/storage/github/OctokitWrapper.js
 app/notebook/storage/github/ReposBrowser.js

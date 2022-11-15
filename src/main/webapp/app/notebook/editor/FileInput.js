@@ -1,8 +1,7 @@
 Ext.define('Voyant.notebook.editor.FileInput', {
-	extend: 'Ext.container.Container',
+	extend: 'Voyant.notebook.editor.CachedInput',
 	alias: 'widget.notebookfileinput', 
 	mixins: ['Voyant.util.Localization'],
-	cls: 'notebook-file-input',
 	config: {
 		dataUrl: undefined,
 		resourceId: undefined,
@@ -21,9 +20,9 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 
 	constructor: function(config) {
 		Ext.apply(this, {
-			height: 125,
+			// minHeight: 50,
 			width: '100%',
-			layout: 'center',
+			// layout: 'center',
 			items: [{
 				xtype: 'voyantfilefield',
 				itemId: 'file',
@@ -62,45 +61,45 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 		this.callParent(arguments);
 	},
 
-	getDataUrl: function() {
+	getCode: function(varName) {
 		var dfd = new Ext.Deferred();
 
-		var dataUrl = this.callParent();
-		if (dataUrl === undefined) {
-			if (this.getResourceId()) {
-				this.loadStoredFile().then(function(dataUrl) {
-					dfd.resolve(dataUrl);
+		if (this.getResourceId()) {
+			this.loadStoredFile().then(function(dataUrl) {
+				Spyral.Util.dataUrlToBlob(dataUrl).then(function(blob) {
+					var code = varName+'='+blob;
+					dfd.resolve(code);
 				}, function() {
 					dfd.reject();
-				})
-			} else {
-				if (this.getFile()) {
-					this.storeFile().then(function(result) {
-						dfd.resolve(result[1]);
+				});
+			}, function() {
+				dfd.reject();
+			})
+		} else {
+			if (this.getFile()) {
+				this.storeFile().then(function(result) {
+					Spyral.Util.dataUrlToBlob(result[1]).then(function(blob) {
+						var code = varName+'='+blob;
+						dfd.resolve(code);
 					}, function() {
 						dfd.reject();
 					});
-				} else {
+				}, function() {
 					dfd.reject();
-				}
+				});
+			} else {
+				dfd.reject();
 			}
-		} else {
-			dfd.resolve(dataUrl);
 		}
 
 		return dfd.promise;
 	},
 
-	getBlob: function() {
-		var dfd = new Ext.Deferred();
-
-		this.getDataUrl().then(function(dataUrl) {
-			dfd.resolve(Spyral.Util.dataUrlToBlob(dataUrl));
-		}, function(err) {
-			dfd.reject(err);
-		});
-
-		return dfd.promise;
+	getInput: function() {
+		return {
+			resourceId: this.getResourceId(),
+			fileName: this.getFileName()
+		}
 	},
 
 	storeFile: function() {
