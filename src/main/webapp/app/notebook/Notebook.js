@@ -773,6 +773,11 @@ Ext.define('Voyant.notebook.Notebook', {
 						// ensuring that the tern server is aware of the variable name and type
 						var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
 						Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+					} else {
+						Spyral.Util.blobToString(theVar.value).then(function(blobStr) {
+							var ternText = 'var '+theVar.name+' = '+blobStr;
+							Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+						});
 					}
 				});
 			}
