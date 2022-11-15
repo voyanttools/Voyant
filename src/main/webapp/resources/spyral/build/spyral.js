@@ -11348,6 +11348,10 @@ var Spyral = (function () {
 			if (contents === undefined) {
 				return;
 			}
+
+			if (document.querySelector('.spyral-dv-container') !== null) {
+				document.querySelector('.spyral-dv-container').remove(); // get rid of dataviewer if it exists
+			}
 			
 			if (Array.isArray(contents)) {
 				var allContents = "";
