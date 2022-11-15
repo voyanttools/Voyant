@@ -99,7 +99,7 @@ public class JSCacher {
 		String debug = request.getParameter("debug");
 		if (debug!=null && debug.equals("true")) {
 			File basePath = new File(request.getSession().getServletContext().getRealPath("/"));
-			doCache(basePath, doSourceMap, false);
+			doCache(basePath, doSourceMap, true);
 			
 			response.sendRedirect(redirectBase+CACHED_FILENAME);
 		}
@@ -111,7 +111,7 @@ public class JSCacher {
 	
 	private static void doCache(File basePath, boolean doSourceMap, boolean forceUpdate) throws IOException {
 		
-		System.out.println("doCache - path: "+basePath.getPath()+", source: "+doSourceMap+", force: "+forceUpdate);
+		System.out.println("JSCacher: path: "+basePath.getPath()+", source: "+doSourceMap+", force: "+forceUpdate);
 		
 		File cachedFile = new File(basePath, CACHED_FILE_PATH+CACHED_FILENAME);
 		File cachedFileMinified = new File(basePath, CACHED_FILE_PATH+CACHED_FILENAME_MINIFIED);
@@ -120,9 +120,10 @@ public class JSCacher {
 		if (cachedFile.canWrite() && cachedFileMinified.canWrite() && sourceMapFile.canWrite()) {
 		
 			long lastModifiedCachedFile = cachedFile.lastModified();
+			Date lastModifiedDate = new Date(lastModifiedCachedFile);
 			List<File> files = getCacheableFiles(basePath);
 			
-			System.out.println("Found "+files.size()+" files");
+			System.out.println("JSCacher: files: "+files.size()+", last modified: "+lastModifiedDate);
 	
 			// look for any file that's been updated since last cache
 			boolean needsUpdate = false;
@@ -131,6 +132,7 @@ public class JSCacher {
 			} else {
 				for (File file : files) {
 					if (file.lastModified() > lastModifiedCachedFile) {
+						System.out.println("JSCacher: new change in: "+file.getName()+", last modified: "+new Date(file.lastModified()));
 						needsUpdate = true;
 						break;
 					}
@@ -138,6 +140,7 @@ public class JSCacher {
 			}
 			
 			if (needsUpdate) {
+				System.out.println("JSCacher: running");
 				
 				List<SourceFile> sourceFiles = new ArrayList<SourceFile>();
 				
