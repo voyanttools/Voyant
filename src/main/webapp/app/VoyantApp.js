@@ -11,7 +11,7 @@ Ext.define('Voyant.VoyantApp', {
     	},
     	api: {
 			palette: 'default',
-			categories: undefined,
+			categories: 'auto',
     		lang: undefined,
     		debug: undefined
     	}

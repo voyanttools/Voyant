@@ -10,7 +10,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
     	i18n: {
     	},
     	api: {
-    		toolFlow: undefined
+    		toolFlow: undefined // TODO what is this supposed to do?
     	}
     },
     
