@@ -485,6 +485,35 @@ Ext.define('Voyant.notebook.Notebook', {
 		return location.href; // we just provide the current URL
 	},
 
+	// override toolable method
+	exportBiblio: function() {
+		var date = new Date();
+		var url = this.getExportUrl();
+		var metadata = this.getMetadata();
+		var author = metadata.author;
+		var title = metadata.title;
+		Ext.Msg.show({
+			title: this.localize('exportBiblioTitle'),
+			message: '<fieldset><legend>MLA</legend>'+
+			'<div class="x-selectable">'+
+			author+'. "'+title+'." '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. '+Ext.Date.format(date,'Y')+'. Web. '+Ext.Date.format(date,'j M Y')+'. &lt;'+url+'&gt;.'+
+			'</div></fieldset><br >'+
+			'<fieldset><legend>Chicago</legend>'+
+			'<div class="x-selectable">'+
+			author+', "'+title+'", '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. Accessed '+Ext.Date.format(date,'F j, Y')+', '+url+'.'+
+			'</div></fieldset><br >'+
+			'<fieldset><legend>APA</legend>'+
+			'<div class="x-selectable">'+
+			author+'. ('+Ext.Date.format(date,'Y')+"). "+title+'. '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+
+			'</div></fieldset>',
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO
+		})
+	},
+
 	loadFromQueryParams: function() {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
 		var doRun = Ext.isDefined(queryParams.run);
