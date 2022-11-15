@@ -204,6 +204,11 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 			notebookName = notebookName.split(this.notebookParent.NOTEBOOK_ID_SEPARATOR)[1];
 		}
 
+		var totalData = {data: data, metadata: JSON.stringify(metadata)};
+		console.log('notebook size:',JSON.stringify(totalData).length);
+		// TODO use form & isUpload options below, to handle large notebooks
+		// https://docs.sencha.com/extjs/6.2.0/classic/Ext.Ajax.html#method-request
+
 		Ext.Ajax.request({
 			method: 'POST',
 			url: Voyant.application.getBaseUrlFull()+'spyral/account/save',

@@ -151,7 +151,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
 
 		Ext.Ajax.request({
-			// TODO inaccessible on server?
+			// TODO inaccessible on server? Same with servers.json used by mirrors.jsp
 			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
 		}).then(function(response) {
 			var json;
