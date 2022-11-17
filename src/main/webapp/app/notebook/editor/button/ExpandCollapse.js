@@ -1,5 +1,5 @@
 Ext.define("Voyant.notebook.editor.button.ExpandCollapse", {
-	extend: "Ext.button.Button",
+	extend: "Ext.menu.Item",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookwrapperexpandcollapse',
 	statics: {
@@ -10,7 +10,7 @@ Ext.define("Voyant.notebook.editor.button.ExpandCollapse", {
 	},
 	constructor: function(config) {
 		config = config || {};
-		config.tooltip = this.localize('collapse');
+		config.text = this.localize('collapse');
 		this.callParent(arguments);
 	},
 	isCollapsed: false,
@@ -27,6 +27,7 @@ Ext.define("Voyant.notebook.editor.button.ExpandCollapse", {
 	setCollapsed: function(isCollapsed) {
 		this.isCollapsed = isCollapsed;
 		this.setGlyph(isCollapsed ? 'xf065@FontAwesome' : 'xf066@FontAwesome');
-		this.setTooltip(isCollapsed ? this.localize('expand') : this.localize('collapse'));
+		this.setText(isCollapsed ? this.localize('expand') : this.localize('collapse'));
+		// this.setTooltip(isCollapsed ? this.localize('expand') : this.localize('collapse'));
 	}
 });

@@ -1,5 +1,5 @@
 Ext.define("Voyant.notebook.editor.button.Remove", {
-	extend: "Ext.menu.Item",
+	extend: "Ext.button.Button",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookwrapperremove',
 	statics: {
@@ -9,8 +9,8 @@ Ext.define("Voyant.notebook.editor.button.Remove", {
 	},
 	constructor: function(config) {
     	Ext.apply(this, {
-			text: this.localize('text'),
-    		// tooltip: this.localize('tip')
+			// text: this.localize('text'),
+    		tooltip: this.localize('text')
     	})
         this.callParent(arguments);
 	},

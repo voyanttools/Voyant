@@ -26,7 +26,7 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 					defaults: { margin: '0 0 3px 3px', cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
 					items: [{
 						style: {float: 'left'},
-						xtype: 'notebookwrapperexpandcollapse'
+						xtype: 'notebookwrapperadd'
 					},{
 						style: {float: 'left'},
 						xtype: 'notebookwrapperrun'
@@ -38,35 +38,11 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 						menuAlign: 'tr-br?',
 						menu: {
 							items: [{
-								text: 'Add',
-								glyph: 'xf067@FontAwesome',
-								menu: {
-									items: [{
-										text: 'Add Text',
-										glyph: 'xf0f6@FontAwesome',
-										handler: function() {
-											var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-											var notebook = ed.findParentByType('notebook');
-											var cmp = notebook.addText('',ed.getIndex()+1);
-											cmp.getTargetEl().scrollIntoView(notebook.getTargetEl(), null, true, true);
-											notebook.redoOrder();
-										}
-									},{
-										text: 'Add Code',
-										glyph: 'xf121@FontAwesome',
-										handler: function() {
-											var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-											var notebook = ed.findParentByType('notebook');
-											var cmp = notebook.addCode('',ed.getIndex()+1);
-											cmp.getTargetEl().scrollIntoView(notebook.getTargetEl(), null, true, true);
-											notebook.redoOrder();
-										}
-									}]
-								}
-							},{
 								xtype: 'notebookwrapperrununtil'
 							},{
 								xtype: 'notebookcodeconfig'
+							},{
+								xtype: 'notebookwrapperexpandcollapse'
 							},{
 								xtype: 'notebookwrapperexport'
 							},'-',{
@@ -79,10 +55,11 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 										xtype: 'notebookwrappermovedown'
 									}]
 								}
-							},{
-								xtype: 'notebookwrapperremove'
 							}]
 						}
+					},{
+						style: {float: 'left'},
+						xtype: 'notebookwrapperremove'
 					}]
 				});
 			}
@@ -129,7 +106,7 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 			counter.setOrder(editor.getIndex());
 
 			var box = editor.body.getBox();
-			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-(isTextEditor ? 31 : 58), box.y, false);
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-58, box.y, false);
 			Voyant.notebook.editor.EditorWrapper.toolbarRight.showAt(box.x+box.width, box.y, false);
 		},
 		hideToolbars: function(evt, force) {
