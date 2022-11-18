@@ -280,7 +280,7 @@ Ext.define('Voyant.panel.Trends', {
     	if (!this.getApiParam("query")) {
         	this.getCorpus().getCorpusTerms().load({
         		params: {
-        			limit: 5,
+        			limit: this.getApiParam('limit'),
         			stopList: this.getApiParam("stopList")
         		},
         		callback: function(records, operation, success) {
@@ -404,7 +404,7 @@ Ext.define('Voyant.panel.Trends', {
     	if (!this.getApiParam("query")) {
         	this.getCorpus().getCorpusTerms().load({
         		params: {
-        			limit: this.getCorpus().getDocumentsCount()<2 ? 5 : 2,
+        			limit: this.getApiParam('limit'),
         			stopList: this.getApiParam("stopList")
         		},
         		callback: function(records, operation, success) {
