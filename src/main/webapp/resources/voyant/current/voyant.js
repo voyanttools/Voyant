@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Nov 18 20:59:22 UTC 2022 */
+/* This file created by JSCacher. Last modified: Tue Nov 29 17:55:17 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -38949,7 +38949,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			var jsonpText = response.responseText; // response has JSON-P wrapper which we'll need to remove
 			var json;
 			try {
-				json = JSON.parse(jsonpText.substring(jsonpText.indexOf('{'), jsonpText.length-2));
+				var startIndex = jsonpText.indexOf('{');
+				var endIndex = jsonpText.search(/\);\s*$/m);
+				json = JSON.parse(jsonpText.substring(startIndex, endIndex));
 			} catch (e) {
 				console.warn('error parsing api doc json', e);
 			}
