@@ -227,7 +227,9 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			var jsonpText = response.responseText; // response has JSON-P wrapper which we'll need to remove
 			var json;
 			try {
-				json = JSON.parse(jsonpText.substring(jsonpText.indexOf('{'), jsonpText.length-2));
+				var startIndex = jsonpText.indexOf('{');
+				var endIndex = jsonpText.search(/\);\s*$/m);
+				json = JSON.parse(jsonpText.substring(startIndex, endIndex));
 			} catch (e) {
 				console.warn('error parsing api doc json', e);
 			}
