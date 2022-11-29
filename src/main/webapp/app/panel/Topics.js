@@ -1,9 +1,11 @@
 Ext.define('Voyant.panel.Topics', {
-	extend: 'Ext.grid.Panel',
-	mixins: ['Voyant.panel.Panel','Voyant.widget.LiveSearchGrid'],
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
 	alias: 'widget.topics',
 	statics: {
 		i18n: {
+			topics: 'Topics',
+			documents: 'Documents'
 		},
 		api: {
 			stopList: 'auto',
@@ -67,81 +69,137 @@ Ext.define('Voyant.panel.Topics', {
 			}
 		}],
 		
-		corpus: undefined,
+		currentTopics: [],
+		currentDocument: undefined,
 
-		documentWeightStore: Ext.create('Ext.data.ArrayStore',{
-			fields: ['topicIndex', 'docId', 'topicWeight']
-		}),
-		
-		documentTopicSmoothing : 0.1,
-		topicWordSmoothing : 0.01,
-		vocabularySize : 0,
-		vocabularyCounts : {},
-		stopwords : {},
-		docSortSmoothing : 10.0,
-		sumDocSortSmoothing : 10.0 * 25, // update?
-		requestedSweeps : 0,
-		wordTopicCounts : {},
-		topicWordCounts : [],
-		tokensPerTopic : [],
-		topicWeights : Array(25),
-		documents: [],
-		progress: undefined,
-		totalIterations: 0,
-		exportGridAll: false
+		corpus: undefined
 	},
 	
-	zeros: function(count, val) {
-		val = val || 0;
-		var ret = Array(count)
-		for (var i=0; i<count; i++) {ret[i]=val;}
-		return ret;
-	},
-	
-	constructor: function(config ) {
+	constructor: function(config) {
 		var me = this;
 		Ext.apply(this, {
 			title: this.localize('title'),
 			layout: {
 				type: 'hbox',
 				pack: 'start',
-				align: 'stretch'
+				align: 'begin',
+				padding: '10px'
 			},
-			store: {
-				fields: ['topicIndex', 'topicWords'],
-				data: []
-			},
-			columns: [{
-				text: this.localize("topic"),
-				tooltip: this.localize("topicTip"),
-				flex: 3,
-				dataIndex: 'topicWords',
-				sortable: false
-			},{
-				xtype: 'widgetcolumn',
-				text: this.localize("scores"),
-				tooltip: this.localize("scoresTip"),
-				flex: 1,
-				dataIndex: 'topicIndex',
-				onWidgetAttach: function(col, widget, rec) {
-					var topicIndex = rec.get('topicIndex');
-					var scores = [];
-					me.getDocumentWeightStore().each(function(record) {
-						if (record.get('topicIndex') === topicIndex) {
-							scores.push(record.get('topicWeight'));
-						}
-					});
-					widget.setValues(scores);
+			defaultType: 'dataview',
+			items: [{
+				itemId: 'topicsView',
+				flex: 2,
+				padding: '0 5px 0 0',
+				margin: '0 5px 0 0',
+				height: '100%',
+				scrollable: 'y',
+				store: Ext.create('Ext.data.ArrayStore',{
+					fields: ['index', 'terms', 'weight']
+				}),
+				selectionModel: {
+					type: 'dataviewmodel',
+					mode: 'MULTI'
 				},
-				widget: {
-					xtype: 'sparklinebar',
-					tipTpl: new Ext.XTemplate('{[this.getDocumentTitle(values.offset,values.value)]}', {
-						getDocumentTitle: function(docIndex, score) {
-							return this.panel.getCorpus().getDocument(docIndex).getTitle()+"<br>coverage: "+Ext.util.Format.number(score*100, "0,000.0")+"%"
+				itemSelector: 'div.topicItem',
+				tpl: new Ext.XTemplate(
+					'<div>{[this.localize("topics")]}</div><tpl for=".">',
+						'<div class="topicItem" style="background-color: {[this.getColor(values.index)]}">',
+							'<div class="data weight">{[fm.number(values.weight*100, "0,000.0")]}%</div>',
+							'<span class="term">{[values.terms.join("</span> <span class=\\"term\\">")]}</span>',
+						'</div>',
+					'</tpl>',
+					{
+						getColor: function(index) {
+							var rgb = me.getColorForTopic(index);
+							return 'rgba('+rgb.join(',')+',.33);'
 						},
-						panel: me 
-					})
-			   }
+						localize: function(key) {
+							return me.localize(key);
+						}
+					}
+				),
+				listeners: {
+					selectionchange: function(sel, selected) {
+						sel.view.removeCls('showWeight');
+						me.setCurrentDocument(undefined);
+						me.setCurrentTopics(selected.map(function(item) { return item.get('index') }));
+
+						me.down('#docsView').getSelectionModel().deselectAll(true);
+						me.down('#docsView').refresh();
+					}
+				}
+			},{
+				itemId: 'docsView',
+				flex: 1,
+				height: '100%',
+				scrollable: 'y',
+				store: Ext.create('Ext.data.JsonStore',{
+					fields: ['docId', 'weights']
+				}),
+				selectionModel: {
+					type: 'dataviewmodel',
+					mode: 'SINGLE',
+					allowDeselect: true,
+					toggleOnClick: true
+				},
+				itemSelector: 'div.topicItem',
+				tpl: new Ext.XTemplate(
+					'<div>{[this.localize("documents")]}</div><tpl for=".">',
+						'<div class="topicItem">',
+							'{[this.getDocTitle(values.docId)]}',
+							'<div class="chart">{[this.getChart(values.docId, values.weights)]}</div>',
+						'</div>',
+					'</tpl>',
+					{
+						getDocTitle: function(docId) {
+							return me.getCorpus().getDocument(docId).getTitle();
+						},
+						getChart: function(docId, weights) {
+							var chart = '';
+							var topicStore = me.down('#topicsView').getStore();
+							topicStore.each(function(item) {
+								var index = item.get('index');
+								var weight = weights[index];
+								var rgb = me.getColorForTopic(index);
+								var alpha = me.getCurrentDocument() === docId ? '1' : me.getCurrentTopics().length === 0 ? '.33' : me.getCurrentTopics().indexOf(index) !== -1 ? '1' : '.15';
+								var color = 'rgba('+rgb.join(',')+','+alpha+')';
+								chart += '<div style="width: '+(weight*100)+'%; background-color: '+color+'"> </div>';
+							});
+							return chart;
+						},
+						localize: function(key) {
+							return me.localize(key);
+						}
+					}
+				),
+				listeners: {
+					selectionchange: function(sel, selected) {
+						me.setCurrentTopics([]);
+						
+						var docId = selected[0] ? selected[0].get('docId') : undefined;
+						me.setCurrentDocument(docId);
+						
+						var topicStore = me.down('#topicsView').getStore();
+						if (docId) {
+							me.down('#topicsView').addCls('showWeight').getSelectionModel().deselectAll(true);
+							topicStore.beginUpdate();
+							sel.view.getStore().query('docId', docId).each(function(item) {
+								var weights = item.get('weights');
+								weights.forEach(function(weight, index) {
+									topicStore.findRecord('index', index).set('weight', weight);
+								});
+							});
+							topicStore.endUpdate();
+							topicStore.sort('weight', 'DESC');
+						} else {
+							me.down('#topicsView').removeCls('showWeight').getSelectionModel().deselectAll(true);
+							topicStore.sort('index', 'ASC');
+						}
+
+						sel.view.refresh();
+					}
+				}
+					
 			}],
 			dockedItems: {
 				dock: 'bottom',
@@ -156,7 +214,7 @@ Ext.define('Voyant.panel.Topics', {
 					width: 80,
 					listeners: {
 						change: {
-							fn: me.onTextFieldChange,
+							fn: me.onQuery,
 							scope: me,
 							buffer: 500
 						}
@@ -176,7 +234,7 @@ Ext.define('Voyant.panel.Topics', {
 						},
 						changecomplete: function(slider, newvalue) {
 							this.setApiParams({termsPerTopic: newvalue});
-							this.sweep();
+							this.runIterations();
 						},
 						scope: this
 					}
@@ -188,14 +246,14 @@ Ext.define('Voyant.panel.Topics', {
 					xtype: 'slider',
 					increment: 1,
 					minValue: 1,
-					maxValue: 200,
+					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("topics")))
 						},
 						changecomplete: function(slider, newvalue) {
 							this.setApiParams({topics: newvalue});
-							this.sweep();
+							this.runIterations();
 						},
 						scope: this
 					}
@@ -215,8 +273,6 @@ Ext.define('Voyant.panel.Topics', {
 
 		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
 		
-		this.resetData();
-		
 		// create a listener for corpus loading (defined here, in case we need to load it next)
 		this.on('loadedCorpus', function(src, corpus) {
 			this.setCorpus(corpus);
@@ -233,35 +289,17 @@ Ext.define('Voyant.panel.Topics', {
 		
 		this.on('query', function(src, query) {
 			this.setApiParam('query', query);
-			this.updateSearchResults();
 		})
 		
 	},
 	
-	resetData: function() {
-		var topics = parseInt(this.getApiParam('topics'));
-	 	this.setVocabularyCounts({});
-		this.setSumDocSortSmoothing(this.getDocSortSmoothing()*topics);
-		this.setRequestedSweeps(0);
-		this.setWordTopicCounts({});
-		this.setTopicWordCounts([]);
-		this.setTokensPerTopic(this.zeros(topics));
-		this.setTopicWeights(this.zeros(topics));
-		this.setDocuments([]);
-		this.setTotalIterations(0);
-	},
-	
 	runIterations: function() {
-		this.sweep();
-	},
-	
-	sweep: function() {
 		var topics = parseInt(this.getApiParam('topics'));
 
 		var params = this.getApiParams();
 		params.tool = 'analysis.TopicModeling';
 		params.corpus = this.getCorpus().getAliasOrId();
-		// params.noCache = 1;
+		params.noCache = 1;
 
 		var iterations = this.getApiParam('iterations');
 		var msg = Ext.MessageBox.progress({
@@ -276,24 +314,82 @@ Ext.define('Voyant.panel.Topics', {
 				msg.close();
 
 				var data = JSON.parse(response.responseText);
-				var docWeights = [];
+				
+				var topicsStore = this.down('#topicsView').getStore();
+				topicsStore.loadData(data.topicModeling.topicWords.map(function(words, i) {
+					return [i, words, 0];
+				}));
+
 				data.topicModeling.topicDocuments.sort(function(a, b) {
 					var docIndexA = this.getCorpus().getDocument(a.docId).getIndex();
 					var docIndexB = this.getCorpus().getDocument(b.docId).getIndex();
 					return docIndexA-docIndexB;
 				}.bind(this));
-				for (var i = 0; i < topics; i++) {
-					data.topicModeling.topicDocuments.forEach(function(doc) {
-						docWeights.push([i, doc.docId, doc.weights[i]]);
-					});
-				}
-				this.getDocumentWeightStore().loadData(docWeights);
-				this.getStore().loadData(data.topicModeling.topicWords.map(function(topic, i) {
-					return [i, topic.join(' ')];
-				}));
+				this.down('#docsView').getStore().loadData(data.topicModeling.topicDocuments);
+				this.down('#docsView').refresh();
 			},
 			scope: this
 		});
+	},
+
+	getColorForTopic: function(topicIndex) {
+		return this.getApplication().getColor(topicIndex);
+	},
+
+	getTopicWeightsForDoc: function(docId) {
+		var weights = [];
+		this.getDocumentWeightStore().query('docId', docId).each(function(item) {
+			var topicIndex = item.get('topicIndex');
+			var topicWeight = item.get('topicWeight');
+		});
+	},
+
+	onQuery: function(cmp, query) {
+		var topicsView = this.down('#topicsView');
+		topicsView.getEl().query('.highlighted').forEach(function(hi) {
+			hi.classList.remove('highlighted');
+		});
+		
+		if (query.trim() !== '') {
+			var matcher = new RegExp(query, 'gi');
+			var topicsStore = topicsView.getStore();
+			var indexes = [];
+			var matches = [];
+			topicsStore.each(function(record) {
+				var terms = record.get('terms');
+				var termMatches = [];
+				for (var i = 0; i < terms.length; i++) {
+					var term = terms[i];
+					if (term.search(matcher) !== -1) {
+						termMatches.push(i);
+					}
+				}
+				if (termMatches.length > 0) {
+					indexes.push(record.get('index'));
+				}
+				matches.push(termMatches);
+			});
+			if (indexes.length > 0) {
+				topicsView.setSelection(indexes.map(function(index) {return topicsStore.findRecord('index', index)}));
+				topicsView.getNodes().forEach(function(node, i) {
+					var nodeMatches = matches[i];
+					if (nodeMatches.length > 0) {
+						var terms = node.querySelectorAll('.term');
+						nodeMatches.forEach(function(termIndex) {
+							terms[termIndex].classList.add('highlighted');
+						})
+					}
+				});
+			} else {
+				this.setCurrentTopics([]);
+				topicsView.getSelectionModel().deselectAll(true);
+				this.down('#docsView').refresh();
+			}
+		} else {
+			this.setCurrentTopics([]);
+			topicsView.getSelectionModel().deselectAll(true);
+			this.down('#docsView').refresh();
+		}
 	},
 	
 	initialize: function() {

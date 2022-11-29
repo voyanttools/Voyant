@@ -243,6 +243,55 @@ svg.cirrusGraph text {
     shape-rendering: crispEdges;
 }
 
+/* Topics */
+
+.topicItem {
+  padding: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.topicItem::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.topicItem.x-item-selected {
+  border-color: #666;
+}
+
+.topicItem.x-view-item-focused {
+  outline: none !important;
+}
+
+.topicItem .weight {
+  display: none;
+  float: right;
+  padding: 3px;
+  margin-left: 3px;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+.showWeight .topicItem .weight {
+  display: block;
+}
+
+.topicItem .chart {
+  width: 100%;
+}
+
+.topicItem .chart div {
+  display: inline-block;
+  height: 10px;
+}
+
+.topicItem .highlighted {
+  font-weight: bold;
+}
 
 
 /* used for panel tool glyphs in the header */
