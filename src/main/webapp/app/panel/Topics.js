@@ -294,8 +294,6 @@ Ext.define('Voyant.panel.Topics', {
 	},
 	
 	runIterations: function() {
-		var topics = parseInt(this.getApiParam('topics'));
-
 		var params = this.getApiParams();
 		params.tool = 'analysis.TopicModeling';
 		params.corpus = this.getCorpus().getAliasOrId();
@@ -334,14 +332,6 @@ Ext.define('Voyant.panel.Topics', {
 
 	getColorForTopic: function(topicIndex) {
 		return this.getApplication().getColor(topicIndex);
-	},
-
-	getTopicWeightsForDoc: function(docId) {
-		var weights = [];
-		this.getDocumentWeightStore().query('docId', docId).each(function(item) {
-			var topicIndex = item.get('topicIndex');
-			var topicWeight = item.get('topicWeight');
-		});
 	},
 
 	onQuery: function(cmp, query) {
@@ -393,9 +383,7 @@ Ext.define('Voyant.panel.Topics', {
 	},
 	
 	initialize: function() {
-		// make sure we have the right number of iterations in our label (especially after an options change)
-		var val = new Ext.Template(this.localize('runIterations')).apply([Ext.util.Format.number(parseInt(this.getApiParam('iterations')), "0,000")]);
-		var iterations = this.down('#iterations').setText(val);
+		this.runIterations();
 	}
 	
 });
