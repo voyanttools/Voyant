@@ -659,9 +659,10 @@ Ext.define('Voyant.util.Toolable', {
 	},
 	exportBiblio: function() {
 		var date = new Date();
-		var url = this.getExportUrl()
-		Ext.Msg.show({
+		var url = this.getExportUrl();
+		var msg = Ext.Msg.show({
 		    title: this.localize('exportBiblioTitle'),
+			minHeight: 525,
 		    message: '<fieldset><legend>MLA</legend>'+
 	    	'<div class="x-selectable">Sinclair, Stéfan and Geoffrey Rockwell. '+(this.isXType('voyantheader') ? '' : '"'+this.localize('title')+'." ')+
 	    	'<i>Voyant Tools</i>. '+Ext.Date.format(date,'Y')+'. Web. '+Ext.Date.format(date,'j M Y')+'. &lt;'+url+'&gt;.</div></fieldset>'+
@@ -672,10 +673,29 @@ Ext.define('Voyant.util.Toolable', {
 	    	'<br >'+
 	    	'<fieldset><legend>APA</legend>'+
 	    	'<div class="x-selectable">Sinclair, S. &amp; G. Rockwell. ('+Ext.Date.format(date,'Y')+"). "+(this.isXType('voyantheader') ? '' : this.localize('title')+'. ')+
-	    	'<i>Voyant Tools</i>. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+'</div></fieldset>',
+	    	'<i>Voyant Tools</i>. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+'</div></fieldset>'+
+			'<br >'+
+			'<fieldset><legend>BibTeX</legend>'+
+			'<div class="x-selectable">'+this.getExportBibTex()+'</div></fieldset>',
 		    buttons: Ext.Msg.OK,
 		    icon: Ext.Msg.INFO
-		})
+		});
+		msg.getEl().query('fieldset > div', false).forEach(function(el) {
+			el.on('click', function(evt, el) {
+				var doc = window.document, sel, range;
+				if (window.getSelection && doc.createRange) {
+					sel = window.getSelection();
+					range = doc.createRange();
+					range.selectNodeContents(el);
+					sel.removeAllRanges();
+					sel.addRange(range);
+				} else if (doc.body.createTextRange) {
+					range = doc.body.createTextRange();
+					range.moveToElementText(el);
+					range.select();
+				}
+			});
+		});
 	},
 	exportSpyral: function() {
 		let toolForUrl = Ext.getClassName(this).split(".").pop();
@@ -838,6 +858,46 @@ Ext.define('Voyant.util.Toolable', {
 			api.corpus = this.getApplication().getCorpus().getAliasOrId();
 		}
 		return this.getApplication().getBaseUrl()+(asTool ? "tool/"+toolForUrl+"/" : "")+'?'+Ext.Object.toQueryString(api);
+	},
+	getExportBibTex: function() {
+		var url = this.getExportUrl();
+		var corpus = this.getApplication().getCorpus();
+		
+		var title = 'Voyant Tools';
+		if (this.isXType('voyantheader') === false) {
+			title += ' '+this.localize('title');
+		}
+
+		var abstract = 'Voyant Tools analysis of ';
+		if (corpus.getTitle() === '') {
+			abstract += 'a corpus';
+		} else {
+			abstract += 'the corpus "'+corpus.getTitle()+'"';
+		}
+		if (this.isXType('voyantheader') === false) {
+			abstract += ' using the '+this.localize('title')+' tool';
+		}
+
+		var now = new Date();
+		var accessed = Ext.Date.format(now,'Y-m-d');
+		var createdTime = new Date(this.getApplication().getCorpus().getCreatedTime());
+
+		var lang = this.getApiParam('lang') || 'en';		
+
+		var citekey = 'voyanttools_'+now.getTime();
+		
+		var bib = ['@misc{'+citekey+','];
+		bib.push('title = {'+title+'},');
+		bib.push('author = {Sinclair, Stéfan and Rockwell, Geoffrey},');
+		bib.push('year = '+createdTime.getFullYear()+',');
+		bib.push('url = {'+url+'},');
+		bib.push('urldate = {'+accessed+'},');
+		bib.push('publisher = {Voyant Tools},');
+		bib.push('copyright = {CC BY 4.0},');
+		bib.push('abstract = {'+abstract+'},');
+		bib.push('language = {'+lang+'},');
+		
+		return bib.join('<br/>&nbsp;&nbsp;') + '<br/>}';
 	},
 	helpToolClick: function(panel) {
 		if (panel.isXType('voyanttabpanel')) {panel = panel.getActiveTab()}
