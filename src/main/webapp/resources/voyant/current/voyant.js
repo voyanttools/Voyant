@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Dec 02 19:01:26 UTC 2022 */
+/* This file created by JSCacher. Last modified: Mon Dec 05 22:27:45 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -12063,8 +12063,7 @@ Ext.define('Voyant.widget.TotalPropertyStatus', {
 		}
 	},
     initComponent: function() {
-        var me = this;
-        Ext.applyIf(me, {
+        Ext.applyIf(this, {
             tpl: this.localize('totalPropertyStatus'),
             itemId: 'totalpropertystatus',
             style: 'margin-right:5px',
@@ -12073,16 +12072,15 @@ Ext.define('Voyant.widget.TotalPropertyStatus', {
             		var grid = cmp.up('grid')
             		if (grid) {
             			var store = grid.getStore();
-            			cmp.updateStatus(store.getTotalCount()); // make sure we set this in case of lazy render
-            			grid.getStore().on("totalcountchange", cmp.updateStatus, cmp) // bind changes to update
+                        cmp.update({count: store.getTotalCount()});
+            			store.on('datachanged', function(store) {
+                            cmp.update({count: store.getTotalCount()});
+                        });
             		}
             	}
             }
-        })
-        me.callParent(arguments);
-    },
-    updateStatus: function(count) {
-    	this.update({count: count})
+        });
+        this.callParent(arguments);
     }
 });
 
