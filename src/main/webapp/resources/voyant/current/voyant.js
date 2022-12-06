@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Dec 05 22:27:45 UTC 2022 */
+/* This file created by JSCacher. Last modified: Tue Dec 06 18:52:58 UTC 2022 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -5942,6 +5942,8 @@ Ext.define('Voyant.util.Localization', {
 		if (code.length === 2) {
 			if (Voyant.util.Localization.AVAILABLE_LANGUAGES.indexOf(code) !== -1) {
 				return this.localize(code);
+			} else {
+				return code;
 			}
 		} else {
 			var langs = Voyant.util.Localization.AVAILABLE_LANGUAGES.map(function(lang) {
@@ -5952,6 +5954,7 @@ Ext.define('Voyant.util.Localization', {
 				return lang.text === lowerCaseCode;
 			});
 			if (match) return match.value;
+			else return code;
 		}
 	},
 	
