@@ -384,6 +384,73 @@ Ext.define('Voyant.panel.Topics', {
 	
 	initialize: function() {
 		this.runIterations();
+	},
+
+	getExtraDataExportItems: function() {
+		return [{
+			name: 'export',
+			inputValue: 'dataAsTsv',
+			boxLabel: this.localize('exportGridCurrentTsv')
+		}]
+	},
+
+	exportDataAsTsv: function(panel, form) {
+		var topicsValue = "Topic\t";
+		var docsValue = 'Document Title';
+
+		var topicOrder = [];
+
+		this.down('#topicsView').getStore().getData().each(function(record, i) {
+			if (i === 0) {
+				topicsValue += record.get('terms').map(function(t, i) { return 'Term '+i; }).join("\t");
+			}
+			
+			topicOrder.push(record.get('index'));
+
+			topicsValue += "\nTopic "+record.get('index')+"\t"+record.get('terms').join("\t");
+			docsValue += "\tTopic "+record.get('index')+' Weight';
+		});
+
+		this.down('#docsView').getStore().getData().each(function(record) {
+			var title = this.getCorpus().getDocument(record.get('docId')).getTitle();
+			
+			var weights = topicOrder.map(function(topicIndex) {
+				var weight = record.get('weights')[topicIndex];
+				return Ext.util.Format.number(weight*100, "00.######");
+			}).join("\t");
+
+			docsValue += "\n"+title+"\t"+weights;
+		}, this);
+
+		Ext.create('Ext.window.Window', {
+			title: panel.localize('exportDataTitle'),
+			height: 290,
+			width: 450,
+			bodyPadding: 10,
+			layout: {
+				type: 'vbox',
+				pack: 'start',
+				align: 'stretch'
+			},
+			modal: true,
+			defaults: {
+				margin: '0 0 5px 0'
+			},
+			items: [{
+				html: panel.localize('exportDataTsvMessage')
+			},{
+				html: '<textarea class="x-form-text-default x-form-textarea" style="height: 76px; width: 100%">'+topicsValue+'</textarea>'
+			},{
+				html: '<textarea class="x-form-text-default x-form-textarea" style="height: 76px; width: 100%">'+docsValue+'</textarea>'
+			}],
+			buttonAlign: 'center',
+			buttons: [{
+				text: 'OK',
+				handler: function(btn) {
+					btn.up('window').close();
+				}
+			}]
+		}).show();
 	}
 	
 });
