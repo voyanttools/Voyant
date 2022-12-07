@@ -13,7 +13,7 @@ Ext.define('Voyant.panel.Topics', {
 			termsPerTopic: 10,
 			iterations: 100,
 			perDocLimit: 1000,
-			query: undefined
+			seed: 0
 		},
 		glyph: 'xf1ea@FontAwesome'
 	},
@@ -55,8 +55,8 @@ Ext.define('Voyant.panel.Topics', {
 			fieldLabel: 'iterations per run',
 			labelAlign: 'right',
 			value: 100,
-			minValue: 1,
-			maxValue: 10000,
+			minValue: 50,
+			maxValue: 1000,
 			step: 50,
 			listeners: {
 				afterrender: function(field) {
@@ -67,6 +67,12 @@ Ext.define('Voyant.panel.Topics', {
 					}
 				}
 			}
+		},{
+			xtype: 'textfield',
+			name: 'seed',
+			fieldLabel: 'Random Seed',
+			labelAlign: 'right',
+			value: 0
 		}],
 		
 		currentTopics: [],
@@ -104,7 +110,7 @@ Ext.define('Voyant.panel.Topics', {
 				tpl: new Ext.XTemplate(
 					'<div>{[this.localize("topics")]}</div><tpl for=".">',
 						'<div class="topicItem" style="background-color: {[this.getColor(values.index)]}">',
-							'<div class="data weight">{[fm.number(values.weight*100, "0,000.0")]}%</div>',
+							'<div class="data weight">{[fm.number(values.weight*100, "00.0")]}%</div>',
 							'<span class="term">{[values.terms.join("</span> <span class=\\"term\\">")]}</span>',
 						'</div>',
 					'</tpl>',
@@ -258,7 +264,7 @@ Ext.define('Voyant.panel.Topics', {
 						scope: this
 					}
 				},{
-					text: new Ext.Template(this.localize('runIterations')).apply([100]),
+					text: 'Run',//new Ext.Template(this.localize('runIterations')).apply([100]),
 					itemId: 'iterations',
 					glyph: 'xf04b@FontAwesome',
 					tooltip: this.localize('runIterationsTip'),
@@ -286,18 +292,12 @@ Ext.define('Voyant.panel.Topics', {
 			}
 
 		});
-		
-		this.on('query', function(src, query) {
-			this.setApiParam('query', query);
-		})
-		
 	},
 	
 	runIterations: function() {
 		var params = this.getApiParams();
 		params.tool = 'analysis.TopicModeling';
 		params.corpus = this.getCorpus().getAliasOrId();
-		params.noCache = 1;
 
 		var iterations = this.getApiParam('iterations');
 		var msg = Ext.MessageBox.progress({
