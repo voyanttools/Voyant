@@ -15,6 +15,7 @@ Ext.define('Voyant.widget.CategoriesOption', {
 		
 		Ext.apply(this, {
     		layout: 'hbox',
+			margin: '0 0 5px 0',
     		items: [{
     			xtype: 'combo',
     			queryMode: 'local',

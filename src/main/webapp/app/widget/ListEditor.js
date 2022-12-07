@@ -3,6 +3,7 @@ Ext.define('Voyant.widget.ListEditor', {
     mixins: ['Voyant.util.Localization'],
     alias: 'widget.listeditor',
     layout: 'hbox',
+	margin: '0 0 5px 0',
     statics: {
     	i18n: {
     	}
