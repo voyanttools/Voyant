@@ -7,6 +7,11 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 	},
 	statics: {
 		i18n: {
+			corpusInput: 'Corpus Input',
+			corpusText: 'Text',
+			corpusVariable: 'Variable',
+			corpusFile: 'File',
+			notebookVariables: 'Notebook Variables'
 		}
 	},
 
@@ -17,10 +22,9 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				align: 'begin',
 				pack: 'start'
 			},
-			height: 100,
 			items: [{
 				xtype: 'combo',
-				fieldLabel: 'Corpus Input',
+				fieldLabel: this.localize('corpusInput'),
 				labelAlign: 'right',
 				margin: '5px',
 				queryMode: 'local',
@@ -28,7 +32,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				editable: false,
 				forceSelection: true,
 				value: 'text',
-				store: [['text','Text'],['variable','Variable'],['file','File']],
+				store: [['text',this.localize('corpusText')],['variable',this.localize('corpusVariable')],['file',this.localize('corpusFile')]],
 				listeners: {
 					change: function(rg, val) {
 						rg.nextSibling().getLayout().setActiveItem(val);
@@ -60,7 +64,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						queryMode: 'local',
 						editable: false,
 						forceSelection: true,
-						emptyText: 'Notebook Variables',
+						emptyText: this.localize('notebookVariables'),
 						store: { fields: ['text'] }
 					}],
 					listeners: {
