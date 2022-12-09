@@ -11,7 +11,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		isChangeRegistered: false,
 		editor: undefined,
 		editedTimeout: undefined,
-		lines: 2, // tracks the number of lines in the editor
+		editorHeight: undefined,
+		editorDocHeight: undefined,
 		markers: [],
 		parentWrapper: undefined,
 		isCollapsed: false
@@ -61,13 +62,6 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 					}
 				}
 			});
-
-			// var minHeight = ((this.MIN_LINES+1) * editor.defaultTextHeight()) + 'px';
-			// var editorWrapperEl = editor.getWrapperElement();
-			// editorWrapperEl.style.height = 'auto';
-			// editorWrapperEl.style.minHeight = minHeight;
-			// editor.getScrollerElement().style.minHeight = minHeight;
-			
 			
 			editor.on('focus', function(editor, ev) {
 				me.getParentWrapper().setIsEditing(true);
@@ -79,9 +73,11 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editor.on('change', function(editor, ev) {
 				me.clearMarkers();
 				
-				var lines = editor.lineCount();
-				if (lines !== me.getLines()) {
-					me.setLines(lines);
+				var editorHeight = editor.getWrapperElement().offsetHeight;
+				var editorDocHeight = editor.getDoc().height;
+				if (editorHeight !== me.getEditorHeight() || editorDocHeight !== me.getEditorDocHeight()) {
+					me.setEditorHeight(editorHeight);
+					me.setEditorDocHeight(editorDocHeight);
 					setTimeout(function() {
 						var height = editor.getWrapperElement().offsetHeight;
 						me.setSize({height: height});
