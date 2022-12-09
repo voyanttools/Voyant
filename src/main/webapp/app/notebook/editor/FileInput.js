@@ -20,9 +20,8 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 
 	constructor: function(config) {
 		Ext.apply(this, {
-			// minHeight: 50,
 			width: '100%',
-			// layout: 'center',
+			margin: '5px',
 			items: [{
 				xtype: 'voyantfilefield',
 				itemId: 'file',
