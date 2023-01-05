@@ -16,7 +16,7 @@ Ext.define('Voyant.widget.CorpusSelector', {
 		// need to call here to get openMenu
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
 
-		var data = [['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"]];	
+		var data = [['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"],['frank',"Mary Shelley's Frankenstein"]];	
 		// check API and server option for open menu values
 		if (this.getApiParam("openMenu")) {
 			data = this.getStoreItemsFromDefinition(this.getApiParam("openMenu"));
