@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Dec 06 18:52:58 UTC 2022 */
+/* This file created by JSCacher. Last modified: Thu Jan 05 19:23:59 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -11454,7 +11454,7 @@ Ext.define('Voyant.widget.CorpusSelector', {
 		// need to call here to get openMenu
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
 
-		var data = [['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"]];	
+		var data = [['shakespeare',"Shakespeare's Plays"],['austen',"Austen's Novels"],['frank',"Mary Shelley's Frankenstein"]];	
 		// check API and server option for open menu values
 		if (this.getApiParam("openMenu")) {
 			data = this.getStoreItemsFromDefinition(this.getApiParam("openMenu"));
