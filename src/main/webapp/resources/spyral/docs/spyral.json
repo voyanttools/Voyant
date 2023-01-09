@@ -431,50 +431,30 @@
         "!doc": "sort direction, **`ASC`**ending or **`DESC`**ending"
       }
     },
-    "Spyral_Corpus_lda_config": {
-      "numberTopics": {
+    "Spyral_Corpus_topics_config": {
+      "topics": {
         "!type": "number",
         "!doc": "the number of topics to get (default is 10)"
       },
-      "sweeps": {
+      "termsPerTopic": {
         "!type": "number",
-        "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
+        "!doc": "the number of terms for each topic (default is 10)"
       },
-      "language": {
+      "iterations": {
+        "!type": "number",
+        "!doc": "the number of iterations to do, more iterations = more accurate (default is 100)"
+      },
+      "perDocLimit": {
+        "!type": "number",
+        "!doc": "this parameter allows you to specify a limit value per document"
+      },
+      "seed": {
+        "!type": "number",
+        "!doc": "specify a particular seed to use for random number generation"
+      },
+      "stopList": {
         "!type": "string",
-        "!doc": "stopwords language to use, default is corpus language"
-      }
-    },
-    "Spyral_Corpus_ldaTopics_config": {
-      "numberTopics": {
-        "!type": "number",
-        "!doc": "the number of topics to get (default is 10)"
-      },
-      "wordsPerTopic": {
-        "!type": "number",
-        "!doc": "the number of words per topic (default is 10)"
-      },
-      "sweeps": {
-        "!type": "number",
-        "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
-      },
-      "language": {
-        "!type": "string",
-        "!doc": "stopwords language to use, default is corpus language"
-      }
-    },
-    "Spyral_Corpus_ldaDocuments_config": {
-      "numberTopics": {
-        "!type": "number",
-        "!doc": "the number of topics to get (default is 10)"
-      },
-      "sweeps": {
-        "!type": "number",
-        "!doc": "the number of sweeps to do, more sweeps = more accurate (default is 100)"
-      },
-      "language": {
-        "!type": "string",
-        "!doc": "stopwords language to use, default is corpus language"
+        "!doc": "a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)"
       }
     },
     "Spyral_Corpus_entities_config": {
@@ -649,9 +629,14 @@
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-dataUrlToBlob"
       },
       "blobToDataUrl": {
-        "!type": "fn(blob: +Blob) -> string",
+        "!type": "fn(blob: +Blob) -> +Promise",
         "!doc": "Take a Blob and convert it to a data URL.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-blobToDataUrl"
+      },
+      "blobToString": {
+        "!type": "fn(blob: +Blob) -> +Promise",
+        "!doc": "Take a Blob and convert it to a String.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-blobToString"
       },
       "transformXml": {
         "!type": "fn(xmlDoc: ?, xslStylesheet: ?, returnDoc?: boolean) -> +Document",
@@ -710,7 +695,7 @@
       },
       "getFileExtensionFromMimeType": {
         "!type": "fn(mimeType: string) -> string",
-        "!doc": "Takes a MIME type and returns the related file extension.\nOnly handles file types supported by Voyant.",
+        "!doc": "Takes a MIME type and returns the related file extension.\rOnly handles file types supported by Voyant.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-getFileExtensionFromMimeType"
       }
     },
@@ -829,11 +814,11 @@
         },
         "load": {
           "!type": "fn(config: ?, api: +Object) -> +Promise",
-          "!doc": "Load the categories (if we're in a recognized environment).\n\nIn its simplest form this can be used with a single string ID to load:\n\tnew Spyral.Categories().load(\"categories.en.txt\")\n\nWhich is equivalent to:\n\tnew Spyral.Categories().load({retrieveResourceId: \"categories.en.txt\"});",
+          "!doc": "Load the categories (if we're in a recognized environment).\r\rIn its simplest form this can be used with a single string ID to load:\r\tnew Spyral.Categories().load(\"categories.en.txt\")\r\rWhich is equivalent to:\r\tnew Spyral.Categories().load({retrieveResourceId: \"categories.en.txt\"});",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-load"
         }
       },
-      "!doc": "Construct a new Categories class.",
+      "!doc": "Construct a new Categories class.\r\rThe following are valid in the config parameter:\r\r * **categories**: an object that maps arrays of terms to category names\r * **categoriesRanking**: an array of category names that determines their ranking, from high to low\r * **features**: an object that maps categories to feature names\r * **featureDefaults**: an object that maps default feature value to feature names\r\rAn example:\r\r new Spyral.Categories({\r   categories: {\r     positive: ['good', 'happy'],\r     negative: ['bad', 'sad']\r   },\r   categoriesRanking: ['positive','negative'],\r   features: {color: {}},\r   featureDefaults: {color: '#333333'}\r })",
       "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Categories-method-constructor",
       "load": {
         "!type": "fn(config: ?, api: +Object) -> +Promise",
@@ -846,7 +831,7 @@
       "prototype": {
         "create": {
           "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-          "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+          "!doc": "Create a new chart.\rSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-create"
         },
         "bar": {
@@ -879,7 +864,7 @@
       "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-constructor",
       "create": {
         "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-        "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+        "!doc": "Create a new chart.\rSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-create"
       },
       "setSeriesData": {
@@ -991,20 +976,10 @@
           "!doc": "Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-lemmas"
         },
-        "lda": {
-          "!type": "fn(config: +Spyral_Corpus_lda_config) -> +Promise",
-          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:\n\n* **getTopicWords**: return a list of topics (words organized into bunches of a specified size\n* **getDocuments**: return a list of documents and the signicant words\n\nThe config object as parameter can contain the following:\n\n* **numberTopics**: the number of topics to get (default is 10)\n* **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n* **language**: stopwords language to use, default is corpus language",
-          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-lda"
-        },
-        "ldaTopics": {
-          "!type": "fn(config: +Spyral_Corpus_ldaTopics_config) -> +Promise",
-          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an array of LDA topics from the corpus.\n\nThe config object as parameter can contain the following:\n\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language",
-          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-ldaTopics"
-        },
-        "ldaDocuments": {
-          "!type": "fn(config: +Spyral_Corpus_ldaDocuments_config) -> +Promise",
-          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an array of documents and associated words\n\nThe config object as parameter can contain the following:\n\n * **numberTopics**: the number of topics to get (default is 10)\n * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)\n * **language**: stopwords language to use, default is corpus language",
-          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-ldaDocuments"
+        "topics": {
+          "!type": "fn(config: +Spyral_Corpus_topics_config) -> +Promise",
+          "!doc": "Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:\n\n* **topicWords**: a list of topics (words organized into bunches of a specified size)\n* **topicDocuments**: a list of documents and their topic weights\n\nThe config object as parameter can contain the following:\n\n* **topics**: the number of topics to get (default is 10)\n* **termsPerTopic**: the number of terms for each topic (default is 10)\n* **iterations**: the number of iterations to do, more iterations = more accurate (default is 100)",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-topics"
         },
         "entities": {
           "!type": "fn(config: +Spyral_Corpus_entities_config) -> +Promise",
@@ -1136,7 +1111,7 @@
         },
         "rows": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of rows in this table.\nWhen the first argument is the boolean value `true` all rows are returned.\nWhen the first argument is a an array then the rows corresponding to the row\nindices or names are returned. When all arguments except are numbers or strings\nthen each of those is returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of rows in this table.\rWhen the first argument is the boolean value `true` all rows are returned.\rWhen the first argument is a an array then the rows corresponding to the row\rindices or names are returned. When all arguments except are numbers or strings\rthen each of those is returned.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rows"
         },
         "row": {
@@ -1146,7 +1121,7 @@
         },
         "columns": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of columns in this table.\nWhen the first argument is the boolean value `true` all columns are returned.\nWhen the first argument is a number a slice of the columns is returned and if\nthe second argument is a number it is treated as the length of the slice to\nreturn (note that it isn't the `end` index like with Array.slice()).",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of columns in this table.\rWhen the first argument is the boolean value `true` all columns are returned.\rWhen the first argument is a number a slice of the columns is returned and if\rthe second argument is a number it is treated as the length of the slice to\rreturn (note that it isn't the `end` index like with Array.slice()).",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columns"
         },
         "column": {
@@ -1161,7 +1136,7 @@
         },
         "headers": {
           "!type": "fn(inds: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of headers in this table.\nWhen the first argument is the boolean value `true` all headers are returned.\nWhen the first argument is a number a slice of the headers is returned.\nWhen the first argument is an array the slices specified in the array are returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of headers in this table.\rWhen the first argument is the boolean value `true` all headers are returned.\rWhen the first argument is a number a slice of the headers is returned.\rWhen the first argument is an array the slices specified in the array are returned.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-headers"
         },
         "hasColumn": {
@@ -1171,7 +1146,7 @@
         },
         "forEach": {
           "!type": "fn(fn: fn())",
-          "!doc": "Runs the specified function on each row.\nThe function is passed the row and the row index.",
+          "!doc": "Runs the specified function on each row.\rThe function is passed the row and the row index.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-forEach"
         },
         "rowMin": {
@@ -1266,12 +1241,12 @@
         },
         "rowSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\nSort the specified rows",
+          "!doc": "TODO\rSort the specified rows",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowSort"
         },
         "columnSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\nSort the specified columns",
+          "!doc": "TODO\rSort the specified columns",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnSort"
         },
         "toCsv": {
