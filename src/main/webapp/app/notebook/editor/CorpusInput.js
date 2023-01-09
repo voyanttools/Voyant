@@ -11,6 +11,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 			corpusText: 'Text',
 			corpusVariable: 'Variable',
 			corpusFile: 'File',
+			corpusId: 'Corpus ID',
 			notebookVariables: 'Notebook Variables'
 		}
 	},
@@ -32,7 +33,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				editable: false,
 				forceSelection: true,
 				value: 'text',
-				store: [['text',this.localize('corpusText')],['variable',this.localize('corpusVariable')],['file',this.localize('corpusFile')]],
+				store: [['text',this.localize('corpusText')],['variable',this.localize('corpusVariable')],['file',this.localize('corpusFile')],['id',this.localize('corpusId')]],
 				listeners: {
 					change: function(rg, val) {
 						rg.nextSibling().getLayout().setActiveItem(val);
@@ -76,6 +77,14 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				},{
 					itemId: 'file',
 					xtype: 'notebookfileinput'
+				},{
+					itemId: 'id',
+					items: [{
+						xtype: 'textfield',
+						width: '75%',
+						name: 'id',
+						fieldLabel: ''
+					}]
 				}]
 			}],
 			listeners: {
@@ -147,6 +156,14 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No text entered!');
+				}
+			} else if (type === 'id') {
+				var id = activeItem.down('textfield').getValue().replace('"', '\"');
+				if (id !== '') {
+					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0]})';
+					dfd.resolve(val);
+				} else {
+					dfd.reject('No ID entered!');
 				}
 			}
 		}
