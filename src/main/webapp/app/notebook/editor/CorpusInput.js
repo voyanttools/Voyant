@@ -3,7 +3,9 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 	alias: 'widget.notebookcorpusinput', 
 	mixins: ['Voyant.util.Localization'],
 	config: {
-		corpusId: undefined
+		corpusId: undefined,
+		type: undefined,
+		value: undefined
 	},
 	statics: {
 		i18n: {
@@ -25,6 +27,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 			},
 			items: [{
 				xtype: 'combo',
+				itemId: 'type',
 				fieldLabel: this.localize('corpusInput'),
 				labelAlign: 'right',
 				margin: '5px',
@@ -37,6 +40,8 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				listeners: {
 					change: function(rg, val) {
 						rg.nextSibling().getLayout().setActiveItem(val);
+						this.setType(val);
+						this.setCorpusId(undefined);
 					},
 					scope: this
 				}
@@ -53,7 +58,13 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						xtype: 'textfield',
 						width: '75%',
 						name: 'text',
-						fieldLabel: ''
+						fieldLabel: '',
+						listeners: {
+							change: function() {
+								this.setCorpusId(undefined);
+							},
+							scope: this
+						}
 					}]
 				},{
 					itemId: 'variable',
@@ -72,23 +83,54 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						activate: function(crd) {
 							this.populateVariables();
 						},
+						change: function() {
+							this.setCorpusId(undefined);
+						},
 						scope: this
 					}
 				},{
 					itemId: 'file',
-					xtype: 'notebookfileinput'
+					xtype: 'notebookfileinput',
+					listeners: {
+						change: function() {
+							this.setCorpusId(undefined);
+						},
+						scope: this
+					}
 				},{
 					itemId: 'id',
 					items: [{
 						xtype: 'textfield',
 						width: '75%',
 						name: 'id',
-						fieldLabel: ''
+						fieldLabel: '',
+						listeners: {
+							change: function() {
+								this.setCorpusId(undefined);
+							},
+							scope: this
+						}
 					}]
 				}]
 			}],
 			listeners: {
 				boxready: function(cmp) {
+					if (config.type) {
+						cmp.down('#type').setValue(config.type);
+					}
+					if (config.value) {
+						var formField = cmp.down('#'+config.type).child();
+						if (formField.setRawValue) {
+							formField.setRawValue(config.value);
+						} else {
+							formField.setValue(config.value);
+						}
+					}
+					// set corpusId last, because of change listeners
+					if (config.corpusId) {
+						cmp.setCorpusId(config.corpusId);
+					}
+
 					cmp.up('notebookdatawrapper').results.on('sandboxMessage', function(msg) {
 						// use sandbox listener to capture corpusId
 						if (msg.type === 'result') {
@@ -97,7 +139,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 							Spyral.Util.blobToString(corpusVal.value).then(function(strVal) {
 								var corpusJson = JSON.parse(strVal);
 								cmp.setCorpusId(corpusJson.corpusid);
-							})
+							});
 						}
 					});
 
@@ -118,7 +160,19 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 		if (prev !== null) {
 			variables = cmp.up('notebook').getNotebookVariables(cmp).map(function(vr) { return [vr.name] });
 		}
-		this.down('#variable combo').getStore().loadRawData(variables);
+		var combo = this.down('#variable combo');
+		combo.getStore().loadRawData(variables);
+		
+		var resetCombo = true;
+		var currValue = combo.getRawValue();
+		variables.forEach(function(variable) {
+			if (variable.indexOf(currValue) !== -1) {
+				resetCombo = false;
+			}
+		})
+		if (resetCombo) {
+			combo.setValue(undefined);
+		}
 	},
 
 	getCode: function(varName) {
@@ -130,8 +184,10 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 		} else {
 			var activeItem = this.down('#cards').getLayout().getActiveItem();
 			var type = activeItem.getItemId();
+			this.setType(type);
 			if (type === 'variable') {
 				var inputVarName = activeItem.down('combo').getValue();
+				this.setValue(inputVarName);
 				if (inputVarName !== '') {
 					var val = 'Spyral.Corpus.load({input:'+inputVarName+'}).then(function(){'+varName+'=arguments[0]})';
 					dfd.resolve(val);
@@ -139,18 +195,17 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 					dfd.reject('No variable specified!');
 				}
 			} else if (type === 'file') {
-				activeItem.getValue().then(function(blob) {
-					Spyral.Util.blobToString(blob).then(function(strVal) {
-						var text = strVal.replace('"', '\"');
-						var val = 'Spyral.Corpus.load({input:"'+text+'"}).then(function(){'+varName+'=arguments[0]})';
-						dfd.resolve(val);
-					}, function() {
-						dfd.reject();
-					})
-					
+				var file = activeItem.getFile();
+				this.setValue(activeItem.getFileName());
+				Spyral.Util.blobToDataUrl(file).then(function(dataUrl) {
+					var val = 'Spyral.Corpus.load(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)).then(function(){'+varName+'=arguments[0]})';
+					dfd.resolve(val);
+				}, function() {
+					dfd.reject();
 				});
 			} else if (type === 'text') {
 				var text = activeItem.down('textfield').getValue().replace('"', '\"');
+				this.setValue(text);
 				if (text !== '') {
 					var val = 'Spyral.Corpus.load({input:"'+text+'"}).then(function(){'+varName+'=arguments[0]})';
 					dfd.resolve(val);
@@ -159,6 +214,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				}
 			} else if (type === 'id') {
 				var id = activeItem.down('textfield').getValue().replace('"', '\"');
+				this.setValue(id);
 				if (id !== '') {
 					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0]})';
 					dfd.resolve(val);
@@ -173,7 +229,9 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 
 	getInput: function() {
 		return {
-			corpusId: this.getCorpusId()
+			corpusId: this.getCorpusId(),
+			type: this.getType(),
+			value: this.getValue()
 		}
 	}
 });
