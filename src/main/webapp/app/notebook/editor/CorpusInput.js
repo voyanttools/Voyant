@@ -143,9 +143,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						}
 					});
 
-					cmp.up('notebook').on('notebookRun', function(notebook) {
-						cmp.populateVariables();
-					})
+					cmp.up('notebook').on('notebookRun', cmp.populateVariables, cmp);
 				}
 			}
 		});
