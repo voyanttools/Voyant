@@ -139,7 +139,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 					fieldLabel: me.localize('notebookFile'),
 					allowBlank: false,
 					buttonText: me.localize('selectFile'),
-					accept: 'text/html'
+					accept: 'text/html,application/json'
 				}],
 				buttons: [{
 					text: me.localize('cancel'),
