@@ -36,7 +36,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		if (config.mode === 'corpus') {
 			this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', config.input);
 		} else {
-			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(config.input, {hidden: !hasCachedInput}));
+			var cfg = hasCachedInput ? config.input : {};
+			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput}));
 		}
 
 		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
