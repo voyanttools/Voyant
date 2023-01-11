@@ -1,9 +1,10 @@
 Ext.define('Voyant.notebook.editor.button.Export', {
-	extend: 'Ext.button.Button',
+	extend: 'Ext.menu.Item',
 	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.notebookwrapperexport',
 	statics: {
 		i18n: {
+			text: 'Export',
 			tip: 'Export',
 			exportTitle: 'Export',
 			exportOpen: 'Export content into new window',
@@ -67,8 +68,8 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			var dfd = new Ext.Deferred();
 
 			var outputPromise = null;
-			if (mode === 'file') {
-				outputPromise = wrapper.fileInput.getBlob();
+			if (mode === 'file' || mode === 'corpus') {
+				outputPromise = wrapper.cachedInput.getBlob();
 			} else {
 				outputPromise = wrapper.results.updateCachedOutput().then(function() {
 					return Ext.Promise.resolve(wrapper.getOutput());
@@ -165,23 +166,22 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 	},
 	constructor: function(config) {
 		Ext.apply(config, {
-			tooltip: this.localize('tip')
+			text: this.localize('text'),
+			// tooltip: this.localize('tip')
 		})
 		this.callParent(arguments);
 	},
 	glyph: 'xf08e@FontAwesome',
-	listeners: {
-		click: function(cmp) {
-			Voyant.notebook.editor.button.Export.getExportWindow(cmp).then(function(exportWin) {
-				exportWin.show();
-			}, function(err) {
-				Ext.Msg.show({
-					title: 'Export Error',
-					msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
-					buttons: Ext.MessageBox.OK,
-					icon: Ext.MessageBox.ERROR
-				});
+	handler: function(cmp) {
+		Voyant.notebook.editor.button.Export.getExportWindow(cmp).then(function(exportWin) {
+			exportWin.show();
+		}, function(err) {
+			Ext.Msg.show({
+				title: 'Export Error',
+				msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
 			});
-		}
+		});
 	}
 })

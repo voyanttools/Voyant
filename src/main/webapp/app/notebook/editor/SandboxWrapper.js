@@ -3,7 +3,10 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	mixins: ["Voyant.util.Localization"],
 	alias: "widget.sandboxwrapper",
 	statics: {
-		i18n: {}
+		i18n: {
+			expandResults: 'Expand Results',
+			collapseResults: 'Collapse Results'
+		}
 	},
 
 	config: {
@@ -66,19 +69,22 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					items: ['->',{
 						itemId: 'expandButton',
 						glyph: isExpanded ? 'xf066@FontAwesome' : 'xf065@FontAwesome',
-						tooltip: isExpanded ? 'Contract Results' : 'Expand Results',
+						tooltip: isExpanded ? this.localize('collapseResults') : this.localize('expandResults'),
 						handler: function() {
-							this._doExpandContract();
+							this._doExpandCollapse();
 						},
 						scope: this
-					},{
-						xtype: 'notebookwrapperexport'
-					},{
+					}
+					// ,{
+					// 	xtype: 'notebookwrapperexport'
+					// }
+					,{
 						glyph: 'xf014@FontAwesome',
 						tooltip: 'Remove Results',
 						handler: function() {
-							this.resetResults();
+							//this.resetResults();
 							this.clear();
+							this.hide();
 						},
 						scope: this
 					}]
@@ -94,7 +100,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					afterrender: function(cmp) {
 						var me = this;
 						cmp.getEl().on('click', function() {
-							me._doExpandContract();
+							me._doExpandCollapse();
 						})
 					},
 					scope: this
@@ -151,7 +157,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		}
 
 		// reset
-		this.resetResults();
+		//this.resetResults(); // TODO review this vs setvisible
+		this.show();
 		this.setHasRunError(false);
 		this.getEl().removeCls(['error','success']);
 
@@ -279,7 +286,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						break;
 				}
 
-				if (eventData.command !== 'getContents') { // don't overwrite value or variables when we just want to get sandbox contents, i.e. dom output
+				if (eventData.command !== 'getContents' &&  // don't overwrite value or variables when we just want to get sandbox contents, i.e. dom output
+					eventData.command !== 'clear') { // don't wipe variables just because results were cleared TODO review
 					if (eventData.value) {
 						me.setCachedResultsValue(eventData.value);
 					}
@@ -301,15 +309,15 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		}
 	},
 
-	_doExpandContract: function() {
+	_doExpandCollapse: function() {
 		var expandButton = this.down('#expandButton');
 		if (this.getExpandResults()) {
 			this.setExpandResults(false);
-			expandButton.setTooltip('Expand Results');
+			expandButton.setTooltip(this.localize('expandResults'));
 			expandButton.setGlyph('xf065@FontAwesome');
 		} else {
 			this.setExpandResults(true);
-			expandButton.setTooltip('Contract Results');
+			expandButton.setTooltip(this.localize('collapseResults'));
 			expandButton.setGlyph('xf066@FontAwesome');
 		}
 		

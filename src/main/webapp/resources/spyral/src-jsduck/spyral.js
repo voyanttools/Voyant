@@ -13,6 +13,25 @@
 
 /**
 * Construct a new Categories class.
+	 * 
+	 * The following are valid in the config parameter:
+	 * 
+	 *  * **categories**: an object that maps arrays of terms to category names
+	 *  * **categoriesRanking**: an array of category names that determines their ranking, from high to low
+	 *  * **features**: an object that maps categories to feature names
+	 *  * **featureDefaults**: an object that maps default feature value to feature names
+	 * 
+	 * An example:
+	 * 
+	 *  new Spyral.Categories({
+	 *    categories: {
+	 *      positive: ['good', 'happy'],
+	 *      negative: ['bad', 'sad']
+	 *    },
+	 *    categoriesRanking: ['positive','negative'],
+	 *    features: {color: {}},
+	 *    featureDefaults: {color: '#333333'}
+	 *  })
 	 * @constructor
 	 * @param {Object} config
 	 * @param {Object} config.categories
@@ -661,10 +680,17 @@
 
 
 /**
+* @cfg {String} xmlDocumentsXpath The XPath expression that defines the location of each document; only used for XML-based documents.
+ * 
+ * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
+ */
+
+
+/**
 * @cfg {String} xmlGroupByXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
  * 
  * 		loadCorpus("<doc><sp s='Juliet'>Hello!</sp><sp s='Romeo'>Hi!</sp><sp s='Juliet'>Bye!</sp></doc>", {
- * 			 xmlDocumentsXPath: '//sp',
+ * 			 xmlDocumentsXpath: '//sp',
  *           xmlGroupByXpath: "//@s"
  * 		}); // two docs: "Hello! Bye!" (Juliet) and "Hi!" (Romeo)
  * 
@@ -1436,60 +1462,26 @@
 
 
 /**
-* Performs topic modelling using the latent Dirichlet allocation. Returns an LDA object that has two primary methods of use:
+* Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:
 	 * 
-	 * * **getTopicWords**: return a list of topics (words organized into bunches of a specified size
-	 * * **getDocuments**: return a list of documents and the signicant words
+	 * * **topicWords**: a list of topics (words organized into bunches of a specified size)
+	 * * **topicDocuments**: a list of documents and their topic weights
 	 *
 	 * The config object as parameter can contain the following:
 	 * 
-	 * * **numberTopics**: the number of topics to get (default is 10)
-	 * * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 * * **language**: stopwords language to use, default is corpus language
+	 * * **topics**: the number of topics to get (default is 10)
+	 * * **termsPerTopic**: the number of terms for each topic (default is 10)
+	 * * **iterations**: the number of iterations to do, more iterations = more accurate (default is 100)
 	 * 
 	 * @param {Object} config (see above)
-	 * @param {number} config.numberTopics the number of topics to get (default is 10)
-	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 * @param {string} config.language stopwords language to use, default is corpus language
-	 * @returns {Promise<Object>} a promise for an LDA object
-	  * @method lda
- */
-
-
-/**
-* Performs topic modelling using the latent Dirichlet allocation. Returns an array of LDA topics from the corpus.
-	 * 
-	 * The config object as parameter can contain the following:
-	 * 
-	 *  * **numberTopics**: the number of topics to get (default is 10)
-	 *  * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 *  * **language**: stopwords language to use, default is corpus language
-	 * 
-	 * @param {Object} config (see above)
-	 * @param {number} config.numberTopics the number of topics to get (default is 10)
-	 * @param {number} config.wordsPerTopic the number of words per topic (default is 10)
-	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 * @param {string} config.language stopwords language to use, default is corpus language
-	 * @returns {Promise<Array>} a promise for an array of topics
-	  * @method ldaTopics
- */
-
-
-/**
-* Performs topic modelling using the latent Dirichlet allocation. Returns an array of documents and associated words
-	 * 
-	 * The config object as parameter can contain the following:
-	 * 
-	 *  * **numberTopics**: the number of topics to get (default is 10)
-	 *  * **sweeps**: the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 *  * **language**: stopwords language to use, default is corpus language
-	 * 
-	 * @param {Object} config (see above)
-	 * @param {number} config.numberTopics the number of topics to get (default is 10)
-	 * @param {number} config.sweeps the number of sweeps to do, more sweeps = more accurate (default is 100)
-	 * @param {string} config.language stopwords language to use, default is corpus language
-	 * @returns {Promise<Array>} a promise for an array of documents
-	  * @method ldaDocuments
+	 * @param {number} config.topics the number of topics to get (default is 10)
+	 * @param {number} config.termsPerTopic the number of terms for each topic (default is 10)
+	 * @param {number} config.iterations the number of iterations to do, more iterations = more accurate (default is 100)
+	 * @param {number} config.perDocLimit this parameter allows you to specify a limit value per document
+	 * @param {number} config.seed specify a particular seed to use for random number generation
+	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @returns {Promise<Object>}
+	  * @method topics
  */
 
 

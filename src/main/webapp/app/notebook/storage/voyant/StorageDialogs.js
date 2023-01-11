@@ -139,7 +139,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 					fieldLabel: me.localize('notebookFile'),
 					allowBlank: false,
 					buttonText: me.localize('selectFile'),
-					accept: 'text/html'
+					accept: 'text/html,application/json'
 				}],
 				buttons: [{
 					text: me.localize('cancel'),
@@ -203,6 +203,11 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 			console.warn('doSave: was sent notebookId instead of name');
 			notebookName = notebookName.split(this.notebookParent.NOTEBOOK_ID_SEPARATOR)[1];
 		}
+
+		var totalData = {data: data, metadata: JSON.stringify(metadata)};
+		console.log('notebook size:',JSON.stringify(totalData).length);
+		// TODO use form & isUpload options below, to handle large notebooks
+		// https://docs.sencha.com/extjs/6.2.0/classic/Ext.Ajax.html#method-request
 
 		Ext.Ajax.request({
 			method: 'POST',

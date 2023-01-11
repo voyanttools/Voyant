@@ -277,7 +277,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			itemId: 'cells',
 				defaults: {
 					margin: '10 0 10 0',
-					padding: '0 50 0 50'
+					padding: '0 65 0 65'
 				}
     		},{
     			itemId: 'spyralFooter',
@@ -484,6 +484,35 @@ Ext.define('Voyant.notebook.Notebook', {
 		return location.href; // we just provide the current URL
 	},
 
+	// override toolable method
+	exportBiblio: function() {
+		var date = new Date();
+		var url = this.getExportUrl();
+		var metadata = this.getMetadata();
+		var author = metadata.author;
+		var title = metadata.title;
+		Ext.Msg.show({
+			title: this.localize('exportBiblioTitle'),
+			message: '<fieldset><legend>MLA</legend>'+
+			'<div class="x-selectable">'+
+			author+'. "'+title+'." '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. '+Ext.Date.format(date,'Y')+'. Web. '+Ext.Date.format(date,'j M Y')+'. &lt;'+url+'&gt;.'+
+			'</div></fieldset><br >'+
+			'<fieldset><legend>Chicago</legend>'+
+			'<div class="x-selectable">'+
+			author+', "'+title+'", '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. Accessed '+Ext.Date.format(date,'F j, Y')+', '+url+'.'+
+			'</div></fieldset><br >'+
+			'<fieldset><legend>APA</legend>'+
+			'<div class="x-selectable">'+
+			author+'. ('+Ext.Date.format(date,'Y')+"). "+title+'. '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+
+			'</div></fieldset>',
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO
+		})
+	},
+
 	loadFromQueryParams: function() {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
 		var doRun = Ext.isDefined(queryParams.run);
@@ -532,8 +561,8 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 	},
 	
-    loadFromString: function(text) {
-    	text = text.trim();
+	loadFromString: function(text) {
+		text = text.trim();
 		if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
 		} else if (this.SPYRAL_ID_REGEX.test('/spyral/'+text)) {
@@ -717,7 +746,7 @@ Ext.define('Voyant.notebook.Notebook', {
     	if (containers.length>0) {
     		var container = containers.shift();
 			var me = this;
-    		container.run(true, prevVars).then(function(result) {
+    		container.run(prevVars).then(function(result) {
 				// check for and remove older duplicates
 				var newVars = container.getVariables();
 				if (prevVars === undefined) {
@@ -772,6 +801,11 @@ Ext.define('Voyant.notebook.Notebook', {
 						// ensuring that the tern server is aware of the variable name and type
 						var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
 						Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+					} else {
+						Spyral.Util.blobToString(theVar.value).then(function(blobStr) {
+							var ternText = 'var '+theVar.name+' = '+blobStr;
+							Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+						});
 					}
 				});
 			}
