@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Jan 05 19:23:59 UTC 2023 */
+/* This file created by JSCacher. Last modified: Thu Jan 12 16:57:50 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -11501,6 +11501,7 @@ Ext.define('Voyant.widget.ListEditor', {
     mixins: ['Voyant.util.Localization'],
     alias: 'widget.listeditor',
     layout: 'hbox',
+	margin: '0 0 5px 0',
     statics: {
     	i18n: {
     	}
@@ -11603,6 +11604,7 @@ Ext.define('Voyant.widget.StopListOption', {
     mixins: ['Voyant.util.Localization'],
     alias: 'widget.stoplistoption',
     layout: 'hbox',
+	margin: '0 0 5px 0',
     statics: {
     		stoplists: {
     		    ar: "stop.ar.arabic-lucene.txt",
@@ -12544,6 +12546,7 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
     mixins: ['Voyant.util.Localization'],
     alias: 'widget.colorpaletteoption',
     layout: 'hbox',
+	margin: '0 0 5px 0',
     statics: {
     	i18n: {
     	}
@@ -13351,6 +13354,7 @@ Ext.define('Voyant.widget.CategoriesOption', {
 		
 		Ext.apply(this, {
     		layout: 'hbox',
+			margin: '0 0 5px 0',
     		items: [{
     			xtype: 'combo',
     			queryMode: 'local',
@@ -34268,587 +34272,461 @@ Ext.define('Voyant.panel.WordWall', {
     }
     
 });
-// heavy lifting for the LDA from https://github.com/mimno/jsLDA with tweaks to fit into a Voyant object scope
-
 Ext.define('Voyant.panel.Topics', {
-	extend: 'Ext.grid.Panel',
-	mixins: ['Voyant.panel.Panel','Voyant.widget.LiveSearchGrid'],
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
 	alias: 'widget.topics',
-    statics: {
-    	i18n: {
-    	},
-    	api: {
-    		stopList: 'auto',
-    		numTopics: 25,
-    		limit: 10,
-    		iterations: 100,
-    		perDocLimit: 1000,
-    		query: undefined
-    	},
+	statics: {
+		i18n: {
+			topics: 'Topics',
+			documents: 'Documents'
+		},
+		api: {
+			stopList: 'auto',
+			topics: 10,
+			termsPerTopic: 10,
+			iterations: 100,
+			perDocLimit: 1000,
+			seed: 0
+		},
 		glyph: 'xf1ea@FontAwesome'
-    },
-    config: {
-    	/**
-    	 * @private
-    	 */
-    	options: [{xtype: 'stoplistoption'},{
-	        xtype: 'numberfield',
-	        name: 'perDocLimit',
-	        fieldLabel: 'maximum words per document',
-	        labelAlign: 'right',
-	        value: 1000,
-	        minValue: 1,
-	        step: 100,
-	        listeners: {
-    	        afterrender: function(field) {
-    	        	var win = field.up("window");
-    	        	if (win && win.panel) {
-        	        	field.setValue(parseInt(win.panel.getApiParam('perDocLimit')))
-    	        		field.setFieldLabel(win.panel.localize("perDocLimit"))
-    	        	}
-    	        },
-		        change: function(field, val) {
-		        	var win = field.up("window");
-		        	if (val>5000 && win && win.panel) {
-		        		win.panel.toastInfo({
-		        			html: win.panel.localize("perDocLimitHigh"),
-		        			anchor: win.getTargetEl(),
-		        			align: 'tr',
-		        			maxWidth: 400
-		        		})
-		        	}
-		        }
-	        }
-	    },{
-	        xtype: 'numberfield',
-	        name: 'iterations',
-	        fieldLabel: 'iterations per run',
-	        labelAlign: 'right',
-	        value: 100,
-	        minValue: 1,
-	        maxValue: 10000,
-	        step: 50,
-	        listeners: {
-    	        afterrender: function(field) {
-    	        	var win = field.up("window");
-    	        	if (win && win.panel) {
-        	        	field.setValue(parseInt(win.panel.getApiParam('iterations')))
-    	        		field.setFieldLabel(win.panel.localize("iterations"))
-    	        	}
-    	        }
-	        }
-	    }],
-    	
-    	corpus: undefined,
-    	
-    	documentTopicSmoothing : 0.1,
-    	topicWordSmoothing : 0.01,
-    	vocabularySize : 0,
-    	 vocabularyCounts : {},
-    	 stopwords : {},
-    	 docSortSmoothing : 10.0,
-    	 sumDocSortSmoothing : 10.0 * 25, // update?
-    	 requestedSweeps : 0,
-    	 wordTopicCounts : {},
-    	 topicWordCounts : [],
-    	 tokensPerTopic : [],
-    	 topicWeights : Array(25),
-    	 documents: [],
-    	 progress: undefined,
-    	 totalIterations: 0,
-    	 exportGridAll: false
-    	
-    },
-    
-    zeros: function(count, val) {
-    	val = val || 0;
-    	var ret = Array(count)
-    	for (var i=0; i<count; i++) {ret[i]=val;}
-    	return ret;
-    },
-    
-    constructor: function(config ) {
-    	var me = this;
-    	Ext.apply(this, {
-    		title: this.localize('title'),
-    		layout: {
-    	        type: 'hbox',
-    	        pack: 'start',
-    	        align: 'stretch'
-    	    },
-	        store: {
-	            fields: ['topic', 'scores'],
-	            data: []
-	        },
-    		columns: [{
-    			text: this.localize("topic"),
-    			tooltip: this.localize("topicTip"),
-    			flex: 3,
-        		dataIndex: 'topic',
-                sortable: false
-            },{
-                xtype: 'widgetcolumn',
-                text: this.localize("scores"),
-                tooltip: this.localize("scoresTip"),
-                flex: 1,
-                dataIndex: 'scores',
-                widget: {
-                    xtype: 'sparklineline',
-                    tipTpl: new Ext.XTemplate('{[this.getDocumentTitle(values.x,values.y)]}', {
-                    	getDocumentTitle: function(docIndex, score) {
-                    		return this.panel.getCorpus().getDocument(docIndex).getTitle()+"<br>coverage: "+Ext.util.Format.number(score*100, "0,000.0")+"%"
-                    	},
-                    	panel: me 
-                    })
-               }
-            }],
-            dockedItems: {
-                dock: 'bottom',
-                xtype: 'toolbar',
-                overflowHandler: 'scroller',
-                items:[
-                       '<span class="info-tip" data-qtip="'+this.localize('searchTip')+'">'+this.localize('search')+'</span>'
-                    ,{
-                    xtype: 'textfield',
-                    name: 'searchField',
-                    hideLabel: true,
-                    width: 80,
-                    listeners: {
-                        change: {
-                            fn: me.onTextFieldChange,
-                            scope: me,
-                            buffer: 500
-                        }
-                    }
-                },
-                	'<span class="info-tip" data-qtip="'+this.localize('limitTermsTip')+'">'+this.localize('limitTerms')+'</span>'
-                ,{ 
-	    			width: 80,
-                    hideLabel: true,
-	    			xtype: 'slider',
-	            	increment: 1,
-	            	minValue: 1,
-	            	maxValue: 100,
-	            	listeners: {
-	            		afterrender: function(slider) {
-	            			slider.setValue(parseInt(this.getApiParam("limit")))
-	            		},
-	            		changecomplete: function(slider, newvalue) {
-	            			this.setApiParams({limit: newvalue});
-	            			this.postSweep();
-	            		},
-	            		scope: this
-	            	}
-                },
-                	'<span class="info-tip" data-qtip="'+this.localize('numTopicsTip')+'">'+this.localize('numTopics')+'</span>'
-                ,{ 
-	    			width: 80,
-                    hideLabel: true,
-	    			xtype: 'slider',
-	            	increment: 1,
-	            	minValue: 1,
-	            	maxValue: 200,
-	            	listeners: {
-	            		afterrender: function(slider) {
-	            			slider.setValue(parseInt(this.getApiParam("numTopics")))
-	            		},
-	            		changecomplete: function(slider, newvalue) {
-	            			this.setApiParams({numTopics: newvalue});
-	            			this.loadFromExistingDocuments();
-	            		},
-	            		scope: this
-	            	}
-                },{
-            		text: new Ext.Template(this.localize('runIterations')).apply([100]),
-            		itemId: 'iterations',
+	},
+	config: {
+		/**
+		 * @private
+		 */
+		options: [{xtype: 'stoplistoption'},{
+			xtype: 'numberfield',
+			name: 'perDocLimit',
+			fieldLabel: 'maximum words per document',
+			labelAlign: 'right',
+			value: 1000,
+			minValue: 1,
+			step: 100,
+			listeners: {
+				afterrender: function(field) {
+					var win = field.up("window");
+					if (win && win.panel) {
+						field.setValue(parseInt(win.panel.getApiParam('perDocLimit')))
+						field.setFieldLabel(win.panel.localize("perDocLimit"))
+					}
+				},
+				change: function(field, val) {
+					var win = field.up("window");
+					if (val>5000 && win && win.panel) {
+						win.panel.toastInfo({
+							html: win.panel.localize("perDocLimitHigh"),
+							anchor: win.getTargetEl(),
+							align: 'tr',
+							maxWidth: 400
+						})
+					}
+				}
+			}
+		},{
+			xtype: 'numberfield',
+			name: 'iterations',
+			fieldLabel: 'iterations per run',
+			labelAlign: 'right',
+			value: 100,
+			minValue: 50,
+			maxValue: 1000,
+			step: 50,
+			listeners: {
+				afterrender: function(field) {
+					var win = field.up("window");
+					if (win && win.panel) {
+						field.setValue(parseInt(win.panel.getApiParam('iterations')))
+						field.setFieldLabel(win.panel.localize("iterations"))
+					}
+				}
+			}
+		},{
+			xtype: 'textfield',
+			name: 'seed',
+			fieldLabel: 'Random Seed',
+			labelAlign: 'right',
+			value: 0
+		}],
+		
+		currentTopics: [],
+		currentDocument: undefined,
+
+		corpus: undefined
+	},
+	
+	constructor: function(config) {
+		var me = this;
+		Ext.apply(this, {
+			title: this.localize('title'),
+			layout: {
+				type: 'hbox',
+				pack: 'start',
+				align: 'begin',
+				padding: '10px'
+			},
+			defaultType: 'dataview',
+			items: [{
+				itemId: 'topicsView',
+				flex: 2,
+				padding: '0 5px 0 0',
+				margin: '0 5px 0 0',
+				height: '100%',
+				scrollable: 'y',
+				store: Ext.create('Ext.data.ArrayStore',{
+					fields: ['index', 'terms', 'weight']
+				}),
+				selectionModel: {
+					type: 'dataviewmodel',
+					mode: 'MULTI'
+				},
+				itemSelector: 'div.topicItem',
+				tpl: new Ext.XTemplate(
+					'<div>{[this.localize("topics")]}</div><tpl for=".">',
+						'<div class="topicItem" style="background-color: {[this.getColor(values.index)]}">',
+							'<div class="data weight">{[fm.number(values.weight*100, "00.0")]}%</div>',
+							'<span class="term">{[values.terms.join("</span> <span class=\\"term\\">")]}</span>',
+						'</div>',
+					'</tpl>',
+					{
+						getColor: function(index) {
+							var rgb = me.getColorForTopic(index);
+							return 'rgba('+rgb.join(',')+',.33);'
+						},
+						localize: function(key) {
+							return me.localize(key);
+						}
+					}
+				),
+				listeners: {
+					selectionchange: function(sel, selected) {
+						sel.view.removeCls('showWeight');
+						me.setCurrentDocument(undefined);
+						me.setCurrentTopics(selected.map(function(item) { return item.get('index') }));
+
+						me.down('#docsView').getSelectionModel().deselectAll(true);
+						me.down('#docsView').refresh();
+					}
+				}
+			},{
+				itemId: 'docsView',
+				flex: 1,
+				height: '100%',
+				scrollable: 'y',
+				store: Ext.create('Ext.data.JsonStore',{
+					fields: ['docId', 'weights']
+				}),
+				selectionModel: {
+					type: 'dataviewmodel',
+					mode: 'SINGLE',
+					allowDeselect: true,
+					toggleOnClick: true
+				},
+				itemSelector: 'div.topicItem',
+				tpl: new Ext.XTemplate(
+					'<div>{[this.localize("documents")]}</div><tpl for=".">',
+						'<div class="topicItem">',
+							'{[this.getDocTitle(values.docId)]}',
+							'<div class="chart">{[this.getChart(values.docId, values.weights)]}</div>',
+						'</div>',
+					'</tpl>',
+					{
+						getDocTitle: function(docId) {
+							return me.getCorpus().getDocument(docId).getTitle();
+						},
+						getChart: function(docId, weights) {
+							var chart = '';
+							var topicStore = me.down('#topicsView').getStore();
+							topicStore.each(function(item) {
+								var index = item.get('index');
+								var weight = weights[index];
+								var rgb = me.getColorForTopic(index);
+								var alpha = me.getCurrentDocument() === docId ? '1' : me.getCurrentTopics().length === 0 ? '.33' : me.getCurrentTopics().indexOf(index) !== -1 ? '1' : '.15';
+								var color = 'rgba('+rgb.join(',')+','+alpha+')';
+								chart += '<div style="width: '+(weight*100)+'%; background-color: '+color+'"> </div>';
+							});
+							return chart;
+						},
+						localize: function(key) {
+							return me.localize(key);
+						}
+					}
+				),
+				listeners: {
+					selectionchange: function(sel, selected) {
+						me.setCurrentTopics([]);
+						
+						var docId = selected[0] ? selected[0].get('docId') : undefined;
+						me.setCurrentDocument(docId);
+						
+						var topicStore = me.down('#topicsView').getStore();
+						if (docId) {
+							me.down('#topicsView').addCls('showWeight').getSelectionModel().deselectAll(true);
+							topicStore.beginUpdate();
+							sel.view.getStore().query('docId', docId).each(function(item) {
+								var weights = item.get('weights');
+								weights.forEach(function(weight, index) {
+									topicStore.findRecord('index', index).set('weight', weight);
+								});
+							});
+							topicStore.endUpdate();
+							topicStore.sort('weight', 'DESC');
+						} else {
+							me.down('#topicsView').removeCls('showWeight').getSelectionModel().deselectAll(true);
+							topicStore.sort('index', 'ASC');
+						}
+
+						sel.view.refresh();
+					}
+				}
+					
+			}],
+			dockedItems: {
+				dock: 'bottom',
+				xtype: 'toolbar',
+				overflowHandler: 'scroller',
+				items:[
+					   '<span class="info-tip" data-qtip="'+this.localize('searchTip')+'">'+this.localize('search')+'</span>'
+					,{
+					xtype: 'textfield',
+					name: 'searchField',
+					hideLabel: true,
+					width: 80,
+					listeners: {
+						change: {
+							fn: me.onQuery,
+							scope: me,
+							buffer: 500
+						}
+					}
+				},
+					'<span class="info-tip" data-qtip="'+this.localize('limitTermsTip')+'">'+this.localize('limitTerms')+'</span>'
+				,{ 
+					width: 80,
+					hideLabel: true,
+					xtype: 'slider',
+					increment: 1,
+					minValue: 1,
+					maxValue: 100,
+					listeners: {
+						afterrender: function(slider) {
+							slider.setValue(parseInt(this.getApiParam("termsPerTopic")))
+						},
+						changecomplete: function(slider, newvalue) {
+							this.setApiParams({termsPerTopic: newvalue});
+							this.runIterations();
+						},
+						scope: this
+					}
+				},
+					'<span class="info-tip" data-qtip="'+this.localize('numTopicsTip')+'">'+this.localize('numTopics')+'</span>'
+				,{ 
+					width: 80,
+					hideLabel: true,
+					xtype: 'slider',
+					increment: 1,
+					minValue: 1,
+					maxValue: 100,
+					listeners: {
+						afterrender: function(slider) {
+							slider.setValue(parseInt(this.getApiParam("topics")))
+						},
+						changecomplete: function(slider, newvalue) {
+							this.setApiParams({topics: newvalue});
+							this.runIterations();
+						},
+						scope: this
+					}
+				},{
+					text: 'Run',//new Ext.Template(this.localize('runIterations')).apply([100]),
+					itemId: 'iterations',
 					glyph: 'xf04b@FontAwesome',
-            		tooltip: this.localize('runIterationsTip'),
-            		handler: this.runIterations,
-            		scope: this
-            	},{
-                	xtype: 'tbtext',
-                	itemId: 'done'
-                },{xtype: 'tbfill'}, {
-	    			xtype: 'tbtext',
-	    			html: this.localize('adaptation')
-	    		}]
-            }
-    	});
+					tooltip: this.localize('runIterationsTip'),
+					handler: this.runIterations,
+					scope: this
+				}]
+			}
+		});
 
-        this.callParent(arguments);
-        
+		this.callParent(arguments);
+		
 
-    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
-    	
-    	this.resetData();
-        
-        // create a listener for corpus loading (defined here, in case we need to load it next)
-    	this.on('loadedCorpus', function(src, corpus) {
-    		this.setCorpus(corpus);
-    		if (this.rendered) {
-    			this.initialize();
-    		}
-    		else {
-    			this.on("afterrender", function() {
-    				this.initialize();
-    			}, this)
-    		}
+		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+		
+		// create a listener for corpus loading (defined here, in case we need to load it next)
+		this.on('loadedCorpus', function(src, corpus) {
+			this.setCorpus(corpus);
+			if (this.rendered) {
+				this.initialize();
+			}
+			else {
+				this.on("afterrender", function() {
+					this.initialize();
+				}, this)
+			}
 
-    	});
-    	
-    	this.on('query', function(src, query) {
-    		this.setApiParam('query', query);
-    		this.updateSearchResults();
-    	})
-    	
-    },
-    
-    loadStopwords: function() {
-    	this.mask(this.localize("loadingStopWords"));
-    	Ext.Ajax.request({
-    	    url: this.getTromboneUrl(),
-    	    params: {
-        		tool: 'resource.KeywordsManager',
-    			stopList: this.getApiParam('stopList'),
-    			corpus: this.getCorpus() ? this.getCorpus().getAliasOrId() : undefined
-    	    },
-    	    success: function(response, req) {
-    	    	this.unmask();
-    	    	var json = Ext.util.JSON.decode(response.responseText);
-    	    	var stopwords = {};
-    	    	json.keywords.keywords.forEach(function(stop) {
-    	    		stopwords[stop]=1;
-    	    	})
-    	    	this.setStopwords(stopwords);
-    	    	this.loadDocuments();
-    	    },
-    	    scope: this
-    	})
-    },
-    
-    loadDocuments: function() {
-    	this.mask(this.localize("loadingDocuments"));
-    	var corpus = this.getCorpus();
-    	if (corpus) {
-        	Ext.Ajax.request({
-        	    url: this.getTromboneUrl(),
-        	    params: {
-            		tool: 'corpus.DocumentTokens',
-        			corpus: corpus.getAliasOrId(),
-        			outputFormat: "text",
-        			template: "docTokens2idsAndText",
-        			limit: 0,
-        			noOthers: true,
-        			perDocLimit: corpus.getDocumentsCount()==1 ? undefined : parseInt(this.getApiParam('perDocLimit'))
-        		},
-        	    success: function(response, req) {
-        	    	this.unmask();
-        	    	this.mask(this.localize("parsingDocuments"));
-        	    	var lines = response.responseText.trim().split(/(\r\n|\r|\n)/);
-        	    	if (lines.length==1) { // one document, so segment
-        	    		var parts = lines[0].split(': ');
-        	    		if (parts.length>1) {
-            	    		var doc = corpus.getDocument(parts[0]);
-            	    		var allwords = parts[1].split(' ');
-            	    		var totalWords = doc.getLexicalTokensCount();
-            	    		if (totalWords<10) {
-            	    			bins = totalWords
-            	    		} else if (totalWords<1000) {
-            	    			bins = 10
-            	    		} else {
-            	    			bins = 100
-            	    		}
-            	    		var bins = 10;
-            	    		var wordsPerBin = Math.floor(allwords.length/bins);
-            	    		for (var i=0; i<bins; i++) {
-            	    			var text = allwords.slice(i*wordsPerBin,(i*wordsPerBin)+wordsPerBin).join(" ");
-                	    		this.parseLine(parts[0]+"-"+i+"\t"+parts[0]+"-"+i+"\t"+text);
-            	    		}
-        	    		}
-        	    	} else {
-            	    	lines.forEach(function(line) {
-            	    		var parts = line.split(': ');
-            	    		if (parts.length>1) {
-                	    		var doc = corpus.getDocument(parts[0]);
-                	    		this.parseLine(parts[0]+"\t"+doc.getTinyLabel()+"\t"+parts[1]);
-            	    		}
-            	    	}, this);
-        	    	}
-        	    	this.unmask();
-        	    	this.runIterations();
-        	    },
-        	    scope: this
-        	})
-    	}
-    },
-    
-    resetData: function() {
-    	var numTopics = parseInt(this.getApiParam('numTopics'));
-	 	this.setVocabularyCounts({});
-		this.setSumDocSortSmoothing(this.getDocSortSmoothing()*numTopics);
-		this.setRequestedSweeps(0);
-		this.setWordTopicCounts({});
-		this.setTopicWordCounts([]);
-		this.setTokensPerTopic(this.zeros(numTopics));
-		this.setTopicWeights(this.zeros(numTopics));
-		this.setDocuments([]);
-		this.setTotalIterations(0);
-    },
-    
-    loadFromExistingDocuments: function() {
+		});
+	},
+	
+	runIterations: function() {
+		var params = this.getApiParams();
+		params.tool = 'analysis.TopicModeling';
+		params.corpus = this.getCorpus().getAliasOrId();
 
-    	// not quite efficient, but at least we don't have to reload from server
-    	var data = this.getDocuments().map(function(doc) {return doc.id+"\t"+doc.date+"\t"+doc.originalText});
-    	
-    	this.resetData(); // reset all data before starting over
-    	
-    	data.forEach(function(doc) {
-    		this.parseLine(doc);
-    	}, this);
-    	
-    	this.runIterations();
-    },
-    
-    runIterations: function() {
-    	var sweeps = this.getRequestedSweeps();
-    	var iterations = parseInt(this.getApiParam('iterations'));
-    	sweeps+=parseInt(iterations);
-    	this.setTotalIterations(this.getTotalIterations()+iterations);
-    	this.setRequestedSweeps(sweeps)
-    	if (!this.getProgress()) {
-    		var progress = Ext.MessageBox.show({
-    			title: this.localize("runningIterations"),
-    			message: new Ext.Template(this.localize('runningIterationsCount')).apply([sweeps]),
-    			progress: true,
-    			progressText: '',
-    			target: sweeps,
-    			customUpdateProgress: function(val) {
-     			   this.updateProgress((this.config.target-val)*this.config.target, " iterations");
-     		   	}
-    		});
-    		this.setProgress(progress);
-    		this.updateProgress(sweeps);
-    	}
-    	this.sweep();
-    },
-    
-    updateProgress: function(sweeps) {
-    	var progress = this.getProgress(), sweeps = this.getRequestedSweeps();
-    	if (progress) {
-    		var target = progress.cfg.target;
-        	var val = (target-sweeps)/target;
-        	progress.updateProgress(val, (parseInt(val)*100) +"% done");
-    	}
-    },
-    
-    sweep: function() {
+		var iterations = this.getApiParam('iterations');
+		var msg = Ext.MessageBox.progress({
+			title: this.localize("runningIterations"),
+			message: new Ext.Template(this.localize('runningIterationsCount')).apply([iterations])
+		});
 
-    	var startTime = Date.now(), numTopics = parseInt(this.getApiParam('numTopics')),
-    		vocabularySize = this.getVocabularySize(), topicWordSmoothing = this.getTopicWordSmoothing(),
-    		tokensPerTopic = this.getTokensPerTopic(), documents = this.getDocuments(),
-    		wordTopicCounts = this.getWordTopicCounts(), topicWeights = this.getTopicWeights(), 
-    		documentTopicSmoothing = this.getDocumentTopicSmoothing()
-    		
-    		
-    	var topicNormalizers = this.zeros(numTopics);
-    	for (var topic = 0; topic < numTopics; topic++) {
-    		topicNormalizers[topic] = 1.0 / (vocabularySize * topicWordSmoothing + tokensPerTopic[topic]);
-    	}
+		Ext.Ajax.request({
+			url: this.getTromboneUrl(),
+			params: params,
+			success: function(response, req) {
+				msg.close();
 
-    	for (var doc = 0; doc < documents.length; doc++) {
-    		var currentDoc = documents[doc];
-    		var docTopicCounts = currentDoc.topicCounts;
-    		
-    		for (var position = 0; position < currentDoc.tokens.length; position++) {
-    			var token = currentDoc.tokens[position];
-    			if (token.isStopword) { continue; }
+				var data = JSON.parse(response.responseText);
+				
+				var topicsStore = this.down('#topicsView').getStore();
+				topicsStore.loadData(data.topicModeling.topicWords.map(function(words, i) {
+					return [i, words, 0];
+				}));
 
-    			tokensPerTopic[ token.topic ]--;
-    			var currentWordTopicCounts = wordTopicCounts[ token.word ];
-    			currentWordTopicCounts[ token.topic ]--;
-    			if (currentWordTopicCounts[ token.topic ] == 0) {
-    			  //delete(currentWordTopicCounts[ token.topic ]);
-    			}
-    			docTopicCounts[ token.topic ]--;
-    			topicNormalizers[ token.topic ] = 1.0 / (vocabularySize * topicWordSmoothing + tokensPerTopic[ token.topic ]);
+				data.topicModeling.topicDocuments.sort(function(a, b) {
+					var docIndexA = this.getCorpus().getDocument(a.docId).getIndex();
+					var docIndexB = this.getCorpus().getDocument(b.docId).getIndex();
+					return docIndexA-docIndexB;
+				}.bind(this));
+				this.down('#docsView').getStore().loadData(data.topicModeling.topicDocuments);
+				this.down('#docsView').refresh();
+			},
+			scope: this
+		});
+	},
 
-    			var sum = 0.0;
-    			for (var topic = 0; topic < numTopics; topic++) {
-    				if (currentWordTopicCounts[ topic ]) {
-    				  topicWeights[topic] =
-    				    (documentTopicSmoothing + docTopicCounts[topic]) *
-    				    (topicWordSmoothing + currentWordTopicCounts[ topic ]) *
-    					topicNormalizers[topic];
-    				}
-    				else {
-    				  topicWeights[topic] =
-    				    (documentTopicSmoothing + docTopicCounts[topic]) *
-    					topicWordSmoothing *
-    					topicNormalizers[topic];
-    				}
-    				sum += topicWeights[topic];
-    			}
-    		    
-    			// Sample from an unnormalized discrete distribution
-    			var sample = sum * Math.random();
-    		    var i = 0;
-    		    sample -= topicWeights[i];
-    		    while (sample > 0.0) {
-    		      i++;
-    		      sample -= topicWeights[i];
-    		 	}
-    			token.topic = i;
-    			
-    			tokensPerTopic[ token.topic ]++;
-    			if (! currentWordTopicCounts[ token.topic ]) {
-    				currentWordTopicCounts[ token.topic ] = 1;
-    			}
-    			else {
-    				currentWordTopicCounts[ token.topic ] += 1;
-    			}
-    			docTopicCounts[ token.topic ]++;
-    			
-    			topicNormalizers[ token.topic ] = 1.0 / (vocabularySize * topicWordSmoothing + tokensPerTopic[ token.topic ]);
-    		}
-    	}
-    	
-    	var sweeps = this.getRequestedSweeps()-1;
-    	this.setRequestedSweeps(sweeps);
-    	var progress = this.getProgress();
-    	if (sweeps>0) {
-    		this.updateProgress(sweeps);
-    		Ext.defer(this.sweep, 0, this);
-    	} else {
-    		progress.close();
-    		this.setProgress(undefined);
-    		this.postSweep();
-    	}
-    	
-    },
-    
-    postSweep: function(){
-    	this.sortTopicWords();
-    	var store = this.getStore();
-    	var done = new Ext.Template(this.localize('totalDone')).apply([Ext.util.Format.number(parseInt(this.getTotalIterations()), "0,000")]);
-    	this.down('#done').setHtml(done);
-    	
-		var numTopics = parseInt(this.getApiParam('numTopics')),
-			topicWordCounts = this.getTopicWordCounts(),
-			data = [], documents = this.getDocuments(),
-			docSortSmoothing = this.getDocSortSmoothing(),
-			sumDocSortSmoothing = this.getSumDocSortSmoothing();
-			
-		var limit = parseInt(this.getApiParam('limit'));
-		for (var topic = 0; topic < numTopics; topic++) {
-			var scores = documents.map(function (doc, i) {
-//				console.warn(doc, doc.topicCounts[topic], docSortSmoothing, doc.tokens.length, sumDocSortSmoothing);
-				  return (doc.topicCounts[topic] + docSortSmoothing) / (doc.tokens.length + sumDocSortSmoothing);
+	getColorForTopic: function(topicIndex) {
+		return this.getApplication().getColor(topicIndex);
+	},
+
+	onQuery: function(cmp, query) {
+		var topicsView = this.down('#topicsView');
+		topicsView.getEl().query('.highlighted').forEach(function(hi) {
+			hi.classList.remove('highlighted');
+		});
+		
+		if (query.trim() !== '') {
+			var matcher = new RegExp(query, 'gi');
+			var topicsStore = topicsView.getStore();
+			var indexes = [];
+			var matches = [];
+			topicsStore.each(function(record) {
+				var terms = record.get('terms');
+				var termMatches = [];
+				for (var i = 0; i < terms.length; i++) {
+					var term = terms[i];
+					if (term.search(matcher) !== -1) {
+						termMatches.push(i);
+					}
+				}
+				if (termMatches.length > 0) {
+					indexes.push(record.get('index'));
+				}
+				matches.push(termMatches);
 			});
-			
-			data.push({
-				topic: this.topNWords(topicWordCounts[topic], limit),
-				scores: scores
-			})
+			if (indexes.length > 0) {
+				topicsView.setSelection(indexes.map(function(index) {return topicsStore.findRecord('index', index)}));
+				topicsView.getNodes().forEach(function(node, i) {
+					var nodeMatches = matches[i];
+					if (nodeMatches.length > 0) {
+						var terms = node.querySelectorAll('.term');
+						nodeMatches.forEach(function(termIndex) {
+							terms[termIndex].classList.add('highlighted');
+						})
+					}
+				});
+			} else {
+				this.setCurrentTopics([]);
+				topicsView.getSelectionModel().deselectAll(true);
+				this.down('#docsView').refresh();
+			}
+		} else {
+			this.setCurrentTopics([]);
+			topicsView.getSelectionModel().deselectAll(true);
+			this.down('#docsView').refresh();
 		}
-    	store.loadData(data)
-    },
-    
-    topNWords: function(wordCounts, n) { return wordCounts.slice(0,n).map( function(d) { return d.word; }).join(" "); },
-    
-    sortTopicWords: function() {
-    	var topicWordCounts = this.getTopicWordCounts(), numTopics = parseInt(this.getApiParam('numTopics')),
-    		wordTopicCounts = this.getWordTopicCounts();
+	},
+	
+	initialize: function() {
+		this.runIterations();
+	},
 
-    	  topicWordCounts = [];
-    	  for (var topic = 0; topic < numTopics; topic++) {
-    	    topicWordCounts[topic] = [];
-    	  }
+	getExtraDataExportItems: function() {
+		return [{
+			name: 'export',
+			inputValue: 'dataAsTsv',
+			boxLabel: this.localize('exportGridCurrentTsv')
+		}]
+	},
 
-    	  for (var word in wordTopicCounts) {
-    	    for (var topic in wordTopicCounts[word]) {
-    	      topicWordCounts[topic].push({"word":word, "count":wordTopicCounts[word][topic]});
-    	    }
-    	  }
+	exportDataAsTsv: function(panel, form) {
+		var topicsValue = "Topic\t";
+		var docsValue = 'Document Title';
 
-    	  for (var topic = 0; topic < numTopics; topic++) {
-    	    topicWordCounts[topic].sort(this.byCountDescending);
-    	  }
+		var topicOrder = [];
 
-    	  this.setTopicWordCounts(topicWordCounts);
-    },
-    
-    byCountDescending: function(a,b) {return b.count - a.count; },
-    
-    initialize: function() {
-    	// make sure we have the right number of iterations in our label (especially after an options change)
-    	var val = new Ext.Template(this.localize('runIterations')).apply([Ext.util.Format.number(parseInt(this.getApiParam('iterations')), "0,000")]);
-    	var iterations = this.down('#iterations').setText(val)
-    	this.loadStopwords();
-    },
-    
-    parseLine: function ( line ) {
-    	
-    	// for simplicity, create locally scoped variables of these
-    	var stopwords = this.getStopwords(), vocabularyCounts = this.getVocabularyCounts(),
-	    	tokensPerTopic = this.getTokensPerTopic(), vocabularySize=this.getVocabularySize(),
-	    	vocabularyCounts = this.getVocabularyCounts(), documents = this.getDocuments(),
-	    	numTopics = parseInt(this.getApiParam('numTopics')),
-	    	wordTopicCounts = this.getWordTopicCounts();
-    	
-    	  if (line == "") { return; }
-    	  var docID = documents.length;
-    	  var docDate = "";
-    	  var fields = line.split("\t");
-    	  var text = fields[0];  // Assume there's just one field, the text
-    	  if (fields.length == 3) {  // If it's in [ID]\t[TAG]\t[TEXT] format...
-    	    docID = fields[0];
-    	    docDate = fields[1]; // do not interpret date as anything but a string
-    	    text = fields[2];
-    	  }
+		this.down('#topicsView').getStore().getData().each(function(record, i) {
+			if (i === 0) {
+				topicsValue += record.get('terms').map(function(t, i) { return 'Term '+i; }).join("\t");
+			}
+			
+			topicOrder.push(record.get('index'));
 
-    	  var tokens = [];
-    	  var rawTokens = text.toLowerCase().split(' '); // xsl should only use space between tokens
-    	  if (rawTokens == null) { return; }
-    	  var topicCounts = this.zeros(numTopics);
+			topicsValue += "\nTopic "+record.get('index')+"\t"+record.get('terms').join("\t");
+			docsValue += "\tTopic "+record.get('index')+' Weight';
+		});
 
-    	  rawTokens.forEach(function (word) {
-    	    if (word !== "") {
-    	      var topic = Math.floor(Math.random() * numTopics);
-    		  
-    		  if (word.length <= 2) { stopwords[word] = 1; }
-    		  
-    		  var isStopword = stopwords[word];
-    		  if (isStopword) {
-    			  // Record counts for stopwords, but nothing else
-    			  if (! vocabularyCounts[word]) {
-    				  vocabularyCounts[word] = 1;
-    			  }
-    			  else {
-    			  	vocabularyCounts[word] += 1;
-    			  }
-    		  }
-    		  else {
-    		      tokensPerTopic[topic]++;
-    		      if (! wordTopicCounts[word]) {
-    		        wordTopicCounts[word] = {};
-    		        vocabularySize++;
-    		        vocabularyCounts[word] = 0;
-    		      }
-    		      if (! wordTopicCounts[word][topic]) {
-    		        wordTopicCounts[word][topic] = 0;
-    		      }
-    		      wordTopicCounts[word][topic] += 1;
-    		      vocabularyCounts[word] += 1;
-    		      topicCounts[topic] += 1;
-    	      }
-    	      tokens.push({"word":word, "topic":topic, "isStopword":isStopword });
-    	    }
-    	  });
-    	  this.setVocabularySize(vocabularySize); // set this scalar
-    	  
-    	  documents.push({ "originalOrder" : documents.length, "id" : docID, "date" : docDate, "originalText" : text, "tokens" : tokens, "topicCounts" : topicCounts});
-    	}
-    
+		this.down('#docsView').getStore().getData().each(function(record) {
+			var title = this.getCorpus().getDocument(record.get('docId')).getTitle();
+			
+			var weights = topicOrder.map(function(topicIndex) {
+				var weight = record.get('weights')[topicIndex];
+				return Ext.util.Format.number(weight*100, "00.######");
+			}).join("\t");
+
+			docsValue += "\n"+title+"\t"+weights;
+		}, this);
+
+		Ext.create('Ext.window.Window', {
+			title: panel.localize('exportDataTitle'),
+			height: 290,
+			width: 450,
+			bodyPadding: 10,
+			layout: {
+				type: 'vbox',
+				pack: 'start',
+				align: 'stretch'
+			},
+			modal: true,
+			defaults: {
+				margin: '0 0 5px 0'
+			},
+			items: [{
+				html: panel.localize('exportDataTsvMessage')
+			},{
+				html: '<textarea class="x-form-text-default x-form-textarea" style="height: 76px; width: 100%">'+topicsValue+'</textarea>'
+			},{
+				html: '<textarea class="x-form-text-default x-form-textarea" style="height: 76px; width: 100%">'+docsValue+'</textarea>'
+			}],
+			buttonAlign: 'center',
+			buttons: [{
+				text: 'OK',
+				handler: function(btn) {
+					btn.up('window').close();
+				}
+			}]
+		}).show();
+	}
+	
 });
 
 // assuming Cirrus library is loaded by containing page (via voyant.jsp)
@@ -35132,25 +35010,54 @@ Ext.define("Voyant.notebook.editor.button.Add", {
 	alias: 'widget.notebookwrapperadd',
 	statics: {
 		i18n: {
+			addTip: 'Add New Cell',
+			addText: 'Add Text',
+			addCode: 'Add Code'
 		}
 	},
 	constructor: function(config) {
 		config = config || {};
-		config.tooltip = this.localize('tip');
+
+		Ext.apply(config, {
+			tooltip: this.localize('addTip'),
+			arrowVisible: false,
+			menuAlign: 'tr-br?',
+			menu: {
+				items: [{
+					text: this.localize('addText'),
+					glyph: 'xf0f6@FontAwesome',
+					handler: function() {
+						var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+						var notebook = ed.findParentByType('notebook');
+						var cmp = notebook.addText('',ed.getIndex()+1);
+						cmp.getTargetEl().scrollIntoView(notebook.getTargetEl(), null, true, true);
+						notebook.redoOrder();
+					}
+				},{
+					text: this.localize('addCode'),
+					glyph: 'xf121@FontAwesome',
+					handler: function() {
+						var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+						var notebook = ed.findParentByType('notebook');
+						var cmp = notebook.addCode('',ed.getIndex()+1);
+						cmp.getTargetEl().scrollIntoView(notebook.getTargetEl(), null, true, true);
+						notebook.redoOrder();
+					}
+				}]
+			}
+		});
+
 		this.callParent(arguments);
 	},
-	glyph: 'xf067@FontAwesome',
-	handler: function(btn, e) {
-		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-		ed.findParentByType('notebook').fireEvent("notebookWrapperAdd", ed, e);
-	}
+	glyph: 'xf067@FontAwesome'
 })
 Ext.define("Voyant.notebook.editor.button.CodeConfig", {
-	extend: "Ext.button.Button",
+	extend: "Ext.menu.Item",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookcodeconfig',
 	statics: {
 		i18n: {
+			text: 'Config',
 			tip: "Configuration Options",
 			title: "Cell Mode",
 			modeCode: 'Code',
@@ -35193,6 +35100,12 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 							xtype: 'fieldset',
 							title: buttonInstance.localize("modeData"),
 							items: [{
+								xtype : 'radiofield',
+								boxLabel : 'Corpus',
+								name  : 'codeMode',
+								inputValue: 'corpus',
+								flex  : 1
+							},{
 								xtype : 'radiofield',
 								boxLabel : buttonInstance.localize('modeFile'),
 								name  : 'codeMode',
@@ -35267,7 +35180,8 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 	},
 	constructor: function(config) {
 		Ext.apply(this, {
-			tooltip: this.localize('tip')
+			text: this.localize('text'),
+			// tooltip: this.localize('tip')
 		})
 		
 		Voyant.notebook.editor.button.CodeConfig.initWindow(this);
@@ -35275,19 +35189,18 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 		this.callParent(arguments);
 	},
 	glyph: 'xf013@FontAwesome',
-	listeners: {
-		click: function(btn, e) {
-			Voyant.notebook.editor.button.CodeConfig.showConfigWindow(Voyant.notebook.editor.EditorWrapper.currentEditor);
-		}
+	handler: function(btn, e) {
+		Voyant.notebook.editor.button.CodeConfig.showConfigWindow(Voyant.notebook.editor.EditorWrapper.currentEditor);
 	}
 });
 
 Ext.define('Voyant.notebook.editor.button.Export', {
-	extend: 'Ext.button.Button',
+	extend: 'Ext.menu.Item',
 	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.notebookwrapperexport',
 	statics: {
 		i18n: {
+			text: 'Export',
 			tip: 'Export',
 			exportTitle: 'Export',
 			exportOpen: 'Export content into new window',
@@ -35351,8 +35264,8 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			var dfd = new Ext.Deferred();
 
 			var outputPromise = null;
-			if (mode === 'file') {
-				outputPromise = wrapper.fileInput.getBlob();
+			if (mode === 'file' || mode === 'corpus') {
+				outputPromise = wrapper.cachedInput.getBlob();
 			} else {
 				outputPromise = wrapper.results.updateCachedOutput().then(function() {
 					return Ext.Promise.resolve(wrapper.getOutput());
@@ -35449,26 +35362,59 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 	},
 	constructor: function(config) {
 		Ext.apply(config, {
-			tooltip: this.localize('tip')
+			text: this.localize('text'),
+			// tooltip: this.localize('tip')
 		})
 		this.callParent(arguments);
 	},
 	glyph: 'xf08e@FontAwesome',
-	listeners: {
-		click: function(cmp) {
-			Voyant.notebook.editor.button.Export.getExportWindow(cmp).then(function(exportWin) {
-				exportWin.show();
-			}, function(err) {
-				Ext.Msg.show({
-					title: 'Export Error',
-					msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
-					buttons: Ext.MessageBox.OK,
-					icon: Ext.MessageBox.ERROR
-				});
+	handler: function(cmp) {
+		Voyant.notebook.editor.button.Export.getExportWindow(cmp).then(function(exportWin) {
+			exportWin.show();
+		}, function(err) {
+			Ext.Msg.show({
+				title: 'Export Error',
+				msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
 			});
-		}
+		});
 	}
 })
+Ext.define("Voyant.notebook.editor.button.ExpandCollapse", {
+	extend: "Ext.menu.Item",
+	mixins: ["Voyant.util.Localization"],
+	alias: 'widget.notebookwrapperexpandcollapse',
+	statics: {
+		i18n: {
+			collapse: 'Collapse Editor',
+			expand: 'Expand Editor'
+		}
+	},
+	constructor: function(config) {
+		config = config || {};
+		config.text = this.localize('collapse');
+		this.callParent(arguments);
+	},
+	isCollapsed: false,
+	glyph: 'xf066@FontAwesome',
+	handler: function(btn, e) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		if (btn.isCollapsed) {
+			ed.expand();
+		} else {
+			ed.collapse();
+		}
+		btn.setCollapsed(!btn.isCollapsed);
+	},
+	setCollapsed: function(isCollapsed) {
+		this.isCollapsed = isCollapsed;
+		this.setGlyph(isCollapsed ? 'xf065@FontAwesome' : 'xf066@FontAwesome');
+		this.setText(isCollapsed ? this.localize('expand') : this.localize('collapse'));
+		// this.setTooltip(isCollapsed ? this.localize('expand') : this.localize('collapse'));
+	}
+});
+
 Ext.define("Voyant.notebook.editor.button.Counter", {
 	extend: "Ext.toolbar.TextItem",
 	mixins: ["Voyant.util.Localization"],
@@ -35500,51 +35446,49 @@ Ext.define("Voyant.notebook.editor.button.Counter", {
 	}
 })
 Ext.define("Voyant.notebook.editor.button.MoveDown", {
-	extend: "Ext.button.Button",
+	extend: "Ext.menu.Item",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookwrappermovedown',
 	statics: {
 		i18n: {
+			text: 'Move Down'
 		}
 	},
 	constructor: function(config) {
     	Ext.apply(this, {
-    		tooltip: this.localize('tip')
+			text: this.localize('text'),
+    		// tooltip: this.localize('tip')
     	})
         this.callParent(arguments);
 	},
 	glyph: 'xf063@FontAwesome',
-	textAlign: 'left',
-	listeners: {
-		click: function(evt) {
-			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-        	ed.findParentByType('notebook').fireEvent("notebookWrapperMoveDown", ed);
-			Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
-		}
+	handler: function(evt) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		ed.findParentByType('notebook').fireEvent("notebookWrapperMoveDown", ed);
+		Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
 	}
 })
 Ext.define("Voyant.notebook.editor.button.MoveUp", {
-	extend: "Ext.button.Button",
+	extend: "Ext.menu.Item",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookwrappermoveup',
 	statics: {
 		i18n: {
+			text: 'Move Up'
 		}
 	},
 	constructor: function(config) {
     	Ext.apply(this, {
-    		tooltip: this.localize('tip')
+			text: this.localize('text'),
+    		// tooltip: this.localize('tip')
     	})
         this.callParent(arguments);
 	},
 	glyph: 'xf062@FontAwesome',
-	textAlign: 'left',
-	listeners: {
-		click: function(evt) {
-			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-        	ed.findParentByType('notebook').fireEvent("notebookWrapperMoveUp", ed);
-			Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
-		}
+	handler: function(evt) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		ed.findParentByType('notebook').fireEvent("notebookWrapperMoveUp", ed);
+		Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
 	}
 })
 Ext.define("Voyant.notebook.editor.button.Remove", {
@@ -35553,33 +35497,32 @@ Ext.define("Voyant.notebook.editor.button.Remove", {
 	alias: 'widget.notebookwrapperremove',
 	statics: {
 		i18n: {
+			text: 'Remove'
 		}
 	},
 	constructor: function(config) {
     	Ext.apply(this, {
-    		tooltip: this.localize('tip')
+			// text: this.localize('text'),
+    		tooltip: this.localize('text')
     	})
         this.callParent(arguments);
 	},
 	glyph: 'xf014@FontAwesome',
-	textAlign: 'left',
-	listeners: {
-		click: function(evt) {
-			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-			Ext.Msg.show({
-				buttons: Ext.Msg.OKCANCEL,
-				icon: Ext.MessageBox.QUESTION,
-				msg: this.localize("confirmRemove"),
-				title: this.localize("confirmRemoveTitle"),
-				fn: function(buttonId) {
-					if (buttonId === 'ok') {
-			        	ed.findParentByType('notebook').fireEvent("notebookWrapperRemove", ed);
-						Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
-					}
-				},
-				scope: this
-			})
-		}
+	handler: function(evt) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		Ext.Msg.show({
+			buttons: Ext.Msg.OKCANCEL,
+			icon: Ext.MessageBox.QUESTION,
+			msg: this.localize("confirmRemove"),
+			title: this.localize("confirmRemoveTitle"),
+			fn: function(buttonId) {
+				if (buttonId === 'ok') {
+					ed.findParentByType('notebook').fireEvent("notebookWrapperRemove", ed);
+					Voyant.notebook.editor.EditorWrapper.hideToolbars(evt, true);
+				}
+			},
+			scope: this
+		})
 	}
 })
 Ext.define("Voyant.notebook.editor.button.Run", {
@@ -35588,19 +35531,19 @@ Ext.define("Voyant.notebook.editor.button.Run", {
 	alias: 'widget.notebookwrapperrun',
 	statics: {
 		i18n: {
+			text: 'Run'
 		}
 	},
 	glyph: 'xf04b@FontAwesome',
 	constructor: function(config) {
 		config = config || {};
 		config.tooltip = this.localize('tip');
+		// config.text = this.localize('text');
 		this.callParent(arguments);
 	},
-	listeners: {
-		click: function(btn, e) {
-			var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-			ed.run.call(ed);
-		}
+	handler: function(btn, e) {
+		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+		ed.up('notebook')._run([ed]);
 	}
 })
 Ext.define("Voyant.notebook.editor.button.RunAll", {
@@ -35619,11 +35562,12 @@ Ext.define("Voyant.notebook.editor.button.RunAll", {
 	}
 })
 Ext.define("Voyant.notebook.editor.button.RunUntil", {
-	extend: "Ext.button.Button",
+	extend: "Ext.menu.Item",
 	mixins: ["Voyant.util.Localization"],
 	alias: 'widget.notebookwrapperrununtil',
 	statics: {
 		i18n: {
+			text: "Run...",
 			tip: "Run multiple cells",
 			runUntil: "Run up to here",
 			runUntilTip: "Run previous code cells and this one.",
@@ -35634,33 +35578,29 @@ Ext.define("Voyant.notebook.editor.button.RunUntil", {
 	glyph: 'xf050@FontAwesome',
 	constructor: function(config) {
 		config = config || {};
-		config.tooltip = this.localize('tip');
-
-		var btn = this;
-		this.runMenu = Ext.create('Ext.menu.Menu', {
+		config.text = this.localize('text');
+		// config.tooltip = this.localize('tip');
+		config.menu = {
 			items: [{
 				text: this.localize("runUntil"),
-				tooltip: this.localize("runUntilTip"),
+				// tooltip: this.localize("runUntilTip"),
 				glyph: 'xf049@FontAwesome',
 				handler: function() {
-					btn.runMenu.editor.up('notebook').runUntil(btn.runMenu.editor);
+					var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+					ed.up('notebook').runUntil(ed);
 				}
 			},{
 				text: this.localize("runFrom"),
-				tooltip: this.localize("runFromTip"),
+				// tooltip: this.localize("runFromTip"),
 				glyph: 'xf050@FontAwesome',
 				handler: function() {
-					btn.runMenu.editor.up('notebook').runFrom(btn.runMenu.editor);
+					var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+					ed.up('notebook').runFrom(ed);
 				}
 			}]
-		});
+		}
 
 		this.callParent(arguments);
-	},
-	handler: function(btn, ev) {
-		var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
-		btn.runMenu.editor = ed;
-		btn.runMenu.showAt(ev.pageX, ev.pageY)
 	}
 })
 Ext.define("Voyant.notebook.editor.EditorWrapper", {
@@ -35684,80 +35624,119 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 
 			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft === undefined) {
 				Voyant.notebook.editor.EditorWrapper.toolbarLeft = Ext.create('Ext.container.Container', {
-					floating: true,
+					floating: true, // TODO toolbars float above notebook header
 					shadow: false,
-					layout: { type: 'vbox', align: 'middle', pack: 'start' },
-					defaults: { margin: 3, cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
+					preventRefocus: true, // prevents focusing on collapsed/blurred CodeEditor when hiding toolbar
+					layout: 'auto',
+					defaults: { margin: '0 0 3px 3px', cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
 					items: [{
-						xtype: 'notebookwrapperadd'
+						style: {float: 'right'},
+						xtype: 'notebookwrapperrun',
+						itemId: 'notebookwrapperrun'
 					},{
-						xtype: 'notebookwrapperrun'
+						style: {float: 'right'},
+						xtype: 'notebookwrapperadd',
+						itemId: 'notebookwrapperadd'
 					},{
-						xtype: 'notebookwrapperrununtil'
-					},{
-						xtype: 'notebookcodeconfig'
-					},{
-						xtype: 'notebookwrapperexport'
-					}],
-					listeners: {
-						boxready: function(cmp) {
-							cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
+						style: {float: 'right', clear: 'both'},
+						xtype: 'button',
+						glyph: 'xf0c9@FontAwesome',
+						arrowVisible: false,
+						menuAlign: 'tr-br?',
+						menu: {
+							items: [{
+								xtype: 'notebookwrapperrununtil',
+								itemId: 'notebookwrapperrununtil'
+							},{
+								xtype: 'notebookcodeconfig',
+								itemId: 'notebookcodeconfig'
+							},{
+								xtype: 'notebookwrapperexpandcollapse',
+								itemId: 'notebookwrapperexpandcollapse'
+							},{
+								xtype: 'notebookwrapperexport',
+								itemId: 'notebookwrapperexport'
+							},{
+								xtype: 'menuseparator', itemId: 'menuseparator'
+							},{
+								text: 'Move',
+								glyph: 'xf07d@FontAwesome',
+								itemId: 'notebookwrappermove',
+								menu: {
+									items: [{
+										xtype: 'notebookwrappermoveup'
+									},{
+										xtype: 'notebookwrappermovedown'
+									}]
+								}
+							}]
 						}
-					}
+					},{
+						style: {float: 'left'},
+						xtype: 'notebookwrapperremove',
+						itemId: 'notebookwrapperremove'
+					}]
 				});
 			}
 			if (Voyant.notebook.editor.EditorWrapper.toolbarRight === undefined) {
 				Voyant.notebook.editor.EditorWrapper.toolbarRight = Ext.create('Ext.container.Container', {
 					floating: true,
 					shadow: false,
+					preventRefocus: true,
 					layout: { type: 'vbox', align: 'middle', pack: 'start' },
-					defaults: { margin: 3, cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
+					defaults: { margin: '0 3px 3px 3px', cls: 'x-btn x-btn-default-toolbar-small', iconCls: 'x-btn-icon-el-default-toolbar-small' },
 					items: [{
 						xtype: 'notebookwrappercounter'
-					},{
-						xtype: 'notebookwrapperremove'
-					},{
-						xtype: 'notebookwrappermoveup'
-					},{
-						xtype: 'notebookwrappermovedown'
-					}],
-					listeners: {
-						boxready: function(cmp) {
-							cmp.getEl().on('mouseleave', Voyant.notebook.editor.EditorWrapper.hideToolbars, this);
-						}
-					}
+					}]
 				});
 			}
 
+			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('menu').isVisible()) return; // don't change toolbars when menu is open
+
 			var showButtons = [];
 			if (editor.xtype === 'notebookcodeeditorwrapper') {
-				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig'];
+				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexpandcollapse', 'notebookwrappermove', 'notebookwrapperremove', 'menuseparator'];
 			} else if (editor.xtype === 'notebookdatawrapper') {
-				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexport'];
+				showButtons = ['notebookwrapperadd', 'notebookwrapperrun', 'notebookwrapperrununtil', 'notebookcodeconfig', 'notebookwrapperexport', 'notebookwrapperexpandcollapse', 'notebookwrappermove', 'notebookwrapperremove', 'menuseparator'];
 			} else {
-				showButtons = ['notebookwrapperadd'];
+				showButtons = ['notebookwrapperadd', 'notebookwrappermove', 'notebookwrapperremove'];
 			}
-			Voyant.notebook.editor.EditorWrapper.toolbarLeft.query('button').forEach(function(button) {
-				button.setVisible(showButtons.indexOf(button.xtype) !== -1);
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.query('button, menuitem').forEach(function(button) {
+				if (button.itemId) { button.setVisible(showButtons.indexOf(button.itemId) !== -1); }
 			});
+
+			if (editor.xtype === 'notebookrunnableeditorwrapper') {
+				var expandCollapseBtn = Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('notebookwrapperexpandcollapse');
+				expandCollapseBtn.setCollapsed(editor.editor.getIsCollapsed());
+			}
 
 			var counter = Voyant.notebook.editor.EditorWrapper.toolbarRight.down('notebookwrappercounter');
 			counter.setName(editor.getCellId());
 			counter.setOrder(editor.getIndex());
 
 			var box = editor.body.getBox();
-			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-33, box.y, false);
-			Voyant.notebook.editor.EditorWrapper.toolbarRight.showAt(box.x+box.width+3, box.y, false);
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.showAt(box.x-58, box.y, false);
+			Voyant.notebook.editor.EditorWrapper.toolbarRight.showAt(box.x+box.width, box.y, false);
 		},
 		hideToolbars: function(evt, force) {
+			// don't change toolbars when menu is open
+			if (Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('menu').isVisible()) return;
+
+			// hide any open submenus
+			Voyant.notebook.editor.EditorWrapper.toolbarLeft.query('menu menu').forEach(function(menu) { menu.setVisible(false); });
+
 			if (Voyant.notebook.editor.EditorWrapper.currentEditor) {
 				var doHide = force ? true : false;
 				if (!doHide) {
-					var box = Voyant.notebook.editor.EditorWrapper.currentEditor.body.getBox();
-					doHide = evt.pageX < box.x-33 || evt.pageX >= box.x+box.width+33 || evt.pageY < box.y || evt.pageY >= box.y+box.height;
+					if (evt.relatedTarget !== null) {
+						var isAncestor = Voyant.notebook.editor.EditorWrapper.toolbarLeft.getEl().isAncestor(evt.relatedTarget) || Voyant.notebook.editor.EditorWrapper.toolbarRight.getEl().isAncestor(evt.relatedTarget)
+						doHide = !isAncestor;
+					}
 				}
 				if (doHide) {
-					Voyant.notebook.editor.EditorWrapper.currentEditor.body.removeCls('notebook-editor-wrapper-hover');
+					if (Voyant.notebook.editor.EditorWrapper.currentEditor.body) {
+						Voyant.notebook.editor.EditorWrapper.currentEditor.body.removeCls('notebook-editor-wrapper-hover');
+					}
 					Voyant.notebook.editor.EditorWrapper.currentEditor = undefined;
 
 					if (Voyant.notebook.editor.EditorWrapper.toolbarLeft !== undefined) {
@@ -35818,10 +35797,9 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 
 	/**
 	 * Run the code in this editor.
-	 * @param {boolean} forceRun True to force the code to run, otherwise a check is performed to see if previous editors have already run.
 	 * @param {array} priorVariables Variables from prior cells that should be eval'd before this cell's code
 	 */
-	run: function(forceRun, priorVariables) {
+	run: function(priorVariables) {
 		if (this.results.getIsInitialized()) {
 			if (priorVariables === undefined) {
 				console.log('fetching prior vars');
@@ -35909,6 +35887,14 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 		}
 	},
 
+	// override Ext.Panel expand/collapse
+	expand: function() {
+		this.editor.expand();
+	},
+	collapse: function() {
+		this.editor.collapse();
+	},
+
 	/**
 	 * This is a method for getting string versions of input and output content.
 	 * Primarily used when saving the notebook.
@@ -35930,7 +35916,10 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	mixins: ["Voyant.util.Localization"],
 	alias: "widget.sandboxwrapper",
 	statics: {
-		i18n: {}
+		i18n: {
+			expandResults: 'Expand Results',
+			collapseResults: 'Collapse Results'
+		}
 	},
 
 	config: {
@@ -35993,19 +35982,22 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					items: ['->',{
 						itemId: 'expandButton',
 						glyph: isExpanded ? 'xf066@FontAwesome' : 'xf065@FontAwesome',
-						tooltip: isExpanded ? 'Contract Results' : 'Expand Results',
+						tooltip: isExpanded ? this.localize('collapseResults') : this.localize('expandResults'),
 						handler: function() {
-							this._doExpandContract();
+							this._doExpandCollapse();
 						},
 						scope: this
-					},{
-						xtype: 'notebookwrapperexport'
-					},{
+					}
+					// ,{
+					// 	xtype: 'notebookwrapperexport'
+					// }
+					,{
 						glyph: 'xf014@FontAwesome',
 						tooltip: 'Remove Results',
 						handler: function() {
-							this.resetResults();
+							//this.resetResults();
 							this.clear();
+							this.hide();
 						},
 						scope: this
 					}]
@@ -36021,7 +36013,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					afterrender: function(cmp) {
 						var me = this;
 						cmp.getEl().on('click', function() {
-							me._doExpandContract();
+							me._doExpandCollapse();
 						})
 					},
 					scope: this
@@ -36078,7 +36070,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		}
 
 		// reset
-		this.resetResults();
+		//this.resetResults(); // TODO review this vs setvisible
+		this.show();
 		this.setHasRunError(false);
 		this.getEl().removeCls(['error','success']);
 
@@ -36206,7 +36199,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						break;
 				}
 
-				if (eventData.command !== 'getContents') { // don't overwrite value or variables when we just want to get sandbox contents, i.e. dom output
+				if (eventData.command !== 'getContents' &&  // don't overwrite value or variables when we just want to get sandbox contents, i.e. dom output
+					eventData.command !== 'clear') { // don't wipe variables just because results were cleared TODO review
 					if (eventData.value) {
 						me.setCachedResultsValue(eventData.value);
 					}
@@ -36228,15 +36222,15 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		}
 	},
 
-	_doExpandContract: function() {
+	_doExpandCollapse: function() {
 		var expandButton = this.down('#expandButton');
 		if (this.getExpandResults()) {
 			this.setExpandResults(false);
-			expandButton.setTooltip('Expand Results');
+			expandButton.setTooltip(this.localize('expandResults'));
 			expandButton.setGlyph('xf065@FontAwesome');
 		} else {
 			this.setExpandResults(true);
-			expandButton.setTooltip('Contract Results');
+			expandButton.setTooltip(this.localize('collapseResults'));
 			expandButton.setGlyph('xf066@FontAwesome');
 		}
 		
@@ -36307,9 +36301,11 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		isChangeRegistered: false,
 		editor: undefined,
 		editedTimeout: undefined,
-		lines: 1, // tracks the number of lines in the editor
+		editorHeight: undefined,
+		editorDocHeight: undefined,
 		markers: [],
-		parentWrapper: undefined
+		parentWrapper: undefined,
+		isCollapsed: false
 	},
 	statics: {
 		i18n: {
@@ -36356,12 +36352,6 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 					}
 				}
 			});
-
-			var minHeight = ((this.MIN_LINES+1) * editor.defaultTextHeight()) + 'px';
-			var editorWrapperEl = editor.getWrapperElement();
-			editorWrapperEl.style.height = 'auto';
-			editorWrapperEl.style.minHeight = minHeight;
-			editor.getScrollerElement().style.minHeight = minHeight;
 			
 			editor.on('focus', function(editor, ev) {
 				me.getParentWrapper().setIsEditing(true);
@@ -36373,9 +36363,11 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			editor.on('change', function(editor, ev) {
 				me.clearMarkers();
 				
-				var lines = editor.lineCount();
-				if (lines !== me.getLines()) {
-					me.setLines(lines);
+				var editorHeight = editor.getWrapperElement().offsetHeight;
+				var editorDocHeight = editor.getDoc().height;
+				if (editorHeight !== me.getEditorHeight() || editorDocHeight !== me.getEditorDocHeight()) {
+					me.setEditorHeight(editorHeight);
+					me.setEditorDocHeight(editorDocHeight);
 					setTimeout(function() {
 						var height = editor.getWrapperElement().offsetHeight;
 						me.setSize({height: height});
@@ -36438,6 +36430,8 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			this.setEditor(editor);
 
 			this._setModeOptions(this.getMode());
+
+			this.expand();
 
 			me.fireEvent('resize', me);
 
@@ -36546,6 +36540,49 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				this.up('notebook').handleDocLink(docHref);
 			}.bind(this));
 		}
+	},
+
+	expand: function() {
+		var editor = this.getEditor();
+		var minHeight = ((this.MIN_LINES+1) * editor.defaultTextHeight()) + 'px';
+
+		var editorWrapperEl = editor.getWrapperElement();
+		editorWrapperEl.style.setProperty('min-height', minHeight);
+		editor.getScrollerElement().style.setProperty('min-height', minHeight);
+		editor.setSize(null, 'auto');
+
+		Ext.fly(editorWrapperEl).unmask();
+
+		this.setSize({height: editor.getWrapperElement().offsetHeight});
+
+		this.setIsCollapsed(false);
+	},
+
+	collapse: function() {
+		var editor = this.getEditor();
+		var height = editor.defaultTextHeight()+8;
+
+		var editorWrapperEl = editor.getWrapperElement();
+		editorWrapperEl.style.removeProperty('min-height');
+		editor.getScrollerElement().style.removeProperty('min-height');
+		editor.setSize(null, height);
+		editorWrapperEl.querySelector('.CodeMirror-vscrollbar').style.setProperty('display', 'none');
+
+		var mask = Ext.fly(editorWrapperEl).mask();
+		mask.setStyle({cursor: 'pointer', background: 'none'});
+		mask.down('.x-mask-msg').hide();
+		mask.on('click', function(evt) {
+			this.expand();
+			this.getEditor().focus();
+		}.bind(this))
+
+		this.setSize({height: editor.getWrapperElement().offsetHeight});
+
+		this.setIsCollapsed(true);
+		
+		setTimeout(function() {
+			editor.display.input.blur();
+		}, 0);
 	}
 })
 Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
@@ -36568,9 +36605,12 @@ Ext.define("Voyant.notebook.editor.CodeEditorWrapper", {
 			parentWrapper: this
 		});
 
+		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
+
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
 			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
 			expandResults: config.expandResults,
+			hidden: hideResults,
 			listeners: {
 				initialized: function() {
 					// pass along initialized
@@ -36761,11 +36801,37 @@ Ext.define("Voyant.notebook.editor.TextEditorWrapper", {
 	}
 	
 })
-Ext.define('Voyant.notebook.editor.FileInput', {
+Ext.define('Voyant.notebook.editor.CachedInput', {
 	extend: 'Ext.container.Container',
+	alias: 'widget.notebookcachedinput', 
+	mixins: ['Voyant.util.Localization'],
+	config: {
+	},
+	statics: {
+		i18n: {
+		}
+	},
+
+	constructor: function(config) {
+		this.callParent(arguments);
+	},
+
+	/**
+	 * Returns a Ext.Promise that resolves to a string of code, which, when run, assigns the cached value to the varName
+	 * @param {String} varName The name of the variable to use for the cached value
+	 */
+	getCode: function(varName) {
+		throw new Error('Subclass must override!');
+	},
+
+	getInput: function() {
+		throw new Error('Subclass must override!');
+	}
+});
+Ext.define('Voyant.notebook.editor.FileInput', {
+	extend: 'Voyant.notebook.editor.CachedInput',
 	alias: 'widget.notebookfileinput', 
 	mixins: ['Voyant.util.Localization'],
-	cls: 'notebook-file-input',
 	config: {
 		dataUrl: undefined,
 		resourceId: undefined,
@@ -36784,9 +36850,8 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 
 	constructor: function(config) {
 		Ext.apply(this, {
-			height: 125,
 			width: '100%',
-			layout: 'center',
+			margin: '5px',
 			items: [{
 				xtype: 'voyantfilefield',
 				itemId: 'file',
@@ -36806,6 +36871,8 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 						this.setFileName(filename);
 						this.setDataUrl(undefined);
 						this.setResourceId(undefined);
+
+						this.fireEvent('change', filename);
 					},
 					scope: this
 				}
@@ -36825,45 +36892,45 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 		this.callParent(arguments);
 	},
 
-	getDataUrl: function() {
+	getCode: function(varName) {
 		var dfd = new Ext.Deferred();
 
-		var dataUrl = this.callParent();
-		if (dataUrl === undefined) {
-			if (this.getResourceId()) {
-				this.loadStoredFile().then(function(dataUrl) {
-					dfd.resolve(dataUrl);
-				}, function() {
-					dfd.reject();
-				})
-			} else {
-				if (this.getFile()) {
-					this.storeFile().then(function(result) {
-						dfd.resolve(result[1]);
-					}, function() {
-						dfd.reject();
-					});
-				} else {
+		if (this.getResourceId()) {
+			this.loadStoredFile().then(function(dataUrl) {
+				try {
+					var code = varName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
+					dfd.resolve(code);
+				} catch(e) {
 					dfd.reject();
 				}
-			}
+			}, function() {
+				dfd.reject();
+			})
 		} else {
-			dfd.resolve(dataUrl);
+			if (this.getFile()) {
+				this.storeFile().then(function(result) {
+					try {
+						var code = varName+'= Spyral.Util.dataUrlToBlob(`'+result[1]+'`)';
+						dfd.resolve(code);
+					} catch(e) {
+						dfd.reject();
+					}
+				}, function() {
+					dfd.reject();
+				});
+			} else {
+				dfd.reject();
+			}
 		}
 
 		return dfd.promise;
 	},
 
-	getBlob: function() {
-		var dfd = new Ext.Deferred();
-
-		this.getDataUrl().then(function(dataUrl) {
-			dfd.resolve(Spyral.Util.dataUrlToBlob(dataUrl));
-		}, function(err) {
-			dfd.reject(err);
-		});
-
-		return dfd.promise;
+	getInput: function() {
+		return {
+			resourceId: this.getResourceId(),
+			fileName: this.getFileName()
+		}
 	},
 
 	storeFile: function() {
@@ -36925,9 +36992,244 @@ Ext.define('Voyant.form.field.File', {
 		return this.callParent([ button, e, newValue ]);
 	}
 });
+Ext.define('Voyant.notebook.editor.CorpusInput', {
+	extend: 'Voyant.notebook.editor.CachedInput',
+	alias: 'widget.notebookcorpusinput', 
+	mixins: ['Voyant.util.Localization'],
+	config: {
+		corpusId: undefined,
+		type: undefined,
+		value: undefined
+	},
+	statics: {
+		i18n: {
+			corpusInput: 'Corpus Input',
+			corpusText: 'Text',
+			corpusVariable: 'Variable',
+			corpusFile: 'File',
+			corpusId: 'Corpus ID',
+			notebookVariables: 'Notebook Variables'
+		}
+	},
+
+	constructor: function(config) {
+		Ext.apply(this, {
+			layout: {
+				type: 'hbox',
+				align: 'begin',
+				pack: 'start'
+			},
+			items: [{
+				xtype: 'combo',
+				itemId: 'type',
+				fieldLabel: this.localize('corpusInput'),
+				labelAlign: 'right',
+				margin: '5px',
+				queryMode: 'local',
+				allowBlank: false,
+				editable: false,
+				forceSelection: true,
+				value: 'text',
+				store: [['text',this.localize('corpusText')],['variable',this.localize('corpusVariable')],['file',this.localize('corpusFile')],['id',this.localize('corpusId')]],
+				listeners: {
+					change: function(rg, val) {
+						rg.nextSibling().getLayout().setActiveItem(val);
+						this.setType(val);
+						this.setCorpusId(undefined);
+					},
+					scope: this
+				}
+			},{
+				xtype: 'container',
+				layout: 'card',
+				defaultType: 'container',
+				itemId: 'cards',
+				flex: 1,
+				margin: '5px 5px 5px 0',
+				items: [{
+					itemId: 'text',
+					items: [{
+						xtype: 'textfield',
+						width: '75%',
+						name: 'text',
+						fieldLabel: '',
+						listeners: {
+							change: function() {
+								this.setCorpusId(undefined);
+							},
+							scope: this
+						}
+					}]
+				},{
+					itemId: 'variable',
+					items: [{
+						xtype: 'combo',
+						name: 'variable',
+						fieldLabel: '',
+						triggerAction: 'all',
+						queryMode: 'local',
+						editable: false,
+						forceSelection: true,
+						emptyText: this.localize('notebookVariables'),
+						store: { fields: ['text'] }
+					}],
+					listeners: {
+						activate: function(crd) {
+							this.populateVariables();
+						},
+						change: function() {
+							this.setCorpusId(undefined);
+						},
+						scope: this
+					}
+				},{
+					itemId: 'file',
+					xtype: 'notebookfileinput',
+					listeners: {
+						change: function() {
+							this.setCorpusId(undefined);
+						},
+						scope: this
+					}
+				},{
+					itemId: 'id',
+					items: [{
+						xtype: 'textfield',
+						width: '75%',
+						name: 'id',
+						fieldLabel: '',
+						listeners: {
+							change: function() {
+								this.setCorpusId(undefined);
+							},
+							scope: this
+						}
+					}]
+				}]
+			}],
+			listeners: {
+				boxready: function(cmp) {
+					if (config.type) {
+						cmp.down('#type').setValue(config.type);
+					}
+					if (config.value) {
+						var formField = cmp.down('#'+config.type).child();
+						if (formField.setRawValue) {
+							formField.setRawValue(config.value);
+						} else {
+							formField.setValue(config.value);
+						}
+					}
+					// set corpusId last, because of change listeners
+					if (config.corpusId) {
+						cmp.setCorpusId(config.corpusId);
+					}
+
+					cmp.up('notebookdatawrapper').results.on('sandboxMessage', function(msg) {
+						// use sandbox listener to capture corpusId
+						if (msg.type === 'result') {
+							var corpusVarName = cmp.up('notebookdatawrapper').getDataName();
+							var corpusVal = msg.variables.find(function(variable) { return variable.name === corpusVarName });
+							Spyral.Util.blobToString(corpusVal.value).then(function(strVal) {
+								var corpusJson = JSON.parse(strVal);
+								cmp.setCorpusId(corpusJson.corpusid);
+							});
+						}
+					});
+
+					cmp.up('notebook').on('notebookRun', cmp.populateVariables, cmp);
+				}
+			}
+		});
+
+		this.callParent(arguments);
+	},
+
+	populateVariables: function() {
+		var cmp = this.up('notebookdatawrapper');
+		var prev = cmp.previousSibling();
+		var variables = [];
+		if (prev !== null) {
+			variables = cmp.up('notebook').getNotebookVariables(cmp).map(function(vr) { return [vr.name] });
+		}
+		var combo = this.down('#variable combo');
+		combo.getStore().loadRawData(variables);
+		
+		var resetCombo = true;
+		var currValue = combo.getRawValue();
+		variables.forEach(function(variable) {
+			if (variable.indexOf(currValue) !== -1) {
+				resetCombo = false;
+			}
+		})
+		if (resetCombo) {
+			combo.setValue(undefined);
+		}
+	},
+
+	getCode: function(varName) {
+		var dfd = new Ext.Deferred();
+
+		if (this.getCorpusId()) {
+			var val = varName+'=new Spyral.Corpus("'+this.getCorpusId()+'")';
+			dfd.resolve(val);
+		} else {
+			var activeItem = this.down('#cards').getLayout().getActiveItem();
+			var type = activeItem.getItemId();
+			this.setType(type);
+			if (type === 'variable') {
+				var inputVarName = activeItem.down('combo').getValue();
+				this.setValue(inputVarName);
+				if (inputVarName !== '') {
+					var val = 'Spyral.Corpus.load({input:'+inputVarName+'}).then(function(){'+varName+'=arguments[0]})';
+					dfd.resolve(val);
+				} else {
+					dfd.reject('No variable specified!');
+				}
+			} else if (type === 'file') {
+				var file = activeItem.getFile();
+				this.setValue(activeItem.getFileName());
+				Spyral.Util.blobToDataUrl(file).then(function(dataUrl) {
+					var val = 'Spyral.Corpus.load(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)).then(function(){'+varName+'=arguments[0]})';
+					dfd.resolve(val);
+				}, function() {
+					dfd.reject();
+				});
+			} else if (type === 'text') {
+				var text = activeItem.down('textfield').getValue().replace('"', '\"');
+				this.setValue(text);
+				if (text !== '') {
+					var val = 'Spyral.Corpus.load({input:"'+text+'"}).then(function(){'+varName+'=arguments[0]})';
+					dfd.resolve(val);
+				} else {
+					dfd.reject('No text entered!');
+				}
+			} else if (type === 'id') {
+				var id = activeItem.down('textfield').getValue().replace('"', '\"');
+				this.setValue(id);
+				if (id !== '') {
+					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0]})';
+					dfd.resolve(val);
+				} else {
+					dfd.reject('No ID entered!');
+				}
+			}
+		}
+
+		return dfd.promise;
+	},
+
+	getInput: function() {
+		return {
+			corpusId: this.getCorpusId(),
+			type: this.getType(),
+			value: this.getValue()
+		}
+	}
+});
 Ext.define("Voyant.notebook.editor.DataWrapper", {
 	extend: "Voyant.notebook.editor.RunnableEditorWrapper",
-	requires: ["Voyant.notebook.editor.CodeEditor", "Voyant.notebook.editor.FileInput"],
+	requires: ["Voyant.notebook.editor.CodeEditor", "Voyant.notebook.editor.FileInput", "Voyant.notebook.editor.CorpusInput"],
 	alias: "widget.notebookdatawrapper",
 	cls: 'notebook-data-wrapper',
 	statics: {
@@ -36943,10 +37245,11 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 	constructor: function(config) {
 		config.mode = config.mode !== undefined ? config.mode : 'json';
 
-		var isFile = config.mode === 'file';
+		var hasCachedInput = config.mode === 'file' || config.mode === 'corpus';
+
 		var resourceId = undefined;
 		var fileName = undefined;
-		if (isFile) {
+		if (hasCachedInput) {
 			resourceId = config.input.resourceId;
 			fileName = config.input.fileName;
 		}
@@ -36955,19 +37258,23 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			content: Ext.Array.from(config.input).join("\n"),
 			docs: config.docs, // TODO
 			mode: config.mode,
-			hidden: isFile,
+			hidden: hasCachedInput,
 			parentWrapper: this
 		});
 
-		this.fileInput = Ext.create('Voyant.notebook.editor.FileInput', {
-			resourceId: resourceId,
-			fileName: fileName,
-			hidden: !isFile
-		});
+		if (config.mode === 'corpus') {
+			this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', config.input);
+		} else {
+			var cfg = hasCachedInput ? config.input : {};
+			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput}));
+		}
+
+		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
 
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
 			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
 			expandResults: config.expandResults,
+			hidden: hideResults,
 			listeners: {
 				initialized: function() {
 					// pass along initialized
@@ -36985,7 +37292,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			border: false,
 			layout: 'anchor',
 			defaults: { anchor: '100%' },
-			items: [this.editor, this.fileInput, {
+			items: [this.editor, this.cachedInput, {
 				xtype: 'form',
 				cls: 'notebook-data-input',
 				bodyPadding: 6,
@@ -37050,9 +37357,22 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 			
 			if (mode === 'file') {
 				this.editor.hide();
-				this.fileInput.show();
+				if (this.cachedInput.isXType('notebookcorpusinput')) {
+					this.cachedInput.destroy();
+					this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', {});
+					this.insert(1, this.cachedInput);
+				}
+				this.cachedInput.show();
+			} else if (mode === 'corpus') {
+				this.editor.hide();
+				if (this.cachedInput.isXType('notebookfileinput')) {
+					this.cachedInput.destroy();
+					this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', {});
+					this.insert(1, this.cachedInput);
+				}
+				this.cachedInput.show();
 			} else {
-				this.fileInput.hide();
+				this.cachedInput.hide();
 				this.editor.switchModes(mode);
 				this.editor.show();
 			}
@@ -37070,9 +37390,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		}
 
 		var mode = this.getMode();
-		if (mode === 'file') {
-			this.fileInput.getDataUrl().then(function(dataUrl) {
-				var code = dataName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
+		if (mode === 'file' || mode === 'corpus') {
+			this.cachedInput.getCode(dataName).then(function(code) {
 				dfd.resolve(code);
 			}, function() {
 				dfd.reject();
@@ -37106,7 +37425,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		this._getCode().then(function(code) {
 			me.results.clear();
 
-			if (me.getMode() !== 'file') {
+			if (me.getMode() !== 'file' && me.getMode() !== 'corpus') {
 				me.editor.clearMarkers();
 			}
 
@@ -37133,13 +37452,10 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 
 	getInput: function() {
 		var mode = this.getMode();
-		if (mode !== 'file') {
-			return this.editor.getValue();
+		if (mode === 'file' || mode === 'corpus') {
+			return this.cachedInput.getInput();
 		} else {
-			return {
-				resourceId: this.fileInput.getResourceId(),
-				fileName: this.fileInput.getFileName()
-			}
+			return this.editor.getValue();
 		}
 	},
 
@@ -38169,7 +38485,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 					fieldLabel: me.localize('notebookFile'),
 					allowBlank: false,
 					buttonText: me.localize('selectFile'),
-					accept: 'text/html'
+					accept: 'text/html,application/json'
 				}],
 				buttons: [{
 					text: me.localize('cancel'),
@@ -38233,6 +38549,11 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 			console.warn('doSave: was sent notebookId instead of name');
 			notebookName = notebookName.split(this.notebookParent.NOTEBOOK_ID_SEPARATOR)[1];
 		}
+
+		var totalData = {data: data, metadata: JSON.stringify(metadata)};
+		console.log('notebook size:',JSON.stringify(totalData).length);
+		// TODO use form & isUpload options below, to handle large notebooks
+		// https://docs.sencha.com/extjs/6.2.0/classic/Ext.Ajax.html#method-request
 
 		Ext.Ajax.request({
 			method: 'POST',
@@ -38934,7 +39255,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
 
 		Ext.Ajax.request({
-			// TODO inaccessible on server?
+			// TODO inaccessible on server? Same with servers.json used by mirrors.jsp
 			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
 		}).then(function(response) {
 			var json;
@@ -40073,7 +40394,7 @@ Ext.define('Voyant.notebook.Notebook', {
     			itemId: 'cells',
 				defaults: {
 					margin: '10 0 10 0',
-					padding: '0 50 0 50'
+					padding: '0 65 0 65'
 				}
     		},{
     			itemId: 'spyralFooter',
@@ -40280,6 +40601,35 @@ Ext.define('Voyant.notebook.Notebook', {
 		return location.href; // we just provide the current URL
 	},
 
+	// override toolable method
+	exportBiblio: function() {
+		var date = new Date();
+		var url = this.getExportUrl();
+		var metadata = this.getMetadata();
+		var author = metadata.author;
+		var title = metadata.title;
+		Ext.Msg.show({
+			title: this.localize('exportBiblioTitle'),
+			message: '<fieldset><legend>MLA</legend>'+
+			'<div class="x-selectable">'+
+			author+'. "'+title+'." '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. '+Ext.Date.format(date,'Y')+'. Web. '+Ext.Date.format(date,'j M Y')+'. &lt;'+url+'&gt;.'+
+			'</div></fieldset><br >'+
+			'<fieldset><legend>Chicago</legend>'+
+			'<div class="x-selectable">'+
+			author+', "'+title+'", '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. Accessed '+Ext.Date.format(date,'F j, Y')+', '+url+'.'+
+			'</div></fieldset><br >'+
+			'<fieldset><legend>APA</legend>'+
+			'<div class="x-selectable">'+
+			author+'. ('+Ext.Date.format(date,'Y')+"). "+title+'. '+
+			'<i>Spyral - Voyant Tools</i>, Development led by Stéfan Sinclair and Geoffrey Rockwell. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+
+			'</div></fieldset>',
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO
+		})
+	},
+
 	loadFromQueryParams: function() {
 		var queryParams = Ext.Object.fromQueryString(document.location.search, true);
 		var doRun = Ext.isDefined(queryParams.run);
@@ -40328,8 +40678,8 @@ Ext.define('Voyant.notebook.Notebook', {
 		}
 	},
 	
-    loadFromString: function(text) {
-    	text = text.trim();
+	loadFromString: function(text) {
+		text = text.trim();
 		if (text.indexOf("{") === 0) {
 			this.loadFromJson(text);
 		} else if (this.SPYRAL_ID_REGEX.test('/spyral/'+text)) {
@@ -40513,7 +40863,7 @@ Ext.define('Voyant.notebook.Notebook', {
     	if (containers.length>0) {
     		var container = containers.shift();
 			var me = this;
-    		container.run(true, prevVars).then(function(result) {
+    		container.run(prevVars).then(function(result) {
 				// check for and remove older duplicates
 				var newVars = container.getVariables();
 				if (prevVars === undefined) {
@@ -40568,6 +40918,11 @@ Ext.define('Voyant.notebook.Notebook', {
 						// ensuring that the tern server is aware of the variable name and type
 						var ternText = 'var '+theVar.name+' = new '+theVar.isSpyralClass+'()';
 						Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+					} else {
+						Spyral.Util.blobToString(theVar.value).then(function(blobStr) {
+							var ternText = 'var '+theVar.name+' = '+blobStr;
+							Voyant.notebook.editor.CodeEditor.ternServer.server.addFile(theVar.name, ternText);
+						});
 					}
 				});
 			}
