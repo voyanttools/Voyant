@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Jan 12 16:57:50 UTC 2023 */
+/* This file created by JSCacher. Last modified: Mon Jan 16 16:56:12 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -35612,7 +35612,8 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 		cellId: undefined,
 		index: undefined,
 		content: '',
-		isEditing: false
+		isEditing: false,
+		isCollapsed: false // custom tracker instead of using Panel's collapsed, which causes due to our overrides
 	},
 	statics: {
 		currentEditor: undefined, // used primarily by toolbar buttons to determine the target of their actions
@@ -35669,7 +35670,13 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 										xtype: 'notebookwrappermovedown'
 									}]
 								}
-							}]
+							}],
+							listeners: {
+								show: function(menu) {
+									var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+									menu.down('#notebookwrapperexpandcollapse').setCollapsed(ed.getIsCollapsed());
+								}
+							}
 						}
 					},{
 						style: {float: 'left'},
@@ -35890,9 +35897,11 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 	// override Ext.Panel expand/collapse
 	expand: function() {
 		this.editor.expand();
+		this.setIsCollapsed(false);
 	},
 	collapse: function() {
 		this.editor.collapse();
+		this.setIsCollapsed(true);
 	},
 
 	/**
