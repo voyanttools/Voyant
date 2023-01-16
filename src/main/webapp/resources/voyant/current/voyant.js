@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Jan 16 16:56:12 UTC 2023 */
+/* This file created by JSCacher. Last modified: Mon Jan 16 19:58:38 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -37344,9 +37344,11 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 					margin: '0 0 0 6',
 					xtype: 'button',
 					text: 'Assign',
-					handler: function(btn) {
-						this.up('notebook').setIsEdited(true);
-						this.run();
+					handler: function() {
+						if (this.down('textfield[name=dataName]').validate()) {
+							this.up('notebook').setIsEdited(true);
+							this.run();
+						}
 					},
 					scope: this
 				}]
@@ -37394,8 +37396,11 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		var dfd = new Ext.Deferred();
 
 		var dataName = this.getDataName();
-		if (dataName === undefined) {
+		var dataNameField = this.down('textfield[name=dataName]');
+		if (dataName === undefined || dataNameField.isValid() === false) {
+			dataNameField.markInvalid(dataNameField.getErrors(dataNameField.getValue()));
 			dfd.reject();
+			return dfd.promise;
 		}
 
 		var mode = this.getMode();
