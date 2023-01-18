@@ -36,8 +36,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		if (config.mode === 'corpus') {
 			this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', config.input);
 		} else {
-			var cfg = hasCachedInput ? config.input : {};
-			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput}));
+			var cfg = hasCachedInput && config.input !== '' ? config.input : {};
+			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput, margin: '5px'}));
 		}
 
 		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
@@ -132,7 +132,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 				this.editor.hide();
 				if (this.cachedInput.isXType('notebookcorpusinput')) {
 					this.cachedInput.destroy();
-					this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', {});
+					this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', {margin: '5px'});
 					this.insert(1, this.cachedInput);
 				}
 				this.cachedInput.show();

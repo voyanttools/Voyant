@@ -18,6 +18,8 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 		}
 	},
 
+	corpusCreator: undefined,
+
 	constructor: function(config) {
 		Ext.apply(this, {
 			layout: {
@@ -42,6 +44,12 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						rg.nextSibling().getLayout().setActiveItem(val);
 						this.setType(val);
 						this.setCorpusId(undefined);
+
+						if (val === 'id') {
+							rg.nextSibling('#corpusOptions').hide();
+						} else {
+							rg.nextSibling('#corpusOptions').show();
+						}
 					},
 					scope: this
 				}
@@ -91,6 +99,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				},{
 					itemId: 'file',
 					xtype: 'notebookfileinput',
+					flex: 1,
 					listeners: {
 						change: function() {
 							this.setCorpusId(undefined);
@@ -112,6 +121,25 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						}
 					}]
 				}]
+			},{
+				itemId: 'corpusOptions',
+				xtype: 'button',
+				width: 60,
+				margin: '5px 5px 5px 0',
+				text: 'Options',
+				handler: function(btn) {
+					if (this.corpusCreator === undefined) {
+						this.corpusCreator = Ext.create('Voyant.panel.CorpusCreator');
+
+					}
+					this.corpusCreator.showOptionsClick(this.corpusCreator);
+					this.corpusCreator.optionsWin.query('fieldset:last')[0].hide(); // hide access manager
+					this.corpusCreator.optionsWin.query('button:first')[0].on('click', function(btn) {
+						// reset corpus on OK button click
+						this.setCorpusId(undefined);
+					}, this, {single: true});
+				},
+				scope: this
 			}],
 			listeners: {
 				boxready: function(cmp) {
@@ -183,11 +211,18 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 			var activeItem = this.down('#cards').getLayout().getActiveItem();
 			var type = activeItem.getItemId();
 			this.setType(type);
+			
+			var apiParams = {};
+			if (this.corpusCreator) {
+				Ext.apply(apiParams, this.corpusCreator.getApiParams());
+			}
+			var apiParamsStr = JSON.stringify(apiParams);
+			
 			if (type === 'variable') {
-				var inputVarName = activeItem.down('combo').getValue();
+				var inputVarName = activeItem.down('combo').getRawValue();
 				this.setValue(inputVarName);
 				if (inputVarName !== '') {
-					var val = 'Spyral.Corpus.load({input:'+inputVarName+'}).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load('+inputVarName+','+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No variable specified!');
@@ -196,7 +231,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				var file = activeItem.getFile();
 				this.setValue(activeItem.getFileName());
 				Spyral.Util.blobToDataUrl(file).then(function(dataUrl) {
-					var val = 'Spyral.Corpus.load(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`),'+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				}, function() {
 					dfd.reject();
@@ -205,7 +240,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				var text = activeItem.down('textfield').getValue().replace('"', '\"');
 				this.setValue(text);
 				if (text !== '') {
-					var val = 'Spyral.Corpus.load({input:"'+text+'"}).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load({input:"'+text+'"},'+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No text entered!');
@@ -214,7 +249,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				var id = activeItem.down('textfield').getValue().replace('"', '\"');
 				this.setValue(id);
 				if (id !== '') {
-					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No ID entered!');
@@ -231,5 +266,31 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 			type: this.getType(),
 			value: this.getValue()
 		}
+	},
+
+	getBlob: function() {
+		var dfd = new Ext.Deferred();
+
+		var corpusId = this.getCorpusId();
+		if (corpusId === undefined) {
+			dfd.reject();
+		} else {
+			Ext.Ajax.request({
+				url: Voyant.application.getTromboneUrl(),
+				binary: true,
+				params: {
+					tool: 'corpus.CorpusExporter',
+					corpus: corpusId,
+					outputFormat: 'zip'
+				}
+			}).then(function(response) {
+				const blob = new Blob([response.responseBytes], {type: 'application/zip'});
+				dfd.resolve(blob);
+			}, function(err) {
+				dfd.reject(err);
+			});
+		}
+
+		return dfd.promise;
 	}
 });
