@@ -282,7 +282,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		mask.setStyle({cursor: 'pointer', background: 'none'});
 		mask.down('.x-mask-msg').hide();
 		mask.on('click', function(evt) {
-			this.expand();
+			this.up('notebookrunnableeditorwrapper').expand();
 			this.getEditor().focus();
 		}.bind(this))
 
