@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Jan 16 19:58:38 UTC 2023 */
+/* This file created by JSCacher. Last modified: Wed Jan 18 20:22:37 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -35279,13 +35279,17 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				var openButton = this.exportWin.down('#open');
 				corpusButton.setHidden(true);
 				openButton.setHidden(false);
-	
+
 				var fileName;
 				var fileType;
 				var fileContent;
-				if (mode === 'file') {
+				if (mode === 'file' || mode === 'corpus') {
 					openButton.setHidden(true);
-					fileName = input.fileName;
+					if (mode === 'file') {
+						fileName = input.fileName;
+					} else {
+						fileName = 'SpyralCorpus-'+input.corpusId;
+					}
 					fileType = output.type;
 					fileContent = output;
 				} else if (mode === 'javascript') {
@@ -36581,7 +36585,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 		mask.setStyle({cursor: 'pointer', background: 'none'});
 		mask.down('.x-mask-msg').hide();
 		mask.on('click', function(evt) {
-			this.expand();
+			this.up('notebookrunnableeditorwrapper').expand();
 			this.getEditor().focus();
 		}.bind(this))
 
@@ -36833,7 +36837,17 @@ Ext.define('Voyant.notebook.editor.CachedInput', {
 		throw new Error('Subclass must override!');
 	},
 
+	/**
+	 * Returns an object suitable for saving to a notebook file, which can be used to recreate the input on load
+	 */
 	getInput: function() {
+		throw new Error('Subclass must override!');
+	},
+
+	/**
+	 * Returns a Ext.Promise that resolves to a Blob of the cached input value
+	 */
+	getBlob: function() {
 		throw new Error('Subclass must override!');
 	}
 });
@@ -36858,9 +36872,8 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 	serverStorage: undefined,
 
 	constructor: function(config) {
-		Ext.apply(this, {
+		Ext.apply(this, config, {
 			width: '100%',
-			margin: '5px',
 			items: [{
 				xtype: 'voyantfilefield',
 				itemId: 'file',
@@ -36904,26 +36917,36 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 	getCode: function(varName) {
 		var dfd = new Ext.Deferred();
 
+		this.getDataUrl().then(function(dataUrl) {
+			var code = varName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
+			dfd.resolve(code);
+		}, function() {
+			dfd.reject();
+		});
+
+		return dfd.promise;
+	},
+
+	getInput: function() {
+		return {
+			resourceId: this.getResourceId(),
+			fileName: this.getFileName()
+		}
+	},
+
+	getDataUrl: function() {
+		var dfd = new Ext.Deferred();
+
 		if (this.getResourceId()) {
 			this.loadStoredFile().then(function(dataUrl) {
-				try {
-					var code = varName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
-					dfd.resolve(code);
-				} catch(e) {
-					dfd.reject();
-				}
+				dfd.resolve(dataUrl);
 			}, function() {
 				dfd.reject();
 			})
 		} else {
 			if (this.getFile()) {
 				this.storeFile().then(function(result) {
-					try {
-						var code = varName+'= Spyral.Util.dataUrlToBlob(`'+result[1]+'`)';
-						dfd.resolve(code);
-					} catch(e) {
-						dfd.reject();
-					}
+					dfd.resolve(result[1]);
 				}, function() {
 					dfd.reject();
 				});
@@ -36935,11 +36958,17 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 		return dfd.promise;
 	},
 
-	getInput: function() {
-		return {
-			resourceId: this.getResourceId(),
-			fileName: this.getFileName()
-		}
+	getBlob: function() {
+		var dfd = new Ext.Deferred();
+
+		this.getDataUrl().then(function(dataUrl) {
+			var blob = Spyral.Util.dataUrlToBlob(dataUrl);
+			dfd.resolve(blob);
+		}, function() {
+			dfd.reject();
+		});
+
+		return dfd.promise;
 	},
 
 	storeFile: function() {
@@ -37021,6 +37050,8 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 		}
 	},
 
+	corpusCreator: undefined,
+
 	constructor: function(config) {
 		Ext.apply(this, {
 			layout: {
@@ -37045,6 +37076,12 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						rg.nextSibling().getLayout().setActiveItem(val);
 						this.setType(val);
 						this.setCorpusId(undefined);
+
+						if (val === 'id') {
+							rg.nextSibling('#corpusOptions').hide();
+						} else {
+							rg.nextSibling('#corpusOptions').show();
+						}
 					},
 					scope: this
 				}
@@ -37094,6 +37131,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				},{
 					itemId: 'file',
 					xtype: 'notebookfileinput',
+					flex: 1,
 					listeners: {
 						change: function() {
 							this.setCorpusId(undefined);
@@ -37115,6 +37153,25 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						}
 					}]
 				}]
+			},{
+				itemId: 'corpusOptions',
+				xtype: 'button',
+				width: 60,
+				margin: '5px 5px 5px 0',
+				text: 'Options',
+				handler: function(btn) {
+					if (this.corpusCreator === undefined) {
+						this.corpusCreator = Ext.create('Voyant.panel.CorpusCreator');
+
+					}
+					this.corpusCreator.showOptionsClick(this.corpusCreator);
+					this.corpusCreator.optionsWin.query('fieldset:last')[0].hide(); // hide access manager
+					this.corpusCreator.optionsWin.query('button:first')[0].on('click', function(btn) {
+						// reset corpus on OK button click
+						this.setCorpusId(undefined);
+					}, this, {single: true});
+				},
+				scope: this
 			}],
 			listeners: {
 				boxready: function(cmp) {
@@ -37186,11 +37243,18 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 			var activeItem = this.down('#cards').getLayout().getActiveItem();
 			var type = activeItem.getItemId();
 			this.setType(type);
+			
+			var apiParams = {};
+			if (this.corpusCreator) {
+				Ext.apply(apiParams, this.corpusCreator.getApiParams());
+			}
+			var apiParamsStr = JSON.stringify(apiParams);
+			
 			if (type === 'variable') {
-				var inputVarName = activeItem.down('combo').getValue();
+				var inputVarName = activeItem.down('combo').getRawValue();
 				this.setValue(inputVarName);
 				if (inputVarName !== '') {
-					var val = 'Spyral.Corpus.load({input:'+inputVarName+'}).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load('+inputVarName+','+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No variable specified!');
@@ -37199,7 +37263,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				var file = activeItem.getFile();
 				this.setValue(activeItem.getFileName());
 				Spyral.Util.blobToDataUrl(file).then(function(dataUrl) {
-					var val = 'Spyral.Corpus.load(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`),'+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				}, function() {
 					dfd.reject();
@@ -37208,7 +37272,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				var text = activeItem.down('textfield').getValue().replace('"', '\"');
 				this.setValue(text);
 				if (text !== '') {
-					var val = 'Spyral.Corpus.load({input:"'+text+'"}).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load({input:"'+text+'"},'+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No text entered!');
@@ -37217,7 +37281,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 				var id = activeItem.down('textfield').getValue().replace('"', '\"');
 				this.setValue(id);
 				if (id !== '') {
-					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0]})';
+					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
 					dfd.resolve(val);
 				} else {
 					dfd.reject('No ID entered!');
@@ -37234,6 +37298,32 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 			type: this.getType(),
 			value: this.getValue()
 		}
+	},
+
+	getBlob: function() {
+		var dfd = new Ext.Deferred();
+
+		var corpusId = this.getCorpusId();
+		if (corpusId === undefined) {
+			dfd.reject();
+		} else {
+			Ext.Ajax.request({
+				url: Voyant.application.getTromboneUrl(),
+				binary: true,
+				params: {
+					tool: 'corpus.CorpusExporter',
+					corpus: corpusId,
+					outputFormat: 'zip'
+				}
+			}).then(function(response) {
+				const blob = new Blob([response.responseBytes], {type: 'application/zip'});
+				dfd.resolve(blob);
+			}, function(err) {
+				dfd.reject(err);
+			});
+		}
+
+		return dfd.promise;
 	}
 });
 Ext.define("Voyant.notebook.editor.DataWrapper", {
@@ -37274,8 +37364,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		if (config.mode === 'corpus') {
 			this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', config.input);
 		} else {
-			var cfg = hasCachedInput ? config.input : {};
-			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput}));
+			var cfg = hasCachedInput && config.input !== '' ? config.input : {};
+			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput, margin: '5px'}));
 		}
 
 		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
@@ -37370,7 +37460,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 				this.editor.hide();
 				if (this.cachedInput.isXType('notebookcorpusinput')) {
 					this.cachedInput.destroy();
-					this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', {});
+					this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', {margin: '5px'});
 					this.insert(1, this.cachedInput);
 				}
 				this.cachedInput.show();
