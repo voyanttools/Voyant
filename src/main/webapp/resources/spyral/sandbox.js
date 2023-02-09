@@ -90,44 +90,46 @@ function Sandboxer(event) {
 					reject(err);
 				});
 			} else {
-				var type = 'application/javascript';
 				var blobData = thing;
-
-				var spyralClass = me.getSpyralClass(thing);
-				if (spyralClass === 'Spyral.Chart') {
-					type = 'application/json';
-					blobData = JSON.stringify({userOptions: thing.userOptions, renderTo: thing.renderTo});
-				} else if (Spyral.Util.isString(thing)) {
-					type = 'text/string';
-					blobData = thing;
-				} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
-					// TODO deep / recursive analysis
-					type = 'application/json';
-					blobData = JSON.stringify(thing);
-				} else if (Spyral.Util.isFunction(thing)) {
-					type = 'application/javascript';
-					blobData = thing.toString();
-				} else if (Spyral.Util.isNode(thing)) {
-					type = 'text/xml';
-					blobData = new XMLSerializer().serializeToString(thing);
-				} else if (Spyral.Util.isNumber(thing) || Spyral.Util.isBoolean(thing) || Spyral.Util.isUndefined(thing) || Spyral.Util.isNull(thing)) {
-					type = 'application/javascript';
-					blobData = thing;
+				if (Spyral.Util.isBlob(blobData)) {
+					resolve(blobData);
 				} else {
-					console.warn('unrecognized var type', thing);
+					var type = 'application/javascript';
+					var spyralClass = me.getSpyralClass(thing);
+					if (spyralClass === 'Spyral.Chart') {
+						type = 'application/json';
+						blobData = JSON.stringify({userOptions: thing.userOptions, renderTo: thing.renderTo});
+					} else if (Spyral.Util.isString(thing)) {
+						type = 'text/string';
+						blobData = thing;
+					} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
+						// TODO deep / recursive analysis
+						type = 'application/json';
+						blobData = JSON.stringify(thing);
+					} else if (Spyral.Util.isFunction(thing)) {
+						type = 'application/javascript';
+						blobData = thing.toString();
+					} else if (Spyral.Util.isNode(thing)) {
+						type = 'text/xml';
+						blobData = new XMLSerializer().serializeToString(thing);
+					} else if (Spyral.Util.isNumber(thing) || Spyral.Util.isBoolean(thing) || Spyral.Util.isUndefined(thing) || Spyral.Util.isNull(thing)) {
+						type = 'application/javascript';
+						blobData = thing;
+					} else {
+						console.warn('unrecognized var type', thing);
+					}
+					
+					resolve(new Blob([blobData], {type: type}));
 				}
-				
-				resolve(new Blob([blobData], {type: type}));
 			}
 		});
 	}
 
 	this.blob2Var = function(blob) {
+		var types2decode = ['text/string','text/plain','application/json','application/javascript','text/xml','text/html'];
+		
 		return new Promise(function(resolve, reject) {
-			if (blob.type.search(/application\/(?!json|javascript)/) === 0) {
-				// probably a non-browser file type
-				resolve(blob);
-			} else {
+			if (types2decode.indexOf(blob.type) !== -1) {
 				var reader = new FileReader();
 				reader.addEventListener('loadend', function(ev) {
 					try {
@@ -143,6 +145,8 @@ function Sandboxer(event) {
 							data = new DOMParser().parseFromString(data, 'text/xml');
 						} else {
 							console.warn('unknown blob type: '+blob.type);
+							resolve(blob);
+							return;
 						}
 						resolve(data);
 					} catch (err) {
@@ -150,6 +154,8 @@ function Sandboxer(event) {
 					}
 				});
 				reader.readAsArrayBuffer(blob);
+			} else {
+				resolve(blob);
 			}
 		});
 	}
