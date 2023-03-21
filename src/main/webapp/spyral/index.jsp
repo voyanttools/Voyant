@@ -32,29 +32,6 @@ if (request.getServletPath().equals("/spiral")) {
 <script src="<%= base %>/resources/spyral/build/spyral.js"></script>
 
 <script src="<%= base %>/resources/ckeditor/ckeditor4.19.1/ckeditor.js"></script>
-<script>
-// adapted from http://handsomedogstudio.com/ckeditor-set-default-target-blank
-CKEDITOR.on('dialogDefinition', function(ev) {
-    try {
-		var dialogName = ev.data.name;
-		var dialogDefinition = ev.data.definition;
-		/* Make sure that the dialog opened is the link plugin ... otherwise do nothing */
-		if(dialogName == 'link') {
-	    /* Getting the contents of the Target tab */
-	    	var informationTab = dialogDefinition.getContents('target');
-		    /* Getting the contents of the dropdown field "Target" so we can set it */
-		    var targetField = informationTab.get('linkTargetType');
-		    /* Now that we have the field, we just set the default to _blank
-			    A good modification would be to check the value of the URL field
-	    		and if the field does not start with "mailto:" or a relative path,
-			    then set the value to "_blank" */
-    		targetField['default'] = '_blank';
-		}
-    } catch(exception) {
-        alert('Error ' + ev.message);
-    }
-});
-</script>
 
 <!-- codemirror -->
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/codemirror/lib/codemirror.css" />
