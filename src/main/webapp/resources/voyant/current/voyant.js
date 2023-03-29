@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Jan 18 20:22:37 UTC 2023 */
+/* This file created by JSCacher. Last modified: Wed Mar 29 17:26:37 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -35983,7 +35983,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					anchor: '100%',
 					height: '100%',
 					src: sandboxSrcUrl,
-					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>']
+					renderTpl: ['<iframe allow="midi; geolocation; microphone; camera; display-capture; encrypted-media;" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-forms allow-top-navigation-by-user-activation allow-downloads" src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" style="min-height: 40px"></iframe>']
 				},{
 					xtype: 'toolbar',
 					itemId: 'buttons',
