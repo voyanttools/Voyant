@@ -7,7 +7,8 @@ function Sandboxer(event) {
 		value: undefined, // result of running the code
 		output: undefined, // html result of running the code
 		height: undefined, // height of the this document
-		variables: [] // variables created as a result of running the code
+		variables: [], // variables created as a result of running the code
+		warnings: [] // for when code could be run but still had non-breaking errors
 	};
 
 	this.handleEvent = function() {
@@ -64,6 +65,23 @@ function Sandboxer(event) {
 			} else if (thing instanceof Spyral.Table) {
 				return 'Spyral.Table'
 			}
+		}
+		return false;
+	}
+
+	this.isVariableSerializable = function(thing) {
+		if (this.getSpyralClass(thing)) {
+			return true;
+		} else if (Spyral.Util.isString(thing)) {
+			return true;
+		} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
+			return true;
+		} else if (Spyral.Util.isFunction(thing)) {
+			return true;
+		} else if (Spyral.Util.isNode(thing)) {
+			return true;
+		} else if (Spyral.Util.isNumber(thing) || Spyral.Util.isBoolean(thing) || Spyral.Util.isUndefined(thing) || Spyral.Util.isNull(thing)) {
+			return true;
 		}
 		return false;
 	}
@@ -160,15 +178,22 @@ function Sandboxer(event) {
 		});
 	}
 
-	this.loadVariables = function(cvs) {
+	this.loadVariables = function(cvs, errors) {
+		if (errors === undefined) {
+			errors = [];
+		}
 		if (cvs.length === 0) {
+			if (errors.length > 0) {
+				return Promise.reject(errors);
+			}
 			return Promise.resolve();
 		} else {
 			var cv = cvs.shift();
 			return me.loadVariable(cv).then(function() {
-				return me.loadVariables(cvs);
+				return me.loadVariables(cvs, errors);
 			}, function(err) {
-				return Promise.reject(err);
+				errors.push({type: 'loadVariable', warningInfo: cv.name});
+				return me.loadVariables(cvs, errors);
 			});
 		}
 	}
@@ -211,14 +236,26 @@ function Sandboxer(event) {
 				} else if (cv.value.type === 'application/javascript') {
 					if (data.search(/^function\s+\w+\(/) !== -1) {
 						// named function
-						window.eval(data);
+						try {
+							window.eval(data);
+						} catch (e) {
+							reject(e);
+						}
 					} else {
 						// anonymous function
-						window.eval(cv.name+'='+data);
+						try {
+							window.eval(cv.name+'='+data);
+						} catch (e) {
+							reject(e);
+						}
 					}
 					resolve();
 				} else {
-					window[cv.name] = data;
+					try {
+						window[cv.name] = data;
+					} catch (e) {
+						reject(e);
+					}
 					resolve();
 				}
 			}, function(err) {
@@ -271,7 +308,10 @@ function Sandboxer(event) {
 				delete window[newKey];
 			});
 
-			this.loadVariables(priorVariables).then(function() {
+			var loadVariableErrors = [];
+			this.loadVariables(priorVariables).catch(function(errors) {
+				loadVariableErrors = errors;
+			}).finally(function() {
 				// actually run the code
 				console.log('running code:', code);
 				var result = undefined;
@@ -308,8 +348,14 @@ function Sandboxer(event) {
 								me.result.name = varName;
 							}
 
-							variables.push({name: varName, isSpyralClass: me.getSpyralClass(varValue)});
-							variableValues.push(me.var2Blob(varValue));
+							var isSerializable = me.isVariableSerializable(varValue);
+
+							if (isSerializable) {
+								variables.push({name: varName, isSpyralClass: me.getSpyralClass(varValue)});
+								variableValues.push(me.var2Blob(varValue));
+							} else {
+								me.result.warnings.push({type: 'serialization', warningInfo: varName})
+							}
 						}
 
 						Promise.all(variableValues).then(function(prValues) {
@@ -318,6 +364,9 @@ function Sandboxer(event) {
 							})
 							
 							me.result.variables = variables;
+							if (loadVariableErrors.length > 0) {
+								me.result.warnings = me.result.warnings.concat(loadVariableErrors);
+							}
 							me.resolveEvent();
 						}, function(err) {
 							me.handleError(err);
@@ -326,8 +375,6 @@ function Sandboxer(event) {
 						me.handleError(err);
 					})
 				}
-			}, function(err) {
-				me.handleError(err);
 			});
 		} catch (err) {
 			me.handleError(err);
@@ -377,7 +424,7 @@ function Sandboxer(event) {
 		try {
 			if (me.result.type === 'error') {
 				// always display error
-				showError(me.result.error);
+				Spyral.Util.showError(me.result.error);
 				// event listener to adjust height when showing error details
 				document.body.querySelector('.error > pre > span:first-child').addEventListener('click', me.notifyHeightChange);
 
