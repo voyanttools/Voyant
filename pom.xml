@@ -116,6 +116,12 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.4.1</version>
+			<exclusions>
+				<exclusion><!-- exclude here since newer version gets included under tika-parsers -->
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!--  Spyral Auth dependencies -->
