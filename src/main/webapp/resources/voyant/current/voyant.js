@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Mar 29 17:26:37 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Mar 31 15:56:54 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -35931,8 +35931,12 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 	statics: {
 		i18n: {
 			expandResults: 'Expand Results',
-			collapseResults: 'Collapse Results'
-		}
+			collapseResults: 'Collapse Results',
+			viewWarnings: 'View Warning(s)',
+			generalWarning: 'Warning: {warningInfo}',
+			serializationWarning: 'The variable "{warningInfo}" cannot be passed between cells.',
+			loadVariableWarning: 'The variable "{warningInfo}" could not be loaded.'
+		},
 	},
 
 	config: {
@@ -35993,6 +35997,22 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					style: { background: 'none', paddingTop: '6px', pointerEvents: 'none' },
 					defaults: { style: { pointerEvents: 'auto'} },
 					items: ['->',{
+						itemId: 'warnings',
+						glyph: 'xf12a@FontAwesome',
+						hidden: true,
+						tooltip: this.localize('viewWarnings'),
+						warnings: [],
+						handler: function(btn) {
+							if (btn.warnings.length > 0) {
+								Ext.Msg.show({
+									title: 'Warning',
+									message: btn.warnings,
+									buttons: Ext.Msg.OK,
+									icon: Ext.Msg.INFO
+								});
+							}
+						}
+					},{
 						itemId: 'expandButton',
 						glyph: isExpanded ? 'xf066@FontAwesome' : 'xf065@FontAwesome',
 						tooltip: isExpanded ? this.localize('collapseResults') : this.localize('expandResults'),
@@ -36068,6 +36088,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 			console.log("clearing but not visible!", this);
 			this.show();
 		}
+		this.down('#warnings').hide().warnings = [];
 		this._sendMessage({type: 'command', command: 'clear'});
 	},
 
@@ -36084,15 +36105,21 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 
 		// reset
 		//this.resetResults(); // TODO review this vs setvisible
+		this.down('#warnings').hide().warnings = [];
 		this.show();
 		this.setHasRunError(false);
-		this.getEl().removeCls(['error','success']);
+		this.getEl().removeCls(['error','success','warning']);
 
 		this.setRunPromise(new Ext.Deferred());
 
 		var actualPromise = this.getRunPromise().promise;
-		actualPromise.then(function() {
-			this.getEl().addCls('success');
+		actualPromise.then(function(result) {
+			if (result.warnings && result.warnings.length > 0) {
+				this._handleWarnings(result.warnings);
+				this.getEl().addCls('warning');
+			} else {
+				this.getEl().addCls('success');
+			}
 		}, function() {
 			this.setHasRunError(true);
 			this.getEl().addCls('error');
@@ -36233,6 +36260,23 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 				console.warn('unrecognized message!', e);
 			}
 		}
+	},
+
+	_handleWarnings: function(warningsArray) {
+		var warningsContent = [];
+		warningsArray.forEach(function(warning) {
+			switch(warning.type) {
+				case 'serialization':
+					warningsContent.push(this.localize('serializationWarning').replace('{warningInfo}', warning.warningInfo));
+					break;
+				case 'loadVariable':
+					warningsContent.push(this.localize('loadVariableWarning').replace('{warningInfo}', warning.warningInfo));
+					break;
+			}
+		}, this)
+		var parent = this.down('#warnings');
+		parent.show();
+		parent.warnings = '<p>'+warningsContent.join('</p><p>')+'</p>';
 	},
 
 	_doExpandCollapse: function() {
