@@ -72,6 +72,8 @@ function Sandboxer(event) {
 	this.isVariableSerializable = function(thing) {
 		if (this.getSpyralClass(thing)) {
 			return true;
+		} else if (Spyral.Util.isBlob(thing)) {
+			return true;
 		} else if (Spyral.Util.isString(thing)) {
 			return true;
 		} else if (Spyral.Util.isObject(thing) || Spyral.Util.isArray(thing)) {
