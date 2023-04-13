@@ -127,12 +127,14 @@ Ext.define('Voyant.panel.CorpusCollocates', {
                 listeners: {
                     selectionchange: {
                     	fn: function(sm, selections) {
-                    		var terms = [];
-                    		var context = this.getApiParam("context")
-                    		selections.forEach(function(selection) {
-                    			terms.push('"'+selection.getKeyword()+" "+selection.getContextTerm()+'"~'+context)
-                    		})
-                    		this.getApplication().dispatchEvent('termsClicked', this, terms);
+							if (selections.length > 0) {
+								var terms = [];
+								var context = this.getApiParam("context")
+								selections.forEach(function(selection) {
+									terms.push('"'+selection.getKeyword()+" "+selection.getContextTerm()+'"~'+context)
+								})
+								this.getApplication().dispatchEvent('termsClicked', this, terms);
+							}
                     	},
                     	scope: this
                     }
