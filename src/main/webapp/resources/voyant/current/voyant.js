@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Mar 31 15:56:54 UTC 2023 */
+/* This file created by JSCacher. Last modified: Thu Apr 13 19:58:35 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -18369,7 +18369,6 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		query: undefined,
     		docId: undefined,
     		docIndex: undefined,
-    		sort: 'contextTermRawFreq'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -18433,6 +18432,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	}, this)
     	
     	this.on("query", function(src, query) {
+			if (query.length === 0) query = undefined;
     		this.setApiParam("query", query);
     		this.getStore().getProxy().setExtraParam("query", query);
     		this.loadFromApis();
@@ -18485,12 +18485,14 @@ Ext.define('Voyant.panel.CorpusCollocates', {
                 listeners: {
                     selectionchange: {
                     	fn: function(sm, selections) {
-                    		var terms = [];
-                    		var context = this.getApiParam("context")
-                    		selections.forEach(function(selection) {
-                    			terms.push('"'+selection.getKeyword()+" "+selection.getContextTerm()+'"~'+context)
-                    		})
-                    		this.getApplication().dispatchEvent('termsClicked', this, terms);
+							if (selections.length > 0) {
+								var terms = [];
+								var context = this.getApiParam("context")
+								selections.forEach(function(selection) {
+									terms.push('"'+selection.getKeyword()+" "+selection.getContextTerm()+'"~'+context)
+								})
+								this.getApplication().dispatchEvent('termsClicked', this, terms);
+							}
                     	},
                     	scope: this
                     }
@@ -22373,12 +22375,13 @@ Ext.define('Voyant.panel.Phrases', {
                 listeners: {
                     selectionchange: {
                     	fn: function(sm, selections) {
-                    		var terms = [];
-                    		var context = this.getApiParam("context")
-                    		selections.forEach(function(selection) {
-                    			terms.push('"'+selection.getTerm()+'"')
-                    		})
-                    		this.getApplication().dispatchEvent('termsClicked', this, terms);
+							if (selections.length > 0) {
+								var terms = [];
+								selections.forEach(function(selection) {
+									terms.push('"'+selection.getTerm()+'"')
+								})
+								this.getApplication().dispatchEvent('termsClicked', this, terms);
+							}
                     	},
                     	scope: this
                     }
