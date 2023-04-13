@@ -74,6 +74,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	}, this)
     	
     	this.on("query", function(src, query) {
+			if (query.length === 0) query = undefined;
     		this.setApiParam("query", query);
     		this.getStore().getProxy().setExtraParam("query", query);
     		this.loadFromApis();
