@@ -10,7 +10,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		context: 5,
     		query: undefined,
     		docId: undefined,
-    		docIndex: undefined,
+    		docIndex: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
