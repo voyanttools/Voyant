@@ -722,7 +722,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 				})
 			);
     	
-    	nodeEnter.append('title').text(function(d) { return d.title; });
+    	nodeEnter.append('title');
     	
     	if (this.getNetworkMode() === this.DEFAULT_MODE) {
     		nodeEnter.append('rect')
@@ -736,14 +736,18 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	
     	nodeEnter.append('text')
 			.attr('font-family', function(d) { return me.getApplication().getCategoriesManager().getFeatureForTerm('font', d.term); })
-			.attr('font-size', function(d) { return Math.max(10, Math.sqrt(d.value)); })
 			.text(function(d) { return d.term; })
-			.each(function(d) { d.bbox = this.getBBox(); }) // set bounding box for later use
 			.style('cursor', 'pointer')
 			.style('user-select', 'none')
 			.attr('dominant-baseline', 'middle');
-    	
-    	this.setNodes(nodeEnter.merge(node));
+
+		var allNodes = nodeEnter.merge(node);
+		allNodes.selectAll('title').text(function(d) { return d.title; });
+		allNodes.selectAll('text')
+			.attr('font-size', function(d) { return Math.max(10, Math.sqrt(d.value)); })
+			.each(function(d) { d.bbox = this.getBBox(); }) // set bounding box for later use
+
+    	this.setNodes(allNodes);
     	
     	if (this.getNetworkMode() === this.DEFAULT_MODE) {
 	    	this.getVis().selectAll('rect')
