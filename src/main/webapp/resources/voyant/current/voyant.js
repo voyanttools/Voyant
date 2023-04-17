@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Apr 14 17:45:13 UTC 2023 */
+/* This file created by JSCacher. Last modified: Mon Apr 17 18:53:42 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -8565,8 +8565,13 @@ Ext.define('Voyant.data.model.Token', {
 		return this.get("term");
 	},
 	getTermWithLineSpacing: function(isPlainText) {
-		var term = this.getTerm().replace(/<\/?\w+\b.*?>/g, "<br /><br />").replace(/>\s+</g,"><").replace(/<br \/><br \/>(<br \/>)+/g,"<br \/><br \/>");
-		if (isPlainText) {term = term.replace(/(\r\n|\r|\n)\s*/g,"<br />");};
+		var term = this.getTerm();
+		if (isPlainText) {
+			term = term.replace(/(\r\n|\r|\n)\s*/g,"<br />");
+		} else {
+			// alternate very general regex: <[^>]*>
+			term = term.replace(/<\/?(.|\n|\r)*?>/gm, "<br /><br />").replace(/>\s+</g,"><").replace(/<br \/><br \/>(<br \/>)+/g,"<br \/><br \/>");
+		}
 		return term;
 	},
 	getPosition: function() {
