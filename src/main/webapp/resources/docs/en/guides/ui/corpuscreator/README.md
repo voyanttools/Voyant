@@ -337,7 +337,7 @@ Access management must be specified during corpus creation, it can't be specifie
 
 ### Admin Codes
 
-The first option allows you to specify one or more admin(istration) codes. Admin codes give you access to the corpus as well as to the access management options (if ever you want to later modify any of the access management options). If you don't specify admin codes, the access codes (if provided) will still be in effect, but you won't be able to change them. You can specify one or more different admin codes separated by commas (any one of the codes will work).
+The first option allows you to specify one or more admin(istration) codes. Admin codes give you access to the corpus so that you can modify it (using the Modify feature in the Documents tool). If you don't specify admin codes, the access codes (if provided) will still be in effect. You can specify one or more different admin codes separated by commas (any one of the codes will work).
 
 ### Access Codes
 
