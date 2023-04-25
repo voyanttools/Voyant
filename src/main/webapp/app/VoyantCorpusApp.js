@@ -259,7 +259,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				delete api.view; // make sure we show default view
 				if (eventName=='termsClicked') {
 					// data can be a simple array of terms or an array of term objects
-					if (Ext.isArray(data) && typeof data[0] !== 'string' && 'term' in data[0] && 'docIndex' in data[0]) {
+					if (Ext.isArray(data) && data.length > 0 && typeof data[0] !== 'string' && 'term' in data[0] && 'docIndex' in data[0]) {
 						let termsObj = {};
 						let docIndObj = {};
 						data.forEach(function(datum) {
