@@ -19,9 +19,8 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 	serverStorage: undefined,
 
 	constructor: function(config) {
-		Ext.apply(this, {
+		Ext.apply(this, config, {
 			width: '100%',
-			margin: '5px',
 			items: [{
 				xtype: 'voyantfilefield',
 				itemId: 'file',
@@ -65,26 +64,36 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 	getCode: function(varName) {
 		var dfd = new Ext.Deferred();
 
+		this.getDataUrl().then(function(dataUrl) {
+			var code = varName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
+			dfd.resolve(code);
+		}, function() {
+			dfd.reject();
+		});
+
+		return dfd.promise;
+	},
+
+	getInput: function() {
+		return {
+			resourceId: this.getResourceId(),
+			fileName: this.getFileName()
+		}
+	},
+
+	getDataUrl: function() {
+		var dfd = new Ext.Deferred();
+
 		if (this.getResourceId()) {
 			this.loadStoredFile().then(function(dataUrl) {
-				try {
-					var code = varName+'= Spyral.Util.dataUrlToBlob(`'+dataUrl+'`)';
-					dfd.resolve(code);
-				} catch(e) {
-					dfd.reject();
-				}
+				dfd.resolve(dataUrl);
 			}, function() {
 				dfd.reject();
 			})
 		} else {
 			if (this.getFile()) {
 				this.storeFile().then(function(result) {
-					try {
-						var code = varName+'= Spyral.Util.dataUrlToBlob(`'+result[1]+'`)';
-						dfd.resolve(code);
-					} catch(e) {
-						dfd.reject();
-					}
+					dfd.resolve(result[1]);
 				}, function() {
 					dfd.reject();
 				});
@@ -96,11 +105,17 @@ Ext.define('Voyant.notebook.editor.FileInput', {
 		return dfd.promise;
 	},
 
-	getInput: function() {
-		return {
-			resourceId: this.getResourceId(),
-			fileName: this.getFileName()
-		}
+	getBlob: function() {
+		var dfd = new Ext.Deferred();
+
+		this.getDataUrl().then(function(dataUrl) {
+			var blob = Spyral.Util.dataUrlToBlob(dataUrl);
+			dfd.resolve(blob);
+		}, function() {
+			dfd.reject();
+		});
+
+		return dfd.promise;
 	},
 
 	storeFile: function() {

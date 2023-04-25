@@ -32,7 +32,9 @@ Ext.define('Voyant.notebook.Notebook', {
     		metadataCancel: "Cancel",
 			catalogueTip: "Search a catalogue of available notebooks.",
 			preparingExport: "Preparing Export",
-			notSavedWarning: "Changes to your notebook have not been saved. Are you sure you want to continue?"
+			notSavedWarning: "Changes to your notebook have not been saved. Are you sure you want to continue?",
+			accountTip: 'View your account',
+			openTip: 'Open a Spyral Notebook (by uploading a file)'
     	},
     	api: {
     		input: undefined,
@@ -90,6 +92,15 @@ Ext.define('Voyant.notebook.Notebook', {
      * @private
      */
     constructor: function(config) {
+		var handleSignIn = function() {
+			parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
+			parent.setIsEdited(false);
+			parent.toastInfo({
+				html: parent.localize('signInSuccess'),
+				anchor: 'tr'
+			});
+		}
+
     	Ext.apply(config, {
     		title: this.localize('title'),
     		includeTools: {
@@ -121,18 +132,14 @@ Ext.define('Voyant.notebook.Notebook', {
 									scope: parent
 								}];
 							} else {
-								menu.items = [{
-									xtype: 'component',
-									padding: 5,
-									html: 'Please sign in to save'
-								}];
+								menu.items = [
+									parent.getGitHubAuthButton(handleSignIn)
+								];
 							}
 						}, function() {
-							menu.items = [{
-								xtype: 'component',
-								padding: 5,
-								html: 'Please sign in to save'
-							}];
+							menu.items = [
+								parent.getGitHubAuthButton(handleSignIn)
+							];
 						}).always(function() {
 							menu.showToolMenu();
 						});
@@ -210,20 +217,12 @@ Ext.define('Voyant.notebook.Notebook', {
                     scope: this
                 },
 				'account': {
+					tooltip: this.localize("accountTip"),
 					xtype: 'toolmenu',
 					glyph: 'xf007@FontAwesome',
 					callback: function(parent, menu) {
 						if (menu.toolMenu) menu.toolMenu.destroy(); // need to recreate toolMenu each time to register item changes
 						menu.items = [];
-
-						var handleSignIn = function() {
-							parent.setMetadata(parent.getMetadata().clone()); // force metadata refresh
-							parent.setIsEdited(false);
-							parent.toastInfo({
-								html: parent.localize('signInSuccess'),
-								anchor: 'tr'
-							});
-						}
 
 						parent.isAuthenticated(true).then(function(isAuth) {
 							if (isAuth) {

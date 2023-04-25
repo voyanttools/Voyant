@@ -135,7 +135,8 @@ Ext.define('Voyant.panel.WordTree', {
     		    params: {
     				limit: 1,
     				query: this.getApiParam('query'),
-    				stopList: this.getApiParam('stopList')
+    				stopList: this.getApiParam('stopList'),
+					categories: this.getApiParam('categories')
     			}
         	});
         }, this);

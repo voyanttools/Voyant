@@ -184,7 +184,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 				items: {
 					xtype: 'legend',
 					store: new Ext.data.JsonStore({
-						fields : ['name', 'mark']
+						fields : ['name', 'mark', 'selector']
 					}),
 					listeners: {
 						itemclick: function(view, record, el, index) {
@@ -205,7 +205,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 		            		
 		            		this.legendMenu.on('click', function(menu, item) {
 		            			if (item !== undefined) {
-		            				this.doTermDeselect(term, true);
+		            				this.getTermsRadio().doTermDeselect(term, true);
 		            			}
 		            		}, this, {single: true});
 		            		this.legendMenu.showAt(xy);
@@ -409,7 +409,7 @@ Ext.define('Voyant.panel.TermsRadio', {
         			var t = term.getTerm();
         			this.setApiParams({query: t});
         			this.loadStore();
-        		});
+        		}, this);
 			}
 		});
 		
@@ -420,7 +420,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     			var t = term.getTerm();
     			this.setApiParams({query: t});
     			this.loadStore();
-    		});
+    		}, this);
 		});
 		
 		this.on('query', function(src, query){

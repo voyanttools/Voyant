@@ -12,6 +12,9 @@ Ext.define('Voyant.widget.CategoriesOption', {
 	initComponent: function() {
 		var value = this.up('window').panel.getApiParam('categories');
     	var data = value ? [{name: value, value: value}] : [];
+		if (value !== 'auto') {
+			data.push({name: 'auto', value: 'auto'});
+		}
 		
 		Ext.apply(this, {
     		layout: 'hbox',
@@ -610,6 +613,16 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		var features = this.categoriesManager.getFeatures();
 		var featuresConfigs = Ext.ClassManager.getClass(this).features;
 		
+		// populate with default features if there are none (can happen when creating categories programmatically)
+		if (Object.entries(features).length === 0) {
+			for (var feature in featuresConfigs) {
+				features[feature] = {};
+				for (var category in this.categoriesManager.getCategories()) {
+					features[feature][category] = undefined;
+				}
+			}
+		}
+
 		for (var feature in features) {
 			fields.push(feature);
 			

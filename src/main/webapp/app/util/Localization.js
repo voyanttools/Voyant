@@ -2,7 +2,7 @@ Ext.define('Voyant.util.Localization', {
 	statics: {
 		DEFAULT_LANGUAGE: 'en',
 		LANGUAGE: 'en',
-		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","sr"],
+		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","ru","sr"],
 		i18n: {
 		}
 	},
@@ -11,6 +11,8 @@ Ext.define('Voyant.util.Localization', {
 		if (code.length === 2) {
 			if (Voyant.util.Localization.AVAILABLE_LANGUAGES.indexOf(code) !== -1) {
 				return this.localize(code);
+			} else {
+				return code;
 			}
 		} else {
 			var langs = Voyant.util.Localization.AVAILABLE_LANGUAGES.map(function(lang) {
@@ -21,6 +23,7 @@ Ext.define('Voyant.util.Localization', {
 				return lang.text === lowerCaseCode;
 			});
 			if (match) return match.value;
+			else return code;
 		}
 	},
 	

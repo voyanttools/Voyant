@@ -42,6 +42,8 @@ Ext.define('Voyant.panel.Reader', {
 	INITIAL_LIMIT: 1000, // need to keep track since limit can be changed when scrolling,
 
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
+
+	HIGHLIGHT_ALPHA: .25, // the alpha value to use for highlighted keywords
     
     constructor: function(config) {
         this.callParent(arguments);
@@ -118,7 +120,6 @@ Ext.define('Voyant.panel.Reader', {
 				extraParams: {
 					tool: 'corpus.DocumentTerms',
 					withDistributions: true,
-					// TODO handle positions
 					withPositions: true,
 					bins: 25,
 					forTool: 'reader'
@@ -132,14 +133,8 @@ Ext.define('Voyant.panel.Reader', {
    		    },
    		    listeners: {
    		    load: function(store, records, successful, opts) {
-   		    		store.sort('docIndex', 'ASC');
-   		    		var term; // store last accessed term
-   		    		store.each(function(r) {
-   		    			term = r.get('term');
-   		    		}, this);
-   		    		 
-   		    		this.highlightKeywords(term);
-//   		    		 this.down('querysearchfield').setValue(term);
+   		    		this.highlightKeywords(records);
+					this.down('readergraph').populateChart(records);
    		    	},
    		    	scope: this
    		    }
@@ -371,7 +366,7 @@ Ext.define('Voyant.panel.Reader', {
     							if (el) {
     								el.scrollIntoView();
     							}
-    							this.highlightKeywords(term.get('term'), false);
+    							this.highlightKeywords(term, false);
     						},
     						scope: this
     					});
@@ -395,36 +390,44 @@ Ext.define('Voyant.panel.Reader', {
     	if (queryTerms && queryTerms.length > 0) {
 			this.getDocumentTermsStore().load({
 				params: {
-					query: queryTerms/*,
-    				docIndex: undefined,
-    				docId: undefined,
-    				page: undefined,
-    				start: undefined,
-    				limit: undefined*/
+					query: queryTerms,
+					categories: this.getApiParam('categories')
     			}
 			});
-			this.down('readergraph').loadQueryTerms(queryTerms);
 		}
     },
     
-    highlightKeywords: function(query, doScroll) {
-		if (!Ext.isArray(query)) query = [query];
-		
-		this.getInnerContainer().first().select('span[class*=keyword]').removeCls('keyword');
-		
-		var spans = [];
-		var caseInsensitiveQuery = new RegExp('^'+query[0]+'$', 'i');
-		var nodes = this.getInnerContainer().first().select('span.word');
-		nodes.each(function(el, compEl, index) {
-			if (el.dom.firstChild && el.dom.firstChild.nodeValue.match(caseInsensitiveQuery)) {
-				el.addCls('keyword');
-				spans.push(el.dom);
+    highlightKeywords: function(termRecords, doScroll) {
+		var container = this.getInnerContainer().first();
+		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent'});
+
+		if (!Ext.isArray(termRecords)) termRecords = [termRecords];
+
+		termRecords.forEach(function(r) {
+			var term = r.get('term');
+			var color = this.getApplication().getColorForTerm(term);
+			color = 'rgba('+color.join(',')+','+this.HIGHLIGHT_ALPHA+')';
+			// might be slightly faster to use positions so do that if they're available
+			if (r.get('positions')) {
+				var positions = r.get('positions');
+				var docIndex = r.get('docIndex');
+				
+				positions.forEach(function(pos) {
+					var match = container.dom.querySelector('#_'+docIndex+'_'+pos);
+					if (match) {
+						Ext.fly(match).addCls('keyword').applyStyles({backgroundColor: color});
+					}
+				})
+			} else {
+				var caseInsensitiveQuery = new RegExp('^'+term+'$', 'i');
+				var nodes = container.select('span.word');
+				nodes.each(function(el, compEl, index) {
+					if (el.dom.firstChild && el.dom.firstChild.nodeValue.match(caseInsensitiveQuery)) {
+						el.addCls('keyword').applyStyles({backgroundColor: color});
+					}
+				});
 			}
-		});
-		
-//		if (doScroll && spans[0] !== undefined) {
-//			Ext.get(nodes[0]).scrollIntoView(reader).frame("ff0000", 1, { duration: 2 });
-//		}
+		}, this);
 	},
 
 	nerSeviceHandler: function(menuitem) {

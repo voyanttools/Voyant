@@ -37,19 +37,8 @@ Ext.define('Voyant.VoyantApp', {
 		this.mixins['Voyant.util.Colors'].constructor.apply(this, arguments);
 
 		this.setCategoriesManager(new Spyral.Categories());
-		// inheritance/mixin hack
-		// var catProps = Object.getOwnPropertyNames(categories).concat(Object.getOwnPropertyNames(Object.getPrototypeOf(categories)));
-		// catProps.forEach(function(propName) {
-		// 	if (this[propName] === undefined) {
-		// 		if (typeof categories[propName] === 'function') {
-		// 			this[propName] = categories[propName].bind(this);
-		// 		} else {
-		// 			this[propName] = categories[propName];
-		// 		}
-		// 	}
-		// }, this)
 		
-		this.getCategoriesManager().addFeature('color');
+		this.getCategoriesManager().addFeature('color', '#BF1B2C'); // default color is Voyant red
 		this.getCategoriesManager().addFeature('font', '"Palatino Linotype", "Book Antiqua", Palatino, serif');
 		
 		// override Voyant.util.Colors methods to add palette api param
@@ -59,7 +48,16 @@ Ext.define('Voyant.VoyantApp', {
 		}
 		var _getColorForTerm = this.getColorForTerm;
 		this.getColorForTerm = function(term, returnHex) {
-			return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
+			if (term.indexOf('@') === 0) {
+				var catColor = this.getCategoriesManager().getCategoryFeature(term.substring(1), 'color');
+				if (returnHex) {
+					return catColor;
+				} else {
+					return this.hexToRgb(catColor);
+				}
+			} else {
+				return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
+			}
 		}
 
 		// call the parent constructor
@@ -93,6 +91,10 @@ Ext.define('Voyant.VoyantApp', {
     	    showDelay: 50 // shorten the delay before showing
     	});
     	
+		if (this.getApiParam("categories")) {
+			this.loadCategoryData(this.getApiParam("categories"));
+		}
+
 		this.callParent(arguments);
     },
     
@@ -211,7 +213,28 @@ Ext.define('Voyant.VoyantApp', {
 				buttons: Ext.Msg.OK
 			});
 		}
-	}
+	},
+	
+	loadCategoryData: function(id) {
+		return this.getCategoriesManager().load(id, {
+			trombone: Voyant.application.getTromboneUrl()
+		}).then(function() {
+			for (var category in this.getCategoriesManager().getCategories()) {
+				var color = this.getCategoriesManager().getCategoryFeature(category, 'color');
+				if (color !== undefined) {
+					var rgb = this.hexToRgb(color);
+					var terms = this.getCategoriesManager().getCategoryTerms(category);
+					for (var i = 0; i < terms.length; i++) {
+						this.setColorForTerm(terms[i], rgb);
+					}
+				}
+			}
+		}.bind(this));
+	},
 
-    
+	saveCategoryData: function(data) {
+		return this.getCategoriesManager().save({}, {
+			trombone: Voyant.application.getTromboneUrl()
+		});
+	}
 });

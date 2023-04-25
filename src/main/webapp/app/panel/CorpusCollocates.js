@@ -10,8 +10,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		context: 5,
     		query: undefined,
     		docId: undefined,
-    		docIndex: undefined,
-    		sort: 'contextTermRawFreq'
+    		docIndex: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -75,6 +74,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	}, this)
     	
     	this.on("query", function(src, query) {
+			if (query.length === 0) query = undefined;
     		this.setApiParam("query", query);
     		this.getStore().getProxy().setExtraParam("query", query);
     		this.loadFromApis();
@@ -127,12 +127,14 @@ Ext.define('Voyant.panel.CorpusCollocates', {
                 listeners: {
                     selectionchange: {
                     	fn: function(sm, selections) {
-                    		var terms = [];
-                    		var context = this.getApiParam("context")
-                    		selections.forEach(function(selection) {
-                    			terms.push('"'+selection.getKeyword()+" "+selection.getContextTerm()+'"~'+context)
-                    		})
-                    		this.getApplication().dispatchEvent('termsClicked', this, terms);
+							if (selections.length > 0) {
+								var terms = [];
+								var context = this.getApiParam("context")
+								selections.forEach(function(selection) {
+									terms.push('"'+selection.getKeyword()+" "+selection.getContextTerm()+'"~'+context)
+								})
+								this.getApplication().dispatchEvent('termsClicked', this, terms);
+							}
                     	},
                     	scope: this
                     }

@@ -83,13 +83,17 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				var openButton = this.exportWin.down('#open');
 				corpusButton.setHidden(true);
 				openButton.setHidden(false);
-	
+
 				var fileName;
 				var fileType;
 				var fileContent;
-				if (mode === 'file') {
+				if (mode === 'file' || mode === 'corpus') {
 					openButton.setHidden(true);
-					fileName = input.fileName;
+					if (mode === 'file') {
+						fileName = input.fileName;
+					} else {
+						fileName = 'SpyralCorpus-'+input.corpusId;
+					}
 					fileType = output.type;
 					fileContent = output;
 				} else if (mode === 'javascript') {

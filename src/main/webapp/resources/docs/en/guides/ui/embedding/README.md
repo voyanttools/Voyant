@@ -33,6 +33,10 @@ You can also embed a specific page using the input parameter (or a variant forma
 	<iframe src="http://voyant-tools.org/tool/Cirrus/?input=http://digitalhumanities.org/dhq/vol/3/3/000067/000067.xml"
 		style="width: 300px; height: 300px;"></iframe>
 		
+Multiple sources can be specified by using additional input parameters:
+
+	http://voyant-tools.org/tool/Cirrus/?input=http://digitalhumanities.org/dhq/vol/16/2/000646/000646.html&input=http://digitalhumanities.org/dhq/vol/16/3/000645/000645.html
+
 Here again, cached contents will be reused if possible, and Voyant will check the URL for modifications if needed. If ever Voyant doesn't updated its contents automatically, you can add a string query like `?v1` or `&v1` to the source URL to force an update. Note that parameters in the source URL should be escaped as needed so as not to interfere with the parameters to Voyant:
 
 	http://voyant-tools.org/tool/Cirrus/?inputFormat=XML&input=http://digitalhumanities.org/dhq/?version%3D1

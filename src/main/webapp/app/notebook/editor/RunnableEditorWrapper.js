@@ -111,9 +111,11 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 	// override Ext.Panel expand/collapse
 	expand: function() {
 		this.editor.expand();
+		this.setIsCollapsed(false);
 	},
 	collapse: function() {
 		this.editor.collapse();
+		this.setIsCollapsed(true);
 	},
 
 	/**

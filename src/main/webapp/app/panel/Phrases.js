@@ -113,12 +113,13 @@ Ext.define('Voyant.panel.Phrases', {
                 listeners: {
                     selectionchange: {
                     	fn: function(sm, selections) {
-                    		var terms = [];
-                    		var context = this.getApiParam("context")
-                    		selections.forEach(function(selection) {
-                    			terms.push('"'+selection.getTerm()+'"')
-                    		})
-                    		this.getApplication().dispatchEvent('termsClicked', this, terms);
+							if (selections.length > 0) {
+								var terms = [];
+								selections.forEach(function(selection) {
+									terms.push('"'+selection.getTerm()+'"')
+								})
+								this.getApplication().dispatchEvent('termsClicked', this, terms);
+							}
                     	},
                     	scope: this
                     }

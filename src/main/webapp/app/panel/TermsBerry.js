@@ -278,6 +278,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     getTopTerms: function(query) {
     	var limit = parseInt(this.getApiParam('numInitialTerms'));
     	var stopList = this.getApiParam('stopList');
+		var categories = this.getApiParam('categories');
     	if (query !== undefined) {
     		limit = undefined;
     		stopList = undefined;
@@ -285,6 +286,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     	this.getCorpus().getCorpusTerms().load({
     		params: {
     			query: query,
+				categories: categories,
  				limit: limit,
  				stopList: stopList
  			},
@@ -300,6 +302,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     getDistinctTerms: function(query) {
     	var limit = parseInt(this.getApiParam('numInitialTerms'));
     	var stopList = this.getApiParam('stopList');
+		var categories = this.getApiParam('categories');
     	if (query !== undefined) {
     		limit = undefined;
     		stopList = undefined;
@@ -308,6 +311,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     	this.getCorpus().getDocumentTerms().load({
 			params: {
 				query: query,
+				categories: categories,
 				limit: limit,
 				perDocLimit: perDocLimit,
 				stopList: stopList,

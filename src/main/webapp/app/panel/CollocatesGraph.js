@@ -263,6 +263,12 @@ Ext.define('Voyant.panel.CollocatesGraph', {
  //       		this.zoomToFit();
         	}
 		}, this);
+
+		this.on('beforedestroy', function(panel) {
+			if (this.getVisLayout()) {
+				this.getVisLayout().stop(); // make sure force simulation isn't running when removed
+			}
+		}, this);
         
         me.callParent(arguments);
 
@@ -280,7 +286,12 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			var limit = 3;
 			var query = this.getApiParam('query');
 			if (query !== undefined) {
-				limit = Ext.isArray(query) ? query.length : query.split(',').length;
+				if (query.indexOf('^@') === 0) {
+					// it's a category so increase limit so that we get most/all of the terms
+					limit = 20;
+				} else {
+					limit = Ext.isArray(query) ? query.length : query.split(',').length;
+				}
 			}
 			this.getCorpus().getCorpusTerms({autoLoad: false}).load({
 				params: {
@@ -711,7 +722,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 				})
 			);
     	
-    	nodeEnter.append('title').text(function(d) { return d.title; });
+    	nodeEnter.append('title');
     	
     	if (this.getNetworkMode() === this.DEFAULT_MODE) {
     		nodeEnter.append('rect')
@@ -725,14 +736,18 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	
     	nodeEnter.append('text')
 			.attr('font-family', function(d) { return me.getApplication().getCategoriesManager().getFeatureForTerm('font', d.term); })
-			.attr('font-size', function(d) { return Math.max(10, Math.sqrt(d.value)); })
 			.text(function(d) { return d.term; })
-			.each(function(d) { d.bbox = this.getBBox(); }) // set bounding box for later use
 			.style('cursor', 'pointer')
 			.style('user-select', 'none')
 			.attr('dominant-baseline', 'middle');
-    	
-    	this.setNodes(nodeEnter.merge(node));
+
+		var allNodes = nodeEnter.merge(node);
+		allNodes.selectAll('title').text(function(d) { return d.title; });
+		allNodes.selectAll('text')
+			.attr('font-size', function(d) { return Math.max(10, Math.sqrt(d.value)); })
+			.each(function(d) { d.bbox = this.getBBox(); }) // set bounding box for later use
+
+    	this.setNodes(allNodes);
     	
     	if (this.getNetworkMode() === this.DEFAULT_MODE) {
 	    	this.getVis().selectAll('rect')

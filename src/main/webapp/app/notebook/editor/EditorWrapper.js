@@ -7,7 +7,8 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 		cellId: undefined,
 		index: undefined,
 		content: '',
-		isEditing: false
+		isEditing: false,
+		isCollapsed: false // custom tracker instead of using Panel's collapsed, which causes due to our overrides
 	},
 	statics: {
 		currentEditor: undefined, // used primarily by toolbar buttons to determine the target of their actions
@@ -64,7 +65,13 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 										xtype: 'notebookwrappermovedown'
 									}]
 								}
-							}]
+							}],
+							listeners: {
+								show: function(menu) {
+									var ed = Voyant.notebook.editor.EditorWrapper.currentEditor;
+									menu.down('#notebookwrapperexpandcollapse').setCollapsed(ed.getIsCollapsed());
+								}
+							}
 						}
 					},{
 						style: {float: 'left'},

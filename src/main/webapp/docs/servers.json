@@ -6,13 +6,13 @@
         "check_url": "https://voyant-tools.org/",
         "location": "Montreal, Canada",
         "latlong": "45.5576136,-73.8533637",
-        "contact": "<a href='https://stefansinclair.name/'>Stéfan Sinclair</a> &amp; <a href='https://geoffreyrockwell.com'>Geoffrey Rockwell</a>"
+        "contact": "Stéfan Sinclair &amp; <a href='https://geoffreyrockwell.com' target='_blank'>Geoffrey Rockwell</a>"
     },{
         "name": "Beta (Auxiliary) Server",
         "url": "https://beta.voyant-tools.org/",
         "location": "Montreal, Canada",
         "latlong": "45.5576136,-73.8533637",
-        "contact": "<a href='https://stefansinclair.name/'>Stéfan Sinclair</a> &amp; <a href='https://geoffreyrockwell.com'>Geoffrey Rockwell</a>"
+        "contact": "Stéfan Sinclair &amp; <a href='https://geoffreyrockwell.com' target='_blank'>Geoffrey Rockwell</a>"
     },{
 		"name": "LINCS Project",
 		"url": "https://voyant.lincsproject.ca/",
@@ -24,12 +24,12 @@
         "url": "https://voyant-tools.huma-num.fr/",
         "location": "Lyon, France",
         "latlong": "45.7718126,4.854807",
-        "contact": "<a href='https://www.huma-num.fr/informations-pratiques'>Huma-Num</a>"
+        "contact": "<a href='https://www.huma-num.fr/informations-pratiques/' target='_blank'>Huma-Num</a>"
     },{
         "name": "South African Centre for Digital Language Resources (SADiLaR)",
         "url": "https://service.sadilar.org/voyant/",
         "location": "South Africa",
         "latlong": "-26.7065869,27.2073277",
-        "contact": "<a href='Juan.Steyn@nwu.ac.za'>Juan Steyn</a>"
+        "contact": "<a href='mailto:Juan.Steyn@nwu.ac.za'>Juan Steyn</a>"
     }]
 }

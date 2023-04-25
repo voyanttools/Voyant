@@ -39,12 +39,14 @@ table.spyral-table td:last-child {
 }
 		</style>
 
-		<link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/8/highcharts.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/10/css/highcharts.css" /> -->
 		<!-- highcharts -->	
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/highcharts.js"></script>
-		<!-- <script type="text/javascript" src="<%=base %>/resources/highcharts/8/highcharts-more.js"></script> -->
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/8/modules/data.js"></script>
-		
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/highcharts.js"></script>
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/data.js"></script>
+		<!--script type="text/javascript" src="<%=base %>/resources/highcharts/10/highcharts-more.js"></script>
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/exporting.js"></script>
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/offline-exporting.js"></script-->
+
 		<script type="text/javascript" src="<%=base %>/resources/d3/current/d3.min.js"></script>
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>

@@ -21,7 +21,17 @@ Ext.define('Voyant.notebook.editor.CachedInput', {
 		throw new Error('Subclass must override!');
 	},
 
+	/**
+	 * Returns an object suitable for saving to a notebook file, which can be used to recreate the input on load
+	 */
 	getInput: function() {
+		throw new Error('Subclass must override!');
+	},
+
+	/**
+	 * Returns a Ext.Promise that resolves to a Blob of the cached input value
+	 */
+	getBlob: function() {
 		throw new Error('Subclass must override!');
 	}
 });
