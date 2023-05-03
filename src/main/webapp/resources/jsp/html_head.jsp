@@ -126,15 +126,6 @@
 	<% } 
 } %>
 
-<% // ridiculous hack for Safari 11 that seems to hide fieldsets, tested with desktop and iPad
-	// https://www.sencha.com/forum/showthread.php?423768&p=1282921&viewfull=1#post1282921
-String userAgent = request.getHeader("user-agent");
-if (userAgent.indexOf("Safari") > -1 && (userAgent.indexOf("Version/13.") > -1 || userAgent.indexOf("Version/11.") > -1 || userAgent.indexOf("Version/12.") > -1 || (userAgent.indexOf("Version/11.") > -1 && userAgent.indexOf("Mobile")>-1))) { %>	<style>
-	/* ridiculous hack for Safari 11 that seems to hide fieldsets */
-	.x-fieldset {overflow: visible;}
-	</style>
-<% } %>
-
 <%@ page import = "org.voyanttools.voyant.Trombone" %>
 <% if (Trombone.hasVoyantServerResource("header-include.html")) { %>
 	<%= Trombone.getVoyantServerResource("header-include.html") %>
