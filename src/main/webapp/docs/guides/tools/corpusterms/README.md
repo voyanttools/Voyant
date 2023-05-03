@@ -14,7 +14,7 @@ The table view shows the following three data columns by default:
 
 Additional columns are available by clicking on the down arrow that appears in the right side of a column header:
 
-- *Relative*: this is the relative frequency of the term in the corpus, per one million words (sorting by count and relative should produce the same results, the relative frequencies might be useful when comparing to another corpus)
+- *Relative*: this is the relative frequency of the term in the corpus (calculated by dividing the raw frequency by the total number of terms in the corpus and multiplying by 1 million). Sorting by count and relative should produce the same results, the relative frequencies might be useful when comparing to another corpus.
 - *Comparison*: this is the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus; to specify the comparison corpus, click the [Options](#!/guide/options) icon and specify the comparison corpus to use
 - *Peakedness*: this is a [statistical measure](https://en.wikipedia.org/wiki/Kurtosis) of how much the relative frequencies of a term in a corpus are bunched up into peaks (regions with higher values where the rest are lower)
 - *Skew*: this is a [statistical measure](https://en.wikipedia.org/wiki/Skewness) of the symmetry of the relative frequencies of a term across the corpus

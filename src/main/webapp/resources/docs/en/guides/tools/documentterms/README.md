@@ -11,7 +11,7 @@ The table view shows the following five data columns by default:
 - *#*: this is the document number (the position of the term's document in the corpus)
 - *Term*: this is the document term
 - *Count*: this is the raw frequency of the term in the document
-- *Relative*: this is the relative frequency (per 10 million words) of the term in the document
+- *Relative*: this is the relative frequency of the term in the document (calculated by dividing the raw frequency by the total number of terms in the document and multiplying by 1 million)
 - *Trends*: this is a sparkline graph that shows the distribution of the term within the segments of the document; you can hover over the sparkline to see finer-grained results
 
 Additional columns are available by clicking on the down arrow that appears in the right side of a column header:
