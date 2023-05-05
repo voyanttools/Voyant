@@ -4,7 +4,7 @@ Voyant Tools is a web-based text reading and analysis environment. It is a schol
 
 What you can do with Voyant:
 
-* Use it to learn how computers-assisted analysis works. Check out our [examples](http://docs.voyant-tools.org/about/examples-gallery/) that show you how to do real academic tasks with Voyant.
+* Use it to learn how computers-assisted analysis works. Check out our [examples](#!/guide/gallery) that show you how to do real academic tasks with Voyant.
 * Use it to study texts that you find on the web or texts that you have carefully edited and have on your computer. 
 * Use it to add functionality to your online collections, journals, blogs or web sites so others can see through your texts with analytical tools.
 * Use it to add interactive evidence to your essays that you publish online. Add interactive panels right into your research essays (if they can be published online) so your readers can recapitulate your results.
