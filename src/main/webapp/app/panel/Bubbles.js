@@ -32,6 +32,14 @@ Ext.define('Voyant.panel.Bubbles', {
     	audio: false
 	},
 	
+	corpusLoaded: false,
+	processingLoaded: false,
+	bubblesAppCode: undefined,
+	
+	bubbles: undefined,
+	oscillator: undefined,
+	gainNode: undefined,
+	
 	
     constructor: function() {
 
@@ -107,20 +115,17 @@ Ext.define('Voyant.panel.Bubbles', {
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     	
+		this.on('boxready', function() {
+			this.loadBubbles();
+		})
+
     	this.on('loadedCorpus', function(src, corpus) {
-    		var canvas = this.getTargetEl().dom.querySelector("canvas");
-    		var me = this;
-    		Ext.Ajax.request({
-    			url: this.getBaseUrl()+'resources/bubbles/bubbles.pjs'
-    		}).then(function(data) {
-    			var canvas = me.getTargetEl().dom.querySelector("canvas");
-    			me.bubbles = new Processing(canvas, data.responseText);
-    			me.bubbles.size(me.getTargetEl().getWidth(),me.getTargetEl().getHeight());
-    			me.bubbles.frameRate(me.getApiParam('speed'));
-    			me.bubbles.bindJavascript(me);
-    			me.bubbles.noLoop();
-    			me.loadDocument();
-    		})
+    		this.corpusLoaded = true;
+			if (this.bubbles) {
+				this.loadDocument();
+			} else {
+				this.loadBubbles();
+			}
     	}, this);
     	
     	this.on("resize", function() {
@@ -182,10 +187,43 @@ Ext.define('Voyant.panel.Bubbles', {
     		})
     	})
     },
+
+	loadBubbles: function() {
+		if (this.bubbles === undefined && this.processingLoaded && this.bubblesAppCode !== undefined && this.getTargetEl() !== undefined) {
+			var canvas = this.getTargetEl().dom.querySelector('canvas');
+			this.bubbles = new Processing(canvas, this.bubblesAppCode);
+			this.bubbles.size(this.getTargetEl().getWidth(),this.getTargetEl().getHeight());
+			this.bubbles.frameRate(this.getApiParam('speed'));
+			this.bubbles.bindJavascript(this);
+			this.bubbles.noLoop();
+			
+			this.bubblesAppCode = undefined;
+
+			if (this.corpusLoaded) {
+				this.loadDocument();
+			}
+		}
+	},
     
     initComponent: function() {
     	// make sure to load script
-		Ext.Loader.loadScript(this.getBaseUrl()+"resources/processingjs/processing.min.js");
+		Ext.Loader.loadScript({
+			url: this.getBaseUrl()+"resources/processingjs/processing.min.js",
+			onLoad: function() {
+				this.processingLoaded = true;
+				this.loadBubbles();
+			},
+			scope: this
+		});
+
+		Ext.Ajax.request({
+			url: this.getBaseUrl()+'resources/bubbles/bubbles.pjs',
+			success: function(data) {
+				this.bubblesAppCode = data.responseText;
+				this.loadBubbles();
+			},
+			scope: this
+		})
 		
 		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 		
