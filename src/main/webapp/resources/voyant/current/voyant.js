@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue May 16 20:37:22 UTC 2023 */
+/* This file created by JSCacher. Last modified: Wed May 17 14:59:17 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -31382,7 +31382,14 @@ Ext.define('Voyant.panel.Trends', {
     		},{xtype: 'colorpaletteoption'}]
 	},
     statics: {
-    	i18n: {    		
+    	i18n: {
+			displayTip: 'Chart display options',
+			labelsTip: 'Toggle term labels',
+			areaTip: 'Area chart',
+			barTip: 'Columns chart',
+			lineTip: 'Line chart',
+			stackedTip: 'Stacked bar chart',
+			barlineTip: 'Line and stacked bar chart'
     	},
     	api: {
     		
