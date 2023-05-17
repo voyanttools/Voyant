@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed May 17 14:59:17 UTC 2023 */
+/* This file created by JSCacher. Last modified: Wed May 17 19:20:00 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -29310,6 +29310,7 @@ Ext.define('Voyant.panel.Summary', {
     	
     	main.removeAll();
     	main.add({
+			cls: 'section',
     		html: this.getCorpus().getString()
     	});
     	
@@ -29395,8 +29396,14 @@ Ext.define('Voyant.panel.Summary', {
 		
     	
     	main.add({
-    		html: this.localize("mostFrequentWords"),
     		cls: 'section',
+			items: [{
+				html: this.localize("mostFrequentWords"),
+				cls: 'header'
+			},{
+				cls: 'contents',
+				html: '<ul><li></li></ul>'
+			}],
     		listeners: {
     			afterrender: function(container) {
     				container.mask(me.localize("loading"));
@@ -29409,7 +29416,8 @@ Ext.define('Voyant.panel.Summary', {
     					callback: function(records, operation, success) {
     						if (success && records && records.length>0) {
     							container.unmask();
-    							Ext.dom.Helper.append(container.getTargetEl().first().first(),
+								var contentsEl = container.down('panel[cls~=contents]').getTargetEl().selectNode('li');
+    							Ext.dom.Helper.append(contentsEl,
 			   	        			 new Ext.XTemplate('<tpl for="." between="; "><a href="#" onclick="return false" class="corpus-type keyword" voyant:recordId="{id}">{term}</a><span style="font-size: smaller"> ({val})</span></tpl>')
 			   	        		 		.apply(records.map(function(term) {
 			   	        		 			return {
@@ -29423,14 +29431,19 @@ Ext.define('Voyant.panel.Summary', {
     					}
     				})
     			}
-    		},
-    		scope: this
+    		}
     	})
     	
     	if (docs.length>1) {
         	main.add({
-        		html: this.localize("distinctiveWords")+"<ol></ol>",
         		cls: 'section',
+				items: [{
+					html: this.localize("distinctiveWords"),
+					cls: 'header'
+				},{
+					cls: 'contents',
+					html: '<ol></ol>'
+				}],
         		itemId: 'distinctiveWords',
         		listeners: {
         			afterrender: function(container) {
@@ -29466,6 +29479,7 @@ Ext.define('Voyant.panel.Summary', {
 					width: sparkWidth
 				}]
 			},{
+				cls: 'contents',
 				html: '<ul><li>'+topText+" "+docsLengthTpl.apply(docs.slice(0, docs.length>limit ? limit : parseInt(docs.length/2)).map(function(doc) {return {
 					id: doc.getId(),
 					shortTitle: doc.getShortTitle(),
@@ -29550,7 +29564,50 @@ Ext.define('Voyant.panel.Summary', {
     			});
     		}
     	}
-    }    
+    },
+
+	// override because the doc sparklines are mostly useless as exports
+	getExportVisualization: function() {
+		return false;
+	},
+
+	getExtraDataExportItems: function() {
+		return [{
+			name: 'export',
+			inputValue: 'dataAsTsv',
+			boxLabel: this.localize('exportGridCurrentTsv')
+		}];
+	},
+
+	exportDataAsTsv: function(panel, form) {
+		var value = '';
+		var sections = panel.query('panel[cls~=section]');
+		sections.forEach(function(sp) {
+			var sectionData = '';
+			var header = sp.down('panel[cls~=header]');
+			var contents = sp.down('panel[cls~=contents]');
+			if (header) {
+				sectionData += header.getEl().dom.textContent + "\n";
+				if (contents) {
+					contents.getEl().select('li').elements.forEach(function(li) {
+						sectionData += li.textContent.replace(/:/, ":\t").replace(/\)[,;]/g, ")\t") + "\n";
+					});
+				}
+			} else {
+				sectionData = sp.getEl().dom.textContent + "\n";
+			}
+			value += sectionData + "\n";
+		});
+		Ext.Msg.show({
+			title: panel.localize('exportDataTitle'),
+			message: panel.localize('exportDataTsvMessage'),
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO,
+			prompt: true,
+			multiline: true,
+			value: value
+		});
+	}
 });
 
 Ext.define('Voyant.panel.TextualArc', {
