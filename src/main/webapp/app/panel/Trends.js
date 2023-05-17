@@ -67,7 +67,14 @@ Ext.define('Voyant.panel.Trends', {
     		},{xtype: 'colorpaletteoption'}]
 	},
     statics: {
-    	i18n: {    		
+    	i18n: {
+			displayTip: 'Chart display options',
+			labelsTip: 'Toggle term labels',
+			areaTip: 'Area chart',
+			barTip: 'Columns chart',
+			lineTip: 'Line chart',
+			stackedTip: 'Stacked bar chart',
+			barlineTip: 'Line and stacked bar chart'
     	},
     	api: {
     		
