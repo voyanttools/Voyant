@@ -80,7 +80,11 @@ a {
     margin-top: 1em;
 }
 .corpus-summary .header .x-autocontainer-innerCt {
-    font-weight: bold; padding-right: 1em;
+    font-weight: normal; padding-right: 1em;
+}
+
+.corpus-summary .header b {
+    font-weight: normal;
 }
 
 .corpus-summary ul, .corpus-summary ol {
