@@ -5,7 +5,8 @@ Ext.define('Voyant.panel.Topics', {
 	statics: {
 		i18n: {
 			topics: 'Topics',
-			documents: 'Documents'
+			documents: 'Documents',
+			topicWeight: 'Topic weight'
 		},
 		api: {
 			stopList: 'auto',
@@ -100,7 +101,7 @@ Ext.define('Voyant.panel.Topics', {
 				height: '100%',
 				scrollable: 'y',
 				store: Ext.create('Ext.data.ArrayStore',{
-					fields: ['index', 'terms', 'weight']
+					fields: ['index', 'terms', 'weight', 'diagnostics']
 				}),
 				selectionModel: {
 					type: 'dataviewmodel',
@@ -108,10 +109,11 @@ Ext.define('Voyant.panel.Topics', {
 				},
 				itemSelector: 'div.topicItem',
 				tpl: new Ext.XTemplate(
-					'<div>{[this.localize("topics")]}</div><tpl for=".">',
+					'<div style="font-weight: bold">{[this.localize("topics")]}</div><tpl for=".">',
 						'<div class="topicItem" style="background-color: {[this.getColor(values.index)]}">',
-							'<div class="data weight">{[fm.number(values.weight*100, "00.0")]}%</div>',
+							'<div class="data weight" data-qtip="{[this.localize("topicWeight")]}">{[fm.number(values.weight*100, "00.0")]}%</div>',
 							'<span class="term">{[values.terms.join("</span> <span class=\\"term\\">")]}</span>',
+							'<div class="data diagnostics">{[this.processDiagnostics(values.diagnostics)]}</div>',
 						'</div>',
 					'</tpl>',
 					{
@@ -121,6 +123,13 @@ Ext.define('Voyant.panel.Topics', {
 						},
 						localize: function(key) {
 							return me.localize(key);
+						},
+						processDiagnostics: function(obj) {
+							var string = '';
+							for (var key in obj) {
+								string += '<div><div class="key">'+key+'</div><div class="value">'+obj[key]+'</div></div>';
+							}
+							return string;
 						}
 					}
 				),
@@ -150,7 +159,7 @@ Ext.define('Voyant.panel.Topics', {
 				},
 				itemSelector: 'div.topicItem',
 				tpl: new Ext.XTemplate(
-					'<div>{[this.localize("documents")]}</div><tpl for=".">',
+					'<div style="font-weight: bold">{[this.localize("documents")]}</div><tpl for=".">',
 						'<div class="topicItem">',
 							'{[this.getDocTitle(values.docId)]}',
 							'<div class="chart">{[this.getChart(values.docId, values.weights)]}</div>',
@@ -270,6 +279,13 @@ Ext.define('Voyant.panel.Topics', {
 					tooltip: this.localize('runIterationsTip'),
 					handler: this.runIterations,
 					scope: this
+				},{
+					text: 'Toggle diagnostics',
+					itemId: 'diagnostics',
+					glyph: 'xf129@FontAwesome',
+					handler: function(btn) {
+						me.down('#topicsView').toggleCls('showDiagnostics');
+					}
 				}]
 			}
 		});
@@ -298,6 +314,7 @@ Ext.define('Voyant.panel.Topics', {
 		var params = this.getApiParams();
 		params.tool = 'analysis.TopicModeling';
 		params.corpus = this.getCorpus().getAliasOrId();
+		params.noCache = 1;
 
 		var iterations = this.getApiParam('iterations');
 		var msg = Ext.MessageBox.progress({
@@ -314,8 +331,13 @@ Ext.define('Voyant.panel.Topics', {
 				var data = JSON.parse(response.responseText);
 				
 				var topicsStore = this.down('#topicsView').getStore();
-				topicsStore.loadData(data.topicModeling.topicWords.map(function(words, i) {
-					return [i, words, 0];
+				topicsStore.loadData(data.topicModeling.topics.map(function(topic, i) {
+					var words = topic.words.map(function(w) {
+						return w.word;
+					});
+					var diagnostics = Object.assign({}, topic);
+					delete diagnostics.words;
+					return [i, words, 0, diagnostics];
 				}));
 
 				data.topicModeling.topicDocuments.sort(function(a, b) {
@@ -400,14 +422,22 @@ Ext.define('Voyant.panel.Topics', {
 
 		var topicOrder = [];
 
+		var includeDiagnostics = this.down('#topicsView').hasCls('showDiagnostics');
+
 		this.down('#topicsView').getStore().getData().each(function(record, i) {
 			if (i === 0) {
 				topicsValue += record.get('terms').map(function(t, i) { return 'Term '+i; }).join("\t");
+				if (includeDiagnostics) {
+					topicsValue += "\t"+Object.keys(record.get('diagnostics')).join("\t");
+				}
 			}
 			
 			topicOrder.push(record.get('index'));
 
 			topicsValue += "\nTopic "+record.get('index')+"\t"+record.get('terms').join("\t");
+			if (includeDiagnostics) {
+				topicsValue += "\t"+Object.values(record.get('diagnostics')).join("\t");
+			}
 			docsValue += "\tTopic "+record.get('index')+' Weight';
 		});
 

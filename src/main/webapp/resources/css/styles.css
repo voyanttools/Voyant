@@ -271,16 +271,34 @@ svg.cirrusGraph text {
   outline: none !important;
 }
 
-.topicItem .weight {
-  display: none;
-  float: right;
+.topicItem .data {
   padding: 3px;
-  margin-left: 3px;
   background-color: #fff;
   border-radius: 3px;
+  display: none;
+}
+.topicItem .weight {
+  float: right;
+  margin-left: 3px;
+}
+.topicItem .diagnostics {
+  font-family: 'Courier New', Courier, monospace;
+  float: left;
+  margin: 3px;
+}
+.topicItem .diagnostics > div {
+  float: left;
+  margin: 6px;
+}
+.topicItem .diagnostics .key {
+  text-decoration: underline;
+  margin-bottom: 3px;
 }
 
 .showWeight .topicItem .weight {
+  display: block;
+}
+.showDiagnostics .topicItem .diagnostics {
   display: block;
 }
 
