@@ -338,25 +338,6 @@ public class Trombone extends HttpServlet {
 
 	}
 	
-	private String getTemplatePath(FlexibleParameters parameters) {
-
-		if (parameters == null) {
-			throw new NullPointerException("illegal parameters");
-		}
-
-		String templatePath = parameters.getParameterValue("template");
-
-		if (templatePath.contains("/") == false) {
-			templatePath = getServletContext().getRealPath("/resources/xsl/"+templatePath);
-		}
-		if (templatePath.endsWith(".xsl") == false) {
-			templatePath += ".xsl";
-		}
-
-		return templatePath;
-		
-	}
-	
 	private static String generateLogMessageForUnprocessableParameters(Set<Map.Entry<String, String[]>> rawParameters, Set<String> hiddenParameters) {
 
 		if (rawParameters == null) {
