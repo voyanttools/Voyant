@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri May 26 20:11:06 UTC 2023 */
+/* This file created by JSCacher. Last modified: Thu Jun 08 21:33:01 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6426,8 +6426,8 @@ Ext.define("Voyant.util.ResponseError", {
 		this.setResponse(config.response);
 		Ext.applyIf(config, {
 			msg: config.response.statusText, // hopefully already set by creator
-			error: ("responseText" in config.response) ? config.response.responseText.split(/(\r\n|\r|\n)/).shift() : "", // show first line of response
-			details: ("responseText" in config.response) ? config.response.responseText : ""
+			error: (typeof config.response === 'object' && 'responseText' in config.response) ? config.response.responseText.split(/(\r\n|\r|\n)/).shift() : config.response, // show first line of response
+			details: (typeof config.response === 'object' && 'responseText' in config.response) ? config.response.responseText : config.response
 		})
 		this.callParent(arguments);
 	}
@@ -10015,6 +10015,7 @@ Ext.define('Voyant.data.util.Geonames', {
 					},
 					failure: function(responseOrProgress) {
 						Voyant.application.showResponseError(me.localize("failedToFetchGeonames"), responseOrProgress);
+						dfd.reject();
 					},
 					scope: me
 				});
@@ -10027,6 +10028,7 @@ Ext.define('Voyant.data.util.Geonames', {
 			}
 		}, function(response) {
 			Voyant.application.showResponseError(me.localize('failedToFetchGeonames'), response);
+			dfd.reject();
 		});
 		return dfd.promise;
 	},
@@ -21602,6 +21604,8 @@ Ext.define('Voyant.widget.GeonamesFilter', {
             me.unmask();
             me.fireEvent("filterUpdate", me, geonames);
             return geonames;
+        }, function() {
+            me.unmask();
         });
     },
 
