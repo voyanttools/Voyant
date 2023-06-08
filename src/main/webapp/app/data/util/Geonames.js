@@ -48,6 +48,7 @@ Ext.define('Voyant.data.util.Geonames', {
 					},
 					failure: function(responseOrProgress) {
 						Voyant.application.showResponseError(me.localize("failedToFetchGeonames"), responseOrProgress);
+						dfd.reject();
 					},
 					scope: me
 				});
@@ -60,6 +61,7 @@ Ext.define('Voyant.data.util.Geonames', {
 			}
 		}, function(response) {
 			Voyant.application.showResponseError(me.localize('failedToFetchGeonames'), response);
+			dfd.reject();
 		});
 		return dfd.promise;
 	},

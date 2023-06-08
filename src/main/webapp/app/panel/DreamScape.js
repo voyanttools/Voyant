@@ -1784,6 +1784,8 @@ Ext.define('Voyant.widget.GeonamesFilter', {
             me.unmask();
             me.fireEvent("filterUpdate", me, geonames);
             return geonames;
+        }, function() {
+            me.unmask();
         });
     },
 
