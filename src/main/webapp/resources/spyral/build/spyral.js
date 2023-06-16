@@ -10494,18 +10494,18 @@ var Spyral = (function () {
 	                      });
 	                    }
 
-	                    formData.append('input', config);
-	                    formData.append('inputFormat', _util["default"].getFileExtensionFromMimeType(config.type));
+	                    formData.set('input', config);
+	                    formData.set('inputFormat', _util["default"].getFileExtensionFromMimeType(config.type));
 	                  } // append any other form options that may have been included
 
 
 	                  if (api && (0, _typeof2["default"])(api) === 'object') {
 	                    for (var key in api) {
-	                      formData.append(key, api[key]);
+	                      formData.set(key, api[key]);
 	                    }
 	                  }
 
-	                  formData.append('tool', 'corpus.CorpusMetadata');
+	                  formData.set('tool', 'corpus.CorpusMetadata');
 	                  config = {
 	                    body: formData,
 	                    method: 'POST'
@@ -12906,22 +12906,17 @@ var Spyral = (function () {
 	            key: "blobToString",
 	            value: function blobToString(blob) {
 	              return new Promise(function (resolve, reject) {
-	                if (blob.type.search(/application\/(?!json|javascript)/) === 0) {
-	                  // probably a non-browser file type
-	                  reject();
-	                } else {
-	                  var reader = new FileReader();
-	                  reader.addEventListener('loadend', function (ev) {
-	                    try {
-	                      var td = new TextDecoder();
-	                      var data = td.decode(ev.target.result);
-	                      resolve(data);
-	                    } catch (err) {
-	                      reject(err);
-	                    }
-	                  });
-	                  reader.readAsArrayBuffer(blob);
-	                }
+	                var reader = new FileReader();
+	                reader.addEventListener('loadend', function (ev) {
+	                  try {
+	                    var td = new TextDecoder();
+	                    var data = td.decode(ev.target.result);
+	                    resolve(data);
+	                  } catch (err) {
+	                    reject(err);
+	                  }
+	                });
+	                reader.readAsArrayBuffer(blob);
 	              });
 	            }
 	            /**
@@ -13160,6 +13155,9 @@ var Spyral = (function () {
 	                  return 'xml';
 
 	                case 'application/xml':
+	                  return 'xml';
+
+	                case 'text/xml':
 	                  return 'xml';
 
 	                case 'application/xhtml+xml':
@@ -13922,22 +13920,17 @@ var Spyral = (function () {
 	    key: "blobToString",
 	    value: function blobToString(blob) {
 	      return new Promise(function (resolve, reject) {
-	        if (blob.type.search(/application\/(?!json|javascript)/) === 0) {
-	          // probably a non-browser file type
-	          reject();
-	        } else {
-	          var reader = new FileReader();
-	          reader.addEventListener('loadend', function (ev) {
-	            try {
-	              var td = new TextDecoder();
-	              var data = td.decode(ev.target.result);
-	              resolve(data);
-	            } catch (err) {
-	              reject(err);
-	            }
-	          });
-	          reader.readAsArrayBuffer(blob);
-	        }
+	        var reader = new FileReader();
+	        reader.addEventListener('loadend', function (ev) {
+	          try {
+	            var td = new TextDecoder();
+	            var data = td.decode(ev.target.result);
+	            resolve(data);
+	          } catch (err) {
+	            reject(err);
+	          }
+	        });
+	        reader.readAsArrayBuffer(blob);
 	      });
 	    }
 	    /**
@@ -14176,6 +14169,9 @@ var Spyral = (function () {
 	          return 'xml';
 
 	        case 'application/xml':
+	          return 'xml';
+
+	        case 'text/xml':
 	          return 'xml';
 
 	        case 'application/xhtml+xml':
