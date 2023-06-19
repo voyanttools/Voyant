@@ -53,6 +53,12 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		tableContent: undefined,
     		tableTitle: undefined,
     		tableAuthor: undefined,
+			tablePubDate: undefined,
+			tablePublisher: undefined,
+			tablePubPlace: undefined,
+			tableKeywords: undefined,
+			tableCollection: undefined,
+			tableExtraMetadata: undefined,
     		title: undefined,
     		subTitle: undefined,
     		inputRemoveFrom: undefined,
@@ -687,6 +693,33 @@ Ext.define('Voyant.panel.CorpusCreator', {
 									fieldLabel: me.localize('tableTitle'),
 									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
 									name: 'tableTitle'
+								},{
+									xtype: 'fieldset',
+			                        title: me.localize('xmlAdditionalOptions'),
+			                        collapsible: true,
+			                        collapsed: true,
+			                        defaultType: 'textfield',
+			                        items: [{
+										fieldLabel: me.localize('xpathPubDate'),
+										name: 'tablePubDate'
+									},{
+										fieldLabel: me.localize('xpathPublisher'),
+										name: 'tablePublisher'
+									},{
+										fieldLabel: me.localize('xpathPubPlace'),
+										name: 'tablePubPlace'
+									},{
+										fieldLabel: me.localize('xpathKeywords'),
+										name: 'tableKeywords'
+									},{
+										fieldLabel: me.localize('xpathCollection'),
+										name: 'tableCollection'
+									},{
+										xtype: 'textareafield',
+										grow: true,
+										fieldLabel: me.localize('xpathExtra'),
+										name: 'tableExtraMetadata'
+									}]
 								}
 							]
 						},{
