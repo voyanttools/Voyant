@@ -108,7 +108,6 @@ Ext.define('Voyant.panel.CorpusCreator', {
                 overflowHandler: 'scroller',
                 dock: 'bottom',
     	    	buttonAlign: 'right',
-//    	    	defaultButtonUI : 'default',
 	    		items: [{
 	    			text: me.localize('Open'),
                     glyph: 'xf115@FontAwesome', // not visible
@@ -119,12 +118,12 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    				    title: me.localize('Open'),
 	    				    layout: 'fit',
 	    				    modal: true,
-	    				    items: {  // Let's put an empty grid in just to illustrate fit layout
+	    				    items: {
 	    				        xtype: 'form',
 	    				        submitEmptyText: false,
-	    				        margin: '5,5,5,5',
 	    				        items: {
-	    				        	xtype: 'corpusselector'
+	    				        	xtype: 'corpusselector',
+									margin: 10
 	    				        },
 	    				        buttons: [
 	    				        	{
