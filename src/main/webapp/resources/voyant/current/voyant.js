@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Jun 19 20:58:04 UTC 2023 */
+/* This file created by JSCacher. Last modified: Mon Jul 03 18:39:34 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -34663,38 +34663,34 @@ Ext.define('Voyant.panel.Topics', {
 				},
 					'<span class="info-tip" data-qtip="'+this.localize('limitTermsTip')+'">'+this.localize('limitTerms')+'</span>'
 				,{ 
-					width: 80,
+					width: 60,
 					hideLabel: true,
-					xtype: 'slider',
-					increment: 1,
+					xtype: 'numberfield',
 					minValue: 1,
 					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("termsPerTopic")))
 						},
-						changecomplete: function(slider, newvalue) {
+						change: function(slider, newvalue) {
 							this.setApiParams({termsPerTopic: newvalue});
-							this.runIterations();
 						},
 						scope: this
 					}
 				},
 					'<span class="info-tip" data-qtip="'+this.localize('numTopicsTip')+'">'+this.localize('numTopics')+'</span>'
 				,{ 
-					width: 80,
+					width: 60,
 					hideLabel: true,
-					xtype: 'slider',
-					increment: 1,
+					xtype: 'numberfield',
 					minValue: 1,
 					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("topics")))
 						},
-						changecomplete: function(slider, newvalue) {
+						change: function(slider, newvalue) {
 							this.setApiParams({topics: newvalue});
-							this.runIterations();
 						},
 						scope: this
 					}
