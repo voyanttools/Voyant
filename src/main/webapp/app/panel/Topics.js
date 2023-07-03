@@ -237,38 +237,34 @@ Ext.define('Voyant.panel.Topics', {
 				},
 					'<span class="info-tip" data-qtip="'+this.localize('limitTermsTip')+'">'+this.localize('limitTerms')+'</span>'
 				,{ 
-					width: 80,
+					width: 60,
 					hideLabel: true,
-					xtype: 'slider',
-					increment: 1,
+					xtype: 'numberfield',
 					minValue: 1,
 					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("termsPerTopic")))
 						},
-						changecomplete: function(slider, newvalue) {
+						change: function(slider, newvalue) {
 							this.setApiParams({termsPerTopic: newvalue});
-							this.runIterations();
 						},
 						scope: this
 					}
 				},
 					'<span class="info-tip" data-qtip="'+this.localize('numTopicsTip')+'">'+this.localize('numTopics')+'</span>'
 				,{ 
-					width: 80,
+					width: 60,
 					hideLabel: true,
-					xtype: 'slider',
-					increment: 1,
+					xtype: 'numberfield',
 					minValue: 1,
 					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("topics")))
 						},
-						changecomplete: function(slider, newvalue) {
+						change: function(slider, newvalue) {
 							this.setApiParams({topics: newvalue});
-							this.runIterations();
 						},
 						scope: this
 					}
