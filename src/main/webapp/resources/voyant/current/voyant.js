@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Jul 14 15:27:39 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Jul 14 18:15:59 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -19372,6 +19372,9 @@ Ext.define('Voyant.panel.CorpusCreator', {
     showOptionsClick: function(panel) {
     	var me = panel;
     	if (me.optionsWin === undefined) {
+			var langCodes = ['bo'].concat(Object.keys(Voyant.widget.StopListOption.stoplists).filter(function(code) { return code !== 'mu'; })).sort();
+			var langArray = langCodes.map(function(code) { return [code, me._localizeClass(Voyant.widget.StopListOption, code)] });
+			langArray.unshift(['', me._localizeClass(Voyant.widget.StopListOption, 'auto')]);
     		me.optionsWin = Ext.create('Ext.window.Window', {
     			title: me.localize('gearWinTitle'),
     			closeAction: 'hide',
@@ -19750,15 +19753,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
 								    xtype:'combo',
 								    fieldLabel: me.localize("language"),
 								    name: 'language',
-								    queryMode:'local', //?
-								    store:[['',me._localizeClass(Voyant.widget.StopListOption, "auto")],['cn',me._localizeClass(Voyant.widget.StopListOption, "cn")],['bo',me._localizeClass(Voyant.widget.StopListOption, "bo")],['grc',me._localizeClass(Voyant.widget.StopListOption, "grc")]],
+								    queryMode:'local',
+								    store: langArray,
 								    forceSelection:true,
 								    value: ''
 								},{
 								    xtype:'combo',
 								    fieldLabel: me.localize('tokenization'),
 								    name: 'tokenization',
-								    queryMode:'local', //?
+								    queryMode:'local',
 								    store:[['',me.localize('tokenizationAuto')],['wordBoundaries',me.localize("tokenizationWordBoundaries")],['whitespace',me.localize("tokenizationWhitespace")]],
 								    forceSelection:true,
 								    value: ''
