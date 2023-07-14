@@ -31,7 +31,7 @@ Date	Location	ID	English (en)	French (fr)	Italian (it)	Spanish (es)	Portuguese (
 2018-10-10	Voyant.panel.WordTree	branchesTip	limit the number of branches that are shown on each side of the keyword	limiter le nombre de branches affichées de part et d'autre du mot clé			limita o número de ramificações exibidas em cada lado da palavra-chave		Ограничить количество ветвей, отображаемых с каждой стороны ключевого слова	Begrenzt die Anzahl der Zweige, die auf jeder Seite des Schlagwortes angezeigt werden											
 2018-10-10	Voyant.panel.WordTree	context	context	contexte			contexto		Контекст	Kontext											
 2018-10-10	Voyant.panel.WordTree	contextTip	limit the length of the context retrieved for branches	limiter la taille du contexte chargé dans les branches			limita a extensão do contexto consultado para as ramificações		Ограничить длину контекста, извлекаемого для ветвей	Begrenzt die Anzahl der angezeigten Kontextwörter einzelner Zweige											
-2018-06-29	Voyant.util.Localization	pt	Portuguese	Portugais			Português		Португальский	Portugiesisch											
+2018-06-29	Voyant.util.Localization	pt	Portuguese	Portugais	Portoghese	Portugués	Português		Португальский	Portugiesisch											
 2018-06-22	Voyant.panel.CorpusCreator	htmlOptionsText	Experimental! Define CSS selectors (<a href='{0}' target='_blank'>see documentation</a>).	Expérimental ! Définir des sélecteurs CSS  (<a href='{0}' target='_blank'>voir la documentation</a>).			Experimental! Definir os seletores CSS (<a href='{0}' target='_blank'>ver a documentação</a>).		Экспериментальный! Определить CSS селекторы (<a href='{0}' target='_blank'>see documentation</a>).	Zum Experimentieren! CSS Selektoren definieren (<a href='{0}' target='_blank'>zur Dokumentation</a>).											
 2018-06-22	Voyant.panel.CorpusCreator	htmlOptions	HTML	HTML			HTML		HTML	HTML											
 2018-06-16	Voyant.panel.CorpusTerms	relativeFreqLabel	relative frequency:	fréquence relative :	frequenza relativa:	frecuencia relativa:	frequência relativa:		Относительная частотность	relative Frequenz:		Relativna učestalost:	Релативна учесталост:	Relativna učestalost:			Relativní frekvence:				
@@ -311,7 +311,7 @@ September 21	Voyant.panel.Trends	failedGetDocumentTerms	Failed to get document t
 2016-06-24	Voyant.util.Localization	de	German	Allemand	Tedesco	Alemán 	Alemão		Немецкий	Deutsch		njemački	немачки	njemački	ドイツ語		němčina	الماني			
 2016-06-24	Voyant.util.Localization	en	English	Anglais	Inglese	Inglés	Inglês		Английский	Englisch		engleski	енглески	engleski	英語		angličtina	انكليزي			
 2016-06-24	Voyant.util.Localization	fr	French	Français	Francese	Francés 	Francês		Французский	Französisch		francuski	француски	francuski	フランス語		francouzština	فرنسي			
-2016-06-24	Voyant.util.Localization	he	Hebrew	Hébreu		Hebreo 	Hebraico		Иврит	Hebräisch		hebrejski	хебрејски	hebrejski	ヘブライ語		hebrejština	عبري			
+2016-06-24	Voyant.util.Localization	he	Hebrew	Hébreu	Ebraico	Hebreo 	Hebraico		Иврит	Hebräisch		hebrejski	хебрејски	hebrejski	ヘブライ語		hebrejština	عبري			
 2016-06-24	Voyant.util.Localization	hr	Croatian	Croate		Croata	Croata		Хорватский	Kroatisch		hrvatski	хрватски	hrvatski	クロアチア語		chorvatština	كرواتي			
 2016-06-24	Voyant.util.Localization	it	Italian	Italien	Italiano	Italiano 	Italiano		Итальянский	Italienisch		talijanski	италијански	italijanski	イタリア語		italština	ايطالي			
 2016-06-24	Voyant.util.Localization	ja	Japanese	Japonais	Giapponese	Japones 	Japonês		Японский	Japanisch		japanski	јапански	japanski	日本語		japonština	ياباني			
@@ -923,6 +923,7 @@ September 21	Voyant.panel.Trends	failedGetDocumentTerms	Failed to get document t
 2016-04-25	Voyant.widget.StopListOption	gl	Galician	Galicien	Gallego	Galicia 	Galego		Галисийский	Galicisch		galicijski	галисијски	galicijski	ガリシア語	גליסית	galicijština	غاليسي			
 2016-04-25	Voyant.widget.StopListOption	hi	Hindi	Hindi	Hindi	Hindú 	Indú		Хинди	Hindi		hindski	хинди	hindski	ヒンディー語	הינדי	hindī	هندي			
 2016-04-25	Voyant.widget.StopListOption	hu	Hungarian	Hongrois	Ungherese	Húngaro	Húngaro		Венгерский	Ungarisch		madžarski	мађарски	mađarski	ハンガリー語	הונגרית	maďarština	هنغاري			
+2023-07-14	Voyant.widget.StopListOption	he	Hebrew	Hébreu	Ebraico	Hebreo 	Hebraico		Иврит	Hebräisch		hebrejski	хебрејски	hebrejski	ヘブライ語		hebrejština	عبري			
 2016-04-25	Voyant.widget.StopListOption	hy	Armenian	Arménien	Armeno	Armenio 	Armênio		Армянский	Armenisch		jermenski	јерменски	jermenski	アルメニア語	ארמנית	arménština	ارمني			
 2016-04-25	Voyant.widget.StopListOption	id	Indonesian	Indonésien	Indonesiano	Indonesia 	Indonésio		Индонезийский	Indonesisch		indonezijski	индонежански	indonezijski	インドネシア語	אינדונזית	indonéština	اندونسي			
 2016-04-25	Voyant.widget.StopListOption	it	Italian	Italien	Italiano	Italiano 	Italiano		Итальянский	Italienisch		talijanski	италијански	italijanski	イタリア語	איטלקית	italština	ايطالي			
@@ -938,6 +939,7 @@ September 21	Voyant.panel.Trends	failedGetDocumentTerms	Failed to get document t
 2016-04-25	Voyant.widget.StopListOption	noEditAutoTitle	Edit Stoplist Error	Erreur durant la modification de la liste des mots vides (<i>stopwords</i>)	Errore di modifica lista di parole non significative	Error en la edición de las palabras excluidas	Erro na edição da lista de palavras excluídas (stoplist)		Ошибка редактирования стоп-листа	Stopwordlist-Fehler bearbeiten		Greška pri reviziji liste praznih riječi	Грешка при ревизији листе празних речи	Greška pri reviziji liste praznih riječi	ストップリストのエラーを編集する	טעות בעריכת הרשימה	Chyba editace seznamu stop slov	خطأ في تحرير قائمة الكلمات المستبعدة			
 2016-04-25	Voyant.widget.StopListOption	none	None	Aucune	Nessuno	Ninguno 	Nenhum		Никакой	Nichts		Ne postoji	Не постоји	Ne postoji	なし	ללא	Žádný	غير متوفر			
 2016-04-25	Voyant.widget.StopListOption	ok	Save	Sauvegarder	Salva	Salvar	Salvar		Сохранить	Speichern		Snimiti	Снимити	Snimiti	保存する	שמירה	Uložit	حفظ			
+2023-07-14	Voyant.widget.StopListOption	pt	Portuguese	Portugais	Portoghese	Portugués	Português		Португальский	Portugiesisch											
 2016-04-25	Voyant.widget.StopListOption	ro	Romanian	Roumain	Romeno	Rumano 	Romeno		Румынский	Rumänisch		rumunjski	румунски	rumunski	ルーマニア語	רומנית	rumunština	روماني			
 2016-04-25	Voyant.widget.StopListOption	se	Swedish	Suédois	Svedese	Sueco 	Sueco		Шведский	Schwedisch		švedski	шведски	švedski	スウェーデン語	שבדית	švédština	سويدي			
 2016-04-25	Voyant.widget.StopListOption	th	Thai	Thaïlandais	Tailandese	Tailandés	Tailandês		Тайский	Thai		tajski	тајландски	tajlandski	タイ語	תאית	thajština	تايلندي			
