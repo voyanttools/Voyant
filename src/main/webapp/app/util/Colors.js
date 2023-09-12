@@ -256,5 +256,100 @@ Ext.define('Voyant.util.Colors', {
 			color = this.rgbToHex(color);
 		}
 		return color;
+	},
+
+	/**
+	 * Accessible Perceptual Contrast Algorithm adapted from https://github.com/Myndex/apca-w3
+	 * @param {Array} background An array of RGB values
+	 * @param {Array} foreground An array of RGB values
+	 * @return {Number}
+	 */
+	getColorContrast: function(background, foreground) {
+
+		// exponents
+		const normBG = 0.56;
+		const normTXT = 0.57;
+		const revTXT = 0.62;
+		const revBG = 0.65;
+
+		// clamps
+		const blkThrs = 0.022;
+		const blkClmp = 1.414;
+		const loClip = 0.1;
+		const deltaYmin = 0.0005;
+
+		// scalers
+		// see https://github.com/w3c/silver/issues/645
+		const scaleBoW = 1.14;
+		const loBoWoffset = 0.027;
+		const scaleWoB= 1.14;
+		const loWoBoffset = 0.027;
+
+		function fclamp (Y) {
+			if (Y >= blkThrs) {
+				return Y;
+			}
+			return Y + (blkThrs - Y) ** blkClmp;
+		}
+
+		function linearize (val) {
+			let sign = val < 0? -1 : 1;
+			let abs = Math.abs(val);
+			return sign * Math.pow(abs, 2.4);
+		}
+
+		let S;
+		let C;
+		let Sapc;
+
+		// Myndex as-published, assumes sRGB inputs
+		let R, G, B;
+
+		// Calculates "screen luminance" with non-standard simple gamma EOTF
+		// weights should be from CSS Color 4, not the ones here which are via Myndex and copied from Lindbloom
+		[R, G, B] = foreground;
+		let lumTxt = linearize(R) * 0.2126729 + linearize(G) * 0.7151522 + linearize(B) * 0.0721750;
+
+		[R, G, B] = background;
+		let lumBg = linearize(R) * 0.2126729 + linearize(G) * 0.7151522 + linearize(B) * 0.0721750;
+
+		// toe clamping of very dark values to account for flare
+		let Ytxt = fclamp(lumTxt);
+		let Ybg = fclamp(lumBg);
+
+		// are we "Black on White" (dark on light), or light on dark?
+		let BoW = Ybg > Ytxt;
+
+		// why is this a delta, when Y is not perceptually uniform?
+		// Answer: it is a noise gate, see
+		// https://github.com/LeaVerou/color.js/issues/208
+		if (Math.abs(Ybg - Ytxt) < deltaYmin) {
+			C = 0;
+		}
+		else {
+			if (BoW) {
+				// dark text on light background
+				S = Ybg ** normBG - Ytxt ** normTXT;
+				C = S * scaleBoW;
+			}
+			else {
+				// light text on dark background
+				S = Ybg ** revBG - Ytxt ** revTXT;
+				C = S * scaleWoB;
+			}
+		}
+		if (Math.abs(C) < loClip) {
+			Sapc = 0;
+		}
+		else if (C > 0) {
+			// not clear whether Woffset is loBoWoffset or loWoBoffset
+			// but they have the same value
+			Sapc = C - loBoWoffset;
+		}
+		else {
+			Sapc = C + loBoWoffset;
+		}
+
+		return Sapc * 100;
 	}
 })

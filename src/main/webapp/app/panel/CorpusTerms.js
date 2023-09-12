@@ -45,6 +45,11 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		 * @cfg
     		 */
     		maxBins: 100,
+
+			/**
+			 * @cfg {Boolean} useTermColors Whether to use a term's color in the term column
+			 */
+			useTermColors: false,
     		
     		/**
     		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
@@ -62,7 +67,25 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	 */
     	options: [{
     		xtype: 'stoplistoption'
-    	},{xtype: 'categoriesoption'},{
+    	},{
+			xtype: 'categoriesoption'
+		},{
+			xtype: 'radiogroup',
+			fieldLabel: 'Term Colors',
+			labelAlign: 'right',
+			items: [
+				{ boxLabel: 'Show', name: 'useTermColors', inputValue: true, margin: '0 10 0 0' },
+				{ boxLabel: 'Hide', name: 'useTermColors', inputValue: false }
+			],
+			listeners: {
+				boxready: function(cmp) {
+					var win = cmp.up('window');
+					var value = win.panel.getApiParam('useTermColors');
+					cmp.setValue({useTermColors: value});
+				}
+			}
+
+		},{
     		xtype: 'corpusselector',
     		name: 'comparisonCorpus',
     		fieldLabel: 'comparison corpus'
@@ -149,7 +172,23 @@ Ext.define('Voyant.panel.CorpusTerms', {
             	tooltip: this.localize("termTip"),
         		dataIndex: 'term',
         		flex: 1,
-                sortable: true
+                sortable: true,
+				xtype: 'templatecolumn',
+				tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.term)]}; padding: 3px; border-radius: 2px;">{term}</span>', {
+					getColorStyle: function(term) {
+						if (me.getApiParam('useTermColors')) {
+							var bgColor = me.getApplication().getColorForTerm(term);
+							var darkText = [0,0,0];
+							var lightText = [255,255,255];
+							var darkContrast = Math.abs(me.getApplication().getColorContrast(bgColor, darkText));
+							var lightContrast = Math.abs(me.getApplication().getColorContrast(bgColor, lightText));
+							var textColor = lightContrast > darkContrast ? lightText : darkText;
+							return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
+						} else {
+							return 'color: rgb(0,0,0)';
+						}
+					}
+				})
             },{
             	text: this.localize("rawFreq"),
             	tooltip: this.localize("rawFreqTip"),
