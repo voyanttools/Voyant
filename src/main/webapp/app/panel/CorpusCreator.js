@@ -53,6 +53,12 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		tableContent: undefined,
     		tableTitle: undefined,
     		tableAuthor: undefined,
+			tablePubDate: undefined,
+			tablePublisher: undefined,
+			tablePubPlace: undefined,
+			tableKeywords: undefined,
+			tableCollection: undefined,
+			tableExtraMetadata: undefined,
     		title: undefined,
     		subTitle: undefined,
     		inputRemoveFrom: undefined,
@@ -102,7 +108,6 @@ Ext.define('Voyant.panel.CorpusCreator', {
                 overflowHandler: 'scroller',
                 dock: 'bottom',
     	    	buttonAlign: 'right',
-//    	    	defaultButtonUI : 'default',
 	    		items: [{
 	    			text: me.localize('Open'),
                     glyph: 'xf115@FontAwesome', // not visible
@@ -113,12 +118,12 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    				    title: me.localize('Open'),
 	    				    layout: 'fit',
 	    				    modal: true,
-	    				    items: {  // Let's put an empty grid in just to illustrate fit layout
+	    				    items: {
 	    				        xtype: 'form',
 	    				        submitEmptyText: false,
-	    				        margin: '5,5,5,5',
 	    				        items: {
-	    				        	xtype: 'corpusselector'
+	    				        	xtype: 'corpusselector',
+									margin: 10
 	    				        },
 	    				        buttons: [
 	    				        	{
@@ -348,6 +353,9 @@ Ext.define('Voyant.panel.CorpusCreator', {
     showOptionsClick: function(panel) {
     	var me = panel;
     	if (me.optionsWin === undefined) {
+			var langCodes = ['bo'].concat(Object.keys(Voyant.widget.StopListOption.stoplists).filter(function(code) { return code !== 'mu'; })).sort();
+			var langArray = langCodes.map(function(code) { return [code, me._localizeClass(Voyant.widget.StopListOption, code)] });
+			langArray.unshift(['', me._localizeClass(Voyant.widget.StopListOption, 'auto')]);
     		me.optionsWin = Ext.create('Ext.window.Window', {
     			title: me.localize('gearWinTitle'),
     			closeAction: 'hide',
@@ -687,6 +695,33 @@ Ext.define('Voyant.panel.CorpusCreator', {
 									fieldLabel: me.localize('tableTitle'),
 									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
 									name: 'tableTitle'
+								},{
+									xtype: 'fieldset',
+			                        title: me.localize('xmlAdditionalOptions'),
+			                        collapsible: true,
+			                        collapsed: true,
+			                        defaultType: 'textfield',
+			                        items: [{
+										fieldLabel: me.localize('xpathPubDate'),
+										name: 'tablePubDate'
+									},{
+										fieldLabel: me.localize('xpathPublisher'),
+										name: 'tablePublisher'
+									},{
+										fieldLabel: me.localize('xpathPubPlace'),
+										name: 'tablePubPlace'
+									},{
+										fieldLabel: me.localize('xpathKeywords'),
+										name: 'tableKeywords'
+									},{
+										fieldLabel: me.localize('xpathCollection'),
+										name: 'tableCollection'
+									},{
+										xtype: 'textareafield',
+										grow: true,
+										fieldLabel: me.localize('xpathExtra'),
+										name: 'tableExtraMetadata'
+									}]
 								}
 							]
 						},{
@@ -699,15 +734,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
 								    xtype:'combo',
 								    fieldLabel: me.localize("language"),
 								    name: 'language',
-								    queryMode:'local', //?
-								    store:[['',me._localizeClass(Voyant.widget.StopListOption, "auto")],['cn',me._localizeClass(Voyant.widget.StopListOption, "cn")],['bo',me._localizeClass(Voyant.widget.StopListOption, "bo")],['grc',me._localizeClass(Voyant.widget.StopListOption, "grc")]],
+								    queryMode:'local',
+								    store: langArray,
 								    forceSelection:true,
 								    value: ''
 								},{
 								    xtype:'combo',
 								    fieldLabel: me.localize('tokenization'),
 								    name: 'tokenization',
-								    queryMode:'local', //?
+								    queryMode:'local',
 								    store:[['',me.localize('tokenizationAuto')],['wordBoundaries',me.localize("tokenizationWordBoundaries")],['whitespace',me.localize("tokenizationWhitespace")]],
 								    forceSelection:true,
 								    value: ''

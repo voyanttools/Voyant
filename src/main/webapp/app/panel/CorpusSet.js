@@ -124,6 +124,7 @@ Ext.define('Voyant.panel.CorpusSet', {
     		var cirrus = this.down('cirrus');
     		var me = this;
     		if (cirrus) {
+				var imageBaseUrl = this.getApplication().getBaseUrl()+'resources/images/';
     			var toolbar = cirrus.down('toolbar');
     			toolbar.add({xtype: 'tbfill'})
     			toolbar.add({
@@ -134,7 +135,7 @@ Ext.define('Voyant.panel.CorpusSet', {
 	        					me.add({
 	        						region: 'north',
 	        						width: '100%',
-	    							html: '<div align="center"><table><tr><td><img src="http://stefansinclair.name/wordpress/wp-content/uploads/2011/07/Sinclair_Stefan_small.jpg" style="height: 60px"></td><td style="text-align: center; padding-left: 2em; padding-right: 2em;">By Athena, you found us hidden<br>up here between the panels!</td><td><img src="http://geoffreyrockwell.com/images/home_09.jpg" style="height: 60px"></td></tr></table></div>'
+	    							html: '<div align="center"><table><tr><td><img src="'+imageBaseUrl+'stefan.jpg" style="height: 60px"></td><td style="text-align: center; padding-left: 2em; padding-right: 2em;">By Athena, you found us hidden<br>up here between the panels!</td><td><img src="'+imageBaseUrl+'geoffrey.jpg" style="height: 60px"></td></tr></table></div>'
 	        					})
 	        				}, single: true
     					},

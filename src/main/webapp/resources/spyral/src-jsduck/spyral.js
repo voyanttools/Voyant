@@ -1472,12 +1472,15 @@
 	 * * **topics**: the number of topics to get (default is 10)
 	 * * **termsPerTopic**: the number of terms for each topic (default is 10)
 	 * * **iterations**: the number of iterations to do, more iterations = more accurate (default is 100)
+	 * * **perDocLimit**: the token limit per document, starting at the beginning of the document
+	 * * **seed**: specify a particular seed to use for random number generation
+	 * * **stopList**: a list of stopwords to include
 	 * 
 	 * @param {Object} config (see above)
 	 * @param {number} config.topics the number of topics to get (default is 10)
 	 * @param {number} config.termsPerTopic the number of terms for each topic (default is 10)
 	 * @param {number} config.iterations the number of iterations to do, more iterations = more accurate (default is 100)
-	 * @param {number} config.perDocLimit this parameter allows you to specify a limit value per document
+	 * @param {number} config.perDocLimit specify a token limit per document, starting at the beginning of the document
 	 * @param {number} config.seed specify a particular seed to use for random number generation
 	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
 	 * @returns {Promise<Object>}
@@ -2490,6 +2493,15 @@
 	 * @returns {Boolean}
 	 * @static
  * @method isPromise
+ */
+
+
+/**
+* Returns true if the value is a Blob.
+	 * @param {*} val 
+	 * @returns {Boolean}
+	 * @static
+ * @method isBlob
  */
 
 

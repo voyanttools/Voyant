@@ -34,7 +34,12 @@ Ext.define('Voyant.notebook.Notebook', {
 			preparingExport: "Preparing Export",
 			notSavedWarning: "Changes to your notebook have not been saved. Are you sure you want to continue?",
 			accountTip: 'View your account',
-			openTip: 'Open a Spyral Notebook (by uploading a file)'
+			openTip: 'Open a Spyral Notebook (by uploading a file)',
+			newNotebookIntro: `
+			<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p>
+			<p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>
+			<p>To learn more check out our <a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/" target="_blank">Spyral Tutorials Table of Contents</a> page.</p>
+			`
     	},
     	api: {
     		input: undefined,
@@ -857,7 +862,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>");
+		this.addText(this.localize('newNotebookIntro'));
 		this.addCode('');
 	},
     

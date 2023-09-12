@@ -770,7 +770,7 @@ Ext.define('VoyantDTOCApp', {
 	},
 	
 	showHelp: function(el) {
-	    this.helpWin = this.openUrl("http://cwrc.ca/DToC_Documentation/");
+	    this.helpWin = this.openUrl("https://cwrc.ca/Documentation/public/DITA_Files-Various_Applications/DToC/OverviewDToC.html");
     },
     
     showMultiSelectMsg: function(panel) {

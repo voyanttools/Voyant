@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Apr 17 18:53:42 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Jul 14 18:15:59 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6426,8 +6426,8 @@ Ext.define("Voyant.util.ResponseError", {
 		this.setResponse(config.response);
 		Ext.applyIf(config, {
 			msg: config.response.statusText, // hopefully already set by creator
-			error: ("responseText" in config.response) ? config.response.responseText.split(/(\r\n|\r|\n)/).shift() : "", // show first line of response
-			details: ("responseText" in config.response) ? config.response.responseText : ""
+			error: (typeof config.response === 'object' && 'responseText' in config.response) ? config.response.responseText.split(/(\r\n|\r|\n)/).shift() : config.response, // show first line of response
+			details: (typeof config.response === 'object' && 'responseText' in config.response) ? config.response.responseText : config.response
 		})
 		this.callParent(arguments);
 	}
@@ -10015,6 +10015,7 @@ Ext.define('Voyant.data.util.Geonames', {
 					},
 					failure: function(responseOrProgress) {
 						Voyant.application.showResponseError(me.localize("failedToFetchGeonames"), responseOrProgress);
+						dfd.reject();
 					},
 					scope: me
 				});
@@ -10027,6 +10028,7 @@ Ext.define('Voyant.data.util.Geonames', {
 			}
 		}, function(response) {
 			Voyant.application.showResponseError(me.localize('failedToFetchGeonames'), response);
+			dfd.reject();
 		});
 		return dfd.promise;
 	},
@@ -11612,42 +11614,42 @@ Ext.define('Voyant.widget.StopListOption', {
 	margin: '0 0 5px 0',
     statics: {
     		stoplists: {
-    		    ar: "stop.ar.arabic-lucene.txt",
-    			bg: "stop.bu.bulgarian-lucene.txt",
-    			br: "stop.br.breton-lucene.txt",
-    			ca: "stop.ca.catalan-lucene.txt",
-    			ckb: "stop.ckb-turkish-lucene.txt",
-    			cn: "stop.cn.chinese-lawrence.txt",
-    			cz: "stop.cz.czech-lucene.txt",
-    			de: "stop.de.german.txt",
-    			el: "stop.el.greek-lucene.txt",
-    			en: "stop.en.taporware.txt",
-    			es: "stop.es.spanish.txt",
-    			eu: "stop.eu.basque-lucene.txt",
-    			fa: "stop.fa.farsi-lucene.txt",
-    			fr: "stop.fr.veronis.txt",
-    			ga: "stop.ga-irish-lucene.txt",
-    			gl: "stop.ga.galician-lucene.txt",
-    			grc: "stop.grc.ancient-greek.txt",
-				he: "stop.he.hebrew.txt",
-    			hi: "stop.hi.hindi-lucene.txt",
-    			hu: "stop.hu.hungarian.txt",
-    			hy: "stop.hy.armenian-lucene.txt",
-    			id: "stop.id.indonesian-lucene.txt",
-    			it: "stop.it.italian.txt",
-    			ja: "stop.ja.japanese-lucene.txt",
-    			la: "stop.la.latin.txt",
-    			lv: "stop.lv.latvian-lucene.txt",
-    			lt: "stop.lt.lithuanian-lucene.txt",
-    			mu: "stop.mu.multi.txt",
-    			nl: "stop.nl.dutch.txt",
-    			no: "stop.no.norwegian.txt",
-    			pt: "stop.pt.brazilian.txt",
-    			ro: "stop.ro.romanian-lucene.txt",
-    			ru: "stop.ru.russian.txt",
-    			se: "stop.se.swedish-long.txt",
-    			th: "stop.th.thai-lucene.txt",
-    			tr: "stop.tr.turkish-lucene.txt"
+    		    ar: "stop.ar.txt",
+    			bg: "stop.bu.txt",
+    			br: "stop.br.txt",
+    			ca: "stop.ca.txt",
+    			ckb: "stop.ku.txt",
+    			cn: "stop.zh.txt",
+    			cz: "stop.cz.txt",
+    			de: "stop.de.txt",
+    			el: "stop.el.txt",
+    			en: "stop.en.txt",
+    			es: "stop.es.txt",
+    			eu: "stop.eu.txt",
+    			fa: "stop.fa.txt",
+    			fr: "stop.fr.txt",
+    			ga: "stop.ga.txt",
+    			gl: "stop.gl.txt",
+    			grc: "stop.grc.txt",
+				he: "stop.he.txt",
+    			hi: "stop.hi.txt",
+    			hu: "stop.hu.txt",
+    			hy: "stop.hy.txt",
+    			id: "stop.id.txt",
+    			it: "stop.it.txt",
+    			ja: "stop.ja.txt",
+    			la: "stop.la.txt",
+    			lv: "stop.lv.txt",
+    			lt: "stop.lt.txt",
+    			mu: "stop.multi.txt",
+    			nl: "stop.nl.txt",
+    			no: "stop.no.txt",
+    			pt: "stop.pt.txt",
+    			ro: "stop.ro.txt",
+    			ru: "stop.ru.txt",
+    			se: "stop.sv.txt",
+    			th: "stop.th.txt",
+    			tr: "stop.tr.txt"
     		},
 	    	i18n: {
 	    		
@@ -15385,6 +15387,14 @@ Ext.define('Voyant.panel.Bubbles', {
     	audio: false
 	},
 	
+	corpusLoaded: false,
+	processingLoaded: false,
+	bubblesAppCode: undefined,
+	
+	bubbles: undefined,
+	oscillator: undefined,
+	gainNode: undefined,
+	
 	
     constructor: function() {
 
@@ -15460,20 +15470,17 @@ Ext.define('Voyant.panel.Bubbles', {
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     	
+		this.on('boxready', function() {
+			this.loadBubbles();
+		})
+
     	this.on('loadedCorpus', function(src, corpus) {
-    		var canvas = this.getTargetEl().dom.querySelector("canvas");
-    		var me = this;
-    		Ext.Ajax.request({
-    			url: this.getBaseUrl()+'resources/bubbles/bubbles.pjs'
-    		}).then(function(data) {
-    			var canvas = me.getTargetEl().dom.querySelector("canvas");
-    			me.bubbles = new Processing(canvas, data.responseText);
-    			me.bubbles.size(me.getTargetEl().getWidth(),me.getTargetEl().getHeight());
-    			me.bubbles.frameRate(me.getApiParam('speed'));
-    			me.bubbles.bindJavascript(me);
-    			me.bubbles.noLoop();
-    			me.loadDocument();
-    		})
+    		this.corpusLoaded = true;
+			if (this.bubbles) {
+				this.loadDocument();
+			} else {
+				this.loadBubbles();
+			}
     	}, this);
     	
     	this.on("resize", function() {
@@ -15535,10 +15542,43 @@ Ext.define('Voyant.panel.Bubbles', {
     		})
     	})
     },
+
+	loadBubbles: function() {
+		if (this.bubbles === undefined && this.processingLoaded && this.bubblesAppCode !== undefined && this.getTargetEl() !== undefined) {
+			var canvas = this.getTargetEl().dom.querySelector('canvas');
+			this.bubbles = new Processing(canvas, this.bubblesAppCode);
+			this.bubbles.size(this.getTargetEl().getWidth(),this.getTargetEl().getHeight());
+			this.bubbles.frameRate(this.getApiParam('speed'));
+			this.bubbles.bindJavascript(this);
+			this.bubbles.noLoop();
+			
+			this.bubblesAppCode = undefined;
+
+			if (this.corpusLoaded) {
+				this.loadDocument();
+			}
+		}
+	},
     
     initComponent: function() {
     	// make sure to load script
-		Ext.Loader.loadScript(this.getBaseUrl()+"resources/processingjs/processing.min.js");
+		Ext.Loader.loadScript({
+			url: this.getBaseUrl()+"resources/processingjs/processing.min.js",
+			onLoad: function() {
+				this.processingLoaded = true;
+				this.loadBubbles();
+			},
+			scope: this
+		});
+
+		Ext.Ajax.request({
+			url: this.getBaseUrl()+'resources/bubbles/bubbles.pjs',
+			success: function(data) {
+				this.bubblesAppCode = data.responseText;
+				this.loadBubbles();
+			},
+			scope: this
+		})
 		
 		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 		
@@ -19032,6 +19072,12 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		tableContent: undefined,
     		tableTitle: undefined,
     		tableAuthor: undefined,
+			tablePubDate: undefined,
+			tablePublisher: undefined,
+			tablePubPlace: undefined,
+			tableKeywords: undefined,
+			tableCollection: undefined,
+			tableExtraMetadata: undefined,
     		title: undefined,
     		subTitle: undefined,
     		inputRemoveFrom: undefined,
@@ -19081,7 +19127,6 @@ Ext.define('Voyant.panel.CorpusCreator', {
                 overflowHandler: 'scroller',
                 dock: 'bottom',
     	    	buttonAlign: 'right',
-//    	    	defaultButtonUI : 'default',
 	    		items: [{
 	    			text: me.localize('Open'),
                     glyph: 'xf115@FontAwesome', // not visible
@@ -19092,12 +19137,12 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    				    title: me.localize('Open'),
 	    				    layout: 'fit',
 	    				    modal: true,
-	    				    items: {  // Let's put an empty grid in just to illustrate fit layout
+	    				    items: {
 	    				        xtype: 'form',
 	    				        submitEmptyText: false,
-	    				        margin: '5,5,5,5',
 	    				        items: {
-	    				        	xtype: 'corpusselector'
+	    				        	xtype: 'corpusselector',
+									margin: 10
 	    				        },
 	    				        buttons: [
 	    				        	{
@@ -19327,6 +19372,9 @@ Ext.define('Voyant.panel.CorpusCreator', {
     showOptionsClick: function(panel) {
     	var me = panel;
     	if (me.optionsWin === undefined) {
+			var langCodes = ['bo'].concat(Object.keys(Voyant.widget.StopListOption.stoplists).filter(function(code) { return code !== 'mu'; })).sort();
+			var langArray = langCodes.map(function(code) { return [code, me._localizeClass(Voyant.widget.StopListOption, code)] });
+			langArray.unshift(['', me._localizeClass(Voyant.widget.StopListOption, 'auto')]);
     		me.optionsWin = Ext.create('Ext.window.Window', {
     			title: me.localize('gearWinTitle'),
     			closeAction: 'hide',
@@ -19666,6 +19714,33 @@ Ext.define('Voyant.panel.CorpusCreator', {
 									fieldLabel: me.localize('tableTitle'),
 									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
 									name: 'tableTitle'
+								},{
+									xtype: 'fieldset',
+			                        title: me.localize('xmlAdditionalOptions'),
+			                        collapsible: true,
+			                        collapsed: true,
+			                        defaultType: 'textfield',
+			                        items: [{
+										fieldLabel: me.localize('xpathPubDate'),
+										name: 'tablePubDate'
+									},{
+										fieldLabel: me.localize('xpathPublisher'),
+										name: 'tablePublisher'
+									},{
+										fieldLabel: me.localize('xpathPubPlace'),
+										name: 'tablePubPlace'
+									},{
+										fieldLabel: me.localize('xpathKeywords'),
+										name: 'tableKeywords'
+									},{
+										fieldLabel: me.localize('xpathCollection'),
+										name: 'tableCollection'
+									},{
+										xtype: 'textareafield',
+										grow: true,
+										fieldLabel: me.localize('xpathExtra'),
+										name: 'tableExtraMetadata'
+									}]
 								}
 							]
 						},{
@@ -19678,15 +19753,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
 								    xtype:'combo',
 								    fieldLabel: me.localize("language"),
 								    name: 'language',
-								    queryMode:'local', //?
-								    store:[['',me._localizeClass(Voyant.widget.StopListOption, "auto")],['cn',me._localizeClass(Voyant.widget.StopListOption, "cn")],['bo',me._localizeClass(Voyant.widget.StopListOption, "bo")],['grc',me._localizeClass(Voyant.widget.StopListOption, "grc")]],
+								    queryMode:'local',
+								    store: langArray,
 								    forceSelection:true,
 								    value: ''
 								},{
 								    xtype:'combo',
 								    fieldLabel: me.localize('tokenization'),
 								    name: 'tokenization',
-								    queryMode:'local', //?
+								    queryMode:'local',
 								    store:[['',me.localize('tokenizationAuto')],['wordBoundaries',me.localize("tokenizationWordBoundaries")],['whitespace',me.localize("tokenizationWhitespace")]],
 								    forceSelection:true,
 								    value: ''
@@ -21564,6 +21639,8 @@ Ext.define('Voyant.widget.GeonamesFilter', {
             me.unmask();
             me.fireEvent("filterUpdate", me, geonames);
             return geonames;
+        }, function() {
+            me.unmask();
         });
     },
 
@@ -29272,6 +29349,7 @@ Ext.define('Voyant.panel.Summary', {
     	
     	main.removeAll();
     	main.add({
+			cls: 'section',
     		html: this.getCorpus().getString()
     	});
     	
@@ -29357,8 +29435,14 @@ Ext.define('Voyant.panel.Summary', {
 		
     	
     	main.add({
-    		html: this.localize("mostFrequentWords"),
     		cls: 'section',
+			items: [{
+				html: this.localize("mostFrequentWords"),
+				cls: 'header'
+			},{
+				cls: 'contents',
+				html: '<ul><li></li></ul>'
+			}],
     		listeners: {
     			afterrender: function(container) {
     				container.mask(me.localize("loading"));
@@ -29371,7 +29455,8 @@ Ext.define('Voyant.panel.Summary', {
     					callback: function(records, operation, success) {
     						if (success && records && records.length>0) {
     							container.unmask();
-    							Ext.dom.Helper.append(container.getTargetEl().first().first(),
+								var contentsEl = container.down('panel[cls~=contents]').getTargetEl().selectNode('li');
+    							Ext.dom.Helper.append(contentsEl,
 			   	        			 new Ext.XTemplate('<tpl for="." between="; "><a href="#" onclick="return false" class="corpus-type keyword" voyant:recordId="{id}">{term}</a><span style="font-size: smaller"> ({val})</span></tpl>')
 			   	        		 		.apply(records.map(function(term) {
 			   	        		 			return {
@@ -29385,14 +29470,19 @@ Ext.define('Voyant.panel.Summary', {
     					}
     				})
     			}
-    		},
-    		scope: this
+    		}
     	})
     	
     	if (docs.length>1) {
         	main.add({
-        		html: this.localize("distinctiveWords")+"<ol></ol>",
         		cls: 'section',
+				items: [{
+					html: this.localize("distinctiveWords"),
+					cls: 'header'
+				},{
+					cls: 'contents',
+					html: '<ol></ol>'
+				}],
         		itemId: 'distinctiveWords',
         		listeners: {
         			afterrender: function(container) {
@@ -29428,6 +29518,7 @@ Ext.define('Voyant.panel.Summary', {
 					width: sparkWidth
 				}]
 			},{
+				cls: 'contents',
 				html: '<ul><li>'+topText+" "+docsLengthTpl.apply(docs.slice(0, docs.length>limit ? limit : parseInt(docs.length/2)).map(function(doc) {return {
 					id: doc.getId(),
 					shortTitle: doc.getShortTitle(),
@@ -29512,7 +29603,50 @@ Ext.define('Voyant.panel.Summary', {
     			});
     		}
     	}
-    }    
+    },
+
+	// override because the doc sparklines are mostly useless as exports
+	getExportVisualization: function() {
+		return false;
+	},
+
+	getExtraDataExportItems: function() {
+		return [{
+			name: 'export',
+			inputValue: 'dataAsTsv',
+			boxLabel: this.localize('exportGridCurrentTsv')
+		}];
+	},
+
+	exportDataAsTsv: function(panel, form) {
+		var value = '';
+		var sections = panel.query('panel[cls~=section]');
+		sections.forEach(function(sp) {
+			var sectionData = '';
+			var header = sp.down('panel[cls~=header]');
+			var contents = sp.down('panel[cls~=contents]');
+			if (header) {
+				sectionData += header.getEl().dom.textContent + "\n";
+				if (contents) {
+					contents.getEl().select('li').elements.forEach(function(li) {
+						sectionData += li.textContent.replace(/:/, ":\t").replace(/\)[,;]/g, ")\t") + "\n";
+					});
+				}
+			} else {
+				sectionData = sp.getEl().dom.textContent + "\n";
+			}
+			value += sectionData + "\n";
+		});
+		Ext.Msg.show({
+			title: panel.localize('exportDataTitle'),
+			message: panel.localize('exportDataTsvMessage'),
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO,
+			prompt: true,
+			multiline: true,
+			value: value
+		});
+	}
 });
 
 Ext.define('Voyant.panel.TextualArc', {
@@ -31344,7 +31478,14 @@ Ext.define('Voyant.panel.Trends', {
     		},{xtype: 'colorpaletteoption'}]
 	},
     statics: {
-    	i18n: {    		
+    	i18n: {
+			displayTip: 'Chart display options',
+			labelsTip: 'Toggle term labels',
+			areaTip: 'Area chart',
+			barTip: 'Columns chart',
+			lineTip: 'Line chart',
+			stackedTip: 'Stacked bar chart',
+			barlineTip: 'Line and stacked bar chart'
     	},
     	api: {
     		
@@ -32202,7 +32343,7 @@ Ext.define('Voyant.panel.VoyantFooter', {
 				", <a href='https://csdh-schn.org/stefan-sinclair-in-memoriam/'>St&eacute;fan Sinclair</a> &amp; <a href='https://geoffreyrockwell.com'>Geoffrey Rockwell</a>",
 				" (<a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'><span class='cc'>c</span></a> "+ new Date().getFullYear() +")",
 				" <a class='privacy' href='"+this.getBaseUrl()+"docs/#!/guide/about-section-privacy-statement' target='top'>"+container.localize('privacy')+"</a>",
-				" v. "+Voyant.application.getVersion()
+				" v. <a href='https://github.com/voyanttools/VoyantServer/releases/tag/"+Voyant.application.getVersion()+"' target='_blank'>"+Voyant.application.getVersion()+"</a>"
 			];
 			var footer = '';
 			var footerWidth = 0;
@@ -32413,6 +32554,7 @@ Ext.define('Voyant.panel.CorpusSet', {
     		var cirrus = this.down('cirrus');
     		var me = this;
     		if (cirrus) {
+				var imageBaseUrl = this.getApplication().getBaseUrl()+'resources/images/';
     			var toolbar = cirrus.down('toolbar');
     			toolbar.add({xtype: 'tbfill'})
     			toolbar.add({
@@ -32423,7 +32565,7 @@ Ext.define('Voyant.panel.CorpusSet', {
 	        					me.add({
 	        						region: 'north',
 	        						width: '100%',
-	    							html: '<div align="center"><table><tr><td><img src="http://stefansinclair.name/wordpress/wp-content/uploads/2011/07/Sinclair_Stefan_small.jpg" style="height: 60px"></td><td style="text-align: center; padding-left: 2em; padding-right: 2em;">By Athena, you found us hidden<br>up here between the panels!</td><td><img src="http://geoffreyrockwell.com/images/home_09.jpg" style="height: 60px"></td></tr></table></div>'
+	    							html: '<div align="center"><table><tr><td><img src="'+imageBaseUrl+'stefan.jpg" style="height: 60px"></td><td style="text-align: center; padding-left: 2em; padding-right: 2em;">By Athena, you found us hidden<br>up here between the panels!</td><td><img src="'+imageBaseUrl+'geoffrey.jpg" style="height: 60px"></td></tr></table></div>'
 	        					})
 	        				}, single: true
     					},
@@ -34291,7 +34433,8 @@ Ext.define('Voyant.panel.Topics', {
 	statics: {
 		i18n: {
 			topics: 'Topics',
-			documents: 'Documents'
+			documents: 'Documents',
+			topicWeight: 'Topic weight'
 		},
 		api: {
 			stopList: 'auto',
@@ -34386,7 +34529,7 @@ Ext.define('Voyant.panel.Topics', {
 				height: '100%',
 				scrollable: 'y',
 				store: Ext.create('Ext.data.ArrayStore',{
-					fields: ['index', 'terms', 'weight']
+					fields: ['index', 'terms', 'weight', 'diagnostics']
 				}),
 				selectionModel: {
 					type: 'dataviewmodel',
@@ -34394,10 +34537,11 @@ Ext.define('Voyant.panel.Topics', {
 				},
 				itemSelector: 'div.topicItem',
 				tpl: new Ext.XTemplate(
-					'<div>{[this.localize("topics")]}</div><tpl for=".">',
+					'<div style="font-weight: bold">{[this.localize("topics")]}</div><tpl for=".">',
 						'<div class="topicItem" style="background-color: {[this.getColor(values.index)]}">',
-							'<div class="data weight">{[fm.number(values.weight*100, "00.0")]}%</div>',
+							'<div class="data weight" data-qtip="{[this.localize("topicWeight")]}">{[fm.number(values.weight*100, "00.0")]}%</div>',
 							'<span class="term">{[values.terms.join("</span> <span class=\\"term\\">")]}</span>',
+							'<div class="data diagnostics">{[this.processDiagnostics(values.diagnostics)]}</div>',
 						'</div>',
 					'</tpl>',
 					{
@@ -34407,6 +34551,13 @@ Ext.define('Voyant.panel.Topics', {
 						},
 						localize: function(key) {
 							return me.localize(key);
+						},
+						processDiagnostics: function(obj) {
+							var string = '';
+							for (var key in obj) {
+								string += '<div><div class="key">'+key+'</div><div class="value">'+obj[key]+'</div></div>';
+							}
+							return string;
 						}
 					}
 				),
@@ -34436,7 +34587,7 @@ Ext.define('Voyant.panel.Topics', {
 				},
 				itemSelector: 'div.topicItem',
 				tpl: new Ext.XTemplate(
-					'<div>{[this.localize("documents")]}</div><tpl for=".">',
+					'<div style="font-weight: bold">{[this.localize("documents")]}</div><tpl for=".">',
 						'<div class="topicItem">',
 							'{[this.getDocTitle(values.docId)]}',
 							'<div class="chart">{[this.getChart(values.docId, values.weights)]}</div>',
@@ -34514,38 +34665,34 @@ Ext.define('Voyant.panel.Topics', {
 				},
 					'<span class="info-tip" data-qtip="'+this.localize('limitTermsTip')+'">'+this.localize('limitTerms')+'</span>'
 				,{ 
-					width: 80,
+					width: 60,
 					hideLabel: true,
-					xtype: 'slider',
-					increment: 1,
+					xtype: 'numberfield',
 					minValue: 1,
 					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("termsPerTopic")))
 						},
-						changecomplete: function(slider, newvalue) {
+						change: function(slider, newvalue) {
 							this.setApiParams({termsPerTopic: newvalue});
-							this.runIterations();
 						},
 						scope: this
 					}
 				},
 					'<span class="info-tip" data-qtip="'+this.localize('numTopicsTip')+'">'+this.localize('numTopics')+'</span>'
 				,{ 
-					width: 80,
+					width: 60,
 					hideLabel: true,
-					xtype: 'slider',
-					increment: 1,
+					xtype: 'numberfield',
 					minValue: 1,
 					maxValue: 100,
 					listeners: {
 						afterrender: function(slider) {
 							slider.setValue(parseInt(this.getApiParam("topics")))
 						},
-						changecomplete: function(slider, newvalue) {
+						change: function(slider, newvalue) {
 							this.setApiParams({topics: newvalue});
-							this.runIterations();
 						},
 						scope: this
 					}
@@ -34556,6 +34703,13 @@ Ext.define('Voyant.panel.Topics', {
 					tooltip: this.localize('runIterationsTip'),
 					handler: this.runIterations,
 					scope: this
+				},{
+					text: 'Toggle diagnostics',
+					itemId: 'diagnostics',
+					glyph: 'xf129@FontAwesome',
+					handler: function(btn) {
+						me.down('#topicsView').toggleCls('showDiagnostics');
+					}
 				}]
 			}
 		});
@@ -34584,6 +34738,7 @@ Ext.define('Voyant.panel.Topics', {
 		var params = this.getApiParams();
 		params.tool = 'analysis.TopicModeling';
 		params.corpus = this.getCorpus().getAliasOrId();
+		params.noCache = 1;
 
 		var iterations = this.getApiParam('iterations');
 		var msg = Ext.MessageBox.progress({
@@ -34600,8 +34755,13 @@ Ext.define('Voyant.panel.Topics', {
 				var data = JSON.parse(response.responseText);
 				
 				var topicsStore = this.down('#topicsView').getStore();
-				topicsStore.loadData(data.topicModeling.topicWords.map(function(words, i) {
-					return [i, words, 0];
+				topicsStore.loadData(data.topicModeling.topics.map(function(topic, i) {
+					var words = topic.words.map(function(w) {
+						return w.word;
+					});
+					var diagnostics = Object.assign({}, topic);
+					delete diagnostics.words;
+					return [i, words, 0, diagnostics];
 				}));
 
 				data.topicModeling.topicDocuments.sort(function(a, b) {
@@ -34686,14 +34846,22 @@ Ext.define('Voyant.panel.Topics', {
 
 		var topicOrder = [];
 
+		var includeDiagnostics = this.down('#topicsView').hasCls('showDiagnostics');
+
 		this.down('#topicsView').getStore().getData().each(function(record, i) {
 			if (i === 0) {
 				topicsValue += record.get('terms').map(function(t, i) { return 'Term '+i; }).join("\t");
+				if (includeDiagnostics) {
+					topicsValue += "\t"+Object.keys(record.get('diagnostics')).join("\t");
+				}
 			}
 			
 			topicOrder.push(record.get('index'));
 
 			topicsValue += "\nTopic "+record.get('index')+"\t"+record.get('terms').join("\t");
+			if (includeDiagnostics) {
+				topicsValue += "\t"+Object.values(record.get('diagnostics')).join("\t");
+			}
 			docsValue += "\tTopic "+record.get('index')+' Weight';
 		});
 
@@ -39273,7 +39441,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			methods: 'Methods',
 			docs: 'Docs',
 			openFull: 'Open Full Documentation',
-			outlineIntro: 'This is an inline version of the API documentation for <a href="#!/guide/notebook">Spyral Notebooks</a>. You can also <a href="#!/api">view the full documentation</a> in a new window.',
+			outlineIntro: 'This is an inline version of the API documentation for <a href="#!/guide/notebook">Spyral Notebooks</a>. You can also <a href="#!/api">view the full documentation</a> in a new window.<br/><br/>For tutorials on how to use Spyral check out the <a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/">Spyral Tutorials Table of Contents</a>.',
 			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
 			loadingDocs: 'Loading Docs'
 		}
@@ -40311,7 +40479,12 @@ Ext.define('Voyant.notebook.Notebook', {
 			preparingExport: "Preparing Export",
 			notSavedWarning: "Changes to your notebook have not been saved. Are you sure you want to continue?",
 			accountTip: 'View your account',
-			openTip: 'Open a Spyral Notebook (by uploading a file)'
+			openTip: 'Open a Spyral Notebook (by uploading a file)',
+			newNotebookIntro: `
+			<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p>
+			<p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>
+			<p>To learn more check out our <a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/" target="_blank">Spyral Tutorials Table of Contents</a> page.</p>
+			`
     	},
     	api: {
     		input: undefined,
@@ -41134,7 +41307,7 @@ Ext.define('Voyant.notebook.Notebook', {
 			title: "Spyral Notebook",
 			language: "English"
 		}));
-		this.addText("<p>This is a Spyral Notebook, a dynamic document that combines writing, code and data in service of reading, analyzing and interpreting digital texts.</p><p>Spyral Notebooks are composed of text cells (like this one) and code cells (like the one below). You can click on the cells to edit them and add new cells by clicking add icon that appears in the left column when hovering over a cell.</p>");
+		this.addText(this.localize('newNotebookIntro'));
 		this.addCode('');
 	},
     
@@ -41871,7 +42044,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				delete api.view; // make sure we show default view
 				if (eventName=='termsClicked') {
 					// data can be a simple array of terms or an array of term objects
-					if (Ext.isArray(data) && typeof data[0] !== 'string' && 'term' in data[0] && 'docIndex' in data[0]) {
+					if (Ext.isArray(data) && data.length > 0 && typeof data[0] !== 'string' && 'term' in data[0] && 'docIndex' in data[0]) {
 						let termsObj = {};
 						let docIndObj = {};
 						data.forEach(function(datum) {
