@@ -21,10 +21,10 @@ Ext.define('Voyant.panel.Reader', {
 	},
     config: {
     	innerContainer: undefined,
-    	tokensStore: undefined,
-    	documentsStore: undefined,
-    	documentTermsStore: undefined,
-		documentEntitiesStore: undefined,
+    	tokensStore: undefined, // for loading the tokens to display in the reader
+    	documentsStore: undefined, // for storing a copy of the corpus document models
+    	documentTermsStore: undefined, // for getting document term positions for highlighting
+		documentEntitiesStore: undefined, // for storing the results of an entities call
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -43,8 +43,6 @@ Ext.define('Voyant.panel.Reader', {
 
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
 
-	HIGHLIGHT_ALPHA: .25, // the alpha value to use for highlighted keywords
-    
     constructor: function(config) {
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
@@ -94,10 +92,7 @@ Ext.define('Voyant.panel.Reader', {
 	    		}, this);
 	    		this.updateText(contents);
 	    		
-	    		var keyword = this.down('querysearchfield').getValue();
-	    		if (keyword != '') {
-//	    			this.highlightKeywords(keyword);
-	    		}
+	    		this.highlightKeywords();
 
 				if (this.getDocumentEntitiesStore() !== undefined) {
 					this.highlightEntities();
@@ -400,6 +395,13 @@ Ext.define('Voyant.panel.Reader', {
     highlightKeywords: function(termRecords, doScroll) {
 		var container = this.getInnerContainer().first();
 		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent', color: 'black'});
+
+		if (termRecords === undefined && this.getDocumentTermsStore().getCount() > 0) {
+			termRecords = this.getDocumentTermsStore().getData().items;
+		}
+		if (termRecords === undefined) {
+			return;
+		}
 
 		if (!Ext.isArray(termRecords)) termRecords = [termRecords];
 
