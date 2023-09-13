@@ -13,7 +13,7 @@ Ext.define('Voyant.util.Colors', {
 		 * For tracking associations between a term and a color (in rgb format), to ensure consistent coloring across tools.
 		 * @private
 		 */
-		colorTermAssociations: undefined
+		colorTermAssociations: {}
 	},
 
 	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
@@ -44,7 +44,7 @@ Ext.define('Voyant.util.Colors', {
 
 	resetColorTermAssociations: function() {
 		this.lastUsedPaletteIndex = -1;
-		this.setColorTermAssociations(new Ext.util.MixedCollection());
+		this.setColorTermAssociations({});
 	},
 
 	rgbToHex: function(a) {
@@ -197,12 +197,12 @@ Ext.define('Voyant.util.Colors', {
 		}
 		term = term.toLowerCase();
 
-		var color = this.getColorTermAssociations().get(term);
-		if (color == null) {
+		var color = this.getColorTermAssociations()[term];
+		if (color === undefined) {
 			var index = this.lastUsedPaletteIndex+1;
 			index %= palette.length;
 			color = palette[index];
-			this.getColorTermAssociations().add(term, color);
+			this.getColorTermAssociations()[term] = color;
 			this.lastUsedPaletteIndex = index;
 		}
 		if (returnHex) {
@@ -221,7 +221,7 @@ Ext.define('Voyant.util.Colors', {
 			color = this.hexToRgb(color);
 		}
 		term = term.toLowerCase();
-		this.getColorTermAssociations().replace(term, color);
+		this.getColorTermAssociations()[term] = color;
 	},
 
 	getColorForEntityType: function(type, returnHex) {
