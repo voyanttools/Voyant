@@ -13,7 +13,12 @@ Ext.define('Voyant.util.Colors', {
 		 * For tracking associations between a term and a color (in rgb format), to ensure consistent coloring across tools.
 		 * @private
 		 */
-		colorTermAssociations: {}
+		colorTermAssociations: {},
+		/**
+		 * For tracking the text color to use with the corresponding background color.
+		 * @private
+		 */
+		textColorsForBackgroundColors: {}
 	},
 
 	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
@@ -45,6 +50,7 @@ Ext.define('Voyant.util.Colors', {
 	resetColorTermAssociations: function() {
 		this.lastUsedPaletteIndex = -1;
 		this.setColorTermAssociations({});
+		this.setTextColorsForBackgroundColors({});
 	},
 
 	rgbToHex: function(a) {
@@ -351,5 +357,23 @@ Ext.define('Voyant.util.Colors', {
 		}
 
 		return Sapc * 100;
+	},
+
+	/**
+	 * Returns either black or white color, depending on the supplied background color.
+	 * @param {Array} backgroundColor An array of RGB values
+	 * @returns {Array}
+	 */
+	getTextColorForBackground: function(backgroundColor) {
+		var textColor = this.getTextColorsForBackgroundColors()[backgroundColor.join('')];
+		if (textColor === undefined) {
+			var darkText = [0,0,0];
+			var lightText = [255,255,255];
+			var darkContrast = Math.abs(this.getColorContrast(backgroundColor, darkText));
+			var lightContrast = Math.abs(this.getColorContrast(backgroundColor, lightText));
+			textColor = lightContrast > darkContrast ? lightText : darkText;
+			this.getTextColorsForBackgroundColors()[backgroundColor.join('')] = textColor;
+		}
+		return textColor;
 	}
 })

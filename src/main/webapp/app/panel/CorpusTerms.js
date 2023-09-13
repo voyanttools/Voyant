@@ -174,15 +174,11 @@ Ext.define('Voyant.panel.CorpusTerms', {
         		flex: 1,
                 sortable: true,
 				xtype: 'templatecolumn',
-				tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.term)]}; padding: 3px; border-radius: 2px;">{term}</span>', {
+				tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.term)]}; padding: 1px 3px; border-radius: 2px;">{term}</span>', {
 					getColorStyle: function(term) {
 						if (me.getApiParam('useTermColors')) {
 							var bgColor = me.getApplication().getColorForTerm(term);
-							var darkText = [0,0,0];
-							var lightText = [255,255,255];
-							var darkContrast = Math.abs(me.getApplication().getColorContrast(bgColor, darkText));
-							var lightContrast = Math.abs(me.getApplication().getColorContrast(bgColor, lightText));
-							var textColor = lightContrast > darkContrast ? lightText : darkText;
+							var textColor = me.getApplication().getTextColorForBackground(bgColor);
 							return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
 						} else {
 							return 'color: rgb(0,0,0)';

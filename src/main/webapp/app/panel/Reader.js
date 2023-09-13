@@ -399,14 +399,16 @@ Ext.define('Voyant.panel.Reader', {
     
     highlightKeywords: function(termRecords, doScroll) {
 		var container = this.getInnerContainer().first();
-		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent'});
+		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent', color: 'black'});
 
 		if (!Ext.isArray(termRecords)) termRecords = [termRecords];
 
 		termRecords.forEach(function(r) {
 			var term = r.get('term');
 			var color = this.getApplication().getColorForTerm(term);
-			color = 'rgba('+color.join(',')+','+this.HIGHLIGHT_ALPHA+')';
+			var textColor = this.getApplication().getTextColorForBackground(color);
+			color = 'rgb('+color.join(',')+')';
+			textColor = 'rgb('+textColor.join(',')+')';
 			// might be slightly faster to use positions so do that if they're available
 			if (r.get('positions')) {
 				var positions = r.get('positions');
@@ -415,7 +417,7 @@ Ext.define('Voyant.panel.Reader', {
 				positions.forEach(function(pos) {
 					var match = container.dom.querySelector('#_'+docIndex+'_'+pos);
 					if (match) {
-						Ext.fly(match).addCls('keyword').applyStyles({backgroundColor: color});
+						Ext.fly(match).addCls('keyword').applyStyles({backgroundColor: color, color: textColor});
 					}
 				})
 			} else {
@@ -423,7 +425,7 @@ Ext.define('Voyant.panel.Reader', {
 				var nodes = container.select('span.word');
 				nodes.each(function(el, compEl, index) {
 					if (el.dom.firstChild && el.dom.firstChild.nodeValue.match(caseInsensitiveQuery)) {
-						el.addCls('keyword').applyStyles({backgroundColor: color});
+						el.addCls('keyword').applyStyles({backgroundColor: color, color: textColor});
 					}
 				});
 			}
