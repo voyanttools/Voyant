@@ -49,7 +49,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			/**
 			 * @cfg {Boolean} useTermColors Whether to use a term's color in the term column
 			 */
-			useTermColors: false,
+			useTermColors: true,
     		
     		/**
     		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
