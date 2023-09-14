@@ -124,6 +124,10 @@ a {
 
 /* Reader */
 
+.voyant-reader .x-panel-body {
+  line-height: 19px !important;
+}
+
 .voyant-reader .x-panel-body .keyword {
   padding: 1px 2px;
   border-radius: 2px;
@@ -154,11 +158,13 @@ ffed6f bright yellow
 .voyant-reader .x-panel-body .entity {
 	border: 2px solid #d9d9d9;
 	border-radius: 3px;
+  padding: 0px 2px;
 }
 .voyant-reader .x-panel-body .entity.start {
 	border-right-width: 0px;
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
+  margin-right: -2px;
 }
 .voyant-reader .x-panel-body .entity.middle {
 	border-left-width: 0px;
@@ -167,11 +173,14 @@ ffed6f bright yellow
 	border-right-width: 0px;
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
+  margin-right: -2px;
+  margin-left: -2px;
 }
 .voyant-reader .x-panel-body .entity.end {
 	border-left-width: 0px;
 	border-top-left-radius: 0px;
 	border-bottom-left-radius: 0px;
+  margin-left: -2px;
 }
 .voyant-reader .x-panel-body .entity:hover, .voyant-reader .x-panel-body .entity.keyword {
 	background-color: hsl(0, 0%, 95%) !important;

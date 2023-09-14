@@ -407,10 +407,12 @@ Ext.define('Voyant.panel.Reader', {
 
 		termRecords.forEach(function(r) {
 			var term = r.get('term');
-			var color = this.getApplication().getColorForTerm(term);
-			var textColor = this.getApplication().getTextColorForBackground(color);
-			color = 'rgb('+color.join(',')+')';
-			textColor = 'rgb('+textColor.join(',')+')';
+			var bgColor = this.getApplication().getColorForTerm(term);
+			var textColor = this.getApplication().getTextColorForBackground(bgColor);
+			bgColor = 'rgb('+bgColor.join(',')+') !important';
+			textColor = 'rgb('+textColor.join(',')+') !important';
+			var styles = 'background-color:'+bgColor+';color:'+textColor+';';
+			
 			// might be slightly faster to use positions so do that if they're available
 			if (r.get('positions')) {
 				var positions = r.get('positions');
@@ -419,7 +421,7 @@ Ext.define('Voyant.panel.Reader', {
 				positions.forEach(function(pos) {
 					var match = container.dom.querySelector('#_'+docIndex+'_'+pos);
 					if (match) {
-						Ext.fly(match).addCls('keyword').applyStyles({backgroundColor: color, color: textColor});
+						Ext.fly(match).addCls('keyword').dom.setAttribute('style', styles);
 					}
 				})
 			} else {
@@ -427,7 +429,7 @@ Ext.define('Voyant.panel.Reader', {
 				var nodes = container.select('span.word');
 				nodes.each(function(el, compEl, index) {
 					if (el.dom.firstChild && el.dom.firstChild.nodeValue.match(caseInsensitiveQuery)) {
-						el.addCls('keyword').applyStyles({backgroundColor: color, color: textColor});
+						el.addCls('keyword').dom.setAttribute('style', styles);
 					}
 				});
 			}
