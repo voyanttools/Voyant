@@ -10,16 +10,13 @@ Ext.define('Voyant.panel.Correlations', {
     		docId: undefined,
     		docIndex: undefined,
     		stopList: 'auto',
-    		minInDocumentsCountRatio: 100
+    		minInDocumentsCountRatio: 100,
+			useTermColors: true
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
     config: {
-    	options: [{
-    		xtype: 'stoplistoption'
-    	},
-        	{xtype: 'categoriesoption'}
-        ]
+    	options: [{xtype: 'stoplistoption'}, {xtype: 'categoriesoption'}, {xtype: 'termcolorsoption'}]
     },
     constructor: function() {
         this.callParent(arguments);
@@ -40,8 +37,9 @@ Ext.define('Voyant.panel.Correlations', {
     		columns: [{
     			text: this.localize("source"),
     			tooltip: this.localize("sourceTip"),
-        		dataIndex: 'source-term',
-        		sortable: false
+        		dataIndex: 'sourceTerm',
+        		sortable: false,
+				xtype: 'coloredtermfield'
     		},{
                 xtype: 'widgetcolumn',
                 tooltip: this.localize("trendTip"),
@@ -64,8 +62,9 @@ Ext.define('Voyant.panel.Correlations', {
             },{
     			text: this.localize("target"),
     			tooltip: this.localize("targetTip"),
-        		dataIndex: 'target-term',
-        		sortable: false
+        		dataIndex: 'targetTerm',
+        		sortable: false,
+				xtype: 'coloredtermfield'
     		},{
     			text: this.localize("correlation"),
     			tooltip: this.localize("correlationTip"),

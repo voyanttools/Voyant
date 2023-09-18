@@ -157,7 +157,7 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
             this.localize('correlations'), this.getCorrelationsStore(), this.getApiParams(),
             '<tpl for="." between="; "><a href="#" onclick="return false" class="corpus-type keyword" voyant:recordId="{term}">{term}</a><span style="font-size: smaller"> ({val})</span></tpl>',
             function(r) {
-                return {term: r.get('source-term'), val: r.get('source').rawFreq}
+                return {term: r.get('sourceTerm'), val: r.get('source').rawFreq}
             }
         );
         
