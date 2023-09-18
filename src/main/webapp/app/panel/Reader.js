@@ -9,7 +9,8 @@ Ext.define('Voyant.panel.Reader', {
 			highlightEntities: 'Highlight Entities',
 			entityType: 'entity type',
 			nerVoyant: 'Entity Identification with Voyant',
-			nerNssi: 'Entity Identification with NSSI'
+			nerNssi: 'Entity Identification with NSSI',
+			nerSpacy: 'Entity Identification with SpaCy'
     	},
     	api: {
     		start: 0,
@@ -265,6 +266,14 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerNssi'),
 							itemId: 'nssi',
 							checked: true,
+							handler: this.nerSeviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: this.localize('nerSpacy'),
+							itemId: 'spacy',
+							checked: false,
 							handler: this.nerSeviceHandler,
 							scope: this
 						},{
