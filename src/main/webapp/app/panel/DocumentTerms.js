@@ -6,7 +6,11 @@ Ext.define('Voyant.panel.DocumentTerms', {
 	config: {
 		options: [{
     		xtype: 'stoplistoption'
-    	},{xtype: 'categoriesoption'}]
+    	},{
+			xtype: 'categoriesoption'
+		},{
+			xtype: 'termcolorsoption'
+		}]
     },
     statics: {
     	i18n: {
@@ -16,7 +20,8 @@ Ext.define('Voyant.panel.DocumentTerms', {
     		query: undefined,
     		docId: undefined,
     		docIndex: undefined,
-    		bins: 10
+    		bins: 10,
+			useTermColors: true
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -151,7 +156,19 @@ Ext.define('Voyant.panel.DocumentTerms', {
         		dataIndex: 'term',
             	tooltip: this.localize("termTip"),
                 sortable: true,
-                flex: 1
+                flex: 1,
+				xtype: 'templatecolumn',
+				tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.term)]}; padding: 1px 3px; border-radius: 2px;">{term}</span>', {
+					getColorStyle: function(term) {
+						if (me.getApiParam('useTermColors')) {
+							var bgColor = me.getApplication().getColorForTerm(term);
+							var textColor = me.getApplication().getTextColorForBackground(bgColor);
+							return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
+						} else {
+							return 'color: rgb(0,0,0)';
+						}
+					}
+				})
             },{
             	text: this.localize("rawFreq"),
             	dataIndex: 'rawFreq',

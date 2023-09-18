@@ -82,6 +82,7 @@ app/data/model/Corpus.js
 app/widget/CorpusSelector.js
 app/widget/ListEditor.js
 app/widget/StopListOption.js
+app/widget/TermColorsOption.js
 app/widget/QuerySearchField.js
 app/widget/TotalPropertyStatus.js
 app/widget/DocumentSelector.js

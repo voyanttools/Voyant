@@ -70,21 +70,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	},{
 			xtype: 'categoriesoption'
 		},{
-			xtype: 'radiogroup',
-			fieldLabel: 'Term Colors',
-			labelAlign: 'right',
-			items: [
-				{ boxLabel: 'Show', name: 'useTermColors', inputValue: true, margin: '0 10 0 0' },
-				{ boxLabel: 'Hide', name: 'useTermColors', inputValue: false }
-			],
-			listeners: {
-				boxready: function(cmp) {
-					var win = cmp.up('window');
-					var value = win.panel.getApiParam('useTermColors');
-					cmp.setValue({useTermColors: value});
-				}
-			}
-
+			xtype: 'termcolorsoption'
 		},{
     		xtype: 'corpusselector',
     		name: 'comparisonCorpus',
