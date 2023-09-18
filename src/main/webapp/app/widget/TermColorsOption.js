@@ -40,4 +40,32 @@ Ext.define('Voyant.widget.TermColorsOption', {
 		})
 		me.callParent(arguments);
 	}
-})
+});
+
+/**
+ * A column field for use in grid panels.
+ * Uses the term's color for display.
+ */
+Ext.define('Voyant.widget.ColoredTermField', {
+	extend: 'Ext.grid.column.Template',
+	alias: 'widget.coloredtermfield',
+	initComponent: function() {
+		var me = this;
+		var dataIndex = me.dataIndex;
+		Ext.apply(me, {
+			tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.'+dataIndex+')]}; padding: 1px 3px; border-radius: 2px;">{'+dataIndex+'}</span>', {
+				getColorStyle: function(term) {
+					var panel = me.up('panel');
+					if (panel.getApiParam('useTermColors')) {
+						var bgColor = panel.getApplication().getColorForTerm(term);
+						var textColor = panel.getApplication().getTextColorForBackground(bgColor);
+						return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
+					} else {
+						return 'color: rgb(0,0,0)';
+					}
+				}
+			})
+		});
+		me.callParent(arguments);
+	}
+});
