@@ -99,6 +99,7 @@ app/widget/VoyantTableTransform.js
 app/widget/CategoriesBuilder.js
 app/widget/VoyantNetworkGraph.js
 app/widget/ReaderGraph.js
+app/widget/EntitiesList.js
 
 
 # PANELS

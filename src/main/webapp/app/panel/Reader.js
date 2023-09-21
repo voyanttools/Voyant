@@ -173,6 +173,7 @@ Ext.define('Voyant.panel.Reader', {
     		// click listener
     		centerPanel.body.on("click", function(event, target) {
     			target = Ext.get(target);
+				// if (target.hasCls('entity')) {} TODO
     			if (target.hasCls('word')) {
     				var info = Voyant.data.model.Token.getInfoFromElement(target);
     				var term = target.getHtml();
@@ -233,7 +234,19 @@ Ext.define('Voyant.panel.Reader', {
 						},
 						scope: this
 					}
-    		    }]
+    		    }, {
+					xtype: 'entitieslist',
+					region: 'east',
+					width: '40%',
+					split: {
+						size: 2
+					},
+					splitterResize: true,
+					border: false,
+					hidden: true,
+					collapsible: true,
+					animCollapse: false
+				}]
     	    },
     		// TODO clearing search loads default document terms into chart but probably shouldn't
     		dockedItems: [{
@@ -383,7 +396,44 @@ Ext.define('Voyant.panel.Reader', {
     					this.fireEvent('termLocationClicked', this, [termRec]);
         			}
         		},
-        		scope: this
+				entityClicked: function(src, entity) {
+					var docIndex = entity.get('docIndex');
+					var position = entity.get('positions')[0];
+					if (Array.isArray(position)) position = position[0];
+					var bufferPosition = position - (this.getApiParam('limit')/2);
+					var doc = this.getCorpus().getDocument(docIndex);
+					this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
+					this.load(true, {
+						callback: function() {
+							var el = this.body.dom.querySelector("#_" + docIndex + "_" + position);
+							if (el) {
+								el.scrollIntoView();
+							}
+							this.highlightEntities();
+						},
+						scope: this
+					});
+				},
+				entityLocationClicked: function(src, entity, positionIndex) {
+					var docIndex = entity.get('docIndex');
+					var position = entity.get('positions')[positionIndex];
+					if (Array.isArray(position)) position = position[0];
+					var bufferPosition = position - (this.getApiParam('limit')/2);
+					var doc = this.getCorpus().getDocument(docIndex);
+					this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
+					this.load(true, {
+						callback: function() {
+							var el = this.body.dom.querySelector("#_" + docIndex + "_" + position);
+							if (el) {
+								// el.classList.add('keyword');
+								el.scrollIntoView();
+							}
+							this.highlightEntities();
+						},
+						scope: this
+					});
+				},
+				scope: this
     		}
     	});
     	
@@ -470,6 +520,7 @@ Ext.define('Voyant.panel.Reader', {
 				me.clearEntityHighlights(); // clear again in case failed documents were rerun
 				me.setDocumentEntitiesStore(entities);
 				me.highlightEntities();
+				me.down('entitieslist').show().setEntities(entities);
 			}
 		});
 	},
@@ -490,10 +541,10 @@ Ext.define('Voyant.panel.Reader', {
 			var positionInstances = entity.positions;
 			if (positionInstances) {
 				positionInstances.forEach(function(positions) {
-					var multiTermEntity = positions.length === 2; // there is both a start and end position
+					var multiTermEntity = positions.length > 1;
 					if (multiTermEntity) {
 						// find the difference between start and end positions
-						if (positions[1]-positions[0] > 1) {
+						if (positions.length === 2 && positions[1]-positions[0] > 1) {
 							// more than two terms, so fill in the middle positions
 							var endPos = positions[1];
 							var curPos = positions[0]+1;
@@ -518,14 +569,17 @@ Ext.define('Voyant.panel.Reader', {
 									if (i === 0) {
 										termEntityPosition = 'start ';
 									} else if (i === len-1) {
-										termEntityPosition = 'end ';	
+										termEntityPosition = 'end ';
 									} else {
 										termEntityPosition = 'middle ';
 									}
 								}
 
 								match.addCls('entity '+termEntityPosition+entity.type);
-								match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								var prevQTip = match.dom.getAttribute('data-qtip');
+								if (prevQTip.indexOf('class="entity"') === -1) {
+									match.dom.setAttribute('data-qtip', prevQTip+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								}
 							}
 						}
 					}
