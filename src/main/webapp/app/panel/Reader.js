@@ -276,16 +276,16 @@ Ext.define('Voyant.panel.Reader', {
 						items: [{
 							xtype: 'menucheckitem',
 							group: 'nerService',
-							text: this.localize('nerNssi'),
-							itemId: 'nssi',
+							text: this.localize('nerSpacy'),
+							itemId: 'spacy',
 							checked: true,
 							handler: this.nerSeviceHandler,
 							scope: this
 						},{
 							xtype: 'menucheckitem',
 							group: 'nerService',
-							text: this.localize('nerSpacy'),
-							itemId: 'spacy',
+							text: this.localize('nerNssi'),
+							itemId: 'nssi',
 							checked: false,
 							handler: this.nerSeviceHandler,
 							scope: this
