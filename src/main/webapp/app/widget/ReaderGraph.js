@@ -128,7 +128,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
 	},
 
 	getColor: function(index, alpha) {
-		var c = this.getParentPanel().getApplication().getColor(index);
+		var c = index % 2 === 0 ? [200,200,200] : [240,240,240];
 		return 'rgba('+c.join(',')+','+alpha+')';
 	},
 
@@ -224,19 +224,14 @@ Ext.define('Voyant.widget.ReaderGraph', {
         var docs = me.getCorpus().getDocuments();
         var tokensTotal = me.getCorpus().getWordTokensCount();
         var docInfos = [];
-        var docMinSize = Number.MAX_VALUE;
-        var docMaxSize = -1;
-//      for (var i = 0; i < docs.getTotalCount(); i++) {
         for (var i = 0; i < docs.getCount(); i++) {
             var d = docs.getAt(i);
             var docIndex = d.get('index');
             var count = d.get('tokensCount-lexical');
-            if (count < docMinSize) docMinSize = count;
-            if (count > docMaxSize) docMaxSize = count;
             var fraction = count / tokensTotal;
             docInfos.push({
                 index: docIndex,
-                count: count,
+                count: 1, // same height for all
                 fraction: fraction
             });
         }
@@ -244,7 +239,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         if (this.getIsDetailedGraph()) {
             for (var i = 0; i < docInfos.length; i++) {
                 var d = docInfos[i];
-                d.relativeHeight = d.count==docMaxSize ? 1 : map(d.count, docMinSize, docMaxSize, 0.25, 1);
+                d.relativeHeight = 1; // same height for all
                 addChart.call(this, d);
             }
         } else {

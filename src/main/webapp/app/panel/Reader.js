@@ -217,7 +217,7 @@ Ext.define('Voyant.panel.Reader', {
     		    },{
 					xtype: 'readergraph',
     		    	region: 'south',
-    		    	height: 40,
+    		    	height: 30,
     		    	split: {
     		    		size: 2
     		    	},
