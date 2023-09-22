@@ -27,27 +27,6 @@ Ext.define('Voyant.widget.EntitiesList', {
 			unknown: 'Unknown'
 		}
 	},
-	config: {
-		entities: undefined
-	},
-
-//	DATE - Absolute or relative dates or periods
-//	PERSON - People, including fictional
-//	GPE - Countries, cities, states
-//	LOC - Non-GPE locations, mountain ranges, bodies of water
-//	MONEY - Monetary values, including unit
-//	TIME - Times smaller than a day
-//	PRODUCT - Objects, vehicles, foods, etc. (not services)
-//	CARDINAL - Numerals that do not fall under another type
-//	ORDINAL - "first", "second", etc.
-//	QUANTITY - Measurements, as of weight or distance
-//	EVENT - Named hurricanes, battles, wars, sports events, etc.
-//	FAC - Buildings, airports, highways, bridges, etc.
-//	LANGUAGE - Any named language
-//	LAW - Named documents made into laws.
-//	NORP - Nationalities or religious or political groups
-//	PERCENT - Percentage, including "%"
-//	WORK_OF_ART - Titles of books, songs, etc.
 
 	bins: 25,
 
@@ -168,12 +147,8 @@ Ext.define('Voyant.widget.EntitiesList', {
 				width: 50
 			}],
 			listeners: {
-				selectionchange: function(cmp, selections) {
-					if (selections && selections.length > 0) {
-						var entity = selections[0];
-						console.log(entity);
-						Voyant.application.dispatchEvent('entityClicked', this, entity);
-					}
+				select: function(cmp, record, index) {
+					Voyant.application.dispatchEvent('entityClicked', this, record);
 				},
 				columnresize: function(ct, column, width) {
 				}
@@ -183,8 +158,15 @@ Ext.define('Voyant.widget.EntitiesList', {
 		this.callParent(arguments);
 	},
 
-	applyEntities: function(entities) {
-		if (this.getStore() !== undefined) {
+	addEntities: function(entities) {
+		var store = this.getStore();
+		if (store !== undefined) {
+			var append = false;
+			if (store.count() > 0 && entities.length > 0) {
+				var oldDocIndex = store.first().get('docIndex');
+				var newDocIndex = entities[0].docIndex;
+				append = oldDocIndex === newDocIndex;
+			}
 			entities.forEach(function(entity) {
 				if (entity.positions) {
 					entity.distribution = this.getDistributionFromPositions(entity.docIndex, entity.positions, this.bins);
@@ -193,9 +175,11 @@ Ext.define('Voyant.widget.EntitiesList', {
 					entity.distribution = [];
 				}
 			}, this);
-			this.getStore().loadData(entities);
+			store.loadData(entities, append);
+			if (append === false) {
+				this.view.findFeature('grouping').collapseAll();
+			}
 		}
-		return entities;
 	},
 
 	getDistributionFromPositions: function(docIndex, positions, bins) {

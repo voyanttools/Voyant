@@ -507,7 +507,7 @@ Ext.define('Voyant.panel.Reader', {
 				me.clearEntityHighlights(); // clear again in case failed documents were rerun
 				me.setDocumentEntitiesStore(entities);
 				me.highlightEntities();
-				me.down('entitieslist').show().setEntities(entities);
+				me.down('entitieslist').show().addEntities(entities);
 			}
 		});
 	},
