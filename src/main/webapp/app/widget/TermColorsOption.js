@@ -79,7 +79,7 @@ Ext.define('Voyant.widget.ColoredTermField', {
 						return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
 					} else {
 						return 'color: rgb(0,0,0)';
-					}	 
+					}
 				}
 			})
 		});
