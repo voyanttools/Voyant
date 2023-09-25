@@ -7,8 +7,9 @@ Ext.define('Voyant.widget.TermColorsOption', {
 	statics: {
 			i18n: {
 				label: 'Term Colors',
-				show: 'Show',
-				hide: 'Hide',
+				none: 'None',
+				categories: 'Categories Only',
+				categoriesTerms: 'Categories and Terms',
 				applyGlobally: 'apply globally'
 			}
 	},
@@ -16,14 +17,27 @@ Ext.define('Voyant.widget.TermColorsOption', {
 		var me = this;
 		Ext.apply(me, {
 			items: [{
-				xtype: 'radiogroup',
+				xtype: 'combo',
+				queryMode: 'local',
+				value: 'categories',
 				fieldLabel: this.localize('label'),
 				labelAlign: 'right',
-				name: 'useTermColors',
-				items: [
-					{ boxLabel: this.localize('show'), name: 'useTermColors', inputValue: true, margin: '0 10 0 0' },
-					{ boxLabel: this.localize('hide'), name: 'useTermColors', inputValue: false }
-				],
+				name: 'termColors',
+				displayField: 'name',
+				valueField: 'value',
+				store: {
+					fields: ['name', 'value'],
+					data: [{
+						name: this.localize('categories'),
+						value: 'categories'
+					},{
+						name: this.localize('categoriesTerms'),
+						value: 'terms'
+					},{
+						name: this.localize('none'),
+						value: ''
+					}]
+				}
 			}, {width: 20}, {
 				xtype: 'checkbox',
 				name: 'termColorsGlobal',
@@ -33,8 +47,8 @@ Ext.define('Voyant.widget.TermColorsOption', {
 			listeners: {
 				boxready: function(cmp) {
 					var win = cmp.up('window');
-					var value = win.panel.getApiParam('useTermColors');
-					cmp.down('radiogroup').setValue({useTermColors: value});
+					var value = win.panel.getApiParam('termColors');
+					cmp.down('combo').setValue(value);
 				}
 			}
 		})
@@ -56,13 +70,16 @@ Ext.define('Voyant.widget.ColoredTermField', {
 			tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.'+dataIndex+')]}; padding: 1px 3px; border-radius: 2px;">{'+dataIndex+'}</span>', {
 				getColorStyle: function(term) {
 					var panel = me.up('panel');
-					if (panel.getApiParam('useTermColors')) {
+					var termColors = panel.getApiParam('termColors');
+					if (termColors !== undefined && termColors !== '' &&
+						(termColors === 'categories' && panel.getApplication().getCategoriesManager().getCategoriesForTerm(term).length > 0) ||
+						(termColors === 'terms')) {
 						var bgColor = panel.getApplication().getColorForTerm(term);
 						var textColor = panel.getApplication().getTextColorForBackground(bgColor);
 						return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
 					} else {
 						return 'color: rgb(0,0,0)';
-					}
+					}	 
 				}
 			})
 		});

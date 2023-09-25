@@ -127,8 +127,8 @@ Ext.define('Voyant.util.Toolable', {
 										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
 											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
 										}
-										if (values['useTermColors'] !== undefined && values['termColorsGlobal'] !== undefined && values.termColorsGlobal) {
-											keyValuesForGlobalUpdate.push(['useTermColors', values['useTermColors']]);
+										if (values['termColors'] !== undefined && values['termColorsGlobal'] !== undefined && values.termColorsGlobal) {
+											keyValuesForGlobalUpdate.push(['termColors', values['termColors']]);
 										}
 
 										var categoriesDfd = new Ext.Deferred();

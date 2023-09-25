@@ -47,10 +47,13 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		maxBins: 100,
 
 			/**
-			 * @cfg {Boolean} useTermColors Whether to use a term's color in the term column
+			 * @cfg {String} termColors Which term colors to show in the grid.
+			 * 
+			 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
+			 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
 			 */
-			useTermColors: true,
-    		
+			termColors: 'categories',
+
     		/**
     		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 

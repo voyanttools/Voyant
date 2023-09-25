@@ -14,7 +14,7 @@ Ext.define('Voyant.panel.Contexts', {
     		stopList: 'auto',
     		context: 5,
     		expand: 50,
-			useTermColors: true
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
