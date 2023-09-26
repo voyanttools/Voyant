@@ -431,6 +431,12 @@ svg.cirrusGraph text {
     text-rendering: optimizeLegibility;
 }
 
+/* Ext.ux.colorpick.Field swatch visibility fix */
+.x-colorpicker-field-swatch-inner {
+  z-index: 1
+}
+
+
 /* ColorPaletteOption */
 
 .color {
