@@ -730,3 +730,112 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
     	}
     }
 });
+
+Ext.define('Voyant.categories.CategoriesMenu', {
+	extend: 'Ext.menu.Menu',
+	alias: 'widget.categoriesmenu',
+
+	config: {
+		terms: []
+	},
+
+	constructor: function(config) {
+		config = config || {};
+		if (config.panel) {
+			this.panel = config.panel;
+			this.app = this.panel.getApplication();
+			this.categoriesManager = this.app.getCategoriesManager();
+		} else {
+			if (window.console) {
+				console.warn('can\'t find panel!');
+			}
+		}
+		this.callParent(arguments);
+	},
+
+	setColorTermsFromCategoryFeatures: function() {
+		for (var category in this.categoriesManager.getCategories()) {
+			var color = this.categoriesManager.getCategoryFeature(category, 'color');
+			if (color !== undefined) {
+				var rgb = this.app.hexToRgb(color);
+				var terms = this.categoriesManager.getCategoryTerms(category);
+				for (var i = 0; i < terms.length; i++) {
+					this.app.setColorForTerm(terms[i], rgb);
+				}
+			}
+		}
+	},
+
+	initComponent: function() {
+		Ext.apply(this, {
+			items: [{
+				text: 'Set category for selected terms',
+				menu: {
+					minWidth: 250,
+					itemId: 'cats',
+					items: [],
+					minButtonWidth: 50,
+					fbar: [{
+						xtype: 'button',
+						text: 'Ok',
+						handler: function(button) {
+							var terms = this.getTerms();
+							var addCats = [];
+							var remCats = [];
+							button.up('menu').items.each(function(item) {
+								if (item.checked) {
+									addCats.push(item.text);
+								} else {
+									remCats.push(item.text);
+								}
+							});
+							remCats.forEach(function(cat) { this.categoriesManager.removeTerms(cat, terms); }, this);
+							addCats.forEach(function(cat) { this.categoriesManager.addTerms(cat, terms); }, this);
+		
+							button.up('menu').up('menu').hide();
+
+							this.setColorTermsFromCategoryFeatures();
+							this.fireEvent('categorySet', this, addCats);
+						},
+						scope: this
+					},{
+						xtype: 'button',
+						text: 'Cancel',
+						handler: function(button) {
+							button.up('menu').up('menu').hide();
+						}
+					},{xtype: 'tbfill'},{
+						xtype: 'button',
+						glyph: 'xf013@FontAwesome',
+						tooltip: 'Show Categories Builder',
+						handler: function(button) {
+							if (Voyant.categories.Builder === undefined) {
+								Voyant.categories.Builder = Ext.create('Voyant.categories.CategoriesBuilder', {
+									panel: this.panel
+								});
+							}
+							Voyant.categories.Builder.show();
+						},
+						scope: this
+					}]
+				}
+			}],
+			listeners: {
+				beforeshow: function(menu) {
+					var categories = this.categoriesManager.getCategories();
+					var catsMenu = menu.down('#cats');
+					catsMenu.removeAll();
+
+					var terms = this.getTerms();
+					var term = Array.isArray(terms) ? terms[0] : terms;
+					var termCats = this.categoriesManager.getCategoriesForTerm(term);
+
+					catsMenu.add(Object.keys(categories).map(function(cat) { return {text: cat, xtype: 'menucheckitem', checked: termCats.indexOf(cat) !== -1} }));
+				},
+				scope: this
+			}
+		});
+
+		this.callParent(arguments);
+	}
+})

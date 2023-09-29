@@ -62,14 +62,38 @@ Ext.define('Voyant.widget.TermColorsOption', {
  */
 Ext.define('Voyant.widget.ColoredTermField', {
 	extend: 'Ext.grid.column.Template',
+	requires: ['Voyant.categories.CategoriesMenu'],
 	alias: 'widget.coloredtermfield',
+	config: {
+		useCategoriesMenu: false
+	},
 	initComponent: function() {
-		var me = this;
-		var dataIndex = me.dataIndex;
-		Ext.apply(me, {
+		var panel = this.up('gridpanel');
+
+		if (this.getUseCategoriesMenu()) {
+			this.categoriesMenu = Ext.create('Voyant.categories.CategoriesMenu', {
+				panel: panel,
+				listeners: {
+					categorySet: function(src, cats) {
+						var store = panel.getStore();
+						store.removeAll();
+    					store.load();
+					}
+				}
+			});
+			panel.on('rowcontextmenu', function(cmp, record, tr, rowIndex, evt) {
+				evt.preventDefault();
+					
+				var terms = panel.getSelection().map(function(sel) { return sel.get('term') });
+				this.categoriesMenu.setTerms(terms);
+				this.categoriesMenu.showAt(evt.getXY());
+			}, this);
+		}
+
+		var dataIndex = this.dataIndex;
+		Ext.apply(this, {
 			tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.'+dataIndex+')]}; padding: 1px 3px; border-radius: 2px;">{'+dataIndex+'}</span>', {
 				getColorStyle: function(term) {
-					var panel = me.up('panel');
 					var termColors = panel.getApiParam('termColors');
 					if (termColors !== undefined && termColors !== '' &&
 						(termColors === 'categories' && panel.getApplication().getCategoriesManager().getCategoriesForTerm(term).length > 0) ||
@@ -83,6 +107,6 @@ Ext.define('Voyant.widget.ColoredTermField', {
 				}
 			})
 		});
-		me.callParent(arguments);
+		this.callParent(arguments);
 	}
 });

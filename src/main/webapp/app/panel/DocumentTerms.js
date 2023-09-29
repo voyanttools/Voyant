@@ -157,7 +157,8 @@ Ext.define('Voyant.panel.DocumentTerms', {
             	tooltip: this.localize("termTip"),
                 sortable: true,
                 flex: 1,
-				xtype: 'coloredtermfield'
+				xtype: 'coloredtermfield',
+				useCategoriesMenu: true
             },{
             	text: this.localize("rawFreq"),
             	dataIndex: 'rawFreq',

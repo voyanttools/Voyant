@@ -80,6 +80,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		fieldLabel: 'comparison corpus'
     	}]
     },
+
 	/**
 	 * @private
 	 */
@@ -151,7 +152,6 @@ Ext.define('Voyant.panel.CorpusTerms', {
                     scope: this
                 }
             },
-
     		columns: [{
                 xtype: 'rownumberer',
                 width: 'autoSize',
@@ -162,7 +162,8 @@ Ext.define('Voyant.panel.CorpusTerms', {
         		dataIndex: 'term',
         		flex: 1,
                 sortable: true,
-				xtype: 'coloredtermfield'
+				xtype: 'coloredtermfield',
+				useCategoriesMenu: true
             },{
             	text: this.localize("rawFreq"),
             	tooltip: this.localize("rawFreqTip"),
