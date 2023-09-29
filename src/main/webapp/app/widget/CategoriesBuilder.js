@@ -282,7 +282,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    		this.queryById('categories').query('grid').forEach(function(grid) {
 										var sels = grid.getSelection();
 										sels.forEach(function(sel) {
-											this.categoriesManager.removeTerm(grid.category, sel.getTerm());
+											this.categoriesManager.removeTerm(grid.category, sel.get('term'));
 										}, this);
 		                    			grid.getStore().remove(sels);
 		                    		}, this);
