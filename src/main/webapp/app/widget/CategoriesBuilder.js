@@ -271,6 +271,24 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    xtype: 'toolbar',
 		                    overflowHandler: 'scroller',
 		                    items: [{
+								xtype: 'textfield',
+								fieldLabel: 'Category Filter',
+								labelAlign: 'right',
+								enableKeyEvents: true,
+								listeners: {
+									keyup: function(cmp, e) {
+										var query = cmp.getValue().trim();
+										this.queryById('categories').query('grid').forEach(function(grid) {
+											if (query === '') {
+												grid.getStore().clearFilter();
+											} else {
+												grid.getStore().filter('term', query);
+											}
+										}, this);
+									},
+									scope: this
+								}
+							},'-',{
 		                    	text: this.localize('addCategory'),
 		                    	handler: function() {
 		                    		this.getAddCategoryWin().show();
