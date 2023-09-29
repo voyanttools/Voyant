@@ -335,7 +335,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 			listeners: {
 				show: function() {
 					// check to see if the widget value is different from the API
-					if (this.getCategoriesId() && this.getCategoriesId()!=this.getApiParam("categories")) {
+					if (this.getCategoriesId() && this.getCategoriesId() !== this.getApiParam("categories")) {
 		    			this.app.loadCategoryData(this.getCategoriesId()).then(function(data) {
 							this.setColorTermsFromCategoryFeatures();
 							this.buildCategories();
@@ -374,6 +374,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     		items: {
     			xtype: 'form',
     			width: 300,
+				bodyPadding: '10 5 5',
     			defaults: {
     				labelAlign: 'right'
     			},
