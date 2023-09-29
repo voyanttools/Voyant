@@ -1,13 +1,12 @@
-Ext.define('Voyant.widget.CategoriesOption', {
+Ext.namespace('Voyant.categories');
+
+Ext.define('Voyant.categories.CategoriesOption', {
 	extend: 'Ext.container.Container',
 	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.categoriesoption',
 	statics: {
 		i18n: {
 		}
-	},
-	config: {
-		builderWin: undefined
 	},
 	initComponent: function() {
 		var value = this.up('window').panel.getApiParam('categories');
@@ -38,30 +37,26 @@ Ext.define('Voyant.widget.CategoriesOption', {
     			text: this.localize('edit'),
     			ui: 'default-toolbar',
     			handler: function() {
-    				if (this.getBuilderWin() === undefined) {
-    					var panel = this.up('window').panel;
-    					var win = Ext.create('Voyant.widget.CategoriesBuilder', {
-    						panel: panel,
-    						height: panel.getApplication().getViewport().getHeight()*0.75,
-    						width: panel.getApplication().getViewport().getWidth()*0.75
-    					});
-    					win.on('close', function(win) {
-    						var id = win.getCategoriesId();
-    						if (id !== undefined) {
-	    						var combo = this.down('combo');
-								var name = id;
-								combo.getStore().add({name: name, value: id});
-								combo.setValue(id);
-								
-								this.up('window').panel.setApiParam('categories', id);
-    						}
-    					}, this);
-    					this.setBuilderWin(win);
-    				}
+    				if (Voyant.categories.Builder === undefined) {
+						Voyant.categories.Builder = Ext.create('Voyant.categories.CategoriesBuilder', {
+							panel: this.up('window').panel
+						});
+					}
+					Voyant.categories.Builder.on('close', function(win) {
+						var id = win.getCategoriesId();
+						if (id !== undefined) {
+							var combo = this.down('combo');
+							var name = id;
+							combo.getStore().add({name: name, value: id});
+							combo.setValue(id);
+							
+							this.up('window').panel.setApiParam('categories', id);
+						}
+					}, this, { single: true });
     				
     				var categoriesId = this.down('combo').getValue();
-    				this.getBuilderWin().setCategoriesId(categoriesId);
-					this.getBuilderWin().show();
+    				Voyant.categories.Builder.setCategoriesId(categoriesId);
+					Voyant.categories.Builder.show();
     			},
     			scope: this
     		}]
@@ -71,7 +66,7 @@ Ext.define('Voyant.widget.CategoriesOption', {
 	}
 });
 
-Ext.define('Voyant.widget.CategoriesBuilder', {
+Ext.define('Voyant.categories.CategoriesBuilder', {
     extend: 'Ext.window.Window',
     requires: ['Voyant.widget.FontFamilyOption'],
     mixins: ['Voyant.util.Localization','Voyant.util.Api'],
@@ -155,16 +150,17 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 
     constructor: function(config) {
     	config = config || {};
-    	
+
     	if (config.panel) {
     		this.panel = config.panel;
 			this.app = this.panel.getApplication();
 			this.categoriesManager = this.app.getCategoriesManager();
-    	} else {
-    		if (window.console) {
-    			console.warn('can\'t find panel!');
-    		}
-    	}
+		} else {
+			console.warn('CategoriesBuilder cannot find panel!');
+		}
+
+		config.height = this.app.getViewport().getHeight()*0.75;
+		config.width = this.app.getViewport().getWidth()*0.75;
     	
     	this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
     	this.callParent(arguments);
