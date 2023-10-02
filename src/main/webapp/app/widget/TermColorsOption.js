@@ -62,7 +62,6 @@ Ext.define('Voyant.widget.TermColorsOption', {
  */
 Ext.define('Voyant.widget.ColoredTermField', {
 	extend: 'Ext.grid.column.Template',
-	requires: ['Voyant.categories.CategoriesMenu'],
 	alias: 'widget.coloredtermfield',
 	config: {
 		useCategoriesMenu: false
