@@ -62,6 +62,7 @@ Ext.define('Voyant.widget.EntitiesList', {
 			viewConfig: {
 				listeners: {
 					expandbody: function(rowNode, record, expandRow, eOpts) {
+						me.getSelectionModel().select(record, false, true); // select expanded row, otherwise select event gets triggered later when interacting with prev/next buttons
 						if (expandRow.textContent === '' || (eOpts && eOpts.force)) {
 							var parentEl = expandRow.querySelector('div.x-grid-rowbody');
 							var expandedRow = Ext.create('Ext.container.Container', {
