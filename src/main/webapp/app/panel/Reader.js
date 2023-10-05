@@ -115,7 +115,6 @@ Ext.define('Voyant.panel.Reader', {
 				url: Voyant.application.getTromboneUrl(),
 				extraParams: {
 					tool: 'corpus.DocumentTerms',
-					withDistributions: true,
 					withPositions: true,
 					bins: 25,
 					forTool: 'reader'
@@ -130,7 +129,6 @@ Ext.define('Voyant.panel.Reader', {
    		    listeners: {
    		    load: function(store, records, successful, opts) {
    		    		this.highlightKeywords(records);
-					this.down('readergraph').populateChart(records);
    		    	},
    		    	scope: this
    		    }
@@ -187,6 +185,9 @@ Ext.define('Voyant.panel.Reader', {
     		}, this);
     		
     		if (this.getCorpus()) {
+				if (this.getApiParam('skipToDocId') === undefined) {
+					this.setApiParam('skipToDocId', this.getCorpus().getDocument(0).getId());
+				}
     			this.load();
 	    		var query = this.getApiParam('query');
 	    		if (query) {
@@ -194,6 +195,9 @@ Ext.define('Voyant.panel.Reader', {
 	    		}
     		}
 			this.on("loadedCorpus", function() {
+				if (this.getApiParam('skipToDocId') === undefined) {
+					this.setApiParam('skipToDocId', this.getCorpus().getDocument(0).getId());
+				}
     			this.load(true); // make sure to clear in case we're replacing the corpus
 	    		var query = this.getApiParam('query');
 	    		if (query) {
@@ -217,6 +221,7 @@ Ext.define('Voyant.panel.Reader', {
     		    },{
 					xtype: 'readergraph',
     		    	region: 'south',
+					weight: 0,
     		    	height: 30,
     		    	split: {
     		    		size: 2
@@ -234,9 +239,10 @@ Ext.define('Voyant.panel.Reader', {
 						},
 						scope: this
 					}
-    		    }, {
+    		    },{
 					xtype: 'entitieslist',
 					region: 'east',
+					weight: 10,
 					width: '40%',
 					split: {
 						size: 2
@@ -248,7 +254,7 @@ Ext.define('Voyant.panel.Reader', {
 					animCollapse: false
 				}]
     	    },
-    		// TODO clearing search loads default document terms into chart but probably shouldn't
+
     		dockedItems: [{
                 dock: 'bottom',
                 xtype: 'toolbar',
@@ -406,12 +412,24 @@ Ext.define('Voyant.panel.Reader', {
     
     loadQueryTerms: function(queryTerms) {
     	if (queryTerms && queryTerms.length > 0) {
+			var docId = this.getApiParam('skipToDocId');
+			if (docId === undefined) {
+				var docIndex = 0;
+				var locationInfo = this.getLocationInfo();
+				if (locationInfo) {
+					docIndex = locationInfo[0].docIndex;
+				}
+				docId = this.getCorpus().getDocument(docIndex).getId();
+			}
 			this.getDocumentTermsStore().load({
 				params: {
 					query: queryTerms,
-					categories: this.getApiParam('categories')
+					docId: docId,
+					categories: this.getApiParam('categories'),
+					limit: -1
     			}
 			});
+			this.down('readergraph').loadQueryTerms(queryTerms);
 		}
     },
 
@@ -686,6 +704,17 @@ Ext.define('Voyant.panel.Reader', {
     		this.getInnerContainer().setHtml('<div class="readerContainer"><div class="loading">'+this.localize('loading')+'</div></div>');
 			this.getInnerContainer().first().first().mask();
 		}
+
+		// check if we're loading a different doc and update terms store if so
+		var tokensStore = this.getTokensStore();
+		if (tokensStore.lastOptions && tokensStore.lastOptions.params.skipToDocId && tokensStore.lastOptions.params.skipToDocId !== this.getApiParam('skipToDocId')) {
+			var dts = this.getDocumentTermsStore();
+			if (dts.lastOptions) {
+				var query = dts.lastOptions.params.query;
+				this.loadQueryTerms(query);
+			}
+		}
+
     	this.getTokensStore().load(Ext.apply(config || {}, {
     		params: Ext.apply(this.getApiParams(), {
     			stripTags: 'blocksOnly',
@@ -781,10 +810,6 @@ Ext.define('Voyant.panel.Reader', {
 			this.down('readergraph').moveLocationMarker(docIndex, fraction, scrollDir);
 		}
 	},
-    
-    updateChart: function() {
-    	
-    },
 
 	getLocationInfo: function() {
 		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
