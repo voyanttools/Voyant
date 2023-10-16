@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Oct 02 18:29:37 UTC 2023 */
+/* This file created by JSCacher. Last modified: Mon Oct 16 20:32:07 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -15311,7 +15311,7 @@ Ext.define('Voyant.widget.Facet', {
     			parentPanel: this
     		})
     		this.store.getProxy().on("exception", function(proxy, request, operation, eOpts) {
-		    	me.showResponseError("Unable to fetch facet: "+me.facet, response);
+		    	me.showResponseError("Unable to fetch facet: "+me.facet, request);
     		})
     	}
     	
