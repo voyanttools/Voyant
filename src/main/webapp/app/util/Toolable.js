@@ -252,12 +252,12 @@ Ext.define('Voyant.util.Toolable', {
 				}, this);
 				el.on("mouseout", function() {
 					this.getHeader().getTools().forEach(function(tool) {
-						var type = tool.config.type || tool.type; // auto-added tools don't have config.type, e.g. collapse
-						if (type && type!='help' && type.indexOf('collapse')==-1) {tool.hide();}
+						var type = tool.config.type || tool.type; // auto-added tools don't have config.type
+						if (type && type !== 'help') tool.hide();
 					})
 				}, this);
 				header.getTools().forEach(function(tool,i) {
-					if (tool.config.type!='help') {tool.hide();}
+					if (tool.config.type !== 'help') tool.hide();
 				});
 			}
 		}, this)
