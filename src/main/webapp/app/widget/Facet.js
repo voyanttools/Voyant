@@ -45,7 +45,7 @@ Ext.define('Voyant.widget.Facet', {
         	hideHeaders: true,
         	selType: 'checkboxmodel',
         	columns: [
-        	          { renderer: function(value, metaData, record) {return "("+record.getInDocumentsCount()+") "+record.getLabel()}, flex: 1 }
+				{ renderer: function(value, metaData, record) {return "("+record.getInDocumentsCount()+") "+record.getLabel()}, flex: 1 }
         	]
         });
         this.callParent();
