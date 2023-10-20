@@ -51,7 +51,7 @@ Ext.define('Voyant.panel.CorpusSet', {
         xtype: 'voyanttabpanel',
     	split: {width: 5},
     	tabBarHeaderPosition: 0,
-    	moreTools: ['trends','collocatesgraph','corpuscollocates'],
+    	moreTools: ['trends','collocatesgraph'],
         items: [{
 	    	xtype: 'trends'
         },{
@@ -88,13 +88,13 @@ Ext.define('Voyant.panel.CorpusSet', {
     	        xtype: 'voyanttabpanel',
     	    	split: {width: 5},
     	    	tabBarHeaderPosition: 0,
-    			moreTools: ['contexts','documentterms'],
+    			moreTools: ['contexts','documentterms','correlations'],
     			items: [{
 	    			xtype: 'contexts'
     			},{
 	    			xtype: 'bubblelines' // is set to default during loadedCorpus below when in non-consumptive mode
     			},{
-	    			xtype: 'correlations'
+	    			xtype: 'corpuscollocates'
     			}]
     	}]
     }],
