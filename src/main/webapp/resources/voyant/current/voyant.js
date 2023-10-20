@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Jul 14 18:15:59 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Oct 20 15:40:40 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6808,12 +6808,12 @@ Ext.define('Voyant.util.Toolable', {
 				}, this);
 				el.on("mouseout", function() {
 					this.getHeader().getTools().forEach(function(tool) {
-						var type = tool.config.type || tool.type; // auto-added tools don't have config.type, e.g. collapse
-						if (type && type!='help' && type.indexOf('collapse')==-1) {tool.hide();}
+						var type = tool.config.type || tool.type; // auto-added tools don't have config.type
+						if (type && type !== 'help') tool.hide();
 					})
 				}, this);
 				header.getTools().forEach(function(tool,i) {
-					if (tool.config.type!='help') {tool.hide();}
+					if (tool.config.type !== 'help') tool.hide();
 				});
 			}
 		}, this)
@@ -7216,19 +7216,20 @@ Ext.define('Voyant.util.Toolable', {
 	exportBiblio: function() {
 		var date = new Date();
 		var url = this.getExportUrl();
+		var websiteTitle = this.isXType('voyantheader') ? 'Voyant Tools' : this.localize('title');
 		var msg = Ext.Msg.show({
 		    title: this.localize('exportBiblioTitle'),
 			minHeight: 525,
 		    message: '<fieldset><legend>MLA</legend>'+
-	    	'<div class="x-selectable">Sinclair, Stéfan and Geoffrey Rockwell. '+(this.isXType('voyantheader') ? '' : '"'+this.localize('title')+'." ')+
+	    	'<div class="x-selectable">Sinclair, Stéfan and Geoffrey Rockwell. "'+websiteTitle+'." '+
 	    	'<i>Voyant Tools</i>. '+Ext.Date.format(date,'Y')+'. Web. '+Ext.Date.format(date,'j M Y')+'. &lt;'+url+'&gt;.</div></fieldset>'+
 	    	'<br >'+
 	    	'<fieldset><legend>Chicago</legend>'+
-	    	'<div class="x-selectable">Stéfan Sinclair and Geoffrey Rockwell, '+(this.isXType('voyantheader') ? '' : '"'+this.localize('title')+'", ')+
+	    	'<div class="x-selectable">Stéfan Sinclair and Geoffrey Rockwell, "'+websiteTitle+'", '+
 	    	'<i>Voyant Tools</i>, accessed '+Ext.Date.format(date,'F j, Y')+', '+url+'.</div></fieldset>'+
 	    	'<br >'+
 	    	'<fieldset><legend>APA</legend>'+
-	    	'<div class="x-selectable">Sinclair, S. &amp; G. Rockwell. ('+Ext.Date.format(date,'Y')+"). "+(this.isXType('voyantheader') ? '' : this.localize('title')+'. ')+
+	    	'<div class="x-selectable">Sinclair, S. &amp; G. Rockwell. ('+Ext.Date.format(date,'Y')+"). "+websiteTitle+'. '+
 	    	'<i>Voyant Tools</i>. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+'</div></fieldset>'+
 			'<br >'+
 			'<fieldset><legend>BibTeX</legend>'+
@@ -7419,10 +7420,7 @@ Ext.define('Voyant.util.Toolable', {
 		var url = this.getExportUrl();
 		var corpus = this.getApplication().getCorpus();
 		
-		var title = 'Voyant Tools';
-		if (this.isXType('voyantheader') === false) {
-			title += ' '+this.localize('title');
-		}
+		var websiteTitle = this.isXType('voyantheader') ? 'Voyant Tools' : this.localize('title');
 
 		var abstract = 'Voyant Tools analysis of ';
 		if (corpus.getTitle() === '') {
@@ -7443,7 +7441,7 @@ Ext.define('Voyant.util.Toolable', {
 		var citekey = 'voyanttools_'+now.getTime();
 		
 		var bib = ['@misc{'+citekey+','];
-		bib.push('title = {'+title+'},');
+		bib.push('title = {'+websiteTitle+'},');
 		bib.push('author = {Sinclair, Stéfan and Rockwell, Geoffrey},');
 		bib.push('year = '+createdTime.getFullYear()+',');
 		bib.push('url = {'+url+'},');
@@ -15313,7 +15311,7 @@ Ext.define('Voyant.widget.Facet', {
     			parentPanel: this
     		})
     		this.store.getProxy().on("exception", function(proxy, request, operation, eOpts) {
-		    	me.showResponseError("Unable to fetch facet: "+me.facet, response);
+		    	me.showResponseError("Unable to fetch facet: "+me.facet, request);
     		})
     	}
     	
@@ -15322,7 +15320,7 @@ Ext.define('Voyant.widget.Facet', {
         	hideHeaders: true,
         	selType: 'checkboxmodel',
         	columns: [
-        	          { renderer: function(value, metaData, record) {return "("+record.getInDocumentsCount()+") "+record.getLabel()}, flex: 1 }
+				{ renderer: function(value, metaData, record) {return "("+record.getInDocumentsCount()+") "+record.getLabel()}, flex: 1 }
         	]
         });
         this.callParent();
@@ -16072,140 +16070,140 @@ Ext.define('Voyant.panel.Catalogue', {
     constructor: function(config) {
     	config = config || {};
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments); // we need api
-    	Ext.apply(this, {
-    		title: this.localize('title'),
-    		layout: 'hbox',
-    		items: [
-    		        {
-    		        	layout: 'vbox',
-    		        	height: '100%',
-    		        	align: 'stretch',
-    		        	itemId: 'facets',
-    		        	defaults: {
-    		        		width: 250,
-    		        		flex: 1,
-    		        		xtype: 'facet',
-    		        		margin: 5,
-    		        		border: true,
-    		        		frame: true,
-    		            	includeTools: {
-    		            		close: {
-    		            			type: 'close',
-    		                		tooltip: this.localize('closeFacetTip'),
-    		                		callback: function(facetCmp) {
-    		                			delete this.facets[facetCmp.facet]; // remove from facets map
-    		                			facetCmp.destroy(); // remove this facet
-    		                			this.updateResults();
-    		                		},
-    		                		scope: this
-    		            		},
-    		            		add: {
-    		            			type: 'plus',
-    		                		tooltip: this.localize('plusFacetTip'),
-    		                		callback: function() {
-    		                			this.addFacet();
-    		                		},
-    		                		scope: this
-    		            		}
-    		            	}
-    		        	},
-    		        	items: []
-    		        },
-    		        {
-    		        	xtype: 'panel',
-    		        	html: config.customResultsHtml || '',
-    		        	flex: 1,
-    		        	itemId: 'results',
-    		        	height: '100%',
-    		        	align: 'stretch',
-    		        	scrollable: true,
-    		        	margin: 5,
-    		        	getCorpus: function() { // for query search field
-    		        		return this.findParentByType('panel').getCorpus();
-    		        	},
-    		        	listeners: {
-    		        		query: function(src, query) {
-    		        			this.findParentByType('panel').updateResults(Ext.isString(query) ? [query] : query)
-    		        		}
-    		        	},
-    		    		dockedItems: [{
-    		                dock: 'bottom',
-    		                xtype: 'toolbar',
-    		                overflowHandler: 'scroller',
-    		                items: [{
-	    		        		itemId: 'sendToVoyant',
-	    		        		text: this.localize('sendToVoyantButton'),
-	    		        		disabled: true,
-	    		        		handler: function() {
-	    		        			this.mask(this.localize("exportInProgress"));
-	    		        			var catalogue = this;
-	    		            		Ext.Ajax.request({
-	    		            			url: this.getApplication().getTromboneUrl(),
-	    		            			params: {
-	    		            				corpus: this.getCorpus().getId(),
-	    		            				tool: 'corpus.CorpusManager',
-	    		            				keepDocuments: true,
-	    		            				docId: this.getMatchingDocIds()
-	    		            			},
-	    		            		    success: function(response, opts) {
-	    		            		    	catalogue.unmask();
-	    		            		    	var json = Ext.JSON.decode(response.responseText);
-		                    				var url = catalogue.getBaseUrl()+"?corpus="+json.corpus.id;
-		                    				catalogue.openUrl(url);
-	    		            		    },
-	    		            		    failure: function(response, opts) {
-	    		            		    	catalogue.unmask();
-	    		            		    	me.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
-	    		            		    }
-	    		            		})
-	
-	    		        		},
-	    		        		scope: this
-	    		        	},{
-	    		        		itemId: 'export',
-	    		        		text: this.localize('downloadButton'),
-	    		        		disabled: true,
-	    		        		handler: function() {
-	    		        			this.mask(this.localize("exportInProgress"));
-	    		        			var catalogue = this;
-	    		            		Ext.Ajax.request({
-	    		            			url: this.getApplication().getTromboneUrl(),
-	    		            			params: {
-	    		            				corpus: this.getCorpus().getId(),
-	    		            				tool: 'corpus.CorpusManager',
-	    		            				keepDocuments: true,
-	    		            				docId: this.getMatchingDocIds()
-	    		            			},
-	    		            		    success: function(response, opts) {
-	    		            		    	catalogue.unmask();
-	    		            		    	var json = Ext.JSON.decode(response.responseText);
-	    		            		    	catalogue.downloadFromCorpusId(json.corpus.id);
-	    		            		    },
-	    		            		    failure: function(response, opts) {
-	    		            		    	catalogue.unmask();
-	    		            		    	me.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
-	    		            		    }
-	    		            		})
-	
-	    		        		},
-	    		        		scope: this
-	    		        	},{
-	    		        		xtype: 'querysearchfield',
-	    		        		width: 200,
-	    		        		flex: 1
-	    		        	},{
-	    		        		itemId: 'status',
-	    		        		xtype: 'tbtext'
-	    		        	}]
-    		    		}]
-    		        }, {
-    		        	xtype: this.getApiParam("reader"),
-    		        	flex: 1,
-    		        	height: '100%',
-    		        	align: 'stretch',
-    		        	header: false
-    		        }]
-    	});
+		Ext.apply(this, {
+			title: this.localize('title'),
+			layout: {
+				type: 'hbox',
+				align: 'stretch'
+			},
+			items: [{
+				layout: {
+					type: 'vbox',
+					align: 'stretch'
+				},
+				itemId: 'facets',
+				minWidth: 175,
+				width: 250,
+				defaults: {
+					width: 250,
+					flex: 1,
+					xtype: 'facet',
+					animCollapse: false,
+					collapseFirst: false,
+					includeTools: {
+						close: {
+							type: 'close',
+							tooltip: this.localize('closeFacetTip'),
+							callback: function(facetCmp) {
+								delete this.facets[facetCmp.facet]; // remove from facets map
+								facetCmp.destroy(); // remove this facet
+								this.updateResults();
+							},
+							scope: this
+						},
+						add: {
+							type: 'plus',
+							tooltip: this.localize('plusFacetTip'),
+							callback: function() {
+								this.addFacet();
+							},
+							scope: this
+						}
+					}
+				},
+				items: []
+			},{xtype: 'splitter'},{
+				html: config.customResultsHtml || '',
+				itemId: 'results',
+				flex: 1,
+				minWidth: 250,
+				scrollable: true,
+				margin: 5,
+				getCorpus: function() { // for query search field
+					return this.findParentByType('panel').getCorpus();
+				},
+				listeners: {
+					query: function(src, query) {
+						this.findParentByType('panel').updateResults(Ext.isString(query) ? [query] : query)
+					}
+				},
+				dockedItems: [{
+					dock: 'bottom',
+					xtype: 'toolbar',
+					overflowHandler: 'scroller',
+					items: [{
+						itemId: 'sendToVoyant',
+						text: this.localize('sendToVoyantButton'),
+						disabled: true,
+						handler: function() {
+							this.mask(this.localize("exportInProgress"));
+							var catalogue = this;
+							Ext.Ajax.request({
+								url: this.getApplication().getTromboneUrl(),
+								params: {
+									corpus: this.getCorpus().getId(),
+									tool: 'corpus.CorpusManager',
+									keepDocuments: true,
+									docId: this.getMatchingDocIds()
+								},
+								success: function(response, opts) {
+									catalogue.unmask();
+									var json = Ext.JSON.decode(response.responseText);
+									var url = catalogue.getBaseUrl()+"?corpus="+json.corpus.id;
+									catalogue.openUrl(url);
+								},
+								failure: function(response, opts) {
+									catalogue.unmask();
+									me.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
+								}
+							})
+
+						},
+						scope: this
+					},{
+						itemId: 'export',
+						text: this.localize('downloadButton'),
+						disabled: true,
+						handler: function() {
+							this.mask(this.localize("exportInProgress"));
+							var catalogue = this;
+							Ext.Ajax.request({
+								url: this.getApplication().getTromboneUrl(),
+								params: {
+									corpus: this.getCorpus().getId(),
+									tool: 'corpus.CorpusManager',
+									keepDocuments: true,
+									docId: this.getMatchingDocIds()
+								},
+								success: function(response, opts) {
+									catalogue.unmask();
+									var json = Ext.JSON.decode(response.responseText);
+									catalogue.downloadFromCorpusId(json.corpus.id);
+								},
+								failure: function(response, opts) {
+									catalogue.unmask();
+									me.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
+								}
+							})
+
+						},
+						scope: this
+					},{
+						xtype: 'querysearchfield',
+						width: 200,
+						flex: 1
+					},{
+						itemId: 'status',
+						xtype: 'tbtext'
+					}]
+				}]
+			},{xtype: 'splitter'},{
+				xtype: this.getApiParam("reader"),
+				flex: 1,
+				minWidth: 250,
+				header: false
+			}]
+		});
 
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
@@ -16254,7 +16252,6 @@ Ext.define('Voyant.panel.Catalogue', {
     	});
     	
     	this.on('afterrender', function(panel) {
-    		
     		var facetsCmp = this.queryById('facets');
 			this.addFacet({
 				facet: 'lexical',
@@ -16279,39 +16276,12 @@ Ext.define('Voyant.panel.Catalogue', {
     		var facets = this.getApiParam('facet');
     		if (Ext.isString(facets)) {facets = facets.split(",")}
     		facets.forEach(function(facet) {
-    			this.addFacet({facet: facet}, facetsCmp)
-    			/*
-    			facetCmp.getSelectionModel().on('selectionchange', function(model, selected) {
-    				var labels = [];
-    				selected.forEach(function(model) {
-    					labels.push({facet: model.getFacet(), label: model.getLabel()})
-    				})
-    				panel.getFacets()[facet] = labels;
-    				panel.updateResults();
-    			})
-    			facetCmp.on('query', function(model, selected) {
-    				panel.getFacets()[facetCmp.facet] = [];
-    				panel.updateResults();
-    			})*/
+    			this.addFacet({facet: facet}, facetsCmp);
     		}, this);
-			
-
-			
-    		/*
-			facetCmp.getSelectionModel().on('selectionchange', function(model, selected) {
-				var labels = [];
-				selected.forEach(function(model) {
-					labels.push({facet: 'lexical', label: model.getTerm()})
-				})
-				panel.getFacets()['lexical'] = labels;
-				panel.updateResults();
-			})*/
     		
         	var title = this.getApiParam("title");
         	if (title) {this.setTitle(title)}
     	});
-    	
-    	
     },
     
     addFacet: function(config, facetsCmp) {
@@ -16514,10 +16484,14 @@ Ext.define('Voyant.panel.Catalogue', {
     							return snippet.getHighlightedContext();
     						}).join(" … ")+'</li>'
     						var docItem = results.down("#"+results.getId()+"_"+id);
-    						if (docItem.query("ul")) {
-    							html="<ul>"+html+"</ul>";
-    						}
-    						docItem.insertHtml('beforeEnd', html)
+							if (docItem) {
+								if (docItem.query("ul")) {
+									html="<ul>"+html+"</ul>";
+								}
+								docItem.insertHtml('beforeEnd', html)
+							} else {
+								console.log('Catalogue: no docItem', results);
+							}
     					}
     				}
     			}
@@ -16531,13 +16505,16 @@ Ext.define('Voyant.panel.Catalogue', {
     		var keys = {};
     		this.getCorpus().getDocuments().each(function(doc) {
     			for (var key in doc.getData()) {
-    				if (key!="corpus" && key.indexOf("parent")!==0 && key.indexOf("-lexical")=="-1") {
+    				if (key !== "corpus" && key.indexOf("parent") !== 0 && key.indexOf("-lexical") === -1) {
         				keys[key] = true
     				}
     			}
     		});
     		keys = Object.keys(keys);
-    		keys.sort();
+			var priority = ['title', 'location', 'publisher', 'pubDate', 'pubPlace', 'language', 'keyword', 'author', 'collection'];
+    		keys.sort(function(a, b) {
+				return priority.indexOf(b) - priority.indexOf(a);
+			});
     		this.facetsSelectionStore = Ext.create('Ext.data.ArrayStore', {
     		    fields: ['text'],
     		    data: keys.map(function(key) {return [key]})
@@ -16547,13 +16524,14 @@ Ext.define('Voyant.panel.Catalogue', {
     	var existingFacets = {};
     	this.queryById('facets').items.each(function(cmp) {
     		existingFacets[cmp.facet]=true;
-    	})
+    	});
 
+		if (this.facetsSelectionStore.isFiltered) this.facetsSelectionStore.clearFilter();
     	this.facetsSelectionStore.filterBy(function(record) {
-    		return !("facet."+record.get('text') in existingFacets)
-    	})
+    		return !("facet."+record.get('text') in existingFacets);
+    	});
     	
-		var win = Ext.create('Ext.window.Window', {
+		Ext.create('Ext.window.Window', {
 			title: this.localize("selectFacet"),
 			modal: true,
 			items: {
@@ -19039,7 +19017,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		xmlPubDateXpath: undefined,
     		xmlPublisherXpath: undefined,
     		xmlPubPlaceXpath: undefined,
-    		xmlKeywordsXpath: undefined,
+    		xmlKeywordXpath: undefined,
     		xmlCollectionXpath: undefined,
     		xmlExtraMetadataXpath: undefined,
     		htmlGroupByQuery: undefined,
@@ -19542,7 +19520,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 										name: 'xmlPubPlaceXpath'
 									},{
 										fieldLabel: me.localize('xpathKeywords'),
-										name: 'xmlKeywordsXpath'
+										name: 'xmlKeywordXpath'
 									},{
 										fieldLabel: me.localize('xpathCollection'),
 										name: 'xmlCollectionXpath'

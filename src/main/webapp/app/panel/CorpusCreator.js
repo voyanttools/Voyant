@@ -20,7 +20,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		xmlPubDateXpath: undefined,
     		xmlPublisherXpath: undefined,
     		xmlPubPlaceXpath: undefined,
-    		xmlKeywordsXpath: undefined,
+    		xmlKeywordXpath: undefined,
     		xmlCollectionXpath: undefined,
     		xmlExtraMetadataXpath: undefined,
     		htmlGroupByQuery: undefined,
@@ -523,7 +523,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 										name: 'xmlPubPlaceXpath'
 									},{
 										fieldLabel: me.localize('xpathKeywords'),
-										name: 'xmlKeywordsXpath'
+										name: 'xmlKeywordXpath'
 									},{
 										fieldLabel: me.localize('xpathCollection'),
 										name: 'xmlCollectionXpath'

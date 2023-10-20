@@ -255,12 +255,12 @@ Ext.define('Voyant.util.Toolable', {
 				}, this);
 				el.on("mouseout", function() {
 					this.getHeader().getTools().forEach(function(tool) {
-						var type = tool.config.type || tool.type; // auto-added tools don't have config.type, e.g. collapse
-						if (type && type!='help' && type.indexOf('collapse')==-1) {tool.hide();}
+						var type = tool.config.type || tool.type; // auto-added tools don't have config.type
+						if (type && type !== 'help') tool.hide();
 					})
 				}, this);
 				header.getTools().forEach(function(tool,i) {
-					if (tool.config.type!='help') {tool.hide();}
+					if (tool.config.type !== 'help') tool.hide();
 				});
 			}
 		}, this)
@@ -663,19 +663,20 @@ Ext.define('Voyant.util.Toolable', {
 	exportBiblio: function() {
 		var date = new Date();
 		var url = this.getExportUrl();
+		var websiteTitle = this.isXType('voyantheader') ? 'Voyant Tools' : this.localize('title');
 		var msg = Ext.Msg.show({
 		    title: this.localize('exportBiblioTitle'),
 			minHeight: 525,
 		    message: '<fieldset><legend>MLA</legend>'+
-	    	'<div class="x-selectable">Sinclair, Stéfan and Geoffrey Rockwell. '+(this.isXType('voyantheader') ? '' : '"'+this.localize('title')+'." ')+
+	    	'<div class="x-selectable">Sinclair, Stéfan and Geoffrey Rockwell. "'+websiteTitle+'." '+
 	    	'<i>Voyant Tools</i>. '+Ext.Date.format(date,'Y')+'. Web. '+Ext.Date.format(date,'j M Y')+'. &lt;'+url+'&gt;.</div></fieldset>'+
 	    	'<br >'+
 	    	'<fieldset><legend>Chicago</legend>'+
-	    	'<div class="x-selectable">Stéfan Sinclair and Geoffrey Rockwell, '+(this.isXType('voyantheader') ? '' : '"'+this.localize('title')+'", ')+
+	    	'<div class="x-selectable">Stéfan Sinclair and Geoffrey Rockwell, "'+websiteTitle+'", '+
 	    	'<i>Voyant Tools</i>, accessed '+Ext.Date.format(date,'F j, Y')+', '+url+'.</div></fieldset>'+
 	    	'<br >'+
 	    	'<fieldset><legend>APA</legend>'+
-	    	'<div class="x-selectable">Sinclair, S. &amp; G. Rockwell. ('+Ext.Date.format(date,'Y')+"). "+(this.isXType('voyantheader') ? '' : this.localize('title')+'. ')+
+	    	'<div class="x-selectable">Sinclair, S. &amp; G. Rockwell. ('+Ext.Date.format(date,'Y')+"). "+websiteTitle+'. '+
 	    	'<i>Voyant Tools</i>. Retrieved '+Ext.Date.format(date,'F j, Y')+', from '+url+'</div></fieldset>'+
 			'<br >'+
 			'<fieldset><legend>BibTeX</legend>'+
@@ -866,10 +867,7 @@ Ext.define('Voyant.util.Toolable', {
 		var url = this.getExportUrl();
 		var corpus = this.getApplication().getCorpus();
 		
-		var title = 'Voyant Tools';
-		if (this.isXType('voyantheader') === false) {
-			title += ' '+this.localize('title');
-		}
+		var websiteTitle = this.isXType('voyantheader') ? 'Voyant Tools' : this.localize('title');
 
 		var abstract = 'Voyant Tools analysis of ';
 		if (corpus.getTitle() === '') {
@@ -890,7 +888,7 @@ Ext.define('Voyant.util.Toolable', {
 		var citekey = 'voyanttools_'+now.getTime();
 		
 		var bib = ['@misc{'+citekey+','];
-		bib.push('title = {'+title+'},');
+		bib.push('title = {'+websiteTitle+'},');
 		bib.push('author = {Sinclair, Stéfan and Rockwell, Geoffrey},');
 		bib.push('year = '+createdTime.getFullYear()+',');
 		bib.push('url = {'+url+'},');
