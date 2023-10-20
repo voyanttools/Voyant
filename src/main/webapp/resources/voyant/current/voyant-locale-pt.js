@@ -498,9 +498,6 @@ Ext.apply(Voyant.data.model.Corpus.i18n, {
 Ext.apply(Voyant.notebook.editor.button.Add.i18n, {
 "tip":"Adicionar novo bloco",
 "title":"Caderno Spyral"});
-Ext.apply(Voyant.widget.CategoriesOption.i18n, {
-"edit":"Editar",
-"categories":"Categorias"});
 Ext.apply(Voyant.panel.WordTree.i18n, {
 "emptyText":"Nenhum resultado.",
 "pool":"limite",
@@ -864,6 +861,9 @@ Ext.apply(Voyant.widget.ProgressMonitor.i18n, {
 "progress":"Progressão",
 "finished":"Finalizado",
 "launch":"Acessando..."});
+Ext.apply(Voyant.categories.CategoriesOption.i18n, {
+"edit":"Editar",
+"categories":"Categorias"});
 Ext.apply(Voyant.panel.BubblelinesSet.i18n, {
 "title":"Skin de bolhas",
 "helpTip":"Visualização especializada para trabalho com gráfico de bolhas."});
