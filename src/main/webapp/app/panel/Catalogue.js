@@ -467,7 +467,10 @@ Ext.define('Voyant.panel.Catalogue', {
     			}
     		});
     		keys = Object.keys(keys);
-    		keys.sort();
+			var priority = ['title', 'location', 'publisher', 'pubDate', 'pubPlace', 'language', 'keyword', 'author', 'collection'];
+    		keys.sort(function(a, b) {
+				return priority.indexOf(b) - priority.indexOf(a);
+			});
     		this.facetsSelectionStore = Ext.create('Ext.data.ArrayStore', {
     		    fields: ['text'],
     		    data: keys.map(function(key) {return [key]})
