@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Oct 19 20:17:59 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Oct 20 15:40:40 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -16511,7 +16511,10 @@ Ext.define('Voyant.panel.Catalogue', {
     			}
     		});
     		keys = Object.keys(keys);
-    		keys.sort();
+			var priority = ['title', 'location', 'publisher', 'pubDate', 'pubPlace', 'language', 'keyword', 'author', 'collection'];
+    		keys.sort(function(a, b) {
+				return priority.indexOf(b) - priority.indexOf(a);
+			});
     		this.facetsSelectionStore = Ext.create('Ext.data.ArrayStore', {
     		    fields: ['text'],
     		    data: keys.map(function(key) {return [key]})
