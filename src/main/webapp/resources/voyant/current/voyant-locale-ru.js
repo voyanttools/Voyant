@@ -498,9 +498,6 @@ Ext.apply(Voyant.data.model.Corpus.i18n, {
 Ext.apply(Voyant.notebook.editor.button.Add.i18n, {
 "tip":"Добавить новую ячейку (с нажатой клавишей Shift, чтобы повторить тот же тип ячейки)",
 "title":"Spyral Notebook"});
-Ext.apply(Voyant.widget.CategoriesOption.i18n, {
-"edit":"Редактировать",
-"categories":"Категории"});
 Ext.apply(Voyant.panel.WordTree.i18n, {
 "emptyText":"Совпадения не найдены",
 "pool":"Ограничение",
@@ -864,6 +861,9 @@ Ext.apply(Voyant.widget.ProgressMonitor.i18n, {
 "progress":"Прогресс",
 "finished":"Завершенный",
 "launch":"Запуск…"});
+Ext.apply(Voyant.categories.CategoriesOption.i18n, {
+"edit":"Редактировать",
+"categories":"Категории"});
 Ext.apply(Voyant.panel.BubblelinesSet.i18n, {
 "title":"Bubblelines Skin",
 "helpTip":"Это специализированное отображение работы с Bubblelines."});

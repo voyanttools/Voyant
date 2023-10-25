@@ -24,6 +24,8 @@ Ext.define('Voyant.widget.ReaderGraph', {
     SCROLL_EQ: 0,
     SCROLL_DOWN: 1,
 
+    RESERVED_KEYS: ['id', 'docIndex', 'readerGraphPadding', 'readerGraphTotal'],
+
     constructor: function(config) {
         this.callParent(arguments);
     },
@@ -62,7 +64,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         
         this.on('boxready', function() {
             if (this.getLocationMarker() == undefined) {
-                this.setLocationMarker(Ext.DomHelper.append(this.getEl(), {tag: 'div', style: 'background-color: '+this.locationMarkerColor+'; height: 100%; width: 2px; position: absolute; top: 0; left: 0;'}));
+                this.setLocationMarker(Ext.DomHelper.append(this.getEl(), {tag: 'div', style: 'background-color: '+this.locationMarkerColor+'; height: 100%; width: 2px; z-index: 3; position: absolute; top: 0; left: 0;'}));
             }
         });        
     },
@@ -75,72 +77,164 @@ Ext.define('Voyant.widget.ReaderGraph', {
         this.generateChart();
     },
 
-	populateChart: function(docTermRecords) {
-		var graphDatas = {};
-		var maxValue = 0;
-		docTermRecords.forEach(function(r) {
-			var graphData = [];
-			var dist = r.get('distributions');
-			var docId = r.get('docId');
-			var docIndex = r.get('docIndex');
-			var term = r.get('term');
-			for (var i = 0; i < dist.length; i++) {
-				var bin = i;//docIndex * dist.length + i;
-				var val = dist[i];
-				if (val > maxValue) maxValue = val;
-				graphData.push([docId, docIndex, bin, val, term]);
-			}
-			if (graphDatas[docIndex] === undefined) {
-				graphDatas[docIndex] = {};
-			}
-			graphDatas[docIndex][term] = graphData;
-		});
-		
-		if (this.getIsDetailedGraph()) {
-			var graphs = this.query('cartesian');
-			for (var i = 0; i < graphs.length; i++) {
-				var graph = graphs[i];
+    loadQueryTerms: function(queryTerms) {
+        // TODO add categories param?
+        if (this.getIsDetailedGraph()) {
+            this.getCorpus().getDocumentTerms().load({
+                params: {
+                    query: queryTerms,
+                    limit: -1,
+                    withDistributions: true
+                },
+                callback: function(records, operation) {
+                    this.populateDetailedChart(records);
+                },
+                scope: this
+            })
+        } else {
+            this.getCorpus().getCorpusTerms().load({
+                params: {
+                    query: queryTerms,
+                    limit: -1,
+                    withDistributions: true
+                },
+                callback: function(records, operation) {
+                    this.populateChart(records);
+                },
+                scope: this
+            })
+        }
+            
+    },
 
-				var docData = graphDatas[i];
-				if (docData !== undefined) {
-					var series = [];
-					for (var term in docData) {
-						var termData = docData[term];
-						var sColor = this.getParentPanel().getApplication().getColorForTerm(term, true);
-						var theCorpus = this.getCorpus();
-						series.push({
-							type: 'line',
-							xField: 'bin',
-							yField: 'distribution',
-							style: { lineWidth: 1, strokeStyle: sColor },
-							store: Ext.create('Ext.data.ArrayStore', {
-								fields: ['docId', 'docIndex', 'bin', 'distribution', 'term'],
-								data: termData
-							})
-						});
-					}
-					graph.getAxes()[0].setMaximum(maxValue);
-					graph.setSeries(series);
-				}
-			}
-		}
-		
-	},
+    populateDetailedChart: function(records) {
+        var graphDatas = {};
+        var maxValue = 0;
+        records.forEach(function(r) {
+            var graphData = [];
+            var dist = r.get('distributions');
+            var docId = r.get('docId');
+            var docIndex = r.get('docIndex');
+            var term = r.get('term');
+            for (var i = 0; i < dist.length; i++) {
+                var val = dist[i];
+                if (val > maxValue) maxValue = val;
+                graphData.push([docId, docIndex, i, val, term]);
+            }
+            if (graphDatas[docIndex] === undefined) {
+                graphDatas[docIndex] = {};
+            }
+            graphDatas[docIndex][term] = graphData;
+        });
+        var graphs = this.query('cartesian');
+        for (var i = 0; i < graphs.length; i++) {
+            var graph = graphs[i];
+
+            var docData = graphDatas[i];
+            if (docData !== undefined) {
+                var series = [];
+                for (var term in docData) {
+                    var termData = docData[term];
+                    var sColor = this.getParentPanel().getApplication().getColorForTerm(term, true);
+                    series.push({
+                        type: 'line',
+                        xField: 'bin',
+                        yField: 'distribution',
+                        style: { lineWidth: 1, strokeStyle: sColor },
+                        store: Ext.create('Ext.data.ArrayStore', {
+                            fields: ['docId', 'docIndex', 'bin', 'distribution', 'term'],
+                            data: termData
+                        })
+                    });
+                }
+                graph.getAxes()[0].setMaximum(maxValue);
+                graph.setSeries(series);
+            }
+        }
+    },
+
+	populateChart: function(records) {
+		var graphDatas = {};
+        this.getCorpus().getDocuments().each(function(doc, index) {
+            graphDatas[index] = {};
+        });
+        var terms = [];
+        records.forEach(function(r) {
+            var term = r.get('term');
+            if (terms.indexOf(term) === -1) {
+                terms.push(term);
+            }
+            var dists = r.get('distributions');
+            dists.forEach(function(val, docIndex) {
+                graphDatas[docIndex][term] = val;
+            });
+        });
+        terms.push('readerGraphPadding');
+
+        var seriesData = Object.entries(graphDatas).map(function(termData) {
+            return Object.assign({docIndex: parseInt(termData[0])}, termData[1]);
+        });
+
+        var maxValue = -1;
+        seriesData.forEach(function(termData) {
+            var total = Object.entries(termData)
+                .filter(function(td) { return td[0] !== 'docIndex'})
+                .map(function(td) { return td[1]})
+                .reduce(function(prevVal, currVal) { return prevVal+currVal});
+            
+            termData.readerGraphTotal = total;
+
+            if (total > maxValue) {
+                maxValue = total;
+            }
+        });
+
+        seriesData.forEach(function(termData) {
+            termData.readerGraphPadding = maxValue - termData.readerGraphTotal;
+        });
+
+        var series = {
+            type: 'bar',
+            stacked: true,
+            fullStack: true,
+            xField: 'docIndex',
+            yField: terms,
+            style: {
+                minGapWidth: 0,
+                minBarWidth: 1,
+                lineWidth: 0,
+                strokeStyle: 'none'
+            },
+            renderer: function (sprite, config, rendererData, index) {
+                var term = sprite.getField();
+                var color;
+                if (term === 'readerGraphPadding') {
+                    color = this.getColor(index, 0.3);
+                } else {
+                    color = this.getParentPanel().getApplication().getColorForTerm(term, true);
+                }
+                return {fillStyle: color};
+            }.bind(this)
+        };
+        var graph = this.down('cartesian');
+        graph.getAxes()[0].setFields(terms);
+        graph.setSeries(series);
+        graph.setStore(Ext.create('Ext.data.JsonStore', {
+            fields: ['docIndex'].concat(terms),
+            data: seriesData
+        }));
+    },
 
 	getColor: function(index, alpha) {
-		var c = this.getParentPanel().getApplication().getColor(index);
+		var c = index % 2 === 0 ? [200,200,200] : [240,240,240];
 		return 'rgba('+c.join(',')+','+alpha+')';
 	},
 
     generateChart: function() {
 		var me = this;
-
-        function map(value, istart, istop, ostart, ostop) {
-            return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-        }
         
         function addChart(docInfo) {
-            var index = docInfo.index;
+            var index = docInfo.docIndex;
             var fraction = docInfo.fraction;
             var height = docInfo.relativeHeight;
             var bColor = this.getColor(index, 0.3);
@@ -199,6 +293,17 @@ Ext.define('Voyant.widget.ReaderGraph', {
 				}
             });
 
+            chart.body.on('mouseenter', function(event, target) {
+                if (chart.getSeries().length === 0) {
+                    var tooltipHtml = this.getCorpus().getDocument(docInfo.docIndex).getTitle();
+                    this.getSeriesToolTip().setHtml(tooltipHtml);
+                    var xy = event.getXY();
+                    xy[0] += 15;
+                    xy[1] += 18;
+                    this.getSeriesToolTip().showAt(xy);
+                }
+            }, this);
+
 			chart.body.on('mouseleave', function(event, target) {
 				this.getSeriesToolTip().hide();
 			}, this);
@@ -224,19 +329,14 @@ Ext.define('Voyant.widget.ReaderGraph', {
         var docs = me.getCorpus().getDocuments();
         var tokensTotal = me.getCorpus().getWordTokensCount();
         var docInfos = [];
-        var docMinSize = Number.MAX_VALUE;
-        var docMaxSize = -1;
-//      for (var i = 0; i < docs.getTotalCount(); i++) {
         for (var i = 0; i < docs.getCount(); i++) {
             var d = docs.getAt(i);
             var docIndex = d.get('index');
             var count = d.get('tokensCount-lexical');
-            if (count < docMinSize) docMinSize = count;
-            if (count > docMaxSize) docMaxSize = count;
             var fraction = count / tokensTotal;
             docInfos.push({
-                index: docIndex,
-                count: count,
+                docIndex: docIndex,
+                count: 1, // same height for all
                 fraction: fraction
             });
         }
@@ -244,7 +344,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         if (this.getIsDetailedGraph()) {
             for (var i = 0; i < docInfos.length; i++) {
                 var d = docInfos[i];
-                d.relativeHeight = d.count==docMaxSize ? 1 : map(d.count, docMinSize, docMaxSize, 0.25, 1);
+                d.relativeHeight = 1; // same height for all
                 addChart.call(this, d);
             }
         } else {
@@ -255,6 +355,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 },
                 flex: 1,
                 height: '100%',
+                animation: false,
                 insetPadding: 0,
                 axes: [{
                     type: 'numeric',
@@ -264,12 +365,12 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 },{
                     type: 'category',
                     position: 'bottom',
-                    fields: 'index',
+                    fields: 'docIndex',
                     hidden: true
                 }],
                 series: [{
                     type: 'bar',
-                    xField: 'index',
+                    xField: 'docIndex',
                     yField: 'count',
                     style: {
                         minGapWidth: 0,
@@ -282,10 +383,28 @@ Ext.define('Voyant.widget.ReaderGraph', {
                     }.bind(this)
                 }],
                 store: Ext.create('Ext.data.JsonStore', {
-                    fields: [{name: 'index', type: 'int'}, {name: 'count', type: 'int'}, {name: 'fraction', type: 'float'}],
+                    fields: [{name: 'docIndex', type: 'int'}, {name: 'count', type: 'int'}],
                     data: docInfos
                 }),
                 listeners: {
+                    itemmouseover: function(chart, item, event) {
+						var tooltipHtml = this.getCorpus().getDocument(item.record.get('docIndex')).getTitle();
+
+                        if (chart.getSeries()[0].getFullStack()) {
+                            Object.keys(item.record.data)
+                                .filter(function(key) { return me.RESERVED_KEYS.indexOf(key) === -1 })
+                                .forEach(function(key) {
+                                    var val = item.record.data[key];
+                                    tooltipHtml += '<br>'+key+': '+val;
+                                }, this);
+                        }
+                        
+						this.getSeriesToolTip().setHtml(tooltipHtml);
+						var xy = event.getXY();
+						xy[0] += 15;
+						xy[1] += 18;
+						this.getSeriesToolTip().showAt(xy);
+					},
                     itemclick: function(chart, item, event) {
                         var el = Ext.get(event.getTarget());
                         var x = event.getX();
@@ -294,8 +413,8 @@ Ext.define('Voyant.widget.ReaderGraph', {
                         var docX = (x - box.x) % docWidth;
                         var fraction = docX / docWidth;
 
-            			var data = item.record.data;
-                        var doc = this.getDocumentsStore().getAt(data.index);
+            			var docIndex = item.record.get('docIndex');
+                        var doc = this.getDocumentsStore().getAt(docIndex);
                         var docIndex = doc.getIndex();
 
                         this.fireEvent('documentRelativePositionSelected', this, {docIndex: docIndex, fraction: fraction});
@@ -303,6 +422,9 @@ Ext.define('Voyant.widget.ReaderGraph', {
                     scope: this
                 }
             });
+            chart.body.on('mouseleave', function(event, target) {
+				this.getSeriesToolTip().hide();
+			}, this);
         }
 
     },
@@ -317,8 +439,10 @@ Ext.define('Voyant.widget.ReaderGraph', {
             }
         } else {
             var graph = this.down('cartesian');
-            var docWidth = graph.getWidth() / this.getCorpus().getDocuments().getCount();
-            locX = graph.getX() + docWidth*docIndex + docWidth*fraction;
+            if (graph) {
+                var docWidth = graph.getWidth() / this.getCorpus().getDocuments().getCount();
+                locX = graph.getX() + docWidth*docIndex + docWidth*fraction;
+            }
         }
         if (scrollDir != null) {
             var currX = locMarkEl.getX();

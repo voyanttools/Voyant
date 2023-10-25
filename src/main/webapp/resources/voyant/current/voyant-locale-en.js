@@ -498,9 +498,6 @@ Ext.apply(Voyant.data.model.Corpus.i18n, {
 Ext.apply(Voyant.notebook.editor.button.Add.i18n, {
 "tip":"Add New Cell (with Shift key to repeat the same kind of cell)",
 "title":"Spyral Notebook"});
-Ext.apply(Voyant.widget.CategoriesOption.i18n, {
-"edit":"Edit",
-"categories":"Categories"});
 Ext.apply(Voyant.panel.WordTree.i18n, {
 "emptyText":"No matching results.",
 "pool":"limit",
@@ -864,6 +861,9 @@ Ext.apply(Voyant.widget.ProgressMonitor.i18n, {
 "progress":"Progress",
 "finished":"Finished",
 "launch":"Launching…"});
+Ext.apply(Voyant.categories.CategoriesOption.i18n, {
+"edit":"Edit",
+"categories":"Categories"});
 Ext.apply(Voyant.panel.BubblelinesSet.i18n, {
 "title":"Bubblelines Skin",
 "helpTip":"This is a specialized view for working with Bubblelines."});

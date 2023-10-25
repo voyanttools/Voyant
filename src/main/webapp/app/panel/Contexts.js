@@ -13,12 +13,13 @@ Ext.define('Voyant.panel.Contexts', {
     		docIndex: undefined,
     		stopList: 'auto',
     		context: 5,
-    		expand: 50
+    		expand: 50,
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
     config: {
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}]
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'termcolorsoption'}]
     },
     constructor: function() {
         this.callParent(arguments);
@@ -136,7 +137,8 @@ Ext.define('Voyant.panel.Contexts', {
     			tooltip: this.localize("termTip"),
         		dataIndex: 'term',
                 sortable: true,
-                width: 'autoSize'
+                width: 'autoSize',
+				xtype: 'coloredtermfield'
             },{
     			text: this.localize("right"),
     			tooltip: this.localize("rightTip"),

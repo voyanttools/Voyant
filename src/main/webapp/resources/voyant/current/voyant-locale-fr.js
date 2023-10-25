@@ -498,9 +498,6 @@ Ext.apply(Voyant.data.model.Corpus.i18n, {
 Ext.apply(Voyant.notebook.editor.button.Add.i18n, {
 "tip":"Ajouter un nouveau bloc",
 "title":"Carnet Spyral"});
-Ext.apply(Voyant.widget.CategoriesOption.i18n, {
-"edit":"Éditer",
-"categories":"Catégories"});
 Ext.apply(Voyant.panel.WordTree.i18n, {
 "emptyText":"Pas de résultat.",
 "pool":"limite",
@@ -864,6 +861,9 @@ Ext.apply(Voyant.widget.ProgressMonitor.i18n, {
 "progress":"Progression",
 "finished":"Fini",
 "launch":"Lancement…"});
+Ext.apply(Voyant.categories.CategoriesOption.i18n, {
+"edit":"Éditer",
+"categories":"Catégories"});
 Ext.apply(Voyant.panel.BubblelinesSet.i18n, {
 "title":"<i>Skin</i> de Lignes de bulles",
 "helpTip":"Ceci est une vue conçue spécialement pour travailler avec Lignes de bulles."});

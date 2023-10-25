@@ -10,12 +10,13 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		context: 5,
     		query: undefined,
     		docId: undefined,
-    		docIndex: undefined
+    		docIndex: undefined,
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
     config: {
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}]
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'termcolorsoption'}]
     },
     constructor: function(config) {
     	
@@ -173,7 +174,9 @@ Ext.define('Voyant.panel.CorpusCollocates', {
         		dataIndex: 'term',
             	tooltip: this.localize("termTip"),
                 sortable: true,
-                flex: 1
+                flex: 1,
+				xtype: 'coloredtermfield',
+				useCategoriesMenu: true
             },{
     			text: this.localize("rawFreq"),
         		dataIndex: 'rawFreq',
@@ -186,7 +189,8 @@ Ext.define('Voyant.panel.CorpusCollocates', {
             	dataIndex: 'contextTerm',
             	tooltip: this.localize("contextTermTip"),
             	flex: 1,
-            	sortable: true
+            	sortable: true,
+				xtype: 'coloredtermfield'
             },{
             	text: this.localize("contextTermRawFreq"),
             	tooltip: this.localize("contextTermRawFreqTip"),

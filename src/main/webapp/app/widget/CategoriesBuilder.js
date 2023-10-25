@@ -1,13 +1,12 @@
-Ext.define('Voyant.widget.CategoriesOption', {
+Ext.namespace('Voyant.categories');
+
+Ext.define('Voyant.categories.CategoriesOption', {
 	extend: 'Ext.container.Container',
 	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.categoriesoption',
 	statics: {
 		i18n: {
 		}
-	},
-	config: {
-		builderWin: undefined
 	},
 	initComponent: function() {
 		var value = this.up('window').panel.getApiParam('categories');
@@ -38,30 +37,26 @@ Ext.define('Voyant.widget.CategoriesOption', {
     			text: this.localize('edit'),
     			ui: 'default-toolbar',
     			handler: function() {
-    				if (this.getBuilderWin() === undefined) {
-    					var panel = this.up('window').panel;
-    					var win = Ext.create('Voyant.widget.CategoriesBuilder', {
-    						panel: panel,
-    						height: panel.getApplication().getViewport().getHeight()*0.75,
-    						width: panel.getApplication().getViewport().getWidth()*0.75
-    					});
-    					win.on('close', function(win) {
-    						var id = win.getCategoriesId();
-    						if (id !== undefined) {
-	    						var combo = this.down('combo');
-								var name = id;
-								combo.getStore().add({name: name, value: id});
-								combo.setValue(id);
-								
-								this.up('window').panel.setApiParam('categories', id);
-    						}
-    					}, this);
-    					this.setBuilderWin(win);
-    				}
+    				if (Voyant.categories.Builder === undefined) {
+						Voyant.categories.Builder = Ext.create('Voyant.categories.CategoriesBuilder', {
+							panel: this.up('window').panel
+						});
+					}
+					Voyant.categories.Builder.on('close', function(win) {
+						var id = win.getCategoriesId();
+						if (id !== undefined) {
+							var combo = this.down('combo');
+							var name = id;
+							combo.getStore().add({name: name, value: id});
+							combo.setValue(id);
+							
+							this.up('window').panel.setApiParam('categories', id);
+						}
+					}, this, { single: true });
     				
     				var categoriesId = this.down('combo').getValue();
-    				this.getBuilderWin().setCategoriesId(categoriesId);
-					this.getBuilderWin().show();
+    				Voyant.categories.Builder.setCategoriesId(categoriesId);
+					Voyant.categories.Builder.show();
     			},
     			scope: this
     		}]
@@ -71,7 +66,7 @@ Ext.define('Voyant.widget.CategoriesOption', {
 	}
 });
 
-Ext.define('Voyant.widget.CategoriesBuilder', {
+Ext.define('Voyant.categories.CategoriesBuilder', {
     extend: 'Ext.window.Window',
     requires: ['Voyant.widget.FontFamilyOption'],
     mixins: ['Voyant.util.Localization','Voyant.util.Api'],
@@ -155,16 +150,17 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 
     constructor: function(config) {
     	config = config || {};
-    	
+
     	if (config.panel) {
     		this.panel = config.panel;
 			this.app = this.panel.getApplication();
 			this.categoriesManager = this.app.getCategoriesManager();
-    	} else {
-    		if (window.console) {
-    			console.warn('can\'t find panel!');
-    		}
-    	}
+		} else {
+			console.warn('CategoriesBuilder cannot find panel!');
+		}
+
+		config.height = this.app.getViewport().getHeight()*0.75;
+		config.width = this.app.getViewport().getWidth()*0.75;
     	
     	this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
     	this.callParent(arguments);
@@ -271,6 +267,24 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    xtype: 'toolbar',
 		                    overflowHandler: 'scroller',
 		                    items: [{
+								xtype: 'textfield',
+								fieldLabel: 'Category Filter',
+								labelAlign: 'right',
+								enableKeyEvents: true,
+								listeners: {
+									keyup: function(cmp, e) {
+										var query = cmp.getValue().trim();
+										this.queryById('categories').query('grid').forEach(function(grid) {
+											if (query === '') {
+												grid.getStore().clearFilter();
+											} else {
+												grid.getStore().filter('term', query);
+											}
+										}, this);
+									},
+									scope: this
+								}
+							},'-',{
 		                    	text: this.localize('addCategory'),
 		                    	handler: function() {
 		                    		this.getAddCategoryWin().show();
@@ -282,7 +296,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    		this.queryById('categories').query('grid').forEach(function(grid) {
 										var sels = grid.getSelection();
 										sels.forEach(function(sel) {
-											this.categoriesManager.removeTerm(grid.category, sel.getTerm());
+											this.categoriesManager.removeTerm(grid.category, sel.get('term'));
 										}, this);
 		                    			grid.getStore().remove(sels);
 		                    		}, this);
@@ -335,7 +349,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 			listeners: {
 				show: function() {
 					// check to see if the widget value is different from the API
-					if (this.getCategoriesId() && this.getCategoriesId()!=this.getApiParam("categories")) {
+					if (this.getCategoriesId() && this.getCategoriesId() !== this.getApiParam("categories")) {
 		    			this.app.loadCategoryData(this.getCategoriesId()).then(function(data) {
 							this.setColorTermsFromCategoryFeatures();
 							this.buildCategories();
@@ -374,6 +388,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     		items: {
     			xtype: 'form',
     			width: 300,
+				bodyPadding: '10 5 5',
     			defaults: {
     				labelAlign: 'right'
     			},
@@ -715,3 +730,112 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     	}
     }
 });
+
+Ext.define('Voyant.categories.CategoriesMenu', {
+	extend: 'Ext.menu.Menu',
+	alias: 'widget.categoriesmenu',
+
+	config: {
+		terms: []
+	},
+
+	constructor: function(config) {
+		config = config || {};
+		if (config.panel) {
+			this.panel = config.panel;
+			this.app = this.panel.getApplication();
+			this.categoriesManager = this.app.getCategoriesManager();
+		} else {
+			if (window.console) {
+				console.warn('can\'t find panel!');
+			}
+		}
+		this.callParent(arguments);
+	},
+
+	setColorTermsFromCategoryFeatures: function() {
+		for (var category in this.categoriesManager.getCategories()) {
+			var color = this.categoriesManager.getCategoryFeature(category, 'color');
+			if (color !== undefined) {
+				var rgb = this.app.hexToRgb(color);
+				var terms = this.categoriesManager.getCategoryTerms(category);
+				for (var i = 0; i < terms.length; i++) {
+					this.app.setColorForTerm(terms[i], rgb);
+				}
+			}
+		}
+	},
+
+	initComponent: function() {
+		Ext.apply(this, {
+			items: [{
+				text: 'Set category for selected terms',
+				menu: {
+					minWidth: 250,
+					itemId: 'cats',
+					items: [],
+					minButtonWidth: 50,
+					fbar: [{
+						xtype: 'button',
+						text: 'Ok',
+						handler: function(button) {
+							var terms = this.getTerms();
+							var addCats = [];
+							var remCats = [];
+							button.up('menu').items.each(function(item) {
+								if (item.checked) {
+									addCats.push(item.text);
+								} else {
+									remCats.push(item.text);
+								}
+							});
+							remCats.forEach(function(cat) { this.categoriesManager.removeTerms(cat, terms); }, this);
+							addCats.forEach(function(cat) { this.categoriesManager.addTerms(cat, terms); }, this);
+		
+							button.up('menu').up('menu').hide();
+
+							this.setColorTermsFromCategoryFeatures();
+							this.fireEvent('categorySet', this, addCats);
+						},
+						scope: this
+					},{
+						xtype: 'button',
+						text: 'Cancel',
+						handler: function(button) {
+							button.up('menu').up('menu').hide();
+						}
+					},{xtype: 'tbfill'},{
+						xtype: 'button',
+						glyph: 'xf013@FontAwesome',
+						tooltip: 'Show Categories Builder',
+						handler: function(button) {
+							if (Voyant.categories.Builder === undefined) {
+								Voyant.categories.Builder = Ext.create('Voyant.categories.CategoriesBuilder', {
+									panel: this.panel
+								});
+							}
+							Voyant.categories.Builder.show();
+						},
+						scope: this
+					}]
+				}
+			}],
+			listeners: {
+				beforeshow: function(menu) {
+					var categories = this.categoriesManager.getCategories();
+					var catsMenu = menu.down('#cats');
+					catsMenu.removeAll();
+
+					var terms = this.getTerms();
+					var term = Array.isArray(terms) ? terms[0] : terms;
+					var termCats = this.categoriesManager.getCategoriesForTerm(term);
+
+					catsMenu.add(Object.keys(categories).map(function(cat) { return {text: cat, xtype: 'menucheckitem', checked: termCats.indexOf(cat) !== -1} }));
+				},
+				scope: this
+			}
+		});
+
+		this.callParent(arguments);
+	}
+})

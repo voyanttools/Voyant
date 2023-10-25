@@ -9,7 +9,8 @@ Ext.define('Voyant.panel.Reader', {
 			highlightEntities: 'Highlight Entities',
 			entityType: 'entity type',
 			nerVoyant: 'Entity Identification with Voyant',
-			nerNssi: 'Entity Identification with NSSI'
+			nerNssi: 'Entity Identification with NSSI',
+			nerSpacy: 'Entity Identification with SpaCy'
     	},
     	api: {
     		start: 0,
@@ -21,10 +22,10 @@ Ext.define('Voyant.panel.Reader', {
 	},
     config: {
     	innerContainer: undefined,
-    	tokensStore: undefined,
-    	documentsStore: undefined,
-    	documentTermsStore: undefined,
-		documentEntitiesStore: undefined,
+    	tokensStore: undefined, // for loading the tokens to display in the reader
+    	documentsStore: undefined, // for storing a copy of the corpus document models
+    	documentTermsStore: undefined, // for getting document term positions for highlighting
+		documentEntitiesStore: undefined, // for storing the results of an entities call
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -43,8 +44,6 @@ Ext.define('Voyant.panel.Reader', {
 
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
 
-	HIGHLIGHT_ALPHA: .25, // the alpha value to use for highlighted keywords
-    
     constructor: function(config) {
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
@@ -94,10 +93,7 @@ Ext.define('Voyant.panel.Reader', {
 	    		}, this);
 	    		this.updateText(contents);
 	    		
-	    		var keyword = this.down('querysearchfield').getValue();
-	    		if (keyword != '') {
-//	    			this.highlightKeywords(keyword);
-	    		}
+	    		this.highlightKeywords();
 
 				if (this.getDocumentEntitiesStore() !== undefined) {
 					this.highlightEntities();
@@ -119,7 +115,6 @@ Ext.define('Voyant.panel.Reader', {
 				url: Voyant.application.getTromboneUrl(),
 				extraParams: {
 					tool: 'corpus.DocumentTerms',
-					withDistributions: true,
 					withPositions: true,
 					bins: 25,
 					forTool: 'reader'
@@ -134,7 +129,6 @@ Ext.define('Voyant.panel.Reader', {
    		    listeners: {
    		    load: function(store, records, successful, opts) {
    		    		this.highlightKeywords(records);
-					this.down('readergraph').populateChart(records);
    		    	},
    		    	scope: this
    		    }
@@ -177,6 +171,7 @@ Ext.define('Voyant.panel.Reader', {
     		// click listener
     		centerPanel.body.on("click", function(event, target) {
     			target = Ext.get(target);
+				// if (target.hasCls('entity')) {} TODO
     			if (target.hasCls('word')) {
     				var info = Voyant.data.model.Token.getInfoFromElement(target);
     				var term = target.getHtml();
@@ -190,6 +185,9 @@ Ext.define('Voyant.panel.Reader', {
     		}, this);
     		
     		if (this.getCorpus()) {
+				if (this.getApiParam('skipToDocId') === undefined) {
+					this.setApiParam('skipToDocId', this.getCorpus().getDocument(0).getId());
+				}
     			this.load();
 	    		var query = this.getApiParam('query');
 	    		if (query) {
@@ -197,6 +195,9 @@ Ext.define('Voyant.panel.Reader', {
 	    		}
     		}
 			this.on("loadedCorpus", function() {
+				if (this.getApiParam('skipToDocId') === undefined) {
+					this.setApiParam('skipToDocId', this.getCorpus().getDocument(0).getId());
+				}
     			this.load(true); // make sure to clear in case we're replacing the corpus
 	    		var query = this.getApiParam('query');
 	    		if (query) {
@@ -220,7 +221,8 @@ Ext.define('Voyant.panel.Reader', {
     		    },{
 					xtype: 'readergraph',
     		    	region: 'south',
-    		    	height: 40,
+					weight: 0,
+    		    	height: 30,
     		    	split: {
     		    		size: 2
     		    	},
@@ -237,9 +239,22 @@ Ext.define('Voyant.panel.Reader', {
 						},
 						scope: this
 					}
-    		    }]
+    		    },{
+					xtype: 'entitieslist',
+					region: 'east',
+					weight: 10,
+					width: '40%',
+					split: {
+						size: 2
+					},
+					splitterResize: true,
+					border: false,
+					hidden: true,
+					collapsible: true,
+					animCollapse: false
+				}]
     	    },
-    		// TODO clearing search loads default document terms into chart but probably shouldn't
+
     		dockedItems: [{
                 dock: 'bottom',
                 xtype: 'toolbar',
@@ -267,9 +282,17 @@ Ext.define('Voyant.panel.Reader', {
 						items: [{
 							xtype: 'menucheckitem',
 							group: 'nerService',
+							text: this.localize('nerSpacy'),
+							itemId: 'spacy',
+							checked: true,
+							handler: this.nerSeviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
 							text: this.localize('nerNssi'),
 							itemId: 'nssi',
-							checked: true,
+							checked: false,
 							handler: this.nerSeviceHandler,
 							scope: this
 						},{
@@ -357,19 +380,7 @@ Ext.define('Voyant.panel.Reader', {
     					var term = terms[0];
     					var docIndex = term.get('docIndex');
     					var position = term.get('position');
-    					var bufferPosition = position - (this.getApiParam('limit')/2);
-    					var doc = this.getCorpus().getDocument(docIndex);
-    					this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
-    					this.load(true, {
-    						callback: function() {
-    							var el = this.body.dom.querySelector("#_" + docIndex + "_" + position);
-    							if (el) {
-    								el.scrollIntoView();
-    							}
-    							this.highlightKeywords(term, false);
-    						},
-    						scope: this
-    					});
+    					this.showTermLocation(docIndex, position, term);
     				};
         		},
         		documentIndexTermsClicked: function(src, terms) {
@@ -379,7 +390,20 @@ Ext.define('Voyant.panel.Reader', {
     					this.fireEvent('termLocationClicked', this, [termRec]);
         			}
         		},
-        		scope: this
+				entityClicked: function(src, entity) {
+					var docIndex = entity.get('docIndex');
+					var position = entity.get('positions')[0];
+					if (Array.isArray(position)) position = position[0];
+					this.showTermLocation(docIndex, position, entity);
+					
+				},
+				entityLocationClicked: function(src, entity, positionIndex) {
+					var docIndex = entity.get('docIndex');
+					var position = entity.get('positions')[positionIndex];
+					if (Array.isArray(position)) position = position[0];
+					this.showTermLocation(docIndex, position, entity);
+				},
+				scope: this
     		}
     	});
     	
@@ -388,25 +412,71 @@ Ext.define('Voyant.panel.Reader', {
     
     loadQueryTerms: function(queryTerms) {
     	if (queryTerms && queryTerms.length > 0) {
+			var docId = this.getApiParam('skipToDocId');
+			if (docId === undefined) {
+				var docIndex = 0;
+				var locationInfo = this.getLocationInfo();
+				if (locationInfo) {
+					docIndex = locationInfo[0].docIndex;
+				}
+				docId = this.getCorpus().getDocument(docIndex).getId();
+			}
 			this.getDocumentTermsStore().load({
 				params: {
 					query: queryTerms,
-					categories: this.getApiParam('categories')
+					docId: docId,
+					categories: this.getApiParam('categories'),
+					limit: -1
     			}
 			});
+			this.down('readergraph').loadQueryTerms(queryTerms);
 		}
     },
+
+	showTermLocation(docIndex, position, term) {
+		var bufferPosition = position - (this.getApiParam('limit')/2);
+		var doc = this.getCorpus().getDocument(docIndex);
+		this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
+		this.load(true, {
+			callback: function() {
+				var el = this.body.dom.querySelector("#_" + docIndex + "_" + position);
+				if (el) {
+					el.scrollIntoView({
+						block: 'center'
+					});
+					Ext.fly(el).frame('#f80');
+				}
+				if (term.get('type')) {
+					this.highlightEntities();
+				} else {
+					this.highlightKeywords(term, false);
+				}
+			},
+			scope: this
+		});
+	},
     
     highlightKeywords: function(termRecords, doScroll) {
 		var container = this.getInnerContainer().first();
-		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent'});
+		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent', color: 'black'});
+
+		if (termRecords === undefined && this.getDocumentTermsStore().getCount() > 0) {
+			termRecords = this.getDocumentTermsStore().getData().items;
+		}
+		if (termRecords === undefined) {
+			return;
+		}
 
 		if (!Ext.isArray(termRecords)) termRecords = [termRecords];
 
 		termRecords.forEach(function(r) {
 			var term = r.get('term');
-			var color = this.getApplication().getColorForTerm(term);
-			color = 'rgba('+color.join(',')+','+this.HIGHLIGHT_ALPHA+')';
+			var bgColor = this.getApplication().getColorForTerm(term);
+			var textColor = this.getApplication().getTextColorForBackground(bgColor);
+			bgColor = 'rgb('+bgColor.join(',')+') !important';
+			textColor = 'rgb('+textColor.join(',')+') !important';
+			var styles = 'background-color:'+bgColor+';color:'+textColor+';';
+			
 			// might be slightly faster to use positions so do that if they're available
 			if (r.get('positions')) {
 				var positions = r.get('positions');
@@ -415,7 +485,7 @@ Ext.define('Voyant.panel.Reader', {
 				positions.forEach(function(pos) {
 					var match = container.dom.querySelector('#_'+docIndex+'_'+pos);
 					if (match) {
-						Ext.fly(match).addCls('keyword').applyStyles({backgroundColor: color});
+						Ext.fly(match).addCls('keyword').dom.setAttribute('style', styles);
 					}
 				})
 			} else {
@@ -423,7 +493,7 @@ Ext.define('Voyant.panel.Reader', {
 				var nodes = container.select('span.word');
 				nodes.each(function(el, compEl, index) {
 					if (el.dom.firstChild && el.dom.firstChild.nodeValue.match(caseInsensitiveQuery)) {
-						el.addCls('keyword').applyStyles({backgroundColor: color});
+						el.addCls('keyword').dom.setAttribute('style', styles);
 					}
 				});
 			}
@@ -455,6 +525,7 @@ Ext.define('Voyant.panel.Reader', {
 				me.clearEntityHighlights(); // clear again in case failed documents were rerun
 				me.setDocumentEntitiesStore(entities);
 				me.highlightEntities();
+				me.down('entitieslist').show().addEntities(entities);
 			}
 		});
 	},
@@ -475,10 +546,10 @@ Ext.define('Voyant.panel.Reader', {
 			var positionInstances = entity.positions;
 			if (positionInstances) {
 				positionInstances.forEach(function(positions) {
-					var multiTermEntity = positions.length === 2; // there is both a start and end position
+					var multiTermEntity = positions.length > 1;
 					if (multiTermEntity) {
 						// find the difference between start and end positions
-						if (positions[1]-positions[0] > 1) {
+						if (positions.length === 2 && positions[1]-positions[0] > 1) {
 							// more than two terms, so fill in the middle positions
 							var endPos = positions[1];
 							var curPos = positions[0]+1;
@@ -503,14 +574,17 @@ Ext.define('Voyant.panel.Reader', {
 									if (i === 0) {
 										termEntityPosition = 'start ';
 									} else if (i === len-1) {
-										termEntityPosition = 'end ';	
+										termEntityPosition = 'end ';
 									} else {
 										termEntityPosition = 'middle ';
 									}
 								}
 
 								match.addCls('entity '+termEntityPosition+entity.type);
-								match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								var prevQTip = match.dom.getAttribute('data-qtip');
+								if (prevQTip.indexOf('class="entity"') === -1) {
+									match.dom.setAttribute('data-qtip', prevQTip+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								}
 							}
 						}
 					}
@@ -630,6 +704,17 @@ Ext.define('Voyant.panel.Reader', {
     		this.getInnerContainer().setHtml('<div class="readerContainer"><div class="loading">'+this.localize('loading')+'</div></div>');
 			this.getInnerContainer().first().first().mask();
 		}
+
+		// check if we're loading a different doc and update terms store if so
+		var tokensStore = this.getTokensStore();
+		if (tokensStore.lastOptions && tokensStore.lastOptions.params.skipToDocId && tokensStore.lastOptions.params.skipToDocId !== this.getApiParam('skipToDocId')) {
+			var dts = this.getDocumentTermsStore();
+			if (dts.lastOptions) {
+				var query = dts.lastOptions.params.query;
+				this.loadQueryTerms(query);
+			}
+		}
+
     	this.getTokensStore().load(Ext.apply(config || {}, {
     		params: Ext.apply(this.getApiParams(), {
     			stripTags: 'blocksOnly',
@@ -725,10 +810,6 @@ Ext.define('Voyant.panel.Reader', {
 			this.down('readergraph').moveLocationMarker(docIndex, fraction, scrollDir);
 		}
 	},
-    
-    updateChart: function() {
-    	
-    },
 
 	getLocationInfo: function() {
 		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
