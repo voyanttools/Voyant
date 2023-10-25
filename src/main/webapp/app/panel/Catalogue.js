@@ -42,6 +42,7 @@ Ext.define('Voyant.panel.Catalogue', {
 				width: 250,
 				defaults: {
 					width: 250,
+					minHeight: 150,
 					flex: 1,
 					xtype: 'facet',
 					animCollapse: false,
@@ -54,6 +55,7 @@ Ext.define('Voyant.panel.Catalogue', {
 								delete this.facets[facetCmp.facet]; // remove from facets map
 								facetCmp.destroy(); // remove this facet
 								this.updateResults();
+								this.adjustFacetHeights();
 							},
 							scope: this
 						},
@@ -255,7 +257,6 @@ Ext.define('Voyant.panel.Catalogue', {
 		if (title=="["+facet+"Title]") {
 			title = facet.replace(/^facet\./,"").replace(/^extra./,"");
 		}
-		var matchingDocumentsLabel = this.localize('matchingDocuments');
 		
 		Ext.applyIf(config, {
 			title: title,
@@ -275,9 +276,13 @@ Ext.define('Voyant.panel.Catalogue', {
 				itemTpl: itemTpl
 			}],
 			corpus: this.getCorpus()
-		})
+		});
 		
 		var facetCmp = facetsCmp.add(config);
+
+		facetCmp.getStore().on('load', function() {
+			this.adjustFacetHeights();
+		}, this);
 		
 		facetCmp.getSelectionModel().on('selectionchange', function(model, selected) {
 			var labels = [];
@@ -286,14 +291,40 @@ Ext.define('Voyant.panel.Catalogue', {
 			})
 			this.getFacets()[facet] = labels;
 			this.updateResults();
-		}, this)
+		}, this);
 		facetCmp.on('query', function(model, selected) {
 			this.getFacets()[facetCmp.facet] = [];
 			this.updateResults();
-		}, this)
+		}, this);
+
     	return facetCmp;
     },
     
+	adjustFacetHeights: function() {
+		var facetsCmp = this.queryById('facets');
+		var counts = {};
+		var maxCount = -1;
+		var facets = facetsCmp.query('facet');
+		facets.forEach(function(facet) {
+			var count = facet.getStore().count();
+			if (count > maxCount) {
+				maxCount = count;
+			}
+			counts[facet.getId()] = count;
+		});
+
+		var mapVal = function(value, istart, istop, ostart, ostop) {
+			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+		};
+
+		facets.forEach(function(facet) {
+			var flexAmt = counts[facet.getId()] / maxCount;
+			flexAmt = mapVal(flexAmt, 0, 1, 0.3, 1);
+			facet.setFlex(flexAmt);
+		}, this);
+		facetsCmp.updateLayout();
+	},
+
     updateResults: function(queries) {
     	var facets = this.getFacets();
     	if (!queries) {
