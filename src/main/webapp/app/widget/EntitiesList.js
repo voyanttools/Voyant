@@ -24,7 +24,12 @@ Ext.define('Voyant.widget.EntitiesList', {
 			norp: 'National/Religious/Political',
 			percent: 'Percent',
 			work_of_art: 'Work of Art',
-			unknown: 'Unknown'
+			unknown: 'Unknown',
+			duration: 'Duration',
+			location: 'Location',
+			misc: 'Misc',
+			organization: 'Organization',
+			set: 'Set'
 		}
 	},
 
