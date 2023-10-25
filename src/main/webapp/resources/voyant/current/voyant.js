@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Oct 20 15:40:40 UTC 2023 */
+/* This file created by JSCacher. Last modified: Wed Oct 25 16:36:33 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6130,7 +6130,12 @@ Ext.define('Voyant.util.Colors', {
 		 * For tracking associations between a term and a color (in rgb format), to ensure consistent coloring across tools.
 		 * @private
 		 */
-		colorTermAssociations: undefined
+		colorTermAssociations: {},
+		/**
+		 * For tracking the text color to use with the corresponding background color.
+		 * @private
+		 */
+		textColorsForBackgroundColors: {}
 	},
 
 	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
@@ -6161,7 +6166,8 @@ Ext.define('Voyant.util.Colors', {
 
 	resetColorTermAssociations: function() {
 		this.lastUsedPaletteIndex = -1;
-		this.setColorTermAssociations(new Ext.util.MixedCollection());
+		this.setColorTermAssociations({});
+		this.setTextColorsForBackgroundColors({});
 	},
 
 	rgbToHex: function(a) {
@@ -6314,12 +6320,12 @@ Ext.define('Voyant.util.Colors', {
 		}
 		term = term.toLowerCase();
 
-		var color = this.getColorTermAssociations().get(term);
-		if (color == null) {
+		var color = this.getColorTermAssociations()[term];
+		if (color === undefined) {
 			var index = this.lastUsedPaletteIndex+1;
 			index %= palette.length;
 			color = palette[index];
-			this.getColorTermAssociations().add(term, color);
+			this.getColorTermAssociations()[term] = color;
 			this.lastUsedPaletteIndex = index;
 		}
 		if (returnHex) {
@@ -6338,7 +6344,7 @@ Ext.define('Voyant.util.Colors', {
 			color = this.hexToRgb(color);
 		}
 		term = term.toLowerCase();
-		this.getColorTermAssociations().replace(term, color);
+		this.getColorTermAssociations()[term] = color;
 	},
 
 	getColorForEntityType: function(type, returnHex) {
@@ -6373,6 +6379,119 @@ Ext.define('Voyant.util.Colors', {
 			color = this.rgbToHex(color);
 		}
 		return color;
+	},
+
+	/**
+	 * Accessible Perceptual Contrast Algorithm adapted from https://github.com/Myndex/apca-w3
+	 * @param {Array} background An array of RGB values
+	 * @param {Array} foreground An array of RGB values
+	 * @return {Number}
+	 */
+	getColorContrast: function(background, foreground) {
+
+		// exponents
+		const normBG = 0.56;
+		const normTXT = 0.57;
+		const revTXT = 0.62;
+		const revBG = 0.65;
+
+		// clamps
+		const blkThrs = 0.022;
+		const blkClmp = 1.414;
+		const loClip = 0.1;
+		const deltaYmin = 0.0005;
+
+		// scalers
+		// see https://github.com/w3c/silver/issues/645
+		const scaleBoW = 1.14;
+		const loBoWoffset = 0.027;
+		const scaleWoB= 1.14;
+		const loWoBoffset = 0.027;
+
+		function fclamp (Y) {
+			if (Y >= blkThrs) {
+				return Y;
+			}
+			return Y + (blkThrs - Y) ** blkClmp;
+		}
+
+		function linearize (val) {
+			let sign = val < 0? -1 : 1;
+			let abs = Math.abs(val);
+			return sign * Math.pow(abs, 2.4);
+		}
+
+		let S;
+		let C;
+		let Sapc;
+
+		// Myndex as-published, assumes sRGB inputs
+		let R, G, B;
+
+		// Calculates "screen luminance" with non-standard simple gamma EOTF
+		// weights should be from CSS Color 4, not the ones here which are via Myndex and copied from Lindbloom
+		[R, G, B] = foreground;
+		let lumTxt = linearize(R) * 0.2126729 + linearize(G) * 0.7151522 + linearize(B) * 0.0721750;
+
+		[R, G, B] = background;
+		let lumBg = linearize(R) * 0.2126729 + linearize(G) * 0.7151522 + linearize(B) * 0.0721750;
+
+		// toe clamping of very dark values to account for flare
+		let Ytxt = fclamp(lumTxt);
+		let Ybg = fclamp(lumBg);
+
+		// are we "Black on White" (dark on light), or light on dark?
+		let BoW = Ybg > Ytxt;
+
+		// why is this a delta, when Y is not perceptually uniform?
+		// Answer: it is a noise gate, see
+		// https://github.com/LeaVerou/color.js/issues/208
+		if (Math.abs(Ybg - Ytxt) < deltaYmin) {
+			C = 0;
+		}
+		else {
+			if (BoW) {
+				// dark text on light background
+				S = Ybg ** normBG - Ytxt ** normTXT;
+				C = S * scaleBoW;
+			}
+			else {
+				// light text on dark background
+				S = Ybg ** revBG - Ytxt ** revTXT;
+				C = S * scaleWoB;
+			}
+		}
+		if (Math.abs(C) < loClip) {
+			Sapc = 0;
+		}
+		else if (C > 0) {
+			// not clear whether Woffset is loBoWoffset or loWoBoffset
+			// but they have the same value
+			Sapc = C - loBoWoffset;
+		}
+		else {
+			Sapc = C + loBoWoffset;
+		}
+
+		return Sapc * 100;
+	},
+
+	/**
+	 * Returns either black or white color, depending on the supplied background color.
+	 * @param {Array} backgroundColor An array of RGB values
+	 * @returns {Array}
+	 */
+	getTextColorForBackground: function(backgroundColor) {
+		var textColor = this.getTextColorsForBackgroundColors()[backgroundColor.join('')];
+		if (textColor === undefined) {
+			var darkText = [0,0,0];
+			var lightText = [255,255,255];
+			var darkContrast = Math.abs(this.getColorContrast(backgroundColor, darkText));
+			var lightContrast = Math.abs(this.getColorContrast(backgroundColor, lightText));
+			textColor = lightContrast > darkContrast ? lightText : darkText;
+			this.getTextColorsForBackgroundColors()[backgroundColor.join('')] = textColor;
+		}
+		return textColor;
 	}
 })
 
@@ -6682,6 +6801,9 @@ Ext.define('Voyant.util.Toolable', {
 										var keyValuesForGlobalUpdate = [];
 										if (values['stopList'] !== undefined && values['stopListGlobal'] !== undefined && values.stopListGlobal) {
 											keyValuesForGlobalUpdate.push(['stopList', values['stopList']]);
+										}
+										if (values['termColors'] !== undefined && values['termColorsGlobal'] !== undefined && values.termColorsGlobal) {
+											keyValuesForGlobalUpdate.push(['termColors', values['termColors']]);
 										}
 
 										var categoriesDfd = new Ext.Deferred();
@@ -8589,8 +8711,8 @@ Ext.define('Voyant.data.model.TermCorrelation', {
              {name: 'target'},
              {name: 'correlation', type: 'float'},
              {name: 'significance', type: 'float'},
-             {name: 'source-term', calculate: function(data) {return data.source.term}},
-             {name: 'target-term', calculate: function(data) {return data.target.term}},
+             {name: 'sourceTerm', calculate: function(data) {return data.source.term}},
+             {name: 'targetTerm', calculate: function(data) {return data.target.term}},
              {name: 'source-distributions', calculate: function(data) {return data.source.distributions}},
              {name: 'target-distributions', calculate: function(data) {return data.target.distributions}}
     ],
@@ -11770,6 +11892,118 @@ Ext.define('Voyant.widget.StopListOption', {
     	});
     }
 })
+Ext.define('Voyant.widget.TermColorsOption', {
+	extend: 'Ext.container.Container',
+	mixins: ['Voyant.util.Localization'],
+	alias: 'widget.termcolorsoption',
+	layout: 'hbox',
+	margin: '0 0 5px 0',
+	statics: {
+			i18n: {
+				label: 'Term Colors',
+				none: 'None',
+				categories: 'Categories Only',
+				categoriesTerms: 'Categories and Terms',
+				applyGlobally: 'apply globally'
+			}
+	},
+	initComponent: function(config) {
+		var me = this;
+		Ext.apply(me, {
+			items: [{
+				xtype: 'combo',
+				queryMode: 'local',
+				value: 'categories',
+				fieldLabel: this.localize('label'),
+				labelAlign: 'right',
+				name: 'termColors',
+				displayField: 'name',
+				valueField: 'value',
+				store: {
+					fields: ['name', 'value'],
+					data: [{
+						name: this.localize('categories'),
+						value: 'categories'
+					},{
+						name: this.localize('categoriesTerms'),
+						value: 'terms'
+					},{
+						name: this.localize('none'),
+						value: ''
+					}]
+				}
+			}, {width: 20}, {
+				xtype: 'checkbox',
+				name: 'termColorsGlobal',
+				checked: true,
+				boxLabel: this.localize('applyGlobally')
+			}],
+			listeners: {
+				boxready: function(cmp) {
+					var win = cmp.up('window');
+					var value = win.panel.getApiParam('termColors');
+					cmp.down('combo').setValue(value);
+				}
+			}
+		})
+		me.callParent(arguments);
+	}
+});
+
+/**
+ * A column field for use in grid panels.
+ * Uses the term's color for display.
+ */
+Ext.define('Voyant.widget.ColoredTermField', {
+	extend: 'Ext.grid.column.Template',
+	alias: 'widget.coloredtermfield',
+	config: {
+		useCategoriesMenu: false
+	},
+	initComponent: function() {
+		var panel = this.up('gridpanel');
+
+		if (this.getUseCategoriesMenu()) {
+			this.categoriesMenu = Ext.create('Voyant.categories.CategoriesMenu', {
+				panel: panel,
+				listeners: {
+					categorySet: function(src, cats) {
+						var store = panel.getStore();
+						store.removeAll();
+    					store.load();
+					}
+				}
+			});
+			panel.on('rowcontextmenu', function(cmp, record, tr, rowIndex, evt) {
+				evt.preventDefault();
+					
+				var terms = panel.getSelection().map(function(sel) { return sel.get('term') });
+				this.categoriesMenu.setTerms(terms);
+				this.categoriesMenu.showAt(evt.getXY());
+			}, this);
+		}
+
+		var dataIndex = this.dataIndex;
+		Ext.apply(this, {
+			tpl: new Ext.XTemplate('<span style="{[this.getColorStyle(values.'+dataIndex+')]}; padding: 1px 3px; border-radius: 2px;">{'+dataIndex+'}</span>', {
+				getColorStyle: function(term) {
+					var termColors = panel.getApiParam('termColors');
+					if (termColors !== undefined && termColors !== '' &&
+						(termColors === 'categories' && panel.getApplication().getCategoriesManager().getCategoriesForTerm(term).length > 0) ||
+						(termColors === 'terms')) {
+						var bgColor = panel.getApplication().getColorForTerm(term);
+						var textColor = panel.getApplication().getTextColorForBackground(bgColor);
+						return 'background-color: rgb('+bgColor.join(',')+'); color: rgb('+textColor.join(',')+')';
+					} else {
+						return 'color: rgb(0,0,0)';
+					}
+				}
+			})
+		});
+		this.callParent(arguments);
+	}
+});
+
 Ext.define('Voyant.widget.QuerySearchField', {
     extend: 'Ext.form.field.Tag',
     mixins: ['Voyant.util.Localization'],
@@ -13339,16 +13573,15 @@ Ext.define('Ext.ux.grid.TransformGrid', {
     }
 });
 
-Ext.define('Voyant.widget.CategoriesOption', {
+Ext.namespace('Voyant.categories');
+
+Ext.define('Voyant.categories.CategoriesOption', {
 	extend: 'Ext.container.Container',
 	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.categoriesoption',
 	statics: {
 		i18n: {
 		}
-	},
-	config: {
-		builderWin: undefined
 	},
 	initComponent: function() {
 		var value = this.up('window').panel.getApiParam('categories');
@@ -13379,30 +13612,26 @@ Ext.define('Voyant.widget.CategoriesOption', {
     			text: this.localize('edit'),
     			ui: 'default-toolbar',
     			handler: function() {
-    				if (this.getBuilderWin() === undefined) {
-    					var panel = this.up('window').panel;
-    					var win = Ext.create('Voyant.widget.CategoriesBuilder', {
-    						panel: panel,
-    						height: panel.getApplication().getViewport().getHeight()*0.75,
-    						width: panel.getApplication().getViewport().getWidth()*0.75
-    					});
-    					win.on('close', function(win) {
-    						var id = win.getCategoriesId();
-    						if (id !== undefined) {
-	    						var combo = this.down('combo');
-								var name = id;
-								combo.getStore().add({name: name, value: id});
-								combo.setValue(id);
-								
-								this.up('window').panel.setApiParam('categories', id);
-    						}
-    					}, this);
-    					this.setBuilderWin(win);
-    				}
+    				if (Voyant.categories.Builder === undefined) {
+						Voyant.categories.Builder = Ext.create('Voyant.categories.CategoriesBuilder', {
+							panel: this.up('window').panel
+						});
+					}
+					Voyant.categories.Builder.on('close', function(win) {
+						var id = win.getCategoriesId();
+						if (id !== undefined) {
+							var combo = this.down('combo');
+							var name = id;
+							combo.getStore().add({name: name, value: id});
+							combo.setValue(id);
+							
+							this.up('window').panel.setApiParam('categories', id);
+						}
+					}, this, { single: true });
     				
     				var categoriesId = this.down('combo').getValue();
-    				this.getBuilderWin().setCategoriesId(categoriesId);
-					this.getBuilderWin().show();
+    				Voyant.categories.Builder.setCategoriesId(categoriesId);
+					Voyant.categories.Builder.show();
     			},
     			scope: this
     		}]
@@ -13412,7 +13641,7 @@ Ext.define('Voyant.widget.CategoriesOption', {
 	}
 });
 
-Ext.define('Voyant.widget.CategoriesBuilder', {
+Ext.define('Voyant.categories.CategoriesBuilder', {
     extend: 'Ext.window.Window',
     requires: ['Voyant.widget.FontFamilyOption'],
     mixins: ['Voyant.util.Localization','Voyant.util.Api'],
@@ -13496,16 +13725,17 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 
     constructor: function(config) {
     	config = config || {};
-    	
+
     	if (config.panel) {
     		this.panel = config.panel;
 			this.app = this.panel.getApplication();
 			this.categoriesManager = this.app.getCategoriesManager();
-    	} else {
-    		if (window.console) {
-    			console.warn('can\'t find panel!');
-    		}
-    	}
+		} else {
+			console.warn('CategoriesBuilder cannot find panel!');
+		}
+
+		config.height = this.app.getViewport().getHeight()*0.75;
+		config.width = this.app.getViewport().getWidth()*0.75;
     	
     	this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
     	this.callParent(arguments);
@@ -13612,6 +13842,24 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    xtype: 'toolbar',
 		                    overflowHandler: 'scroller',
 		                    items: [{
+								xtype: 'textfield',
+								fieldLabel: 'Category Filter',
+								labelAlign: 'right',
+								enableKeyEvents: true,
+								listeners: {
+									keyup: function(cmp, e) {
+										var query = cmp.getValue().trim();
+										this.queryById('categories').query('grid').forEach(function(grid) {
+											if (query === '') {
+												grid.getStore().clearFilter();
+											} else {
+												grid.getStore().filter('term', query);
+											}
+										}, this);
+									},
+									scope: this
+								}
+							},'-',{
 		                    	text: this.localize('addCategory'),
 		                    	handler: function() {
 		                    		this.getAddCategoryWin().show();
@@ -13623,7 +13871,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 		                    		this.queryById('categories').query('grid').forEach(function(grid) {
 										var sels = grid.getSelection();
 										sels.forEach(function(sel) {
-											this.categoriesManager.removeTerm(grid.category, sel.getTerm());
+											this.categoriesManager.removeTerm(grid.category, sel.get('term'));
 										}, this);
 		                    			grid.getStore().remove(sels);
 		                    		}, this);
@@ -13676,7 +13924,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
 			listeners: {
 				show: function() {
 					// check to see if the widget value is different from the API
-					if (this.getCategoriesId() && this.getCategoriesId()!=this.getApiParam("categories")) {
+					if (this.getCategoriesId() && this.getCategoriesId() !== this.getApiParam("categories")) {
 		    			this.app.loadCategoryData(this.getCategoriesId()).then(function(data) {
 							this.setColorTermsFromCategoryFeatures();
 							this.buildCategories();
@@ -13715,6 +13963,7 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     		items: {
     			xtype: 'form',
     			width: 300,
+				bodyPadding: '10 5 5',
     			defaults: {
     				labelAlign: 'right'
     			},
@@ -14056,6 +14305,115 @@ Ext.define('Voyant.widget.CategoriesBuilder', {
     	}
     }
 });
+
+Ext.define('Voyant.categories.CategoriesMenu', {
+	extend: 'Ext.menu.Menu',
+	alias: 'widget.categoriesmenu',
+
+	config: {
+		terms: []
+	},
+
+	constructor: function(config) {
+		config = config || {};
+		if (config.panel) {
+			this.panel = config.panel;
+			this.app = this.panel.getApplication();
+			this.categoriesManager = this.app.getCategoriesManager();
+		} else {
+			if (window.console) {
+				console.warn('can\'t find panel!');
+			}
+		}
+		this.callParent(arguments);
+	},
+
+	setColorTermsFromCategoryFeatures: function() {
+		for (var category in this.categoriesManager.getCategories()) {
+			var color = this.categoriesManager.getCategoryFeature(category, 'color');
+			if (color !== undefined) {
+				var rgb = this.app.hexToRgb(color);
+				var terms = this.categoriesManager.getCategoryTerms(category);
+				for (var i = 0; i < terms.length; i++) {
+					this.app.setColorForTerm(terms[i], rgb);
+				}
+			}
+		}
+	},
+
+	initComponent: function() {
+		Ext.apply(this, {
+			items: [{
+				text: 'Set category for selected terms',
+				menu: {
+					minWidth: 250,
+					itemId: 'cats',
+					items: [],
+					minButtonWidth: 50,
+					fbar: [{
+						xtype: 'button',
+						text: 'Ok',
+						handler: function(button) {
+							var terms = this.getTerms();
+							var addCats = [];
+							var remCats = [];
+							button.up('menu').items.each(function(item) {
+								if (item.checked) {
+									addCats.push(item.text);
+								} else {
+									remCats.push(item.text);
+								}
+							});
+							remCats.forEach(function(cat) { this.categoriesManager.removeTerms(cat, terms); }, this);
+							addCats.forEach(function(cat) { this.categoriesManager.addTerms(cat, terms); }, this);
+		
+							button.up('menu').up('menu').hide();
+
+							this.setColorTermsFromCategoryFeatures();
+							this.fireEvent('categorySet', this, addCats);
+						},
+						scope: this
+					},{
+						xtype: 'button',
+						text: 'Cancel',
+						handler: function(button) {
+							button.up('menu').up('menu').hide();
+						}
+					},{xtype: 'tbfill'},{
+						xtype: 'button',
+						glyph: 'xf013@FontAwesome',
+						tooltip: 'Show Categories Builder',
+						handler: function(button) {
+							if (Voyant.categories.Builder === undefined) {
+								Voyant.categories.Builder = Ext.create('Voyant.categories.CategoriesBuilder', {
+									panel: this.panel
+								});
+							}
+							Voyant.categories.Builder.show();
+						},
+						scope: this
+					}]
+				}
+			}],
+			listeners: {
+				beforeshow: function(menu) {
+					var categories = this.categoriesManager.getCategories();
+					var catsMenu = menu.down('#cats');
+					catsMenu.removeAll();
+
+					var terms = this.getTerms();
+					var term = Array.isArray(terms) ? terms[0] : terms;
+					var termCats = this.categoriesManager.getCategoriesForTerm(term);
+
+					catsMenu.add(Object.keys(categories).map(function(cat) { return {text: cat, xtype: 'menucheckitem', checked: termCats.indexOf(cat) !== -1} }));
+				},
+				scope: this
+			}
+		});
+
+		this.callParent(arguments);
+	}
+})
 /**
  * This class is essentially a wrapper for a D3 force directed graph.
  * It provides defaults for physics and styling and simplifies loading data.
@@ -14752,6 +15110,8 @@ Ext.define('Voyant.widget.ReaderGraph', {
     SCROLL_EQ: 0,
     SCROLL_DOWN: 1,
 
+    RESERVED_KEYS: ['id', 'docIndex', 'readerGraphPadding', 'readerGraphTotal'],
+
     constructor: function(config) {
         this.callParent(arguments);
     },
@@ -14790,7 +15150,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         
         this.on('boxready', function() {
             if (this.getLocationMarker() == undefined) {
-                this.setLocationMarker(Ext.DomHelper.append(this.getEl(), {tag: 'div', style: 'background-color: '+this.locationMarkerColor+'; height: 100%; width: 2px; position: absolute; top: 0; left: 0;'}));
+                this.setLocationMarker(Ext.DomHelper.append(this.getEl(), {tag: 'div', style: 'background-color: '+this.locationMarkerColor+'; height: 100%; width: 2px; z-index: 3; position: absolute; top: 0; left: 0;'}));
             }
         });        
     },
@@ -14803,72 +15163,164 @@ Ext.define('Voyant.widget.ReaderGraph', {
         this.generateChart();
     },
 
-	populateChart: function(docTermRecords) {
-		var graphDatas = {};
-		var maxValue = 0;
-		docTermRecords.forEach(function(r) {
-			var graphData = [];
-			var dist = r.get('distributions');
-			var docId = r.get('docId');
-			var docIndex = r.get('docIndex');
-			var term = r.get('term');
-			for (var i = 0; i < dist.length; i++) {
-				var bin = i;//docIndex * dist.length + i;
-				var val = dist[i];
-				if (val > maxValue) maxValue = val;
-				graphData.push([docId, docIndex, bin, val, term]);
-			}
-			if (graphDatas[docIndex] === undefined) {
-				graphDatas[docIndex] = {};
-			}
-			graphDatas[docIndex][term] = graphData;
-		});
-		
-		if (this.getIsDetailedGraph()) {
-			var graphs = this.query('cartesian');
-			for (var i = 0; i < graphs.length; i++) {
-				var graph = graphs[i];
+    loadQueryTerms: function(queryTerms) {
+        // TODO add categories param?
+        if (this.getIsDetailedGraph()) {
+            this.getCorpus().getDocumentTerms().load({
+                params: {
+                    query: queryTerms,
+                    limit: -1,
+                    withDistributions: true
+                },
+                callback: function(records, operation) {
+                    this.populateDetailedChart(records);
+                },
+                scope: this
+            })
+        } else {
+            this.getCorpus().getCorpusTerms().load({
+                params: {
+                    query: queryTerms,
+                    limit: -1,
+                    withDistributions: true
+                },
+                callback: function(records, operation) {
+                    this.populateChart(records);
+                },
+                scope: this
+            })
+        }
+            
+    },
 
-				var docData = graphDatas[i];
-				if (docData !== undefined) {
-					var series = [];
-					for (var term in docData) {
-						var termData = docData[term];
-						var sColor = this.getParentPanel().getApplication().getColorForTerm(term, true);
-						var theCorpus = this.getCorpus();
-						series.push({
-							type: 'line',
-							xField: 'bin',
-							yField: 'distribution',
-							style: { lineWidth: 1, strokeStyle: sColor },
-							store: Ext.create('Ext.data.ArrayStore', {
-								fields: ['docId', 'docIndex', 'bin', 'distribution', 'term'],
-								data: termData
-							})
-						});
-					}
-					graph.getAxes()[0].setMaximum(maxValue);
-					graph.setSeries(series);
-				}
-			}
-		}
-		
-	},
+    populateDetailedChart: function(records) {
+        var graphDatas = {};
+        var maxValue = 0;
+        records.forEach(function(r) {
+            var graphData = [];
+            var dist = r.get('distributions');
+            var docId = r.get('docId');
+            var docIndex = r.get('docIndex');
+            var term = r.get('term');
+            for (var i = 0; i < dist.length; i++) {
+                var val = dist[i];
+                if (val > maxValue) maxValue = val;
+                graphData.push([docId, docIndex, i, val, term]);
+            }
+            if (graphDatas[docIndex] === undefined) {
+                graphDatas[docIndex] = {};
+            }
+            graphDatas[docIndex][term] = graphData;
+        });
+        var graphs = this.query('cartesian');
+        for (var i = 0; i < graphs.length; i++) {
+            var graph = graphs[i];
+
+            var docData = graphDatas[i];
+            if (docData !== undefined) {
+                var series = [];
+                for (var term in docData) {
+                    var termData = docData[term];
+                    var sColor = this.getParentPanel().getApplication().getColorForTerm(term, true);
+                    series.push({
+                        type: 'line',
+                        xField: 'bin',
+                        yField: 'distribution',
+                        style: { lineWidth: 1, strokeStyle: sColor },
+                        store: Ext.create('Ext.data.ArrayStore', {
+                            fields: ['docId', 'docIndex', 'bin', 'distribution', 'term'],
+                            data: termData
+                        })
+                    });
+                }
+                graph.getAxes()[0].setMaximum(maxValue);
+                graph.setSeries(series);
+            }
+        }
+    },
+
+	populateChart: function(records) {
+		var graphDatas = {};
+        this.getCorpus().getDocuments().each(function(doc, index) {
+            graphDatas[index] = {};
+        });
+        var terms = [];
+        records.forEach(function(r) {
+            var term = r.get('term');
+            if (terms.indexOf(term) === -1) {
+                terms.push(term);
+            }
+            var dists = r.get('distributions');
+            dists.forEach(function(val, docIndex) {
+                graphDatas[docIndex][term] = val;
+            });
+        });
+        terms.push('readerGraphPadding');
+
+        var seriesData = Object.entries(graphDatas).map(function(termData) {
+            return Object.assign({docIndex: parseInt(termData[0])}, termData[1]);
+        });
+
+        var maxValue = -1;
+        seriesData.forEach(function(termData) {
+            var total = Object.entries(termData)
+                .filter(function(td) { return td[0] !== 'docIndex'})
+                .map(function(td) { return td[1]})
+                .reduce(function(prevVal, currVal) { return prevVal+currVal});
+            
+            termData.readerGraphTotal = total;
+
+            if (total > maxValue) {
+                maxValue = total;
+            }
+        });
+
+        seriesData.forEach(function(termData) {
+            termData.readerGraphPadding = maxValue - termData.readerGraphTotal;
+        });
+
+        var series = {
+            type: 'bar',
+            stacked: true,
+            fullStack: true,
+            xField: 'docIndex',
+            yField: terms,
+            style: {
+                minGapWidth: 0,
+                minBarWidth: 1,
+                lineWidth: 0,
+                strokeStyle: 'none'
+            },
+            renderer: function (sprite, config, rendererData, index) {
+                var term = sprite.getField();
+                var color;
+                if (term === 'readerGraphPadding') {
+                    color = this.getColor(index, 0.3);
+                } else {
+                    color = this.getParentPanel().getApplication().getColorForTerm(term, true);
+                }
+                return {fillStyle: color};
+            }.bind(this)
+        };
+        var graph = this.down('cartesian');
+        graph.getAxes()[0].setFields(terms);
+        graph.setSeries(series);
+        graph.setStore(Ext.create('Ext.data.JsonStore', {
+            fields: ['docIndex'].concat(terms),
+            data: seriesData
+        }));
+    },
 
 	getColor: function(index, alpha) {
-		var c = this.getParentPanel().getApplication().getColor(index);
+		var c = index % 2 === 0 ? [200,200,200] : [240,240,240];
 		return 'rgba('+c.join(',')+','+alpha+')';
 	},
 
     generateChart: function() {
 		var me = this;
-
-        function map(value, istart, istop, ostart, ostop) {
-            return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-        }
         
         function addChart(docInfo) {
-            var index = docInfo.index;
+            var index = docInfo.docIndex;
             var fraction = docInfo.fraction;
             var height = docInfo.relativeHeight;
             var bColor = this.getColor(index, 0.3);
@@ -14927,6 +15379,17 @@ Ext.define('Voyant.widget.ReaderGraph', {
 				}
             });
 
+            chart.body.on('mouseenter', function(event, target) {
+                if (chart.getSeries().length === 0) {
+                    var tooltipHtml = this.getCorpus().getDocument(docInfo.docIndex).getTitle();
+                    this.getSeriesToolTip().setHtml(tooltipHtml);
+                    var xy = event.getXY();
+                    xy[0] += 15;
+                    xy[1] += 18;
+                    this.getSeriesToolTip().showAt(xy);
+                }
+            }, this);
+
 			chart.body.on('mouseleave', function(event, target) {
 				this.getSeriesToolTip().hide();
 			}, this);
@@ -14952,19 +15415,14 @@ Ext.define('Voyant.widget.ReaderGraph', {
         var docs = me.getCorpus().getDocuments();
         var tokensTotal = me.getCorpus().getWordTokensCount();
         var docInfos = [];
-        var docMinSize = Number.MAX_VALUE;
-        var docMaxSize = -1;
-//      for (var i = 0; i < docs.getTotalCount(); i++) {
         for (var i = 0; i < docs.getCount(); i++) {
             var d = docs.getAt(i);
             var docIndex = d.get('index');
             var count = d.get('tokensCount-lexical');
-            if (count < docMinSize) docMinSize = count;
-            if (count > docMaxSize) docMaxSize = count;
             var fraction = count / tokensTotal;
             docInfos.push({
-                index: docIndex,
-                count: count,
+                docIndex: docIndex,
+                count: 1, // same height for all
                 fraction: fraction
             });
         }
@@ -14972,7 +15430,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         if (this.getIsDetailedGraph()) {
             for (var i = 0; i < docInfos.length; i++) {
                 var d = docInfos[i];
-                d.relativeHeight = d.count==docMaxSize ? 1 : map(d.count, docMinSize, docMaxSize, 0.25, 1);
+                d.relativeHeight = 1; // same height for all
                 addChart.call(this, d);
             }
         } else {
@@ -14983,6 +15441,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 },
                 flex: 1,
                 height: '100%',
+                animation: false,
                 insetPadding: 0,
                 axes: [{
                     type: 'numeric',
@@ -14992,12 +15451,12 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 },{
                     type: 'category',
                     position: 'bottom',
-                    fields: 'index',
+                    fields: 'docIndex',
                     hidden: true
                 }],
                 series: [{
                     type: 'bar',
-                    xField: 'index',
+                    xField: 'docIndex',
                     yField: 'count',
                     style: {
                         minGapWidth: 0,
@@ -15010,10 +15469,28 @@ Ext.define('Voyant.widget.ReaderGraph', {
                     }.bind(this)
                 }],
                 store: Ext.create('Ext.data.JsonStore', {
-                    fields: [{name: 'index', type: 'int'}, {name: 'count', type: 'int'}, {name: 'fraction', type: 'float'}],
+                    fields: [{name: 'docIndex', type: 'int'}, {name: 'count', type: 'int'}],
                     data: docInfos
                 }),
                 listeners: {
+                    itemmouseover: function(chart, item, event) {
+						var tooltipHtml = this.getCorpus().getDocument(item.record.get('docIndex')).getTitle();
+
+                        if (chart.getSeries()[0].getFullStack()) {
+                            Object.keys(item.record.data)
+                                .filter(function(key) { return me.RESERVED_KEYS.indexOf(key) === -1 })
+                                .forEach(function(key) {
+                                    var val = item.record.data[key];
+                                    tooltipHtml += '<br>'+key+': '+val;
+                                }, this);
+                        }
+                        
+						this.getSeriesToolTip().setHtml(tooltipHtml);
+						var xy = event.getXY();
+						xy[0] += 15;
+						xy[1] += 18;
+						this.getSeriesToolTip().showAt(xy);
+					},
                     itemclick: function(chart, item, event) {
                         var el = Ext.get(event.getTarget());
                         var x = event.getX();
@@ -15022,8 +15499,8 @@ Ext.define('Voyant.widget.ReaderGraph', {
                         var docX = (x - box.x) % docWidth;
                         var fraction = docX / docWidth;
 
-            			var data = item.record.data;
-                        var doc = this.getDocumentsStore().getAt(data.index);
+            			var docIndex = item.record.get('docIndex');
+                        var doc = this.getDocumentsStore().getAt(docIndex);
                         var docIndex = doc.getIndex();
 
                         this.fireEvent('documentRelativePositionSelected', this, {docIndex: docIndex, fraction: fraction});
@@ -15031,6 +15508,9 @@ Ext.define('Voyant.widget.ReaderGraph', {
                     scope: this
                 }
             });
+            chart.body.on('mouseleave', function(event, target) {
+				this.getSeriesToolTip().hide();
+			}, this);
         }
 
     },
@@ -15045,8 +15525,10 @@ Ext.define('Voyant.widget.ReaderGraph', {
             }
         } else {
             var graph = this.down('cartesian');
-            var docWidth = graph.getWidth() / this.getCorpus().getDocuments().getCount();
-            locX = graph.getX() + docWidth*docIndex + docWidth*fraction;
+            if (graph) {
+                var docWidth = graph.getWidth() / this.getCorpus().getDocuments().getCount();
+                locX = graph.getX() + docWidth*docIndex + docWidth*fraction;
+            }
         }
         if (scrollDir != null) {
             var currX = locMarkEl.getX();
@@ -15056,9 +15538,219 @@ Ext.define('Voyant.widget.ReaderGraph', {
         locMarkEl.setX(locX);
     }
 });
+Ext.define('Voyant.widget.EntitiesList', {
+	extend: 'Ext.grid.Panel',
+	mixins: ['Voyant.util.Localization'],
+	alias: 'widget.entitieslist',
+	statics: {
+		i18n: {
+			term: 'Term',
+			count: 'Count',
+			next: 'Next Occurrence',
+			prev: 'Previous Occurrence',
+			date: 'Date',
+			person: 'Person',
+			gpe: 'Geopolitical Entity',
+			loc: 'Location',
+			money: 'Money',
+			time: 'Time',
+			product: 'Product',
+			cardinal: 'Cardinal',
+			quantity: 'Quantity',
+			event: 'Event',
+			fac: 'Facility',
+			language: 'Language',
+			law: 'Law',
+			norp: 'National/Religious/Political',
+			percent: 'Percent',
+			work_of_art: 'Work of Art',
+			unknown: 'Unknown',
+			duration: 'Duration',
+			location: 'Location',
+			misc: 'Misc',
+			organization: 'Organization',
+			set: 'Set'
+		}
+	},
+
+	bins: 25,
+
+	initComponent: function() {
+		var me = this;
+		Ext.apply(this, {
+			title: 'Entities',
+			forceFit: true,
+			store: Ext.create('Ext.data.JsonStore', {
+				fields: ['term','normalized','type','docIndex','rawFreq','positions','offset'],
+				groupField: 'type',
+				sorters: [{
+					property: 'rawFreq',
+					direction: 'DESC'
+				}]
+			}),
+			features: [{
+				ftype: 'grouping',
+				hideGroupedHeader: true,
+				enableGroupingMenu: false,
+				startCollapsed: true,
+				groupHeaderTpl: ['{name:this.localizeName} ({children.length})',{
+					localizeName: function(name) {
+						return me.localize(name);
+					}
+				}]
+			}],
+			plugins: [{
+				ptype: 'rowexpander',
+				rowBodyTpl: new Ext.XTemplate(''),
+				expandOnDblClick: false
+			}],
+			viewConfig: {
+				listeners: {
+					expandbody: function(rowNode, record, expandRow, eOpts) {
+						me.getSelectionModel().select(record, false, true); // select expanded row, otherwise select event gets triggered later when interacting with prev/next buttons
+						if (expandRow.textContent === '' || (eOpts && eOpts.force)) {
+							var parentEl = expandRow.querySelector('div.x-grid-rowbody');
+							var expandedRow = Ext.create('Ext.container.Container', {
+								currentEntityPositionIndex: 0,
+								handlePositionChange: function(dir) {
+									if (dir < 0) {
+										this.currentEntityPositionIndex--;
+										if (this.currentEntityPositionIndex < 0) this.currentEntityPositionIndex = record.get('positions').length-1;
+									} else {
+										this.currentEntityPositionIndex++;
+										if (this.currentEntityPositionIndex > record.get('positions').length-1) this.currentEntityPositionIndex = 0;
+									}
+
+									// programatically highlight the current bar
+									var dist = record.get('distribution');
+									var distBinToHighlight = 0;
+									var distBinCount = 0;
+									for (var i = 0; i < dist.length; i++) {
+										distBinCount += dist[i];
+										if (distBinCount > this.currentEntityPositionIndex) {
+											distBinToHighlight = i;
+											break;
+										}
+									}
+									var sparkline = this.down('sparklinebar');
+									var sparklineBox = sparkline.canvas.el.getBox();
+									var binWidth = sparkline.getBarWidth()+sparkline.getBarSpacing();
+									var mouseX = sparklineBox.x + (binWidth * distBinToHighlight);
+									var mouseY = sparklineBox.y + (sparklineBox.height*.5);
+									var event = Ext.create('Ext.event.Event', new MouseEvent('mousemove', {clientX: mouseX, clientY: mouseY}));
+									sparkline.onMouseMove(event);
+
+									Voyant.application.dispatchEvent('entityLocationClicked', this, record, this.currentEntityPositionIndex);
+								},
+								layout: {
+									type: 'hbox',
+									align: 'middle'
+								},
+								renderTo: parentEl,
+								items: [{
+									xtype: 'button',
+									glyph: 'xf060@FontAwesome',
+									tooltip: me.localize('prev'),
+									handler: function(btn, e) {
+										btn.up('container').handlePositionChange(-1);
+									}
+								},{
+									xtype: 'button',
+									glyph: 'xf061@FontAwesome',
+									tooltip: me.localize('next'),
+									margin: '0 5',
+									handler: function(btn, e) {
+										btn.up('container').handlePositionChange(1);
+									}
+								},{
+									xtype: 'sparklinebar',
+									values: record.get('distribution'),
+									highlightColor: '#f80',
+									height: 24,
+									tipTpl: false,
+									width: parentEl.offsetWidth - 80 // TODO resize when layout changes
+								}],
+								listeners: {
+									boxready: function(cmp) {
+										setTimeout(function() {
+											cmp.currentEntityPositionIndex = -1;
+											cmp.handlePositionChange(1);
+										}, 50);
+									}
+								}
+							});
+						}
+					}
+				}
+			},
+			columns: [{
+				text: this.localize('term'),
+				dataIndex: 'term',
+				flex: 1
+			},{
+				text: this.localize('count'),
+				dataIndex: 'rawFreq',
+				width: 50
+			}],
+			listeners: {
+				select: function(cmp, record, index) {
+					Voyant.application.dispatchEvent('entityClicked', this, record);
+				},
+				columnresize: function(ct, column, width) {
+				}
+			}
+		});
+		
+		this.callParent(arguments);
+	},
+
+	addEntities: function(entities) {
+		var store = this.getStore();
+		if (store !== undefined) {
+			var append = false;
+			if (store.count() > 0 && entities.length > 0) {
+				var oldDocIndex = store.first().get('docIndex');
+				var newDocIndex = entities[0].docIndex;
+				append = oldDocIndex === newDocIndex;
+			}
+			entities.forEach(function(entity) {
+				if (entity.positions) {
+					entity.distribution = this.getDistributionFromPositions(entity.docIndex, entity.positions, this.bins);
+				} else {
+					console.warn('no positions for:',entity);
+					entity.distribution = [];
+				}
+			}, this);
+			store.loadData(entities, append);
+			if (append === false) {
+				this.view.findFeature('grouping').collapseAll();
+			}
+		}
+	},
+
+	getDistributionFromPositions: function(docIndex, positions, bins) {
+		var totalTokens = Voyant.application.getCorpus().getDocument(docIndex).get('tokensCount-lexical');
+		var binSize = Math.floor(totalTokens/bins);
+		
+		var distribution = new Array(bins);
+		for (var i = 0; i < bins; i++) { distribution[i] = 0; }
+
+		positions.forEach(function(position) {
+			var bin;
+			if (Array.isArray(position)) {
+				bin = Math.floor(position[0] / binSize);
+			} else {
+				bin = Math.floor(position / binSize);
+			}
+			distribution[bin]++;
+		});
+
+		return distribution;
+	}
+});
 Ext.define('Voyant.panel.Panel', {
 	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.util.Toolable','Voyant.util.DetailedError'],
-	requires: ['Voyant.widget.QuerySearchField','Voyant.widget.StopListOption','Voyant.widget.CategoriesOption','Voyant.widget.TotalPropertyStatus'],
+	requires: ['Voyant.widget.QuerySearchField','Voyant.widget.StopListOption','Voyant.categories.CategoriesOption','Voyant.widget.TotalPropertyStatus'],
 	alias: 'widget.voyantpanel',
 	statics: {
 		i18n: {
@@ -16086,6 +16778,7 @@ Ext.define('Voyant.panel.Catalogue', {
 				width: 250,
 				defaults: {
 					width: 250,
+					minHeight: 150,
 					flex: 1,
 					xtype: 'facet',
 					animCollapse: false,
@@ -16098,6 +16791,7 @@ Ext.define('Voyant.panel.Catalogue', {
 								delete this.facets[facetCmp.facet]; // remove from facets map
 								facetCmp.destroy(); // remove this facet
 								this.updateResults();
+								this.adjustFacetHeights();
 							},
 							scope: this
 						},
@@ -16299,7 +16993,6 @@ Ext.define('Voyant.panel.Catalogue', {
 		if (title=="["+facet+"Title]") {
 			title = facet.replace(/^facet\./,"").replace(/^extra./,"");
 		}
-		var matchingDocumentsLabel = this.localize('matchingDocuments');
 		
 		Ext.applyIf(config, {
 			title: title,
@@ -16319,9 +17012,13 @@ Ext.define('Voyant.panel.Catalogue', {
 				itemTpl: itemTpl
 			}],
 			corpus: this.getCorpus()
-		})
+		});
 		
 		var facetCmp = facetsCmp.add(config);
+
+		facetCmp.getStore().on('load', function() {
+			this.adjustFacetHeights();
+		}, this);
 		
 		facetCmp.getSelectionModel().on('selectionchange', function(model, selected) {
 			var labels = [];
@@ -16330,14 +17027,40 @@ Ext.define('Voyant.panel.Catalogue', {
 			})
 			this.getFacets()[facet] = labels;
 			this.updateResults();
-		}, this)
+		}, this);
 		facetCmp.on('query', function(model, selected) {
 			this.getFacets()[facetCmp.facet] = [];
 			this.updateResults();
-		}, this)
+		}, this);
+
     	return facetCmp;
     },
     
+	adjustFacetHeights: function() {
+		var facetsCmp = this.queryById('facets');
+		var counts = {};
+		var maxCount = -1;
+		var facets = facetsCmp.query('facet');
+		facets.forEach(function(facet) {
+			var count = facet.getStore().count();
+			if (count > maxCount) {
+				maxCount = count;
+			}
+			counts[facet.getId()] = count;
+		});
+
+		var mapVal = function(value, istart, istop, ostart, ostop) {
+			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+		};
+
+		facets.forEach(function(facet) {
+			var flexAmt = counts[facet.getId()] / maxCount;
+			flexAmt = mapVal(flexAmt, 0, 1, 0.3, 1);
+			facet.setFlex(flexAmt);
+		}, this);
+		facetsCmp.updateLayout();
+	},
+
     updateResults: function(queries) {
     	var facets = this.getFacets();
     	if (!queries) {
@@ -18088,12 +18811,13 @@ Ext.define('Voyant.panel.Contexts', {
     		docIndex: undefined,
     		stopList: 'auto',
     		context: 5,
-    		expand: 50
+    		expand: 50,
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
     config: {
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}]
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'termcolorsoption'}]
     },
     constructor: function() {
         this.callParent(arguments);
@@ -18211,7 +18935,8 @@ Ext.define('Voyant.panel.Contexts', {
     			tooltip: this.localize("termTip"),
         		dataIndex: 'term',
                 sortable: true,
-                width: 'autoSize'
+                width: 'autoSize',
+				xtype: 'coloredtermfield'
             },{
     			text: this.localize("right"),
     			tooltip: this.localize("rightTip"),
@@ -18395,12 +19120,13 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		context: 5,
     		query: undefined,
     		docId: undefined,
-    		docIndex: undefined
+    		docIndex: undefined,
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
     config: {
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}]
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'termcolorsoption'}]
     },
     constructor: function(config) {
     	
@@ -18558,7 +19284,9 @@ Ext.define('Voyant.panel.CorpusCollocates', {
         		dataIndex: 'term',
             	tooltip: this.localize("termTip"),
                 sortable: true,
-                flex: 1
+                flex: 1,
+				xtype: 'coloredtermfield',
+				useCategoriesMenu: true
             },{
     			text: this.localize("rawFreq"),
         		dataIndex: 'rawFreq',
@@ -18571,7 +19299,8 @@ Ext.define('Voyant.panel.CorpusCollocates', {
             	dataIndex: 'contextTerm',
             	tooltip: this.localize("contextTermTip"),
             	flex: 1,
-            	sortable: true
+            	sortable: true,
+				xtype: 'coloredtermfield'
             },{
             	text: this.localize("contextTermRawFreq"),
             	tooltip: this.localize("contextTermRawFreqTip"),
@@ -18797,7 +19526,7 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
             this.localize('correlations'), this.getCorrelationsStore(), this.getApiParams(),
             '<tpl for="." between="; "><a href="#" onclick="return false" class="corpus-type keyword" voyant:recordId="{term}">{term}</a><span style="font-size: smaller"> ({val})</span></tpl>',
             function(r) {
-                return {term: r.get('source-term'), val: r.get('source').rawFreq}
+                return {term: r.get('sourceTerm'), val: r.get('source').rawFreq}
             }
         );
         
@@ -18848,16 +19577,13 @@ Ext.define('Voyant.panel.Correlations', {
     		docId: undefined,
     		docIndex: undefined,
     		stopList: 'auto',
-    		minInDocumentsCountRatio: 100
+    		minInDocumentsCountRatio: 100,
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
     config: {
-    	options: [{
-    		xtype: 'stoplistoption'
-    	},
-        	{xtype: 'categoriesoption'}
-        ]
+    	options: [{xtype: 'stoplistoption'}, {xtype: 'categoriesoption'}, {xtype: 'termcolorsoption'}]
     },
     constructor: function() {
         this.callParent(arguments);
@@ -18878,8 +19604,9 @@ Ext.define('Voyant.panel.Correlations', {
     		columns: [{
     			text: this.localize("source"),
     			tooltip: this.localize("sourceTip"),
-        		dataIndex: 'source-term',
-        		sortable: false
+        		dataIndex: 'sourceTerm',
+        		sortable: false,
+				xtype: 'coloredtermfield'
     		},{
                 xtype: 'widgetcolumn',
                 tooltip: this.localize("trendTip"),
@@ -18902,8 +19629,9 @@ Ext.define('Voyant.panel.Correlations', {
             },{
     			text: this.localize("target"),
     			tooltip: this.localize("targetTip"),
-        		dataIndex: 'target-term',
-        		sortable: false
+        		dataIndex: 'targetTerm',
+        		sortable: false,
+				xtype: 'coloredtermfield'
     		},{
     			text: this.localize("correlation"),
     			tooltip: this.localize("correlationTip"),
@@ -22672,7 +23400,15 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		 * @cfg
     		 */
     		maxBins: 100,
-    		
+
+			/**
+			 * @cfg {String} termColors Which term colors to show in the grid.
+			 * 
+			 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
+			 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+			 */
+			termColors: 'categories',
+
     		/**
     		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 
@@ -22689,12 +23425,17 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	 */
     	options: [{
     		xtype: 'stoplistoption'
-    	},{xtype: 'categoriesoption'},{
+    	},{
+			xtype: 'categoriesoption'
+		},{
+			xtype: 'termcolorsoption'
+		},{
     		xtype: 'corpusselector',
     		name: 'comparisonCorpus',
     		fieldLabel: 'comparison corpus'
     	}]
     },
+
 	/**
 	 * @private
 	 */
@@ -22766,7 +23507,6 @@ Ext.define('Voyant.panel.CorpusTerms', {
                     scope: this
                 }
             },
-
     		columns: [{
                 xtype: 'rownumberer',
                 width: 'autoSize',
@@ -22776,7 +23516,9 @@ Ext.define('Voyant.panel.CorpusTerms', {
             	tooltip: this.localize("termTip"),
         		dataIndex: 'term',
         		flex: 1,
-                sortable: true
+                sortable: true,
+				xtype: 'coloredtermfield',
+				useCategoriesMenu: true
             },{
             	text: this.localize("rawFreq"),
             	tooltip: this.localize("rawFreqTip"),
@@ -22881,7 +23623,11 @@ Ext.define('Voyant.panel.DocumentTerms', {
 	config: {
 		options: [{
     		xtype: 'stoplistoption'
-    	},{xtype: 'categoriesoption'}]
+    	},{
+			xtype: 'categoriesoption'
+		},{
+			xtype: 'termcolorsoption'
+		}]
     },
     statics: {
     	i18n: {
@@ -22891,7 +23637,8 @@ Ext.define('Voyant.panel.DocumentTerms', {
     		query: undefined,
     		docId: undefined,
     		docIndex: undefined,
-    		bins: 10
+    		bins: 10,
+			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -23026,7 +23773,9 @@ Ext.define('Voyant.panel.DocumentTerms', {
         		dataIndex: 'term',
             	tooltip: this.localize("termTip"),
                 sortable: true,
-                flex: 1
+                flex: 1,
+				xtype: 'coloredtermfield',
+				useCategoriesMenu: true
             },{
             	text: this.localize("rawFreq"),
             	dataIndex: 'rawFreq',
@@ -24309,7 +25058,7 @@ Ext.define('Voyant.panel.RezoViz', {
 			terms: undefined,
 			stopList: 'auto',
 			docId: undefined,
-			nerService: 'nssi'
+			nerService: 'spacy'
 		},
 		glyph: 'xf1e0@FontAwesome'
 	},
@@ -24423,6 +25172,14 @@ Ext.define('Voyant.panel.RezoViz', {
 					text: this.localize('nerService'),
 					menu: {
 						items: [{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: 'SpaCy',
+							itemId: 'spacy',
+							checked: true,
+							handler: this.serviceHandler,
+							scope: this
+						},{
 							xtype: 'menucheckitem',
 							group: 'nerService',
 							text: 'NSSI',
@@ -26760,7 +27517,8 @@ Ext.define('Voyant.panel.Reader', {
 			highlightEntities: 'Highlight Entities',
 			entityType: 'entity type',
 			nerVoyant: 'Entity Identification with Voyant',
-			nerNssi: 'Entity Identification with NSSI'
+			nerNssi: 'Entity Identification with NSSI',
+			nerSpacy: 'Entity Identification with SpaCy'
     	},
     	api: {
     		start: 0,
@@ -26772,10 +27530,10 @@ Ext.define('Voyant.panel.Reader', {
 	},
     config: {
     	innerContainer: undefined,
-    	tokensStore: undefined,
-    	documentsStore: undefined,
-    	documentTermsStore: undefined,
-		documentEntitiesStore: undefined,
+    	tokensStore: undefined, // for loading the tokens to display in the reader
+    	documentsStore: undefined, // for storing a copy of the corpus document models
+    	documentTermsStore: undefined, // for getting document term positions for highlighting
+		documentEntitiesStore: undefined, // for storing the results of an entities call
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -26794,8 +27552,6 @@ Ext.define('Voyant.panel.Reader', {
 
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
 
-	HIGHLIGHT_ALPHA: .25, // the alpha value to use for highlighted keywords
-    
     constructor: function(config) {
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
@@ -26845,10 +27601,7 @@ Ext.define('Voyant.panel.Reader', {
 	    		}, this);
 	    		this.updateText(contents);
 	    		
-	    		var keyword = this.down('querysearchfield').getValue();
-	    		if (keyword != '') {
-//	    			this.highlightKeywords(keyword);
-	    		}
+	    		this.highlightKeywords();
 
 				if (this.getDocumentEntitiesStore() !== undefined) {
 					this.highlightEntities();
@@ -26870,7 +27623,6 @@ Ext.define('Voyant.panel.Reader', {
 				url: Voyant.application.getTromboneUrl(),
 				extraParams: {
 					tool: 'corpus.DocumentTerms',
-					withDistributions: true,
 					withPositions: true,
 					bins: 25,
 					forTool: 'reader'
@@ -26885,7 +27637,6 @@ Ext.define('Voyant.panel.Reader', {
    		    listeners: {
    		    load: function(store, records, successful, opts) {
    		    		this.highlightKeywords(records);
-					this.down('readergraph').populateChart(records);
    		    	},
    		    	scope: this
    		    }
@@ -26928,6 +27679,7 @@ Ext.define('Voyant.panel.Reader', {
     		// click listener
     		centerPanel.body.on("click", function(event, target) {
     			target = Ext.get(target);
+				// if (target.hasCls('entity')) {} TODO
     			if (target.hasCls('word')) {
     				var info = Voyant.data.model.Token.getInfoFromElement(target);
     				var term = target.getHtml();
@@ -26941,6 +27693,9 @@ Ext.define('Voyant.panel.Reader', {
     		}, this);
     		
     		if (this.getCorpus()) {
+				if (this.getApiParam('skipToDocId') === undefined) {
+					this.setApiParam('skipToDocId', this.getCorpus().getDocument(0).getId());
+				}
     			this.load();
 	    		var query = this.getApiParam('query');
 	    		if (query) {
@@ -26948,6 +27703,9 @@ Ext.define('Voyant.panel.Reader', {
 	    		}
     		}
 			this.on("loadedCorpus", function() {
+				if (this.getApiParam('skipToDocId') === undefined) {
+					this.setApiParam('skipToDocId', this.getCorpus().getDocument(0).getId());
+				}
     			this.load(true); // make sure to clear in case we're replacing the corpus
 	    		var query = this.getApiParam('query');
 	    		if (query) {
@@ -26971,7 +27729,8 @@ Ext.define('Voyant.panel.Reader', {
     		    },{
 					xtype: 'readergraph',
     		    	region: 'south',
-    		    	height: 40,
+					weight: 0,
+    		    	height: 30,
     		    	split: {
     		    		size: 2
     		    	},
@@ -26988,9 +27747,22 @@ Ext.define('Voyant.panel.Reader', {
 						},
 						scope: this
 					}
-    		    }]
+    		    },{
+					xtype: 'entitieslist',
+					region: 'east',
+					weight: 10,
+					width: '40%',
+					split: {
+						size: 2
+					},
+					splitterResize: true,
+					border: false,
+					hidden: true,
+					collapsible: true,
+					animCollapse: false
+				}]
     	    },
-    		// TODO clearing search loads default document terms into chart but probably shouldn't
+
     		dockedItems: [{
                 dock: 'bottom',
                 xtype: 'toolbar',
@@ -27018,9 +27790,17 @@ Ext.define('Voyant.panel.Reader', {
 						items: [{
 							xtype: 'menucheckitem',
 							group: 'nerService',
+							text: this.localize('nerSpacy'),
+							itemId: 'spacy',
+							checked: true,
+							handler: this.nerSeviceHandler,
+							scope: this
+						},{
+							xtype: 'menucheckitem',
+							group: 'nerService',
 							text: this.localize('nerNssi'),
 							itemId: 'nssi',
-							checked: true,
+							checked: false,
 							handler: this.nerSeviceHandler,
 							scope: this
 						},{
@@ -27108,19 +27888,7 @@ Ext.define('Voyant.panel.Reader', {
     					var term = terms[0];
     					var docIndex = term.get('docIndex');
     					var position = term.get('position');
-    					var bufferPosition = position - (this.getApiParam('limit')/2);
-    					var doc = this.getCorpus().getDocument(docIndex);
-    					this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
-    					this.load(true, {
-    						callback: function() {
-    							var el = this.body.dom.querySelector("#_" + docIndex + "_" + position);
-    							if (el) {
-    								el.scrollIntoView();
-    							}
-    							this.highlightKeywords(term, false);
-    						},
-    						scope: this
-    					});
+    					this.showTermLocation(docIndex, position, term);
     				};
         		},
         		documentIndexTermsClicked: function(src, terms) {
@@ -27130,7 +27898,20 @@ Ext.define('Voyant.panel.Reader', {
     					this.fireEvent('termLocationClicked', this, [termRec]);
         			}
         		},
-        		scope: this
+				entityClicked: function(src, entity) {
+					var docIndex = entity.get('docIndex');
+					var position = entity.get('positions')[0];
+					if (Array.isArray(position)) position = position[0];
+					this.showTermLocation(docIndex, position, entity);
+					
+				},
+				entityLocationClicked: function(src, entity, positionIndex) {
+					var docIndex = entity.get('docIndex');
+					var position = entity.get('positions')[positionIndex];
+					if (Array.isArray(position)) position = position[0];
+					this.showTermLocation(docIndex, position, entity);
+				},
+				scope: this
     		}
     	});
     	
@@ -27139,25 +27920,71 @@ Ext.define('Voyant.panel.Reader', {
     
     loadQueryTerms: function(queryTerms) {
     	if (queryTerms && queryTerms.length > 0) {
+			var docId = this.getApiParam('skipToDocId');
+			if (docId === undefined) {
+				var docIndex = 0;
+				var locationInfo = this.getLocationInfo();
+				if (locationInfo) {
+					docIndex = locationInfo[0].docIndex;
+				}
+				docId = this.getCorpus().getDocument(docIndex).getId();
+			}
 			this.getDocumentTermsStore().load({
 				params: {
 					query: queryTerms,
-					categories: this.getApiParam('categories')
+					docId: docId,
+					categories: this.getApiParam('categories'),
+					limit: -1
     			}
 			});
+			this.down('readergraph').loadQueryTerms(queryTerms);
 		}
     },
+
+	showTermLocation(docIndex, position, term) {
+		var bufferPosition = position - (this.getApiParam('limit')/2);
+		var doc = this.getCorpus().getDocument(docIndex);
+		this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
+		this.load(true, {
+			callback: function() {
+				var el = this.body.dom.querySelector("#_" + docIndex + "_" + position);
+				if (el) {
+					el.scrollIntoView({
+						block: 'center'
+					});
+					Ext.fly(el).frame('#f80');
+				}
+				if (term.get('type')) {
+					this.highlightEntities();
+				} else {
+					this.highlightKeywords(term, false);
+				}
+			},
+			scope: this
+		});
+	},
     
     highlightKeywords: function(termRecords, doScroll) {
 		var container = this.getInnerContainer().first();
-		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent'});
+		container.select('span[class*=keyword]').removeCls('keyword').applyStyles({backgroundColor: 'transparent', color: 'black'});
+
+		if (termRecords === undefined && this.getDocumentTermsStore().getCount() > 0) {
+			termRecords = this.getDocumentTermsStore().getData().items;
+		}
+		if (termRecords === undefined) {
+			return;
+		}
 
 		if (!Ext.isArray(termRecords)) termRecords = [termRecords];
 
 		termRecords.forEach(function(r) {
 			var term = r.get('term');
-			var color = this.getApplication().getColorForTerm(term);
-			color = 'rgba('+color.join(',')+','+this.HIGHLIGHT_ALPHA+')';
+			var bgColor = this.getApplication().getColorForTerm(term);
+			var textColor = this.getApplication().getTextColorForBackground(bgColor);
+			bgColor = 'rgb('+bgColor.join(',')+') !important';
+			textColor = 'rgb('+textColor.join(',')+') !important';
+			var styles = 'background-color:'+bgColor+';color:'+textColor+';';
+			
 			// might be slightly faster to use positions so do that if they're available
 			if (r.get('positions')) {
 				var positions = r.get('positions');
@@ -27166,7 +27993,7 @@ Ext.define('Voyant.panel.Reader', {
 				positions.forEach(function(pos) {
 					var match = container.dom.querySelector('#_'+docIndex+'_'+pos);
 					if (match) {
-						Ext.fly(match).addCls('keyword').applyStyles({backgroundColor: color});
+						Ext.fly(match).addCls('keyword').dom.setAttribute('style', styles);
 					}
 				})
 			} else {
@@ -27174,7 +28001,7 @@ Ext.define('Voyant.panel.Reader', {
 				var nodes = container.select('span.word');
 				nodes.each(function(el, compEl, index) {
 					if (el.dom.firstChild && el.dom.firstChild.nodeValue.match(caseInsensitiveQuery)) {
-						el.addCls('keyword').applyStyles({backgroundColor: color});
+						el.addCls('keyword').dom.setAttribute('style', styles);
 					}
 				});
 			}
@@ -27206,6 +28033,7 @@ Ext.define('Voyant.panel.Reader', {
 				me.clearEntityHighlights(); // clear again in case failed documents were rerun
 				me.setDocumentEntitiesStore(entities);
 				me.highlightEntities();
+				me.down('entitieslist').show().addEntities(entities);
 			}
 		});
 	},
@@ -27226,10 +28054,10 @@ Ext.define('Voyant.panel.Reader', {
 			var positionInstances = entity.positions;
 			if (positionInstances) {
 				positionInstances.forEach(function(positions) {
-					var multiTermEntity = positions.length === 2; // there is both a start and end position
+					var multiTermEntity = positions.length > 1;
 					if (multiTermEntity) {
 						// find the difference between start and end positions
-						if (positions[1]-positions[0] > 1) {
+						if (positions.length === 2 && positions[1]-positions[0] > 1) {
 							// more than two terms, so fill in the middle positions
 							var endPos = positions[1];
 							var curPos = positions[0]+1;
@@ -27254,14 +28082,17 @@ Ext.define('Voyant.panel.Reader', {
 									if (i === 0) {
 										termEntityPosition = 'start ';
 									} else if (i === len-1) {
-										termEntityPosition = 'end ';	
+										termEntityPosition = 'end ';
 									} else {
 										termEntityPosition = 'middle ';
 									}
 								}
 
 								match.addCls('entity '+termEntityPosition+entity.type);
-								match.dom.setAttribute('data-qtip', match.dom.getAttribute('data-qtip')+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								var prevQTip = match.dom.getAttribute('data-qtip');
+								if (prevQTip.indexOf('class="entity"') === -1) {
+									match.dom.setAttribute('data-qtip', prevQTip+'<div class="entity">'+entityTypeStr+': '+entity.type+'</div>');
+								}
 							}
 						}
 					}
@@ -27381,6 +28212,17 @@ Ext.define('Voyant.panel.Reader', {
     		this.getInnerContainer().setHtml('<div class="readerContainer"><div class="loading">'+this.localize('loading')+'</div></div>');
 			this.getInnerContainer().first().first().mask();
 		}
+
+		// check if we're loading a different doc and update terms store if so
+		var tokensStore = this.getTokensStore();
+		if (tokensStore.lastOptions && tokensStore.lastOptions.params.skipToDocId && tokensStore.lastOptions.params.skipToDocId !== this.getApiParam('skipToDocId')) {
+			var dts = this.getDocumentTermsStore();
+			if (dts.lastOptions) {
+				var query = dts.lastOptions.params.query;
+				this.loadQueryTerms(query);
+			}
+		}
+
     	this.getTokensStore().load(Ext.apply(config || {}, {
     		params: Ext.apply(this.getApiParams(), {
     			stripTags: 'blocksOnly',
@@ -27476,10 +28318,6 @@ Ext.define('Voyant.panel.Reader', {
 			this.down('readergraph').moveLocationMarker(docIndex, fraction, scrollDir);
 		}
 	},
-    
-    updateChart: function() {
-    	
-    },
 
 	getLocationInfo: function() {
 		var readerWords = Ext.DomQuery.select('.word', this.getInnerContainer().down('.readerContainer', true));
@@ -32459,7 +33297,7 @@ Ext.define('Voyant.panel.CorpusSet', {
         xtype: 'voyanttabpanel',
     	split: {width: 5},
     	tabBarHeaderPosition: 0,
-    	moreTools: ['trends','collocatesgraph','corpuscollocates'],
+    	moreTools: ['trends','collocatesgraph'],
         items: [{
 	    	xtype: 'trends'
         },{
@@ -32496,13 +33334,13 @@ Ext.define('Voyant.panel.CorpusSet', {
     	        xtype: 'voyanttabpanel',
     	    	split: {width: 5},
     	    	tabBarHeaderPosition: 0,
-    			moreTools: ['contexts','documentterms'],
+    			moreTools: ['contexts','documentterms','correlations'],
     			items: [{
 	    			xtype: 'contexts'
     			},{
 	    			xtype: 'bubblelines' // is set to default during loadedCorpus below when in non-consumptive mode
     			},{
-	    			xtype: 'correlations'
+	    			xtype: 'corpuscollocates'
     			}]
     	}]
     }],
