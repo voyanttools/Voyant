@@ -17,7 +17,7 @@ Ext.define('Voyant.panel.RezoViz', {
 			terms: undefined,
 			stopList: 'auto',
 			docId: undefined,
-			nerService: 'nssi'
+			nerService: 'spacy'
 		},
 		glyph: 'xf1e0@FontAwesome'
 	},
@@ -131,6 +131,14 @@ Ext.define('Voyant.panel.RezoViz', {
 					text: this.localize('nerService'),
 					menu: {
 						items: [{
+							xtype: 'menucheckitem',
+							group: 'nerService',
+							text: 'SpaCy',
+							itemId: 'spacy',
+							checked: true,
+							handler: this.serviceHandler,
+							scope: this
+						},{
 							xtype: 'menucheckitem',
 							group: 'nerService',
 							text: 'NSSI',
