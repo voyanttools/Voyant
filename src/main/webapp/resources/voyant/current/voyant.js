@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Oct 25 16:36:33 UTC 2023 */
+/* This file created by JSCacher. Last modified: Tue Nov 07 18:57:15 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -20761,19 +20761,21 @@ Ext.define('Voyant.panel.DreamScape', {
                                             scope: this
                                         },
                                         items: [
+                                            // {
+                                            //     boxLabel: this.localize('watercolor'),
+                                            //     itemId: 'watercolor',
+                                            //     cls: ['map-menu-item','watercolor'],
+                                            //     checked: true
+                                            // },
                                             {
-                                                boxLabel: this.localize('watercolor'),
-                                                itemId: 'watercolor',
-                                                cls: ['map-menu-item','watercolor'],
-                                                checked: true
-                                            },{
                                                 boxLabel: this.localize('wms4326'),
                                                 cls: ['map-menu-item','wms4326'],
                                                 itemId: 'wms4326'
                                             },{
                                                 boxLabel: this.localize('osm'),
                                                 cls: ['map-menu-item','osm'],
-                                                itemId: 'osm'
+                                                itemId: 'osm',
+                                                checked: true
                                             },{
                                                 boxLabel: this.localize('arcGIS'),
                                                 cls: ['map-menu-item','arcGIS'],
@@ -21141,6 +21143,13 @@ Ext.define('Voyant.panel.DreamScape', {
             */
 
             var baseLayers = this.getBaseLayers();
+            baseLayers['osm'] = new ol.layer.Tile({
+                preload: Infinity,
+                source: new ol.source.OSM({
+                    projection: "EPSG:3857"
+                })
+            });
+
             baseLayers['wms4326'] = new ol.layer.Tile({
                 preload: Infinity,
                 source: new ol.source.TileWMS({
@@ -21154,21 +21163,14 @@ Ext.define('Voyant.panel.DreamScape', {
                 })
             });
 
-            baseLayers['watercolor'] =  new ol.layer.Tile({
-                preload: Infinity,
-                source: new ol.source.Stamen({
-                    //cacheSize: 2048,
-                    layer: 'watercolor',
-                    projection: "EPSG:3857"
-                })
-            });
-
-            baseLayers['osm'] = new ol.layer.Tile({
-                preload: Infinity,
-                source: new ol.source.OSM({
-                    projection: "EPSG:3857"
-                })
-            });
+            // baseLayers['watercolor'] =  new ol.layer.Tile({
+            //     preload: Infinity,
+            //     source: new ol.source.Stamen({
+            //         //cacheSize: 2048,
+            //         layer: 'watercolor',
+            //         projection: "EPSG:3857"
+            //     })
+            // });
 
             baseLayers['arcGIS'] = new ol.layer.Tile({
                 preload: Infinity,
@@ -21181,17 +21183,17 @@ Ext.define('Voyant.panel.DreamScape', {
 //            this.setContentEl(overlayEl.down('.popup-content'));
             var map = new ol.Map({
                 layers: [
-                    baseLayers['watercolor'],
+                    baseLayers['osm'],
 
-                    new ol.layer.Tile({
-                        preload: Infinity,
-                        source: new ol.source.Stamen({
-                            cacheize: 2048,
-                            layer: 'toner-hybrid',
-                            projection: "EPSG:3857"
-                        }),
-                        id: 'overlayLayer'
-                    })
+                    // new ol.layer.Tile({
+                    //     preload: Infinity,
+                    //     source: new ol.source.Stamen({
+                    //         cacheize: 2048,
+                    //         layer: 'toner-hybrid',
+                    //         projection: "EPSG:3857"
+                    //     }),
+                    //     id: 'overlayLayer'
+                    // })
                 ],
 //                overlays: [overlay],
                 target: el.getId(),
