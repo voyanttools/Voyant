@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Nov 07 18:57:15 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Nov 24 22:32:28 UTC 2023 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -16848,7 +16848,7 @@ Ext.define('Voyant.panel.Catalogue', {
 								},
 								failure: function(response, opts) {
 									catalogue.unmask();
-									me.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
+									catalogue.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
 								}
 							})
 
@@ -16876,7 +16876,7 @@ Ext.define('Voyant.panel.Catalogue', {
 								},
 								failure: function(response, opts) {
 									catalogue.unmask();
-									me.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
+									catalogue.showResponseError("Unable to export corpus: "+catalogue.getCorpus().getId(), response);
 								}
 							})
 
