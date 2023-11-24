@@ -14,7 +14,7 @@ Ext.apply(Voyant.panel.Correlations.i18n, {
 "helpTip":"The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).",
 "minInDocumentsCountRatioLabel":"minimum coverage (%{0})"});
 Ext.apply(Voyant.panel.VoyantHeader.i18n, {
-"homeConfirm":"¿Estás seguro de querrer de nuevo empezar (y dejar el actual corpus)?",
+"homeConfirm":"¿Estás seguro de querer empezar de nuevo (y abandonar el corpus actual)?",
 "title":"Voyant Tools",
 "helpTip":"Voyant Tools es un entorno de lectura y análisis para textos digitales basado en web",
 "homeTip":"Clic para comenzar de nuevo desde la pantalla de creación del corpus",
