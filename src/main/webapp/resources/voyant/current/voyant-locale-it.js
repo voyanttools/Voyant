@@ -732,6 +732,7 @@ Ext.apply(Voyant.widget.StopListOption.i18n, {
 "hu":"Ungherese",
 "editStopListTitle":"Modifica la lista",
 "hy":"Armeno",
+"uk":"Ucraino",
 "id":"Indonesiano",
 "new":"Nuova lista definita dall'utente",
 "el":"Greco",

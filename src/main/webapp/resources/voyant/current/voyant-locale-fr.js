@@ -732,6 +732,7 @@ Ext.apply(Voyant.widget.StopListOption.i18n, {
 "hu":"Hongrois",
 "editStopListTitle":"Modifier la liste des mots vides",
 "hy":"Arménien",
+"uk":"Ukrainien",
 "id":"Indonésien",
 "new":"Nouvelle liste créée par l’utilisateur",
 "el":"Grec",

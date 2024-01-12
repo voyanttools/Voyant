@@ -732,6 +732,7 @@ Ext.apply(Voyant.widget.StopListOption.i18n, {
 "hu":"Húngaro",
 "editStopListTitle":"Editar a lista de palavras excluídas (stoplist)",
 "hy":"Armênio",
+"uk":"Ucraniano",
 "id":"Indonésio",
 "new":"Nova lista definida pelo usuário",
 "el":"Grego",
