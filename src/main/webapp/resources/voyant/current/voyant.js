@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Nov 24 22:32:28 UTC 2023 */
+/* This file created by JSCacher. Last modified: Fri Jan 12 16:45:34 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -11769,7 +11769,8 @@ Ext.define('Voyant.widget.StopListOption', {
     			ru: "stop.ru.txt",
     			se: "stop.sv.txt",
     			th: "stop.th.txt",
-    			tr: "stop.tr.txt"
+    			tr: "stop.tr.txt",
+				uk: "stop.uk.txt"
     		},
 	    	i18n: {
 	    		
