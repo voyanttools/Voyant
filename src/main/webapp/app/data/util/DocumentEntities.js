@@ -25,6 +25,32 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		timeoutId: undefined
 	},
 	
+	// FIXME duplicating colors from styles.css
+	entitiesColors: {
+		date: '#80b1d3',
+		time: '#80b1d3',
+		duration: '#80b1d3',
+		person: '#fdb462',
+		organization: '#bebada',
+		gpe: '#bebada',
+		loc: '#b3de69',
+		location: '#b3de69',
+		money: '#ffffb3',
+		misc: '#8dd3c7',
+		product: undefined,
+		cardinal: undefined,
+		quantity: undefined,
+		event: undefined,
+		fac: undefined,
+		language: undefined,
+		law: undefined,
+		norp: undefined,
+		percent: undefined,
+		work_of_art: undefined,
+		unknown: undefined,
+		set: undefined
+	},
+
 	constructor: function(params, callback) {
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 		this.initConfig();
@@ -67,6 +93,8 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 				if (win) {
 					win.close();
 				}
+
+				me._addEntitiesToCategories(data.entities);
 				callback.call(me, data.entities);
 			} else {
 				me.updateProgress(data.status, progressArray);
@@ -86,7 +114,8 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 							win.close();
 						}
 					}
-	
+
+					me._addEntitiesToCategories(data.entities);
 					callback.call(me, data.entities);
 				} else {
 					delete params.retryFailures;
@@ -237,7 +266,26 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		win.setTitle(this.localize('identifyingDocEnts')+' '+numDone+' / '+total);
 
 		win.show();
-	}
+	},
 
+	_addEntitiesToCategories: function(entities) {
+		var categories = {};
+		entities.forEach(function(entity) {
+			if (categories[entity.type] === undefined) {
+				categories[entity.type] = [];
+			}
+			categories[entity.type].push(entity.term);
+		});
+		var catMan = Voyant.application.getCategoriesManager();
+		Object.keys(categories).forEach(function(category) {
+			var color = this.entitiesColors[category];
+			if (color !== undefined) {
+				catMan.addCategory(category);
+				catMan.addTerms(category, categories[category]);	
+				catMan.setCategoryFeature(category, 'color', color);
+			}
+		}, this);
+		
+	}
 
 });
