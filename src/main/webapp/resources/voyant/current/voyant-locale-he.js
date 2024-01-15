@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"מסמכים",
 "numbersCommasOnly":"Comma-separated numbers only.",
 "PleaseSelectExisting":"Please be sure to select a corpus.",
-"tableOptionsText":"Specify how documents should be extracted (currently only supported for MS Excel: .XLS, XLSX). For more information see the documentation on creating a corpus with <a href=\"{0}\" target=\"voyantdocs\">tabular data</a>.",
+"tableOptionsText":"Specify how documents should be extracted. For more information see the documentation on creating a corpus with <a href=\"{0}\" target=\"voyantdocs\">tabular data</a>.",
 "inputFormat":"Input Format",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"מעמודות שלמות",

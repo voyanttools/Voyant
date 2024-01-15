@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"مستندات",
 "numbersCommasOnly":"ارقام محددة بفاصلة فقط",
 "PleaseSelectExisting":"الرجاء إختيار مكنز",
-"tableOptionsText":"اختيار طريقة إستخراج المستندات (الصيغات المعتمدة حصريا من MS Excel: .XLS, XLSX فقط). للمزيد من المعلومات انظرالتوثيق حول انشاء مكنزمن<a href=\"{0}\" target=\"voyantdoc\"\" البيانات المجدولة</a>.",
+"tableOptionsText":"اختيار طريقة إستخراج المستندات . للمزيد من المعلومات انظرالتوثيق حول انشاء مكنزمن<a href=\"{0}\" target=\"voyantdoc\"\" البيانات المجدولة</a>.",
 "inputFormat":"صيغة الإدخال",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"من جميع الخلايا في العمود",

@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"Documenti",
 "numbersCommasOnly":"Solamente numeri separati da virgola.",
 "PleaseSelectExisting":"Per favore, assicurati di selezionare un corpus",
-"tableOptionsText":"Specifica come i documenti dovranno essere estratti (attualmente supportato solo per MS Excel: .xls, xlsx). Per maggiori informazioni vedi la documentazione su creare un corpus con <a href=\"{0}\" target=\"voyantdocs\">dati tabulari</a>.",
+"tableOptionsText":"Specifica come i documenti dovranno essere estratti. Per maggiori informazioni vedi la documentazione su creare un corpus con <a href=\"{0}\" target=\"voyantdocs\">dati tabulari</a>.",
 "inputFormat":"Formato di input",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"Da tutte le colonne",

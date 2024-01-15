@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"Dokumenty",
 "numbersCommasOnly":"Pouze čísla oddělená čárkou.",
 "PleaseSelectExisting":"Prosím ujistěte se, že jste vybrali korpus.",
-"tableOptionsText":"Specifikujte, jak by měly být dokumenty extrahovány (v současnosti podporováno pro MS Excel: .xls, xlsx). Pro více informací konzultujte dokumentaci o vytváření korpusu s <a href=\"{0}\" target=\"voyantdocs\">tabulkovými daty</a>.",
+"tableOptionsText":"Specifikujte, jak by měly být dokumenty extrahovány. Pro více informací konzultujte dokumentaci o vytváření korpusu s <a href=\"{0}\" target=\"voyantdocs\">tabulkovými daty</a>.",
 "inputFormat":"Formát vstupu",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"z celých sloupců",

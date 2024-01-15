@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"Документы",
 "numbersCommasOnly":"Только числа, разделенные запятыми.",
 "PleaseSelectExisting":"Пожалуйста, убедитесь, что выбрали корпус",
-"tableOptionsText":"Укажите формат извлекаемого текста (в настоящее время для MS Excel поддерживаются только: .XLS, XLSX). Для дополнительной информации см. документацию по созданию корпуса с <a href=\"{0}\" target=\"voyantdocs\">табличными данными</a>.",
+"tableOptionsText":"Укажите формат извлекаемого текста. Для дополнительной информации см. документацию по созданию корпуса с <a href=\"{0}\" target=\"voyantdocs\">табличными данными</a>.",
 "inputFormat":"Формат ввода",
 "xpathPubDate":"Дата публикации",
 "tableDocumentsColumns":"из всех столбцов",

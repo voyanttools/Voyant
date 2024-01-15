@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"Dokumenti",
 "numbersCommasOnly":"Samo brojevi razdvojeni zarezom",
 "PleaseSelectExisting":"Svakako odaberite korpus",
-"tableOptionsText":"Odredite kako bi dokumenti trebali biti ekstraktirani (trenutno je samo podržan MS Excel: .xls, xlsx). Za više informacija, pogledajte dokumentaciju o stvaranju korpusa sa <a href=\"{0}\" target=\"voyantdocs\"> tabelarnim podacima </a>.",
+"tableOptionsText":"Odredite kako bi dokumenti trebali biti ekstraktirani. Za više informacija, pogledajte dokumentaciju o stvaranju korpusa sa <a href=\"{0}\" target=\"voyantdocs\"> tabelarnim podacima </a>.",
 "inputFormat":"Format za unos",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"iz cijelih kolona",

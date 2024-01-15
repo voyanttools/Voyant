@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"ドキュメント",
 "numbersCommasOnly":"コンマ区切り数値のみ",
 "PleaseSelectExisting":"コーパスが選択されていることを確認してください",
-"tableOptionsText":"ドキュメントをどのように抽出するかを指定してください（現在はMS ExcelのXLS, XLSXのみサポートされています)。より詳しくはコーパス作成と<a href=\"{0}\" target=\"voyantdocs\">表データ</a>についてのマニュアルを参照してください",
+"tableOptionsText":"ドキュメントをどのように抽出するかを指定してください。より詳しくはコーパス作成と<a href=\"{0}\" target=\"voyantdocs\">表データ</a>についてのマニュアルを参照してください",
 "inputFormat":"入力フォーマット",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"すべてのカラムから",
