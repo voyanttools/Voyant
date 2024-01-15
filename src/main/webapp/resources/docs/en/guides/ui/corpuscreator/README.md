@@ -248,7 +248,7 @@ If any Pointer is specified but doesn't exist in the document an exception will 
 
 ## Tables
 
-Voyant allows you to work flexibly with tabular data such as spreadsheets. At the moment the options described here only work with MS Excel files (.xsl or .xslx). Voyant can currently extract text from other tabular file formats such as OpenOffice, Pages, and comma-separated values (CSV), but in that case each file is considered as a separate document. The options below allow you to extract multiple documents from a single MS Excel file (or from several files).
+Voyant allows you to work flexibly with tabular data such as spreadsheets. At the moment the options described here only work with MS Excel files (.xsl or .xslx) and comma and tab-separated values files (CSV and TSV). Voyant can currently extract text from other tabular file formats such as OpenOffice and Pages, but in that case each file is considered as a separate document. The options below allow you to extract multiple documents from a single file (or from several files).
 
 The options for tables are a bit complex, but there are a lot of possibilities when working with tabular data, so it's worth it, right?
 
