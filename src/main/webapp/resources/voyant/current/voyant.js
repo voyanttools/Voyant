@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Jan 12 16:45:34 UTC 2024 */
+/* This file created by JSCacher. Last modified: Mon Jan 15 21:40:35 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -10261,6 +10261,32 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		timeoutId: undefined
 	},
 	
+	// FIXME duplicating colors from styles.css
+	entitiesColors: {
+		date: '#80b1d3',
+		time: '#80b1d3',
+		duration: '#80b1d3',
+		person: '#fdb462',
+		organization: '#bebada',
+		gpe: '#bebada',
+		loc: '#b3de69',
+		location: '#b3de69',
+		money: '#ffffb3',
+		misc: '#8dd3c7',
+		product: undefined,
+		cardinal: undefined,
+		quantity: undefined,
+		event: undefined,
+		fac: undefined,
+		language: undefined,
+		law: undefined,
+		norp: undefined,
+		percent: undefined,
+		work_of_art: undefined,
+		unknown: undefined,
+		set: undefined
+	},
+
 	constructor: function(params, callback) {
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 		this.initConfig();
@@ -10303,6 +10329,8 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 				if (win) {
 					win.close();
 				}
+
+				me._addEntitiesToCategories(data.entities);
 				callback.call(me, data.entities);
 			} else {
 				me.updateProgress(data.status, progressArray);
@@ -10322,7 +10350,8 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 							win.close();
 						}
 					}
-	
+
+					me._addEntitiesToCategories(data.entities);
 					callback.call(me, data.entities);
 				} else {
 					delete params.retryFailures;
@@ -10473,8 +10502,27 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		win.setTitle(this.localize('identifyingDocEnts')+' '+numDone+' / '+total);
 
 		win.show();
-	}
+	},
 
+	_addEntitiesToCategories: function(entities) {
+		var categories = {};
+		entities.forEach(function(entity) {
+			if (categories[entity.type] === undefined) {
+				categories[entity.type] = [];
+			}
+			categories[entity.type].push(entity.term);
+		});
+		var catMan = Voyant.application.getCategoriesManager();
+		Object.keys(categories).forEach(function(category) {
+			var color = this.entitiesColors[category];
+			if (color !== undefined) {
+				catMan.addCategory(category);
+				catMan.addTerms(category, categories[category]);	
+				catMan.setCategoryFeature(category, 'color', color);
+			}
+		}, this);
+		
+	}
 
 });
 /*
@@ -19909,7 +19957,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
             	            	if (form.isValid()) {
             	            		var files = filefield.fileInputEl.dom.files;
             	            		var badFilesRe = /\.(png|gif|jpe?g|mp[234a]|mpeg|exe|wmv|avi|ppt|mpg|tif|wav|mov|psd|wma|ai|bmp|pps|aif|pub|dwg|indd|swf|asf|mbd|dmg|flv)$/i;
-            	            		var goodFilesRe = /\.(txt|pdf|html?|xml|docx?|rtf|pages|epub|odt|zip|jar|tar|gz|ar|cpio|bzip2|bz2|gzip|xlsx?)$/i;
+            	            		var goodFilesRe = /\.(txt|pdf|html?|xml|docx?|rtf|pages|epub|odt|zip|jar|tar|gz|ar|cpio|bzip2|bz2|gzip|csv|tsv|xlsx?)$/i;
             	            		var badFiles = [];
             	            		var unknownFiles = [];
             	            		for (var i = 0, len = files.length; i<len; i++) {
