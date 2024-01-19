@@ -14,7 +14,7 @@ This document outlines how to download, run, and control the server.
 
 ### Requirements
 
-Ensure your computer has Java version 8 or the latest. Instructions for installing Java are available here -- [https://www.wikihow.com/Run-a-.Jar-Java-File](https://www.wikihow.com/Run-a-.Jar-Java-File). Here is another link for how to install Java -- [https://java.com/en/download/help/download\_options.html](https://java.com/en/download/help/download_options.html)
+Ensure your computer has Java version 11 or later. Java 11 can be downloaded from [https://jdk.java.net/archive/](https://jdk.java.net/archive/). Instructions for installing Java are available here: [https://www.wikihow.com/Run-a-.Jar-Java-File](https://www.wikihow.com/Run-a-.Jar-Java-File). Here is another link for how to install Java: [https://java.com/en/download/help/download\_options.html](https://java.com/en/download/help/download_options.html)
 
 ### Downloading Voyant Server
 
