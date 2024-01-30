@@ -14,7 +14,7 @@ Ext.apply(Voyant.panel.Correlations.i18n, {
 "helpTip":"The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).",
 "minInDocumentsCountRatioLabel":"minimum coverage (%{0})"});
 Ext.apply(Voyant.panel.VoyantHeader.i18n, {
-"homeConfirm":"¿Estás seguro de querrer de nuevo empezar (y dejar el actual corpus)?",
+"homeConfirm":"¿Estás seguro de querer empezar de nuevo (y abandonar el corpus actual)?",
 "title":"Voyant Tools",
 "helpTip":"Voyant Tools es un entorno de lectura y análisis para textos digitales basado en web",
 "homeTip":"Clic para comenzar de nuevo desde la pantalla de creación del corpus",
@@ -332,7 +332,7 @@ Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "xpathDocuments":"Documentos ",
 "numbersCommasOnly":"Solamente números separados por comas.",
 "PleaseSelectExisting":"Por favor, asegurese de seleccionar un corpus. ",
-"tableOptionsText":"Especifica cómo deben extraerse los documentos (actualmente sólo se admite para MS Excel: .XLS, XLSX). Para obtener más información, consulta la documentación sobre la creación de un corpus con <a href=\"{0}\" target=\"voyantdocs\"> datos tabulares </a>.",
+"tableOptionsText":"Especifica cómo deben extraerse los documentos. Para obtener más información, consulta la documentación sobre la creación de un corpus con <a href=\"{0}\" target=\"voyantdocs\"> datos tabulares </a>.",
 "inputFormat":"Formato de ingreso ",
 "xpathPubDate":"Publication Date",
 "tableDocumentsColumns":"Desde las columnas completas",
@@ -732,6 +732,7 @@ Ext.apply(Voyant.widget.StopListOption.i18n, {
 "hu":"Húngaro",
 "editStopListTitle":"Editar la lista de palabras excluidas",
 "hy":"Armenio ",
+"uk":"Ucranio",
 "id":"Indonesia ",
 "new":"Nueva lista -definida por el usuario-",
 "el":"Griego ",

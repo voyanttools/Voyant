@@ -20,12 +20,6 @@
 		"latlong": "43.6319,-79.3716",
 		"contact": ""
 	},{
-        "name": "Huma-Num",
-        "url": "https://voyant-tools.huma-num.fr/",
-        "location": "Lyon, France",
-        "latlong": "45.7718126,4.854807",
-        "contact": "<a href='https://www.huma-num.fr/informations-pratiques/' target='_blank'>Huma-Num</a>"
-    },{
         "name": "South African Centre for Digital Language Resources (SADiLaR)",
         "url": "https://service.sadilar.org/voyant/",
         "location": "South Africa",

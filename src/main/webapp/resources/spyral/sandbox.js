@@ -161,8 +161,10 @@ function Sandboxer(event) {
 							data = JSON.parse(data);
 						} else if (blob.type === 'application/javascript') {
 							// it's a function and we'll eval it in loadVariable
-						} else if (blob.type === 'text/xml' || blob.type === 'text/html') {
+						} else if (blob.type === 'text/xml') {
 							data = new DOMParser().parseFromString(data, 'text/xml');
+						} else if (blob.type === 'text/html') {
+							data = new DOMParser().parseFromString(data, 'text/html');
 						} else {
 							console.warn('unknown blob type: '+blob.type);
 							resolve(blob);
