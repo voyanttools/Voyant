@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Jan 15 21:40:35 UTC 2024 */
+/* This file created by JSCacher. Last modified: Wed Jan 31 20:52:01 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -40348,6 +40348,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			width: 500,
 			height: 500,
 			minimizable: true,
+			alwaysOnTop: true,
 			closeAction: 'hide',
 			tbar: [{
 				text: this.localize('home'),
