@@ -8,11 +8,13 @@ Compare the following two displays:
 
 The one on the left uses the _Auto-detect_ setting (so the English stopword list in this case) and the one on the right uses the _None_ setting.
 
-<div style="float: right; width: 200px;">{@img options.png Options}</div> In Voyant Tools you can select from pre-existing stopword lists in various languages or create your own. For tools that support stopword lists, you can begin by clicking on the options icon (the may not appear if it's a tool that doesn't support stopwords).
+<div style="float: right; width: 200px;">{@img options.png Options}</div> In Voyant Tools you can select from pre-existing stopword lists in various languages or create your own. For tools that support stopword lists, you can begin by clicking on the options icon (the option may not appear if it's a tool that doesn't support stopwords).
 
 This will produce a dialog box where you can select from one of the existing stopword lists. In many cases, you don't need to select a list or a language, Voyant will _Auto-detect_ the language of the text and automatically select a stopword list. If you don't want a stopword list at all, you can select _None_. The _New User-Defined List_ can be used if you want to start your own list from scratch, not based on one of the existing lists.
 
-All lists are customizable. You can select a language and then click on the _Edit List_ button to modify words (this is also a good way of seeing what's in any given list, even if you don't intend to edit it). Stopword lists are composed of one word per line (though remember that what Voyant considers a word might be different from what's in the list). One you're done, you can save the list and then proceed to apply the options.
+The existing lists and their contents are viewable in the [GitHub repository](https://github.com/voyanttools/trombone/tree/master/src/main/resources/org/voyanttools/trombone/stopwords).
+
+All lists are customizable. You can select a language and then click on the _Edit List_ button to modify words (this is also a good way of seeing what's in any given list, even if you don't intend to edit it). Stopword lists are composed of one word per line (though remember that what Voyant considers a word might be different from what's in the list). Once you're done, you can save the list and then proceed to apply the options.
 
 <table style="width: 90%; margin-left: auto; margin-right: auto;"><tr><td><div style="max-width: 400px;">{@img dialog.png Stopwords Dialog}</div></td><td><div style="max-width: 250px; text-align: center;">{@img edit.png Edit Dialog}</div></td></tr></table>
 
