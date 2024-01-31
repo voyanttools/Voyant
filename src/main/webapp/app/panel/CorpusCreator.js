@@ -7,7 +7,8 @@ Ext.define('Voyant.panel.CorpusCreator', {
     statics: {
     	i18n: {
 			corpusSortInitialOrder: 'initial order',
-			dtocIndexDoc: 'DToC Index Document'
+			dtocIndexDoc: 'DToC Index Document',
+			textEncoding: 'Text Encoding'
     	},
     	api: {
     		inputFormat: undefined,
@@ -45,6 +46,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		jsonKeywordsPointer: undefined,
     		jsonCollectionPointer: undefined,
     		jsonExtraMetadataPointer: undefined,
+			encoding: undefined,
     		tokenization: undefined,
     		adminPassword: undefined,
     		accessPassword: undefined,
@@ -746,6 +748,14 @@ Ext.define('Voyant.panel.CorpusCreator', {
 								    store:[['',me.localize('tokenizationAuto')],['wordBoundaries',me.localize("tokenizationWordBoundaries")],['whitespace',me.localize("tokenizationWhitespace")]],
 								    forceSelection:true,
 								    value: ''
+								},{
+									xtype:'combo',
+									fieldLabel: me.localize('textEncoding'),
+									name: 'encoding',
+									queryMode:'local',
+									store:[['','Auto'],['ISO-8859-1', 'ISO-8859-1 (Latin 1)'],['UTF-8', 'UTF-8'],['UTF-16BE', 'UTF-16BE'],['UTF-16LE', 'UTF-16LE'],['windows-1252', 'Windows-1252 (ANSI)']],
+									forceSelection:false,
+									value: ''
 								}
 							]
 						},{
