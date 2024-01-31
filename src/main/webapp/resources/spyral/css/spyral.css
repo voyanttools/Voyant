@@ -228,3 +228,7 @@ body.exported-notebook {
 .docsWindowContent .pre {
 	font-family: monospace;
 }
+
+.docsWindowContent strong {
+	font-weight: 700;
+}
