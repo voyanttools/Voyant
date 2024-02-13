@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Feb 13 15:43:05 UTC 2024 */
+/* This file created by JSCacher. Last modified: Tue Feb 13 17:39:38 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -15753,6 +15753,13 @@ Ext.define('Voyant.widget.EntitiesList', {
 		this.callParent(arguments);
 	},
 
+	clearEntities: function() {
+		var store = this.getStore();
+		if (store !== undefined) {
+			store.removeAll();
+		}
+	},
+	
 	addEntities: function(entities) {
 		var store = this.getStore();
 		if (store !== undefined) {
@@ -27992,7 +27999,7 @@ Ext.define('Voyant.panel.Reader', {
 		}
     },
 
-	showTermLocation(docIndex, position, term) {
+	showTermLocation: function(docIndex, position, term) {
 		var bufferPosition = position - (this.getApiParam('limit')/2);
 		var doc = this.getCorpus().getDocument(docIndex);
 		this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
@@ -28072,6 +28079,9 @@ Ext.define('Voyant.panel.Reader', {
 			docIndex.push(0);
 		}
 
+		var entitiesList = this.down('entitieslist');
+		entitiesList.clearEntities();
+
 		this.clearEntityHighlights();
 
 		var me = this;
@@ -28084,7 +28094,7 @@ Ext.define('Voyant.panel.Reader', {
 				me.clearEntityHighlights(); // clear again in case failed documents were rerun
 				me.setDocumentEntitiesStore(entities);
 				me.highlightEntities();
-				me.down('entitieslist').show().addEntities(entities);
+				entitiesList.expand().show().addEntities(entities);
 			}
 		});
 	},
