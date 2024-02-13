@@ -433,7 +433,7 @@ Ext.define('Voyant.panel.Reader', {
 		}
     },
 
-	showTermLocation(docIndex, position, term) {
+	showTermLocation: function(docIndex, position, term) {
 		var bufferPosition = position - (this.getApiParam('limit')/2);
 		var doc = this.getCorpus().getDocument(docIndex);
 		this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
