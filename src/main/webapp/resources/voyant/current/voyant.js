@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Jan 31 20:52:01 UTC 2024 */
+/* This file created by JSCacher. Last modified: Tue Feb 13 15:43:05 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -40646,6 +40646,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 			noResults: 'No matching notebooks',
 			suggested: 'Suggested Notebooks',
 			load: 'Open Selected Notebook',
+			new: 'New Notebook',
 			close: 'Close'
 		}
 	},
@@ -40843,6 +40844,13 @@ Ext.define('Voyant.notebook.Catalogue', {
 						this.window.close();
 					},
 					scope: this
+				},{
+					text: this.localize('new'),
+					glyph: 'xf067@FontAwesome',
+					handler: function(but) {
+						let url = Voyant.application.getBaseUrl()+"spyral/";
+						Voyant.application.openUrl(url);
+					}
 				},{
 					text: this.localize('load'),
 					glyph: 'xf115@FontAwesome',
