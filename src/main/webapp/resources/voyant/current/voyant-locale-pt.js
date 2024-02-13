@@ -776,7 +776,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "autoSaveAvailableTitle":"Salvamento automático disponível",
 "cannotMoveLower":"O bloco já está no ponto mais baixo.",
 "failedNotebookLoad":"Falha ao carregar o caderno especificado. Um novo caderno será aberto.",
-"openTip":"Abrir um Caderno Spytal (colando um código JSON).",
+"openTip":"Abrir um Caderno Spytal",
 "differentUrl":"Esse caderno localizava-se aparentemente em outra URL. Se tem certeza de que esta URL está correta, é melhor executar novamente todos os blocos de código para assegurar que tudo funciona corretamente. Gostaria de executar todos os blocos de código? </p><pre>esta URL: {1}\n URL deste caderno: {0}",
 "cannotMoveHigher":"O bloco já está no topo e não pode ser movido para cima.",
 "fetchingNotebook":"Recuperação do caderno...",

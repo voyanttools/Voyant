@@ -776,7 +776,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "autoSaveAvailableTitle":"Sauvegarde disponible",
 "cannotMoveLower":"Ce bloc est déjà tout en bas.",
 "failedNotebookLoad":"Impossible de charger le carnet demandé. Un nouveau carnet va s’ouvrir.",
-"openTip":"Ouvrir un carnet Spyral (en collant du code JSON)",
+"openTip":"Ouvrir un carnet Spyral",
 "differentUrl":"Ce carnet se trouvait apparemment à une autre URL. Si vous êtes certain(e) que cette URL est exacte, il vaut peut-être mieux exécuter à nouveau tous les blocs de code pour vous assurer que tout fonctionne normalement. Voulez-vous exécuter tous les blocs de code ?</p><pre>Cette URL : {1}\nURL de ce carnet : {0}",
 "cannotMoveHigher":"Ce bloc est déjà tout en haut.",
 "fetchingNotebook":"Récupération du carnet…",

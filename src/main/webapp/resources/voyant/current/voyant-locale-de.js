@@ -776,7 +776,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "autoSaveAvailableTitle":"Autosave verfügbar",
 "cannotMoveLower":"Dieser Block ist bereits ganz unten und kann nicht weiter nach unten bewegt werden.",
 "failedNotebookLoad":"Laden des gewünschten Notebooks fehlgeschlagen. Eine neue Notebook-Vorlage wird stattdessen geöffnet.",
-"openTip":"Spyral Notebook öffnen (durch Einfügen von JSON Code)",
+"openTip":"Spyral Notebook öffnen",
 "differentUrl":"Dieses Notebook scheint an einer anderen URL lokalisiert worden zu sein. Wenn Sie sicher sind, dass die URL korrekt ist, können Sie alle Codeblocks erneut durchführen lassen, um eine korrekte Funktionsweise sicherzustellen. Möchten Sie alle Codeblocks durchführen?</p><pre>diese URL: {1}\nURL dieses Notebooks: {0}",
 "cannotMoveHigher":"Dieser Block ist bereits ganz oben und kann nicht weiter nach oben bewegt werden.",
 "fetchingNotebook":"Notebook wird wiederhergestellt...",

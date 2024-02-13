@@ -776,7 +776,7 @@ Ext.apply(Voyant.notebook.Notebook.i18n, {
 "autoSaveAvailableTitle":"Autosave Available",
 "cannotMoveLower":"This block is already at the bottom and cannot be moved lower.",
 "failedNotebookLoad":"Failed to load the specified notebook. A new notebook template will be presented instead.",
-"openTip":"Open a Spyral Notebook (by pasting in JSON code).",
+"openTip":"Open a Spyral Notebook (by uploading a file)",
 "differentUrl":"This notebook seems to be have been located at a different URL. If you’re sure this URL is correct, you may want to rerun all the code blocks to ensure that everything is functioning correctly. Do you wish to run all the code blocks?</p><pre>this URL: {1}\nthis notebook’s URL: {0}",
 "cannotMoveHigher":"This block is already at the top and cannot be moved higher.",
 "fetchingNotebook":"Fetching notebook…",
