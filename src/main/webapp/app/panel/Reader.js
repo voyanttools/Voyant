@@ -513,6 +513,9 @@ Ext.define('Voyant.panel.Reader', {
 			docIndex.push(0);
 		}
 
+		var entitiesList = this.down('entitieslist');
+		entitiesList.clearEntities();
+
 		this.clearEntityHighlights();
 
 		var me = this;
@@ -525,7 +528,7 @@ Ext.define('Voyant.panel.Reader', {
 				me.clearEntityHighlights(); // clear again in case failed documents were rerun
 				me.setDocumentEntitiesStore(entities);
 				me.highlightEntities();
-				me.down('entitieslist').show().addEntities(entities);
+				entitiesList.expand().show().addEntities(entities);
 			}
 		});
 	},

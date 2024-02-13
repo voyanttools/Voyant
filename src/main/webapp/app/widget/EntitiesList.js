@@ -164,6 +164,13 @@ Ext.define('Voyant.widget.EntitiesList', {
 		this.callParent(arguments);
 	},
 
+	clearEntities: function() {
+		var store = this.getStore();
+		if (store !== undefined) {
+			store.removeAll();
+		}
+	},
+	
 	addEntities: function(entities) {
 		var store = this.getStore();
 		if (store !== undefined) {
