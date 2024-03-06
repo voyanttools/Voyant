@@ -13715,6 +13715,13 @@ var Spyral = (function () {
 				}
 				contents = this;
 			}
+			if (contents instanceof Node) {
+				if (contents instanceof Element) {
+					contents = contents.outerHTML;
+				} else if ((contents instanceof Document || contents instanceof DocumentFragment) && contents.firstElementChild !== null) {
+					contents = contents.firstElementChild.outerHTML;
+				}
+			}
 			if (contents.then) { // check if we currently have a promise
 				return contents.then(function(text) {show(text, len);})
 			}
