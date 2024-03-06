@@ -169,6 +169,13 @@ Date	Location	ID	English (en)	French (fr)	Italian (it)	Spanish (es)	Portuguese (
 2018-05-29	Voyant.panel.TermsBerry	inDocs	In Docs	Dans les documents			Nos documentos		В документах	In Dokumenten													V dokumentih
 2018-05-29	Voyant.panel.TermsBerry	reset	Reset	Réinitialiser			Reiniciar		Перезапустить	Neustart													Ponastavi
 2018-05-29	Voyant.panel.TermsBerry	tfidf	tf-idf	TF-IDF			tf-idf		tf-idf	TF-IDF													tf-idf
+2024-03-06	Voyant.panel.Trends	displayTip	Chart display options																				
+2024-03-06	Voyant.panel.Trends	labelsTip	Toggle term labels																				
+2024-03-06	Voyant.panel.Trends	areaTip	Area chart																				
+2024-03-06	Voyant.panel.Trends	barTip	Columns chart																				
+2024-03-06	Voyant.panel.Trends	lineTip	Line chart																				
+2024-03-06	Voyant.panel.Trends	stackedTip	Stacked bar chart																				
+2024-03-06	Voyant.panel.Trends	barlineTip	Line and stacked bar chart																				
 2018-05-29	Voyant.panel.Trends	area	Area	Aire			Área		Область	Bereich													Površina
 2018-05-29	Voyant.panel.Trends	bar	Columns	Colonnes			Colunas		Столбцы	Spalte													Stolpci
 2018-05-29	Voyant.panel.Trends	barline	Line + Stacked Bar	Ligne + barres empilées			Linhas + barras empilhadas		Строка + гистограмма с накоплением	Linie + Stapelbalken													Črta + Zloženi stolpiči
