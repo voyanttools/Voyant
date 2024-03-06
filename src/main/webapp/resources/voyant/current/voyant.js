@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Mar 06 17:27:48 UTC 2024 */
+/* This file created by JSCacher. Last modified: Wed Mar 06 19:07:59 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -20028,6 +20028,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    	        	var input = btn.up('form').down('#input').getValue();
 	    	        	if (input !== '') {
 	    	        		var api = me.getApiParams();
+							delete api.corpus;
 	    	            	delete api.view;
 	    	            	delete api.stopList;
 	    	        		if (api.inputFormat && input.trim().indexOf("<")!==0) {
@@ -20084,13 +20085,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
     
     loadForm: function(form) {
     	var params = {tool: this.getCorpus() ? 'corpus.CorpusMetadata' : 'corpus.CorpusCreator'};
+		var apiParams = this.getApiParams();
     	if (this.getCorpus()) {
     		Ext.apply(params, {
     			corpus: this.getCorpus().getId(),
     			addDocuments: true
     		})
-    	};
-    	var apiParams = this.getApiParams();
+    	} else {
+			delete apiParams.corpus;
+		}
     	delete apiParams.view;
     	delete apiParams.stopList;
     	Ext.apply(params, apiParams);
@@ -42772,11 +42775,6 @@ Ext.define('Voyant.VoyantCorpusApp', {
     loadCorpusFromParams: function(params) {
 		var me = this;
 
-		if (this.errorLoadingCorpus) {
-			delete params.corpus; // remove corpus ID so that it's not used erroneously
-			delete this.errorLoadingCorpus;
-		}
-
 		var view = me.getViewport()
 		view.mask(this.localize("fetchingCorpus"));
 		if (params.archive) { // fix a few URLs we know about
@@ -42796,7 +42794,6 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				me.dispatchEvent('loadedCorpus', this, corpus);
 			}
 		}).otherwise(function() {
-			me.errorLoadingCorpus = true; // track error so we can remove corpus ID from params on subsequent load
 			view.unmask();
 		})
     },
