@@ -247,6 +247,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    	        	var input = btn.up('form').down('#input').getValue();
 	    	        	if (input !== '') {
 	    	        		var api = me.getApiParams();
+							delete api.corpus;
 	    	            	delete api.view;
 	    	            	delete api.stopList;
 	    	        		if (api.inputFormat && input.trim().indexOf("<")!==0) {
@@ -303,13 +304,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
     
     loadForm: function(form) {
     	var params = {tool: this.getCorpus() ? 'corpus.CorpusMetadata' : 'corpus.CorpusCreator'};
+		var apiParams = this.getApiParams();
     	if (this.getCorpus()) {
     		Ext.apply(params, {
     			corpus: this.getCorpus().getId(),
     			addDocuments: true
     		})
-    	};
-    	var apiParams = this.getApiParams();
+    	} else {
+			delete apiParams.corpus;
+		}
     	delete apiParams.view;
     	delete apiParams.stopList;
     	Ext.apply(params, apiParams);

@@ -109,11 +109,6 @@ Ext.define('Voyant.VoyantCorpusApp', {
     loadCorpusFromParams: function(params) {
 		var me = this;
 
-		if (this.errorLoadingCorpus) {
-			delete params.corpus; // remove corpus ID so that it's not used erroneously
-			delete this.errorLoadingCorpus;
-		}
-
 		var view = me.getViewport()
 		view.mask(this.localize("fetchingCorpus"));
 		if (params.archive) { // fix a few URLs we know about
@@ -133,7 +128,6 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				me.dispatchEvent('loadedCorpus', this, corpus);
 			}
 		}).otherwise(function() {
-			me.errorLoadingCorpus = true; // track error so we can remove corpus ID from params on subsequent load
 			view.unmask();
 		})
     },
