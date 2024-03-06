@@ -285,7 +285,7 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerSpacy'),
 							itemId: 'spacy',
 							checked: true,
-							handler: this.nerSeviceHandler,
+							handler: this.nerServiceHandler,
 							scope: this
 						},{
 							xtype: 'menucheckitem',
@@ -293,7 +293,7 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerNssi'),
 							itemId: 'nssi',
 							checked: false,
-							handler: this.nerSeviceHandler,
+							handler: this.nerServiceHandler,
 							scope: this
 						},{
 							xtype: 'menucheckitem',
@@ -301,7 +301,7 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerVoyant'),
 							itemId: 'stanford',
 							checked: false,
-							handler: this.nerSeviceHandler,
+							handler: this.nerServiceHandler,
 							scope: this
 						}
 						// ,{
@@ -310,7 +310,7 @@ Ext.define('Voyant.panel.Reader', {
 						// 	text: 'NER with Voyant (OpenNLP)',
 						// 	itemId: 'opennlp',
 						// 	checked: false,
-						// 	handler: this.nerSeviceHandler,
+						// 	handler: this.nerServiceHandler,
 						// 	scope: this
 						// }
 						]
@@ -500,7 +500,7 @@ Ext.define('Voyant.panel.Reader', {
 		}, this);
 	},
 
-	nerSeviceHandler: function(menuitem) {
+	nerServiceHandler: function(menuitem) {
 		var annotator = menuitem.itemId;
 
 		var docIndex = [];
