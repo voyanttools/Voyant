@@ -354,7 +354,7 @@ Ext.define('Voyant.panel.Trends', {
     			
     			var terms = records.map(function(r) {return r.getTerm()})
     			var colors = terms.map(function(term) {
-	    			return  this.getApplication().getColorForTerm(term, true);
+	    			return this.getApplication().getColorForTerm(term, true);
 	    		}, this);
 	    		if (chartType=='bar') {
 		    		series.push({
@@ -478,10 +478,10 @@ Ext.define('Voyant.panel.Trends', {
     			}, this);
     			
 	    		if (chartType=='bar') {
-	    			var isOneTerm = Ext.Array.unique(records.map(function(r) {return r.getTerm()})).length;
+	    			var isOneTerm = Ext.Array.unique(records.map(function(r) {return r.getTerm()})).length === 1;
 	    			var terms = records.map(function(r) {return (1+r.get("docIndex"))	+") "+r.getTerm()})
 	    			var colors = records.map(function(r) {
-		    			return  isOneTerm ? this.getApplication().getColor(r.get("docIndex"), true) : this.getApplication().getColorForTerm(r.getTerm(), true);
+		    			return isOneTerm ? this.getApplication().getColor(r.get("docIndex"), true) : this.getApplication().getColorForTerm(r.getTerm(), true);
 		    		}, this);
 
 		    		series.push({
