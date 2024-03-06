@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Feb 13 17:39:38 UTC 2024 */
+/* This file created by JSCacher. Last modified: Wed Mar 06 17:27:48 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -32343,7 +32343,7 @@ Ext.define('Voyant.panel.Trends', {
 	        	listeners: {
 	        		afterrender: function(radiogroup) {
 	        			var panel = this.up("window").panel;
-	        			this.setFieldLabel("frequencies");
+	        			this.setFieldLabel(panel.localize("freqsMode"));
 	        			var val = panel.getApiParam("withDistributions");
 	        			radiogroup.getBoxes().forEach(function(item) {
 	        				item.setBoxLabel(panel.localize(item.inputValue));
@@ -32355,15 +32355,7 @@ Ext.define('Voyant.panel.Trends', {
     		},{xtype: 'colorpaletteoption'}]
 	},
     statics: {
-    	i18n: {
-			displayTip: 'Chart display options',
-			labelsTip: 'Toggle term labels',
-			areaTip: 'Area chart',
-			barTip: 'Columns chart',
-			lineTip: 'Line chart',
-			stackedTip: 'Stacked bar chart',
-			barlineTip: 'Line and stacked bar chart'
-    	},
+    	i18n: {},
     	api: {
     		
     		/**
