@@ -95,9 +95,26 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 						},
 						scope: this
 					}
-					// ,{
-					// 	xtype: 'notebookwrapperexport'
-					// }
+					,{
+						itemId: 'exportButton',
+						glyph: 'xf08e@FontAwesome',
+						handler: function(cmp) {
+							// hack to get the export menu item so we can pass it to the export window function
+							// TODO need a better way to do this
+							var exportMenuItem = Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('notebookwrapperexport');
+							Voyant.notebook.editor.button.Export.getExportWindow(exportMenuItem).then(function(exportWin) {
+								exportWin.show();
+							}, function(err) {
+								Ext.Msg.show({
+									title: 'Export Error',
+									msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
+									buttons: Ext.MessageBox.OK,
+									icon: Ext.MessageBox.ERROR
+								});
+							});
+						},
+						scope: this
+					}
 					,{
 						glyph: 'xf014@FontAwesome',
 						tooltip: 'Remove Results',
