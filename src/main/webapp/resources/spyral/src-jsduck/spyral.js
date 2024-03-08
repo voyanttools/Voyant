@@ -1464,9 +1464,30 @@
 /**
 * Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:
 	 * 
-	 * * **topicWords**: a list of topics (words organized into bunches of a specified size)
-	 * * **topicDocuments**: a list of documents and their topic weights
+	 * * **topics**: an array of topics (words organized into bunches of a specified size)
+	 * * **topicDocuments**: an array of documents and their topic weights
 	 *
+	 * Each topic in the **topics** array is an object with the following properties:
+	 * 
+	 * * **words**: an array of the actual words that form the topic. Each word has the same properties as the topic, as well as a "word" property that contains the text content.
+	 * * tokens
+	 * * documentEntropy
+	 * * wordLength
+	 * * coherence
+	 * * uniformDist
+	 * * corpusDist
+	 * * effNumWords
+	 * * tokenDocDiff
+	 * * rank1Docs
+	 * * allocationRatio
+	 * * allocationCount
+	 * * exclusivity
+	 * 
+	 * Each document in the **topicDocuments** array is an object with the following properties:
+	 * 
+	 *  * docId: the document ID
+	 *  * weights: an array of the numbers corresponding to the the weight of each topic in this document
+	 * 
 	 * The config object as parameter can contain the following:
 	 * 
 	 * * **topics**: the number of topics to get (default is 10)
@@ -1494,11 +1515,11 @@
 	 * The config object as parameter can contain the following:
 	 * 
 	 *  * **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  * **annotator**: the annotator to use: 'stanford' or 'nssi'
+	 *  * **annotator**: the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	 * 
 	 * @param {Object} config
 	 * @param {(number|string)} config.docIndex document index to restrict to (can be comma-separated list)
-	 * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi'
+	 * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	 * @returns {Promise<Array>}
 	  * @method entities
  */
