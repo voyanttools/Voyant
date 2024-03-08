@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Mar 06 20:07:47 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Mar 08 19:40:41 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -17526,9 +17526,14 @@ Ext.define('Voyant.panel.Cirrus', {
 	            	maxValue: 500,
 	            	listeners: {
 	            		afterrender: function(slider) {
-	            			slider.maxValue = this.getApiParam("limit")
-	            			slider.increment = parseInt(slider.maxValue/50)
-	            			slider.setValue(this.getApiParam("visible"))
+							slider.maxValue = this.getApiParam("limit")
+							slider.minValue = Math.round(Math.max(5, parseInt(slider.maxValue/20)));
+							if (slider.maxValue % 25 === 0 && slider.minValue % 25 === 0) {
+								slider.increment = 25; // default values handling
+							} else {
+	            				slider.increment = Math.round((slider.maxValue - slider.minValue)/10); // 10 steps across entire range
+							}
+	            			slider.setValue(this.getApiParam("visible"));
 	            		},
 	            		changecomplete: function(slider, newvalue) {
 	            			this.setApiParams({visible: newvalue});
