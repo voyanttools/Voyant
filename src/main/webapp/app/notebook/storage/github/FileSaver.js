@@ -189,6 +189,7 @@ Ext.define("Voyant.notebook.github.FileSaver", {
 	doSave: async function(isPR=false) {
 		const form = this.queryById('saveForm').getForm();
 		if (form.isValid()) {
+			this.fireEvent('fileSaving', this);
 			const {owner, repo, folder, file} = form.getValues();
 			let path = file;
 			if (folder !== '') {

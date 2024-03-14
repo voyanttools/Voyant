@@ -34,6 +34,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		const title = newNotebook ? this.localize('saveNewNotebook') : this.localize('overwriteNotebook');
 		Ext.create('Ext.window.Window', {
 			title: title,
+			modal: true,
 			items: [{
 				xtype: 'form',
 				width: 450,
@@ -93,20 +94,13 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 								if (exists) {
 									form.findField('notebookName').markInvalid('That Notebook ID already exists.');
 								} else {
-									me.doSave(values);
 									win.close();
+									me.doSave(values);
 								}
 							});
 						} else {
-							button.setDisabled(true);
-							me.doSave(values).then(function(didSave) {
-								button.setDisabled(false);
-								if (didSave) {
-									win.close();
-								} else {
-									// TODO show error
-								}
-							});
+							win.close();
+							me.doSave(values);
 						}
 					}
     	        }
@@ -198,6 +192,8 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		const me = this;
 
 		const dfd = new Ext.Deferred();
+
+		me.fireEvent('fileSaving', me);
 
 		if (notebookName.indexOf(this.notebookParent.NOTEBOOK_ID_SEPARATOR) !== -1) {
 			console.warn('doSave: was sent notebookId instead of name');

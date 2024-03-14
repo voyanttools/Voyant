@@ -329,6 +329,9 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.loadFromString(fileData);
 					});
 				},
+				'fileSaving': function() {
+					this.mask(this.localize('saving'));	
+				},
 				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
 					if (notebookId !== null) {
@@ -349,7 +352,6 @@ Ext.define('Voyant.notebook.Notebook', {
 				'saveCancelled': function() {
 				},
 				'close': function() {
-					this.unmask();
 				},
 				scope: this
 			}
@@ -369,6 +371,9 @@ Ext.define('Voyant.notebook.Notebook', {
 							url: url
 						}, 'Spyral Notebook: '+id, url);
 					}
+				},
+				'fileSaving': function() {
+					this.mask(this.localize('saving'));	
 				},
 				'fileSaved': function(src, {owner, repo, branch, path}) {
 					this.githubDialogs.close();
@@ -440,8 +445,6 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 
 	showSaveDialog: function(saveAs) {
-		this.mask(this.localize('saving'));
-		
 		this.getMetadata().setDateNow('modified');
 		this.getMetadata().set({userId: this.accountInfo.id});
 
