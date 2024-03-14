@@ -18,10 +18,13 @@ class Notebook {
 		}
 	}
 	/**
-	 * Returns the target element
+	 * Returns the first DIV element that's a child of the document body. If none exists then one will be created.
 	 * @returns {element}
 	 */
 	static getTarget() {
+		if (document.body.firstElementChild !== null && document.body.firstElementChild.nodeName === 'DIV') {
+			return document.body.firstElementChild
+		}
 		const target = document.createElement("div");
 		document.body.appendChild(target);
 		return target;

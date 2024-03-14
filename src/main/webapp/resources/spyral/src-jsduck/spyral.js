@@ -2676,7 +2676,7 @@
 
 
 /**
-* Returns the target element
+* Returns the first DIV element that's a child of the document body. If none exists then one will be created.
 	 * @returns {element}
 	 * @static
  * @method getTarget
