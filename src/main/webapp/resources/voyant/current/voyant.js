@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Mar 08 19:40:41 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Mar 14 22:37:55 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -39331,6 +39331,7 @@ Ext.define("Voyant.notebook.github.FileSaver", {
 	doSave: async function(isPR=false) {
 		const form = this.queryById('saveForm').getForm();
 		if (form.isValid()) {
+			this.fireEvent('fileSaving', this);
 			const {owner, repo, folder, file} = form.getValues();
 			let path = file;
 			if (folder !== '') {
@@ -39435,6 +39436,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		let loadWin = undefined;
 		loadWin = Ext.create('Ext.window.Window', {
 			title: 'Load from GitHub',
+			modal: true,
 			width: 750,
 			height: 550,
 			closable: false,
@@ -39493,6 +39495,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		let saveWin = undefined;
 		saveWin = Ext.create('Ext.window.Window', {
 			title: 'Save to GitHub',
+			modal: true,
 			width: 750,
 			height: 650,
 			closable: false,
@@ -39602,6 +39605,7 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		const title = newNotebook ? this.localize('saveNewNotebook') : this.localize('overwriteNotebook');
 		Ext.create('Ext.window.Window', {
 			title: title,
+			modal: true,
 			items: [{
 				xtype: 'form',
 				width: 450,
@@ -39661,20 +39665,13 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 								if (exists) {
 									form.findField('notebookName').markInvalid('That Notebook ID already exists.');
 								} else {
-									me.doSave(values);
 									win.close();
+									me.doSave(values);
 								}
 							});
 						} else {
-							button.setDisabled(true);
-							me.doSave(values).then(function(didSave) {
-								button.setDisabled(false);
-								if (didSave) {
-									win.close();
-								} else {
-									// TODO show error
-								}
-							});
+							win.close();
+							me.doSave(values);
 						}
 					}
     	        }
@@ -39766,6 +39763,8 @@ Ext.define("Voyant.notebook.StorageDialogs", {
 		const me = this;
 
 		const dfd = new Ext.Deferred();
+
+		me.fireEvent('fileSaving', me);
 
 		if (notebookName.indexOf(this.notebookParent.NOTEBOOK_ID_SEPARATOR) !== -1) {
 			console.warn('doSave: was sent notebookId instead of name');
@@ -41050,6 +41049,8 @@ Ext.define('Voyant.notebook.Authenticator', {
 			close: 'Close',
 			openSelected: 'Open Selected Notebook',
 			deleteSelected: 'Delete Selected Notebook',
+			deleteConfirm: 'Are you sure you want to permanently delete the selected notebook?',
+			deleting: 'Deleting',
 			notebookDeleted: 'Notebook deleted',
 			errorDeletingNotebook: 'Error deleting notebook'
 		}
@@ -41209,18 +41210,25 @@ Ext.define('Voyant.notebook.Authenticator', {
 					glyph: 'xf1f8@FontAwesome',
 					handler: function(btn) {
 						const win = btn.up('window');
-						const sel = win.down('#notebookslist').getSelection();
+						const notebooksList = win.down('#notebookslist');
+						const sel = notebooksList.getSelection();
 						if (sel[0]) {
-							Ext.Msg.confirm('Delete', 'Are you sure you want to permanently delete the selected notebook?', function(button) {
+							Ext.Msg.confirm('Delete', me.localize('deleteConfirm'), function(button) {
 								if (button === 'yes') {
+									btn.setDisabled(true);
+									notebooksList.mask(me.localize('deleting'));
 									const notebookId = sel[0].get('id');
 									me.deleteNotebook(notebookId).then(function() {
-										win.down('#notebookslist').getStore().remove(sel[0]);
+										notebooksList.unmask();
+										btn.setDisabled(false);
+										notebooksList.getStore().remove(sel[0]);
 										me.toastInfo({
 											html: me.localize('notebookDeleted'),
 											anchor: 'tr'
 										});
 									}, function(err) {
+										notebooksList.unmask();
+										btn.setDisabled(false);
 										Ext.Msg.show({
 											title: me.localize('errorDeletingNotebook'),
 											msg: err,
@@ -41677,6 +41685,9 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.loadFromString(fileData);
 					});
 				},
+				'fileSaving': function() {
+					this.mask(this.localize('saving'));	
+				},
 				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
 					if (notebookId !== null) {
@@ -41697,7 +41708,6 @@ Ext.define('Voyant.notebook.Notebook', {
 				'saveCancelled': function() {
 				},
 				'close': function() {
-					this.unmask();
 				},
 				scope: this
 			}
@@ -41717,6 +41727,9 @@ Ext.define('Voyant.notebook.Notebook', {
 							url: url
 						}, 'Spyral Notebook: '+id, url);
 					}
+				},
+				'fileSaving': function() {
+					this.mask(this.localize('saving'));	
 				},
 				'fileSaved': function(src, {owner, repo, branch, path}) {
 					this.githubDialogs.close();
@@ -41788,8 +41801,6 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 
 	showSaveDialog: function(saveAs) {
-		this.mask(this.localize('saving'));
-		
 		this.getMetadata().setDateNow('modified');
 		this.getMetadata().set({userId: this.accountInfo.id});
 
