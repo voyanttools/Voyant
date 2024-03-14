@@ -13,6 +13,8 @@ Ext.define('Voyant.notebook.Authenticator', {
 			close: 'Close',
 			openSelected: 'Open Selected Notebook',
 			deleteSelected: 'Delete Selected Notebook',
+			deleteConfirm: 'Are you sure you want to permanently delete the selected notebook?',
+			deleting: 'Deleting',
 			notebookDeleted: 'Notebook deleted',
 			errorDeletingNotebook: 'Error deleting notebook'
 		}
@@ -172,18 +174,25 @@ Ext.define('Voyant.notebook.Authenticator', {
 					glyph: 'xf1f8@FontAwesome',
 					handler: function(btn) {
 						const win = btn.up('window');
-						const sel = win.down('#notebookslist').getSelection();
+						const notebooksList = win.down('#notebookslist');
+						const sel = notebooksList.getSelection();
 						if (sel[0]) {
-							Ext.Msg.confirm('Delete', 'Are you sure you want to permanently delete the selected notebook?', function(button) {
+							Ext.Msg.confirm('Delete', me.localize('deleteConfirm'), function(button) {
 								if (button === 'yes') {
+									btn.setDisabled(true);
+									notebooksList.mask(me.localize('deleting'));
 									const notebookId = sel[0].get('id');
 									me.deleteNotebook(notebookId).then(function() {
-										win.down('#notebookslist').getStore().remove(sel[0]);
+										notebooksList.unmask();
+										btn.setDisabled(false);
+										notebooksList.getStore().remove(sel[0]);
 										me.toastInfo({
 											html: me.localize('notebookDeleted'),
 											anchor: 'tr'
 										});
 									}, function(err) {
+										notebooksList.unmask();
+										btn.setDisabled(false);
 										Ext.Msg.show({
 											title: me.localize('errorDeletingNotebook'),
 											msg: err,
