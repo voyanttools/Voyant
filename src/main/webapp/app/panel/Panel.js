@@ -30,6 +30,28 @@ Ext.define('Voyant.panel.Panel', {
 				this.setTitle(this.getTitle()+" <i style='font-size: smaller;'>"+this.getApiParam('subtitle')+"</i>")
 			}
 			if (this.isXType("grid")) {
+				this.on('boxready', function() {
+					var columns = this.getApiParam('columns');
+					if (columns !== undefined) {
+						if (Array.isArray(columns) === false) {
+							columns = columns.split(',');
+						}
+						if (columns.length > 0) {
+							var anyMatch = false;
+							this.getColumns().forEach(function(gcol) {
+								var match = columns.indexOf(gcol.dataIndex) !== -1;
+								anyMatch = match || anyMatch;
+								gcol.setVisible(match);
+							});
+							if (!anyMatch) {
+								this.getColumns().forEach(function(gcol) {
+									gcol.setVisible(gcol.initialConfig.hidden !== undefined ? !gcol.initialConfig.hidden : true);
+								});
+							}
+						}
+					}
+				}, this);
+				
 				this.getSelectionModel().on("selectionchange", function(store, records) {
 //					console.warn(records, this.selectedRecordsToRemember)
 //					this.selectedRecordsToRemember = records;

@@ -10,7 +10,8 @@ Ext.define('Voyant.panel.Documents', {
     	api: {
     		query: undefined,
     		docIndex: undefined,
-    		docId: undefined
+    		docId: undefined,
+			columns: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },

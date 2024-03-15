@@ -60,7 +60,14 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		 * None of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the "Comparison" column is shown.
     		 * The comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus.
     		 */
-    		comparisonCorpus: undefined
+    		comparisonCorpus: undefined,
+
+			/**
+			 * @cfg {String/String[]} columns One or more column data indexes to display, separated by a comma.
+			 * 
+			 * Use this to modify the default set of visible columns.
+			 */
+			columns: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },

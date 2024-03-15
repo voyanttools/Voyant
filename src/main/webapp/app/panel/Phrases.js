@@ -15,7 +15,8 @@ Ext.define('Voyant.panel.Phrases', {
     		dir: 'desc',
     		minLength: 2,
     		maxLength: 50,
-    		overlapFilter: 'length'
+    		overlapFilter: 'length',
+			columns: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
