@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Mar 14 22:37:55 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Mar 15 20:58:14 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -18881,6 +18881,7 @@ Ext.define('Voyant.panel.Contexts', {
     	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'termcolorsoption'}]
     },
     constructor: function() {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
@@ -19085,9 +19086,13 @@ Ext.define('Voyant.panel.Contexts', {
                 	            	corpus: me.getStore().getCorpus()
                 	            });
                 	            var data = record.getData();
+								var query = data.query;
+								if (query.match(/^[\^@]/) !== null) {
+									query = data.term; // if it's a category query then use term instead
+								}
                 	            store.load({
                 	            	params: {
-                    	            	query: data.query,
+                    	            	query: query,
                     	            	docIndex: data.docIndex,
                     	            	position: data.position,
                     	            	limit: 1,
@@ -19114,22 +19119,28 @@ Ext.define('Voyant.panel.Contexts', {
         		this.mask(this.localize('limitedAccess'), 'mask-no-spinner');
         	}
         	else {
-        		var corpusTerms = corpus.getCorpusTerms({autoLoad: false});
-        		corpusTerms.load({
-        		    callback: function(records, operation, success) {
-        		    	if (success && records.length>0) {
-        		    		this.setApiParam("query", [records[0].getTerm()]);
-        		    		this.getStore().clearAndLoad({params: this.getApiParams()});
-        		    	}
-        		    },
-        		    scope: me,
-        		    params: {
-        				limit: 1,
-        				query: this.getApiParam("query"),
-        				stopList: this.getApiParam("stopList"),
-        				forTool: 'contexts'
-        			}
-            	});
+				var query = this.getApiParam("query");
+				if (query !== undefined && query.match(/^[\^@]/) !== null) {
+					// query is a category so just load
+					this.getStore().clearAndLoad({params: this.getApiParams()});
+				} else {
+					var corpusTerms = corpus.getCorpusTerms({autoLoad: false});
+					corpusTerms.load({
+						callback: function(records, operation, success) {
+							if (success && records.length>0) {
+								this.setApiParam("query", [records[0].getTerm()]);
+								this.getStore().clearAndLoad({params: this.getApiParams()});
+							}
+						},
+						scope: me,
+						params: {
+							limit: 1,
+							query: query,
+							stopList: this.getApiParam("stopList"),
+							forTool: 'contexts'
+						}
+					});
+				}
         	}
         });
         
