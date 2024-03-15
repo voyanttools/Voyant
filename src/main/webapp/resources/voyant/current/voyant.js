@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Mar 15 20:58:14 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Mar 15 22:10:08 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -15836,6 +15836,28 @@ Ext.define('Voyant.panel.Panel', {
 				this.setTitle(this.getTitle()+" <i style='font-size: smaller;'>"+this.getApiParam('subtitle')+"</i>")
 			}
 			if (this.isXType("grid")) {
+				this.on('boxready', function() {
+					var columns = this.getApiParam('columns');
+					if (columns !== undefined) {
+						if (Array.isArray(columns) === false) {
+							columns = columns.split(',');
+						}
+						if (columns.length > 0) {
+							var anyMatch = false;
+							this.getColumns().forEach(function(gcol) {
+								var match = columns.indexOf(gcol.dataIndex) !== -1;
+								anyMatch = match || anyMatch;
+								gcol.setVisible(match);
+							});
+							if (!anyMatch) {
+								this.getColumns().forEach(function(gcol) {
+									gcol.setVisible(gcol.initialConfig.hidden !== undefined ? !gcol.initialConfig.hidden : true);
+								});
+							}
+						}
+					}
+				}, this);
+				
 				this.getSelectionModel().on("selectionchange", function(store, records) {
 //					console.warn(records, this.selectedRecordsToRemember)
 //					this.selectedRecordsToRemember = records;
@@ -18873,6 +18895,7 @@ Ext.define('Voyant.panel.Contexts', {
     		stopList: 'auto',
     		context: 5,
     		expand: 50,
+			columns: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -19193,6 +19216,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		query: undefined,
     		docId: undefined,
     		docIndex: undefined,
+			columns: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -19650,6 +19674,7 @@ Ext.define('Voyant.panel.Correlations', {
     		docIndex: undefined,
     		stopList: 'auto',
     		minInDocumentsCountRatio: 100,
+			columns: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -23146,7 +23171,8 @@ Ext.define('Voyant.panel.Phrases', {
     		dir: 'desc',
     		minLength: 2,
     		maxLength: 50,
-    		overlapFilter: 'length'
+    		overlapFilter: 'length',
+			columns: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -23492,7 +23518,14 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		 * None of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the "Comparison" column is shown.
     		 * The comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus.
     		 */
-    		comparisonCorpus: undefined
+    		comparisonCorpus: undefined,
+
+			/**
+			 * @cfg {String/String[]} columns One or more column data indexes to display, separated by a comma.
+			 * 
+			 * Use this to modify the default set of visible columns.
+			 */
+			columns: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -23715,6 +23748,7 @@ Ext.define('Voyant.panel.DocumentTerms', {
     		docId: undefined,
     		docIndex: undefined,
     		bins: 10,
+			columns: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -23942,7 +23976,8 @@ Ext.define('Voyant.panel.Documents', {
     	api: {
     		query: undefined,
     		docIndex: undefined,
-    		docId: undefined
+    		docId: undefined,
+			columns: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
