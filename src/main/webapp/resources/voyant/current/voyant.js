@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Mar 15 22:10:08 UTC 2024 */
+/* This file created by JSCacher. Last modified: Tue Mar 19 16:18:19 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -18896,6 +18896,8 @@ Ext.define('Voyant.panel.Contexts', {
     		context: 5,
     		expand: 50,
 			columns: undefined,
+			sort: undefined,
+			dir: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -19217,6 +19219,8 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		docId: undefined,
     		docIndex: undefined,
 			columns: undefined,
+			sort: undefined,
+			dir: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -19675,6 +19679,8 @@ Ext.define('Voyant.panel.Correlations', {
     		stopList: 'auto',
     		minInDocumentsCountRatio: 100,
 			columns: undefined,
+			sort: undefined,
+			dir: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -23172,7 +23178,9 @@ Ext.define('Voyant.panel.Phrases', {
     		minLength: 2,
     		maxLength: 50,
     		overlapFilter: 'length',
-			columns: undefined
+			columns: undefined,
+			sort: undefined,
+			dir: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -23525,7 +23533,17 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			 * 
 			 * Use this to modify the default set of visible columns.
 			 */
-			columns: undefined
+			columns: undefined,
+
+			/**
+			 * @cfg {String} sort The column to sort the results by
+			 */
+			sort: undefined,
+
+			/**
+			 * @cfg {String} dir The direction in which to sort the results: 'asc' or 'desc'
+			 */
+			dir: undefined,
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -23749,6 +23767,8 @@ Ext.define('Voyant.panel.DocumentTerms', {
     		docIndex: undefined,
     		bins: 10,
 			columns: undefined,
+			sort: undefined,
+			dir: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -23977,7 +23997,9 @@ Ext.define('Voyant.panel.Documents', {
     		query: undefined,
     		docIndex: undefined,
     		docId: undefined,
-			columns: undefined
+			columns: undefined,
+			sort: undefined,
+			dir: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
