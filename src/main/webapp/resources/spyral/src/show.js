@@ -22,12 +22,8 @@ function show(contents, len, mode='info') {
 			document.querySelector('.spyral-dv-container').remove(); // get rid of dataviewer if it exists
 		}
 		
-		if (Array.isArray(contents)) {
-			var allContents = "";
-			contents.forEach(function(content) {
-				allContents += content.getString ? content.getString() : content.toString();
-			});
-			contents = allContents;
+		if (contents.constructor === Object || Array.isArray(contents)) {
+			return contents; // it's JSON so use the dataviewer
 		} else if (typeof this === 'string' || this instanceof String) {
 			if (typeof contents === 'number' && isFinite(contents)) {
 				len = contents;
