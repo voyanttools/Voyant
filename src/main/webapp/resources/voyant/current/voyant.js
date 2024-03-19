@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Mar 19 16:18:19 UTC 2024 */
+/* This file created by JSCacher. Last modified: Tue Mar 19 18:36:13 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -12471,7 +12471,7 @@ Ext.define('Voyant.widget.DocumentSelector', {
 						if (corpus.getDocumentsCount()==1) {
 							this.hide();
 						} else {
-							selector.populate(corpus.getDocumentsStore().getRange(), true);
+							selector.populate(corpus.getDocumentsStore().getRange());
 						}
 					}, selector);
 					var panel = selector.findParentBy(function(clz) {
@@ -12493,23 +12493,42 @@ Ext.define('Voyant.widget.DocumentSelector', {
 
     },
     
-    populate: function(docs, replace) {
+    populate: function(docs) {
     	this.setDocs(docs);
     	
+		var checkedDocs = {docId: undefined, docIndex: undefined, match: false};
+		var panel = this.findParentBy(function(clz) {
+			return clz.mixins["Voyant.panel.Panel"];
+		});
+		if (panel && panel.getApiParam) {
+			checkedDocs.docId = panel.getApiParam('docId');
+			checkedDocs.docIndex = panel.getApiParam('docIndex');
+			if (checkedDocs.docId !== undefined && typeof checkedDocs.docId === 'string') {
+				checkedDocs.docId = checkedDocs.docId.split(',');
+				checkedDocs.match = true;
+			}
+			if (checkedDocs.docIndex !== undefined && typeof checkedDocs.docIndex === 'string') {
+				checkedDocs.docIndex = checkedDocs.docIndex.split(',').map(function(di) { return parseInt(di)});
+				checkedDocs.match = true;
+			}
+		}
+
     	var menu = this.getMenu();
-    	if (replace) {
-    		menu.removeAll();
-    	}
+    	menu.removeAll();
     	
     	var isSingleSelect = this.getSingleSelect();
     	
     	var groupId = 'docGroup'+Ext.id();
     	docs.forEach(function(doc, index) {
+			var checked = isSingleSelect && index == 0 || !isSingleSelect;
+			if (checkedDocs.match) {
+				checked = (checkedDocs.docId !== undefined && checkedDocs.docId.indexOf(doc.get('id')) !== -1) || (checkedDocs.docIndex !== undefined && checkedDocs.docIndex.indexOf(doc.get('index')) !== -1);
+			}
     		menu.add({
     			xtype: 'menucheckitem',
     			text: doc.getShortTitle(),
     			docId: doc.get('id'),
-    			checked: isSingleSelect && index == 0 || !isSingleSelect,
+    			checked: checked,
     			group: isSingleSelect ? groupId : undefined,
     			checkHandler: function(item, checked) {
     				if (this.getSingleSelect() && checked) {
