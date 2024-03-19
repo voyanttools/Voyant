@@ -92,7 +92,7 @@ Ext.define('Voyant.widget.DocumentSelector', {
 						if (corpus.getDocumentsCount()==1) {
 							this.hide();
 						} else {
-							selector.populate(corpus.getDocumentsStore().getRange(), true);
+							selector.populate(corpus.getDocumentsStore().getRange());
 						}
 					}, selector);
 					var panel = selector.findParentBy(function(clz) {
@@ -114,13 +114,11 @@ Ext.define('Voyant.widget.DocumentSelector', {
 
     },
     
-    populate: function(docs, replace) {
+    populate: function(docs) {
     	this.setDocs(docs);
     	
     	var menu = this.getMenu();
-    	if (replace) {
-    		menu.removeAll();
-    	}
+    	menu.removeAll();
     	
     	var isSingleSelect = this.getSingleSelect();
     	
