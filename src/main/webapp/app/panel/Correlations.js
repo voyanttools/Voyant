@@ -12,6 +12,8 @@ Ext.define('Voyant.panel.Correlations', {
     		stopList: 'auto',
     		minInDocumentsCountRatio: 100,
 			columns: undefined,
+			sort: undefined,
+			dir: undefined,
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'

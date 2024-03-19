@@ -67,7 +67,17 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			 * 
 			 * Use this to modify the default set of visible columns.
 			 */
-			columns: undefined
+			columns: undefined,
+
+			/**
+			 * @cfg {String} sort The column to sort the results by
+			 */
+			sort: undefined,
+
+			/**
+			 * @cfg {String} dir The direction in which to sort the results: 'asc' or 'desc'
+			 */
+			dir: undefined,
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
