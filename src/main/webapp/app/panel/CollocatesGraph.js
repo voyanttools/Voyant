@@ -10,7 +10,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     		mode: undefined,
     		limit: 5,
     		stopList: 'auto',
-    		terms: undefined,
+
     		context: 5,
     		centralize: undefined
     	},
