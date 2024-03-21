@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Mar 21 15:08:18 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Mar 21 16:00:14 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -18014,7 +18014,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     		mode: undefined,
     		limit: 5,
     		stopList: 'auto',
-    		terms: undefined,
+
     		context: 5,
     		centralize: undefined
     	},
