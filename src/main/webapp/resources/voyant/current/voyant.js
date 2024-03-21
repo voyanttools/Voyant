@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Mar 21 16:00:14 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Mar 21 16:37:57 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -18011,7 +18011,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	},
     	api: {
     		query: undefined,
-    		mode: undefined,
+
     		limit: 5,
     		stopList: 'auto',
 
@@ -18320,10 +18320,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     		this.resetGraph();
     		return;
     	}
-    	this.setApiParams({
-    		mode: 'corpus',
-    		query: query
-    	});
+    	this.setApiParams({ query: query });
     	var params = this.getApiParams();
     	params.noCache=true;
     	(Ext.isString(query) ? [query] : query).forEach(function(q) {
