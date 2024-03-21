@@ -39,11 +39,6 @@ Ext.define('Voyant.panel.TermsRadio', {
     	},
     	api: {
     		/**
-    		 * @private (this shouldn't be modified but it needs to be part of the parameters)
-    		 */
-    		withDistributions: true,
-
-    		/**
     		 * @cfg {Number} bins How many document segments to show if the corpus has a single document (default is 10); otherwise, the number of bins corresponds to the number of documents in the corpus.
     		 * 
     		 * Note that this often works in parallel with the {@link #bins} value.
@@ -446,6 +441,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     		this.corpusStore.setCorpus(corpus);
     		
     		var params = this.getApiParams();
+			params.withDistributions = true;
 			if (params.type) {
 				delete params.limit;
 			}
@@ -487,6 +483,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     ,loadStore: function () {
     	this.queryById('play').setPlaying(false);
 		var params = this.getApiParams();
+		params.withDistributions = true;
 		if(this.getApiParam('mode') === 'document') { 
 			this.documentStore.load({params: params});
 		}
