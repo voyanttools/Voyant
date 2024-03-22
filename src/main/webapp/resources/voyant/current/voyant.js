@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Mar 21 16:37:57 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Mar 22 16:10:30 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -15823,6 +15823,11 @@ Ext.define('Voyant.widget.EntitiesList', {
 		return distribution;
 	}
 });
+/**
+ * The base class for Voyant tool panels.
+ * 
+ * @class Panel
+ */
 Ext.define('Voyant.panel.Panel', {
 	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.util.Toolable','Voyant.util.DetailedError'],
 	requires: ['Voyant.widget.QuerySearchField','Voyant.widget.StopListOption','Voyant.categories.CategoriesOption','Voyant.widget.TotalPropertyStatus'],
@@ -15833,10 +15838,92 @@ Ext.define('Voyant.panel.Panel', {
 		config: {
 			corpusValidated: false
 		},
+		// typedefs for commonly used API params
+		/**
+		 * @typedef {String} StopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
+		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+		 */
+
+		/**
+		 * @typedef {String|String[]} Query A query or array of queries (queries can be separated by a comma).
+		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+		 */
+
+		/**
+		 * @typedef {String|String[]} DocId The document ID(s) to restrict the results to.
+		 */
+
+		/**
+		 * @typedef {Number|Number[]} DocIndex The document index(es) to restrict the results to.
+		 */
+
+		/**
+		 * @typedef {String} Categories The categories ID to use. For more information see the <a href="#!/guide/categories">Categories documentation</a>.
+		 */
+
+		/**
+		 * @typedef {Number} Bins The number of "bins" to divide the result into.
+		 */
+
+		/**
+		 * @typedef {Number} Start The index of the item to start the results at.
+		 */
+
+		/**
+		 * @typedef {Number} Limit The number of items to limit the result to.
+		 */
+
+		/**
+		 * @typedef {Number} Context The number of terms to consider on each side of the keyword.
+		 */
+
+		/**
+		 * @typedef {String} WithDistributions Determines whether to show "raw" or "relative" frequencies (those are the two valid values).
+		 * The default value is "relative" (unless there's only one document in the corpus, in which case raw frequencies are shown).
+		 */
+
+		/**
+		 * @typedef {String} TermColors Which term colors to show in the grid.
+		 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
+		 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+		 */
+
+		/**
+		 * @typedef {String|String[]} Columns One or more column data indexes to display, separated by a comma.
+		 * Use this to modify the default set of visible columns.
+		 */
+
+		/**
+		 * @typedef {String} SortColumn The column to sort the results by
+		 */
+
+		/**
+		 * @typedef {String} SortDir The direction in which to sort the results: 'asc' or 'desc'
+		 */
 		api: {
+			/**
+			 * @memberof Panel
+			 * @property {String} corpus The ID of the corpus to use.
+			 */
 			corpus: undefined,
+
+			/**
+			 * @memberof Panel
+			 * @property {String|String[]} input Use to directly provide input, instead of specifying a corpus. Can be: one or more URLs, one or more chunks of text.
+			 */
 			input: undefined,
+
+			/**
+			 * @memberof Panel
+			 * @property {String} inputFormat The input format of the provided input (the default is auto-detect).
+			 */
 			inputFormat: undefined,
+			
+			/**
+			 * @memberof Panel
+			 * @property {String} subtitle Specify a subtitle to display in the tool's header.
+			 */
 			subtitle: undefined
 		}
 	},
@@ -16003,6 +16090,7 @@ Ext.define('Voyant.panel.Panel', {
 	 * access setting for the corpus, then by checking the corpus setting.
 	 * 
 	 * Assumes we're only calling this from a non-consumptive tool.
+	 * @private
 	 */
 	hasCorpusAccess: function(corpus) {
 		var app = this.getApplication();
@@ -16141,6 +16229,11 @@ Ext.define('Voyant.widget.Facet', {
 });
 
 // assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * Bubbles is a playful visualization of term frequencies by document.
+ * 
+ * @class Bubbles
+ */
 Ext.define('Voyant.panel.Bubbles', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -16150,19 +16243,37 @@ Ext.define('Voyant.panel.Bubbles', {
     	},
     	api: {
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+			 * @memberof Bubbles
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {DocIndex}
+			 */
     		docIndex: 0,
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 100,
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {Boolean} audio Whether or not to play audio
+			 * @default
+			 */
     		audio: false,
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {Number} speed How fast to play the visualization
+			 * @default
+			 */
     		speed: 30
     			
     			
@@ -16381,6 +16492,11 @@ Ext.define('Voyant.panel.Bubbles', {
     }
 });
 // assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * Bubblelines visualizes the frequency and distribution of terms in a corpus.
+ * 
+ * @class Bubblelines
+ */
 Ext.define('Voyant.panel.Bubblelines', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -16390,41 +16506,41 @@ Ext.define('Voyant.panel.Bubblelines', {
     	},
     	api: {
     		/**
-    		 * @property bins How many "bins" to separate a document into.
-    		 * @type Integer
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {Bins}
+			 * @default
     		 */
     		bins: 50,
+
         	/**
-        	 * @property query A string to search for in a document.
-        	 * @type String
-    		 * @private
+			 * @memberof Bubblelines
+        	 * @property {Query}
         	 */
     		query: null,
     		
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
+
     		/**
-    		 * @property docId The document ID to restrict results to.
-    		 * @type String
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {DocId}
     		 */
     		docId: undefined,
+
     		/**
-    		 * @property docIndex The document index to restrict results to.
-    		 * @type Integer
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {DocIndex}
     		 */
     		docIndex: undefined,
+
     		/**
-    		 * @property maxDocs The maximum number of documents to show.
-    		 * @type Integer
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {Number} maxDocs The maximum number of documents to show.
+    		 * @default
     		 */
     		maxDocs: 50
     	},
@@ -17395,16 +17511,9 @@ Ext.define('Voyant.panel.Catalogue', {
 
 // assuming Cirrus library is loaded by containing page (via voyant.jsp)
 /**
- * Cirrus tool, a wordcloud-like visuaization.
+ * Cirrus tool, a wordcloud-like visualization.
  * 
- * 	// simple cirrus
- * 	loadCorpus("austen").tool("cirrus");
- *
- * 	// define stopwords list and styling
- * 	loadCorpus("austen").tool("cirrus", {
- * 		stopList: 'auto',
- * 		style: 'width: 500px; height: 400px'
- * 	});
+ * @class Cirrus
  */
 Ext.define('Voyant.panel.Cirrus', {
 	extend: 'Ext.panel.Panel',
@@ -17415,36 +17524,68 @@ Ext.define('Voyant.panel.Cirrus', {
     	},
     	api: {
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * @default auto
-    		 * 
-    		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof Cirrus
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
+			/**
+			 * @memberof Cirrus
+			 * @property {Categories}
+			 */
     		categories: undefined,
-    		whiteList: undefined, // specify a list of words to use
+
+			/**
+			 * @memberof Cirrus
+			 * @property {String|String[]} whiteList a list of words to always include
+			 */
+    		whiteList: undefined,
     		
     		/**
-    		 * @cfg {Number} limit Specify the number of terms to load (which is separate from the number of {@link #visible} terms to show) at a time).
+			 * @memberof Cirrus
+    		 * @property {Number} limit Specify the number of terms to load (which is separate from the number of {@link Cirrus.visible} terms to show) at a time).
     		 * @default 500
     		 */
     		limit: 500,
     		
     		/**
-    		 * @cfg {Number} visible Specify the number of terms that are visible at a time.
+			 * @memberof Cirrus
+    		 * @property {Number} visible Specify the number of terms that are visible at a time.
     		 * @default 50
     		 */
     		visible: 50,
+
+			// TODO unused??
     		terms: undefined,
+
+			/**
+			 * @memberof Cirrus
+    		 * @property {DocId}
+			 */
     		docId: undefined,
+			/**
+			 * @memberof Cirrus
+    		 * @property {DocIndex}
+			 */
     		docIndex: undefined,
     		
-    		inlineData: undefined, // format should match CorpusTerm model, only term and rawFreq required
+			/**
+			 * @memberof Cirrus
+			 * @property {String} inlineData Directly specify the terms and their relative sizes.
+			 * There data format is a comma-separated list of colon-separated term/size pairs.
+			 * For example: love:20,like:15,dear:10,child:6
+			 */
+    		inlineData: undefined,
 
+			/**
+			 * @memberof Cirrus
+			 * @property {String} fontFamily The CSS font-family to use for the terms
+			 * @default
+			 */
     		fontFamily: '"Palatino Linotype", "Book Antiqua", Palatino, serif',
-    		cirrusForceFlash: false,
+    		
+			// TODO remove these flash specific params
+			cirrusForceFlash: false,
     		background: '0xffffff',
     		fade: true,
     		smoothness: 2,
@@ -18002,6 +18143,11 @@ Ext.define('Voyant.panel.Cirrus', {
         return newRelativeSize;
     }
 });
+/**
+ * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
+ * 
+ * @class CollocatesGraph
+ */
 Ext.define('Voyant.panel.CollocatesGraph', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -18010,12 +18156,37 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof CollocatesGraph
+			 * @property {Query}
+			 */
     		query: undefined,
 
+			/**
+			 * @memberof CollocatesGraph
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 5,
+
+			/**
+			 * @memberof CollocatesGraph
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
 
+			/**
+			 * @memberof CollocatesGraph
+			 * @property {Context}
+			 * @default
+			 */
     		context: 5,
+
+			/**
+			 * @memberof CollocatesGraph
+			 * @property {String} centralize If specified, will "centralize" on this keyword
+			 */
     		centralize: undefined
     	},
 		glyph: 'xf1e0@FontAwesome'
@@ -18895,6 +19066,11 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     }
     
 });
+/**
+ * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
+ * 
+ * @class Contexts
+ */
 Ext.define('Voyant.panel.Contexts', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -18905,15 +19081,68 @@ Ext.define('Voyant.panel.Contexts', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Contexts
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Contexts
+			 * @property {Context}
+			 * @default
+			 */
     		context: 5,
+
+			/**
+			 * @memberof Contexts
+			 * @property {Number} expand  How many terms to show when you expand any given row
+			 * @default
+			 */
     		expand: 50,
+
+			/**
+			 * @memberof Contexts
+			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
+			 */
 			columns: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {SortDir}
+			 */
 			dir: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -19221,6 +19450,11 @@ Ext.define('Voyant.panel.Contexts', {
      }
      
 });
+/**
+ * Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
+ * 
+ * @class CorpusCollocates
+ */
 Ext.define('Voyant.panel.CorpusCollocates', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -19229,14 +19463,61 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {Context}
+			 * @default
+			 */
     		context: 5,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {Columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
+			 */
 			columns: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {SortDir}
+			 */
 			dir: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -19681,6 +19962,11 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
     }
 });
 
+/**
+ * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
+ * 
+ * @class Correlations
+ */
 Ext.define('Voyant.panel.Correlations', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -19689,14 +19975,61 @@ Ext.define('Voyant.panel.Correlations', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Correlations
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Correlations
+			 * @property {Number} minInDocumentsCountRatio The minimum coverage (as a percentage) for terms. For instance, if a corpus has 10 documents and the minimum coverage is 20%, at least two of the documents must contain the term or it will be ignored.
+			 * @default
+			 */
     		minInDocumentsCountRatio: 100,
+
+			/**
+			 * @memberof Correlations
+			 * @property {Columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
+			 */
 			columns: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {SortDir}
+			 */
 			dir: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -22583,6 +22916,11 @@ Ext.define('Voyant.widget.GeonamesFilter', {
 });
 
 // assuming Knots library is loaded by containing page (via voyant.jsp)
+/**
+ * Knots is a creative visualization that represents terms in a single document as a series of twisted lines.
+ * 
+ * @class Knots
+ */
 Ext.define('Voyant.panel.Knots', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -22592,25 +22930,28 @@ Ext.define('Voyant.panel.Knots', {
     	},
     	api: {
     		/**
-        	 * @property query A string to search for in a document.
-        	 * @type String
-    		 * @private
+        	 * @memberof Knots
+			 * @property {Query}
         	 */
     		query: null,
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+			 * @memberof Knots
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
+
     		/**
-    		 * @property docId The document ID to restrict results to.
-    		 * @type String
-    		 * @private
+			 * @memberof Knots
+    		 * @property {DocId}
     		 */
     		docId: undefined,
     		
+			/**
+			 * @memberof Knots
+			 * @property {Boolean} audio Whether or not to play audio during the visualization.
+			 * @default
+			 */
     		audio: false
     	},
     	glyph: 'xf06e@FontAwesome'
@@ -23176,6 +23517,11 @@ Ext.define('Voyant.panel.Knots', {
 		this.getApplication().dispatchEvent('termsClicked', this, data);
 	}
 });
+/**
+ * The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
+ * 
+ * @class Phrases
+ */
 Ext.define('Voyant.panel.Phrases', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -23185,18 +23531,69 @@ Ext.define('Voyant.panel.Phrases', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Phrases
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Phrases
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Phrases
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Phrases
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
-    		sort: 'length',
-    		dir: 'desc',
+
+			/**
+			 * @memberof Phrases
+			 * @property {Number} minLength The minimum length (number of words) of the phrase to consider.
+			 */
     		minLength: 2,
+
+			/**
+			 * @memberof Phrases
+			 * @property {Number} maxLength The maximum length (number of words) of the phrase to consider.
+			 */
     		maxLength: 50,
+
+			/**
+			 * @memberof Phrases
+			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See <a href="#!/guide/phrases-section-options">Phrases options</a> for more info.
+			 * @default
+			 */
     		overlapFilter: 'length',
+
+			/**
+			 * @memberof Phrases
+			 * @property {Columns} columns 'term', 'rawFreq', 'length', 'distributions'
+			 */
 			columns: undefined,
-			sort: undefined,
-			dir: undefined
+
+			/**
+			 * @memberof Phrases
+			 * @property {SortColumn}
+			 * @default
+			 */
+			sort: 'length',
+
+			/**
+			 * @memberof Phrases
+			 * @property {SortDir}
+			 * @default
+			 */
+			dir: 'desc'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -23379,7 +23776,7 @@ Ext.define('Voyant.panel.Phrases', {
                                group: 'overlap',
                                inputValue: 'rawFreq',
                                checkHandler: function() {
-                            	   this.setApiParam('overlapFilter', 'rawfreq')
+                            	   this.setApiParam('overlapFilter', 'rawFreq')
                             	   this.getStore().load({params: this.getApiParams()})
                                },
                                scope: this
@@ -23483,16 +23880,7 @@ Ext.define('Voyant.panel.Phrases', {
 /**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
- * <iframe src="../?corpus=austen&view=corpusterms" style="max-width: 500px; height: 300px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('CorpusTerms'); // simply embed
- * 			austen.embed('CorpusTerms', {query: '^lov*'}); // embed with query
- * 		});
+ * @class CorpusTerms
  */
 Ext.define('Voyant.panel.CorpusTerms', {
 	extend: 'Ext.grid.Panel',
@@ -23504,40 +23892,38 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	api: {
     		
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof CorpusTerms
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @cfg {String/String[]} query A query or array of queries (queries can be separated by a comma).
-    		 * 
-    		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+    		 * @memberof CorpusTerms
+			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @cfg {Number} maxBins The maximum number of bins to use for distributions in Trend.
+			 * @memberof CorpusTerms
+    		 * @property {Number} maxBins The maximum number of bins to use for distributions in Trend.
     		 * 
     		 * By default this is set to 100 (in other words, if there are more than 100 documents in the corpus, they will be forced into 100 bins).
     		 * Higher values are possible but it can cause performance issues and necessitate more data transfer (values for each one of the bins for each one of the terms).
-    		 * @cfg
+			 * @default
     		 */
     		maxBins: 100,
 
 			/**
-			 * @cfg {String} termColors Which term colors to show in the grid.
-			 * 
-			 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
-			 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+			 * @memberof CorpusTerms
+			 * @property {TermColors}
+			 * @default
 			 */
 			termColors: 'categories',
 
     		/**
-    		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
+			 * @memberof CorpusTerms
+    		 * @property {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 
     		 * None of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the "Comparison" column is shown.
     		 * The comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus.
@@ -23545,19 +23931,20 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		comparisonCorpus: undefined,
 
 			/**
-			 * @cfg {String/String[]} columns One or more column data indexes to display, separated by a comma.
-			 * 
-			 * Use this to modify the default set of visible columns.
+			 * @memberof CorpusTerms
+			 * @property {Columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
-			 * @cfg {String} sort The column to sort the results by
+			 * @memberof CorpusTerms
+			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
-			 * @cfg {String} dir The direction in which to sort the results: 'asc' or 'desc'
+			 * @memberof CorpusTerms
+			 * @property {SortDir}
 			 */
 			dir: undefined,
     	},
@@ -23759,6 +24146,11 @@ Ext.define('Voyant.panel.CorpusTerms', {
     }
 })
 
+/**
+ * Document Terms is a table view of term frequencies for each document.
+ * 
+ * @class DocumentTerms
+ */
 Ext.define('Voyant.panel.DocumentTerms', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -23777,14 +24169,53 @@ Ext.define('Voyant.panel.DocumentTerms', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof DocumentTerms
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+			/**
+			 * @memberof DocumentTerms
+			 * @property {Query}
+			 */
     		query: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {DocId}
+			 */
     		docId: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {Bins}
+			 * @default
+			 */
     		bins: 10,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {Columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
+			 */
 			columns: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {SortDir}
+			 */
 			dir: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -24000,6 +24431,11 @@ Ext.define('Voyant.panel.DocumentTerms', {
     
 });
 
+/**
+ * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
+ * 
+ * @class Documents
+ */
 Ext.define('Voyant.panel.Documents', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel','Voyant.util.Downloadable'],
@@ -24010,11 +24446,40 @@ Ext.define('Voyant.panel.Documents', {
 			newCorpusError: 'There was an error creating the new the corpus. You may not have permission to do this.'
     	},
     	api: {
+			/**
+			 * @memberof Documents
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {Columns} columns 'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'
+			 */
 			columns: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {SortDir}
+			 */
 			dir: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -24781,6 +25246,11 @@ Ext.define('Voyant.panel.DocumentsFinder', {
     }
     
 })
+/**
+ * Embedder provides a way to embed a web page into your Voyant Tools experience.
+ * 
+ * @class Embedder
+ */
 Ext.define('Voyant.panel.Embedder', {
 	extend: 'Ext.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -24794,6 +25264,10 @@ Ext.define('Voyant.panel.Embedder', {
 			helpTip: 'Embedder provides a way to embed a web page into your Voyant Tools experience.'
 		},
 		api: {
+			/**
+			 * @memberof Embedder
+			 * @property {String} url The URL of the web page to embed.
+			 */
 			url: undefined
 		},
 		glyph: 'xf0c1@FontAwesome'
@@ -25189,6 +25663,11 @@ Ext.define('Voyant.panel.Fountain', {
     	this.callParent(arguments);
     }
 });
+/**
+ * RezoViz represents connections between people, places and organizations that co-occur in multiple documents.
+ * 
+ * @class RezoViz
+ */
 Ext.define('Voyant.panel.RezoViz', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -25200,14 +25679,49 @@ Ext.define('Voyant.panel.RezoViz', {
 			nerService: 'Entity Identification Service'
 		},
 		api: {
+			/**
+			 * @memberof RezoViz
+			 * @property {Query}
+			 */
 			query: undefined,
-			mode: undefined,
+
+			/**
+			 * @memberof RezoViz
+			 * @property {Limit}
+			 * @default
+			 */
 			limit: 50,
+
+			/**
+			 * @memberof RezoViz
+			 * @property {String[]} type The entity types to include in the results. One or more of: 'location', 'organization', 'person'.
+			 */
 			type: ['organization','location','person'],
+
+			/**
+			 * @memberof RezoViz
+			 * @property {Number} minEdgeCount
+			 */
 			minEdgeCount: 2,
-			terms: undefined,
+
+			/**
+			 * @memberof RezoViz
+			 * @property {StopList}
+			 * @default
+			 */
 			stopList: 'auto',
+
+			/**
+			 * @memberof RezoViz
+			 * @property {DocId}
+			 */
 			docId: undefined,
+
+			/**
+			 * @memberof RezoViz
+			 * @property {String} nerService Which NER service to use: 'spacy', 'nssi', or 'voyant'.
+			 * @default
+			 */
 			nerService: 'spacy'
 		},
 		glyph: 'xf1e0@FontAwesome'
@@ -26628,6 +27142,11 @@ Ext.define('Voyant.util.LoomControl', {
     }
     
 })
+/**
+ * Microsearch visualizes the frequency and distribution of terms in a corpus.
+ * 
+ * @class MicroSearch
+ */
 Ext.define('Voyant.panel.MicroSearch', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -26636,7 +27155,17 @@ Ext.define('Voyant.panel.MicroSearch', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof MicroSearch
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof MicroSearch
+			 * @property {Query}
+			 */
     		query: undefined
     	},
 		glyph: 'xf1ea@FontAwesome'
@@ -26852,6 +27381,11 @@ Ext.define('Voyant.panel.MicroSearch', {
     	
     }
 });
+/**
+ * Mandala is a conceptual visualization that shows the relationships between terms and documents.
+ * 
+ * @class Mandala
+ */
 Ext.define('Voyant.panel.Mandala', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -26861,15 +27395,23 @@ Ext.define('Voyant.panel.Mandala', {
     	},
     	api: {
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
-    		 */
+			 * @memberof Mandala
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
     		
+			/**
+			 * @memberof Mandala
+			 * @property {Query}
+			 */
     		query: undefined,
     		
+			/**
+			 * @memberof Mandala
+			 * @property {Boolean} labels Whether or not labels should be shown.
+			 * @default
+			 */
     		labels: true
     		
     	},
@@ -27656,6 +28198,11 @@ Ext.define('Voyant.panel.MicroOcp', {
         
 });
 
+/**
+ * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
+ * 
+ * @class Reader
+ */
 Ext.define('Voyant.panel.Reader', {
 	extend: 'Ext.panel.Panel',
 	requires: ['Voyant.data.store.Tokens'],
@@ -27671,9 +28218,30 @@ Ext.define('Voyant.panel.Reader', {
 			nerSpacy: 'Entity Identification with SpaCy'
     	},
     	api: {
+			/**
+			 * @memberof Reader
+			 * @property {Start}
+			 * @default
+			 */
     		start: 0,
+
+			/**
+			 * @memberof Reader
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 1000,
+
+			/**
+			 * @memberof Reader
+			 * @property {String} skipToDocId The document ID to start reading from, defaults to the first document in the corpus.
+			 */
     		skipToDocId: undefined,
+
+			/**
+			 * @memberof Reader
+			 * @property {Query}
+			 */
     		query: undefined
     	},
     	glyph: 'xf0f6@FontAwesome'
@@ -28607,6 +29175,11 @@ Ext.define('Voyant.panel.SimpleDocReader', {
 	}
 });
 
+/**
+ * ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.
+ * 
+ * @class ScatterPlot
+ */
 Ext.define('Voyant.panel.ScatterPlot', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -28616,21 +29189,108 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof ScatterPlot
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String} analysis The type of analysis to perform. Options are: 'ca', 'pca', 'tsne', and 'docSim'.
+			 */
     		analysis: 'ca',
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 50,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Number} dimensions The number of dimensions to render, either 2 or 3.
+			 * @default
+			 */
     		dimensions: 3,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Bins}
+			 * @default
+			 */
     		bins: 10,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Number} clusters The number of clusters within which to group words.
+			 * @default
+			 */
     		clusters: 3,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Number} perplexity The TSNE perplexity value.
+			 * @default
+			 */
     		perplexity: 15,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Number} iterations The TSNE iterations value.
+			 * @default
+			 */
     		iterations: 1500,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String} comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
+			 * @default
+			 */
     		comparisonType: 'relative',
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String} target The term to set as the target. This will filter results to terms that are near the target.
+			 */
     		target: undefined,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String[]} term Used in combination with "target" as a white list of terms to keep.
+			 */
     		term: undefined,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String} whitelist TODO Unused or only used in CA?
+			 */
     		whitelist: undefined,
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String[]} label The label types to show. One or more of: 'summary', 'docs', and 'terms'.
+			 */
     		label: ['summary', 'docs', 'terms'],
+
+			/**
+			 * @memberof ScatterPlot
+			 * @property {String} storeJson TODO used in embed
+			 */
     		storeJson: undefined
     	},
 		glyph: 'xf06e@FontAwesome'
@@ -29752,6 +30412,11 @@ Ext.define('Ext.chart.series.CustomScatter', {
     	this.callParent(arguments);
     }
 });
+/**
+ * StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
+ * 
+ * @class StreamGraph
+ */
 Ext.define('Voyant.panel.StreamGraph', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -29760,12 +30425,50 @@ Ext.define('Voyant.panel.StreamGraph', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof StreamGraph
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 5,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {WithDistributions}
+			 * @default
+			 */
     		withDistributions: 'relative',
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {Bins}
+			 * @default
+			 */
     		bins: 50,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {DocId}
+			 */
     		docId: undefined
     	},
 		glyph: 'xf1fe@FontAwesome'
@@ -30176,6 +30879,8 @@ Ext.define('Voyant.panel.StreamGraph', {
 /**
  * The Summary panel provides an overview of a corpus, and the content will
  * depend on whether the corpus includes one document or many.
+ * 
+ * @class Summary
  */
 Ext.define('Voyant.panel.Summary', {
 	extend: 'Ext.panel.Panel',
@@ -30191,28 +30896,30 @@ Ext.define('Voyant.panel.Summary', {
     	api: {
     		
     		/**
-    		 * @cfg {String} stopList A list of words to exclude.
-    		 * 
-    		 * Stopword lists can take one of several forms and they can be combined with commas:
-    		 * 
-    		 * * *auto*: automatically detect the language (this is recommended and the default so it doesn't need to be specified)
-    		 * * specially named stopword lists including stop.ar.arabic-lucene.txt, stop.bg.bulgarian-lucene.txt, stop.br.breton-lucene.txt, stop.ca.catalan-lucene.txt, stop.ckb.kurdish-lucene.txt, stop.cn.chinese-lawrence.txt, stop.cz.czech-lucene.txt, stop.de.citelab.txt, stop.de.german.txt, stop.el.greek-lucene.txt, stop.en.glasgow.txt, stop.en.smart.txt, stop.en.taporware.txt, stop.es.spanish.txt, stop.eu.basque-luence.txt, stop.fa.farsi-lucene.txt, stop.fr.steffens.txt, stop.fr.veronis.txt, stop.ga.ga-irish.txt, stop.gl.galician-lucene.txt, stop.hi.hindi-lucene.txt, stop.hu.hungarian.txt, stop.hy.armenian-lucene.txt, stop.id.indonesian-lucene.txt, stop.it.italian.txt, stop.ja.japanese.txt, stop.lt.lithuanian-lucene.txt, stop.lv.latvian-lucene.txt, stop.mu.multi.txt, stop.nl.dutch.txt, stop.no.norwegian.txt, stop.ro.romanian-lucene.txt, stop.se.swedish-long.txt, stop.se.swedish-short.txt, stop.th.thai-lucene.txt, stop.tr.turkish-lucene.txt
-    		 * * individual words to be excluded
-    		 * * URLs that point to plain text UTF-8 files with one stopword per line (lines with leading hash symbols (#) are skipped)
+    		 * @memberof Summary
+			 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
-    		
+    		/**
+			 * @memberof Summary
+			 * @property {Start}
+			 * @default
+			 */
     		start: 0,
     		
     		
     		/**
-    		 * @cfg {Number} limit The number of items to include in most lists (document length, vocabulary density, most frequent terms).
+    		 * @memberof Summary
+			 * @property {Limit}
+			 * @default
     		 */
     		limit: 5,
     		
     		/**
-    		 * @cfg {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
+			 * @memberof Summary
+    		 * @property {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
     		 */
     		numberOfDocumentsForDistinctiveWords: 10
     	},
@@ -30618,6 +31325,11 @@ Ext.define('Voyant.panel.Summary', {
 	}
 });
 
+/**
+ * TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
+ * 
+ * @class TextualArc
+ */
 Ext.define('Voyant.panel.TextualArc', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -30627,17 +31339,31 @@ Ext.define('Voyant.panel.TextualArc', {
     	},
     	api: {
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+    		 * @memberof TextualArc
+			 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
+			/**
+    		 * @memberof TextualArc
+			 * @property {DocIndex}
+			 * @default
+    		 */
     		docIndex: 0,
     		
+			/**
+    		 * @memberof TextualArc
+			 * @property {Number} speed How fast to animate the visualization.
+			 * @default
+    		 */
     		speed: 50,
     		
+			/**
+    		 * @memberof TextualArc
+			 * @property {Number} minRawFreq The minimum raw frequency of terms to be considered.
+			 * @default
+    		 */
     		minRawFreq: 2
     			
     	},
@@ -31259,6 +31985,11 @@ Ext.define('Voyant.panel.TopicContexts', {
     }
     
 })
+/**
+ * The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).
+ * 
+ * @class TermsBerry
+ */
 Ext.define('Voyant.panel.TermsBerry', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -31267,12 +31998,48 @@ Ext.define('Voyant.panel.TermsBerry', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof TermsBerry
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Context}
+			 * @default
+			 */
     		context: 2,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Number} numInitialTerms The number of initial terms to display.
+			 */
         	numInitialTerms: 75,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Categories}
+			 */
     		categories: undefined
     	},
 		glyph: 'xf1db@FontAwesome'
@@ -31879,20 +32646,9 @@ Ext.define('Voyant.panel.TermsBerry', {
     }
 });
 /**
- * Terms Radio tool, a visualization for term distributions.
+ * TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
  * 
- * <iframe src="../?corpus=austen&view=termsradio" style="max-width: 600px; height: 600px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('TermsRadio'); // simply embed
- * 			austen.embed('TermsRadio', {visibleBins: 8}); // embed with parameter
- * 		});
- * 
- * @class Voyant.panel.TermsRadio
+ * @class TermsRadio
  * @author Mark Turcato
  * @author Andrew MacDonald
  */
@@ -31919,88 +32675,91 @@ Ext.define('Voyant.panel.TermsRadio', {
     	},
     	api: {
     		/**
-    		 * @cfg {Number} bins How many document segments to show if the corpus has a single document (default is 10); otherwise, the number of bins corresponds to the number of documents in the corpus.
-    		 * 
-    		 * Note that this often works in parallel with the {@link #bins} value.
+			 * @memberof TermsRadio
+			 * @property {Bins}
+			 * @default
     		 */
-    		bins: 5
+    		bins: 5,
     	
     		/**
-    		 * @cfg {Number} visibleBins How many segments or documents to show at once (default is 5).
-    		 * 
+			 * @memberof TermsRadio
+			 * @property {Number} visibleBins How many segments or documents to show at once (default is 5).
     		 * Note that this often works in parallel with the {@link #bins} value.
+			 * @default
     		 */
-    		,visibleBins: 5
+    		visibleBins: 5,
     		
     		/**
-    		 * @property docIdType The document type(s) to restrict results to.
-    		 * @type String|Array
+			 * @memberof TermsRadio
+    		 * @property {String[]} docIdType The document type(s) to restrict results to.
     		 * @default null
     		 * @private
     		 */
-    		,docIdType: null
+    		docIdType: null,
     		
     		/**
-    		 * @cfg {Number} limit Determine the number of terms to show (larger numbers may make the graph unusable).
+    		 * @memberof TermsRadio
+			 * @property {Limit}
+			 * @default
     		 */
-    		,limit: 50
+    		limit: 50,
     	
     		/**
         	 * @property mode What mode to operate at, either document or corpus.
         	 * @choices document, corpus
     		 * @private
         	 */
-    		,mode: null
+    		mode: null,
     		
     		/**
-        	 * @property position The current shifted position of the visualization.
-        	 * @type Integer
+			 * @memberof TermsRadio
+        	 * @property {Number} position The current shifted position of the visualization.
         	 * @default 0
     		 * @private
         	 */
-    		,position: 0
+    		position: 0,
     		
     		/**
-    		 * @property selectedWords The words that have been selected.
-    		 * @type String|Array
+			 * @memberof TermsRadio
+    		 * @property {String[]} selectedWords The words that have been selected.
     		 * @default null
     		 * @private
     		 */
-    		,selectedWords: []
+    		selectedWords: [],
     		
 			/**
-			 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-			 * 
-			 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-			 *  
-			 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof TermsRadio
+			 * @property {StopList}
+			 * @default
 			 */
-    		,stopList: 'auto'
+    		stopList: 'auto',
     		
     		/**
-    		 * @property query The corpus type(s) to restrict results to.
-    		 * @type String
-    		 * @default null
-    		 * @private
+    		 * @memberof TermsRadio
+			 * @property {Query}
     		 */
-    		,query: null
+    		query: null,
     		
     		/**
-    		 * @property yAxisScale The scale for the y axis.
-    		 * @type String
+			 * @memberof TermsRadio
+    		 * @property {String} yAxisScale The scale for the y axis. Options are: 'log' or 'linear'.
     		 * @default log
-    		 * @private
     		 */
-    		,yAxisScale: 'log'
+    		yAxisScale: 'log',
     			
-    		,speed: 50
+			/**
+			 * @memberof TermsRadio
+			 * @property {Number} speed How fast to animate the visualization.
+			 * @default
+			 */
+    		speed: 50,
     		
     		/**
-    		 * @property slider Whether to show the slider
-    		 * @type Boolean
+			 * @memberof TermsRadio
+    		 * @property {Boolean} slider Whether to show the slider.
     		 * @default true
     		 */
-    		,slider: undefined
+    		slider: undefined
     	},
     	glyph: 'xf201@FontAwesome'
     }
@@ -32376,18 +33135,9 @@ Ext.define('Voyant.panel.TermsRadio', {
 });
 
 /**
- * Trends tool, a line graph that shows term distributions.
+ * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
  * 
- * <iframe src="../?corpus=austen&view=trends" style="max-width: 500px; height: 300px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('Trends'); // simply embed
- * 			austen.embed('Trends', {query: '^lov*'}); // embed with query
- * 		});
+ * @class Trends
  */
 Ext.define('Voyant.panel.Trends', {
 	extend: 'Ext.panel.Panel',
@@ -32448,37 +33198,39 @@ Ext.define('Voyant.panel.Trends', {
     	api: {
     		
     		/**
-    		 * @cfg {Number} limit Determine the number of terms to show (larger numbers may make the graph unusable).
+    		 * @memberof Trends
+			 * @property {Limit}
+			 * @default
     		 */
     		limit: 5,
     		
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+    		 * @memberof Trends
+			 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @cfg {String/String[]} query A query or array of queries (queries can be separated by a comma).
-    		 * 
-    		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+    		 * @memberof Trends
+			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @cfg {String} withDistributions Determine whether to show "raw" or "relative" frequencies (those are the two valid values).
-    		 * 
-    		 * The default value is "relative" (unless there's only one document in the corpus, in which case raw frequencies are shown).
+    		 * @memberof Trends
+			 * @property {WithDistributions}
+			 * @default
     		 */
     		withDistributions: 'relative',
     		
     		/**
-    		 * @cfg {Number} bins The number of segments to use.
+    		 * @memberof Trends
+			 * @property {Bins}
     		 * 
-    		 * The default value will depend on the nature of the corpus:
+    		 * TODO verify this:
+			 * 
+			 * The default value will depend on the nature of the corpus:
     		 * 
     		 * - corpus has one document: the default number of bins is 10
     		 * - corpus has multiple documents:
@@ -32488,24 +33240,36 @@ Ext.define('Voyant.panel.Trends', {
     		bins: 10,
     		
     		/**
-    		 * @cfg {Number/Number[]/String} docIndex The index of one or more documents, as a number, or numbers separated by commas or in an array.
-    		 * 
-    		 * The first document's index is 0 and so on.
+    		 * @memberof Trends
+			 * @property {DocIndex}
     		 */
     		docIndex: undefined,
     		
     		/**
-    		 * @cfg {String/String[]} docId The document ID of one or more documents, as a string, or strings separated by commas or in an array.
+    		 * @memberof Trends
+			 * @property {DocId}
     		 */
     		docId: undefined,
     		
     		/**
-    		 * @cfg {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
+    		 * @memberof Trends
+			 * @property {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
+			 * @default
     		 */
     		mode: "corpus",
     		
+			/**
+    		 * @memberof Trends
+			 * @property {String} chartType The of chart to display: Options are: 'area', 'bar', 'line', 'stacked', and 'barline'.
+			 * @default
+    		 */
     		chartType: 'barline',
     		
+			/**
+    		 * @memberof Trends
+			 * @property {Boolean} labels Whether to show term labels.
+			 * @default
+    		 */
     		labels: false
     	},
 		glyph: 'xf201@FontAwesome'
@@ -34482,6 +35246,11 @@ Ext.define('Voyant.panel.Veliza', {
     	body.scroll('b', Infinity);
     }
 });
+/**
+ * The Word Tree tool allows you to explore how keywords are used in different phrases in the corpus.
+ * 
+ * @class WordTree
+ */
 Ext.define('Voyant.panel.WordTree', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -34490,11 +35259,43 @@ Ext.define('Voyant.panel.WordTree', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof WordTree
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof WordTree
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof WordTree
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof WordTree
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof WordTree
+			 * @property {Context}
+			 * @default
+			 */
     		context: 10,
+
+			/**
+			 * @memberof WordTree
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 100
     	},
 		glyph: 'xf0e8@FontAwesome'
@@ -35384,6 +36185,11 @@ Ext.define('Voyant.panel.WordWall', {
     }
     
 });
+/**
+ * The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
+ * 
+ * @class Topics
+ */
 Ext.define('Voyant.panel.Topics', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -35395,11 +36201,46 @@ Ext.define('Voyant.panel.Topics', {
 			topicWeight: 'Topic weight'
 		},
 		api: {
+			/**
+			 * @memberof Topics
+			 * @property {StopList}
+			 * @default
+			 */
 			stopList: 'auto',
+
+			/**
+			 * @memberof Topics
+			 * @property {Number} topics The number of topics.
+			 * @default
+			 */
 			topics: 10,
+
+			/**
+			 * @memberof Topics
+			 * @property {Number} termsPerTopic The number of terms per topic.
+			 * @default
+			 */
 			termsPerTopic: 10,
+
+			/**
+			 * @memberof Topics
+			 * @property {Number} iterations The number of iterations.
+			 * @default
+			 */
 			iterations: 100,
+
+			/**
+			 * @memberof Topics
+			 * @property {Number} perDocLimit The number of terms to limit each document to.
+			 * @default
+			 */
 			perDocLimit: 1000,
+
+			/**
+			 * @memberof Topics
+			 * @property {Number} seed The seed to use for random number generation.
+			 * @default
+			 */
 			seed: 0
 		},
 		glyph: 'xf1ea@FontAwesome'
