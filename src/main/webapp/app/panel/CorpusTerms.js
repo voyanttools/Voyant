@@ -1,16 +1,7 @@
 /**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
- * <iframe src="../?corpus=austen&view=corpusterms" style="max-width: 500px; height: 300px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('CorpusTerms'); // simply embed
- * 			austen.embed('CorpusTerms', {query: '^lov*'}); // embed with query
- * 		});
+ * @class CorpusTerms
  */
 Ext.define('Voyant.panel.CorpusTerms', {
 	extend: 'Ext.grid.Panel',
@@ -22,40 +13,38 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	api: {
     		
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof CorpusTerms
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @cfg {String/String[]} query A query or array of queries (queries can be separated by a comma).
-    		 * 
-    		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+    		 * @memberof CorpusTerms
+			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @cfg {Number} maxBins The maximum number of bins to use for distributions in Trend.
+			 * @memberof CorpusTerms
+    		 * @property {Number} maxBins The maximum number of bins to use for distributions in Trend.
     		 * 
     		 * By default this is set to 100 (in other words, if there are more than 100 documents in the corpus, they will be forced into 100 bins).
     		 * Higher values are possible but it can cause performance issues and necessitate more data transfer (values for each one of the bins for each one of the terms).
-    		 * @cfg
+			 * @default
     		 */
     		maxBins: 100,
 
 			/**
-			 * @cfg {String} termColors Which term colors to show in the grid.
-			 * 
-			 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
-			 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+			 * @memberof CorpusTerms
+			 * @property {TermColors}
+			 * @default
 			 */
 			termColors: 'categories',
 
     		/**
-    		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
+			 * @memberof CorpusTerms
+    		 * @property {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 
     		 * None of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the "Comparison" column is shown.
     		 * The comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus.
@@ -63,19 +52,20 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		comparisonCorpus: undefined,
 
 			/**
-			 * @cfg {String/String[]} columns One or more column data indexes to display, separated by a comma.
-			 * 
-			 * Use this to modify the default set of visible columns.
+			 * @memberof CorpusTerms
+			 * @property {Columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
-			 * @cfg {String} sort The column to sort the results by
+			 * @memberof CorpusTerms
+			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
-			 * @cfg {String} dir The direction in which to sort the results: 'asc' or 'desc'
+			 * @memberof CorpusTerms
+			 * @property {SortDir}
 			 */
 			dir: undefined,
     	},

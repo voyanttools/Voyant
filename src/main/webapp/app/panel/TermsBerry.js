@@ -1,3 +1,8 @@
+/**
+ * The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).
+ * 
+ * @class TermsBerry
+ */
 Ext.define('Voyant.panel.TermsBerry', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -6,12 +11,48 @@ Ext.define('Voyant.panel.TermsBerry', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof TermsBerry
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Context}
+			 * @default
+			 */
     		context: 2,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Number} numInitialTerms The number of initial terms to display.
+			 */
         	numInitialTerms: 75,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof TermsBerry
+			 * @property {Categories}
+			 */
     		categories: undefined
     	},
 		glyph: 'xf1db@FontAwesome'

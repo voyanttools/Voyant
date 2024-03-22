@@ -1,3 +1,8 @@
+/**
+ * Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
+ * 
+ * @class CorpusCollocates
+ */
 Ext.define('Voyant.panel.CorpusCollocates', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -6,14 +11,61 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {Context}
+			 * @default
+			 */
     		context: 5,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {Columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
+			 */
 			columns: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {SortDir}
+			 */
 			dir: undefined,
+
+			/**
+			 * @memberof CorpusCollocates
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'

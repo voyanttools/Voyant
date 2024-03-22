@@ -1,3 +1,8 @@
+/**
+ * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
+ * 
+ * @class Reader
+ */
 Ext.define('Voyant.panel.Reader', {
 	extend: 'Ext.panel.Panel',
 	requires: ['Voyant.data.store.Tokens'],
@@ -13,9 +18,30 @@ Ext.define('Voyant.panel.Reader', {
 			nerSpacy: 'Entity Identification with SpaCy'
     	},
     	api: {
+			/**
+			 * @memberof Reader
+			 * @property {Start}
+			 * @default
+			 */
     		start: 0,
+
+			/**
+			 * @memberof Reader
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 1000,
+
+			/**
+			 * @memberof Reader
+			 * @property {String} skipToDocId The document ID to start reading from, defaults to the first document in the corpus.
+			 */
     		skipToDocId: undefined,
+
+			/**
+			 * @memberof Reader
+			 * @property {Query}
+			 */
     		query: undefined
     	},
     	glyph: 'xf0f6@FontAwesome'

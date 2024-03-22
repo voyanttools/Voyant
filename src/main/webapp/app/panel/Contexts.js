@@ -1,3 +1,8 @@
+/**
+ * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
+ * 
+ * @class Contexts
+ */
 Ext.define('Voyant.panel.Contexts', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,15 +13,68 @@ Ext.define('Voyant.panel.Contexts', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Contexts
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Contexts
+			 * @property {Context}
+			 * @default
+			 */
     		context: 5,
+
+			/**
+			 * @memberof Contexts
+			 * @property {Number} expand  How many terms to show when you expand any given row
+			 * @default
+			 */
     		expand: 50,
+
+			/**
+			 * @memberof Contexts
+			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
+			 */
 			columns: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {SortColumn}
+			 */
 			sort: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {SortDir}
+			 */
 			dir: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'

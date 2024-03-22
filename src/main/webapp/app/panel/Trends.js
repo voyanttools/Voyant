@@ -1,16 +1,7 @@
 /**
- * Trends tool, a line graph that shows term distributions.
+ * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
  * 
- * <iframe src="../?corpus=austen&view=trends" style="max-width: 500px; height: 300px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('Trends'); // simply embed
- * 			austen.embed('Trends', {query: '^lov*'}); // embed with query
- * 		});
+ * @class Trends
  */
 Ext.define('Voyant.panel.Trends', {
 	extend: 'Ext.panel.Panel',
@@ -71,37 +62,39 @@ Ext.define('Voyant.panel.Trends', {
     	api: {
     		
     		/**
-    		 * @cfg {Number} limit Determine the number of terms to show (larger numbers may make the graph unusable).
+    		 * @memberof Trends
+			 * @property {Limit}
+			 * @default
     		 */
     		limit: 5,
     		
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+    		 * @memberof Trends
+			 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @cfg {String/String[]} query A query or array of queries (queries can be separated by a comma).
-    		 * 
-    		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+    		 * @memberof Trends
+			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @cfg {String} withDistributions Determine whether to show "raw" or "relative" frequencies (those are the two valid values).
-    		 * 
-    		 * The default value is "relative" (unless there's only one document in the corpus, in which case raw frequencies are shown).
+    		 * @memberof Trends
+			 * @property {WithDistributions}
+			 * @default
     		 */
     		withDistributions: 'relative',
     		
     		/**
-    		 * @cfg {Number} bins The number of segments to use.
+    		 * @memberof Trends
+			 * @property {Bins}
     		 * 
-    		 * The default value will depend on the nature of the corpus:
+    		 * TODO verify this:
+			 * 
+			 * The default value will depend on the nature of the corpus:
     		 * 
     		 * - corpus has one document: the default number of bins is 10
     		 * - corpus has multiple documents:
@@ -111,24 +104,36 @@ Ext.define('Voyant.panel.Trends', {
     		bins: 10,
     		
     		/**
-    		 * @cfg {Number/Number[]/String} docIndex The index of one or more documents, as a number, or numbers separated by commas or in an array.
-    		 * 
-    		 * The first document's index is 0 and so on.
+    		 * @memberof Trends
+			 * @property {DocIndex}
     		 */
     		docIndex: undefined,
     		
     		/**
-    		 * @cfg {String/String[]} docId The document ID of one or more documents, as a string, or strings separated by commas or in an array.
+    		 * @memberof Trends
+			 * @property {DocId}
     		 */
     		docId: undefined,
     		
     		/**
-    		 * @cfg {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
+    		 * @memberof Trends
+			 * @property {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
+			 * @default
     		 */
     		mode: "corpus",
     		
+			/**
+    		 * @memberof Trends
+			 * @property {String} chartType The of chart to display: Options are: 'area', 'bar', 'line', 'stacked', and 'barline'.
+			 * @default
+    		 */
     		chartType: 'barline',
     		
+			/**
+    		 * @memberof Trends
+			 * @property {Boolean} labels Whether to show term labels.
+			 * @default
+    		 */
     		labels: false
     	},
 		glyph: 'xf201@FontAwesome'

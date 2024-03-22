@@ -1,4 +1,9 @@
 // assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * Bubblelines visualizes the frequency and distribution of terms in a corpus.
+ * 
+ * @class Bubblelines
+ */
 Ext.define('Voyant.panel.Bubblelines', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,41 +13,41 @@ Ext.define('Voyant.panel.Bubblelines', {
     	},
     	api: {
     		/**
-    		 * @property bins How many "bins" to separate a document into.
-    		 * @type Integer
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {Bins}
+			 * @default
     		 */
     		bins: 50,
+
         	/**
-        	 * @property query A string to search for in a document.
-        	 * @type String
-    		 * @private
+			 * @memberof Bubblelines
+        	 * @property {Query}
         	 */
     		query: null,
     		
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
+
     		/**
-    		 * @property docId The document ID to restrict results to.
-    		 * @type String
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {DocId}
     		 */
     		docId: undefined,
+
     		/**
-    		 * @property docIndex The document index to restrict results to.
-    		 * @type Integer
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {DocIndex}
     		 */
     		docIndex: undefined,
+
     		/**
-    		 * @property maxDocs The maximum number of documents to show.
-    		 * @type Integer
-    		 * @private
+			 * @memberof Bubblelines
+    		 * @property {Number} maxDocs The maximum number of documents to show.
+    		 * @default
     		 */
     		maxDocs: 50
     	},
