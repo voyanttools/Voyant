@@ -418,12 +418,13 @@ Ext.define('Voyant.notebook.Notebook', {
 		Ext.Promise.all([
 			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/spyral.json'}),
 			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/ecmascript.json'}),
-			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'})
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'}),
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/tools.json'})
 		]).then(function(responses) {
 			this.spyralTernDocs = Ext.JSON.decode(responses[0].responseText);
 			this.ecmaTernDocs = Ext.JSON.decode(responses[1].responseText);
 			this.browserTernDocs = Ext.JSON.decode(responses[2].responseText);
-
+			this.toolTernDocs = Ext.JSON.decode(responses[3].responseText);
 			this.loadFromQueryParams();
 		}.bind(this), function() {
 			this.loadFromQueryParams();

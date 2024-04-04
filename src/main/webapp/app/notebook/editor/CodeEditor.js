@@ -114,7 +114,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				editor.on('keypress', function(ed, event) {
 					if (event.key === '.') {
 						Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
-					} else if (event.key === '{') {
+					} else if (event.key === '{' || event.key === ',') {
 						// many Spyral methods take a single config object
 						// so look out for that and display config object properties
 						var cursor = ed.getCursor();
@@ -123,6 +123,35 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 							// let closebrackets addon finish and then look for matches
 							setTimeout(function() {
 								Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+							}, 50);
+						} else {
+							// special handling for corpus tools
+							var toolNameCheck = range.match(/\.tool\(\s*['"]{1}(\w+)['"]{1}\s*,\s*/);
+							if (toolNameCheck !== null) {
+								setTimeout(function() {
+									var toolName = toolNameCheck[1];
+									var notebook = me.up('notebook');
+									var toolEntry = notebook.toolTernDocs[toolName];
+									if (toolEntry) {
+										Voyant.notebook.editor.CodeEditor.ternServer.showCorpusToolHint(ed, toolEntry);
+									}
+								}, 50);
+							}
+						}
+					} else if (event.key === "'" || event.key === '"') {
+						// special handling for corpus tools
+						var cursor = ed.getCursor();
+						var range = ed.getRange({line: cursor.line, ch: 0}, cursor);
+						var corpusToolFnCheck = range.match(/\.tool\(\s*$/);
+						if (corpusToolFnCheck !== null) {
+							setTimeout(function() {
+								ed.showHint({hint: function() {
+									var notebook = me.up('notebook');
+									var toolNames = Object.keys(notebook.toolTernDocs).filter(function(key) { return key.charAt(0) !== '!'});
+									var cursor = ed.getCursor();
+									var result = {list: toolNames, from: {line: cursor.line, ch: cursor.ch}, to: {line: cursor.line, ch: cursor.ch}};
+									return result;
+								}})
 							}, 50);
 						}
 					}
@@ -134,7 +163,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 					'Cmd-Space': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.complete(ed); },
 					'Cmd-D': function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.showDocs(ed, undefined, me._showDocsCallback.bind(me)); }
 				});
-				editor.on('cursorActivity', function(ed) { Voyant.notebook.editor.CodeEditor.ternServer.updateArgHints(ed); });
+				editor.on('cursorActivity', function(ed) { console.log('cursorActivity'); Voyant.notebook.editor.CodeEditor.ternServer.updateArgHints(ed); });
 			}
 
 			this.setEditor(editor);
@@ -151,6 +180,10 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				cmp.setEditor(undefined);
 			}
 		}
+		
+	},
+
+	getHintForTool: function(toolName, cm, self, data) {
 		
 	},
 
