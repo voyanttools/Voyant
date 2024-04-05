@@ -92,6 +92,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	spyralTernDocs: undefined,
 	ecmaTernDocs: undefined,
 	browserTernDocs: undefined,
+	toolTernDocs: undefined,
     
     /**
      * @private

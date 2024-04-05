@@ -17,7 +17,7 @@ Ext.define('Voyant.panel.Panel', {
 		/**
 		 * @typedef {String} StopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
 		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+		 * For more information see the <a href="#!/guide/stopwords">Stopwords documentation</a>.
 		 */
 
 		/**

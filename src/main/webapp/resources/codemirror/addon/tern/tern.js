@@ -120,21 +120,49 @@
 
     selectName: function(cm) { selectName(this, cm); },
 
-    showCorpusToolHint: function(cm, toolEntry) {
-      var list = Object.entries(toolEntry).map(function(keyAndValue, array) {
+    showCorpusToolParamsHint: function(cm, toolParams) {
+      var list = Object.entries(toolParams).map(function(keyAndValue, array) {
         var key = keyAndValue[0];
         var value = keyAndValue[1];
         var cssType = value.type.toLowerCase();
         if (cssType === 'boolean') cssType = 'bool';
+        var docEl = document.createElement('span');
+        docEl.innerHTML = value.doc; // turn it into a element in order to convert links
         return {
           className: "CodeMirror-Tern-completion CodeMirror-Tern-completion-"+cssType,
           text: key,
           displayText: key,
           data: {
-            doc: value.description,
+            doc: docEl,
             guess: undefined,
             name: key,
             type: value.type
+          }
+        }
+      });
+      var cursor = cm.getCursor();
+      var obj = {list: list, from: {line: cursor.line, ch: cursor.ch}, to: {line: cursor.line, ch: cursor.ch}};
+      var me = this;
+      var cth = function(cm, c) { buildHint(me, cm, obj); c(obj); };
+      cth.async = true;
+      cm.showHint({hint: cth});
+    },
+
+    showCorpusToolsHint: function(cm, tools) {
+      var list = tools.map(function(entry, array) {
+        var toolName = entry[0];
+        var docEl = document.createElement('span');
+        docEl.innerHTML = entry[1]; // turn it into a element in order to convert links
+        var cssType = 'class';
+        return {
+          className: "CodeMirror-Tern-completion CodeMirror-Tern-completion-"+cssType,
+          text: toolName,
+          displayText: toolName,
+          data: {
+            doc: docEl,
+            guess: undefined,
+            name: toolName,
+            type: 'class'
           }
         }
       });
