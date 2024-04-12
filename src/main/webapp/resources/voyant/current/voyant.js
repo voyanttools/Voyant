@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Apr 12 20:38:20 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Apr 12 20:55:57 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -23897,6 +23897,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 	alias: 'widget.corpusterms',
     statics: {
     	i18n: {
+			comparisonCorpus: 'Comparison Corpus'
     	},
     	api: {
     		
@@ -23971,8 +23972,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			xtype: 'termcolorsoption'
 		},{
     		xtype: 'corpusselector',
-    		name: 'comparisonCorpus',
-    		fieldLabel: 'comparison corpus'
+    		name: 'comparisonCorpus'
     	}]
     },
 
@@ -23982,6 +23982,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     constructor: function(config) {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
+		this.getOptions().filter(function(option) { return option.xtype === 'corpusselector'})[0].fieldLabel = this.localize('comparisonCorpus');
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
     
