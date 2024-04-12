@@ -45,6 +45,13 @@ Ext.define('Voyant.panel.Correlations', {
 
 			/**
 			 * @memberof Correlations
+			 * @property {WithDistributions}
+			 * @default
+			 */
+			withDistributions: 'relative',
+
+			/**
+			 * @memberof Correlations
 			 * @property {Columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
 			 */
 			columns: undefined,
