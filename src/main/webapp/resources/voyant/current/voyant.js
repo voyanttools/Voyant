@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Apr 12 19:59:00 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Apr 12 20:38:20 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -20007,6 +20007,13 @@ Ext.define('Voyant.panel.Correlations', {
 			 * @default
 			 */
     		minInDocumentsCountRatio: 100,
+
+			/**
+			 * @memberof Correlations
+			 * @property {WithDistributions}
+			 * @default
+			 */
+			withDistributions: 'relative',
 
 			/**
 			 * @memberof Correlations
