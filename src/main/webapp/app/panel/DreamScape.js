@@ -1117,6 +1117,7 @@ Ext.define('Voyant.panel.DreamScape', {
    
     /**
      * Update all filters
+     * @private
      */
     reloadFilters: function() {
         this.getFilterWidgets().each(function(filter) {

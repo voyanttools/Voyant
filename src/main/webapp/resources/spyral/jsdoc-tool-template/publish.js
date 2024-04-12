@@ -59,7 +59,20 @@ exports.publish = function(data, opts, tutorials) {
             desc += "\n\n<a target=\"_spyral_docs\" href=\""+apiUrlRoot+"/docs/#!/guide/"+doc.name.toLowerCase()+"\">More documentation</a>";
             output[doc.name] = {
                 doc: desc,
-                params: {}
+                params: {
+                    "style": {
+                        "type": "String",
+                        "doc": "A string of CSS properties to use as the style attribute for the tool's parent tag."
+                    },
+                    "width": {
+                        "type": "Number",
+                        "doc": "Specify the display width of the tool in pixels."
+                    },
+                    "height": {
+                        "type": "Number",
+                        "doc": "Specify the display height of the tool in pixels."
+                    }
+                }
             }
         }
     }
@@ -87,7 +100,7 @@ exports.publish = function(data, opts, tutorials) {
                 }
                 var typedef = output['!define'][firstType];
                 output[parent]['params'][doc.name].type = typedef.type[0];
-                output[parent]['params'][doc.name].doc = typedef.doc + additionalDoc
+                output[parent]['params'][doc.name].doc = typedef.doc + additionalDoc;
             } else {
                 output[parent]['params'][doc.name].type = firstType;
                 output[parent]['params'][doc.name].doc = doc.properties[0].description;

@@ -382,6 +382,7 @@ Ext.define('Voyant.panel.Bubblelines', {
     /**
      * Get the results for the query(s) for each of the corpus documents.
      * @param query {String|Array}
+	 * @private
      */
     getDocTermsFromQuery: function(query) {
     	if (query) {this.setApiParam('query', query);} // make sure it's set for subsequent calls
