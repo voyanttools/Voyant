@@ -9,6 +9,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 	alias: 'widget.corpusterms',
     statics: {
     	i18n: {
+			comparisonCorpus: 'Comparison Corpus'
     	},
     	api: {
     		
@@ -83,8 +84,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			xtype: 'termcolorsoption'
 		},{
     		xtype: 'corpusselector',
-    		name: 'comparisonCorpus',
-    		fieldLabel: 'comparison corpus'
+    		name: 'comparisonCorpus'
     	}]
     },
 
@@ -94,6 +94,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     constructor: function(config) {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
+		this.getOptions().filter(function(option) { return option.xtype === 'corpusselector'})[0].fieldLabel = this.localize('comparisonCorpus');
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
     
