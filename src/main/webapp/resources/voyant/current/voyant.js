@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Apr 05 20:53:09 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Apr 12 19:59:00 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -16875,6 +16875,7 @@ Ext.define('Voyant.panel.Bubblelines', {
     /**
      * Get the results for the query(s) for each of the corpus documents.
      * @param query {String|Array}
+	 * @private
      */
     getDocTermsFromQuery: function(query) {
     	if (query) {this.setApiParam('query', query);} // make sure it's set for subsequent calls
@@ -22133,6 +22134,7 @@ Ext.define('Voyant.panel.DreamScape', {
    
     /**
      * Update all filters
+     * @private
      */
     reloadFilters: function() {
         this.getFilterWidgets().each(function(filter) {
