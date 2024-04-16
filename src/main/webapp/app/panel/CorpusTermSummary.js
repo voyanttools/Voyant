@@ -91,7 +91,18 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
         this.setApiParam('query', this.getRecord().getTerm());
         
         this.setCollocatesStore(Ext.create('Voyant.data.store.CorpusCollocates', { corpus: corpus }));
-        this.setCorrelationsStore(Ext.create('Voyant.data.store.TermCorrelations', { corpus: corpus }));
+        this.setCorrelationsStore(Ext.create('Voyant.data.store.TermCorrelations', {
+            corpus: corpus,
+            listeners: {
+                beforeload: function(store) {
+                    if (corpus.getDocumentsCount() === 1) {
+                        store.getProxy().setExtraParam('tool', 'corpus.DocumentTermCorrelations');
+                    } else {
+                        store.getProxy().setExtraParam('tool', 'corpus.CorpusTermCorrelations');
+                    }
+                }
+            }
+        }));
         this.setPhrasesStore(Ext.create('Voyant.data.store.CorpusNgrams', { corpus: corpus }));
         this.setDocumentTermsStore(Ext.create('Voyant.data.store.DocumentTerms', { corpus: corpus }));
         
