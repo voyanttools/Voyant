@@ -240,17 +240,22 @@ Ext.define('Voyant.panel.CorpusTerms', {
         });
         
     	me.on('loadedCorpus', function(src, corpus) {
-//    		this.setApiParam('query', undefined);
     		if (corpus.getDocumentsCount()>100) {
     			this.getStore().getProxy().setExtraParam('bins', this.getApiParam('maxBins'));
     		}
     		if (this.isVisible()) {
-        		this.getStore().load()
+				if (corpus.getDocumentsCount() === 1) {
+					this.getColumns().filter(function(col) { return col.dataIndex === 'distributions'})[0].hide();
+				}
+        		this.getStore().load();
     		}
     	}, me);
     	
     	me.on("activate", function() { // load after tab activate (if we're in a tab panel)
     		if (me.getStore().getCorpus()) {
+				if (me.getStore().getCorpus().getDocumentsCount() === 1) {
+					this.getColumns().filter(function(col) { return col.dataIndex === 'distributions'})[0].hide();
+				}
     			me.getStore().load({params: this.getApiParams()});
     		}
     	}, me);
