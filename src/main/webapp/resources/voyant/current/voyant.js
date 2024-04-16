@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Apr 12 20:55:57 UTC 2024 */
+/* This file created by JSCacher. Last modified: Tue Apr 16 20:13:42 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -19858,7 +19858,18 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
         this.setApiParam('query', this.getRecord().getTerm());
         
         this.setCollocatesStore(Ext.create('Voyant.data.store.CorpusCollocates', { corpus: corpus }));
-        this.setCorrelationsStore(Ext.create('Voyant.data.store.TermCorrelations', { corpus: corpus }));
+        this.setCorrelationsStore(Ext.create('Voyant.data.store.TermCorrelations', {
+            corpus: corpus,
+            listeners: {
+                beforeload: function(store) {
+                    if (corpus.getDocumentsCount() === 1) {
+                        store.getProxy().setExtraParam('tool', 'corpus.DocumentTermCorrelations');
+                    } else {
+                        store.getProxy().setExtraParam('tool', 'corpus.CorpusTermCorrelations');
+                    }
+                }
+            }
+        }));
         this.setPhrasesStore(Ext.create('Voyant.data.store.CorpusNgrams', { corpus: corpus }));
         this.setDocumentTermsStore(Ext.create('Voyant.data.store.DocumentTerms', { corpus: corpus }));
         
@@ -24128,17 +24139,22 @@ Ext.define('Voyant.panel.CorpusTerms', {
         });
         
     	me.on('loadedCorpus', function(src, corpus) {
-//    		this.setApiParam('query', undefined);
     		if (corpus.getDocumentsCount()>100) {
     			this.getStore().getProxy().setExtraParam('bins', this.getApiParam('maxBins'));
     		}
     		if (this.isVisible()) {
-        		this.getStore().load()
+				if (corpus.getDocumentsCount() === 1) {
+					this.getColumns().filter(function(col) { return col.dataIndex === 'distributions'})[0].hide();
+				}
+        		this.getStore().load();
     		}
     	}, me);
     	
     	me.on("activate", function() { // load after tab activate (if we're in a tab panel)
     		if (me.getStore().getCorpus()) {
+				if (me.getStore().getCorpus().getDocumentsCount() === 1) {
+					this.getColumns().filter(function(col) { return col.dataIndex === 'distributions'})[0].hide();
+				}
     			me.getStore().load({params: this.getApiParams()});
     		}
     	}, me);
