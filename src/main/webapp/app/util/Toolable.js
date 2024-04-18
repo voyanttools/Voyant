@@ -78,6 +78,9 @@ Ext.define('Voyant.util.Toolable', {
 			            	panel: panel,
 							items: {
 								xtype: 'form',
+								defaults: {
+									margin: '10 10 10 0'
+								},
 								items: panel.getOptions(),
 								listeners: {
 									afterrender: function(form) {
@@ -207,8 +210,7 @@ Ext.define('Voyant.util.Toolable', {
 									},
 									scope: panel
 								}]
-							},
-							bodyPadding: 5
+							}
 						}).show()
 					}
 				} : undefined,
