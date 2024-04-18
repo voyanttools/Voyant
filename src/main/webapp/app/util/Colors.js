@@ -21,6 +21,14 @@ Ext.define('Voyant.util.Colors', {
 		textColorsForBackgroundColors: {}
 	},
 
+	d3Palettes: {
+		categorical: ["Category10","Tableau10","Observable10","Set1","Set2","Set3","Accent","Dark2","Pastel1","Pastel2","Paired"],
+		cyclical: ["Rainbow","Sinebow"],
+		sequentialDiverging: ["BrBG","PRGn","PiYG","PuOr","RdBu","RdGy","RdYlBu","RdYlGn","Spectral"],
+		sequentialMulti: ["BuGn","BuPu","GnBu","OrRd","PuBuGn","PuBu","PuRd","RdPu","YlGnBu","YlGn","YlOrBr","YlOrRd","Cividis","Viridis","Inferno","Magma","Plasma","Warm","Cool","CubehelixDefault","Turbo"],
+		sequentialSingle: ["Blues","Greens","Greys","Oranges","Purples","Reds"]
+	},
+
 	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
 
 	constructor: function(config) {
@@ -31,16 +39,10 @@ Ext.define('Voyant.util.Colors', {
 
 		// palettes
 		if (d3 !== undefined) {
-			var cat10 = d3.scaleOrdinal(d3.schemeCategory10).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var cat20a = d3.scaleOrdinal(d3.schemeCategory20).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var cat20b = d3.scaleOrdinal(d3.schemeCategory20b).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var cat20c = d3.scaleOrdinal(d3.schemeCategory20c).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var set3 = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f'].map(function(val) { return this.hexToRgb(val); }, this);
-			this.addColorPalette('d3_cat10', cat10);
-			this.addColorPalette('d3_cat20a', cat20a);
-			this.addColorPalette('d3_cat20b', cat20b);
-			this.addColorPalette('d3_cat20c', cat20c);
-			this.addColorPalette('d3_set3', set3);
+			this.d3Palettes.categorical.forEach(function(palName) {
+				var rgbs = d3.scaleOrdinal(d3['scheme'+palName]).range().map(function(val) { return this.hexToRgb(val); }, this);
+				this.addColorPalette(palName, rgbs);
+			}, this);
 		}
 		
 		var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);

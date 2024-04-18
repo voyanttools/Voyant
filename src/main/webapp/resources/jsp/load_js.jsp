@@ -18,6 +18,7 @@ String rtl_js = (String) request.getAttribute("rtl");
 <!-- D3 -->
 <script type="text/javascript" src="<%= base_js %>/resources/d3/current/d3.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/d3/fisheye.js"></script>
+<script type="text/javascript" src="<%= base_js %>/resources/d3/d3-scale-chromatic.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/cirrus/html5/d3.layout.cloud.js"></script>
 
 <!-- spectrum -->
