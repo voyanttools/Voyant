@@ -107,6 +107,49 @@ Ext.define('Voyant.util.Colors', {
 		}
 	},
 
+	/**
+	 * Generate a color palette from one of the D3 color palettes.
+	 * Available palettes: "Blues", "Greens", "Greys", "Oranges", "Purples", "Reds", "BuGn", "BuPu", "GnBu", "OrRd", "PuBuGn", "PuBu", "PuRd", "RdPu", "YlGnBu", "YlGn", "YlOrBr", "YlOrRd", "Cividis", "Viridis", "Inferno", "Magma", "Plasma", "Warm", "Cool", "CubehelixDefault", "Turbo", "BrBG", "PRGn", "PiYG", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral", "Rainbow", "Sinebow"
+	 * @param {String} d3Name The D3 color palette name
+	 * @param {Number} [steps] How many steps to divide the palette into, defaults to 10
+	 * @param {Boolean} [returnHex] True to return a hexadecimal representation of each color, defaults to rgb values
+	 */
+	createD3ColorPalette: function(d3Name, steps, returnHex) {
+		var colors;
+		steps = steps === undefined ? 10 : steps;
+		returnHex = returnHex === undefined ? false : returnHex;
+
+		if (d3['scheme'+d3Name] === undefined && d3['interpolate'+d3Name] === undefined) {
+			throw new Error('Invalid color palette name');
+		}
+
+		if (d3['interpolate'+d3Name]) {
+			var interpolate = d3['interpolate'+d3Name];
+			colors = [];
+			for (var i = 0; i < steps; ++i) {
+				colors.push(d3.rgb(interpolate(i / (steps - 1))));
+			}
+		} else {
+			if (d3['scheme'+d3Name][steps] === undefined) {
+				steps = d3['scheme'+d3Name].length - 1;
+			}
+			colors = Array.isArray(d3['scheme'+d3Name][steps]) ? d3['scheme'+d3Name][steps] : d3['scheme'+d3Name]; // handling for both flat and multi-dimensional palette arrays
+			colors = colors.map(function(c) { return d3.rgb(c)});
+		}
+
+		colors = colors.map(function(c) {
+			return [c.r, c.g, c.b];
+		}, this);
+		
+		if (returnHex) {
+			colors = colors.map(function(c) {
+				return this.rgbToHex([c.r, c.g, c.b]);
+			}, this);
+		}
+
+		return colors;
+	},
+
 	saveCustomColorPalette: function(paletteArray) {
 		var dfd = new Ext.Deferred();
 

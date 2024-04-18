@@ -441,9 +441,12 @@ svg.cirrusGraph text {
 
 .color {
 	float: left;
-	padding: 10px;
-	margin: 1px;
+	padding: 16px;
+	margin: 2px;
 	border: 2px solid #ffffff;
+  border-radius: 4px;
+  filter: drop-shadow(#ccc 2px 2px 2px);
+  outline: none !important;
 }
 .color.selected {
 	border: 2px solid #000000;
@@ -453,6 +456,9 @@ svg.cirrusGraph text {
 }
 .sp-input {
 	background: #ffffff !important;
+}
+.d3-palette-item .x-tree-icon {
+  color: #333333;
 }
 
 
