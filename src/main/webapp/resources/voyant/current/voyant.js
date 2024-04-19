@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Apr 18 21:50:41 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Apr 19 21:07:33 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -13876,6 +13876,7 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 			category: 'Category',
 			increaseCategory: 'Increase Category Priority',
 			decreaseCategory: 'Decrease Category Priority',
+			setColorsFromPalette: 'Set Colors From Palette',
     		
     		color: 'Color',
     		font: 'Font',
@@ -14105,11 +14106,29 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 	    				sortable: false,
 	    				hideable: false,
 	    				flex: 1
-	    			}]
+	    			}],
+					bbar: [{
+						xtype: 'colorpaletteoption'
+					},' ',{
+						text: this.localize('setColorsFromPalette'),
+						handler: function(btn) {
+							var palName = btn.up().down('colorpaletteoption').down('combo').getValue();
+							var palColors = this.app.getColorPalette(palName, true);
+							if (palColors.length > 0) {
+								Object.keys(this.categoriesManager.getCategories()).forEach(function(categoryName, index) {
+									var color = palColors[index % (palColors.length)];
+									this.categoriesManager.setCategoryFeature(categoryName, 'color', color);
+								}, this);
+								this.buildFeatures();
+							}
+						},
+						scope: this
+					}]
 	    		}]
     		},
     		buttons: [{
 				text: this.localize('cancel'),
+				ui: 'default-toolbar',
 				handler: function(btn) {
 					this.setCategoriesId(undefined);
 					btn.up('window').close();
