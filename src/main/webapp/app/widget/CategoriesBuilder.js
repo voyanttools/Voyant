@@ -92,6 +92,7 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 			category: 'Category',
 			increaseCategory: 'Increase Category Priority',
 			decreaseCategory: 'Decrease Category Priority',
+			setColorsFromPalette: 'Set Colors From Palette',
     		
     		color: 'Color',
     		font: 'Font',
@@ -321,11 +322,29 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 	    				sortable: false,
 	    				hideable: false,
 	    				flex: 1
-	    			}]
+	    			}],
+					bbar: [{
+						xtype: 'colorpaletteoption'
+					},' ',{
+						text: this.localize('setColorsFromPalette'),
+						handler: function(btn) {
+							var palName = btn.up().down('colorpaletteoption').down('combo').getValue();
+							var palColors = this.app.getColorPalette(palName, true);
+							if (palColors.length > 0) {
+								Object.keys(this.categoriesManager.getCategories()).forEach(function(categoryName, index) {
+									var color = palColors[index % (palColors.length)];
+									this.categoriesManager.setCategoryFeature(categoryName, 'color', color);
+								}, this);
+								this.buildFeatures();
+							}
+						},
+						scope: this
+					}]
 	    		}]
     		},
     		buttons: [{
 				text: this.localize('cancel'),
+				ui: 'default-toolbar',
 				handler: function(btn) {
 					this.setCategoriesId(undefined);
 					btn.up('window').close();
