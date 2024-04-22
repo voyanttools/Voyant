@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri Apr 19 21:07:33 UTC 2024 */
+/* This file created by JSCacher. Last modified: Mon Apr 22 20:02:30 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -23739,12 +23739,14 @@ Ext.define('Voyant.panel.Phrases', {
 			/**
 			 * @memberof Phrases
 			 * @property {Number} minLength The minimum length (number of words) of the phrase to consider.
+			 * @default
 			 */
     		minLength: 2,
 
 			/**
 			 * @memberof Phrases
 			 * @property {Number} maxLength The maximum length (number of words) of the phrase to consider.
+			 * @default
 			 */
     		maxLength: 50,
 
@@ -23898,8 +23900,8 @@ Ext.define('Voyant.panel.Phrases', {
                 }, {
                 	xtype: 'slider',
                 	minValue: 2,
-                	values: [2, 30],
-                	maxValue: 30,
+                	values: [2, 50],
+                	maxValue: 50,
                 	increment: 1,
                 	width: 75,
                 	tooltip: this.localize("lengthTip"),
