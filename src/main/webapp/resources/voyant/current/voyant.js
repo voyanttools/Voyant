@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Apr 22 20:02:30 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Apr 25 17:54:26 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -43666,6 +43666,10 @@ Ext.define('Voyant.VoyantApp', {
 		this.getColorForTerm = function(term, returnHex) {
 			if (term.indexOf('@') === 0) {
 				var catColor = this.getCategoriesManager().getCategoryFeature(term.substring(1), 'color');
+				if (catColor === undefined) {
+					// no category color so just use the default term behaviour
+					return _getColorForTerm.apply(this, [this.getApiParam('palette'), term, returnHex]);
+				}
 				if (returnHex) {
 					return catColor;
 				} else {
