@@ -79,17 +79,23 @@
 <link rel="shortcut icon" type="image/ico" href="<%= base %>/resources/voyant/favicon<%= spyral %>.ico" />
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MZ8WDV5DGZ"></script>
 <script>
-	var isLocalHost = window.location.hostname=='localhost' || window.location.hostname=='127.0.0.1';
-	if (isLocalHost) {
-		window['ga-disable-G-MZ8WDV5DGZ'] = true;
+	var gTagId = undefined;
+	if (window.location.hostname === 'beta.voyant-tools.org') {
+		gTagId = 'G-BL4LKKPKXD';
+	} else if (window.location.hostname === 'voyant-tools.org') {
+		gTagId = 'G-MZ8WDV5DGZ';
 	}
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-
-	gtag('config', 'G-MZ8WDV5DGZ');
+	if (gTagId !== undefined) {
+		var scriptTagLoader = document.createElement('script');
+		scriptTagLoader.setAttribute('async', 'true');
+		scriptTagLoader.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id='+gTagId);
+		document.head.appendChild(scriptTagLoader);
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', gTagId);
+	}
 </script>
 
 <!-- EXTJS CLASSIC -->
