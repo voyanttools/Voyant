@@ -78,23 +78,20 @@
 
 <link rel="shortcut icon" type="image/ico" href="<%= base %>/resources/voyant/favicon<%= spyral %>.ico" />
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- Google Tag Manager -->
 <script>
-	var gTagId = undefined;
+	var gtmId = undefined;
 	if (window.location.hostname === 'beta.voyant-tools.org') {
-		gTagId = 'G-BL4LKKPKXD';
+		gtmId = 'GTM-W4XT4SV6';
 	} else if (window.location.hostname === 'voyant-tools.org') {
-		gTagId = 'G-MZ8WDV5DGZ';
+		gtmId = 'GTM-5SQ3JQS8';
 	}
-	if (gTagId !== undefined) {
-		var scriptTagLoader = document.createElement('script');
-		scriptTagLoader.setAttribute('async', 'true');
-		scriptTagLoader.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id='+gTagId);
-		document.head.appendChild(scriptTagLoader);
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', gTagId);
+	if (gtmId !== undefined) {
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer',gtmId);
 	}
 </script>
 
