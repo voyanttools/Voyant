@@ -1075,8 +1075,8 @@
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
 	 * @param {number} config.minRawFreq the minimum raw frequency of terms
-	 * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
-	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.query a term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
+	 * @param {string} config.stopList a list of stopwords to include (see <a href="https://voyant-tools.org/docs/#!/guide/stopwords" target="_blank">https://voyant-tools.org/docs/#!/guide/stopwords</a>)
 	 * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	 * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -1188,7 +1188,7 @@
      * 
      *  * **start**: the zero-based start index of the list (for paging)
      *  * **limit**: the maximum number of terms to provide per request
-     *  * **query**: a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     *  * **query**: a term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
      *  * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -1214,7 +1214,7 @@
      * @param {Object} config an Object specifying parameters (see above)
      * @param {number} config.start the zero-based start index of the list (for paging)
      * @param {number} config.limit the maximum number of terms to provide per request
-     * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     * @param {string} config.query a term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
      * @param {string} config.sort the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
      * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -1503,7 +1503,7 @@
 	 * @param {number} config.iterations the number of iterations to do, more iterations = more accurate (default is 100)
 	 * @param {number} config.perDocLimit specify a token limit per document, starting at the beginning of the document
 	 * @param {number} config.seed specify a particular seed to use for random number generation
-	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.stopList a list of stopwords to include (see <a href="https://voyant-tools.org/docs/#!/guide/stopwords" target="_blank">https://voyant-tools.org/docs/#!/guide/stopwords</a>)
 	 * @returns {Promise<Object>}
 	  * @method topics
  */
@@ -1522,6 +1522,30 @@
 	 * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	 * @returns {Promise<Array>}
 	  * @method entities
+ */
+
+
+/**
+* Performs one of several dimension reduction statistical analysis techniques.
+	 * 
+	 * For more details see <a href="https://voyant-tools.org/docs/#!/guide/scatterplot" target="_blank">https://voyant-tools.org/docs/#!/guide/scatterplot</a>.
+	 * 
+	 * @param {Object} config 
+	 * @param {string} config.type The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'
+	 * @param {number} config.start The zero-based start of the list
+	 * @param {number} config.limit A limit to the number of items to return at a time
+	 * @param {number} config.dimensions The number of dimensions to render, either 2 or 3.
+	 * @param {number} config.bins The number of bins to separate a document into.
+	 * @param {number} config.clusters The number of clusters within which to group words.
+	 * @param {number} config.perplexity The TSNE perplexity value.
+	 * @param {number} config.iterations The TSNE iterations value.
+	 * @param {string} config.comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
+	 * @param {string} config.target The term to set as the target. This will filter results to terms that are near the target.
+	 * @param {string} config.term Used in combination with "target" as a white list of terms to keep.
+	 * @param {string} config.query A term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
+	 * @param {string} config.stopList A list of stopwords to include (see <a href="https://voyant-tools.org/docs/#!/guide/stopwords" target="_blank">https://voyant-tools.org/docs/#!/guide/stopwords</a>)
+	 * @returns {Promise<Object>}
+	  * @method analysis
  */
 
 

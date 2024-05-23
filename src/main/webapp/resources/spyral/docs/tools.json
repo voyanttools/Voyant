@@ -452,6 +452,10 @@
         "type": "Number",
         "doc": "The minimum coverage (as a percentage) for terms. For instance, if a corpus has 10 documents and the minimum coverage is 20%, at least two of the documents must contain the term or it will be ignored."
       },
+      "withDistributions": {
+        "type": "String",
+        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\n\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
+      },
       "columns": {
         "type": "String",
         "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'"

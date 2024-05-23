@@ -467,6 +467,60 @@
         "!doc": "the annotator to use: 'stanford' or 'nssi' or 'spacy'"
       }
     },
+    "Spyral_Corpus_analysis_config": {
+      "type": {
+        "!type": "string",
+        "!doc": "The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'"
+      },
+      "start": {
+        "!type": "number",
+        "!doc": "The zero-based start of the list"
+      },
+      "limit": {
+        "!type": "number",
+        "!doc": "A limit to the number of items to return at a time"
+      },
+      "dimensions": {
+        "!type": "number",
+        "!doc": "The number of dimensions to render, either 2 or 3."
+      },
+      "bins": {
+        "!type": "number",
+        "!doc": "The number of bins to separate a document into."
+      },
+      "clusters": {
+        "!type": "number",
+        "!doc": "The number of clusters within which to group words."
+      },
+      "perplexity": {
+        "!type": "number",
+        "!doc": "The TSNE perplexity value."
+      },
+      "iterations": {
+        "!type": "number",
+        "!doc": "The TSNE iterations value."
+      },
+      "comparisonType": {
+        "!type": "string",
+        "!doc": "The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'."
+      },
+      "target": {
+        "!type": "string",
+        "!doc": "The term to set as the target. This will filter results to terms that are near the target."
+      },
+      "term": {
+        "!type": "string",
+        "!doc": "Used in combination with \"target\" as a white list of terms to keep."
+      },
+      "query": {
+        "!type": "string",
+        "!doc": "A term query (see https://voyant-tools.org/docs/#!/guide/search)"
+      },
+      "stopList": {
+        "!type": "string",
+        "!doc": "A list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)"
+      }
+    },
     "Spyral_NetworkGraph_config": {
       "nodes": {
         "!type": "+Array",
@@ -990,6 +1044,11 @@
           "!type": "fn(config: +Spyral_Corpus_entities_config) -> +Promise",
           "!doc": "Returns an array of entities.\n\nThe config object as parameter can contain the following:\n\n * **docIndex**: document index to restrict to (can be comma-separated list)\n * **annotator**: the annotator to use: 'stanford' or 'nssi' or 'spacy'",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-entities"
+        },
+        "analysis": {
+          "!type": "fn(config: +Spyral_Corpus_analysis_config) -> +Promise",
+          "!doc": "Performs one of several dimension reduction statistical analysis techniques.\n\nFor more details see https://voyant-tools.org/docs/#!/guide/scatterplot.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-analysis"
         },
         "tool": {
           "!type": "fn(tool: string, config: +Object) -> +Promise",
