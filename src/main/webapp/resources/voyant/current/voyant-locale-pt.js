@@ -670,7 +670,7 @@ Ext.apply(Voyant.panel.Phrases.i18n, {
 "overlapFreq":"priorizar frases mais frequentes",
 "emptyText":"Nenhum resultado.",
 "length":"Comprimento",
-"termRawFreqTip":"Quantidade de veses que a frase ocorre no corpus.",
+"termRawFreqTip":"Quantidade de vezes que a frase ocorre no corpus.",
 "termTip":"Frase-chave (forma genérica que pode variar a cada ocorrência).",
 "lengthTip":"Limites superiores e inferiores do comprimento das frases (quantas palavras em cada frase).",
 "title":"Frases",
