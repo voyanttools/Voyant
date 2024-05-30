@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Apr 25 17:54:26 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu May 30 16:03:18 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -20363,7 +20363,9 @@ Ext.define('Voyant.panel.CorpusCreator', {
     statics: {
     	i18n: {
 			corpusSortInitialOrder: 'initial order',
-			dtocIndexDoc: 'DToC Index Document'
+			dtocIndexDoc: 'DToC Index Document',
+			groupByColumn: 'Group By Column',
+			groupByColumnText: 'Specify a column (or columns) by which to group documents. Only applicable when extracting documents from cells in each row.'
     	},
     	api: {
     		inputFormat: undefined,
@@ -20406,6 +20408,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		accessPassword: undefined,
     		noPasswordAccess: undefined,
     		tableDocuments: undefined,
+			tableGroupBy: undefined,
     		tableContent: undefined,
     		tableTitle: undefined,
     		tableAuthor: undefined,
@@ -21042,6 +21045,14 @@ Ext.define('Voyant.panel.CorpusCreator', {
 									fieldLabel: me.localize('tableContent'),
 									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
 									name: 'tableContent'
+								},{
+									xtype: 'container',
+									html: '<p><i>'+me.localize('groupByColumnText')+'</i></p>',
+									width: 375
+								},{
+									fieldLabel: me.localize('groupByColumn'),
+									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
+									name: 'tableGroupBy'
 								},{
 	    							xtype: 'container',
 	    							html: '<p><i>'+me.localize("tableMetadataText")+'</i></p>',
