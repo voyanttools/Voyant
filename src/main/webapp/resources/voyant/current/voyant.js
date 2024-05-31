@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Fri May 31 20:06:18 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri May 31 21:59:43 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -11294,16 +11294,15 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
 	
 	getNoPasswordAccess: function() {
-		// overrides the getId() function from the model to handle promises
-    	return this.get('noPasswordAccess');		
+    	return this.get('noPasswordAccess');
 	},
 	
 	getTitle: function() {
-		return this.get('title');		
+		return this.get('title');
 	},
 	
 	getSubTitle: function() {
-		return this.get('subTitle');		
+		return this.get('subTitle');
 	},
 	
 	getRelatedWords : function(config) {
@@ -16248,30 +16247,39 @@ Ext.define('Voyant.panel.Panel', {
 	/**
 	 * Checks to see if we have access to this corpus, first by checking the application's
 	 * access setting for the corpus, then by checking the corpus setting.
-	 * 
-	 * Assumes we're only calling this from a non-consumptive tool.
 	 * @private
 	 */
 	hasCorpusAccess: function(corpus) {
 		var app = this.getApplication();
-		if (app) {
-			var corpusAccess = app.getCorpusAccess();
-			if (corpusAccess=='ADMIN' || corpusAccess=='ACCESS') {return true;}
-		}
+		var corpusAccess = app.getCorpusAccess();  // undefined: corpus is unprotected, ACCESS: user entered the access password, ADMIN: user entered there admin password, LIMITED: no password entered
+		if (corpusAccess === 'ADMIN' || corpusAccess === 'ACCESS') return true;
 		if (!corpus) {
-			if (this.getCorpus) {
-				corpus = this.getCorpus();
-			}
-			if (!corpus && app.getCorpus) {
+			corpus = this.getCorpus();
+			if (!corpus) {
 				corpus = app.getCorpus();
 			}
 		}
-		if (corpus) {
-			return corpus.getNoPasswordAccess()!='NONCONSUMPTIVE' && corpus.getNoPasswordAccess()!='NONE';
-		}
-		return false; // don't know if we ever get here
-	}
+		return corpus.getNoPasswordAccess() === 'NORMAL'; // NORMAL: corpus is unprotected, NONE: corpus cannot be accessed except by password, NONCONSUMPTIVE: limited access without password
+	},
 	
+	/**
+	 * Checks to see if the user can modify the corpus.
+	 * @private
+	 */
+	hasModifyCorpusAccess: function(corpus) {
+		var allowDownload = this.getApplication().getAllowDownload();
+		if (!allowDownload) return false;
+
+		var allowInput = this.getApplication().getAllowInput();
+		if (!allowInput) return false;
+
+		var corpusAccess = this.getApplication().getCorpusAccess();
+		var noPasswordAccess = corpus.getNoPasswordAccess();
+		
+		var canModify = (corpusAccess === undefined && noPasswordAccess === 'NORMAL') || corpusAccess === 'ADMIN';
+		
+		return canModify;
+	}
 });
 
 Ext.define('Voyant.panel.VoyantTabPanel', {
@@ -17278,6 +17286,10 @@ Ext.define('Voyant.panel.Catalogue', {
     	
         // create a listener for corpus loading (defined here, in case we need to load it next)
     	this.on('loadedCorpus', function(src, corpus) {
+			if (this.hasModifyCorpusAccess(corpus) === false) {
+				this.queryById('sendToVoyant').hide();
+				this.queryById('export').hide();
+			}
     		this.queryById('status').update(new Ext.XTemplate(this.localize('noMatches')).apply([corpus.getDocumentsCount()]))
     		if (!this.getCustomResultsHtml()) {
     			if (this.getApiParam("splash")) {
@@ -17449,7 +17461,6 @@ Ext.define('Voyant.panel.Catalogue', {
 	    	}
     	}
 		var results = this.queryById("results").getTargetEl();
-		var catalogue = this;
 		results.update(this.getCustomResultsHtml() ? this.getCustomResultsHtml() : new Ext.XTemplate(this.localize('noMatches')).apply([this.getCorpus().getDocumentsCount()]));
 		this.queryById('status').update(new Ext.XTemplate(this.localize('noMatches')).apply([this.getCorpus().getDocumentsCount()]))
 		this.queryById('sendToVoyant').setDisabled(true);
@@ -24945,8 +24956,7 @@ Ext.define('Voyant.panel.Documents', {
     			}, this);
     		}
 
-			var app = this.getApplication();
-    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload() === false)) {
+    		if (this.hasModifyCorpusAccess(corpus) === false) {
     			this.queryById('modifyButton').hide();
     			this.queryById('downloadButton').hide();
     		}
@@ -44095,6 +44105,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 	                    				  passWin.unmask();
 	                    				  passWin.close();
 	                    				  view.unmask();
+										  me.setCorpusAccess('LIMITED');
 	                    				  me.dispatchEvent('loadedCorpus', me, corpus);
 	                    			  }
 	                    		});
