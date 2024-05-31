@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu May 30 16:03:18 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri May 31 20:06:18 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -20645,7 +20645,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
         
         me.on("boxready", function(panel) {
         	var app = this.getApplication();
-        	if (app.getAllowInput && app.getAllowInput()=="false") {
+        	if (app.getAllowInput() === false) {
 				panel.getDockedItems().forEach(function(docked) {
 					panel.removeDocked(docked);
 				})
@@ -24946,7 +24946,7 @@ Ext.define('Voyant.panel.Documents', {
     		}
 
 			var app = this.getApplication();
-    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload && app.getAllowDownload() === 'false')) {
+    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload() === false)) {
     			this.queryById('modifyButton').hide();
     			this.queryById('downloadButton').hide();
     		}
@@ -43901,6 +43901,8 @@ Ext.define('Voyant.VoyantCorpusApp', {
     config: {
     	corpus: undefined,
     	corpusAccess: undefined,
+		allowInput: true,
+		allowDownload: true,
 		entitiesEnabled: false,
     	moreTools: [{
 			i18n: 'moreToolsScaleCorpus',
@@ -44174,8 +44176,21 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				this.openUrl(url)
 			})
     	}
-    }
+    },
 
+	applyAllowInput: function(value) {
+		if (value === undefined || String(value).trim() === '') {
+			return true;
+		}
+		return String(value).trim().toLowerCase() === 'true';
+	},
+
+	applyAllowDownload: function(value) {
+		if (value === undefined || String(value).trim() === '') {
+			return true;
+		}
+		return String(value).trim().toLowerCase() === 'true';
+	}
 });
 Ext.define('Voyant.panel.DocumentClusters', {
 	extend: 'Ext.panel.Panel',
