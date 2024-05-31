@@ -289,7 +289,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
         
         me.on("boxready", function(panel) {
         	var app = this.getApplication();
-        	if (app.getAllowInput && app.getAllowInput()=="false") {
+        	if (app.getAllowInput() === false) {
 				panel.getDockedItems().forEach(function(docked) {
 					panel.removeDocked(docked);
 				})

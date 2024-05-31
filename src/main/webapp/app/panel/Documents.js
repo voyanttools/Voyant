@@ -314,7 +314,7 @@ Ext.define('Voyant.panel.Documents', {
     		}
 
 			var app = this.getApplication();
-    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload && app.getAllowDownload() === 'false')) {
+    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload() === false)) {
     			this.queryById('modifyButton').hide();
     			this.queryById('downloadButton').hide();
     		}

@@ -30,6 +30,8 @@ Ext.define('Voyant.VoyantCorpusApp', {
     config: {
     	corpus: undefined,
     	corpusAccess: undefined,
+		allowInput: true,
+		allowDownload: true,
 		entitiesEnabled: false,
     	moreTools: [{
 			i18n: 'moreToolsScaleCorpus',
@@ -303,6 +305,19 @@ Ext.define('Voyant.VoyantCorpusApp', {
 				this.openUrl(url)
 			})
     	}
-    }
+    },
 
+	applyAllowInput: function(value) {
+		if (value === undefined || String(value).trim() === '') {
+			return true;
+		}
+		return String(value).trim().toLowerCase() === 'true';
+	},
+
+	applyAllowDownload: function(value) {
+		if (value === undefined || String(value).trim() === '') {
+			return true;
+		}
+		return String(value).trim().toLowerCase() === 'true';
+	}
 });
