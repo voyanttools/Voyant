@@ -720,16 +720,15 @@ Ext.define('Voyant.data.model.Corpus', {
 	},
 	
 	getNoPasswordAccess: function() {
-		// overrides the getId() function from the model to handle promises
-    	return this.get('noPasswordAccess');		
+    	return this.get('noPasswordAccess');
 	},
 	
 	getTitle: function() {
-		return this.get('title');		
+		return this.get('title');
 	},
 	
 	getSubTitle: function() {
-		return this.get('subTitle');		
+		return this.get('subTitle');
 	},
 	
 	getRelatedWords : function(config) {

@@ -224,6 +224,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 	                    				  passWin.unmask();
 	                    				  passWin.close();
 	                    				  view.unmask();
+										  me.setCorpusAccess('LIMITED');
 	                    				  me.dispatchEvent('loadedCorpus', me, corpus);
 	                    			  }
 	                    		});

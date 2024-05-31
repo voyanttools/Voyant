@@ -263,28 +263,37 @@ Ext.define('Voyant.panel.Panel', {
 	/**
 	 * Checks to see if we have access to this corpus, first by checking the application's
 	 * access setting for the corpus, then by checking the corpus setting.
-	 * 
-	 * Assumes we're only calling this from a non-consumptive tool.
 	 * @private
 	 */
 	hasCorpusAccess: function(corpus) {
 		var app = this.getApplication();
-		if (app) {
-			var corpusAccess = app.getCorpusAccess();
-			if (corpusAccess=='ADMIN' || corpusAccess=='ACCESS') {return true;}
-		}
+		var corpusAccess = app.getCorpusAccess();  // undefined: corpus is unprotected, ACCESS: user entered the access password, ADMIN: user entered there admin password, LIMITED: no password entered
+		if (corpusAccess === 'ADMIN' || corpusAccess === 'ACCESS') return true;
 		if (!corpus) {
-			if (this.getCorpus) {
-				corpus = this.getCorpus();
-			}
-			if (!corpus && app.getCorpus) {
+			corpus = this.getCorpus();
+			if (!corpus) {
 				corpus = app.getCorpus();
 			}
 		}
-		if (corpus) {
-			return corpus.getNoPasswordAccess()!='NONCONSUMPTIVE' && corpus.getNoPasswordAccess()!='NONE';
-		}
-		return false; // don't know if we ever get here
-	}
+		return corpus.getNoPasswordAccess() === 'NORMAL'; // NORMAL: corpus is unprotected, NONE: corpus cannot be accessed except by password, NONCONSUMPTIVE: limited access without password
+	},
 	
+	/**
+	 * Checks to see if the user can modify the corpus.
+	 * @private
+	 */
+	hasModifyCorpusAccess: function(corpus) {
+		var allowDownload = this.getApplication().getAllowDownload();
+		if (!allowDownload) return false;
+
+		var allowInput = this.getApplication().getAllowInput();
+		if (!allowInput) return false;
+
+		var corpusAccess = this.getApplication().getCorpusAccess();
+		var noPasswordAccess = corpus.getNoPasswordAccess();
+		
+		var canModify = (corpusAccess === undefined && noPasswordAccess === 'NORMAL') || corpusAccess === 'ADMIN';
+		
+		return canModify;
+	}
 });
