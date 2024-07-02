@@ -78,18 +78,21 @@
 
 <link rel="shortcut icon" type="image/ico" href="<%= base %>/resources/voyant/favicon<%= spyral %>.ico" />
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MZ8WDV5DGZ"></script>
+<!-- Google Tag Manager -->
 <script>
-	var isLocalHost = window.location.hostname=='localhost' || window.location.hostname=='127.0.0.1';
-	if (isLocalHost) {
-		window['ga-disable-G-MZ8WDV5DGZ'] = true;
+	var gtmId = undefined;
+	if (window.location.hostname === 'beta.voyant-tools.org') {
+		gtmId = 'GTM-W4XT4SV6';
+	} else if (window.location.hostname === 'voyant-tools.org') {
+		gtmId = 'GTM-5SQ3JQS8';
 	}
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-
-	gtag('config', 'G-MZ8WDV5DGZ');
+	if (gtmId !== undefined) {
+		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer',gtmId);
+	}
 </script>
 
 <!-- EXTJS CLASSIC -->

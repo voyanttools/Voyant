@@ -281,7 +281,9 @@ The syntax is the same for the _Title_ and _Author_ options: column numbers sepa
 
 When documents are extracted _from entire columns_, the title metadata is extracted from the first row if there's a header row, otherwise a label is automatically generated (no authors are defined).
 
-## Tokenization
+## Processing
+
+### Tokenization
 
 Tokenization (in this context) is the process of identifying words, or sequences of Unicode letter characters that should be considered as a unit. In most cases Voyant will do a decent job of tokenization, even with some languages where there's not always an indication of word boundaries (like Chinese). There are three choices:
 
@@ -321,6 +323,10 @@ The following table summarizes tokenization for the string <span class="keyword"
 </tr>
 </tbody>
 </table>
+
+### Text Encoding
+
+Voyant uses algorithms to determine the text encoding of the documents in your corpus. However if the detected text encoding is incorrect, you can use this option to specify a different one. You can use any of the pre-defined values, or enter one manually. The java.nio canonical names from [this table](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html) should be acceptable.
 
 ## Access Management
 
