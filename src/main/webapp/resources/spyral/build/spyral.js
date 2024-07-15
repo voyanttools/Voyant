@@ -6681,7 +6681,6 @@ var Spyral = (function () {
 	              var a = new Error("Cannot find module '" + i + "'");
 	              throw a.code = "MODULE_NOT_FOUND", a;
 	            }
-
 	            var p = n[i] = {
 	              exports: {}
 	            };
@@ -6690,23 +6689,18 @@ var Spyral = (function () {
 	              return o(n || r);
 	            }, p, p.exports, r, e, n, t);
 	          }
-
 	          return n[i].exports;
 	        }
-
 	        for (var u = "function" == typeof commonjsRequire && commonjsRequire, i = 0; i < t.length; i++) {
 	          o(t[i]);
 	        }
-
 	        return o;
 	      }
-
 	      return r;
 	    }()({
 	      1: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
@@ -6746,17 +6740,11 @@ var Spyral = (function () {
 	            return _util["default"];
 	          }
 	        });
-
 	        var _corpus = _interopRequireDefault(require("./src/corpus"));
-
 	        var _table = _interopRequireDefault(require("./src/table"));
-
 	        var _load = _interopRequireDefault(require("./src/load"));
-
 	        var _util = _interopRequireDefault(require("./src/util"));
-
 	        var _chart = _interopRequireDefault(require("./src/chart"));
-
 	        var _categories = _interopRequireDefault(require("./src/categories"));
 	      }, {
 	        "./src/categories": 19,
@@ -6771,14 +6759,11 @@ var Spyral = (function () {
 
 	        function _arrayLikeToArray(arr, len) {
 	          if (len == null || len > arr.length) len = arr.length;
-
 	          for (var i = 0, arr2 = new Array(len); i < len; i++) {
 	            arr2[i] = arr[i];
 	          }
-
 	          return arr2;
 	        }
-
 	        module.exports = _arrayLikeToArray;
 	      }, {}],
 	      3: [function (require, module, exports) {
@@ -6786,7 +6771,6 @@ var Spyral = (function () {
 	        function _arrayWithHoles(arr) {
 	          if (Array.isArray(arr)) return arr;
 	        }
-
 	        module.exports = _arrayWithHoles;
 	      }, {}],
 	      4: [function (require, module, exports) {
@@ -6799,34 +6783,28 @@ var Spyral = (function () {
 	            reject(error);
 	            return;
 	          }
-
 	          if (info.done) {
 	            resolve(value);
 	          } else {
 	            Promise.resolve(value).then(_next, _throw);
 	          }
 	        }
-
 	        function _asyncToGenerator(fn) {
 	          return function () {
 	            var self = this,
-	                args = arguments;
+	              args = arguments;
 	            return new Promise(function (resolve, reject) {
 	              var gen = fn.apply(self, args);
-
 	              function _next(value) {
 	                asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
 	              }
-
 	              function _throw(err) {
 	                asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
 	              }
-
 	              _next(undefined);
 	            });
 	          };
 	        }
-
 	        module.exports = _asyncToGenerator;
 	      }, {}],
 	      5: [function (require, module, exports) {
@@ -6836,15 +6814,12 @@ var Spyral = (function () {
 	            throw new TypeError("Cannot call a class as a function");
 	          }
 	        }
-
 	        module.exports = _classCallCheck;
 	      }, {}],
 	      6: [function (require, module, exports) {
 
 	        var setPrototypeOf = require("./setPrototypeOf");
-
 	        var isNativeReflectConstruct = require("./isNativeReflectConstruct");
-
 	        function _construct(Parent, args, Class) {
 	          if (isNativeReflectConstruct()) {
 	            module.exports = _construct = Reflect.construct;
@@ -6858,10 +6833,8 @@ var Spyral = (function () {
 	              return instance;
 	            };
 	          }
-
 	          return _construct.apply(null, arguments);
 	        }
-
 	        module.exports = _construct;
 	      }, {
 	        "./isNativeReflectConstruct": 10,
@@ -6878,13 +6851,11 @@ var Spyral = (function () {
 	            Object.defineProperty(target, descriptor.key, descriptor);
 	          }
 	        }
-
 	        function _createClass(Constructor, protoProps, staticProps) {
 	          if (protoProps) _defineProperties(Constructor.prototype, protoProps);
 	          if (staticProps) _defineProperties(Constructor, staticProps);
 	          return Constructor;
 	        }
-
 	        module.exports = _createClass;
 	      }, {}],
 	      8: [function (require, module, exports) {
@@ -6900,10 +6871,8 @@ var Spyral = (function () {
 	          } else {
 	            obj[key] = value;
 	          }
-
 	          return obj;
 	        }
-
 	        module.exports = _defineProperty;
 	      }, {}],
 	      9: [function (require, module, exports) {
@@ -6913,7 +6882,6 @@ var Spyral = (function () {
 	            "default": obj
 	          };
 	        }
-
 	        module.exports = _interopRequireDefault;
 	      }, {}],
 	      10: [function (require, module, exports) {
@@ -6922,7 +6890,6 @@ var Spyral = (function () {
 	          if (typeof Reflect === "undefined" || !Reflect.construct) return false;
 	          if (Reflect.construct.sham) return false;
 	          if (typeof Proxy === "function") return true;
-
 	          try {
 	            Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
 	            return true;
@@ -6930,7 +6897,6 @@ var Spyral = (function () {
 	            return false;
 	          }
 	        }
-
 	        module.exports = _isNativeReflectConstruct;
 	      }, {}],
 	      11: [function (require, module, exports) {
@@ -6941,11 +6907,9 @@ var Spyral = (function () {
 	          var _n = true;
 	          var _d = false;
 	          var _e = undefined;
-
 	          try {
 	            for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
 	              _arr.push(_s.value);
-
 	              if (i && _arr.length === i) break;
 	            }
 	          } catch (err) {
@@ -6958,10 +6922,8 @@ var Spyral = (function () {
 	              if (_d) throw _e;
 	            }
 	          }
-
 	          return _arr;
 	        }
-
 	        module.exports = _iterableToArrayLimit;
 	      }, {}],
 	      12: [function (require, module, exports) {
@@ -6969,7 +6931,6 @@ var Spyral = (function () {
 	        function _nonIterableRest() {
 	          throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 	        }
-
 	        module.exports = _nonIterableRest;
 	      }, {}],
 	      13: [function (require, module, exports) {
@@ -6979,26 +6940,19 @@ var Spyral = (function () {
 	            o.__proto__ = p;
 	            return o;
 	          };
-
 	          return _setPrototypeOf(o, p);
 	        }
-
 	        module.exports = _setPrototypeOf;
 	      }, {}],
 	      14: [function (require, module, exports) {
 
 	        var arrayWithHoles = require("./arrayWithHoles");
-
 	        var iterableToArrayLimit = require("./iterableToArrayLimit");
-
 	        var unsupportedIterableToArray = require("./unsupportedIterableToArray");
-
 	        var nonIterableRest = require("./nonIterableRest");
-
 	        function _slicedToArray(arr, i) {
 	          return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
 	        }
-
 	        module.exports = _slicedToArray;
 	      }, {
 	        "./arrayWithHoles": 3,
@@ -7020,16 +6974,13 @@ var Spyral = (function () {
 	              return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 	            };
 	          }
-
 	          return _typeof(obj);
 	        }
-
 	        module.exports = _typeof;
 	      }, {}],
 	      16: [function (require, module, exports) {
 
 	        var arrayLikeToArray = require("./arrayLikeToArray");
-
 	        function _unsupportedIterableToArray(o, minLen) {
 	          if (!o) return;
 	          if (typeof o === "string") return arrayLikeToArray(o, minLen);
@@ -7038,7 +6989,6 @@ var Spyral = (function () {
 	          if (n === "Map" || n === "Set") return Array.from(n);
 	          if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 	        }
-
 	        module.exports = _unsupportedIterableToArray;
 	      }, {
 	        "./arrayLikeToArray": 2
@@ -7052,7 +7002,6 @@ var Spyral = (function () {
 	      18: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 	        /**
 	         * Copyright (c) 2014-present, Facebook, Inc.
@@ -7061,30 +7010,29 @@ var Spyral = (function () {
 	         * LICENSE file in the root directory of this source tree.
 	         */
 
-
 	        var runtime = function (exports) {
 
 	          var Op = Object.prototype;
 	          var hasOwn = Op.hasOwnProperty;
 	          var undefined$1; // More compressible than void 0.
-
 	          var $Symbol = typeof Symbol === "function" ? Symbol : {};
 	          var iteratorSymbol = $Symbol.iterator || "@@iterator";
 	          var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
 	          var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
 	          function wrap(innerFn, outerFn, self, tryLocsList) {
 	            // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
 	            var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
 	            var generator = Object.create(protoGenerator.prototype);
-	            var context = new Context(tryLocsList || []); // The ._invoke method unifies the implementations of the .next,
-	            // .throw, and .return methods.
+	            var context = new Context(tryLocsList || []);
 
+	            // The ._invoke method unifies the implementations of the .next,
+	            // .throw, and .return methods.
 	            generator._invoke = makeInvokeMethod(innerFn, self, context);
 	            return generator;
 	          }
+	          exports.wrap = wrap;
 
-	          exports.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
+	          // Try/catch helper to minimize deoptimizations. Returns a completion
 	          // record like context.tryEntries[i].completion. This interface could
 	          // have been (and was previously) designed to take a closure to be
 	          // invoked without arguments, but in all the cases we care about we
@@ -7094,7 +7042,6 @@ var Spyral = (function () {
 	          // in every case, so we don't have to touch the arguments object. The
 	          // only additional allocation required is the completion record, which
 	          // has a stable shape and so hopefully should be cheap to allocate.
-
 	          function tryCatch(fn, obj, arg) {
 	            try {
 	              return {
@@ -7108,47 +7055,43 @@ var Spyral = (function () {
 	              };
 	            }
 	          }
-
 	          var GenStateSuspendedStart = "suspendedStart";
 	          var GenStateSuspendedYield = "suspendedYield";
 	          var GenStateExecuting = "executing";
-	          var GenStateCompleted = "completed"; // Returning this object from the innerFn has the same effect as
-	          // breaking out of the dispatch switch statement.
+	          var GenStateCompleted = "completed";
 
-	          var ContinueSentinel = {}; // Dummy constructor functions that we use as the .constructor and
+	          // Returning this object from the innerFn has the same effect as
+	          // breaking out of the dispatch switch statement.
+	          var ContinueSentinel = {};
+
+	          // Dummy constructor functions that we use as the .constructor and
 	          // .constructor.prototype properties for functions that return Generator
 	          // objects. For full spec compliance, you may wish to configure your
 	          // minifier not to mangle the names of these two functions.
-
 	          function Generator() {}
-
 	          function GeneratorFunction() {}
+	          function GeneratorFunctionPrototype() {}
 
-	          function GeneratorFunctionPrototype() {} // This is a polyfill for %IteratorPrototype% for environments that
+	          // This is a polyfill for %IteratorPrototype% for environments that
 	          // don't natively support it.
-
-
 	          var IteratorPrototype = {};
-
 	          IteratorPrototype[iteratorSymbol] = function () {
 	            return this;
 	          };
-
 	          var getProto = Object.getPrototypeOf;
 	          var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-
 	          if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
 	            // This environment has a native %IteratorPrototype%; use it instead
 	            // of the polyfill.
 	            IteratorPrototype = NativeIteratorPrototype;
 	          }
-
 	          var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
 	          GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
 	          GeneratorFunctionPrototype.constructor = GeneratorFunction;
-	          GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction"; // Helper for defining the .next, .throw, and .return methods of the
-	          // Iterator interface in terms of a single ._invoke method.
+	          GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction";
 
+	          // Helper for defining the .next, .throw, and .return methods of the
+	          // Iterator interface in terms of a single ._invoke method.
 	          function defineIteratorMethods(prototype) {
 	            ["next", "throw", "return"].forEach(function (method) {
 	              prototype[method] = function (arg) {
@@ -7156,49 +7099,43 @@ var Spyral = (function () {
 	              };
 	            });
 	          }
-
 	          exports.isGeneratorFunction = function (genFun) {
 	            var ctor = typeof genFun === "function" && genFun.constructor;
-	            return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
+	            return ctor ? ctor === GeneratorFunction ||
+	            // For the native GeneratorFunction constructor, the best we can
 	            // do is to check its .name property.
 	            (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
 	          };
-
 	          exports.mark = function (genFun) {
 	            if (Object.setPrototypeOf) {
 	              Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
 	            } else {
 	              genFun.__proto__ = GeneratorFunctionPrototype;
-
 	              if (!(toStringTagSymbol in genFun)) {
 	                genFun[toStringTagSymbol] = "GeneratorFunction";
 	              }
 	            }
-
 	            genFun.prototype = Object.create(Gp);
 	            return genFun;
-	          }; // Within the body of any async function, `await x` is transformed to
+	          };
+
+	          // Within the body of any async function, `await x` is transformed to
 	          // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
 	          // `hasOwn.call(value, "__await")` to determine if the yielded value is
 	          // meant to be awaited.
-
-
 	          exports.awrap = function (arg) {
 	            return {
 	              __await: arg
 	            };
 	          };
-
 	          function AsyncIterator(generator, PromiseImpl) {
 	            function invoke(method, arg, resolve, reject) {
 	              var record = tryCatch(generator[method], generator, arg);
-
 	              if (record.type === "throw") {
 	                reject(record.arg);
 	              } else {
 	                var result = record.arg;
 	                var value = result.value;
-
 	                if (value && (0, _typeof2["default"])(value) === "object" && hasOwn.call(value, "__await")) {
 	                  return PromiseImpl.resolve(value.__await).then(function (value) {
 	                    invoke("next", value, resolve, reject);
@@ -7206,7 +7143,6 @@ var Spyral = (function () {
 	                    invoke("throw", err, resolve, reject);
 	                  });
 	                }
-
 	                return PromiseImpl.resolve(value).then(function (unwrapped) {
 	                  // When a yielded Promise is resolved, its final value becomes
 	                  // the .value of the Promise<{value,done}> result for the
@@ -7220,17 +7156,15 @@ var Spyral = (function () {
 	                });
 	              }
 	            }
-
 	            var previousPromise;
-
 	            function enqueue(method, arg) {
 	              function callInvokeWithMethodAndArg() {
 	                return new PromiseImpl(function (resolve, reject) {
 	                  invoke(method, arg, resolve, reject);
 	                });
 	              }
-
-	              return previousPromise = // If enqueue has been called before, then we want to wait until
+	              return previousPromise =
+	              // If enqueue has been called before, then we want to wait until
 	              // all previous Promises have been resolved before calling invoke,
 	              // so that results are always delivered in the correct order. If
 	              // enqueue has not been called before, then it is important to
@@ -7242,26 +7176,25 @@ var Spyral = (function () {
 	              // execute code before the first await. Since we implement simple
 	              // async functions in terms of async generators, it is especially
 	              // important to get this right, even though it requires care.
-	              previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, // Avoid propagating failures to Promises returned by later
+	              previousPromise ? previousPromise.then(callInvokeWithMethodAndArg,
+	              // Avoid propagating failures to Promises returned by later
 	              // invocations of the iterator.
 	              callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-	            } // Define the unified helper method that is used to implement .next,
+	            }
+
+	            // Define the unified helper method that is used to implement .next,
 	            // .throw, and .return (see defineIteratorMethods).
-
-
 	            this._invoke = enqueue;
 	          }
-
 	          defineIteratorMethods(AsyncIterator.prototype);
-
 	          AsyncIterator.prototype[asyncIteratorSymbol] = function () {
 	            return this;
 	          };
+	          exports.AsyncIterator = AsyncIterator;
 
-	          exports.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
+	          // Note that simple async functions are implemented on top of
 	          // AsyncIterator objects; they just return a Promise for the value of
 	          // the final result produced by the iterator.
-
 	          exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
 	            if (PromiseImpl === void 0) PromiseImpl = Promise;
 	            var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
@@ -7270,39 +7203,32 @@ var Spyral = (function () {
 	              return result.done ? result.value : iter.next();
 	            });
 	          };
-
 	          function makeInvokeMethod(innerFn, self, context) {
 	            var state = GenStateSuspendedStart;
 	            return function invoke(method, arg) {
 	              if (state === GenStateExecuting) {
 	                throw new Error("Generator is already running");
 	              }
-
 	              if (state === GenStateCompleted) {
 	                if (method === "throw") {
 	                  throw arg;
-	                } // Be forgiving, per 25.3.3.3.3 of the spec:
+	                }
+
+	                // Be forgiving, per 25.3.3.3.3 of the spec:
 	                // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-
-
 	                return doneResult();
 	              }
-
 	              context.method = method;
 	              context.arg = arg;
-
 	              while (true) {
 	                var delegate = context.delegate;
-
 	                if (delegate) {
 	                  var delegateResult = maybeInvokeDelegate(delegate, context);
-
 	                  if (delegateResult) {
 	                    if (delegateResult === ContinueSentinel) continue;
 	                    return delegateResult;
 	                  }
 	                }
-
 	                if (context.method === "next") {
 	                  // Setting context._sent for legacy support of Babel's
 	                  // function.sent implementation.
@@ -7312,51 +7238,44 @@ var Spyral = (function () {
 	                    state = GenStateCompleted;
 	                    throw context.arg;
 	                  }
-
 	                  context.dispatchException(context.arg);
 	                } else if (context.method === "return") {
 	                  context.abrupt("return", context.arg);
 	                }
-
 	                state = GenStateExecuting;
 	                var record = tryCatch(innerFn, self, context);
-
 	                if (record.type === "normal") {
 	                  // If an exception is thrown from innerFn, we leave state ===
 	                  // GenStateExecuting and loop back for another invocation.
 	                  state = context.done ? GenStateCompleted : GenStateSuspendedYield;
-
 	                  if (record.arg === ContinueSentinel) {
 	                    continue;
 	                  }
-
 	                  return {
 	                    value: record.arg,
 	                    done: context.done
 	                  };
 	                } else if (record.type === "throw") {
-	                  state = GenStateCompleted; // Dispatch the exception by looping back around to the
+	                  state = GenStateCompleted;
+	                  // Dispatch the exception by looping back around to the
 	                  // context.dispatchException(context.arg) call above.
-
 	                  context.method = "throw";
 	                  context.arg = record.arg;
 	                }
 	              }
 	            };
-	          } // Call delegate.iterator[context.method](context.arg) and handle the
+	          }
+
+	          // Call delegate.iterator[context.method](context.arg) and handle the
 	          // result, either by returning a { value, done } result from the
 	          // delegate iterator, or by modifying context.method and context.arg,
 	          // setting context.delegate to null, and returning the ContinueSentinel.
-
-
 	          function maybeInvokeDelegate(delegate, context) {
 	            var method = delegate.iterator[context.method];
-
 	            if (method === undefined$1) {
 	              // A .throw or .return when the delegate iterator has no .throw
 	              // method always terminates the yield* loop.
 	              context.delegate = null;
-
 	              if (context.method === "throw") {
 	                // Note: ["return"] must be used for ES3 parsing compatibility.
 	                if (delegate.iterator["return"]) {
@@ -7365,51 +7284,45 @@ var Spyral = (function () {
 	                  context.method = "return";
 	                  context.arg = undefined$1;
 	                  maybeInvokeDelegate(delegate, context);
-
 	                  if (context.method === "throw") {
 	                    // If maybeInvokeDelegate(context) changed context.method from
 	                    // "return" to "throw", let that override the TypeError below.
 	                    return ContinueSentinel;
 	                  }
 	                }
-
 	                context.method = "throw";
 	                context.arg = new TypeError("The iterator does not provide a 'throw' method");
 	              }
-
 	              return ContinueSentinel;
 	            }
-
 	            var record = tryCatch(method, delegate.iterator, context.arg);
-
 	            if (record.type === "throw") {
 	              context.method = "throw";
 	              context.arg = record.arg;
 	              context.delegate = null;
 	              return ContinueSentinel;
 	            }
-
 	            var info = record.arg;
-
 	            if (!info) {
 	              context.method = "throw";
 	              context.arg = new TypeError("iterator result is not an object");
 	              context.delegate = null;
 	              return ContinueSentinel;
 	            }
-
 	            if (info.done) {
 	              // Assign the result of the finished delegate to the temporary
 	              // variable specified by delegate.resultName (see delegateYield).
-	              context[delegate.resultName] = info.value; // Resume execution at the desired location (see delegateYield).
+	              context[delegate.resultName] = info.value;
 
-	              context.next = delegate.nextLoc; // If context.method was "throw" but the delegate handled the
+	              // Resume execution at the desired location (see delegateYield).
+	              context.next = delegate.nextLoc;
+
+	              // If context.method was "throw" but the delegate handled the
 	              // exception, let the outer generator proceed normally. If
 	              // context.method was "next", forget context.arg since it has been
 	              // "consumed" by the delegate iterator. If context.method was
 	              // "return", allow the original .return call to continue in the
 	              // outer generator.
-
 	              if (context.method !== "return") {
 	                context.method = "next";
 	                context.arg = undefined$1;
@@ -7417,55 +7330,49 @@ var Spyral = (function () {
 	            } else {
 	              // Re-yield the result returned by the delegate method.
 	              return info;
-	            } // The delegate iterator is finished, so forget it and continue with
+	            }
+
+	            // The delegate iterator is finished, so forget it and continue with
 	            // the outer generator.
-
-
 	            context.delegate = null;
 	            return ContinueSentinel;
-	          } // Define Generator.prototype.{next,throw,return} in terms of the
+	          }
+
+	          // Define Generator.prototype.{next,throw,return} in terms of the
 	          // unified ._invoke helper method.
-
-
 	          defineIteratorMethods(Gp);
-	          Gp[toStringTagSymbol] = "Generator"; // A Generator should always return itself as the iterator object when the
+	          Gp[toStringTagSymbol] = "Generator";
+
+	          // A Generator should always return itself as the iterator object when the
 	          // @@iterator function is called on it. Some browsers' implementations of the
 	          // iterator prototype chain incorrectly implement this, causing the Generator
 	          // object to not be returned from this call. This ensures that doesn't happen.
 	          // See https://github.com/facebook/regenerator/issues/274 for more details.
-
 	          Gp[iteratorSymbol] = function () {
 	            return this;
 	          };
-
 	          Gp.toString = function () {
 	            return "[object Generator]";
 	          };
-
 	          function pushTryEntry(locs) {
 	            var entry = {
 	              tryLoc: locs[0]
 	            };
-
 	            if (1 in locs) {
 	              entry.catchLoc = locs[1];
 	            }
-
 	            if (2 in locs) {
 	              entry.finallyLoc = locs[2];
 	              entry.afterLoc = locs[3];
 	            }
-
 	            this.tryEntries.push(entry);
 	          }
-
 	          function resetTryEntry(entry) {
 	            var record = entry.completion || {};
 	            record.type = "normal";
 	            delete record.arg;
 	            entry.completion = record;
 	          }
-
 	          function Context(tryLocsList) {
 	            // The root entry object (effectively a try statement without a catch
 	            // or a finally block) gives us a place to store values thrown from
@@ -7476,97 +7383,84 @@ var Spyral = (function () {
 	            tryLocsList.forEach(pushTryEntry, this);
 	            this.reset(true);
 	          }
-
 	          exports.keys = function (object) {
 	            var keys = [];
-
 	            for (var key in object) {
 	              keys.push(key);
 	            }
+	            keys.reverse();
 
-	            keys.reverse(); // Rather than returning an object with a next method, we keep
+	            // Rather than returning an object with a next method, we keep
 	            // things simple and return the next function itself.
-
 	            return function next() {
 	              while (keys.length) {
 	                var key = keys.pop();
-
 	                if (key in object) {
 	                  next.value = key;
 	                  next.done = false;
 	                  return next;
 	                }
-	              } // To avoid creating an additional object, we just hang the .value
+	              }
+
+	              // To avoid creating an additional object, we just hang the .value
 	              // and .done properties off the next function object itself. This
 	              // also ensures that the minifier will not anonymize the function.
-
-
 	              next.done = true;
 	              return next;
 	            };
 	          };
-
 	          function values(iterable) {
 	            if (iterable) {
 	              var iteratorMethod = iterable[iteratorSymbol];
-
 	              if (iteratorMethod) {
 	                return iteratorMethod.call(iterable);
 	              }
-
 	              if (typeof iterable.next === "function") {
 	                return iterable;
 	              }
-
 	              if (!isNaN(iterable.length)) {
 	                var i = -1,
-	                    next = function next() {
-	                  while (++i < iterable.length) {
-	                    if (hasOwn.call(iterable, i)) {
-	                      next.value = iterable[i];
-	                      next.done = false;
-	                      return next;
+	                  next = function next() {
+	                    while (++i < iterable.length) {
+	                      if (hasOwn.call(iterable, i)) {
+	                        next.value = iterable[i];
+	                        next.done = false;
+	                        return next;
+	                      }
 	                    }
-	                  }
-
-	                  next.value = undefined$1;
-	                  next.done = true;
-	                  return next;
-	                };
-
+	                    next.value = undefined$1;
+	                    next.done = true;
+	                    return next;
+	                  };
 	                return next.next = next;
 	              }
-	            } // Return an iterator with no values.
+	            }
 
-
+	            // Return an iterator with no values.
 	            return {
 	              next: doneResult
 	            };
 	          }
-
 	          exports.values = values;
-
 	          function doneResult() {
 	            return {
 	              value: undefined$1,
 	              done: true
 	            };
 	          }
-
 	          Context.prototype = {
 	            constructor: Context,
 	            reset: function reset(skipTempReset) {
 	              this.prev = 0;
-	              this.next = 0; // Resetting context._sent for legacy support of Babel's
+	              this.next = 0;
+	              // Resetting context._sent for legacy support of Babel's
 	              // function.sent implementation.
-
 	              this.sent = this._sent = undefined$1;
 	              this.done = false;
 	              this.delegate = null;
 	              this.method = "next";
 	              this.arg = undefined$1;
 	              this.tryEntries.forEach(resetTryEntry);
-
 	              if (!skipTempReset) {
 	                for (var name in this) {
 	                  // Not sure about the optimal order of these conditions:
@@ -7580,50 +7474,40 @@ var Spyral = (function () {
 	              this.done = true;
 	              var rootEntry = this.tryEntries[0];
 	              var rootRecord = rootEntry.completion;
-
 	              if (rootRecord.type === "throw") {
 	                throw rootRecord.arg;
 	              }
-
 	              return this.rval;
 	            },
 	            dispatchException: function dispatchException(exception) {
 	              if (this.done) {
 	                throw exception;
 	              }
-
 	              var context = this;
-
 	              function handle(loc, caught) {
 	                record.type = "throw";
 	                record.arg = exception;
 	                context.next = loc;
-
 	                if (caught) {
 	                  // If the dispatched exception was caught by a catch block,
 	                  // then let that catch block handle the exception normally.
 	                  context.method = "next";
 	                  context.arg = undefined$1;
 	                }
-
 	                return !!caught;
 	              }
-
 	              for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 	                var entry = this.tryEntries[i];
 	                var record = entry.completion;
-
 	                if (entry.tryLoc === "root") {
 	                  // Exception thrown outside of any try block that could handle
 	                  // it, so set the completion value of the entire function to
 	                  // throw the exception.
 	                  return handle("end");
 	                }
-
 	                if (entry.tryLoc <= this.prev) {
 	                  var hasCatch = hasOwn.call(entry, "catchLoc");
 	                  var hasFinally = hasOwn.call(entry, "finallyLoc");
-
 	                  if (hasCatch && hasFinally) {
 	                    if (this.prev < entry.catchLoc) {
 	                      return handle(entry.catchLoc, true);
@@ -7647,36 +7531,30 @@ var Spyral = (function () {
 	            abrupt: function abrupt(type, arg) {
 	              for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 	                var entry = this.tryEntries[i];
-
 	                if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
 	                  var finallyEntry = entry;
 	                  break;
 	                }
 	              }
-
 	              if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
 	                // Ignore the finally entry if control is not jumping to a
 	                // location outside the try/catch block.
 	                finallyEntry = null;
 	              }
-
 	              var record = finallyEntry ? finallyEntry.completion : {};
 	              record.type = type;
 	              record.arg = arg;
-
 	              if (finallyEntry) {
 	                this.method = "next";
 	                this.next = finallyEntry.finallyLoc;
 	                return ContinueSentinel;
 	              }
-
 	              return this.complete(record);
 	            },
 	            complete: function complete(record, afterLoc) {
 	              if (record.type === "throw") {
 	                throw record.arg;
 	              }
-
 	              if (record.type === "break" || record.type === "continue") {
 	                this.next = record.arg;
 	              } else if (record.type === "return") {
@@ -7686,13 +7564,11 @@ var Spyral = (function () {
 	              } else if (record.type === "normal" && afterLoc) {
 	                this.next = afterLoc;
 	              }
-
 	              return ContinueSentinel;
 	            },
 	            finish: function finish(finallyLoc) {
 	              for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 	                var entry = this.tryEntries[i];
-
 	                if (entry.finallyLoc === finallyLoc) {
 	                  this.complete(entry.completion, entry.afterLoc);
 	                  resetTryEntry(entry);
@@ -7703,21 +7579,18 @@ var Spyral = (function () {
 	            "catch": function _catch(tryLoc) {
 	              for (var i = this.tryEntries.length - 1; i >= 0; --i) {
 	                var entry = this.tryEntries[i];
-
 	                if (entry.tryLoc === tryLoc) {
 	                  var record = entry.completion;
-
 	                  if (record.type === "throw") {
 	                    var thrown = record.arg;
 	                    resetTryEntry(entry);
 	                  }
-
 	                  return thrown;
 	                }
-	              } // The context.catch method must only be called with a location
+	              }
+
+	              // The context.catch method must only be called with a location
 	              // argument that corresponds to a known catch block.
-
-
 	              throw new Error("illegal catch attempt");
 	            },
 	            delegateYield: function delegateYield(iterable, resultName, nextLoc) {
@@ -7726,27 +7599,26 @@ var Spyral = (function () {
 	                resultName: resultName,
 	                nextLoc: nextLoc
 	              };
-
 	              if (this.method === "next") {
 	                // Deliberately forget the last sent value so that we don't
 	                // accidentally pass it on to the delegate.
 	                this.arg = undefined$1;
 	              }
-
 	              return ContinueSentinel;
 	            }
-	          }; // Regardless of whether this script is executing as a CommonJS module
+	          };
+
+	          // Regardless of whether this script is executing as a CommonJS module
 	          // or not, return the runtime object so that we can declare the variable
 	          // regeneratorRuntime in the outer scope, which allows this module to be
 	          // injected easily by `bin/regenerator --include-runtime script.js`.
-
 	          return exports;
-	        }( // If this script is executing as a CommonJS module, use module.exports
+	        }(
+	        // If this script is executing as a CommonJS module, use module.exports
 	        // as the regeneratorRuntime namespace. Otherwise create a new empty
 	        // object. Either way, the resulting object will be used to initialize
 	        // the regeneratorRuntime variable at the top of this file.
 	        (typeof module === "undefined" ? "undefined" : (0, _typeof2["default"])(module)) === "object" ? module.exports : {});
-
 	        try {
 	          regeneratorRuntime = runtime;
 	        } catch (accidentalStrictMode) {
@@ -7768,16 +7640,12 @@ var Spyral = (function () {
 	      19: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 	        var _load = _interopRequireDefault(require("./load"));
 	        /**
 	         * Class for working with categories and features.
@@ -7787,8 +7655,6 @@ var Spyral = (function () {
 	         * @memberof Spyral
 	         * @class
 	         */
-
-
 	        var Categories = /*#__PURE__*/function () {
 	          /**
 	           * Construct a new Categories class.
@@ -7821,28 +7687,26 @@ var Spyral = (function () {
 	           */
 	          function Categories() {
 	            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-	              categories: {},
-	              categoriesRanking: [],
-	              features: {},
-	              featureDefaults: {}
-	            },
-	                categories = _ref.categories,
-	                categoriesRanking = _ref.categoriesRanking,
-	                features = _ref.features,
-	                featureDefaults = _ref.featureDefaults;
-
+	                categories: {},
+	                categoriesRanking: [],
+	                features: {},
+	                featureDefaults: {}
+	              },
+	              categories = _ref.categories,
+	              categoriesRanking = _ref.categoriesRanking,
+	              features = _ref.features,
+	              featureDefaults = _ref.featureDefaults;
 	            (0, _classCallCheck2["default"])(this, Categories);
 	            this.categories = categories;
 	            this.categoriesRanking = categoriesRanking;
 	            this.features = features;
 	            this.featureDefaults = featureDefaults;
 	          }
+
 	          /**
 	           * Get the categories.
 	           * @returns {Object}
 	           */
-
-
 	          (0, _createClass2["default"])(Categories, [{
 	            key: "getCategories",
 	            value: function getCategories() {
@@ -7852,7 +7716,6 @@ var Spyral = (function () {
 	             * Get category names as an array.
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "getCategoryNames",
 	            value: function getCategoryNames() {
@@ -7863,7 +7726,6 @@ var Spyral = (function () {
 	             * @param {string} name The category name
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "getCategoryTerms",
 	            value: function getCategoryTerms(name) {
@@ -7873,7 +7735,6 @@ var Spyral = (function () {
 	             * Add a new category.
 	             * @param {string} name The category name
 	             */
-
 	          }, {
 	            key: "addCategory",
 	            value: function addCategory(name) {
@@ -7887,7 +7748,6 @@ var Spyral = (function () {
 	             * @param {string} oldName The old category name
 	             * @param {string} newName The new category name
 	             */
-
 	          }, {
 	            key: "renameCategory",
 	            value: function renameCategory(oldName, newName) {
@@ -7895,12 +7755,10 @@ var Spyral = (function () {
 	                var terms = this.getCategoryTerms(oldName);
 	                var ranking = this.getCategoryRanking(oldName);
 	                this.addTerms(newName, terms);
-
 	                for (var feature in this.features) {
 	                  var value = this.features[feature][oldName];
 	                  this.setCategoryFeature(newName, feature, value);
 	                }
-
 	                this.removeCategory(oldName);
 	                this.setCategoryRanking(newName, ranking);
 	              }
@@ -7909,17 +7767,14 @@ var Spyral = (function () {
 	             * Remove a category.
 	             * @param {string} name The category name
 	             */
-
 	          }, {
 	            key: "removeCategory",
 	            value: function removeCategory(name) {
 	              delete this.categories[name];
 	              var index = this.categoriesRanking.indexOf(name);
-
 	              if (index !== -1) {
 	                this.categoriesRanking.splice(index, 1);
 	              }
-
 	              for (var feature in this.features) {
 	                delete this.features[feature][name];
 	              }
@@ -7929,12 +7784,10 @@ var Spyral = (function () {
 	             * @param {string} name The category name
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "getCategoryRanking",
 	            value: function getCategoryRanking(name) {
 	              var ranking = this.categoriesRanking.indexOf(name);
-
 	              if (ranking === -1) {
 	                return undefined;
 	              } else {
@@ -7946,18 +7799,15 @@ var Spyral = (function () {
 	             * @param {string} name The category name
 	             * @param {number} ranking The category ranking
 	             */
-
 	          }, {
 	            key: "setCategoryRanking",
 	            value: function setCategoryRanking(name, ranking) {
 	              if (this.categories[name] !== undefined) {
 	                ranking = Math.min(this.categoriesRanking.length - 1, Math.max(0, ranking));
 	                var index = this.categoriesRanking.indexOf(name);
-
 	                if (index !== -1) {
 	                  this.categoriesRanking.splice(index, 1);
 	                }
-
 	                this.categoriesRanking.splice(ranking, 0, name);
 	              }
 	            }
@@ -7966,7 +7816,6 @@ var Spyral = (function () {
 	             * @param {string} category The category name
 	             * @param {string} term The term
 	             */
-
 	          }, {
 	            key: "addTerm",
 	            value: function addTerm(category, term) {
@@ -7977,21 +7826,17 @@ var Spyral = (function () {
 	             * @param {string} category The category name
 	             * @param {Array} terms An array of terms
 	             */
-
 	          }, {
 	            key: "addTerms",
 	            value: function addTerms(category, terms) {
 	              if (!Array.isArray(terms)) {
 	                terms = [terms];
 	              }
-
 	              if (this.categories[category] === undefined) {
 	                this.addCategory(category);
 	              }
-
 	              for (var i = 0; i < terms.length; i++) {
 	                var term = terms[i];
-
 	                if (this.categories[category].indexOf(term) === -1) {
 	                  this.categories[category].push(term);
 	                }
@@ -8002,7 +7847,6 @@ var Spyral = (function () {
 	             * @param {string} category The category name
 	             * @param {string} term The term
 	             */
-
 	          }, {
 	            key: "removeTerm",
 	            value: function removeTerm(category, term) {
@@ -8013,19 +7857,16 @@ var Spyral = (function () {
 	             * @param {string} category The category name
 	             * @param {Array} terms An array of terms
 	             */
-
 	          }, {
 	            key: "removeTerms",
 	            value: function removeTerms(category, terms) {
 	              if (!Array.isArray(terms)) {
 	                terms = [terms];
 	              }
-
 	              if (this.categories[category] !== undefined) {
 	                for (var i = 0; i < terms.length; i++) {
 	                  var term = terms[i];
 	                  var index = this.categories[category].indexOf(term);
-
 	                  if (index !== -1) {
 	                    this.categories[category].splice(index, 1);
 	                  }
@@ -8037,20 +7878,17 @@ var Spyral = (function () {
 	             * @param {string} term The term
 	             * @returns {string}
 	             */
-
 	          }, {
 	            key: "getCategoryForTerm",
 	            value: function getCategoryForTerm(term) {
 	              var ranking = Number.MAX_VALUE;
 	              var cat = undefined;
-
 	              for (var category in this.categories) {
 	                if (this.categories[category].indexOf(term) !== -1 && this.getCategoryRanking(category) < ranking) {
 	                  ranking = this.getCategoryRanking(category);
 	                  cat = category;
 	                }
 	              }
-
 	              return cat;
 	            }
 	            /**
@@ -8058,18 +7896,15 @@ var Spyral = (function () {
 	             * @param {string} term The term
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "getCategoriesForTerm",
 	            value: function getCategoriesForTerm(term) {
 	              var cats = [];
-
 	              for (var category in this.categories) {
 	                if (this.categories[category].indexOf(term) !== -1) {
 	                  cats.push(category);
 	                }
 	              }
-
 	              return cats;
 	            }
 	            /**
@@ -8078,7 +7913,6 @@ var Spyral = (function () {
 	             * @param {string} term The term
 	             * @returns {*}
 	             */
-
 	          }, {
 	            key: "getFeatureForTerm",
 	            value: function getFeatureForTerm(feature, term) {
@@ -8088,7 +7922,6 @@ var Spyral = (function () {
 	             * Get the features.
 	             * @returns {Object}
 	             */
-
 	          }, {
 	            key: "getFeatures",
 	            value: function getFeatures() {
@@ -8099,14 +7932,12 @@ var Spyral = (function () {
 	             * @param {string} name The feature name
 	             * @param {*} defaultValue The default value
 	             */
-
 	          }, {
 	            key: "addFeature",
 	            value: function addFeature(name, defaultValue) {
 	              if (this.features[name] === undefined) {
 	                this.features[name] = {};
 	              }
-
 	              if (defaultValue !== undefined) {
 	                this.featureDefaults[name] = defaultValue;
 	              }
@@ -8115,7 +7946,6 @@ var Spyral = (function () {
 	             * Remove a feature.
 	             * @param {string} name The feature name
 	             */
-
 	          }, {
 	            key: "removeFeature",
 	            value: function removeFeature(name) {
@@ -8128,14 +7958,12 @@ var Spyral = (function () {
 	             * @param {string} featureName The feature name
 	             * @param {*} featureValue The feature value
 	             */
-
 	          }, {
 	            key: "setCategoryFeature",
 	            value: function setCategoryFeature(categoryName, featureName, featureValue) {
 	              if (this.features[featureName] === undefined) {
 	                this.addFeature(featureName);
 	              }
-
 	              this.features[featureName][categoryName] = featureValue;
 	            }
 	            /**
@@ -8144,31 +7972,25 @@ var Spyral = (function () {
 	             * @param {string} featureName The feature name
 	             * @returns {*}
 	             */
-
 	          }, {
 	            key: "getCategoryFeature",
 	            value: function getCategoryFeature(categoryName, featureName) {
 	              var value = undefined;
-
 	              if (this.features[featureName] !== undefined) {
 	                value = this.features[featureName][categoryName];
-
 	                if (value === undefined) {
 	                  value = this.featureDefaults[featureName];
-
 	                  if (typeof value === 'function') {
 	                    value = value();
 	                  }
 	                }
 	              }
-
 	              return value;
 	            }
 	            /**
 	             * Get a copy of the category and feature data.
 	             * @returns {Object}
 	             */
-
 	          }, {
 	            key: "getCategoryExportData",
 	            value: function getCategoryExportData() {
@@ -8185,7 +8007,6 @@ var Spyral = (function () {
 	             * @param {Object} config for the network call (specifying if needed the location of Trombone, etc., see {@link Spyral.Load#trombone}
 	             * @returns {Promise<string>} this returns a promise which eventually resolves to a string that is the ID reference for the stored categories
 	             */
-
 	          }, {
 	            key: "save",
 	            value: function save() {
@@ -8197,7 +8018,8 @@ var Spyral = (function () {
 	                storeResource: categoriesData
 	              })).then(function (data) {
 	                return data.storedCategories.id;
-	              }); // TODO save id as property
+	              });
+	              // TODO save id as property
 	              // TODO somehow cache id so that it's not resaved everytime notebook is run
 	            }
 	            /**
@@ -8213,24 +8035,20 @@ var Spyral = (function () {
 	             * @param {Object} api an object specifying any parameters for the trombone call
 	             * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
 	             */
-
 	          }, {
 	            key: "load",
 	            value: function load() {
 	              var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	              var api = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	              var me = this;
-
 	              if (typeof config === 'string') {
 	                config = {
 	                  'retrieveResourceId': config
 	                };
 	              }
-
 	              if (!('retrieveResourceId' in config)) {
 	                throw Error('You must provide a value for the retrieveResourceId parameter');
 	              }
-
 	              return _load["default"].trombone(api, Object.assign(config, {
 	                tool: 'resource.StoredCategories'
 	              })).then(function (data) {
@@ -8238,13 +8056,11 @@ var Spyral = (function () {
 	                me.features = cats.features;
 	                me.categories = cats.categories;
 	                me.categoriesRanking = cats.categoriesRanking || [];
-
 	                if (me.categoriesRanking.length === 0) {
 	                  for (var category in me.categories) {
 	                    me.categoriesRanking.push(category);
 	                  }
 	                }
-
 	                return me;
 	              });
 	            }
@@ -8255,7 +8071,6 @@ var Spyral = (function () {
 	             * @param {Object} api an object specifying any parameters for the trombone call
 	             * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
 	             */
-
 	          }], [{
 	            key: "load",
 	            value: function load() {
@@ -8267,7 +8082,6 @@ var Spyral = (function () {
 	          }]);
 	          return Categories;
 	        }();
-
 	        var _default = Categories;
 	        exports["default"] = _default;
 	      }, {
@@ -8279,25 +8093,17 @@ var Spyral = (function () {
 	      20: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-
 	        var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 	        var _networkgraph = _interopRequireDefault(require("./networkgraph"));
-
 	        var _util = _interopRequireDefault(require("./util.js"));
 	        /* global Spyral, Highcharts */
-
 	        /**
 	         * The Chart class in Spyral.
 	         * This class provides methods for creating a variety of charts.
@@ -8327,8 +8133,6 @@ var Spyral = (function () {
 	         * @memberof Spyral
 	         * @class
 	         */
-
-
 	        var Chart = /*#__PURE__*/function () {
 	          /**
 	           * The Highcharts config object
@@ -8358,7 +8162,6 @@ var Spyral = (function () {
 	           */
 	          function Chart(target, data) {
 	            (0, _classCallCheck2["default"])(this, Chart);
-
 	            if (_util["default"].isNode(target)) {
 	              if (target.isConnected === false) {
 	                throw new Error('The target node does not exist within the document.');
@@ -8367,10 +8170,10 @@ var Spyral = (function () {
 	              data = target;
 	              target = undefined;
 	            }
-
 	            this.target = target;
 	            this.data = data;
 	          }
+
 	          /**
 	           * Create a new chart.
 	           * See [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.
@@ -8378,15 +8181,11 @@ var Spyral = (function () {
 	           * @param {HighchartsConfig} config 
 	           * @returns {Highcharts.Chart}
 	           */
-
-
 	          (0, _createClass2["default"])(Chart, [{
 	            key: "create",
 	            value: function create(target, config) {
 	              var _Chart$_handleTargetA = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA2 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA, 2);
-
 	              target = _Chart$_handleTargetA2[0];
 	              config = _Chart$_handleTargetA2[1];
 	              return Highcharts.chart(target, config);
@@ -8398,10 +8197,8 @@ var Spyral = (function () {
 	             * @param {HighchartsConfig} config 
 	             * @returns {Highcharts.Chart}
 	             */
-
 	          }, {
 	            key: "bar",
-
 	            /**
 	             * Create a bar chart
 	             * @param {Object} [config]
@@ -8418,10 +8215,8 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
 	             */
-
 	          }, {
 	            key: "column",
-
 	            /**
 	             * Create a column chart
 	             * @param {Object} [config]
@@ -8438,10 +8233,8 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
 	             */
-
 	          }, {
 	            key: "line",
-
 	            /**
 	             * Create a line chart
 	             * @param {Object} [config]
@@ -8458,10 +8251,8 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
 	             */
-
 	          }, {
 	            key: "scatter",
-
 	            /**
 	             * Create a scatter plot
 	             * @param {Object} [config]
@@ -8478,10 +8269,8 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
 	             */
-
 	          }, {
 	            key: "networkgraph",
-
 	            /**
 	             * Create a network graph
 	             * @param {Object} [config]
@@ -8497,14 +8286,11 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @returns {Spyral.NetworkGraph}
 	             */
-
 	          }], [{
 	            key: "create",
 	            value: function create(target, config) {
 	              var _Chart$_handleTargetA3 = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA4 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA3, 2);
-
 	              target = _Chart$_handleTargetA4[0];
 	              config = _Chart$_handleTargetA4[1];
 	              return Highcharts.chart(target, config);
@@ -8516,11 +8302,9 @@ var Spyral = (function () {
 	                config = target;
 	                target = undefined;
 	              }
-
 	              if (target === undefined) {
 	                if (typeof Spyral !== 'undefined' && Spyral.Notebook) {
 	                  target = Spyral.Notebook.getTarget();
-
 	                  if (target.clientHeight <= 40) {
 	                    target.style.height = '400px'; // 400 is the default Highcharts height
 	                  }
@@ -8532,9 +8316,9 @@ var Spyral = (function () {
 	                if (_util["default"].isNode(target) && target.isConnected === false) {
 	                  throw new Error('The target node does not exist within the document.');
 	                }
-	              } // convert title and suppress if not provided
+	              }
 
-
+	              // convert title and suppress if not provided
 	              if ('title' in config) {
 	                if (typeof config.title === 'string') {
 	                  config.title = {
@@ -8543,9 +8327,9 @@ var Spyral = (function () {
 	                }
 	              } else {
 	                config.title = false;
-	              } // convert subtitle and convert if not provided
+	              }
 
-
+	              // convert subtitle and convert if not provided
 	              if ('subtitle' in config) {
 	                if (typeof config.subtitle === 'string') {
 	                  config.subtitle = {
@@ -8554,31 +8338,29 @@ var Spyral = (function () {
 	                }
 	              } else {
 	                config.subtitle = false;
-	              } // convert credits
+	              }
 
-
+	              // convert credits
 	              if (!('credits' in config)) {
 	                config.credits = false;
-	              } // suppress xAxis title unless provided
+	              }
 
-
+	              // suppress xAxis title unless provided
 	              if (!('xAxis' in config)) {
 	                config.xAxis = {};
 	              }
-
 	              if (!('title' in config.xAxis)) {
 	                config.xAxis.title = false;
 	              } else if (typeof config.xAxis.title === 'string') {
 	                config.xAxis.title = {
 	                  text: config.xAxis.title
 	                };
-	              } // suppress xAxis title unless provided
+	              }
 
-
+	              // suppress xAxis title unless provided
 	              if (!('yAxis' in config)) {
 	                config.yAxis = {};
 	              }
-
 	              if (!('title' in config.yAxis)) {
 	                config.yAxis.title = false;
 	              } else if (typeof config.yAxis.title === 'string') {
@@ -8586,7 +8368,6 @@ var Spyral = (function () {
 	                  text: config.yAxis.title
 	                };
 	              }
-
 	              return [target, config];
 	            }
 	          }, {
@@ -8596,18 +8377,17 @@ var Spyral = (function () {
 	                config.chart.type = config.type;
 	                delete config.type;
 	                return;
-	              } // TODO: check plot options and series?
+	              }
 
+	              // TODO: check plot options and series?
 
 	              if ('chart' in config) {
 	                if ('type' in config.chart) {
 	                  return;
 	                } // already set
-
 	              } else {
 	                config.chart = {};
 	              }
-
 	              config.chart.type = type;
 	              return config;
 	            }
@@ -8616,7 +8396,6 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @param {Array} data 
 	             */
-
 	          }, {
 	            key: "setSeriesData",
 	            value: function setSeriesData(config, data) {
@@ -8638,65 +8417,47 @@ var Spyral = (function () {
 	            key: "bar",
 	            value: function bar(target, config) {
 	              var _Chart$_handleTargetA5 = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA6 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA5, 2);
-
 	              target = _Chart$_handleTargetA6[0];
 	              config = _Chart$_handleTargetA6[1];
-
 	              Chart._setDefaultChartType(config, 'bar');
-
 	              return Highcharts.chart(target, config);
 	            }
 	          }, {
 	            key: "column",
 	            value: function column(target, config) {
 	              var _Chart$_handleTargetA7 = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA8 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA7, 2);
-
 	              target = _Chart$_handleTargetA8[0];
 	              config = _Chart$_handleTargetA8[1];
-
 	              Chart._setDefaultChartType(config, 'column');
-
 	              return Highcharts.chart(target, config);
 	            }
 	          }, {
 	            key: "line",
 	            value: function line(target, config) {
 	              var _Chart$_handleTargetA9 = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA10 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA9, 2);
-
 	              target = _Chart$_handleTargetA10[0];
 	              config = _Chart$_handleTargetA10[1];
-
 	              Chart._setDefaultChartType(config, 'line');
-
 	              return Highcharts.chart(target, config);
 	            }
 	          }, {
 	            key: "scatter",
 	            value: function scatter(target, config) {
 	              var _Chart$_handleTargetA11 = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA12 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA11, 2);
-
 	              target = _Chart$_handleTargetA12[0];
 	              config = _Chart$_handleTargetA12[1];
-
 	              Chart._setDefaultChartType(config, 'scatter');
-
 	              return Highcharts.chart(target, config);
 	            }
 	          }, {
 	            key: "networkgraph",
 	            value: function networkgraph(target, config) {
 	              var _Chart$_handleTargetA13 = Chart._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA14 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA13, 2);
-
 	              target = _Chart$_handleTargetA14[0];
 	              config = _Chart$_handleTargetA14[1];
 	              return new _networkgraph["default"](target, config);
@@ -8704,7 +8465,6 @@ var Spyral = (function () {
 	          }]);
 	          return Chart;
 	        }();
-
 	        var _default = Chart;
 	        exports["default"] = _default;
 	      }, {
@@ -8719,41 +8479,28 @@ var Spyral = (function () {
 	      21: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-
 	        var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
 	        var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 	        var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 	        var _load = _interopRequireDefault(require("./load"));
-
 	        var _util = _interopRequireDefault(require("./util.js"));
-
 	        function ownKeys(object, enumerableOnly) {
 	          var keys = Object.keys(object);
-
 	          if (Object.getOwnPropertySymbols) {
 	            var symbols = Object.getOwnPropertySymbols(object);
 	            enumerableOnly && (symbols = symbols.filter(function (sym) {
 	              return Object.getOwnPropertyDescriptor(object, sym).enumerable;
 	            })), keys.push.apply(keys, symbols);
 	          }
-
 	          return keys;
 	        }
-
 	        function _objectSpread(target) {
 	          for (var i = 1; i < arguments.length; i++) {
 	            var source = null != arguments[i] ? arguments[i] : {};
@@ -8763,16 +8510,15 @@ var Spyral = (function () {
 	              Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
 	            });
 	          }
-
 	          return target;
-	        } // this is essentially a private method to determine if we're in corpus or documents mode.
+	        }
+	        // this is essentially a private method to determine if we're in corpus or documents mode.
 	        // if docIndex or docId is defined, or if mode=="documents" then we're in documents mode
-
-
 	        function isDocumentsMode() {
 	          var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	          return 'docIndex' in config || 'docId' in config || 'mode' in config && config.mode === 'documents';
 	        }
+
 	        /**
 	         * The Corpus class in Spyral. Here's a simple example:
 	         * 
@@ -8798,8 +8544,6 @@ var Spyral = (function () {
 	         * @memberof Spyral
 	         * @class
 	         */
-
-
 	        var Corpus = /*#__PURE__*/function () {
 	          /**
 	           * @cfg {String} corpus The ID of a previously created corpus.
@@ -9122,10 +8866,8 @@ var Spyral = (function () {
 	            (0, _classCallCheck2["default"])(this, Corpus);
 	            this.corpusid = id;
 	          }
-
 	          (0, _createClass2["default"])(Corpus, [{
 	            key: "id",
-
 	            /**
 	             * Returns the ID of the corpus.
 	             * 
@@ -9145,7 +8887,6 @@ var Spyral = (function () {
 	            //	static id(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.id(api || config));
 	            //	}
-
 	            /**
 	             * Returns the metadata object (of the corpus or document, depending on which mode is used).
 	             * 
@@ -9217,7 +8958,6 @@ var Spyral = (function () {
 	             * @param {Object} config an Object specifying parameters (see list above)
 	             * @returns {Promise<object>} a Promise for an Object containing metadata
 	             */
-
 	          }, {
 	            key: "metadata",
 	            value: function metadata(config) {
@@ -9236,7 +8976,6 @@ var Spyral = (function () {
 	            //	static metadata(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.metadata(api || config));
 	            //	}
-
 	            /**
 	             * Returns a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) 
 	             * 
@@ -9246,7 +8985,6 @@ var Spyral = (function () {
 	             * 
 	             * @returns {Promise<string>} a Promise for a string containing a brief summary of the corpus metadata
 	             */
-
 	          }, {
 	            key: "summary",
 	            value: function summary() {
@@ -9262,7 +9000,6 @@ var Spyral = (function () {
 	            //	static summary(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.summary(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of document titles for the corpus.
 	             * 
@@ -9290,7 +9027,6 @@ var Spyral = (function () {
 	             * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
 	             * @returns {Promise<Array>} a Promise for an Array of document titles
 	             */
-
 	          }, {
 	            key: "titles",
 	            value: function titles() {
@@ -9325,7 +9061,6 @@ var Spyral = (function () {
 	             * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
 	             * @returns {Promise<Array>} a Promise for an Array of documents metadata
 	             */
-
 	          }, {
 	            key: "documents",
 	            value: function documents() {
@@ -9341,7 +9076,6 @@ var Spyral = (function () {
 	            //	static titles(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.titles(api || config));
 	            //	}
-
 	            /**
 	             * Returns the text of the entire corpus.
 	             * 
@@ -9366,7 +9100,6 @@ var Spyral = (function () {
 	             * @param {string} config.format `text` for plain text, any other value for the simplified Voyant markup
 	             * @returns {Promise<string>} a Promise for a string of the corpus
 	             */
-
 	          }, {
 	            key: "text",
 	            value: function text(config) {
@@ -9382,7 +9115,6 @@ var Spyral = (function () {
 	            //	static text(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.text(api || config));	
 	            //	}
-
 	            /**
 	             * Returns an array of texts from the entire corpus.
 	             * 
@@ -9405,7 +9137,6 @@ var Spyral = (function () {
 	             * @param {string} config.format `text` for plain text, any other value for the simplified Voyant markup
 	             * @returns {Promise<Array>} a Promise for an Array of texts from the corpus
 	             */
-
 	          }, {
 	            key: "texts",
 	            value: function texts(config) {
@@ -9424,7 +9155,6 @@ var Spyral = (function () {
 	            //	static texts(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.texts(api || config));	
 	            //	}
-
 	            /**
 	             * Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).
 	             * These terms are actually types, so information about each type is collected (as opposed to the {#link tokens}
@@ -9507,7 +9237,6 @@ var Spyral = (function () {
 	             * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
 	             * @returns {Promise<Array>} a Promise for a Array of Terms
 	             */
-
 	          }, {
 	            key: "terms",
 	            value: function terms(config) {
@@ -9526,7 +9255,6 @@ var Spyral = (function () {
 	            //	static terms(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.terms(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of document tokens.
 	             * 
@@ -9574,7 +9302,6 @@ var Spyral = (function () {
 	             * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
 	             * @returns {Promise<Array>} a Promise for an Array of document tokens
 	             */
-
 	          }, {
 	            key: "tokens",
 	            value: function tokens(config) {
@@ -9593,7 +9320,6 @@ var Spyral = (function () {
 	            //	static tokens(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.tokens(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of words from the corpus.
 	             * 
@@ -9624,16 +9350,14 @@ var Spyral = (function () {
 	             * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
 	             * @returns {Promise<Array>} a Promise for an Array of words
 	             */
-
 	          }, {
 	            key: "words",
 	            value: function words() {
-	              var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}; // by default DocumentTokens limits to 50 which probably isn't expected
-
+	              var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	              // by default DocumentTokens limits to 50 which probably isn't expected
 	              if (!('limit' in config)) {
 	                config.limit = 0;
 	              }
-
 	              return _load["default"].trombone(config, {
 	                tool: 'corpus.DocumentTokens',
 	                noOthers: true,
@@ -9652,7 +9376,6 @@ var Spyral = (function () {
 	            //	static words(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.words(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of Objects that contain keywords in contexts (KWICs).
 	             * 
@@ -9709,14 +9432,12 @@ var Spyral = (function () {
 	                * @param {string} config.overlapStrategy determines how to handle cases where there's overlap between KWICs, such as "to be or not to be" when the keyword is "be"
 	                * @returns {Promise<Array>} a Promise for an Array of KWIC Objects
 	                */
-
 	          }, {
 	            key: "contexts",
 	            value: function contexts(config) {
 	              if ((!config || !config.query) && console) {
 	                console.warn('No query provided for contexts request.');
 	              }
-
 	              return _load["default"].trombone(config, {
 	                tool: 'corpus.DocumentContexts',
 	                corpus: this.corpusid
@@ -9732,7 +9453,6 @@ var Spyral = (function () {
 	            //	static contexts(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.contexts(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of collocates (either document or corpus collocates, depending on the specified mode).
 	             * 
@@ -9800,14 +9520,12 @@ var Spyral = (function () {
 	             * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
 	             * @returns {Promise<Array>} a Promise for a Array of Terms
 	             */
-
 	          }, {
 	            key: "collocates",
 	            value: function collocates(config) {
 	              if ((!config || !config.query) && console) {
 	                console.warn('No query provided for collocates request.');
 	              }
-
 	              return _load["default"].trombone(config, {
 	                tool: 'corpus.CorpusCollocates',
 	                corpus: this.corpusid
@@ -9823,7 +9541,6 @@ var Spyral = (function () {
 	            //	static collocates(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.collocates(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).
 	             * 
@@ -9886,7 +9603,6 @@ var Spyral = (function () {
 	             * @param {string} config.overlapFilter it happens that phrases contain other phrases and we need a strategy for handling overlap
 	                * @returns {Promise<Array>} a Promise for an Array of phrase Objects
 	                */
-
 	          }, {
 	            key: "phrases",
 	            value: function phrases(config) {
@@ -9905,7 +9621,6 @@ var Spyral = (function () {
 	            //	static phrases(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.phrases(api || config));
 	            //	}
-
 	            /**
 	             * Returns an array of correlations (either document or corpus correlations, depending on the specified mode).
 	             * 
@@ -9993,18 +9708,15 @@ var Spyral = (function () {
 	             * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
 	                * @returns {Promise<Array>} a Promise for an Array of phrase Objects
 	                */
-
 	          }, {
 	            key: "correlations",
 	            value: function correlations(config) {
 	              if ((!config || !config.query) && console) {
 	                console.warn('No query provided for correlations request.');
-
 	                if (!isDocumentsMode(config)) {
 	                  throw new Error('Unable to run correlations for a corpus without a query.');
 	                }
 	              }
-
 	              return _load["default"].trombone(config, {
 	                tool: isDocumentsMode(config) ? 'corpus.DocumentTermCorrelations' : 'corpus.CorpusTermCorrelations',
 	                corpus: this.corpusid
@@ -10020,13 +9732,11 @@ var Spyral = (function () {
 	            //	static correlations(config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.correlations(api || config));
 	            //	}
-
 	            /**
 	             * Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })
 	             * @param {Object} config an Object specifying parameters (see above)
 	                * @returns {Promise<Array>} a Promise for an Array of lemma Objects
 	             */
-
 	          }, {
 	            key: "lemmas",
 	            value: function lemmas() {
@@ -10038,9 +9748,30 @@ var Spyral = (function () {
 	            /**
 	             * Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:
 	             * 
-	             * * **topicWords**: a list of topics (words organized into bunches of a specified size)
-	             * * **topicDocuments**: a list of documents and their topic weights
+	             * * **topics**: an array of topics (words organized into bunches of a specified size)
+	             * * **topicDocuments**: an array of documents and their topic weights
 	             *
+	             * Each topic in the **topics** array is an object with the following properties:
+	             * 
+	             * * **words**: an array of the actual words that form the topic. Each word has the same properties as the topic, as well as a "word" property that contains the text content.
+	             * * tokens
+	             * * documentEntropy
+	             * * wordLength
+	             * * coherence
+	             * * uniformDist
+	             * * corpusDist
+	             * * effNumWords
+	             * * tokenDocDiff
+	             * * rank1Docs
+	             * * allocationRatio
+	             * * allocationCount
+	             * * exclusivity
+	             * 
+	             * Each document in the **topicDocuments** array is an object with the following properties:
+	             * 
+	             *  * docId: the document ID
+	             *  * weights: an array of the numbers corresponding to the the weight of each topic in this document
+	             * 
 	             * The config object as parameter can contain the following:
 	             * 
 	             * * **topics**: the number of topics to get (default is 10)
@@ -10059,13 +9790,12 @@ var Spyral = (function () {
 	             * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
 	             * @returns {Promise<Object>}
 	             */
-
 	          }, {
 	            key: "topics",
 	            value: function () {
 	              var _topics = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
 	                var config,
-	                    _args = arguments;
+	                  _args = arguments;
 	                return _regenerator["default"].wrap(function _callee$(_context) {
 	                  while (1) {
 	                    switch (_context.prev = _context.next) {
@@ -10083,7 +9813,6 @@ var Spyral = (function () {
 	                        }).then(function (data) {
 	                          return data.topicModeling;
 	                        }));
-
 	                      case 2:
 	                      case "end":
 	                        return _context.stop();
@@ -10091,11 +9820,9 @@ var Spyral = (function () {
 	                  }
 	                }, _callee, this);
 	              }));
-
 	              function topics() {
 	                return _topics.apply(this, arguments);
 	              }
-
 	              return topics;
 	            }()
 	            /**
@@ -10104,14 +9831,13 @@ var Spyral = (function () {
 	             * The config object as parameter can contain the following:
 	             * 
 	             *  * **docIndex**: document index to restrict to (can be comma-separated list)
-	             *  * **annotator**: the annotator to use: 'stanford' or 'nssi'
+	             *  * **annotator**: the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	             * 
 	             * @param {Object} config
 	             * @param {(number|string)} config.docIndex document index to restrict to (can be comma-separated list)
-	             * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi'
+	             * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	             * @returns {Promise<Array>}
 	             */
-
 	          }, {
 	            key: "entities",
 	            value: function entities() {
@@ -10123,7 +9849,6 @@ var Spyral = (function () {
 	              return new Promise(function (resolve, reject) {
 	                function doLoad(config) {
 	                  var _this = this;
-
 	                  _load["default"].trombone(config, {
 	                    tool: 'corpus.DocumentEntities',
 	                    includeEntities: true,
@@ -10141,7 +9866,6 @@ var Spyral = (function () {
 	                      }
 	                    });
 	                    var isDone = numDone === total;
-
 	                    if (isDone) {
 	                      if (hasFailures && numDone === 1) {
 	                        reject('Failed to get entities');
@@ -10156,8 +9880,72 @@ var Spyral = (function () {
 	                    return reject(error);
 	                  });
 	                }
-
 	                doLoad(config);
+	              });
+	            }
+	            /**
+	             * Performs one of several dimension reduction statistical analysis techniques.
+	             * 
+	             * For more details see {@link https://voyant-tools.org/docs/#!/guide/scatterplot}.
+	             * 
+	             * @param {Object} config 
+	             * @param {string} config.type The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'
+	             * @param {number} config.start The zero-based start of the list
+	             * @param {number} config.limit A limit to the number of items to return at a time
+	             * @param {number} config.dimensions The number of dimensions to render, either 2 or 3.
+	             * @param {number} config.bins The number of bins to separate a document into.
+	             * @param {number} config.clusters The number of clusters within which to group words.
+	             * @param {number} config.perplexity The TSNE perplexity value.
+	             * @param {number} config.iterations The TSNE iterations value.
+	             * @param {string} config.comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
+	             * @param {string} config.target The term to set as the target. This will filter results to terms that are near the target.
+	             * @param {string} config.term Used in combination with "target" as a white list of terms to keep.
+	             * @param {string} config.query A term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+	             * @param {string} config.stopList A list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	             * @returns {Promise<Object>}
+	             */
+	          }, {
+	            key: "analysis",
+	            value: function analysis() {
+	              var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	              config = Object.assign({
+	                type: 'ca',
+	                start: 0,
+	                limit: 50,
+	                dimensions: 3,
+	                bins: 10,
+	                clusters: 3,
+	                perplexity: 15,
+	                iterations: 1500,
+	                comparisonType: 'relative',
+	                target: undefined,
+	                term: undefined,
+	                query: undefined,
+	                stopList: 'auto'
+	              }, config);
+	              var analysis = config.type.toLowerCase();
+	              delete config.type;
+	              var tool = '';
+	              var root = '';
+	              if (analysis === 'tsne') {
+	                tool = 'corpus.TSNE';
+	                root = 'tsneAnalysis';
+	              } else if (analysis === 'pca') {
+	                tool = 'corpus.PCA';
+	                root = 'pcaAnalysis';
+	              } else if (analysis === 'docsim') {
+	                tool = 'corpus.DocumentSimilarity';
+	                root = 'documentSimilarity';
+	              } else {
+	                tool = 'corpus.CA';
+	                root = 'correspondenceAnalysis';
+	              }
+	              return _load["default"].trombone(config, {
+	                tool: tool,
+	                withDistributions: true,
+	                corpus: this.corpusid
+	              }).then(function (data) {
+	                return data[root];
 	              });
 	            }
 	            /**
@@ -10271,7 +10059,6 @@ var Spyral = (function () {
 	             * @param {Object} config The config object for the tool
 	             * @returns {Promise<string>}
 	             */
-
 	          }, {
 	            key: "tool",
 	            value: function tool(_tool) {
@@ -10282,29 +10069,25 @@ var Spyral = (function () {
 	                var isTool = function isTool(obj) {
 	                  return obj && typeof obj === 'string' && /\W/.test(obj) === false || (0, _typeof2["default"])(obj) === 'object' && 'forTool' in obj;
 	                };
-
 	                var isConfig = function isConfig(obj) {
 	                  return obj && (0, _typeof2["default"])(obj) === 'object' && !('forTool' in obj);
 	                };
-
 	                var lastArg = _arguments[_arguments.length - 1];
-	                config = isConfig(lastArg) ? lastArg : {}; // we have all tools and we'll show them individually
+	                config = isConfig(lastArg) ? lastArg : {};
 
+	                // we have all tools and we'll show them individually
 	                if (isTool(_tool) && (isTool(lastArg) || isConfig(lastArg))) {
 	                  var width;
 	                  var height;
 	                  var val;
 	                  var url;
-
 	                  var _ret = function () {
 	                    var defaultAttributes = {
 	                      style: ''
 	                    };
 	                    var out = '';
-
 	                    for (var i = 0; i < _arguments.length; i++) {
 	                      var t = _arguments[i];
-
 	                      if (isTool(t)) {
 	                        (function () {
 	                          if (typeof t === 'string') {
@@ -10312,95 +10095,87 @@ var Spyral = (function () {
 	                              forTool: t
 	                            };
 	                          } // make sure we have object
+
 	                          // process width and height info
-
-
 	                          width = config['width'] !== undefined ? config['width'] + '' : '350';
 	                          height = config['height'] !== undefined ? config['height'] + '' : '350';
 	                          if (width.search(/^\d+$/) === 0) width += 'px';
 	                          if (height.search(/^\d+$/) === 0) height += 'px';
-
 	                          if (config['style'] !== undefined) {
 	                            if (config['style'].indexOf('width') === -1) {
 	                              config['style'] = "width: ".concat(width, ";") + config['style'];
 	                            }
-
 	                            if (config['style'].indexOf('height') === -1) {
 	                              config['style'] = "height: ".concat(height, ";") + config['style'];
 	                            }
 	                          } else {
 	                            config['style'] = "width: ".concat(width, "; height: ").concat(height, ";");
-	                          } // build iframe tag
+	                          }
 
-
+	                          // build iframe tag
 	                          out += '<iframe ';
-
 	                          for (var attr in defaultAttributes) {
 	                            val = (attr in t ? t[attr] : undefined) || (attr in config ? config[attr] : undefined) || (attr in defaultAttributes ? defaultAttributes[attr] : undefined);
-
 	                            if (val !== undefined) {
 	                              out += ' ' + attr + '="' + val + '"';
 	                            }
-	                          } // build url
+	                          }
 
-
+	                          // build url
 	                          url = new URL((config && config.voyantUrl ? config.voyantUrl : _load["default"].baseUrl) + 'tool/' + t.forTool + '/');
-	                          url.searchParams.append('corpus', me.corpusid); // add API values from config (some may be ignored)
-
+	                          url.searchParams.append('corpus', me.corpusid);
+	                          // add API values from config (some may be ignored)
 	                          var all = Object.assign(t, config);
 	                          Object.keys(all).forEach(function (key) {
 	                            if (key !== 'input' && !(key in defaultAttributes)) {
-	                              var value = all[key]; // TODO need to sort this out, if key is "query" and value is an array then stringify will break the query format for voyant
+	                              var value = all[key];
+	                              // TODO need to sort this out, if key is "query" and value is an array then stringify will break the query format for voyant
 	                              // if (typeof value !== 'string') {
 	                              // 	value = JSON.stringify(value);
 	                              // }
-
 	                              url.searchParams.append(key, value);
 	                            }
-	                          }); // finish tag
+	                          });
 
+	                          // finish tag
 	                          out += ' src="' + url + '"></iframe>';
 	                        })();
 	                      }
 	                    }
-
 	                    return {
 	                      v: resolve(out)
 	                    };
 	                  }();
-
 	                  if ((0, _typeof2["default"])(_ret) === "object") return _ret.v;
 	                } else {
 	                  if (Array.isArray(_tool)) {
 	                    _tool = _tool.join(';');
 	                  }
-
 	                  var defaultAttributes = {
 	                    width: undefined,
 	                    height: undefined,
 	                    style: 'width: 90%; height: ' + 350 * (_tool ? _tool : '').split(';').length + 'px'
-	                  }; // build iframe tag
+	                  };
 
+	                  // build iframe tag
 	                  var out = '<iframe ';
-
 	                  for (var attr in defaultAttributes) {
 	                    var val = (attr in config ? config[attr] : undefined) || (attr in defaultAttributes ? defaultAttributes[attr] : undefined);
-
 	                    if (val !== undefined) {
 	                      out += ' ' + attr + '="' + val + '"';
 	                    }
-	                  } // build url
+	                  }
 
-
+	                  // build url
 	                  var url = new URL((config && config.voyantUrl ? config.voyantUrl : _load["default"].baseUrl) + (_tool ? '?view=customset&tableLayout=' + _tool : ''));
-	                  url.searchParams.append('corpus', me.corpusid); // add API values from config (some may be ignored)
-
+	                  url.searchParams.append('corpus', me.corpusid);
+	                  // add API values from config (some may be ignored)
 	                  Object.keys(config).forEach(function (key) {
 	                    if (key !== 'input' && !(key in defaultAttributes)) {
-	                      var value = config[key]; // if (typeof value !== 'string') {
+	                      var value = config[key];
+	                      // if (typeof value !== 'string') {
 	                      // 	value = JSON.stringify(value);
 	                      // }
-
 	                      url.searchParams.append(key, value);
 	                    }
 	                  });
@@ -10417,11 +10192,9 @@ var Spyral = (function () {
 	            //	static tool(tool, config, api) {
 	            //		return Corpus.load(config).then(corpus => corpus.tool(tool, config, api));
 	            //	}
-
 	            /**
 	             * An alias for {@link #summary}.
 	             */
-
 	          }, {
 	            key: "toString",
 	            value: function toString() {
@@ -10434,14 +10207,12 @@ var Spyral = (function () {
 	            //	static create(config) {
 	            //		return Corpus.load(config);
 	            //	}
-
 	            /**
 	             * Load a Corpus using the provided config and api
 	             * @param {Object} config the Corpus config
 	             * @param {Object} api any additional API values
 	             * @returns {Promise<Corpus>}
 	             */
-
 	          }], [{
 	            key: "setBaseUrl",
 	            value: function setBaseUrl(baseUrl) {
@@ -10456,7 +10227,6 @@ var Spyral = (function () {
 	                if (config instanceof Corpus) {
 	                  resolve(config);
 	                }
-
 	                if (typeof config === 'string') {
 	                  if (config.length > 0 && /\W/.test(config) === false) {
 	                    config = {
@@ -10473,7 +10243,6 @@ var Spyral = (function () {
 	                  };
 	                } else if (config instanceof Blob || _util["default"].isNode(config) || _util["default"].isArray(config) && (config[0] instanceof Blob || _util["default"].isNode(config[0]))) {
 	                  var formData = new FormData();
-
 	                  if (_util["default"].isArray(config)) {
 	                    config.forEach(function (file) {
 	                      if (_util["default"].isNode(file)) {
@@ -10482,7 +10251,6 @@ var Spyral = (function () {
 	                          type: 'text/xml'
 	                        });
 	                      }
-
 	                      formData.append('input', file);
 	                      formData.append('inputFormat', _util["default"].getFileExtensionFromMimeType(file.type));
 	                    });
@@ -10493,25 +10261,22 @@ var Spyral = (function () {
 	                        type: 'text/xml'
 	                      });
 	                    }
-
 	                    formData.set('input', config);
 	                    formData.set('inputFormat', _util["default"].getFileExtensionFromMimeType(config.type));
-	                  } // append any other form options that may have been included
+	                  }
 
-
+	                  // append any other form options that may have been included
 	                  if (api && (0, _typeof2["default"])(api) === 'object') {
 	                    for (var key in api) {
 	                      formData.set(key, api[key]);
 	                    }
 	                  }
-
 	                  formData.set('tool', 'corpus.CorpusMetadata');
 	                  config = {
 	                    body: formData,
 	                    method: 'POST'
 	                  };
 	                }
-
 	                _load["default"].trombone(_objectSpread({}, config, {}, api), {
 	                  tool: 'corpus.CorpusMetadata'
 	                }).then(function (data) {
@@ -10520,28 +10285,27 @@ var Spyral = (function () {
 	                  reject(err);
 	                });
 	              });
-	              ['collocates', 'contexts', 'correlations', 'documents', 'entities', 'id', 'topics', 'lemmas', 'metadata', 'phrases', 'summary', 'terms', 'text', 'texts', 'titles', 'toString', 'tokens', 'tool', 'words'].forEach(function (name) {
+	              ['analysis', 'collocates', 'contexts', 'correlations', 'documents', 'entities', 'id', 'topics', 'lemmas', 'metadata', 'phrases', 'summary', 'terms', 'text', 'texts', 'titles', 'toString', 'tokens', 'tool', 'words'].forEach(function (name) {
 	                promise[name] = function () {
 	                  var args = arguments;
 	                  return promise.then(function (corpus) {
 	                    return corpus[name].apply(corpus, args);
 	                  });
 	                };
-	              }); // TODO document assign
+	              });
 
+	              // TODO document assign
 	              promise.assign = function (name) {
 	                return this.then(function (corpus) {
 	                  window[name] = corpus;
 	                  return corpus;
 	                });
 	              };
-
 	              return promise;
 	            }
 	          }]);
 	          return Corpus;
 	        }();
-
 	        (0, _defineProperty2["default"])(Corpus, "Load", _load["default"]);
 	        var _default = Corpus;
 	        exports["default"] = _default;
@@ -10559,31 +10323,23 @@ var Spyral = (function () {
 	      22: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 	        var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 	        function ownKeys(object, enumerableOnly) {
 	          var keys = Object.keys(object);
-
 	          if (Object.getOwnPropertySymbols) {
 	            var symbols = Object.getOwnPropertySymbols(object);
 	            enumerableOnly && (symbols = symbols.filter(function (sym) {
 	              return Object.getOwnPropertyDescriptor(object, sym).enumerable;
 	            })), keys.push.apply(keys, symbols);
 	          }
-
 	          return keys;
 	        }
-
 	        function _objectSpread(target) {
 	          for (var i = 1; i < arguments.length; i++) {
 	            var source = null != arguments[i] ? arguments[i] : {};
@@ -10593,7 +10349,6 @@ var Spyral = (function () {
 	              Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
 	            });
 	          }
-
 	          return target;
 	        }
 	        /**
@@ -10601,16 +10356,12 @@ var Spyral = (function () {
 	         * @memberof Spyral
 	         * @class
 	         */
-
-
 	        var Load = /*#__PURE__*/function () {
 	          function Load() {
 	            (0, _classCallCheck2["default"])(this, Load);
 	          }
-
 	          (0, _createClass2["default"])(Load, null, [{
 	            key: "setBaseUrl",
-
 	            /**
 	             * Set the base URL for use with the Load class
 	             * @param {string} baseUrl 
@@ -10624,7 +10375,6 @@ var Spyral = (function () {
 	             * @param {Object} params
 	             * @returns {JSON}
 	             */
-
 	          }, {
 	            key: "trombone",
 	            value: function trombone() {
@@ -10632,31 +10382,24 @@ var Spyral = (function () {
 	              var params = arguments.length > 1 ? arguments[1] : undefined;
 	              var url = new URL(config.trombone ? config.trombone : this.baseUrl + 'trombone', window.location.origin);
 	              delete config.trombone;
-
 	              var all = _objectSpread({}, config, {}, params);
-
 	              for (var key in all) {
 	                if (all[key] === undefined) {
 	                  delete all[key];
 	                }
 	              }
-
 	              var method = all.method;
-
 	              if (method === undefined) {
 	                method = 'GET';
 	              } else {
 	                delete all.method;
 	              }
-
 	              var opt = {};
-
 	              if (method === 'GET' || method === 'POST') {
 	                if (method === 'POST' || JSON.stringify(all).length > 1000) {
 	                  opt = {
 	                    method: 'POST'
 	                  };
-
 	                  if ('body' in all) {
 	                    // TODO assume FormData or set this header to ensure UTF-8?
 	                    // opt.headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
@@ -10665,7 +10408,6 @@ var Spyral = (function () {
 	                    (function () {
 	                      // don't set header as it messes up boundaries
 	                      var formData = new FormData();
-
 	                      var _loop = function _loop(_key) {
 	                        if (all[_key] instanceof Array) {
 	                          all[_key].forEach(function (val) {
@@ -10675,11 +10417,9 @@ var Spyral = (function () {
 	                          formData.set(_key, all[_key]);
 	                        }
 	                      };
-
 	                      for (var _key in all) {
 	                        _loop(_key);
 	                      }
-
 	                      opt.body = formData;
 	                    })();
 	                  }
@@ -10693,7 +10433,6 @@ var Spyral = (function () {
 	                      url.searchParams.set(_key2, all[_key2]);
 	                    }
 	                  };
-
 	                  for (var _key2 in all) {
 	                    _loop2(_key2);
 	                  }
@@ -10701,7 +10440,6 @@ var Spyral = (function () {
 	              } else {
 	                throw Error('Load.trombone: unsupported method:', method);
 	              }
-
 	              return fetch(url.toString(), opt).then(function (response) {
 	                if (response.ok) {
 	                  return response.json();
@@ -10710,7 +10448,6 @@ var Spyral = (function () {
 	                    if (window.console) {
 	                      console.error(text);
 	                    }
-
 	                    throw Error(text);
 	                  });
 	                }
@@ -10722,7 +10459,6 @@ var Spyral = (function () {
 	             * @param {Object} config
 	             * @returns {Response}
 	             */
-
 	          }, {
 	            key: "load",
 	            value: function load(urlToFetch, config) {
@@ -10736,7 +10472,6 @@ var Spyral = (function () {
 	                    if (window.console) {
 	                      console.error(text);
 	                    }
-
 	                    throw Error(text);
 	                  });
 	                }
@@ -10749,7 +10484,6 @@ var Spyral = (function () {
 	             * @param {string} url 
 	             * @returns {Document}
 	             */
-
 	          }, {
 	            key: "html",
 	            value: function html(url) {
@@ -10762,7 +10496,6 @@ var Spyral = (function () {
 	             * @param {string} url 
 	             * @returns {XMLDocument}
 	             */
-
 	          }, {
 	            key: "xml",
 	            value: function xml(url) {
@@ -10775,7 +10508,6 @@ var Spyral = (function () {
 	             * @param {string} url 
 	             * @returns {JSON}
 	             */
-
 	          }, {
 	            key: "json",
 	            value: function json(url) {
@@ -10788,7 +10520,6 @@ var Spyral = (function () {
 	             * @param {string} url 
 	             * @returns {string}
 	             */
-
 	          }, {
 	            key: "text",
 	            value: function text(url) {
@@ -10799,7 +10530,6 @@ var Spyral = (function () {
 	          }]);
 	          return Load;
 	        }();
-
 	        (0, _defineProperty2["default"])(Load, "baseUrl", void 0);
 	        var _default = Load;
 	        exports["default"] = _default;
@@ -10812,26 +10542,19 @@ var Spyral = (function () {
 	      23: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 	        var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 	        /* global d3 */
-
 	        /**
 	         * A d3 force directed layout with labeled nodes
 	         * @memberof Spyral
 	         * @class
 	         */
-
-
 	        var NetworkGraph = /*#__PURE__*/function () {
 	          /**
 	           * Construct a new NetworkGraph class
@@ -10851,7 +10574,6 @@ var Spyral = (function () {
 	           */
 	          function NetworkGraph(target, config) {
 	            var _this = this;
-
 	            (0, _classCallCheck2["default"])(this, NetworkGraph);
 	            (0, _defineProperty2["default"])(this, "physics", {
 	              damping: 0.4,
@@ -10864,7 +10586,6 @@ var Spyral = (function () {
 	              springStrength: 0.25,
 	              // 0 = not strong, >1 = probably too strong
 	              collisionScale: 1.25 // 1 = default, 0 = no collision 
-
 	            });
 	            this.target = target;
 	            if (config.nodes === undefined) throw new Error('Missing nodes!');
@@ -10886,9 +10607,7 @@ var Spyral = (function () {
 	            var linkValueField = config.linkValueField === undefined ? 'value' : config.linkValueField;
 	            this.linkData = config.links.map(function (link) {
 	              var sourceId = _this._idGet(typeof linkSourceField === 'string' ? link[linkSourceField] : linkSourceField(link));
-
 	              var targetId = _this._idGet(typeof linkTargetField === 'string' ? link[linkTargetField] : linkTargetField(link));
-
 	              var linkId = sourceId + '-' + targetId;
 	              return {
 	                id: linkId,
@@ -10902,30 +10621,28 @@ var Spyral = (function () {
 	            this.parentEl;
 	            this.links;
 	            this.nodes;
-
 	            this._insertStyles();
-
 	            this.initGraph();
 	            return this;
 	          }
-
 	          (0, _createClass2["default"])(NetworkGraph, [{
 	            key: "initGraph",
 	            value: function initGraph() {
 	              var _this2 = this;
-
 	              var width = this.target.offsetWidth;
 	              var height = this.target.offsetHeight;
 	              var svg = d3.select(this.target).append('svg').attr('viewBox', [0, 0, width, height]);
 	              this.parentEl = svg.append('g');
 	              this.links = this.parentEl.append('g').attr('class', 'spyral-ng-links').selectAll('.spyral-ng-link');
 	              this.nodes = this.parentEl.append('g').attr('class', 'spyral-ng-nodes').selectAll('.spyral-ng-node');
-	              this.simulation = d3.forceSimulation().force('center', d3.forceCenter(width * .5, height * .5) // .strength(this.physics.centralGravity)
+	              this.simulation = d3.forceSimulation().force('center', d3.forceCenter(width * .5, height * .5)
+	              // .strength(this.physics.centralGravity)
 	              ).force('link', d3.forceLink().id(function (d) {
 	                return d.id;
 	              }).distance(this.physics.springLength).strength(this.physics.springStrength)).force('charge', d3.forceManyBody().strength(this.physics.nodeGravity)).force('collide', d3.forceCollide(function (d) {
 	                return Math.sqrt(d.bbox.width * d.bbox.height) * _this2.physics.collisionScale;
-	              })).on('tick', this._ticked.bind(this)) // TODO need to update sandbox cached output when simulation is done running
+	              })).on('tick', this._ticked.bind(this))
+	              // TODO need to update sandbox cached output when simulation is done running
 	              .on('end', this._zoomToFit.bind(this));
 	              var link = this.links.data(this.linkData);
 	              link.exit().remove();
@@ -10942,7 +10659,6 @@ var Spyral = (function () {
 	              }).on('mouseover', this._nodeMouseOver.bind(this)).on('mouseout', this._nodeMouseOut.bind(this)).on('click', function (data) {
 	                d3.event.stopImmediatePropagation();
 	                d3.event.preventDefault();
-
 	                this._nodeClick(data);
 	              }.bind(this)).on('contextmenu', function (d) {
 	                d3.event.preventDefault();
@@ -10956,7 +10672,6 @@ var Spyral = (function () {
 	                d.fixed = true;
 	              }.bind(this)).on('drag', function (d) {
 	                this.simulation.alpha(0.3); // don't let simulation end while the user is dragging
-
 	                d.fx = d3.event.x;
 	                d.fy = d3.event.y;
 	              }.bind(this)).on('end', function (d) {
@@ -10999,24 +10714,20 @@ var Spyral = (function () {
 	            key: "_nodeMouseOver",
 	            value: function _nodeMouseOver(node) {
 	              var _this3 = this;
-
 	              this.parentEl.selectAll('.spyral-ng-node').each(function (d, i, nodes) {
 	                return nodes[i].classList.remove('hover');
 	              });
 	              this.links.each(function (link) {
 	                var id;
-
 	                if (link.source.id === node.id) {
 	                  id = link.target.id;
 	                } else if (link.target.id === node.id) {
 	                  id = link.source.id;
 	                }
-
 	                if (id) {
 	                  _this3.parentEl.select('#' + id).each(function (d, i, nodes) {
 	                    return nodes[i].classList.add('hover');
 	                  });
-
 	                  _this3.parentEl.select('#' + link.id).each(function (d, i, links) {
 	                    return links[i].classList.add('hover');
 	                  });
@@ -11081,7 +10792,6 @@ var Spyral = (function () {
 	              if (term.search(/^\d+$/) === 0) {
 	                return 'spyral_' + term;
 	              }
-
 	              return term.replace(/\W/g, '_');
 	            }
 	          }, {
@@ -11098,11 +10808,9 @@ var Spyral = (function () {
 	              var fullHeight = svgRect.height;
 	              var scale = (paddingPercent || 0.8) / Math.max(width / fullWidth, height / fullHeight);
 	              var translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
-
 	              if (width < 1) {
 	                return;
 	              } // FIXME: something strange with spyral
-
 
 	              d3.select(svg).transition().duration(transitionDuration || 500).call(this.zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 	            }
@@ -11119,7 +10827,6 @@ var Spyral = (function () {
 	          }]);
 	          return NetworkGraph;
 	        }();
-
 	        var _default = NetworkGraph;
 	        exports["default"] = _default;
 	      }, {
@@ -11131,27 +10838,18 @@ var Spyral = (function () {
 	      24: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _construct2 = _interopRequireDefault(require("@babel/runtime/helpers/construct"));
-
 	        var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
-
 	        var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 	        var _chart = _interopRequireDefault(require("./chart.js"));
-
 	        var _util = _interopRequireDefault(require("./util.js"));
 	        /* global Spyral */
-
 	        /**
 	         * The Spyral.Table class in Spyral provides convenience functions for working with tabular
 	         * data.
@@ -11211,8 +10909,6 @@ var Spyral = (function () {
 	         * @memberof Spyral
 	         * @class
 	         */
-
-
 	        var Table = /*#__PURE__*/function () {
 	          /**
 	           * The Table config object
@@ -11232,25 +10928,25 @@ var Spyral = (function () {
 	           */
 	          function Table(data, config) {
 	            var _this = this;
-
 	            for (var _len = arguments.length, other = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
 	              other[_key - 2] = arguments[_key];
 	            }
-
 	            (0, _classCallCheck2["default"])(this, Table);
 	            this._rows = [];
 	            this._headers = {};
-	            this._rowKeyColumnIndex = 0; // TODO throw error if data is Promise
-	            // we have a configuration object followed by values: create({headers: []}, 1,2,3) …
+	            this._rowKeyColumnIndex = 0;
 
+	            // TODO throw error if data is Promise
+
+	            // we have a configuration object followed by values: create({headers: []}, 1,2,3) …
 	            if (data && (0, _typeof2["default"])(data) === 'object' && (typeof config === 'string' || typeof config === 'number' || Array.isArray(config))) {
 	              data.rows = [config].concat(other).filter(function (v) {
 	                return v !== undefined;
 	              });
 	              config = undefined;
-	            } // we have a simple variable set of arguments: create(1,2,3) …
+	            }
 
-
+	            // we have a simple variable set of arguments: create(1,2,3) …
 	            if (arguments.length > 0 && Array.from(arguments).every(function (a) {
 	              return a !== undefined && !Array.isArray(a) && (0, _typeof2["default"])(a) !== 'object';
 	            })) {
@@ -11258,36 +10954,33 @@ var Spyral = (function () {
 	                return v !== undefined;
 	              });
 	              config = undefined;
-	            } // could be CSV or TSV
+	            }
 
-
+	            // could be CSV or TSV
 	            if (Array.isArray(data) && data.length === 1 && typeof data[0] === 'string' && (data[0].indexOf(',') > -1 || data[0].indexOf('\t') > -1)) {
 	              data = data[0];
-	            } // first check if we have a string that might be delimited data
+	            }
 
-
+	            // first check if we have a string that might be delimited data
 	            if (data && (typeof data === 'string' || typeof data === 'number')) {
 	              if (typeof data === 'number') {
 	                data = String(data);
 	              } // convert to string for split
-
-
 	              var rows = [];
 	              var format = config && 'format' in config ? config.format : undefined;
 	              data.split(/(\r\n|[\n\v\f\r\x85\u2028\u2029])+/g).forEach(function (line, i) {
 	                if (line.trim().length > 0) {
 	                  var values;
-
 	                  if (format && format === 'tsv' || line.indexOf('\t') > -1) {
 	                    values = line.split(/\t/);
 	                  } else if (format && format === 'csv' || line.indexOf(',') > -1) {
 	                    values = parseCsvLine(line);
 	                  } else {
 	                    values = [line];
-	                  } // if we can't find any config information for headers then we try to guess
+	                  }
+
+	                  // if we can't find any config information for headers then we try to guess
 	                  // if the first line doesn't have any numbers - this heuristic may be questionable
-
-
 	                  if (i === 0 && values.every(function (v) {
 	                    return isNaN(v);
 	                  }) && ((0, _typeof2["default"])(config) !== 'object' || (0, _typeof2["default"])(config) === 'object' && !('hasHeaders' in config) && !('headers' in config))) {
@@ -11301,7 +10994,6 @@ var Spyral = (function () {
 	              });
 	              data = rows;
 	            }
-
 	            if (data && Array.isArray(data)) {
 	              if (config) {
 	                if (Array.isArray(config)) {
@@ -11314,21 +11006,17 @@ var Spyral = (function () {
 	                  }
 	                }
 	              }
-
 	              if (config && 'count' in config && config.count) {
 	                var freqs = Table.counts(data);
-
 	                if (config.count === 'vertical') {
 	                  for (var item in freqs) {
 	                    this.addRow(item, freqs[item]);
 	                  }
-
 	                  this.rowSort(function (a, b) {
 	                    return Table.cmp(b[1], a[1]);
 	                  });
 	                } else {
 	                  this._headers = []; // reset and use the terms as headers
-
 	                  this.addRow(freqs);
 	                  this.columnSort(function (a, b) {
 	                    return Table.cmp(_this.cell(0, b), _this.cell(0, a));
@@ -11343,11 +11031,9 @@ var Spyral = (function () {
 	              } else if ('hasHeaders' in data && 'rows' in data) {
 	                this.setHeaders(data.rows.shift());
 	              }
-
 	              if ('rows' in data && Array.isArray(data.rows)) {
 	                this.addRows(data.rows);
 	              }
-
 	              if ('rowKeyColumn' in data) {
 	                if (typeof data.rowKeyColumn === 'number') {
 	                  if (data.rowKeyColumn < this.columns()) {
@@ -11365,18 +11051,16 @@ var Spyral = (function () {
 	              }
 	            }
 	          }
+
 	          /**
 	           * Set the headers for the Table
 	           * @param {(Object|Array)} data
 	           * @returns {Spyral.Table}
 	           */
-
-
 	          (0, _createClass2["default"])(Table, [{
 	            key: "setHeaders",
 	            value: function setHeaders(data) {
 	              var _this2 = this;
-
 	              if (data && Array.isArray(data)) {
 	                data.forEach(function (h) {
 	                  return _this2.addColumn(h);
@@ -11390,7 +11074,6 @@ var Spyral = (function () {
 	              } else {
 	                throw new Error('Unrecognized argument for headers, it should be an array or an object.' + data);
 	              }
-
 	              return this;
 	            }
 	            /**
@@ -11398,12 +11081,10 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "addRows",
 	            value: function addRows(data) {
 	              var _this3 = this;
-
 	              data.forEach(function (row) {
 	                return _this3.addRow(row);
 	              }, this);
@@ -11414,19 +11095,16 @@ var Spyral = (function () {
 	             * @param {(Array|Object)} data
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "addRow",
 	            value: function addRow(data) {
 	              for (var _len2 = arguments.length, other = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
 	                other[_key2 - 1] = arguments[_key2];
-	              } // we have multiple arguments, so call again as an array
-
-
+	              }
+	              // we have multiple arguments, so call again as an array
 	              if (other.length > 0) {
 	                return this.addRow([data].concat(other));
 	              }
-
 	              this.setRow(this.rows(), data, true);
 	              return this;
 	            }
@@ -11437,19 +11115,16 @@ var Spyral = (function () {
 	             * @param {boolean} create
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "setRow",
 	            value: function setRow(ind, data, create) {
 	              var _this4 = this;
-
 	              var rowIndex = this.getRowIndex(ind, create);
-
 	              if (rowIndex >= this.rows() && !create) {
 	                throw new Error('Attempt to set row values for a row that does note exist: ' + ind + '. Maybe use addRow() instead?');
-	              } // we have a simple array, so we'll just push to the rows
+	              }
 
-
+	              // we have a simple array, so we'll just push to the rows
 	              if (data && Array.isArray(data)) {
 	                if (data.length > this.columns()) {
 	                  if (create) {
@@ -11460,28 +11135,26 @@ var Spyral = (function () {
 	                    throw new Error('The row that you\'ve created contains more columns than the current table. Maybe use addColunm() first?');
 	                  }
 	                }
-
 	                data.forEach(function (d, i) {
 	                  return _this4.setCell(rowIndex, i, d);
 	                }, this);
-	              } // we have an object so we'll use the headers
+	              }
+
+	              // we have an object so we'll use the headers
 	              else if ((0, _typeof2["default"])(data) === 'object') {
-	                  for (var column in data) {
-	                    if (!this.hasColumn(column)) ;
-
-	                    this.setCell(rowIndex, column, data[column]);
-	                  }
-	                } else if (this.columns() < 2 && create) {
-	                  // hopefully some scalar value
-	                  if (this.columns() === 0) {
-	                    this.addColumn(); // create first column if it doesn't exist
-	                  }
-
-	                  this.setCell(rowIndex, 0, data);
-	                } else {
-	                  throw new Error('setRow() expects an array or an object, maybe setCell()?');
+	                for (var column in data) {
+	                  if (!this.hasColumn(column)) ;
+	                  this.setCell(rowIndex, column, data[column]);
 	                }
-
+	              } else if (this.columns() < 2 && create) {
+	                // hopefully some scalar value
+	                if (this.columns() === 0) {
+	                  this.addColumn(); // create first column if it doesn't exist
+	                }
+	                this.setCell(rowIndex, 0, data);
+	              } else {
+	                throw new Error('setRow() expects an array or an object, maybe setCell()?');
+	              }
 	              return this;
 	            }
 	            /**
@@ -11491,33 +11164,33 @@ var Spyral = (function () {
 	             * @param {boolean} create
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "setColumn",
 	            value: function setColumn(ind, data, create) {
 	              var _this5 = this;
-
 	              var columnIndex = this.getColumnIndex(ind, create);
-
 	              if (columnIndex >= this.columns() && !create) {
 	                throw new Error('Attempt to set column values for a column that does note exist: ' + ind + '. Maybe use addColumn() instead?');
-	              } // we have a simple array, so we'll just push to the rows
+	              }
 
-
+	              // we have a simple array, so we'll just push to the rows
 	              if (data && Array.isArray(data)) {
 	                data.forEach(function (d, i) {
 	                  return _this5.setCell(i, columnIndex, d, create);
 	                }, this);
-	              } // we have an object so we'll use the headers
-	              else if ((0, _typeof2["default"])(data) === 'object') {
-	                  for (var row in data) {
-	                    this.setCell(row, columnIndex, data[row], create);
-	                  }
-	                } // hope we have a scalar value to assign to the first row
-	                else {
-	                    this.setCell(0, columnIndex, data, create);
-	                  }
+	              }
 
+	              // we have an object so we'll use the headers
+	              else if ((0, _typeof2["default"])(data) === 'object') {
+	                for (var row in data) {
+	                  this.setCell(row, columnIndex, data[row], create);
+	                }
+	              }
+
+	              // hope we have a scalar value to assign to the first row
+	              else {
+	                this.setCell(0, columnIndex, data, create);
+	              }
 	              return this;
 	            }
 	            /**
@@ -11527,7 +11200,6 @@ var Spyral = (function () {
 	             * @param {number} value The value to set/add
 	             * @param {boolean} overwrite True to set, false to add to current value
 	             */
-
 	          }, {
 	            key: "updateCell",
 	            value: function updateCell(row, column, value, overwrite) {
@@ -11543,7 +11215,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} colInd The column index
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "cell",
 	            value: function cell(rowInd, colInd) {
@@ -11556,7 +11227,6 @@ var Spyral = (function () {
 	             * @param {number} value The value to set
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "setCell",
 	            value: function setCell(row, column, value) {
@@ -11569,12 +11239,10 @@ var Spyral = (function () {
 	             * @param {boolean} create
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "getRowIndex",
 	            value: function getRowIndex(ind, create) {
 	              var _this6 = this;
-
 	              if (typeof ind === 'number') {
 	                if (ind < this._rows.length) {
 	                  return ind;
@@ -11582,13 +11250,11 @@ var Spyral = (function () {
 	                  this._rows[ind] = Array(this.columns());
 	                  return ind;
 	                }
-
 	                throw new Error('The requested row does not exist: ' + ind);
 	              } else if (typeof ind === 'string') {
 	                var row = this._rows.findIndex(function (r) {
 	                  return r[_this6._rowKeyColumnIndex] === ind;
 	                }, this);
-
 	                if (row > -1) {
 	                  return row;
 	                } else if (create) {
@@ -11600,7 +11266,6 @@ var Spyral = (function () {
 	                  throw new Error('Unable to find the row named ' + ind);
 	                }
 	              }
-
 	              throw new Error('Please provide a valid row (number or named row)');
 	            }
 	            /**
@@ -11609,7 +11274,6 @@ var Spyral = (function () {
 	             * @param {boolean} create
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "getColumnIndex",
 	            value: function getColumnIndex(ind, create) {
@@ -11620,7 +11284,6 @@ var Spyral = (function () {
 	                  this.addColumn(ind);
 	                  return ind;
 	                }
-
 	                throw new Error('The requested column does not exist: ' + ind);
 	              } else if (typeof ind === 'string') {
 	                if (ind in this._headers) {
@@ -11631,10 +11294,8 @@ var Spyral = (function () {
 	                  });
 	                  return this._headers[ind];
 	                }
-
 	                throw new Error('Unable to find column named ' + ind);
 	              }
-
 	              throw new Error('Please provide a valid column (number or named column)');
 	            }
 	            /**
@@ -11643,49 +11304,44 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "addColumn",
 	            value: function addColumn(config, ind) {
 	              // determine col
 	              var col = this.columns(); // default
-
 	              if (config && typeof config === 'string') {
 	                col = config;
 	              } else if (config && (0, _typeof2["default"])(config) === 'object' && 'header' in config) {
 	                col = config.header;
 	              } else if (ind !== undefined) {
 	                col = ind;
-	              } // check if it exists
+	              }
 
-
+	              // check if it exists
 	              if (col in this._headers) {
 	                throw new Error('This column exists already: ' + config.header);
-	              } // add column
+	              }
 
-
+	              // add column
 	              var colIndex = this.columns();
-	              this._headers[col] = colIndex; // determine data
+	              this._headers[col] = colIndex;
 
+	              // determine data
 	              var data = [];
-
 	              if (config && (0, _typeof2["default"])(config) === 'object' && 'rows' in config) {
 	                data = config.rows;
 	              } else if (Array.isArray(config)) {
 	                data = config;
-	              } // make sure we have enough rows for the new data
+	              }
 
-
+	              // make sure we have enough rows for the new data
 	              var columns = this.columns();
-
 	              while (this._rows.length < data.length) {
 	                this._rows[this._rows.length] = new Array(columns);
 	              }
-
 	              this._rows.forEach(function (r, i) {
 	                return r[colIndex] = data[i];
 	              });
-
 	              return this;
 	            }
 	            /**
@@ -11699,59 +11355,57 @@ var Spyral = (function () {
 	             * @param {(Object|Number|String)} [config]
 	             * @returns {(Number|Array)}
 	             */
-
 	          }, {
 	            key: "rows",
 	            value: function rows(inds, config) {
-	              var _this7 = this; // return length
-
-
+	              var _this7 = this;
+	              // return length
 	              if (inds === undefined) {
 	                return this._rows.length;
 	              }
-
 	              var rows = [];
-
 	              for (var _len3 = arguments.length, other = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
 	                other[_key3 - 2] = arguments[_key3];
 	              }
+	              var asObj = config && (0, _typeof2["default"])(config) === 'object' && config.asObj || other.length > 0 && (0, _typeof2["default"])(other[other.length - 1]) === 'object' && other[other.length - 1].asObj;
 
-	              var asObj = config && (0, _typeof2["default"])(config) === 'object' && config.asObj || other.length > 0 && (0, _typeof2["default"])(other[other.length - 1]) === 'object' && other[other.length - 1].asObj; // return all
-
+	              // return all
 	              if (typeof inds === 'boolean' && inds) {
 	                rows = this._rows.map(function (r, i) {
 	                  return _this7.row(i, asObj);
 	                });
-	              } // return specified rows
+	              }
+
+	              // return specified rows
 	              else if (Array.isArray(inds)) {
-	                  rows = inds.map(function (ind) {
-	                    return _this7.row(ind);
-	                  });
-	                } // return specified rows as varargs
-	                else if (typeof inds === 'number' || typeof inds === 'string') {
-	                    [inds, config].concat(other).every(function (i) {
-	                      if (typeof i === 'number' || typeof i === 'string') {
-	                        rows.push(_this7.row(i, asObj));
-	                        return true;
-	                      } else {
-	                        return false;
-	                      }
-	                    });
+	                rows = inds.map(function (ind) {
+	                  return _this7.row(ind);
+	                });
+	              }
 
-	                    if (other.length > 0) {
-	                      // when config is in last position
-	                      if ((0, _typeof2["default"])(other[other.length - 1]) === 'object') {
-	                        config = other[other.length - 1];
-	                      }
-	                    }
-	                  } // zip if requested
+	              // return specified rows as varargs
+	              else if (typeof inds === 'number' || typeof inds === 'string') {
+	                [inds, config].concat(other).every(function (i) {
+	                  if (typeof i === 'number' || typeof i === 'string') {
+	                    rows.push(_this7.row(i, asObj));
+	                    return true;
+	                  } else {
+	                    return false;
+	                  }
+	                });
+	                if (other.length > 0) {
+	                  // when config is in last position
+	                  if ((0, _typeof2["default"])(other[other.length - 1]) === 'object') {
+	                    config = other[other.length - 1];
+	                  }
+	                }
+	              }
 
-
+	              // zip if requested
 	              if (config && (0, _typeof2["default"])(config) === 'object' && 'zip' in config && config.zip) {
 	                if (rows.length < 2) {
 	                  throw new Error('Only one row available, can\'t zip');
 	                }
-
 	                return Table.zip(rows);
 	              } else {
 	                return rows;
@@ -11763,19 +11417,15 @@ var Spyral = (function () {
 	             * @param {boolean} [asObj]
 	             * @returns {(Object|Number|String)}
 	             */
-
 	          }, {
 	            key: "row",
 	            value: function row(ind, asObj) {
 	              var row = this._rows[this.getRowIndex(ind)];
-
 	              if (asObj) {
 	                var obj = {};
-
 	                for (var key in this._headers) {
 	                  obj[key] = row[this._headers[key]];
 	                }
-
 	                return obj;
 	              } else {
 	                return row;
@@ -11792,57 +11442,52 @@ var Spyral = (function () {
 	             * @param {(Object|Number|String)} [config]
 	             * @returns {(Number|Array)}
 	             */
-
 	          }, {
 	            key: "columns",
 	            value: function columns(inds, config) {
-	              var _this8 = this; // return length
-
-
+	              var _this8 = this;
+	              // return length
 	              if (inds === undefined) {
 	                return Object.keys(this._headers).length;
 	              }
-
 	              var columns = [];
-
 	              for (var _len4 = arguments.length, other = new Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
 	                other[_key4 - 2] = arguments[_key4];
 	              }
+	              var asObj = config && (0, _typeof2["default"])(config) === 'object' && config.asObj || other.length > 0 && (0, _typeof2["default"])(other[other.length - 1]) === 'object' && other[other.length - 1].asObj;
 
-	              var asObj = config && (0, _typeof2["default"])(config) === 'object' && config.asObj || other.length > 0 && (0, _typeof2["default"])(other[other.length - 1]) === 'object' && other[other.length - 1].asObj; // return all columns
-
+	              // return all columns
 	              if (typeof inds === 'boolean' && inds) {
 	                for (var i = 0, len = this.columns(); i < len; i++) {
 	                  columns.push(this.column(i, asObj));
 	                }
-	              } // return specified columns
-	              else if (Array.isArray(inds)) {
-	                  inds.forEach(function (i) {
-	                    return columns.push(_this8.column(i, asObj));
-	                  }, this);
-	                } else if (typeof inds === 'number' || typeof inds === 'string') {
-	                  [inds, config].concat(other).every(function (i) {
-	                    if (typeof i === 'number' || typeof i === 'string') {
-	                      columns.push(_this8.column(i, asObj));
-	                      return true;
-	                    } else {
-	                      return false;
-	                    }
-	                  });
+	              }
 
-	                  if (other.length > 0) {
-	                    // when config is in last position
-	                    if ((0, _typeof2["default"])(other[other.length - 1]) === 'object') {
-	                      config = other[other.length - 1];
-	                    }
+	              // return specified columns
+	              else if (Array.isArray(inds)) {
+	                inds.forEach(function (i) {
+	                  return columns.push(_this8.column(i, asObj));
+	                }, this);
+	              } else if (typeof inds === 'number' || typeof inds === 'string') {
+	                [inds, config].concat(other).every(function (i) {
+	                  if (typeof i === 'number' || typeof i === 'string') {
+	                    columns.push(_this8.column(i, asObj));
+	                    return true;
+	                  } else {
+	                    return false;
+	                  }
+	                });
+	                if (other.length > 0) {
+	                  // when config is in last position
+	                  if ((0, _typeof2["default"])(other[other.length - 1]) === 'object') {
+	                    config = other[other.length - 1];
 	                  }
 	                }
-
+	              }
 	              if (config && (0, _typeof2["default"])(config) === 'object' && 'zip' in config && config.zip) {
 	                if (columns.length < 2) {
 	                  throw new Error('Only one column available, can\'t zip');
 	                }
-
 	                return Table.zip(columns);
 	              } else {
 	                return columns;
@@ -11854,26 +11499,19 @@ var Spyral = (function () {
 	             * @param {boolean} [asObj]
 	             * @returns {(Object|Number|String)}
 	             */
-
 	          }, {
 	            key: "column",
 	            value: function column(ind, asObj) {
 	              var _this9 = this;
-
 	              var column = this.getColumnIndex(ind);
-
 	              var data = this._rows.forEach(function (r) {
 	                return r[column];
 	              }); // TODO
-
-
 	              if (asObj) {
 	                var obj = {};
-
 	                this._rows.forEach(function (r) {
 	                  obj[r[_this9._rowKeyColumnIndex]] = r[column];
 	                });
-
 	                return obj;
 	              } else {
 	                return this._rows.map(function (r) {
@@ -11886,12 +11524,10 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {(number|string)}
 	             */
-
 	          }, {
 	            key: "header",
 	            value: function header(ind) {
 	              var _this10 = this;
-
 	              var keys = Object.keys(this._headers);
 	              var i = this.getColumnIndex(ind);
 	              return keys[keys.findIndex(function (k) {
@@ -11907,47 +11543,46 @@ var Spyral = (function () {
 	             * @param {(Boolean|Array|Number|String)} inds
 	             * @returns {(Number|Array)}
 	             */
-
 	          }, {
 	            key: "headers",
 	            value: function headers(inds) {
-	              var _this11 = this; // return length
-
-
+	              var _this11 = this;
+	              // return length
 	              if (inds === undefined) {
 	                return Object.keys(this._headers).length;
-	              } // let headers = [];
+	              }
+
+	              // let headers = [];
+
 	              // return all
-
-
 	              if (typeof inds === 'boolean' && inds) {
 	                inds = Array(Object.keys(this._headers).length).fill().map(function (_, i) {
 	                  return i;
 	                });
-	              } // return specified rows
+	              }
 
-
+	              // return specified rows
 	              if (Array.isArray(inds)) {
 	                return inds.map(function (i) {
 	                  return _this11.header(i);
 	                });
-	              } // return specified rows as varargs
-	              else if (typeof inds === 'number' || typeof inds === 'string') {
-	                  for (var _len5 = arguments.length, other = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
-	                    other[_key5 - 1] = arguments[_key5];
-	                  }
+	              }
 
-	                  return [inds].concat(other).map(function (i) {
-	                    return _this11.header(i);
-	                  });
+	              // return specified rows as varargs
+	              else if (typeof inds === 'number' || typeof inds === 'string') {
+	                for (var _len5 = arguments.length, other = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+	                  other[_key5 - 1] = arguments[_key5];
 	                }
+	                return [inds].concat(other).map(function (i) {
+	                  return _this11.header(i);
+	                });
+	              }
 	            }
 	            /**
 	             * Does the specified column exist
 	             * @param {(number|string)} ind
 	             * @returns {(number|string)}
 	             */
-
 	          }, {
 	            key: "hasColumn",
 	            value: function hasColumn(ind) {
@@ -11958,7 +11593,6 @@ var Spyral = (function () {
 	             * The function is passed the row and the row index.
 	             * @param {Function} fn
 	             */
-
 	          }, {
 	            key: "forEach",
 	            value: function forEach(fn) {
@@ -11971,7 +11605,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowMin",
 	            value: function rowMin(ind) {
@@ -11982,7 +11615,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowMax",
 	            value: function rowMax(ind) {
@@ -11993,7 +11625,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnMin",
 	            value: function columnMin(ind) {
@@ -12004,7 +11635,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnMax",
 	            value: function columnMax(ind) {
@@ -12015,7 +11645,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowSum",
 	            value: function rowSum(ind) {
@@ -12026,7 +11655,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnSum",
 	            value: function columnSum(ind) {
@@ -12037,7 +11665,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowMean",
 	            value: function rowMean(ind) {
@@ -12048,7 +11675,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnMean",
 	            value: function columnMean(ind) {
@@ -12059,7 +11685,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowCounts",
 	            value: function rowCounts(ind) {
@@ -12070,7 +11695,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnCounts",
 	            value: function columnCounts(ind) {
@@ -12083,16 +11707,13 @@ var Spyral = (function () {
 	             * @param {boolean} overwrite
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "rowRollingMean",
 	            value: function rowRollingMean(ind, neighbors, overwrite) {
 	              var means = Table.rollingMean(this.row(ind), neighbors);
-
 	              if (overwrite) {
 	                this.setRow(ind, means);
 	              }
-
 	              return means;
 	            }
 	            /**
@@ -12102,16 +11723,13 @@ var Spyral = (function () {
 	             * @param {boolean} overwrite
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "columnRollingMean",
 	            value: function columnRollingMean(ind, neighbors, overwrite) {
 	              var means = Table.rollingMean(this.column(ind), neighbors);
-
 	              if (overwrite) {
 	                this.setColumn(ind, means);
 	              }
-
 	              return means;
 	            }
 	            /**
@@ -12119,7 +11737,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowVariance",
 	            value: function rowVariance(ind) {
@@ -12130,7 +11747,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnVariance",
 	            value: function columnVariance(ind) {
@@ -12141,7 +11757,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "rowStandardDeviation",
 	            value: function rowStandardDeviation(ind) {
@@ -12152,7 +11767,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "columnStandardDeviation",
 	            value: function columnStandardDeviation(ind) {
@@ -12163,7 +11777,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "rowZScores",
 	            value: function rowZScores(ind) {
@@ -12174,7 +11787,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} ind
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "columnZScores",
 	            value: function columnZScores(ind) {
@@ -12185,31 +11797,26 @@ var Spyral = (function () {
 	             * Sort the specified rows
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "rowSort",
 	            value: function rowSort(inds, config) {
-	              var _this12 = this; // no inds, use all columns
-
-
+	              var _this12 = this;
+	              // no inds, use all columns
 	              if (inds === undefined) {
 	                inds = Array(this.columns()).fill().map(function (_, i) {
 	                  return i;
 	                });
-	              } // wrap a single index as array
+	              }
 
-
+	              // wrap a single index as array
 	              if (typeof inds === 'string' || typeof inds === 'number') {
 	                inds = [inds];
 	              }
-
 	              if (Array.isArray(inds)) {
 	                return this.rowSort(function (a, b) {
 	                  var ind;
-
 	                  for (var i = 0, len = inds.length; i < len; i++) {
 	                    ind = _this12.getColumnIndex(inds[i]);
-
 	                    if (a !== b) {
 	                      if (typeof a[ind] === 'string' && typeof b[ind] === 'string') {
 	                        return a[ind].localeCompare(b[ind]);
@@ -12218,38 +11825,29 @@ var Spyral = (function () {
 	                      }
 	                    }
 	                  }
-
 	                  return 0;
 	                }, config);
 	              }
-
 	              if (typeof inds === 'function') {
 	                this._rows.sort(function (a, b) {
 	                  if (config && 'asObject' in config && config.asObject) {
 	                    var c = {};
-
 	                    for (var k in _this12._headers) {
 	                      c[k] = a[_this12._headers[k]];
 	                    }
-
 	                    var d = {};
-
 	                    for (var _k in _this12._headers) {
 	                      d[_k] = b[_this12._headers[_k]];
 	                    }
-
 	                    return inds.apply(_this12, [c, d]);
 	                  } else {
 	                    return inds.apply(_this12, [a, b]);
 	                  }
 	                });
-
 	                if (config && 'reverse' in config && config.reverse) {
 	                  this._rows.reverse(); // in place
-
 	                }
 	              }
-
 	              return this;
 	            }
 	            /**
@@ -12257,40 +11855,40 @@ var Spyral = (function () {
 	             * Sort the specified columns
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "columnSort",
 	            value: function columnSort(inds, config) {
-	              var _this13 = this; // no inds, use all columns
-
-
+	              var _this13 = this;
+	              // no inds, use all columns
 	              if (inds === undefined) {
 	                inds = Array(this.columns()).fill().map(function (_, i) {
 	                  return i;
 	                });
-	              } // wrap a single index as array
+	              }
 
-
+	              // wrap a single index as array
 	              if (typeof inds === 'string' || typeof inds === 'number') {
 	                inds = [inds];
 	              }
-
 	              if (Array.isArray(inds)) {
 	                // convert to column names
 	                var headers = inds.map(function (ind) {
 	                  return _this13.header(ind);
-	                }); // make sure we have all columns
+	                });
 
+	                // make sure we have all columns
 	                Object.keys(this._headers).forEach(function (h) {
 	                  if (!headers.includes(h)) {
 	                    headers.push(h);
 	                  }
-	                }); // sort names alphabetically
+	                });
 
+	                // sort names alphabetically
 	                headers.sort(function (a, b) {
 	                  return a.localeCompare(b);
-	                }); // reorder by columns
+	                });
 
+	                // reorder by columns
 	                this._rows = this._rows.map(function (_, i) {
 	                  return headers.map(function (h) {
 	                    return _this13.cell(i, h);
@@ -12301,10 +11899,8 @@ var Spyral = (function () {
 	                  return _this13._headers[h] = i;
 	                });
 	              }
-
 	              if (typeof inds === 'function') {
 	                var _headers = Object.keys(this._headers);
-
 	                if (config && 'asObject' in _headers && _headers.asObject) {
 	                  _headers = _headers.map(function (h, i) {
 	                    return {
@@ -12315,16 +11911,14 @@ var Spyral = (function () {
 	                    };
 	                  });
 	                }
-
 	                _headers.sort(function (a, b) {
 	                  return inds.apply(_this13, [a, b]);
 	                });
-
 	                _headers = _headers.map(function (h) {
 	                  return (0, _typeof2["default"])(h) === 'object' ? h.header : h;
 	                }); // convert back to string
-	                // make sure we have all keys
 
+	                // make sure we have all keys
 	                Object.keys(this._headers).forEach(function (k) {
 	                  if (_headers.indexOf(k) === -1) {
 	                    _headers.push(k);
@@ -12336,7 +11930,6 @@ var Spyral = (function () {
 	                  });
 	                });
 	                this._headers = {};
-
 	                _headers.forEach(function (h, i) {
 	                  return _this13._headers[h] = i;
 	                });
@@ -12347,7 +11940,6 @@ var Spyral = (function () {
 	             * @param {Object} [config]
 	             * @returns {string}
 	             */
-
 	          }, {
 	            key: "toCsv",
 	            value: function toCsv(config) {
@@ -12355,7 +11947,6 @@ var Spyral = (function () {
 	                var quote = /"/g;
 	                return typeof c === 'string' && (c.indexOf(',') > -1 || c.indexOf('"') > -1) ? '"' + c.replace(quote, '"') + '"' : c;
 	              };
-
 	              return (config && 'noHeaders' in config && config.noHeaders ? '' : this.headers(true).map(function (h) {
 	                return cell(h);
 	              }).join(',') + '\n') + this._rows.map(function (row) {
@@ -12369,7 +11960,6 @@ var Spyral = (function () {
 	             * @param {Object} [config]
 	             * @returns {string}
 	             */
-
 	          }, {
 	            key: "toTsv",
 	            value: function toTsv(config) {
@@ -12383,34 +11973,28 @@ var Spyral = (function () {
 	             * @param {Object} [config]
 	             * @returns {Spyral.Table}
 	             */
-
 	          }, {
 	            key: "html",
 	            value: function html(target, config) {
 	              var html = this.toString(config);
-
 	              if (typeof target === 'function') {
 	                target(html);
 	              } else {
 	                if (typeof target === 'string') {
 	                  target = document.querySelector(target);
-
 	                  if (!target) {
 	                    throw 'Unable to find specified target: ' + target;
 	                  }
 	                }
-
 	                if ((0, _typeof2["default"])(target) === 'object' && 'innerHTML' in target) {
 	                  target.innerHTML = html;
 	                }
 	              }
-
 	              return this;
 	            }
 	            /**
 	             * Same as {@link toString}.
 	             */
-
 	          }, {
 	            key: "toHtml",
 	            value: function toHtml() {
@@ -12422,30 +12006,24 @@ var Spyral = (function () {
 	             * @param {Object} [config]
 	             * @returns {string}
 	             */
-
 	          }, {
 	            key: "toString",
 	            value: function toString() {
 	              var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
 	              if (typeof config === 'number') {
 	                config = {
 	                  limit: config
 	                };
 	              }
-
 	              if ('top' in config && !('limit' in config)) {
 	                config.limit = config.top;
 	              }
-
 	              if ('limit' in config && !('bottom' in config)) {
 	                config.bottom = 0;
 	              }
-
 	              if ('bottom' in config && !('limit' in config)) {
 	                config.limit = 0;
 	              }
-
 	              return '<table' + ('id' in config ? ' id="' + config.id + '" ' : ' ') + 'class="voyantTable">' + (config && 'caption' in config && typeof config.caption === 'string' ? '<caption>' + config.caption + '</caption>' : '') + (config && 'noHeaders' in config && config.noHeaders ? '' : '<thead><tr>' + this.headers(true).map(function (c) {
 	                return '<th>' + c + '</th>';
 	              }).join('') + '</tr></thead>') + '<tbody>' + this._rows.filter(function (row, i, arr) {
@@ -12462,19 +12040,14 @@ var Spyral = (function () {
 	             * @param {HighchartsConfig} [config]
 	             * @returns {Highcharts.Chart}
 	             */
-
 	          }, {
 	            key: "chart",
 	            value: function chart() {
 	              var _this14 = this;
-
 	              var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 	              var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
 	              var _Chart$_handleTargetA = _chart["default"]._handleTargetAndConfig(target, config);
-
 	              var _Chart$_handleTargetA2 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA, 2);
-
 	              target = _Chart$_handleTargetA2[0];
 	              config = _Chart$_handleTargetA2[1];
 	              config.chart = config.chart || {};
@@ -12484,17 +12057,16 @@ var Spyral = (function () {
 	              var isHeadersCategories = headers.every(function (h) {
 	                return isNaN(h);
 	              });
-
 	              if (isHeadersCategories) {
 	                _chart["default"]._setDefaultChartType(config, 'column');
-	              } // set categories if not set
+	              }
 
-
+	              // set categories if not set
 	              config.xAxis = config.xAxis || {};
-	              config.xAxis.categories = config.xAxis.categories || headers; // start filling in series
+	              config.xAxis.categories = config.xAxis.categories || headers;
 
+	              // start filling in series
 	              config.series = config.series || [];
-
 	              if (!('seriesFrom' in config)) {
 	                // one row, so let's take series from rows
 	                if (rowsCount === 1) {
@@ -12503,7 +12075,6 @@ var Spyral = (function () {
 	                  config.dataFrom = config.dataFrom || 'columns';
 	                }
 	              }
-
 	              if ('dataFrom' in config) {
 	                if (config.dataFrom === 'rows') {
 	                  config.data = {
@@ -12516,7 +12087,6 @@ var Spyral = (function () {
 	                    columns: []
 	                  };
 	                  config.data.columns = config.data.columns.concat(this.columns(true));
-
 	                  if (config.data.columns.length === headers.length) {
 	                    headers.forEach(function (h, i) {
 	                      config.data.columns[i].splice(0, 0, h);
@@ -12535,14 +12105,12 @@ var Spyral = (function () {
 	                  this.columns(config.columns ? config.columns : true).forEach(function (col, i) {
 	                    config.series[i] = config.series[i] || {};
 	                    config.series[i].data = [];
-
 	                    for (var r = 0; r < rowsCount; r++) {
 	                      config.series[i].data.push(_this14.cell(r, i));
 	                    }
 	                  });
 	                }
 	              }
-
 	              delete config.dataFrom;
 	              delete config.seriesFrom;
 	              return _chart["default"].create(target, config);
@@ -12553,14 +12121,12 @@ var Spyral = (function () {
 	             * @param {TableConfig} config
 	             * @returns {Spyral.Table}
 	             */
-
 	          }], [{
 	            key: "create",
 	            value: function create(data, config) {
 	              for (var _len6 = arguments.length, other = new Array(_len6 > 2 ? _len6 - 2 : 0), _key6 = 2; _key6 < _len6; _key6++) {
 	                other[_key6 - 2] = arguments[_key6];
 	              }
-
 	              return (0, _construct2["default"])(Table, [data, config].concat(other));
 	            }
 	            /**
@@ -12570,7 +12136,6 @@ var Spyral = (function () {
 	             * @param {Object} config
 	             * @returns {Promise}
 	             */
-
 	          }, {
 	            key: "fetch",
 	            value: function fetch(input, api, config) {
@@ -12579,7 +12144,6 @@ var Spyral = (function () {
 	                  if (!response.ok) {
 	                    throw new Error(response.status + ' ' + response.statusText);
 	                  }
-
 	                  response.text().then(function (text) {
 	                    resolve(Table.create(text, config || api));
 	                  });
@@ -12591,7 +12155,6 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {Object}
 	             */
-
 	          }, {
 	            key: "counts",
 	            value: function counts(data) {
@@ -12607,7 +12170,6 @@ var Spyral = (function () {
 	             * @param {(number|string)} b
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "cmp",
 	            value: function cmp(a, b) {
@@ -12618,7 +12180,6 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "sum",
 	            value: function sum(data) {
@@ -12631,7 +12192,6 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "mean",
 	            value: function mean(data) {
@@ -12643,14 +12203,13 @@ var Spyral = (function () {
 	             * @param {number} neighbors
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "rollingMean",
 	            value: function rollingMean(data, neighbors) {
 	              // https://stackoverflow.com/questions/41386083/plot-rolling-moving-average-in-d3-js-v4/41388581#41387286
 	              return data.map(function (val, idx, arr) {
 	                var start = Math.max(0, idx - neighbors),
-	                    end = idx + neighbors;
+	                  end = idx + neighbors;
 	                var subset = arr.slice(start, end + 1);
 	                var sum = subset.reduce(function (a, b) {
 	                  return a + b;
@@ -12663,7 +12222,6 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "variance",
 	            value: function variance(data) {
@@ -12677,7 +12235,6 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {number}
 	             */
-
 	          }, {
 	            key: "standardDeviation",
 	            value: function standardDeviation(data) {
@@ -12688,7 +12245,6 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "zScores",
 	            value: function zScores(data) {
@@ -12703,24 +12259,21 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @returns {Array}
 	             */
-
 	          }, {
 	            key: "zip",
 	            value: function zip() {
 	              for (var _len7 = arguments.length, data = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
 	                data[_key7] = arguments[_key7];
-	              } // we have a single nested array, so let's recall with flattened arguments
-
-
+	              }
+	              // we have a single nested array, so let's recall with flattened arguments
 	              if (data.length === 1 && Array.isArray(data) && data.every(function (d) {
 	                return Array.isArray(d);
 	              })) {
 	                var _Table$zip;
-
 	                return (_Table$zip = Table.zip).apply.apply(_Table$zip, [null].concat(data));
-	              } // allow arrays to be of different lengths
+	              }
 
-
+	              // allow arrays to be of different lengths
 	              var len = Math.max.apply(null, data.map(function (d) {
 	                return d.length;
 	              }));
@@ -12734,10 +12287,7 @@ var Spyral = (function () {
 	          return Table;
 	        }(); // this seems like a good balance between a built-in flexible parser and a heavier external parser
 	        // https://lowrey.me/parsing-a-csv-file-in-es6-javascript/
-
-
 	        var regex = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
-
 	        function parseCsvLine(line) {
 	          var arr = [];
 	          line.replace(regex, function (m0, m1, m2, m3) {
@@ -12748,17 +12298,13 @@ var Spyral = (function () {
 	            } else if (m3 !== undefined) {
 	              arr.push(m3);
 	            }
-
 	            return '';
 	          });
-
 	          if (/,\s*$/.test(line)) {
 	            arr.push('');
 	          }
-
 	          return arr;
 	        }
-
 	        var _default = Table;
 	        exports["default"] = _default;
 	      }, {
@@ -12774,49 +12320,38 @@ var Spyral = (function () {
 	      25: [function (require, module, exports) {
 
 	        var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 	        Object.defineProperty(exports, "__esModule", {
 	          value: true
 	        });
 	        exports["default"] = void 0;
-
 	        var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-
 	        var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 	        /**
 	         * A helper for working with the Voyant Notebook app.
 	         * @memberof Spyral
 	         */
-
-
 	        var Util = /*#__PURE__*/function () {
 	          function Util() {
 	            (0, _classCallCheck2["default"])(this, Util);
 	          }
-
 	          (0, _createClass2["default"])(Util, null, [{
 	            key: "id",
-
 	            /**
 	             * Generates a random ID of the specified length.
 	             * @param {Number} len The length of the ID to generate?
 	             * @returns {String}
 	             */
 	            value: function id() {
-	              var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8; // based on https://stackoverflow.com/a/13403498
-
+	              var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
+	              // based on https://stackoverflow.com/a/13403498
 	              var times = Math.ceil(len / 11);
 	              var id = '';
-
 	              for (var i = 0; i < times; i++) {
 	                id += Math.random().toString(36).substring(2); // the result of this is 11 characters long
 	              }
-
 	              var letters = 'abcdefghijklmnopqrstuvwxyz';
 	              id = letters[Math.floor(Math.random() * 26)] + id; // ensure the id starts with a letter
-
 	              return id.substring(0, len);
 	            }
 	            /**
@@ -12824,18 +12359,15 @@ var Spyral = (function () {
 	             * @param {Array|Object|String} contents 
 	             * @returns {String}
 	             */
-
 	          }, {
 	            key: "toString",
 	            value: function toString(contents) {
 	              if (contents.constructor === Array || contents.constructor === Object) {
 	                contents = JSON.stringify(contents);
-
 	                if (contents.length > 500) {
 	                  contents = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' + contents.substring(0, 500) + ' <a href="">+</a><div style="display: none">' + contents.substring(501) + '</div>';
 	                }
 	              }
-
 	              return contents.toString();
 	            }
 	            /**
@@ -12844,7 +12376,6 @@ var Spyral = (function () {
 	             * @param {String} more 
 	             * @param {String} after 
 	             */
-
 	          }, {
 	            key: "more",
 	            value: function more(before, _more, after) {
@@ -12855,7 +12386,6 @@ var Spyral = (function () {
 	             * @param {String} dataUrl 
 	             * @returns {Blob}
 	             */
-
 	          }, {
 	            key: "dataUrlToBlob",
 	            value: function dataUrlToBlob(dataUrl) {
@@ -12864,11 +12394,9 @@ var Spyral = (function () {
 	              var mimeString = parts[0].split(':')[1].split(';')[0];
 	              var ab = new ArrayBuffer(byteString.length);
 	              var ia = new Uint8Array(ab);
-
 	              for (var i = 0; i < byteString.length; i++) {
 	                ia[i] = byteString.charCodeAt(i);
 	              }
-
 	              return new Blob([ab], {
 	                type: mimeString
 	              });
@@ -12878,17 +12406,14 @@ var Spyral = (function () {
 	             * @param {Blob} blob 
 	             * @returns {Promise<String>} a Promise for a data URL
 	             */
-
 	          }, {
 	            key: "blobToDataUrl",
 	            value: function blobToDataUrl(blob) {
 	              return new Promise(function (resolve, reject) {
 	                var fr = new FileReader();
-
 	                fr.onload = function (e) {
 	                  resolve(e.target.result);
 	                };
-
 	                try {
 	                  fr.readAsDataURL(blob);
 	                } catch (e) {
@@ -12901,7 +12426,6 @@ var Spyral = (function () {
 	             * @param {Blob} blob 
 	             * @returns {Promise<String>} a Promise for a String
 	             */
-
 	          }, {
 	            key: "blobToString",
 	            value: function blobToString(blob) {
@@ -12926,58 +12450,43 @@ var Spyral = (function () {
 	             * @param {Boolean} [returnDoc=false] True to return a Document, false to return a DocumentFragment
 	             * @returns {Document}
 	             */
-
 	          }, {
 	            key: "transformXml",
 	            value: function transformXml(xmlDoc, xslStylesheet) {
 	              var returnDoc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
 	              if (this.isString(xmlDoc)) {
 	                var parser = new DOMParser();
 	                xmlDoc = parser.parseFromString(xmlDoc, 'application/xml');
-
 	                var error = this._getParserError(xmlDoc);
-
 	                if (error) {
 	                  throw error;
 	                }
 	              }
-
 	              if (this.isString(xslStylesheet)) {
 	                var _parser = new DOMParser();
-
 	                xslStylesheet = _parser.parseFromString(xslStylesheet, 'application/xml');
-
 	                var _error = this._getParserError(xslStylesheet);
-
 	                if (_error) {
 	                  throw _error;
 	                }
 	              }
-
 	              var xslRoot = xslStylesheet.firstElementChild;
-
 	              if (xslRoot.hasAttribute('version') === false) {
 	                // Transform fails in Firefox if version is missing, so return a more helpful error message instead of the default.
 	                throw new Error('XSL stylesheet is missing version attribute.');
 	              }
-
 	              var xsltProcessor = new XSLTProcessor();
-
 	              try {
 	                xsltProcessor.importStylesheet(xslStylesheet);
 	              } catch (e) {
 	                console.warn(e);
 	              }
-
 	              var result;
-
 	              if (returnDoc) {
 	                result = xsltProcessor.transformToDocument(xmlDoc);
 	              } else {
 	                result = xsltProcessor.transformToFragment(xmlDoc, document);
 	              }
-
 	              return result;
 	            }
 	            /**
@@ -12987,25 +12496,21 @@ var Spyral = (function () {
 	             * @param {Boolean} [includePosition=false] True to include the error position information
 	             * @returns {Error|null}
 	             */
-
 	          }, {
 	            key: "_getParserError",
 	            value: function _getParserError(doc) {
-	              var includePosition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false; // fairly naive check for parsererror, consider something like https://stackoverflow.com/a/55756548
-
+	              var includePosition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	              // fairly naive check for parsererror, consider something like https://stackoverflow.com/a/55756548
 	              var parsererror = doc.querySelector('parsererror');
-
 	              if (parsererror !== null) {
 	                var errorMsg = parsererror.textContent;
 	                var error = new Error(errorMsg);
-
 	                if (includePosition) {
 	                  var lineNumber = parseInt(errorMsg.match(/line[\s\w]+?(\d+)/i)[1]);
 	                  var columnNumber = parseInt(errorMsg.match(/column[\s\w]+?(\d+)/i)[1]);
 	                  error.lineNumber = lineNumber;
 	                  error.columnNumber = columnNumber;
 	                }
-
 	                return error;
 	              } else {
 	                return null;
@@ -13016,7 +12521,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean} 
 	             */
-
 	          }, {
 	            key: "isString",
 	            value: function isString(val) {
@@ -13027,7 +12531,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isNumber",
 	            value: function isNumber(val) {
@@ -13038,7 +12541,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isBoolean",
 	            value: function isBoolean(val) {
@@ -13049,7 +12551,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isUndefined",
 	            value: function isUndefined(val) {
@@ -13060,7 +12561,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isArray",
 	            value: function isArray(val) {
@@ -13071,7 +12571,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isObject",
 	            value: function isObject(val) {
@@ -13082,7 +12581,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isNull",
 	            value: function isNull(val) {
@@ -13093,7 +12591,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isNode",
 	            value: function isNode(val) {
@@ -13104,7 +12601,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isFunction",
 	            value: function isFunction(val) {
@@ -13115,12 +12611,12 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isPromise",
 	            value: function isPromise(val) {
 	              // ES6 promise detection
 	              // return Object.prototype.toString.call(val) === '[object Promise]';
+
 	              // general promise detection
 	              return !!val && ((0, _typeof2["default"])(val) === 'object' || typeof val === 'function') && typeof val.then === 'function';
 	            }
@@ -13129,7 +12625,6 @@ var Spyral = (function () {
 	             * @param {*} val 
 	             * @returns {Boolean}
 	             */
-
 	          }, {
 	            key: "isBlob",
 	            value: function isBlob(val) {
@@ -13141,86 +12636,62 @@ var Spyral = (function () {
 	             * @param {String} mimeType 
 	             * @returns {String}
 	             */
-
 	          }, {
 	            key: "getFileExtensionFromMimeType",
 	            value: function getFileExtensionFromMimeType(mimeType) {
 	              mimeType = mimeType.trim().toLowerCase();
-
 	              switch (mimeType) {
 	                case 'application/atom+xml':
 	                  return 'xml';
-
 	                case 'application/rss+xml':
 	                  return 'xml';
-
 	                case 'application/xml':
 	                  return 'xml';
-
 	                case 'text/xml':
 	                  return 'xml';
-
 	                case 'application/xhtml+xml':
 	                  return 'xhtml';
-
 	                case 'text/html':
 	                  return 'html';
-
 	                case 'text/plain':
 	                  return 'txt';
-
 	                case 'application/pdf':
 	                  return 'pdf';
-
 	                case 'application/json':
 	                  return 'json';
-
 	                case 'application/vnd.apple.pages':
 	                  return 'pages';
-
 	                case 'application/rtf':
 	                  return 'rtf';
-
 	                case 'application/vnd.oasis.opendocument.text':
 	                  return 'odt';
-
 	                case 'application/epub+zip':
 	                  return 'epub';
-
 	                case 'application/msword':
 	                  return 'doc';
-
 	                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
 	                  return 'docx';
-
 	                case 'application/vnd.ms-excel':
 	                  return 'xls';
-
 	                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
 	                  return 'xlsx';
-
 	                case 'application/zip':
 	                  return 'zip';
-
 	                case 'application/gzip':
 	                  return 'gzip';
-
 	                case 'application/x-bzip2':
 	                  return 'bzip2';
-
 	                default:
 	                  if (mimeType.indexOf('text') === 0) {
 	                    return 'txt'; // fallback
 	                  } else {
 	                    return undefined;
 	                  }
-
 	              }
 	            }
 	          }]);
 	          return Util;
 	        }();
-
 	        var _default = Util;
 	        exports["default"] = _default;
 	      }, {
@@ -13781,16 +13252,13 @@ var Spyral = (function () {
 	      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 	    };
 	  }
-
 	  return _typeof(obj);
 	}
-
 	function _classCallCheck(instance, Constructor) {
 	  if (!(instance instanceof Constructor)) {
 	    throw new TypeError("Cannot call a class as a function");
 	  }
 	}
-
 	function _defineProperties(target, props) {
 	  for (var i = 0; i < props.length; i++) {
 	    var descriptor = props[i];
@@ -13800,7 +13268,6 @@ var Spyral = (function () {
 	    Object.defineProperty(target, descriptor.key, descriptor);
 	  }
 	}
-
 	function _createClass(Constructor, protoProps, staticProps) {
 	  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
 	  if (staticProps) _defineProperties(Constructor, staticProps);
@@ -13815,10 +13282,8 @@ var Spyral = (function () {
 	  function Util() {
 	    _classCallCheck(this, Util);
 	  }
-
 	  _createClass(Util, null, [{
 	    key: "id",
-
 	    /**
 	     * Generates a random ID of the specified length.
 	     * @param {Number} len The length of the ID to generate?
@@ -13829,14 +13294,11 @@ var Spyral = (function () {
 	      // based on https://stackoverflow.com/a/13403498
 	      var times = Math.ceil(len / 11);
 	      var id = '';
-
 	      for (var i = 0; i < times; i++) {
 	        id += Math.random().toString(36).substring(2); // the result of this is 11 characters long
 	      }
-
 	      var letters = 'abcdefghijklmnopqrstuvwxyz';
 	      id = letters[Math.floor(Math.random() * 26)] + id; // ensure the id starts with a letter
-
 	      return id.substring(0, len);
 	    }
 	    /**
@@ -13844,18 +13306,15 @@ var Spyral = (function () {
 	     * @param {Array|Object|String} contents 
 	     * @returns {String}
 	     */
-
 	  }, {
 	    key: "toString",
 	    value: function toString(contents) {
 	      if (contents.constructor === Array || contents.constructor === Object) {
 	        contents = JSON.stringify(contents);
-
 	        if (contents.length > 500) {
 	          contents = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' + contents.substring(0, 500) + ' <a href="">+</a><div style="display: none">' + contents.substring(501) + '</div>';
 	        }
 	      }
-
 	      return contents.toString();
 	    }
 	    /**
@@ -13864,7 +13323,6 @@ var Spyral = (function () {
 	     * @param {String} more 
 	     * @param {String} after 
 	     */
-
 	  }, {
 	    key: "more",
 	    value: function more(before, _more, after) {
@@ -13875,7 +13333,6 @@ var Spyral = (function () {
 	     * @param {String} dataUrl 
 	     * @returns {Blob}
 	     */
-
 	  }, {
 	    key: "dataUrlToBlob",
 	    value: function dataUrlToBlob(dataUrl) {
@@ -13884,11 +13341,9 @@ var Spyral = (function () {
 	      var mimeString = parts[0].split(':')[1].split(';')[0];
 	      var ab = new ArrayBuffer(byteString.length);
 	      var ia = new Uint8Array(ab);
-
 	      for (var i = 0; i < byteString.length; i++) {
 	        ia[i] = byteString.charCodeAt(i);
 	      }
-
 	      return new Blob([ab], {
 	        type: mimeString
 	      });
@@ -13898,17 +13353,14 @@ var Spyral = (function () {
 	     * @param {Blob} blob 
 	     * @returns {Promise<String>} a Promise for a data URL
 	     */
-
 	  }, {
 	    key: "blobToDataUrl",
 	    value: function blobToDataUrl(blob) {
 	      return new Promise(function (resolve, reject) {
 	        var fr = new FileReader();
-
 	        fr.onload = function (e) {
 	          resolve(e.target.result);
 	        };
-
 	        try {
 	          fr.readAsDataURL(blob);
 	        } catch (e) {
@@ -13921,7 +13373,6 @@ var Spyral = (function () {
 	     * @param {Blob} blob 
 	     * @returns {Promise<String>} a Promise for a String
 	     */
-
 	  }, {
 	    key: "blobToString",
 	    value: function blobToString(blob) {
@@ -13946,58 +13397,43 @@ var Spyral = (function () {
 	     * @param {Boolean} [returnDoc=false] True to return a Document, false to return a DocumentFragment
 	     * @returns {Document}
 	     */
-
 	  }, {
 	    key: "transformXml",
 	    value: function transformXml(xmlDoc, xslStylesheet) {
 	      var returnDoc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
 	      if (this.isString(xmlDoc)) {
 	        var parser = new DOMParser();
 	        xmlDoc = parser.parseFromString(xmlDoc, 'application/xml');
-
 	        var error = this._getParserError(xmlDoc);
-
 	        if (error) {
 	          throw error;
 	        }
 	      }
-
 	      if (this.isString(xslStylesheet)) {
 	        var _parser = new DOMParser();
-
 	        xslStylesheet = _parser.parseFromString(xslStylesheet, 'application/xml');
-
 	        var _error = this._getParserError(xslStylesheet);
-
 	        if (_error) {
 	          throw _error;
 	        }
 	      }
-
 	      var xslRoot = xslStylesheet.firstElementChild;
-
 	      if (xslRoot.hasAttribute('version') === false) {
 	        // Transform fails in Firefox if version is missing, so return a more helpful error message instead of the default.
 	        throw new Error('XSL stylesheet is missing version attribute.');
 	      }
-
 	      var xsltProcessor = new XSLTProcessor();
-
 	      try {
 	        xsltProcessor.importStylesheet(xslStylesheet);
 	      } catch (e) {
 	        console.warn(e);
 	      }
-
 	      var result;
-
 	      if (returnDoc) {
 	        result = xsltProcessor.transformToDocument(xmlDoc);
 	      } else {
 	        result = xsltProcessor.transformToFragment(xmlDoc, document);
 	      }
-
 	      return result;
 	    }
 	    /**
@@ -14007,25 +13443,21 @@ var Spyral = (function () {
 	     * @param {Boolean} [includePosition=false] True to include the error position information
 	     * @returns {Error|null}
 	     */
-
 	  }, {
 	    key: "_getParserError",
 	    value: function _getParserError(doc) {
 	      var includePosition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	      // fairly naive check for parsererror, consider something like https://stackoverflow.com/a/55756548
 	      var parsererror = doc.querySelector('parsererror');
-
 	      if (parsererror !== null) {
 	        var errorMsg = parsererror.textContent;
 	        var error = new Error(errorMsg);
-
 	        if (includePosition) {
 	          var lineNumber = parseInt(errorMsg.match(/line[\s\w]+?(\d+)/i)[1]);
 	          var columnNumber = parseInt(errorMsg.match(/column[\s\w]+?(\d+)/i)[1]);
 	          error.lineNumber = lineNumber;
 	          error.columnNumber = columnNumber;
 	        }
-
 	        return error;
 	      } else {
 	        return null;
@@ -14036,7 +13468,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean} 
 	     */
-
 	  }, {
 	    key: "isString",
 	    value: function isString(val) {
@@ -14047,7 +13478,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isNumber",
 	    value: function isNumber(val) {
@@ -14058,7 +13488,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isBoolean",
 	    value: function isBoolean(val) {
@@ -14069,7 +13498,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isUndefined",
 	    value: function isUndefined(val) {
@@ -14080,7 +13508,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isArray",
 	    value: function isArray(val) {
@@ -14091,7 +13518,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isObject",
 	    value: function isObject(val) {
@@ -14102,7 +13528,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isNull",
 	    value: function isNull(val) {
@@ -14113,7 +13538,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isNode",
 	    value: function isNode(val) {
@@ -14124,7 +13548,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isFunction",
 	    value: function isFunction(val) {
@@ -14135,12 +13558,12 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isPromise",
 	    value: function isPromise(val) {
 	      // ES6 promise detection
 	      // return Object.prototype.toString.call(val) === '[object Promise]';
+
 	      // general promise detection
 	      return !!val && (_typeof(val) === 'object' || typeof val === 'function') && typeof val.then === 'function';
 	    }
@@ -14149,7 +13572,6 @@ var Spyral = (function () {
 	     * @param {*} val 
 	     * @returns {Boolean}
 	     */
-
 	  }, {
 	    key: "isBlob",
 	    value: function isBlob(val) {
@@ -14161,84 +13583,60 @@ var Spyral = (function () {
 	     * @param {String} mimeType 
 	     * @returns {String}
 	     */
-
 	  }, {
 	    key: "getFileExtensionFromMimeType",
 	    value: function getFileExtensionFromMimeType(mimeType) {
 	      mimeType = mimeType.trim().toLowerCase();
-
 	      switch (mimeType) {
 	        case 'application/atom+xml':
 	          return 'xml';
-
 	        case 'application/rss+xml':
 	          return 'xml';
-
 	        case 'application/xml':
 	          return 'xml';
-
 	        case 'text/xml':
 	          return 'xml';
-
 	        case 'application/xhtml+xml':
 	          return 'xhtml';
-
 	        case 'text/html':
 	          return 'html';
-
 	        case 'text/plain':
 	          return 'txt';
-
 	        case 'application/pdf':
 	          return 'pdf';
-
 	        case 'application/json':
 	          return 'json';
-
 	        case 'application/vnd.apple.pages':
 	          return 'pages';
-
 	        case 'application/rtf':
 	          return 'rtf';
-
 	        case 'application/vnd.oasis.opendocument.text':
 	          return 'odt';
-
 	        case 'application/epub+zip':
 	          return 'epub';
-
 	        case 'application/msword':
 	          return 'doc';
-
 	        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
 	          return 'docx';
-
 	        case 'application/vnd.ms-excel':
 	          return 'xls';
-
 	        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
 	          return 'xlsx';
-
 	        case 'application/zip':
 	          return 'zip';
-
 	        case 'application/gzip':
 	          return 'gzip';
-
 	        case 'application/x-bzip2':
 	          return 'bzip2';
-
 	        default:
 	          if (mimeType.indexOf('text') === 0) {
 	            return 'txt'; // fallback
 	          } else {
 	            return undefined;
 	          }
-
 	      }
 	    }
 	  }]);
-
 	  return Util;
 	}();
 

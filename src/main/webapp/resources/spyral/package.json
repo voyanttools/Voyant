@@ -33,7 +33,7 @@
 	"homepage": "https://github.com/voyanttools/Voyant",
 	"dependencies": {
 		"js-cookie": "^2.2.1",
-		"voyant": "^3.0.5"
+		"voyant": "^3.1.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
@@ -45,7 +45,7 @@
 		"acorn-loose": "^8.1.0",
 		"acorn-walk": "^8.1.1",
 		"core-js": "^3.6.5",
-		"jsdoc": "^3.6.4",
+		"jsdoc": "^4.0.3",
 		"rollup": "^2.6.1",
 		"rollup-plugin-babel": "^4.4.0",
 		"rollup-plugin-concatfiles": "git+https://github.com/kpulkit29/rollup-plugin-concatfiles.git",
