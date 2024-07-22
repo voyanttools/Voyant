@@ -414,9 +414,9 @@
         "!type": "number",
         "!doc": "the maximum number of terms to provide per request"
       },
-      "minRawFreq": {
+      "minInDocumentsCountRatio": {
         "!type": "number",
-        "!doc": "the minimum raw frequency of the collocate terms"
+        "!doc": "the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents"
       },
       "termsOnly": {
         "!type": "boolean",
@@ -890,7 +890,7 @@
       "prototype": {
         "create": {
           "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-          "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+          "!doc": "Create a new chart.\rSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-create"
         },
         "bar": {
@@ -923,7 +923,7 @@
       "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-constructor",
       "create": {
         "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-        "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+        "!doc": "Create a new chart.\rSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-create"
       },
       "setSeriesData": {
@@ -1027,7 +1027,7 @@
         },
         "correlations": {
           "!type": "fn(config: +Spyral_Corpus_correlations_config) -> +Promise",
-          "!doc": "Returns an array of correlations (either document or corpus correlations, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus correlation (corpus mode):\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"mrs\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 2531,\n\t\t\t\"relativePeakedness\": 0.46444246,\n\t\t\t\"relativeSkewness\": -0.44197384\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 568,\n\t\t\t\"relativePeakedness\": 5.763066,\n\t\t\t\"relativeSkewness\": 2.2536576\n\t\t},\n\t\t\"correlation\": -0.44287738,\n\t\t\"significance\": 0.08580014\n\t}\n\nThe following is an example of Document correlation (documents mode), without positions requested:\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"confide\",\n\t\t\t\"rawFreq\": 3,\n\t\t\t\"relativeFreq\": 89.3948,\n\t\t\t\"zscore\": -0.10560975,\n\t\t\t\"zscoreRatio\": -0.7541012,\n\t\t\t\"tfidf\": 1.1168874E-5,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"relativeFreq\": 1609.1063,\n\t\t\t\"zscore\": 53.830048,\n\t\t\t\"zscoreRatio\": -707.44696,\n\t\t\t\"tfidf\": 0.0,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"correlation\": 0.93527687,\n\t\t\"significance\": 7.0970666E-5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **minRawFreq**: the minimum raw frequency of the collocate terms\n * **termsOnly**: a very compact data view of the correlations\n * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 10 phrases in the corpus\n\tloadCorpus(\"austen\").correlations({query: \"love\", limit: 10})",
+          "!doc": "Returns an array of correlations (either document or corpus correlations, depending on the specified mode).\n\nThe mode is set to \"documents\" when any of the following is true\n\n* the `mode` parameter is set to \"documents\"\n* a `docIndex` parameter being set\n* a `docId` parameter being set\n\nThe following is an example a Corpus correlation (corpus mode):\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"mrs\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 2531,\n\t\t\t\"relativePeakedness\": 0.46444246,\n\t\t\t\"relativeSkewness\": -0.44197384\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"inDocumentsCount\": 8,\n\t\t\t\"rawFreq\": 568,\n\t\t\t\"relativePeakedness\": 5.763066,\n\t\t\t\"relativeSkewness\": 2.2536576\n\t\t},\n\t\t\"correlation\": -0.44287738,\n\t\t\"significance\": 0.08580014\n\t}\n\nThe following is an example of Document correlation (documents mode), without positions requested:\n\n\t{\n\t\t\"source\": {\n\t\t\t\"term\": \"confide\",\n\t\t\t\"rawFreq\": 3,\n\t\t\t\"relativeFreq\": 89.3948,\n\t\t\t\"zscore\": -0.10560975,\n\t\t\t\"zscoreRatio\": -0.7541012,\n\t\t\t\"tfidf\": 1.1168874E-5,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"target\": {\n\t\t\t\"term\": \"love\",\n\t\t\t\"rawFreq\": 54,\n\t\t\t\"relativeFreq\": 1609.1063,\n\t\t\t\"zscore\": 53.830048,\n\t\t\t\"zscoreRatio\": -707.44696,\n\t\t\t\"tfidf\": 0.0,\n\t\t\t\"totalTermsCount\": 33559,\n\t\t\t\"docIndex\": 0,\n\t\t\t\"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n\t\t},\n\t\t\"correlation\": 0.93527687,\n\t\t\"significance\": 7.0970666E-5\n\t}\n\nThe following config parameters are valid in both modes:\n\n * **start**: the zero-based start index of the list (for paging)\n * **limit**: the maximum number of terms to provide per request\n * **termsOnly**: a very compact data view of the correlations\n * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`\n * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending\n\nThe following is specific to corpus mode:\n\n * **minInDocumentsCountRatio**: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents\n\nThe following are specific to documents mode:\n\n * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)\n * **docId**: the document IDs to include (use commas to separate multiple values)\n \nAn example:\n\n\t// load the first 10 phrases in the corpus\n\tloadCorpus(\"austen\").correlations({query: \"love\", limit: 10})",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-correlations"
         },
         "lemmas": {
@@ -1175,7 +1175,7 @@
         },
         "rows": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of rows in this table.\nWhen the first argument is the boolean value `true` all rows are returned.\nWhen the first argument is a an array then the rows corresponding to the row\nindices or names are returned. When all arguments except are numbers or strings\nthen each of those is returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of rows in this table.\rWhen the first argument is the boolean value `true` all rows are returned.\rWhen the first argument is a an array then the rows corresponding to the row\rindices or names are returned. When all arguments except are numbers or strings\rthen each of those is returned.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rows"
         },
         "row": {
@@ -1185,7 +1185,7 @@
         },
         "columns": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of columns in this table.\nWhen the first argument is the boolean value `true` all columns are returned.\nWhen the first argument is a number a slice of the columns is returned and if\nthe second argument is a number it is treated as the length of the slice to\nreturn (note that it isn't the `end` index like with Array.slice()).",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of columns in this table.\rWhen the first argument is the boolean value `true` all columns are returned.\rWhen the first argument is a number a slice of the columns is returned and if\rthe second argument is a number it is treated as the length of the slice to\rreturn (note that it isn't the `end` index like with Array.slice()).",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columns"
         },
         "column": {
@@ -1200,7 +1200,7 @@
         },
         "headers": {
           "!type": "fn(inds: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of headers in this table.\nWhen the first argument is the boolean value `true` all headers are returned.\nWhen the first argument is a number a slice of the headers is returned.\nWhen the first argument is an array the slices specified in the array are returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of headers in this table.\rWhen the first argument is the boolean value `true` all headers are returned.\rWhen the first argument is a number a slice of the headers is returned.\rWhen the first argument is an array the slices specified in the array are returned.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-headers"
         },
         "hasColumn": {
@@ -1210,7 +1210,7 @@
         },
         "forEach": {
           "!type": "fn(fn: fn())",
-          "!doc": "Runs the specified function on each row.\nThe function is passed the row and the row index.",
+          "!doc": "Runs the specified function on each row.\rThe function is passed the row and the row index.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-forEach"
         },
         "rowMin": {
@@ -1305,12 +1305,12 @@
         },
         "rowSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\nSort the specified rows",
+          "!doc": "TODO\rSort the specified rows",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowSort"
         },
         "columnSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\nSort the specified columns",
+          "!doc": "TODO\rSort the specified columns",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnSort"
         },
         "toCsv": {

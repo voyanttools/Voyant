@@ -1426,11 +1426,14 @@
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **minRawFreq**: the minimum raw frequency of the collocate terms
 	 *  * **termsOnly**: a very compact data view of the correlations
 	 *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      * 
+	 * The following is specific to corpus mode:
+	 * 
+	 *  * **minInDocumentsCountRatio**: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
+	 * 
      * The following are specific to documents mode:
      * 
 	 *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
@@ -1444,7 +1447,7 @@
      * @param {Object} config an Object specifying parameters (see above)
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
-	 * @param {number} config.minRawFreq the minimum raw frequency of the collocate terms
+	 * @param {number} config.minInDocumentsCountRatio the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
 	 * @param {boolean} config.termsOnly a very compact data view of the correlations
 	 * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
