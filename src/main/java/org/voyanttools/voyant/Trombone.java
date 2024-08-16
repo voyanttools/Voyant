@@ -1,18 +1,18 @@
 package org.voyanttools.voyant;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -194,6 +193,15 @@ public class Trombone extends HttpServlet {
 			throw new NullPointerException("illegal servlet response");
 		}
 
+		if (System.getProperty("org.voyanttools.server.allowprivateip", "false").equals("false") && parameters.containsKey("uri")) {
+			String[] uris = parameters.getParameterValues("uri");
+			for (String uri : uris) {
+				if (Trombone.isPrivateIP(uri)) {
+					throw new NullPointerException("Private IPs are not allowed");
+				}
+			}
+		}
+		
 		resp.setContentType(ResultsOutputFormat.getResultsOutputFormat(parameters.getParameterValue("outputFormat", "json")).getContentType());
 
 		if (parameters.containsKey("fetchData")) {
@@ -460,6 +468,21 @@ public class Trombone extends HttpServlet {
 		
 		return parameterValue;
 		
+	}
+	
+	private static boolean isPrivateIP(String uri) throws MalformedURLException {
+		InetAddress address;
+		try {
+			URL url = new URL(uri);
+			String host = url.getHost();
+			InetAddress ad = InetAddress.getByName(host);
+			byte[] ip = ad.getAddress();
+			address = InetAddress.getByAddress(ip);
+		} catch (UnknownHostException e) {
+			return true;
+		}
+		boolean isPrivate = address.isSiteLocalAddress() || address.isAnyLocalAddress() || address.isLinkLocalAddress() || address.isLoopbackAddress() || address.isMulticastAddress();
+		return isPrivate;
 	}
 	
 	public static boolean hasVoyantServerResource(String resource) {
