@@ -9684,11 +9684,14 @@ var Spyral = (function () {
 	             * 
 	             *  * **start**: the zero-based start index of the list (for paging)
 	             *  * **limit**: the maximum number of terms to provide per request
-	             *  * **minRawFreq**: the minimum raw frequency of the collocate terms
 	             *  * **termsOnly**: a very compact data view of the correlations
 	             *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	             *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
 	                * 
+	             * The following is specific to corpus mode:
+	             * 
+	             *  * **minInDocumentsCountRatio**: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
+	             * 
 	                * The following are specific to documents mode:
 	                * 
 	             *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
@@ -9702,7 +9705,7 @@ var Spyral = (function () {
 	                * @param {Object} config an Object specifying parameters (see above)
 	             * @param {number} config.start the zero-based start index of the list (for paging)
 	             * @param {number} config.limit the maximum number of terms to provide per request
-	             * @param {number} config.minRawFreq the minimum raw frequency of the collocate terms
+	             * @param {number} config.minInDocumentsCountRatio the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
 	             * @param {boolean} config.termsOnly a very compact data view of the correlations
 	             * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	             * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
@@ -10252,7 +10255,8 @@ var Spyral = (function () {
 	                        });
 	                      }
 	                      formData.append('input', file);
-	                      formData.append('inputFormat', _util["default"].getFileExtensionFromMimeType(file.type));
+	                      var fileExt = _util["default"].getFileExtensionFromMimeType(file.type);
+	                      formData.append('inputFormat', _util["default"].getVoyantDocumentFormatFromFileExtension(fileExt));
 	                    });
 	                  } else {
 	                    if (_util["default"].isNode(config)) {
@@ -10262,7 +10266,8 @@ var Spyral = (function () {
 	                      });
 	                    }
 	                    formData.set('input', config);
-	                    formData.set('inputFormat', _util["default"].getFileExtensionFromMimeType(config.type));
+	                    var fileExt = _util["default"].getFileExtensionFromMimeType(config.type);
+	                    formData.set('inputFormat', _util["default"].getVoyantDocumentFormatFromFileExtension(fileExt));
 	                  }
 
 	                  // append any other form options that may have been included
@@ -12689,6 +12694,35 @@ var Spyral = (function () {
 	                  }
 	              }
 	            }
+	            /**
+	             * Takes a file extension and returns the corresponding Voyant Document Format name.
+	             * @param {String} fileExtension 
+	             * @returns {String}
+	             */
+	          }, {
+	            key: "getVoyantDocumentFormatFromFileExtension",
+	            value: function getVoyantDocumentFormatFromFileExtension(fileExtension) {
+	              fileExtension = fileExtension.trim().toLowerCase();
+	              switch (fileExtension) {
+	                case 'txt':
+	                  return 'text';
+	                case 'xhtml':
+	                  return 'html';
+	                case 'doc':
+	                  return 'msword';
+	                case 'docx':
+	                  return 'mswordx';
+	                case 'xls':
+	                  return 'xlsx';
+	                case 'zip':
+	                  return 'archive';
+	                case 'gzip':
+	                case 'bzip2':
+	                  return 'compressed';
+	                default:
+	                  return fileExtension;
+	              }
+	            }
 	          }]);
 	          return Util;
 	        }();
@@ -13634,6 +13668,35 @@ var Spyral = (function () {
 	          } else {
 	            return undefined;
 	          }
+	      }
+	    }
+	    /**
+	     * Takes a file extension and returns the corresponding Voyant Document Format name.
+	     * @param {String} fileExtension 
+	     * @returns {String}
+	     */
+	  }, {
+	    key: "getVoyantDocumentFormatFromFileExtension",
+	    value: function getVoyantDocumentFormatFromFileExtension(fileExtension) {
+	      fileExtension = fileExtension.trim().toLowerCase();
+	      switch (fileExtension) {
+	        case 'txt':
+	          return 'text';
+	        case 'xhtml':
+	          return 'html';
+	        case 'doc':
+	          return 'msword';
+	        case 'docx':
+	          return 'mswordx';
+	        case 'xls':
+	          return 'xlsx';
+	        case 'zip':
+	          return 'archive';
+	        case 'gzip':
+	        case 'bzip2':
+	          return 'compressed';
+	        default:
+	          return fileExtension;
 	      }
 	    }
 	  }]);
