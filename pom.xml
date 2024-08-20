@@ -84,7 +84,7 @@
 		<dependency>
 			<groupId>org.voyant-tools</groupId>
 			<artifactId>trombone</artifactId>
-			<version>5.2.21</version>
+			<version>5.2.22</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
