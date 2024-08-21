@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Tue Jul 02 18:53:04 UTC 2024 */
+/* This file created by JSCacher. Last modified: Wed Aug 21 19:35:56 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -24276,9 +24276,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
             	tooltip: this.localize("relativeFreqTip"),
             	dataIndex: 'relativeFreq',
             	renderer: function(val) {
-            		var percent = val*100;
-            		return Ext.util.Format.number(val*1000000, "0,000")/* + " (%"+
-            			(val*100 <  .1 ? "<0.1" : Ext.util.Format.number(val*100, "0.0"))+")"*/
+            		return Ext.util.Format.number(val*1000000, "0,000")
             	},
                 width: 'autoSize',
                 hidden: true,
@@ -24586,7 +24584,9 @@ Ext.define('Voyant.panel.DocumentTerms', {
             	dataIndex: 'relativeFreq',
             	width: 'autoSize',
             	sortable: true,
-            	renderer: Ext.util.Format.numberRenderer('0,000')
+            	renderer: function(val) {
+            		return Ext.util.Format.number(val*1000000, "0,000")
+            	}
             },{
             	text: this.localize("tfidf"),
             	tooltip: this.localize("tfidfTip"),
