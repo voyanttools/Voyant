@@ -183,9 +183,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
             	tooltip: this.localize("relativeFreqTip"),
             	dataIndex: 'relativeFreq',
             	renderer: function(val) {
-            		var percent = val*100;
-            		return Ext.util.Format.number(val*1000000, "0,000")/* + " (%"+
-            			(val*100 <  .1 ? "<0.1" : Ext.util.Format.number(val*100, "0.0"))+")"*/
+            		return Ext.util.Format.number(val*1000000, "0,000")
             	},
                 width: 'autoSize',
                 hidden: true,

@@ -218,7 +218,9 @@ Ext.define('Voyant.panel.DocumentTerms', {
             	dataIndex: 'relativeFreq',
             	width: 'autoSize',
             	sortable: true,
-            	renderer: Ext.util.Format.numberRenderer('0,000')
+            	renderer: function(val) {
+            		return Ext.util.Format.number(val*1000000, "0,000")
+            	}
             },{
             	text: this.localize("tfidf"),
             	tooltip: this.localize("tfidfTip"),
