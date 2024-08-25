@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Wed Aug 21 19:35:56 UTC 2024 */
+/* This file created by JSCacher. Last modified: Sun Aug 25 19:59:22 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -6419,7 +6419,7 @@ Ext.define('Voyant.util.Colors', {
 				index = 8;
 		}
 
-		var color = this.getPalettes()['d3_set3'][index];
+		var color = this.getPalettes()['Set3'][index];
 		if (returnHex) {
 			color = this.rgbToHex(color);
 		}
