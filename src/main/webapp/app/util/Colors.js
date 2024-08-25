@@ -302,7 +302,7 @@ Ext.define('Voyant.util.Colors', {
 				index = 8;
 		}
 
-		var color = this.getPalettes()['d3_set3'][index];
+		var color = this.getPalettes()['Set3'][index];
 		if (returnHex) {
 			color = this.rgbToHex(color);
 		}
