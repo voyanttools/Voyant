@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Sun Aug 25 19:59:22 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Sep 05 21:28:33 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -15321,7 +15321,6 @@ Ext.define('Voyant.widget.ReaderGraph', {
     },
     config: {
         parentPanel: undefined,
-        corpus: undefined,
         documentsStore: undefined,
     	locationMarker: undefined,
     	isDetailedGraph: true,
@@ -15356,18 +15355,11 @@ Ext.define('Voyant.widget.ReaderGraph', {
         var parentPanel = this.findParentBy(function(clz) {
     		return clz.mixins["Voyant.panel.Panel"];
         });
-    	if (parentPanel != null) {
+        if (parentPanel === null) {
+            throw new Error('No parent panel for ReaderGraph!');
+        } else {
             this.setParentPanel(parentPanel);
-    		if (parentPanel.getCorpus && parentPanel.getCorpus()) {
-    			this.on("afterrender", function(c) {
-    				this.setCorpus(parentPanel.getCorpus());	
-    			}, this);
-    		} else {
-                parentPanel.on("loadedCorpus", function(src, corpus) {
-                    this.setCorpus(corpus);
-                }, this);
-                this.hasCorpusLoadedListener = true;
-    		}
+            parentPanel.on('loadedCorpus', this.handleCorpus, this);
         }
 
 		this.setSeriesToolTip(Ext.create('Ext.tip.ToolTip', {
@@ -15382,7 +15374,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         });        
     },
 
-    updateCorpus: function(corpus) {
+    handleCorpus: function(parentPanel, corpus) {
         var docs = corpus.getDocuments();
         this.setDocumentsStore(docs);
         this.setIsDetailedGraph(docs.getTotalCount() < this.DETAILED_GRAPH_DOC_LIMIT);
@@ -15393,7 +15385,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
     loadQueryTerms: function(queryTerms) {
         // TODO add categories param?
         if (this.getIsDetailedGraph()) {
-            this.getCorpus().getDocumentTerms().load({
+            this.getParentPanel().getCorpus().getDocumentTerms().load({
                 params: {
                     query: queryTerms,
                     limit: -1,
@@ -15405,7 +15397,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 scope: this
             })
         } else {
-            this.getCorpus().getCorpusTerms().load({
+            this.getParentPanel().getCorpus().getCorpusTerms().load({
                 params: {
                     query: queryTerms,
                     limit: -1,
@@ -15468,7 +15460,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
 
 	populateChart: function(records) {
 		var graphDatas = {};
-        this.getCorpus().getDocuments().each(function(doc, index) {
+        this.getParentPanel().getCorpus().getDocuments().each(function(doc, index) {
             graphDatas[index] = {};
         });
         var terms = [];
@@ -15589,7 +15581,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 }],
 				listeners: {
 					itemmouseover: function(chart, item, event) {
-						var tooltipHtml = this.getCorpus().getDocument(item.record.get('docIndex')).getTitle();
+						var tooltipHtml = this.getParentPanel().getCorpus().getDocument(item.record.get('docIndex')).getTitle();
 						chart.getSeries().forEach(function(series) {
 							var seriesItem = series.getItemByIndex(item.index);
 							var term = seriesItem.record.get('term');
@@ -15608,7 +15600,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
 
             chart.body.on('mouseenter', function(event, target) {
                 if (chart.getSeries().length === 0) {
-                    var tooltipHtml = this.getCorpus().getDocument(docInfo.docIndex).getTitle();
+                    var tooltipHtml = this.getParentPanel().getCorpus().getDocument(docInfo.docIndex).getTitle();
                     this.getSeriesToolTip().setHtml(tooltipHtml);
                     var xy = event.getXY();
                     xy[0] += 15;
@@ -15639,8 +15631,8 @@ Ext.define('Voyant.widget.ReaderGraph', {
         
         me.removeAll();
         
-        var docs = me.getCorpus().getDocuments();
-        var tokensTotal = me.getCorpus().getWordTokensCount();
+        var docs = me.getParentPanel().getCorpus().getDocuments();
+        var tokensTotal = me.getParentPanel().getCorpus().getWordTokensCount();
         var docInfos = [];
         for (var i = 0; i < docs.getCount(); i++) {
             var d = docs.getAt(i);
@@ -15701,7 +15693,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                 }),
                 listeners: {
                     itemmouseover: function(chart, item, event) {
-						var tooltipHtml = this.getCorpus().getDocument(item.record.get('docIndex')).getTitle();
+						var tooltipHtml = this.getParentPanel().getCorpus().getDocument(item.record.get('docIndex')).getTitle();
 
                         if (chart.getSeries()[0].getFullStack()) {
                             Object.keys(item.record.data)
@@ -15722,7 +15714,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
                         var el = Ext.get(event.getTarget());
                         var x = event.getX();
                         var box = el.getBox();
-                        var docWidth = box.width / this.getCorpus().getDocuments().getCount();
+                        var docWidth = box.width / this.getParentPanel().getCorpus().getDocuments().getCount();
                         var docX = (x - box.x) % docWidth;
                         var fraction = docX / docWidth;
 
@@ -15753,7 +15745,7 @@ Ext.define('Voyant.widget.ReaderGraph', {
         } else {
             var graph = this.down('cartesian');
             if (graph) {
-                var docWidth = graph.getWidth() / this.getCorpus().getDocuments().getCount();
+                var docWidth = graph.getWidth() / this.getParentPanel().getCorpus().getDocuments().getCount();
                 locX = graph.getX() + docWidth*docIndex + docWidth*fraction;
             }
         }
