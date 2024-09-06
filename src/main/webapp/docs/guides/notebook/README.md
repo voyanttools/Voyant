@@ -6,8 +6,9 @@ Spyral was designed in the tradition of "literate programming" where the develop
 
 ## Example Notebooks
 
-* <a href="//voyant-tools.org/spyral/aboutspyral/" target="_blank">Introduction to Spyral Notebooks</a>
-* <a href="//voyant-tools.org/spyral/homeALTA/" target="_blank">The Art of Literary Text Analysis with Spyral Notebooks</a>
+* <a href="//voyant-tools.org/spyral/learnspyral@gh/aboutspyral/" target="_blank">Introduction to Spyral Notebooks</a>
+* <a href="//voyant-tools.org/spyral/learnspyral@gh/Tutorials/" target="_blank">Spyral Tutorials</a>
+* <a href="//voyant-tools.org/spyral/learnspyral@gh/homeALTA/" target="_blank">The Art of Literary Text Analysis with Spyral Notebooks</a>
 
 ## API
 
