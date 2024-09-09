@@ -12609,7 +12609,8 @@ var Spyral = (function () {
 	          }, {
 	            key: "isFunction",
 	            value: function isFunction(val) {
-	              return Object.prototype.toString.call(val) === '[object Function]';
+	              var typeString = Object.prototype.toString.call(val);
+	              return typeString === '[object Function]' || typeString === '[object AsyncFunction]';
 	            }
 	            /**
 	             * Returns true if the value is a Promise.
@@ -13585,7 +13586,8 @@ var Spyral = (function () {
 	  }, {
 	    key: "isFunction",
 	    value: function isFunction(val) {
-	      return Object.prototype.toString.call(val) === '[object Function]';
+	      var typeString = Object.prototype.toString.call(val);
+	      return typeString === '[object Function]' || typeString === '[object AsyncFunction]';
 	    }
 	    /**
 	     * Returns true if the value is a Promise.
