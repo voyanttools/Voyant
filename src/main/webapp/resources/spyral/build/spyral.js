@@ -8538,7 +8538,7 @@ var Spyral = (function () {
 	         * - **formats**:
 	         * 	- **Text**: {@link #inputRemoveFrom}, {@link #inputRemoveFromAfter}, {@link #inputRemoveUntil}, {@link #inputRemoveUntilAfter}
 	         * 	- **XML**: {@link #xmlAuthorXpath}, {@link #xmlCollectionXpath}, {@link #xmlContentXpath}, {@link #xmlExtraMetadataXpath}, {@link #xmlKeywordXpath}, {@link #xmlPubPlaceXpath}, {@link #xmlPublisherXpath}, {@link #xmlTitleXpath}
-	         * 	- **Tables**: {@link #tableAuthor}, {@link #tableContent}, {@link #tableDocuments}, {@link #tableNoHeadersRow}, {@link #tableTitle}
+	         * 	- **Tables**: {@link #tableAuthor}, {@link #tableContent}, {@link #tableDocuments}, {@link #tableNoHeadersRow}, {@link #tableTitle}, {@link #tableGroupBy}
 	         * - **other**: {@link #inputFormat}, {@link #subTitle}, {@link #title}, {@link #tokenization}
 	        
 	         * @memberof Spyral
@@ -8618,7 +8618,7 @@ var Spyral = (function () {
 	           * - **rows**: each row of the table is a separate document
 	           * - **columns**: each column of the table is a separate document
 	           * 
-	           * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+	           * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
 	           */
 
 	          /**
@@ -8633,7 +8633,7 @@ var Spyral = (function () {
 	           * - **1,2**: use columns 1 and 2 separately
 	           * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	           * 
-	           * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+	           * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
 	           */
 
 	          /**
@@ -8648,7 +8648,7 @@ var Spyral = (function () {
 	           * - **1,2**: use columns 1 and 2 separately
 	           * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	           * 
-	           * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+	           * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
 	           */
 
 	          /**
@@ -8663,7 +8663,22 @@ var Spyral = (function () {
 	           * - **1,2**: use columns 1 and 2 separately
 	           * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	           * 
-	           * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+	           * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
+	           */
+
+	          /**
+	           * @cfg {String} tableGroupBy Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.
+	           * 
+	           * Columns are referred to by numbers, the first is column 1 (not 0).
+	           * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
+	           * 
+	           * Some examples:
+	           * 
+	           * - **1**: use column 1
+	           * - **1,2**: use columns 1 and 2 separately
+	           * - **1+2,3**: combine columns 1 and two and use column 3 separately
+	           * 
+	           * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
 	           */
 
 	          /**
@@ -8671,7 +8686,7 @@ var Spyral = (function () {
 	           * 
 	           * Provide a value of "true" if there is no header row, otherwise leave it blank or undefined (default).
 	           * 
-	           * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+	           * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
 	           */
 
 	          /**
@@ -8763,7 +8778,7 @@ var Spyral = (function () {
 	           */
 
 	          /**
-	           * @cfg {String} xmlGroupByXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
+	           * @cfg {String} xmlGroupByXpath The XPath expression by which to group multiple documents; only used for XML-based documents.
 	           * 
 	           * 		loadCorpus("<doc><sp s='Juliet'>Hello!</sp><sp s='Romeo'>Hi!</sp><sp s='Juliet'>Bye!</sp></doc>", {
 	           * 			 xmlDocumentsXpath: '//sp',
@@ -10854,6 +10869,7 @@ var Spyral = (function () {
 	        var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 	        var _chart = _interopRequireDefault(require("./chart.js"));
 	        var _util = _interopRequireDefault(require("./util.js"));
+	        /* eslint-disable linebreak-style */
 	        /* global Spyral */
 	        /**
 	         * The Spyral.Table class in Spyral provides convenience functions for working with tabular
@@ -10940,8 +10956,9 @@ var Spyral = (function () {
 	            this._rows = [];
 	            this._headers = {};
 	            this._rowKeyColumnIndex = 0;
-
-	            // TODO throw error if data is Promise
+	            if (_util["default"].isPromise(data)) {
+	              throw new Error('Data cannot be a Promise');
+	            }
 
 	            // we have a configuration object followed by values: create({headers: []}, 1,2,3) …
 	            if (data && (0, _typeof2["default"])(data) === 'object' && (typeof config === 'string' || typeof config === 'number' || Array.isArray(config))) {

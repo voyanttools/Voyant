@@ -756,6 +756,11 @@
         "!type": "fn(mimeType: string) -> string",
         "!doc": "Takes a MIME type and returns the related file extension.\nOnly handles file types supported by Voyant.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-getFileExtensionFromMimeType"
+      },
+      "getVoyantDocumentFormatFromFileExtension": {
+        "!type": "fn(fileExtension: string) -> string",
+        "!doc": "Takes a file extension and returns the corresponding Voyant Document Format name.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-getVoyantDocumentFormatFromFileExtension"
       }
     },
     "Categories": {
@@ -890,7 +895,7 @@
       "prototype": {
         "create": {
           "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-          "!doc": "Create a new chart.\rSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+          "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-create"
         },
         "bar": {
@@ -923,7 +928,7 @@
       "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-method-constructor",
       "create": {
         "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
-        "!doc": "Create a new chart.\rSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
+        "!doc": "Create a new chart.\nSee [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Chart-static-method-create"
       },
       "setSeriesData": {
