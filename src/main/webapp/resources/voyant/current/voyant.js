@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Sep 05 21:28:33 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Oct 03 21:33:15 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -34272,11 +34272,12 @@ Ext.define('Voyant.panel.VoyantFooter', {
 	listeners: {
 		boxready: function(container, width, height) {
 			var parts = [
-				"<a href='"+container.getBaseUrl()+"docs/' target='voyantdocs'>"+container.localize('voyantTools')+"</a> ",
+				"<a href='"+container.getBaseUrl()+"docs/' target='voyantdocs'>"+container.localize('voyantTools')+"</a>",
 				", <a href='https://csdh-schn.org/stefan-sinclair-in-memoriam/'>St&eacute;fan Sinclair</a> &amp; <a href='https://geoffreyrockwell.com'>Geoffrey Rockwell</a>",
 				" (<a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'><span class='cc'>c</span></a> "+ new Date().getFullYear() +")",
 				" <a class='privacy' href='"+this.getBaseUrl()+"docs/#!/guide/about-section-privacy-statement' target='top'>"+container.localize('privacy')+"</a>",
-				" v. <a href='https://github.com/voyanttools/VoyantServer/releases/tag/"+Voyant.application.getVersion()+"' target='_blank'>"+Voyant.application.getVersion()+"</a>"
+				" v. <a href='https://github.com/voyanttools/VoyantServer/releases/tag/"+Voyant.application.getVersion()+"' target='_blank'>"+Voyant.application.getVersion()+"</a>",
+				" | <a href='https://voyant-tools.info/' target='_blank'>Voyant Consortium</a>"
 			];
 			var footer = '';
 			var footerWidth = 0;
@@ -44320,7 +44321,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			});
 			xtype = 'corpusset'; // switch to default view
 		}
-		var SPLIT_SIZE = 5;
+
 		this.viewport = Ext.create('Ext.container.Viewport', {
 		    layout: 'border',
 		    rtl: (this.getApiParam('rtl')!==undefined || Voyant.util.Localization.LANGUAGE=="ar" || Voyant.util.Localization.LANGUAGE=="he"),
@@ -44355,11 +44356,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 						"</div>"
 					},{
 						xtype: 'container',
-						width: 'auto',
+						width: 800,
 						html: ""+
-						"<div style='font-style: italic; text-align: center; margin-top: 10px;'>"+
-							"<div>"+this.localize('serverMessage')+"</div>"+
-						"</div>"
+						"<div id='voyantServerMessage' style='font-style: italic; text-align: center; margin-top: 10px;'></div>"
 					}]	
 				},{
 					layout: 'fit',
@@ -44370,7 +44369,21 @@ Ext.define('Voyant.VoyantDefaultApp', {
 				}]
 		    }]
 		});
+		this.getServerMessage();
 		this.callParent(arguments);
+	},
+	getServerMessage: function() {
+		$.get('trombone', {
+			fetchData: 'https://raw.githubusercontent.com/wiki/voyanttools/voyant/Announcements.md'
+		}, function(data) {
+			var converter = new showdown.Converter();
+			converter.setOption('openLinksInNewWindow', true);
+			var html = converter.makeHtml(data);
+			$('#voyantServerMessage').html(html);
+		}, 'text')
+		.fail(function() {
+			console.log('failed to fetch server message')
+		});
 	}
 });
 Ext.define('Voyant.panel.MoreLikeThis', {
