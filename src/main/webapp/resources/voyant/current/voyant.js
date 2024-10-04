@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Thu Oct 03 21:33:15 UTC 2024 */
+/* This file created by JSCacher. Last modified: Fri Oct 04 21:13:59 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -39041,7 +39041,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		editor.on('focus', function(evt) {
 			if (this.getIsFresh()) {
 				this.setIsFresh(false);
-				this.getTargetEl().update('<p></p>'); // insert paragraphs because otherwise ckeditor will do it automatically
+				editor.setData('<p></p>'); // insert paragraphs because otherwise ckeditor will do it automatically
 			}
 		}, this);
 		
