@@ -3,6 +3,11 @@
 <table cellspacing="2" cellpadding="2">
 <tbody>
 <tr>
+<td><a href="http://hdl.handle.net/10791/419">Exploration in Hermeneutics of Dedicated OER Policies and Implications for Post Secondary Institutions</a></td>
+<td>September 7, 2023</td>
+<td>paper, usage</td>
+</tr>
+<tr>
 <td><a href="http://www.maxkemman.nl/2016/11/a-republic-of-emails-what-are-the-contents/"><span style="font-weight: 400">A Republic of Emails: What are the contents?</span></a></td>
 <td><span style="font-weight: 400">November 24, 2016</span></td>
 <td><span style="font-weight: 400">Blog post, usage, word trends, links, contexts</span></td>
@@ -25,7 +30,7 @@
 <tr>
 <td><a href="http://modernist-magazines.org/?q=taxonomy/term/782">Magazine Modernsim: Voyant Tools</a></td>
 <td>April 22, 2013</td>
-<td><!-- br {mso-data-placement:same-cell;} -->blog post, usage, screenshot, word trends, key words in context, words in the entire corpus, collocates</td>
+<td>blog post, usage, screenshot, word trends, key words in context, words in the entire corpus, collocates</td>
 </tr>
 <tr>
 <td><a href="http://www.jltonline.de/index.php/conferences/article/view/502/1306">Reading German Culture, 1789-1918</a></td>
