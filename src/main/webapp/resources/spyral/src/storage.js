@@ -64,8 +64,7 @@ class Storage {
 	 * @returns {String}
 	 */
 	static getTromboneUrl() {
-		return 'https://beta.voyant-tools.org/trombone'
-		// return 'http://localhost:8080/voyant/trombone'
+		return Voyant.application.getTromboneUrl();
 	}
 	
 	static _doStore(id, dataString) {
