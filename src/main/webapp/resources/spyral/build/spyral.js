@@ -10245,7 +10245,7 @@ var Spyral = (function () {
 	                if (config instanceof Corpus) {
 	                  resolve(config);
 	                }
-	                if (typeof config === 'string') {
+	                if (_util["default"].isString(config)) {
 	                  if (config.length > 0 && /\W/.test(config) === false) {
 	                    config = {
 	                      corpus: config
@@ -10259,7 +10259,7 @@ var Spyral = (function () {
 	                  config = {
 	                    input: config
 	                  };
-	                } else if (config instanceof Blob || _util["default"].isNode(config) || _util["default"].isArray(config) && (config[0] instanceof Blob || _util["default"].isNode(config[0]))) {
+	                } else if (_util["default"].isBlob(config) || _util["default"].isNode(config) || _util["default"].isArray(config) && (_util["default"].isBlob(config[0]) || _util["default"].isNode(config[0]))) {
 	                  var formData = new FormData();
 	                  if (_util["default"].isArray(config)) {
 	                    config.forEach(function (file) {
@@ -10286,7 +10286,7 @@ var Spyral = (function () {
 	                  }
 
 	                  // append any other form options that may have been included
-	                  if (api && (0, _typeof2["default"])(api) === 'object') {
+	                  if (api && _util["default"].isObject(api)) {
 	                    for (var key in api) {
 	                      formData.set(key, api[key]);
 	                    }
@@ -10296,6 +10296,10 @@ var Spyral = (function () {
 	                    body: formData,
 	                    method: 'POST'
 	                  };
+	                } else if (_util["default"].isObject(config)) {
+	                  if (config.inputFormat === 'json' && _util["default"].isString(config.input) === false) {
+	                    config.input = JSON.stringify(config.input);
+	                  }
 	                }
 	                _load["default"].trombone(_objectSpread({}, config, {}, api), {
 	                  tool: 'corpus.CorpusMetadata'
