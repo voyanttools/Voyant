@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Oct 07 21:21:19 UTC 2024 */
+/* This file created by JSCacher. Last modified: Thu Oct 24 18:21:57 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -44274,6 +44274,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			rtl: undefined
 		}
 	},
+	config: {
+		showServerMessage: false
+	},
 	
 	listeners: {
     	loadedCorpus: function(src, corpus) {
@@ -44369,7 +44372,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 				}]
 		    }]
 		});
-		this.getServerMessage();
+		if (this.getShowServerMessage() === true) {
+			this.getServerMessage();
+		}
 		this.callParent(arguments);
 	},
 	getServerMessage: function() {
