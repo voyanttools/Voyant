@@ -17,6 +17,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			rtl: undefined
 		}
 	},
+	config: {
+		showServerMessage: false
+	},
 	
 	listeners: {
     	loadedCorpus: function(src, corpus) {
@@ -112,7 +115,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 				}]
 		    }]
 		});
-		this.getServerMessage();
+		if (this.getShowServerMessage() === true) {
+			this.getServerMessage();
+		}
 		this.callParent(arguments);
 	},
 	getServerMessage: function() {
