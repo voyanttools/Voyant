@@ -15,8 +15,16 @@ String rtl_js = (String) request.getAttribute("rtl");
 <script type="text/javascript" src="<%= base_js %>/resources/jquery/current/jquery.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/jquery/current/jquery-ui.min.js"></script>
 
+<%
+String showServerMessage = System.getProperty("org.voyanttools.server.showservermessage");
+if (showServerMessage != null && showServerMessage.equals("true")) {
+%>
 <!-- showdown -->
 <script type="text/javascript" src="<%= base_js %>/resources/showdown/showdown.min.js"></script>
+
+<!-- purify -->
+<script type="text/javascript" src="<%= base_js %>/resources/purify/purify.min.js"></script>
+<% } %>
 
 <!-- D3 -->
 <script type="text/javascript" src="<%= base_js %>/resources/d3/current/d3.min.js"></script>
