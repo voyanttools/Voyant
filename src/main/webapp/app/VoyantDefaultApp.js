@@ -18,7 +18,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		}
 	},
 	config: {
-		showServerMessage: false
+		showServerMessage: 'false'
 	},
 	
 	listeners: {
@@ -115,7 +115,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 				}]
 		    }]
 		});
-		if (this.getShowServerMessage() === true) {
+		if (this.getShowServerMessage() === 'true') {
 			this.getServerMessage();
 		}
 		this.callParent(arguments);
