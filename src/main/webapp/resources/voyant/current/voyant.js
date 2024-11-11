@@ -1,4 +1,4 @@
-/* This file created by JSCacher. Last modified: Mon Oct 28 17:52:44 UTC 2024 */
+/* This file created by JSCacher. Last modified: Mon Nov 11 21:41:56 UTC 2024 */
 function Bubblelines(config) {
 	this.container = config.container;
 	this.externalClickHandler = config.clickHandler;
@@ -8791,6 +8791,27 @@ Ext.define('Voyant.data.model.TermCorrelation', {
 		return this.getSource()+"-"+this.getTarget();
 	}
 });
+Ext.define('Voyant.data.model.Entity', {
+	extend: 'Ext.data.Model',
+	fields: [
+		{name: 'term'},
+		{name: 'normalized'},
+		{name: 'type'},
+		{name: 'docIndex', 'type': 'int'},
+		{name: 'rawFreq', type: 'int'},
+		{name: 'positions'},
+		{name: 'offsets'},
+		{name: 'distributions'}
+	],
+	getTerm: function() {return this.get('term');},
+	getNormalized: function() {return this.get('normalized');},
+	getType: function() {return this.get('type')},
+	getDocIndex: function() {return this.get('docIndex')},
+	getRawFreq: function() {return this.get('rawFreq')},
+	getDistributions: function() {return this.get('distributions')},
+	getPositions: function() {return this.get('positions')},
+	getOffsets: function() {return this.get('offsets')}
+});
 Ext.define('Voyant.data.store.VoyantStore', {
 	mixins: ['Voyant.util.Localization'],
 	config: {
@@ -10305,6 +10326,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 	config: {
 		progressWindow: undefined,
 		updateDelay: 5000,
+		bins: 25,
 		timeoutId: undefined
 	},
 	
@@ -10334,31 +10356,30 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		set: undefined
 	},
 
-	constructor: function(params, callback) {
+	constructor: function(params) {
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 		this.initConfig();
 		this.callParent();
 
-		return this.load(params, callback);
+		return this.load(params);
 	},
 
 	/**
 	 * Load the entities
 	 * @param {Object} params Additional params
-	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi'
-	 * @param {Function} callback A function to call when the entities are loaded
+	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi' or 'spacy'
 	 */
-	load: function(params, callback) {
+	load: function(params) {
 		params = Ext.apply({
 			tool: 'corpus.DocumentEntities',
 			corpus: Voyant.application.getCorpus().getId(),
 			noCache: true
 		}, params || {});
 
-		this.doLoad(params, callback, true);
+		this.doLoad(params, true);
 	},
 
-	doLoad: function(params, callback, firstCall) {
+	doLoad: function(params, firstCall) {
 		var me = this;
 		Ext.Ajax.request({
 			url: Voyant.application.getTromboneUrl(),
@@ -10377,8 +10398,9 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 					win.close();
 				}
 
+				me._addDistributionsToEntities(data.entities, me.getBins());
 				me._addEntitiesToCategories(data.entities);
-				callback.call(me, data.entities);
+				Voyant.application.dispatchEvent('entityResults', me, data.entities);
 			} else {
 				me.updateProgress(data.status, progressArray);
 				if (isDone) {
@@ -10388,7 +10410,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 	
 					if (hasFailures && !has413Status) {
 						win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
-							me.load(Ext.apply({retryFailures: true}, params), callback);
+							me.load(Ext.apply({retryFailures: true}, params));
 							btn.setDisabled(true);
 						}, me);
 					} else {
@@ -10398,17 +10420,18 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 						}
 					}
 
+					me._addDistributionsToEntities(data.entities, me.getBins());
 					me._addEntitiesToCategories(data.entities);
-					callback.call(me, data.entities);
+					Voyant.application.dispatchEvent('entityResults', me, data.entities);
 				} else {
 					delete params.retryFailures;
-					me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, callback, false]));
+					me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, false]));
 				}
 			}
 		}, function(err) {
 			Voyant.application.showError(me.localize('error'));
 			console.warn(err);
-			callback.call(me, null);
+			Voyant.application.dispatchEvent('entityResults', me, null);
 		});
 	},
 
@@ -10567,8 +10590,38 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 				catMan.addTerms(category, categories[category]);	
 				catMan.setCategoryFeature(category, 'color', color);
 			}
+		}, this);	
+	},
+
+	_addDistributionsToEntities: function(entities, bins) {
+		function doAdd(docIndex, positions) {
+			var totalTokens = Voyant.application.getCorpus().getDocument(docIndex).get('tokensCount-lexical');
+			var binSize = Math.floor(totalTokens/bins);
+			
+			var distribution = new Array(bins);
+			for (var i = 0; i < bins; i++) { distribution[i] = 0; }
+
+			positions.forEach(function(position) {
+				var bin;
+				if (Array.isArray(position)) {
+					bin = Math.floor(position[0] / binSize);
+				} else {
+					bin = Math.floor(position / binSize);
+				}
+				distribution[bin]++;
+			});
+
+			return distribution;
+		}
+
+		entities.forEach(function(entity) {
+			if (entity.positions) {
+				entity.distributions = doAdd(entity.docIndex, entity.positions);
+			} else {
+				console.warn('no positions for:',entity);
+				entity.distributions = [];
+			}
 		}, this);
-		
 	}
 
 });
@@ -15765,6 +15818,8 @@ Ext.define('Voyant.widget.EntitiesList', {
 		i18n: {
 			term: 'Term',
 			count: 'Count',
+			type: 'Type',
+			docIndex: 'Document',
 			next: 'Next Occurrence',
 			prev: 'Previous Occurrence',
 			date: 'Date',
@@ -15792,15 +15847,14 @@ Ext.define('Voyant.widget.EntitiesList', {
 		}
 	},
 
-	bins: 25,
-
 	initComponent: function() {
 		var me = this;
+		var hasEntitiesParent = this.up().xtype === 'entities';
 		Ext.apply(this, {
 			title: 'Entities',
 			forceFit: true,
 			store: Ext.create('Ext.data.JsonStore', {
-				fields: ['term','normalized','type','docIndex','rawFreq','positions','offset'],
+				model: 'Voyant.data.model.Entity',
 				groupField: 'type',
 				sorters: [{
 					property: 'rawFreq',
@@ -15810,14 +15864,23 @@ Ext.define('Voyant.widget.EntitiesList', {
 			features: [{
 				ftype: 'grouping',
 				hideGroupedHeader: true,
-				enableGroupingMenu: false,
+				enableGroupingMenu: true,
 				startCollapsed: true,
 				groupHeaderTpl: ['{name:this.localizeName} ({children.length})',{
 					localizeName: function(name) {
-						return me.localize(name);
+						var localized = me.localize(name);
+						var bracketsCheck = localized.match(/^\[(.*)\]$/);
+						if (bracketsCheck !== null) {
+							// there was no localization so just show the value sans brackets
+							localized = bracketsCheck[1];
+						}
+						return localized;
 					}
 				}]
 			}],
+			selModel: {
+				mode: hasEntitiesParent ? 'SIMPLE' : 'SINGLE'
+			},
 			plugins: [{
 				ptype: 'rowexpander',
 				rowBodyTpl: new Ext.XTemplate(''),
@@ -15841,7 +15904,7 @@ Ext.define('Voyant.widget.EntitiesList', {
 									}
 
 									// programatically highlight the current bar
-									var dist = record.get('distribution');
+									var dist = record.get('distributions');
 									var distBinToHighlight = 0;
 									var distBinCount = 0;
 									for (var i = 0; i < dist.length; i++) {
@@ -15883,7 +15946,7 @@ Ext.define('Voyant.widget.EntitiesList', {
 									}
 								},{
 									xtype: 'sparklinebar',
-									values: record.get('distribution'),
+									values: record.get('distributions'),
 									highlightColor: '#f80',
 									height: 24,
 									tipTpl: false,
@@ -15903,6 +15966,16 @@ Ext.define('Voyant.widget.EntitiesList', {
 				}
 			},
 			columns: [{
+				text: this.localize('docIndex'),
+				dataIndex: 'docIndex',
+				hidden: true,
+				width: 100
+			},{
+				text: this.localize('type'),
+				dataIndex: 'type',
+				hidden: true,
+				flex: 1
+			},{
 				text: this.localize('term'),
 				dataIndex: 'term',
 				flex: 1
@@ -15912,11 +15985,15 @@ Ext.define('Voyant.widget.EntitiesList', {
 				width: 50
 			}],
 			listeners: {
-				select: function(cmp, record, index) {
-					Voyant.application.dispatchEvent('entityClicked', this, record);
+				selectionchange: function(cmp, records, index) {
+					Voyant.application.dispatchEvent('entitiesClicked', this, records);
 				},
 				columnresize: function(ct, column, width) {
-				}
+				},
+				entityResults: function(src, entities) {
+					this.addEntities(entities);
+				},
+				scope: this
 			}
 		});
 		
@@ -15929,6 +16006,21 @@ Ext.define('Voyant.widget.EntitiesList', {
 			store.removeAll();
 		}
 	},
+
+	getEntities: function(annotator, docs) {
+		var docIds = [];
+		var corpus = Voyant.application.getCorpus();
+		if (docs) {
+			docs.forEach(function(doc) {
+				docIds.push(corpus.getDocument(doc).getId())
+			}, this);
+		}
+		new Voyant.data.util.DocumentEntities({
+			annotator: annotator,
+			includeEntities: true,
+			docId: docIds
+		});
+	},
 	
 	addEntities: function(entities) {
 		var store = this.getStore();
@@ -15939,14 +16031,6 @@ Ext.define('Voyant.widget.EntitiesList', {
 				var newDocIndex = entities[0].docIndex;
 				append = oldDocIndex === newDocIndex;
 			}
-			entities.forEach(function(entity) {
-				if (entity.positions) {
-					entity.distribution = this.getDistributionFromPositions(entity.docIndex, entity.positions, this.bins);
-				} else {
-					console.warn('no positions for:',entity);
-					entity.distribution = [];
-				}
-			}, this);
 			store.loadData(entities, append);
 			if (append === false) {
 				this.view.findFeature('grouping').collapseAll();
@@ -15954,25 +16038,7 @@ Ext.define('Voyant.widget.EntitiesList', {
 		}
 	},
 
-	getDistributionFromPositions: function(docIndex, positions, bins) {
-		var totalTokens = Voyant.application.getCorpus().getDocument(docIndex).get('tokensCount-lexical');
-		var binSize = Math.floor(totalTokens/bins);
-		
-		var distribution = new Array(bins);
-		for (var i = 0; i < bins; i++) { distribution[i] = 0; }
-
-		positions.forEach(function(position) {
-			var bin;
-			if (Array.isArray(position)) {
-				bin = Math.floor(position[0] / binSize);
-			} else {
-				bin = Math.floor(position / binSize);
-			}
-			distribution[bin]++;
-		});
-
-		return distribution;
-	}
+	
 });
 /**
  * The base class for Voyant tool panels.
@@ -23119,6 +23185,158 @@ Ext.define('Voyant.widget.GeonamesFilter', {
     }
 });
 
+Ext.define('Voyant.panel.Entities', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.entities',
+
+	statics: {
+		i18n: {
+			title: 'Named Entity Recognition',
+			entity: 'Entity',
+			lemma: 'Lemma',
+			classification: 'Classification',
+			document: 'Document',
+			start: 'Start',
+			end: 'End',
+			entityType: 'entity type',
+			nerVoyant: 'Entity Identification with Voyant',
+			nerNssi: 'Entity Identification with NSSI',
+			nerSpacy: 'Entity Identification with SpaCy',
+		},
+		api: {
+			/**
+			 * @memberof Contexts
+			 * @property {DocId}
+			 */
+    		docId: undefined,
+		}
+	},
+
+	constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
+		this.callParent(arguments);
+		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+	},
+
+	initComponent: function() {
+		var me = this;
+
+		Ext.apply(me, {
+			title: this.localize('title'),
+			layout: 'fit',
+			items: [{
+				xtype: 'entitieslist',
+				listeners: {
+					boxready: function(cmp) {
+						cmp.getColumns().forEach(function(col) {
+							col.show();
+						})
+					},
+					scope: this
+				}
+			}],
+			dockedItems: [{
+				dock: 'bottom', 
+				xtype: 'toolbar',
+				items: [{
+					xtype: 'corpusdocumentselector'
+				},{
+					itemId: 'annotatorType',
+					xtype: 'combo',
+					queryMode: 'local',
+					triggerAction: 'all',
+					fieldLabel: 'NER Annotator',
+					labelAlign: 'right',
+					value: 'spacy',
+					forceSelection: true,
+					allowBlank: false,
+					editable: false,
+					valueField: 'value',
+					displayField: 'name',
+					store: new Ext.data.ArrayStore({
+						fields: ['name', 'value'],
+						data: [['Spacy', 'spacy'], ['NSSI', 'nssi'], ['Voyant', 'stanford']]
+					})
+				},{
+					xtype: 'button',
+					text: 'Find Entities',
+					handler: function(btn) {
+						var annotator = btn.up().queryById('annotatorType').getValue();
+						if (annotator !== null) {
+							this.nerServiceHandler(annotator);
+						}
+					},
+					scope: this
+				},'->',{
+					xtype: 'textfield',
+					itemId: 'entitySearch',
+					fieldLabel: 'Filter Entities',
+					labelAlign: 'right',
+					enableKeyEvents: true,
+					triggers: {
+						search: {
+							cls: 'fa-trigger form-fa-search-trigger',
+							handler: function(cmp) {
+								this.searchEntities(cmp.getValue());
+							},
+							scope: this
+						}
+					},
+					listeners: {
+						keyup: function(cmp, e) {
+							if (e.getCharCode() === 13) {
+								this.searchEntities(cmp.getValue());
+							}
+						},
+						scope: this
+					}
+				}]
+			}],
+			listeners: {
+				corpusSelected: function(src, corpus) {
+					this.setApiParam('docId', undefined);
+				},
+
+				documentsSelected: function(src, docIds) {
+					this.setApiParam('docId', docIds);
+				},
+
+				entitiesClicked: function(src, ents) {
+				},
+
+				entityLocationClicked: function(src, ent) {
+				},
+
+				scope: this
+			}
+		});
+
+		me.callParent(arguments);
+	},
+
+	nerServiceHandler: function(annotator) {
+		var entitiesList = this.down('entitieslist');
+		entitiesList.clearEntities();
+		entitiesList.getEntities(annotator, this.getApiParam('docId'));
+	},
+
+	searchEntities: function(query) {
+		query = query.trim().toLowerCase();
+		var entitiesList = this.down('entitieslist');
+		if (query.length > 0) {
+			entitiesList.getStore().filterBy(function(record) {
+				return record.getTerm().toLowerCase().indexOf(query) !== -1;
+			});
+			entitiesList.getView().findFeature('grouping').expandAll();
+		} else {
+			entitiesList.getStore().clearFilter();
+			entitiesList.getView().findFeature('grouping').collapseAll();
+		}
+	}
+});
+
+
 // assuming Knots library is loaded by containing page (via voyant.jsp)
 /**
  * Knots is a creative visualization that represents terms in a single document as a series of twisted lines.
@@ -28463,6 +28681,7 @@ Ext.define('Voyant.panel.Reader', {
     	documentsStore: undefined, // for storing a copy of the corpus document models
     	documentTermsStore: undefined, // for getting document term positions for highlighting
 		documentEntitiesStore: undefined, // for storing the results of an entities call
+		enableEntitiesList: true, // set to false when using reader as part of entitiesset
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -28482,6 +28701,7 @@ Ext.define('Voyant.panel.Reader', {
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
 
     constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
@@ -28827,12 +29047,24 @@ Ext.define('Voyant.panel.Reader', {
     					this.fireEvent('termLocationClicked', this, [termRec]);
         			}
         		},
-				entityClicked: function(src, entity) {
-					var docIndex = entity.get('docIndex');
-					var position = entity.get('positions')[0];
-					if (Array.isArray(position)) position = position[0];
-					this.showTermLocation(docIndex, position, entity);
-					
+				entityResults: function(src, entities) {
+					if (entities !== null) {
+						this.clearEntityHighlights(); // clear again in case failed documents were rerun
+						this.setDocumentEntitiesStore(entities);
+						this.highlightEntities();
+						if (this.getEnableEntitiesList()) {
+							this.down('entitieslist').expand().show();
+						}
+					}
+				},
+				entitiesClicked: function(src, entities) {
+					if (entities[0] !== undefined) {
+						var entity = entities[0];
+						var docIndex = entity.get('docIndex');
+						var position = entity.get('positions')[0];
+						if (Array.isArray(position)) position = position[0];
+						this.showTermLocation(docIndex, position, entity);
+					}
 				},
 				entityLocationClicked: function(src, entity, positionIndex) {
 					var docIndex = entity.get('docIndex');
@@ -28950,24 +29182,11 @@ Ext.define('Voyant.panel.Reader', {
 			docIndex.push(0);
 		}
 
-		var entitiesList = this.down('entitieslist');
-		entitiesList.clearEntities();
-
 		this.clearEntityHighlights();
 
-		var me = this;
-		new Voyant.data.util.DocumentEntities({
-			annotator: annotator,
-			includeEntities: true,
-			docIndex: docIndex
-		}, function(entities) {
-			if (entities) {
-				me.clearEntityHighlights(); // clear again in case failed documents were rerun
-				me.setDocumentEntitiesStore(entities);
-				me.highlightEntities();
-				entitiesList.expand().show().addEntities(entities);
-			}
-		});
+		var entitiesList = this.down('entitieslist');
+		entitiesList.clearEntities();
+		entitiesList.getEntities(annotator, docIndex);
 	},
 
 	clearEntityHighlights: function() {
@@ -29203,7 +29422,7 @@ Ext.define('Voyant.panel.Reader', {
 
 			var docTokens = {};
 			var totalTokens = 0;
-			var showNerButton = this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
+			var showNerButton = this.getEnableEntitiesList() && this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
@@ -33597,6 +33816,7 @@ Ext.define('Voyant.panel.Trends', {
     			if (Ext.isString(term)) {queryTerms.push(term);}
     			else if (term.term) {queryTerms.push(term.term);}
     			else if (term.getTerm) {queryTerms.push(term.getTerm());}
+
     		});
     		this.setApiParam("query", queryTerms && queryTerms.length>0 ? queryTerms : undefined);
     		this.loadCorpusTerms();
@@ -33616,7 +33836,10 @@ Ext.define('Voyant.panel.Trends', {
     	},
     	query: function(src, query) {
 			this.fireEvent("termsClicked", this, query)
-    	}
+    	},
+		entitiesClicked: function(src, ents) {
+			this.fireEvent("termsClicked", this, ents);
+		}
     },
     
     loadCorpusTerms: function(params) {
@@ -35247,6 +35470,71 @@ Ext.define('Voyant.panel.CustomSet', {
     	}
 
     	this.updateLayout();
+	}
+})
+Ext.define('Voyant.panel.EntitiesSet', {
+	extend: 'Ext.panel.Panel',
+	requires: ['Voyant.panel.Entities','Voyant.panel.Reader', 'Voyant.panel.Trends'],
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.entitiesset',
+	statics: {
+		i18n: {
+		},
+		glyph: 'xf17a@FontAwesome'
+	},
+	constructor: function(config) {
+		this.callParent(arguments);
+		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+	},
+	layout: 'hbox',
+	header: false,
+	items: [{
+		width: '100%',
+		height: '100%',
+		split: {width: 5},
+		layout: 'hbox',
+		flex: 3,
+		defaults: {
+			width: '100%',
+			height: '100%',
+			flex: 1,
+			frame: true,
+			border: true
+		},
+		items: [{
+			xtype: 'entities'
+		}]
+	},{
+		layout: 'vbox',
+		align: 'stretch',
+		width: '100%',
+		height: '100%',
+		flex: 2,
+		defaults: {
+			width: '100%',
+			height: '100%',
+			flex: 1,
+			frame: true,
+			border: true
+		},
+		items: [{
+			xtype: 'reader',
+			enableEntitiesList: false,
+			listeners: {
+				boxready: function(cmp) {
+					cmp.down('#nerServiceParent').hide();
+				}
+			}
+		},{
+			xtype: 'trends'
+		}]
+	}],
+	listeners: {
+		entitiesClicked: function(src, ents) {
+		},
+		entityLocationClicked: function(src, ent) {
+		},
+		scope: this
 	}
 })
 Ext.define('Voyant.panel.Veliza', {
@@ -37071,144 +37359,6 @@ Ext.define('Voyant.panel.Via', {
     	});
     }
 });
-Ext.define('Voyant.panel.NSSI', {
-	extend: 'Ext.grid.Panel',
-	mixins: ['Voyant.panel.Panel'],
-	alias: 'widget.nssi',
-
-	statics: {
-		i18n: {
-			title: 'NSSI Results',
-			entity: 'Entity',
-			lemma: 'Lemma',
-			classification: 'Classification',
-			document: 'Document',
-			start: 'Start',
-			end: 'End'
-		}
-	},
-	config: {
-	},
-
-	constructor: function(config) {
-		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-		this.callParent(arguments);
-		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
-	},
-
-	initComponent: function() {
-		var me = this;
-
-		var store = Ext.create('Ext.data.JsonStore', {
-			fields: [
-				{name: 'entity'},
-				{name: 'lemma'},
-				{name: 'classification'},
-				{name: 'docId'},
-				{name: 'start', type: 'int'},
-				{name: 'end', type: 'int'}
-			]
-		});
-
-		Ext.apply(me, {
-			title: this.localize('title'),
-			emptyText: this.localize('emptyText'),
-			store : store,
-			columns: [{
-				text: this.localize('document'),
-				dataIndex: 'docIndex',
-				width: 'autoSize',
-				sortable: true
-			},{
-				text: this.localize('classification'),
-				dataIndex: 'classification',
-				flex: .5,
-				sortable: true
-			},{
-				text: this.localize('entity'),
-				dataIndex: 'entity',
-				flex: 1,
-				sortable: true
-			},{
-				text: this.localize('lemma'),
-				dataIndex: 'lemma',
-				flex: 1,
-				sortable: true
-			},{
-				text: this.localize('start'),
-				dataIndex: 'start',
-				width: 'autoSize',
-				sortable: false
-			},{
-				text: this.localize('end'),
-				dataIndex: 'end',
-				width: 'autoSize',
-				sortable: false
-			}]
-		});
-
-		me.on('loadedCorpus', function() {
-			var me = this;
-			if (this.isVisible()) {
-				this.load().then(function(data) {
-					var parsedData = [];
-					data.documents.forEach(function(doc) {
-						var docIndex = me.getCorpus().getDocument(doc.id).getIndex();
-						doc.entities.forEach(function(entity) {
-							parsedData.push(Object.assign({ docIndex: docIndex }, entity));
-						});
-					});
-					store.loadRawData(parsedData);
-				}, function(err) {
-					console.log(err);
-				})
-			}
-		}, me);
-
-		me.callParent(arguments);
-	},
-
-	load: function(params, dfd) {
-		dfd = dfd || new Ext.Deferred();
-		var me = this;
-
-		Ext.Ajax.request({
-			url: Voyant.application.getTromboneUrl(),
-			params: {
-				corpus: this.getCorpus().getAliasOrId(),
-				tool: 'corpus.NSSI',
-				useCache: false,
-				noCache: true
-			},
-			scope: this
-		}).then(function(response) {
-			var data = Ext.JSON.decode(response.responseText);
-			if (data && data.nssi && data.nssi.progress) {
-				new Voyant.widget.ProgressMonitor({
-					progress: data.nssi.progress,
-					delay: 10000,
-					maxMillisSinceStart: 1000*60*60, // an hour (!)
-					success: function() {
-						console.log('NSSI progress monitor success');
-						me.load.call(me, params, dfd);
-					},
-					failure: function(responseOrProgress) {
-						Voyant.application.showResponseError(me.localize("failedToFetchGeonames"), responseOrProgress);
-					},
-					scope: me
-				});
-			}
-			if (data && data.nssi && !data.nssi.progress) {
-				dfd.resolve(data.nssi);
-			}
-		}, function(response) {
-			Voyant.application.showResponseError(me.localize('failedToFetchGeonames'), response);
-		});
-		return dfd.promise;
-	}
-});
-
-
 Ext.define("Voyant.notebook.editor.button.Add", {
 	extend: "Ext.button.Button",
 	mixins: ["Voyant.util.Localization"],
