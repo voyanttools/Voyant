@@ -250,6 +250,7 @@ Ext.define('Voyant.panel.Trends', {
     			if (Ext.isString(term)) {queryTerms.push(term);}
     			else if (term.term) {queryTerms.push(term.term);}
     			else if (term.getTerm) {queryTerms.push(term.getTerm());}
+
     		});
     		this.setApiParam("query", queryTerms && queryTerms.length>0 ? queryTerms : undefined);
     		this.loadCorpusTerms();
@@ -269,7 +270,10 @@ Ext.define('Voyant.panel.Trends', {
     	},
     	query: function(src, query) {
 			this.fireEvent("termsClicked", this, query)
-    	}
+    	},
+		entitiesClicked: function(src, ents) {
+			this.fireEvent("termsClicked", this, ents);
+		}
     },
     
     loadCorpusTerms: function(params) {

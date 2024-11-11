@@ -22,6 +22,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 	config: {
 		progressWindow: undefined,
 		updateDelay: 5000,
+		bins: 25,
 		timeoutId: undefined
 	},
 	
@@ -51,31 +52,30 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 		set: undefined
 	},
 
-	constructor: function(params, callback) {
+	constructor: function(params) {
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 		this.initConfig();
 		this.callParent();
 
-		return this.load(params, callback);
+		return this.load(params);
 	},
 
 	/**
 	 * Load the entities
 	 * @param {Object} params Additional params
-	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi'
-	 * @param {Function} callback A function to call when the entities are loaded
+	 * @param {String} params.annotator Annotator can be: 'stanford' (default) or 'nssi' or 'spacy'
 	 */
-	load: function(params, callback) {
+	load: function(params) {
 		params = Ext.apply({
 			tool: 'corpus.DocumentEntities',
 			corpus: Voyant.application.getCorpus().getId(),
 			noCache: true
 		}, params || {});
 
-		this.doLoad(params, callback, true);
+		this.doLoad(params, true);
 	},
 
-	doLoad: function(params, callback, firstCall) {
+	doLoad: function(params, firstCall) {
 		var me = this;
 		Ext.Ajax.request({
 			url: Voyant.application.getTromboneUrl(),
@@ -94,8 +94,9 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 					win.close();
 				}
 
+				me._addDistributionsToEntities(data.entities, me.getBins());
 				me._addEntitiesToCategories(data.entities);
-				callback.call(me, data.entities);
+				Voyant.application.dispatchEvent('entityResults', me, data.entities);
 			} else {
 				me.updateProgress(data.status, progressArray);
 				if (isDone) {
@@ -105,7 +106,7 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 	
 					if (hasFailures && !has413Status) {
 						win.down('#retryButton').setHidden(false).setDisabled(false).setHandler(function(btn) {
-							me.load(Ext.apply({retryFailures: true}, params), callback);
+							me.load(Ext.apply({retryFailures: true}, params));
 							btn.setDisabled(true);
 						}, me);
 					} else {
@@ -115,17 +116,18 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 						}
 					}
 
+					me._addDistributionsToEntities(data.entities, me.getBins());
 					me._addEntitiesToCategories(data.entities);
-					callback.call(me, data.entities);
+					Voyant.application.dispatchEvent('entityResults', me, data.entities);
 				} else {
 					delete params.retryFailures;
-					me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, callback, false]));
+					me.setTimeoutId(Ext.defer(me.doLoad, me.getUpdateDelay(), me, [params, false]));
 				}
 			}
 		}, function(err) {
 			Voyant.application.showError(me.localize('error'));
 			console.warn(err);
-			callback.call(me, null);
+			Voyant.application.dispatchEvent('entityResults', me, null);
 		});
 	},
 
@@ -284,8 +286,38 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 				catMan.addTerms(category, categories[category]);	
 				catMan.setCategoryFeature(category, 'color', color);
 			}
+		}, this);	
+	},
+
+	_addDistributionsToEntities: function(entities, bins) {
+		function doAdd(docIndex, positions) {
+			var totalTokens = Voyant.application.getCorpus().getDocument(docIndex).get('tokensCount-lexical');
+			var binSize = Math.floor(totalTokens/bins);
+			
+			var distribution = new Array(bins);
+			for (var i = 0; i < bins; i++) { distribution[i] = 0; }
+
+			positions.forEach(function(position) {
+				var bin;
+				if (Array.isArray(position)) {
+					bin = Math.floor(position[0] / binSize);
+				} else {
+					bin = Math.floor(position / binSize);
+				}
+				distribution[bin]++;
+			});
+
+			return distribution;
+		}
+
+		entities.forEach(function(entity) {
+			if (entity.positions) {
+				entity.distributions = doAdd(entity.docIndex, entity.positions);
+			} else {
+				console.warn('no positions for:',entity);
+				entity.distributions = [];
+			}
 		}, this);
-		
 	}
 
 });

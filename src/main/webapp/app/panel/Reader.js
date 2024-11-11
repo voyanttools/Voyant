@@ -52,6 +52,7 @@ Ext.define('Voyant.panel.Reader', {
     	documentsStore: undefined, // for storing a copy of the corpus document models
     	documentTermsStore: undefined, // for getting document term positions for highlighting
 		documentEntitiesStore: undefined, // for storing the results of an entities call
+		enableEntitiesList: true, // set to false when using reader as part of entitiesset
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -71,6 +72,7 @@ Ext.define('Voyant.panel.Reader', {
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
 
     constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
@@ -416,12 +418,24 @@ Ext.define('Voyant.panel.Reader', {
     					this.fireEvent('termLocationClicked', this, [termRec]);
         			}
         		},
-				entityClicked: function(src, entity) {
-					var docIndex = entity.get('docIndex');
-					var position = entity.get('positions')[0];
-					if (Array.isArray(position)) position = position[0];
-					this.showTermLocation(docIndex, position, entity);
-					
+				entityResults: function(src, entities) {
+					if (entities !== null) {
+						this.clearEntityHighlights(); // clear again in case failed documents were rerun
+						this.setDocumentEntitiesStore(entities);
+						this.highlightEntities();
+						if (this.getEnableEntitiesList()) {
+							this.down('entitieslist').expand().show();
+						}
+					}
+				},
+				entitiesClicked: function(src, entities) {
+					if (entities[0] !== undefined) {
+						var entity = entities[0];
+						var docIndex = entity.get('docIndex');
+						var position = entity.get('positions')[0];
+						if (Array.isArray(position)) position = position[0];
+						this.showTermLocation(docIndex, position, entity);
+					}
 				},
 				entityLocationClicked: function(src, entity, positionIndex) {
 					var docIndex = entity.get('docIndex');
@@ -539,24 +553,11 @@ Ext.define('Voyant.panel.Reader', {
 			docIndex.push(0);
 		}
 
-		var entitiesList = this.down('entitieslist');
-		entitiesList.clearEntities();
-
 		this.clearEntityHighlights();
 
-		var me = this;
-		new Voyant.data.util.DocumentEntities({
-			annotator: annotator,
-			includeEntities: true,
-			docIndex: docIndex
-		}, function(entities) {
-			if (entities) {
-				me.clearEntityHighlights(); // clear again in case failed documents were rerun
-				me.setDocumentEntitiesStore(entities);
-				me.highlightEntities();
-				entitiesList.expand().show().addEntities(entities);
-			}
-		});
+		var entitiesList = this.down('entitieslist');
+		entitiesList.clearEntities();
+		entitiesList.getEntities(annotator, docIndex);
 	},
 
 	clearEntityHighlights: function() {
@@ -792,7 +793,7 @@ Ext.define('Voyant.panel.Reader', {
 
 			var docTokens = {};
 			var totalTokens = 0;
-			var showNerButton = this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
+			var showNerButton = this.getEnableEntitiesList() && this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');
