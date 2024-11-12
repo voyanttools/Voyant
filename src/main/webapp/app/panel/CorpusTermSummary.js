@@ -133,7 +133,6 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
             listeners: {
                 afterrender: function(container) {
                     container.mask(this.localize('loading'));
-                    // TODO make distribution bins reflective of doc sizes
                     this.getDocumentTermsStore().load({
                         params: {
                             query: this.getApiParam('query'),
@@ -143,8 +142,11 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
                         },
                         callback: function(records, op, success) {
                             if (success && records && records.length>0) {
+                                // sort by docIndex
+                                records.sort(function(a, b) { return a.getDocIndex() - b.getDocIndex(); });
                                 var arrays = records.map(function(r) { return r.getDistributions(); });
                                 var values = arrays.reduce(function(a,b) { return a.concat(b); });
+                                values = values.map(function(val) { return Math.floor(val*1000000); });
                                 this.down('#distLine').setValues(values);
                                 container.unmask();
                             }
