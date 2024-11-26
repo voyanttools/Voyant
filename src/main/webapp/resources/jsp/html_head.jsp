@@ -70,7 +70,7 @@
 		title = "Voyant Tools";
 	}
 %><!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
