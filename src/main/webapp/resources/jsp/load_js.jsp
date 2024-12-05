@@ -1,3 +1,4 @@
+<% String voyant_js_id = ""; %>
 <%
 String base_js = (String) request.getAttribute("base");
 String lang_js = (String) request.getAttribute("lang");
@@ -38,5 +39,5 @@ if (showServerMessage != null && showServerMessage.equals("true")) {
 <!-- spyral -->
 <script type="text/javascript" src="<%= base_js %>/resources/spyral/build/spyral.js"></script>
 
-<script type="text/javascript" src="<%= base_js %>/resources/voyant/current/voyant<%= (request.getParameter("debug")!=null ? ".jsp?debug=true" : ".min.js") %>"></script>
+<script type="text/javascript" src="<%= base_js %>/resources/voyant/current/voyant.<%= voyant_js_id %>.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/voyant/current/voyant-locale-<%= lang_js %>.js"></script>
