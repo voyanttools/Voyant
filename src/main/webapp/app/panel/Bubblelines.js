@@ -3,6 +3,7 @@
  * Bubblelines visualizes the frequency and distribution of terms in a corpus.
  * 
  * @class Bubblelines
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Bubblelines', {
 	extend: 'Ext.panel.Panel',

@@ -158,7 +158,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 	                items: [
 	                    {
 	                        html: '<p>'+me.localize('passwordRequiredMessage')+'</p>' + (noPasswordAccess=='NONCONSUMPTIVE' ? '<p>'+me.localize('nonConsumptiveMessage')+"</p>" : "")+'</p>'
-	                    },{
+	                    }, {
 	                    	xtype: 'textfield',
 	                    	fieldLabel: me.localize('password')
 	                    }

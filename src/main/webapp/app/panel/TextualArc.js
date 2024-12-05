@@ -2,6 +2,7 @@
  * TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
  * 
  * @class TextualArc
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.TextualArc', {
 	extend: 'Ext.panel.Panel',

@@ -1,6 +1,6 @@
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\categories.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/categories.js ***
 
 /**
 * Class for working with categories and features.
@@ -244,7 +244,7 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\chart.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/chart.js ***
 
 /**
 * The Chart class in Spyral.
@@ -425,7 +425,7 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\corpus.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/corpus.js ***
 
 /**
 * The Corpus class in Spyral. Here's a simple example:
@@ -1700,7 +1700,7 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\load.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/load.js ***
 
 /**
 * Class embodying Load functionality.
@@ -1774,7 +1774,7 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\networkgraph.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/networkgraph.js ***
 
 /**
 * A d3 force directed layout with labeled nodes
@@ -1803,7 +1803,7 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\table.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/table.js ***
 
 /**
 * The Spyral.Table class in Spyral provides convenience functions for working with tabular
@@ -2385,7 +2385,7 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\node_modules\voyant\src\util.js ***
+// *** Documentation extracted from: ../spyral/node_modules/voyant/src/util.js ***
 
 /**
 * A helper for working with the Voyant Notebook app.
@@ -2590,63 +2590,119 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\src\dataviewer.js ***
+// *** Documentation extracted from: ../spyral/src/show.js ***
 
 /**
-* @ignore
- * @class .DataViewer
- */
-
-
-
-
-// *** Documentation extracted from: ..\spyral\src\index.js ***
-
-/**
-* @class window
- * These are helper methods that get added to global window variable.
- */
-
-
-/**
-* 
- * @member window
- * @method loadCorpus
- * @static
- * loadCorpus is shorthand for Spyral.Corpus.load
- */
-
-
-/**
-* 
- * @member window
- * @method createTable
- * @static
- * createTable is shorthand for Spyral.Table.create
- */
-
-
-/**
-* 
- * @member window
+* Show contents in the results area.
+ * @member Spyral.Util
  * @method show
  * @static
- * show is shorthand for Spyral.Util.show
+ * @param {*} contents 
+ * @param {*} len 
+ * @param {*} mode
+ */
+
+
+/**
+* Show an error in the results area.
+ * @member Spyral.Util
+ * @method showError
+ * @static
+ * @param {*} error 
+ * @param {*} more
+ */
+
+
+
+
+// *** Documentation extracted from: ../spyral/src/storage.js ***
+
+/**
+* A class for simplying resource storage
+ * @class Spyral.Util.Storage
+ */
+
+
+/**
+* Store a resource
+	 * 
+	 * 
+	 * @param {String} id 
+	 * @param {*} data 
+	 * @returns {Promise}
+	 * @static
+ * @method storeResource
+ */
+
+
+/**
+* Get the URL for trombone
+	 * 
+	 * 
+	 * @returns {String}
+	 * @static
+ * @method getTromboneUrl
+ */
+
+
+/**
+* Get a stored resource
+	 * 
+	 * 
+	 * @param {String} id 
+	 * @returns {Promise}
+	 * @static
+ * @method getStoredResource
+ */
+
+
+
+
+// *** Documentation extracted from: ../spyral/src/notebook.js ***
+
+/**
+* A helper for working with the Voyant Notebook app.
+ * @class Spyral.Notebook
  */
 
 
 /**
 * 
- * @member window
- * @method showError
- * @static
- * showError is shorthand for Spyral.Util.showError
+	 * @param {*} contents 
+	 * @param {*} config 
+	 * @static
+ * @method show
+ */
+
+
+/**
+* Returns the first DIV element that's a child of the document body. If none exists then one will be created.
+	 * @returns {element}
+	 * @static
+ * @method getTarget
+ */
+
+
+/**
+* Returns a new promise
+	 * @returns {Promise} A promise
+	 * @static
+ * @method getPromise
+ */
+
+
+/**
+* Fetch and return the content of a notebook or a particular cell in a notebook
+	 * @param {string} url The URL of the notebook to import
+	 * @param {number} [cellIndex] The index of the cell to import
+	 * @static
+ * @method import
  */
 
 
 
 
-// *** Documentation extracted from: ..\spyral\src\metadata.js ***
+// *** Documentation extracted from: ../spyral/src/metadata.js ***
 
 /**
 * A class for storing Notebook metadata
@@ -2710,113 +2766,57 @@
 
 
 
-// *** Documentation extracted from: ..\spyral\src\notebook.js ***
+// *** Documentation extracted from: ../spyral/src/index.js ***
 
 /**
-* A helper for working with the Voyant Notebook app.
- * @class Spyral.Notebook
+* @class window
+ * These are helper methods that get added to global window variable.
  */
 
 
 /**
 * 
-	 * @param {*} contents 
-	 * @param {*} config 
-	 * @static
- * @method show
+ * @member window
+ * @method loadCorpus
+ * @static
+ * loadCorpus is shorthand for Spyral.Corpus.load
  */
 
 
 /**
-* Returns the first DIV element that's a child of the document body. If none exists then one will be created.
-	 * @returns {element}
-	 * @static
- * @method getTarget
+* 
+ * @member window
+ * @method createTable
+ * @static
+ * createTable is shorthand for Spyral.Table.create
  */
 
 
 /**
-* Returns a new promise
-	 * @returns {Promise} A promise
-	 * @static
- * @method getPromise
- */
-
-
-/**
-* Fetch and return the content of a notebook or a particular cell in a notebook
-	 * @param {string} url The URL of the notebook to import
-	 * @param {number} [cellIndex] The index of the cell to import
-	 * @static
- * @method import
- */
-
-
-
-
-// *** Documentation extracted from: ..\spyral\src\show.js ***
-
-/**
-* Show contents in the results area.
- * @member Spyral.Util
+* 
+ * @member window
  * @method show
  * @static
- * @param {*} contents 
- * @param {*} len 
- * @param {*} mode
+ * show is shorthand for Spyral.Util.show
  */
 
 
 /**
-* Show an error in the results area.
- * @member Spyral.Util
+* 
+ * @member window
  * @method showError
  * @static
- * @param {*} error 
- * @param {*} more
+ * showError is shorthand for Spyral.Util.showError
  */
 
 
 
 
-// *** Documentation extracted from: ..\spyral\src\storage.js ***
+// *** Documentation extracted from: ../spyral/src/dataviewer.js ***
 
 /**
-* A class for simplying resource storage
- * @class Spyral.Util.Storage
- */
-
-
-/**
-* Store a resource
-	 * 
-	 * 
-	 * @param {String} id 
-	 * @param {*} data 
-	 * @returns {Promise}
-	 * @static
- * @method storeResource
- */
-
-
-/**
-* Get the URL for trombone
-	 * 
-	 * 
-	 * @returns {String}
-	 * @static
- * @method getTromboneUrl
- */
-
-
-/**
-* Get a stored resource
-	 * 
-	 * 
-	 * @param {String} id 
-	 * @returns {Promise}
-	 * @static
- * @method getStoredResource
+* @ignore
+ * @class .DataViewer
  */
 
 

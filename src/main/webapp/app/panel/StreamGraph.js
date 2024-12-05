@@ -2,6 +2,7 @@
  * StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
  * 
  * @class StreamGraph
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.StreamGraph', {
 	extend: 'Ext.panel.Panel',

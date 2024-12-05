@@ -3,6 +3,7 @@
  * Bubbles is a playful visualization of term frequencies by document.
  * 
  * @class Bubbles
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Bubbles', {
 	extend: 'Ext.panel.Panel',

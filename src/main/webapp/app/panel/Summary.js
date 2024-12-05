@@ -3,6 +3,7 @@
  * depend on whether the corpus includes one document or many.
  * 
  * @class Summary
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Summary', {
 	extend: 'Ext.panel.Panel',

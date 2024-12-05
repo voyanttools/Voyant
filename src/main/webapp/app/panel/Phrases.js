@@ -2,6 +2,7 @@
  * The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
  * 
  * @class Phrases
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Phrases', {
 	extend: 'Ext.grid.Panel',

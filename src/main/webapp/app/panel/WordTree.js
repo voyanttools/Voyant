@@ -2,6 +2,7 @@
  * The Word Tree tool allows you to explore how keywords are used in different phrases in the corpus.
  * 
  * @class WordTree
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.WordTree', {
 	extend: 'Ext.panel.Panel',
