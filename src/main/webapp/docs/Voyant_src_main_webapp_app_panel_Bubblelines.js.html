@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: Voyant/src/main/webapp/app/panel/Bubblelines.js | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * Bubblelines visualizes the frequency and distribution of terms in a corpus.
+ * 
+ * @class Bubblelines
+ * @memberof Tools
+ */
+Ext.define('Voyant.panel.Bubblelines', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.bubblelines',
+    statics: {
+    	i18n: {
+    	},
+    	api: {
+    		/**
+			 * @memberof Bubblelines
+    		 * @property {Bins}
+			 * @default
+    		 */
+    		bins: 50,
+
+        	/**
+			 * @memberof Bubblelines
+        	 * @property {Query}
+        	 */
+    		query: null,
+    		
+    		/**
+			 * @memberof Bubblelines
+    		 * @property {StopList}
+			 * @default
+    		 */
+    		stopList: 'auto',
+
+    		/**
+			 * @memberof Bubblelines
+    		 * @property {DocId}
+    		 */
+    		docId: undefined,
+
+    		/**
+			 * @memberof Bubblelines
+    		 * @property {DocIndex}
+    		 */
+    		docIndex: undefined,
+
+    		/**
+			 * @memberof Bubblelines
+    		 * @property {Number} maxDocs The maximum number of documents to show.
+    		 * @default
+    		 */
+    		maxDocs: 50
+    	},
+    	glyph: 'xf06e@FontAwesome'
+	},
+	config: {
+		bubblelines: undefined,
+		termStore: undefined,
+		docTermStore: undefined,
+		selectedDocs: undefined,
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'colorpaletteoption'}]
+	},
+	
+	termTpl: new Ext.XTemplate(
+		'&lt;tpl for=".">',
+			'&lt;div class="term" style="color: rgb({color});float: left;padding: 3px;margin: 2px;">{term}&lt;/div>',
+		'&lt;/tpl>'
+	),
+    
+    constructor: function() {
+        this.callParent(arguments);
+    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+    	
+    	this.on('loadedCorpus', function(src, corpus) {
+    		this.setDocTermStore(corpus.getDocumentTerms({
+    			proxy: {
+	    			extraParams: {
+						withDistributions: 'raw',
+						withPositions: true
+					}
+    			},
+				listeners: {
+	   		    	 load: function(store, records, successful, options) {
+	   		    		records.forEach(function(record) {
+	   		    			var termData = this.processTerms(record);
+	   		    			var docId = record.get('docId');
+	   		    			var term = record.get('term');
+	   		    			var termObj = {};
+	   		    			termObj[term] = termData;
+	   		    			this.getBubblelines().addTermsToDoc(termObj, docId);
+	   		    		}, this);
+	   		    		this.getBubblelines().doBubblelinesLayout();
+	   				},
+	   				scope: this
+	   		     }
+    		}));
+    		
+    		if (this.isVisible() &amp;&amp; this.getBubblelines()) {
+    			this.initLoad();
+    		}
+    	}, this);
+    	
+        this.on('activate', function() { // load after tab activate (if we're in a tab panel)
+        	if (this.getCorpus()) {
+				Ext.Function.defer(this.initLoad, 100, this);
+			}
+    	}, this);
+        
+        this.on('query', function(src, query) {
+    		if (query !== undefined &amp;&amp; query != '') {
+    			this.getDocTermsFromQuery(query);
+    		}
+    	}, this);
+        
+        this.on('documentsSelected', function(src, docIds) {
+        	this.setApiParam('docId', docIds);
+        	this.getBubblelines().cache.each(function(d) {
+        		d.hidden = docIds.indexOf(d.id) === -1;
+        	});
+        	this.getBubblelines().drawGraph();
+        }, this);
+    	
+    	this.on('termsClicked', function(src, terms) {
+    		if (src !== this) {
+	    		var queryTerms = [];
+	    		terms.forEach(function(term) {
+        			if (Ext.isString(term)) {queryTerms.push(term);}
+        			else if (term.term) {queryTerms.push(term.term);}
+        			else if (term.getTerm) {queryTerms.push(term.getTerm());}
+        		});
+	    		this.getDocTermsFromQuery(queryTerms);
+    		}
+		}, this);
+    	
+    	this.on('documentTermsClicked', function(src, terms) {
+    		var queryTerms = [];
+    		terms.forEach(function(term) {
+    			if (term.getTerm()) {queryTerms.push(term.getTerm());}
+    		});
+    		this.getDocTermsFromQuery(queryTerms);
+    	}, this);
+    	
+    	this.down('#granularity').setValue(parseInt(this.getApiParam('bins')));
+    },
+    
+    initComponent: function() {
+    	this.setTermStore(Ext.create('Ext.data.ArrayStore', {
+            fields: ['term', 'color'],
+            listeners: {
+            	load: function(store, records, successful, options) {
+            		var termsView = this.down('#termsView');
+            		for (var i = 0; i &lt; records.length; i++) {
+            			var r = records[i];
+            			termsView.select(r, true);
+            		}
+            	},
+            	scope: this
+            }
+        }));
+    	
+    	Ext.apply(this, {
+    		title: this.localize('title'),
+    		dockedItems: [{
+                dock: 'bottom',
+                xtype: 'toolbar',
+                overflowHandler: 'scroller',
+                items: [{
+                	xtype: 'querysearchfield'
+                },{
+	            	text: this.localize('clearTerms'),
+					glyph: 'xf014@FontAwesome',
+	            	handler: function() {
+	            		this.down('#termsView').getSelectionModel().deselectAll(true);
+	            		this.getTermStore().removeAll();
+	            		this.setApiParams({query: null});
+	            		this.getBubblelines().removeAllTerms();
+	            		this.getBubblelines().drawGraph();
+	            	},
+	            	scope: this                			
+        		},{
+	            	xtype: 'documentselectorbutton'
+        		},{
+	            	xtype: 'slider',
+	            	itemId: 'granularity',
+	            	fieldLabel: this.localize('granularity'),
+	            	labelAlign: 'right',
+	            	labelWidth: 70,
+	            	width: 150,
+	            	increment: 10,
+	            	minValue: 10,
+	            	maxValue: 300,
+	            	listeners: {
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({bins: newvalue});
+	            			this.getBubblelines().bubbleSpacing = newvalue;
+	            			this.reloadTermsData();
+	            		},
+	            		scope: this
+	            	}
+	            },{
+	            	xtype: 'checkbox',
+	            	boxLabel: this.localize('separateLines'),
+	            	boxLabelAlign: 'before',
+	            	checked: false,
+	            	handler: function(checkbox, checked) {
+	            		this.getBubblelines().SEPARATE_LINES_FOR_TERMS = checked;
+	            		this.getBubblelines().lastClickedBubbles = {};
+	            		this.getBubblelines().setCanvasHeight();
+	    				this.getBubblelines().drawGraph();
+	            	},
+	            	scope: this
+	            	
+	            }]
+    		}],
+            border: false,
+            layout: 'fit',
+            items: {
+            	layout: {
+            		type: 'vbox',
+            		align: 'stretch'
+            	},
+            	defaults: {border: false},
+	            items: [{
+	            	height: 30,
+	            	itemId: 'termsView',
+	            	xtype: 'dataview',
+	            	store: this.getTermStore(),
+	            	tpl: this.termTpl,
+	            	itemSelector: 'div.term',
+	            	overItemCls: 'over',
+	            	selectedItemCls: 'selected',
+	            	selectionModel: {
+	            		mode: 'SIMPLE'
+	            	},
+//	            	cls: 'selected', // default selected
+	            	focusCls: '',
+	            	listeners: {
+	            		beforeitemclick: function(dv, record, item, index, event, opts) {
+	            			event.preventDefault();
+	            			event.stopPropagation();
+	            			dv.fireEvent('itemcontextmenu', dv, record, item, index, event, opts);
+	            			return false;
+	            		},
+	            		beforecontainerclick: function() {
+	            			// cancel deselect all
+	            			event.preventDefault();
+	            			event.stopPropagation();
+	            			return false;
+	            		},
+	            		selectionchange: function(selModel, selections) {
+	            			var dv = this.down('#termsView');
+	            			var terms = [];
+	            			
+	            			dv.getStore().each(function(r) {
+	            				if (selections.indexOf(r) !== -1) {
+	            					terms.push(r.get('term'));
+	            					Ext.fly(dv.getNodeByRecord(r)).removeCls('unselected').addCls('selected');
+	            				} else {
+	            					Ext.fly(dv.getNodeByRecord(r)).removeCls('selected').addCls('unselected');
+	            				}
+	            			});
+	            			
+	            			for (var index in this.getBubblelines().lastClickedBubbles) {
+	            				var lcTerms = this.getBubblelines().lastClickedBubbles[index];
+	            				for (var term in lcTerms) {
+	            					if (terms.indexOf(term) == -1) {
+	            						delete this.getBubblelines().lastClickedBubbles[index][term];
+	            					}
+	            				}
+	            				
+	            			}
+	            			this.getBubblelines().termsFilter = terms;
+	            			this.getBubblelines().setCanvasHeight();
+	            			this.getBubblelines().drawGraph();
+	            		},
+	            		itemcontextmenu: function(dv, record, el, index, event) {
+	            			event.preventDefault();
+	            			event.stopPropagation();
+	            			var isSelected = dv.isSelected(el);
+	            			var menu = new Ext.menu.Menu({
+	            				floating: true,
+	            				items: [{
+	            					text: isSelected ? this.localize('hideTerm') : this.localize('showTerm'),
+	            					handler: function() {
+	            						if (isSelected) {
+	            							dv.deselect(index);
+	            						} else {
+	            							dv.select(index, true);
+	            						}
+	            					},
+	            					scope: this
+	            				},{
+	            					text: this.localize('removeTerm'),
+	            					handler: function() {
+	            						dv.deselect(index);
+	            						var term = this.getTermStore().getAt(index).get('term');
+	            						this.getTermStore().removeAt(index);
+	            						dv.refresh();
+	            						
+	            						this.getBubblelines().removeTerm(term);
+	            						this.getBubblelines().setCanvasHeight();
+	            						this.getBubblelines().drawGraph();
+	            					},
+	            					scope: this
+	            				}]
+	            			});
+	            			menu.showAt(event.getXY());
+	            		},
+	            		scope: this
+	            	}
+	            },{
+	            	flex: 1,
+	            	xtype: 'container',
+	            	autoEl: 'div',
+	            	itemId: 'canvasParent',
+	            	layout: 'fit',
+	            	overflowY: 'auto',
+	            	overflowX: 'hidden'
+	            }],
+	            listeners: {
+	            	render: function(component) {
+	            		var canvasParent = this.down('#canvasParent');
+	                	this.setBubblelines(new Bubblelines({
+	                		container: canvasParent,
+	                		clickHandler: this.bubbleClickHandler.bind(this)
+	                	}));
+	                	this.getBubblelines().bubbleSpacing = parseInt(this.getApiParam('bins'));
+	            	},
+            		afterlayout: function(container) {
+            			if (this.getBubblelines().initialized === false) {
+            				this.getBubblelines().initializeCanvas();
+            			}
+            		},
+	        		resize: function(cnt, width, height) {
+	        			this.getBubblelines().doBubblelinesLayout();
+	        		},
+            		scope: this
+            	}
+            }
+		});
+    	
+    	this.callParent(arguments);
+    },
+    
+    initLoad: function() {
+    	// get doc info
+    	var docIds = [];
+		this.getCorpus().getDocuments().each(function(doc, index, total) {
+			var inLimit = index &lt; this.getApiParam('maxDocs');
+			this.getBubblelines().addDocToCache({
+				id: doc.getId(),
+				index: doc.getIndex(),
+				title: doc.getShortTitle(),
+				totalTokens: doc.get('tokensCount-lexical'),
+				terms: {},
+				hidden: !inLimit
+			});
+			if (inLimit) {
+				docIds.push(doc.getId());
+			}
+		}, this);
+		this.setApiParam('docId', docIds);
+		
+		// get top terms in corpus
+		this.getCorpus().getCorpusTerms({autoload: false}).load({
+			callback: function(records, operation, success) {
+		    	var query = [];
+		    	records.forEach(function(record, index) {
+					query.push(record.get('term'));
+				}, this);
+		    	this.getDocTermsFromQuery(query);
+		    },
+		    scope: this,
+		    params: {
+		    	limit: this.getApiParam('query') ? undefined : 5,
+		    	stopList: this.getApiParams('stopList'),
+		    	query: this.getApiParam('query')
+		    }
+		});
+    },
+    
+    /**
+     * Get the results for the query(s) for each of the corpus documents.
+     * @param query {String|Array}
+	 * @private
+     */
+    getDocTermsFromQuery: function(query) {
+    	if (query) {this.setApiParam('query', query);} // make sure it's set for subsequent calls
+    	if (this.getCorpus() &amp;&amp; this.isVisible()) {
+			this.getDocTermStore().load({params: this.getApiParams()});
+    	}
+	},
+    
+	reloadTermsData: function() {
+		var terms = [];
+		for (var term in this.getBubblelines().currentTerms) {
+			terms.push(term);
+		}
+		this.getDocTermsFromQuery(terms);
+	},
+	
+    filterDocuments: function() {
+		var docIds = this.getApiParam('docId');
+		if (docIds == '') {
+			docIds = [];
+			this.getCorpus().getDocuments().each(function(item, index) {
+				docIds.push(item.getId());
+			});
+			this.setApiParams({docId: docIds});
+		}
+		if (typeof docIds == 'string') docIds = [docIds];
+		
+		if (docIds == null) {
+			this.setSelectedDocs(this.getCorpus().getDocuments().clone());
+			var count = this.getSelectedDocs().getCount();
+			if (count > 10) {
+				for (var i = 10; i &lt; count; i++) {
+					this.getSelectedDocs().removeAt(10);
+				}
+			}
+			docIds = [];
+			this.getSelectedDocs().eachKey(function(docId, doc) {
+				docIds.push(docId);
+			}, this);
+			this.setApiParams({docId: docIds});
+		} else {
+			this.setSelectedDocs(this.getCorpus().getDocuments().filterBy(function(doc, docId) {
+				return docIds.indexOf(docId) != -1;
+			}, this));
+		}
+	},
+	
+	processTerms: function(termRecord) {
+		var termObj;
+		var term = termRecord.get('term');
+		var rawFreq = termRecord.get('rawFreq');
+		var positions = termRecord.get('positions');
+		if (rawFreq > 0) {
+			var color = this.getApplication().getColorForTerm(term);
+			if (this.getTermStore().find('term', term) === -1) {
+				this.getTermStore().loadData([[term, color]], true);
+				var index = this.getTermStore().find('term', term);
+				this.down('#termsView').select(index, true); // manually select since the store's load listener isn't triggered
+			}
+			var distributions = termRecord.get('distributions');
+			termObj = {positions: positions, distributions: distributions, rawFreq: rawFreq, color: color};
+		} else {
+			termObj = false;
+		}
+		
+		return termObj;
+	},
+	
+	bubbleClickHandler: function(data) {
+		this.getApplication().dispatchEvent('termsClicked', this, data);
+	}
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

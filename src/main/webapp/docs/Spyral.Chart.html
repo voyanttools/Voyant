@@ -1,0 +1,2780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Class: Chart | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="Spyral.html">Spyral</a>.</span>Chart<span class="signature">(target<span class="signature-attributes">opt</span>, data)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>The Chart class in Spyral.
+This class provides methods for creating a variety of charts.
+Charts are created using the <a href="https://api.highcharts.com/highcharts/">Highcharts Library</a>.
+Highcharts have many configuration options and Spyral.Chart helps to streamline the process.
+A simple example:</p>
+<pre><code>Spyral.Chart.line({ series: [{ data: [0,2,1,3] }] })
+</code></pre>
+<p>A more complex example:</p>
+<pre><code>Spyral.Chart.column({
+	title: 'Wildflowers',
+	series: [{
+		name: 'Ontario',
+		data: [13, 39, 139, 38]
+	},{
+		name: 'Quebec',
+		data: [14, 33, 94, 30]
+	}],
+	xAxis: {
+		title: 'Number of Petals',
+		categories: [3, 4, 5, 6]
+	}
+})
+</code></pre></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="Chart">
+            
+                new <span class="type-signature"></span>Chart<span class="signature">(target<span class="signature-attributes">opt</span>, data)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line36">line 36</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Construct a new Chart class</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array of data to visualize.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="bar">
+            
+                <span class="type-signature"></span>bar<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line203">line 203</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a bar chart</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="column">
+            
+                <span class="type-signature"></span>column<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line224">line 224</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a column chart</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="create">
+            
+                <span class="type-signature"></span>create<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line83">line 83</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a new chart.
+See <a href="https://api.highcharts.com/highcharts/">Highcharts API</a> for full set of config options.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#HighchartsConfig">HighchartsConfig</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="line">
+            
+                <span class="type-signature"></span>line<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line245">line 245</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a line chart</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="networkgraph">
+            
+                <span class="type-signature"></span>networkgraph<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Spyral.NetworkGraph.html">Spyral.NetworkGraph</a>}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line287">line 287</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a network graph</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="Spyral.NetworkGraph.html">Spyral.NetworkGraph</a></span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="scatter">
+            
+                <span class="type-signature"></span>scatter<span class="signature">(config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line266">line 266</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a scatter plot</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".bar">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>bar<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line213">line 213</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a bar chart</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".column">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>column<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line234">line 234</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a column chart</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".create">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>create<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line95">line 95</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a new chart.
+See <a href="https://api.highcharts.com/highcharts/">Highcharts API</a> for full set of config options.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#HighchartsConfig">HighchartsConfig</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".line">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>line<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line255">line 255</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a line chart</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".networkgraph">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>networkgraph<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {<a href="Spyral.NetworkGraph.html">Spyral.NetworkGraph</a>}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line296">line 296</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a network graph</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="Spyral.NetworkGraph.html">Spyral.NetworkGraph</a></span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".scatter">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>scatter<span class="signature">(target<span class="signature-attributes">opt</span>, config)</span><span class="type-signature"> &rarr; {Highcharts.Chart}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line276">line 276</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a scatter plot</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Element</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An element or ID to use as the chart's target. If not specified, one will be created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Highcharts.Chart</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".setSeriesData">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>setSeriesData<span class="signature">(config, data)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_chart.js.html">voyantjs/src/chart.js</a></code>,
+                <code><a href="voyantjs_src_chart.js.html#line188">line 188</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Add the provided data to the config as a series</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = 'Spyral.Chart_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

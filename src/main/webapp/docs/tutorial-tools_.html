@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Tools | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+<section>
+    <header>
+        <h2>Tools</h2>
+    </header>
+
+    
+        <article class="readme">
+            <style>
+article img {
+    width: 150px; 
+    height: 150px;
+    float: left;
+    margin-right: 1em;
+}
+
+article p.clear {
+    clear: left;
+}
+
+article {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+article div.tool-row {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 600px;
+    margin-bottom: 1em;
+    margin-right: 1em;
+}
+
+</style>
+<div class="tool-row">
+<p><img src="imgs/tools/bubblelines/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-bubblelines_.html">Bubblelines</a></h4>
+<p>Bubblelines visualizes the frequency and distribution of terms in a corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/bubbles/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-bubbles_.html">Bubbles</a></h4>
+<p>Bubbles is a playful visualization of term frequencies by document.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/cirrus/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-cirrus_.html">Cirrus</a></h4>
+<p>Cirrus is a word cloud that visualizes the top frequency words of a corpus or document.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/collocatesgraph/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></h4>
+<p>Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/corpuscollocates/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></h4>
+<p>Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/contexts/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-contexts_.html">Contexts</a></h4>
+<p>The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/correlations/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-correlations_.html">Correlations</a></h4>
+<p>The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/documentterms/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-documentterms_.html">Document Terms</a></h4>
+<p>Document Terms is a table view of document term frequencies.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/corpusterms/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-corpusterms_.html">Corpus Terms</a></h4>
+<p>Corpus Terms is a table view of term frequencies in the entire corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/documents/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-documents_.html">Documents</a></h4>
+<p>The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/knots/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-knots_.html">Knots</a></h4>
+<p>Knots is a creative visualization that represents terms in a single document as a series of twisted lines.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/mandala/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-mandala_.html">Mandala</a></h4>
+<p>Mandala is a conceptual visualization that shows the relationships between terms and documents.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/microsearch/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-microsearch_.html">MicroSearch</a></h4>
+<p>Microsearch visualizes the frequency and distribution of terms in a corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/phrases/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-phrases_.html">Phrases</a></h4>
+<p>The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/reader/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-reader_.html">Reader</a></h4>
+<p>The Reader tool provides a way of reading documents in the corpus, text is fetched on-demand as needed.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/scatterplot/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-scatterplot_.html">ScatterPlot</a></h4>
+<p>ScatterPlot is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/streamgraph/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-streamgraph_.html">StreamGraph</a></h4>
+<p>StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/summary/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-summary_.html">Summary</a></h4>
+<p>The Summary provides a simple, textual overview of the current corpus, including including information about words and documents.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/textualarc/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-textualarc_.html">TextualArc</a></h4>
+<p>TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/topics/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-topics_.html">Topics</a></h4>
+<p>The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how
+each topic (term cluster) is distributed across the document or corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/trends/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-trends_.html">Trends</a></h4>
+<p>Trends shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/veliza/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-veliza.html">Veliza</a></h4>
+<p>Veliza is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.</p>
+<p class="clear"></p></div>
+<div class="tool-row">
+<p><img src="imgs/tools/wordtree/icon.png" alt="Icon"></p>
+<h4><a href="tutorial-wordtree_.html">WordTree</a></h4>
+<p>Word Tree is a tool that allows you to explore how words are used in phrases.</p>
+<p class="clear"></p></div>
+<!--
+<div class="thumb-list">
+	<a href="#!/guide/via"><dd>
+		<div class="thumb">
+			<img src="imgs/tools/via/icon.png" />
+		</div>
+		<div>
+			<h4>Via</h4>
+			<p>Via is an experimental tool for exploring semantically related terms in English.</p>
+		</div>
+	</dd></a>
+</div>
+-->
+        </article>
+    
+</section>
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        showLnbExamples();
+    </script>
+
+</body>
+</html>

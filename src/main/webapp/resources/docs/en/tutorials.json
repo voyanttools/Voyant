@@ -1,0 +1,158 @@
+{
+  "guides": {
+    "title": "Guides",
+    "children": {
+      "start": {
+        "title": "Getting Started"
+      },
+      "corpuscreator": {
+        "title": "Creating a Corpus"
+      },
+      "modifyingcorpus": {
+        "title": "Modifying a Corpus"
+      },
+      "embedding": {
+        "title": "Embedding Voyant"
+      },
+      "skins": {
+        "title": "Skins"
+      },
+      "languages": {
+        "title": "Languages"
+      },
+      "stopwords": {
+        "title": "Stopwords"
+      },
+      "categories": {
+        "title": "Categories"
+      },
+      "search": {
+        "title": "Search"
+      },
+      "palette": {
+        "title": "Palette"
+      },
+      "grids": {
+        "title": "Grids"
+      },
+      "new": {
+        "title": "What's New"
+      },
+      "tutorial": {
+        "title": "Tutorial/Workshop"
+      }
+    }
+  },
+  "tools": {
+    "title": "Tools",
+    "children": {
+      "bubblelines": {
+        "title": "Bubblelines"
+      },
+      "bubbles": {
+        "title": "Bubbles"
+      },
+      "catalogue": {
+        "title": "Catalogue"
+      },
+      "cirrus": {
+        "title": "Cirrus"
+      },
+      "corpuscollocates": {
+        "title": "Corpus Collocates"
+      },
+      "collocatesgraph": {
+        "title": "Collocates Graph"
+      },
+      "contexts": {
+        "title": "Contexts"
+      },
+      "corpusterms": {
+        "title": "Corpus Terms"
+      },
+      "correlations": {
+        "title": "Correlations"
+      },
+      "documents": {
+        "title": "Documents"
+      },
+      "documentterms": {
+        "title": "Document Terms"
+      },
+      "dreamscape": {
+        "title": "Dreamscape"
+      },
+      "knots": {
+        "title": "Knots"
+      },
+      "mandala": {
+        "title": "Mandala"
+      },
+      "microsearch": {
+        "title": "MicroSearch"
+      },
+      "phrases": {
+        "title": "Phrases"
+      },
+      "reader": {
+        "title": "Reader"
+      },
+      "rezoviz": {
+        "title": "RezoViz"
+      },
+      "scatterplot": {
+        "title": "ScatterPlot"
+      },
+      "streamgraph": {
+        "title": "StreamGraph"
+      },
+      "summary": {
+        "title": "Summary"
+      },
+      "termsberry": {
+        "title": "TermsBerry"
+      },
+      "termsradio": {
+        "title": "TermsRadio"
+      },
+      "textualarc": {
+        "title": "TextualArc"
+      },
+      "topics": {
+        "title": "Topics"
+      },
+      "trends": {
+        "title": "Trends"
+      },
+      "veliza": {
+        "title": "Veliza"
+      },
+      "wordtree": {
+        "title": "WordTree"
+      },
+      "via": {
+        "title": "Via"
+      }
+    }
+  },
+  "info": {
+    "title": "Information",
+    "children": {
+      "about": {
+        "title": "About"
+      },
+      "notebook": {
+        "title": "About Spyral"
+      },
+      "gallery": {
+        "title": "Gallery"
+      },
+      "mirrors": {
+        "title": "Mirrors"
+      },
+      "server": {
+        "title": "VoyantServer"
+      }
+    }
+  }
+}
