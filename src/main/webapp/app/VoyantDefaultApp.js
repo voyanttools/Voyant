@@ -125,9 +125,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			fetchData: 'https://raw.githubusercontent.com/wiki/voyanttools/voyant/Announcements.md'
 		}, function(data) {
 			var converter = new showdown.Converter();
-			converter.setOption('openLinksInNewWindow', true);
 			var html = converter.makeHtml(data);
-			$('#voyantServerMessage').html(html);
+			var cleanHtml = DOMPurify.sanitize(html);
+			$('#voyantServerMessage').html(cleanHtml);
 		}, 'text')
 		.fail(function() {
 			console.log('failed to fetch server message')
