@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: Voyant/src/main/webapp/app/panel/TermsRadio.js | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
+ * 
+ * @class TermsRadio
+ * @memberof Tools
+ * @author Mark Turcato
+ * @author Andrew MacDonald
+ */
+Ext.define('Voyant.panel.TermsRadio', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.termsradio',
+	config: {
+		/**
+		 * @private
+		 */
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}],
+		/**
+		 * @private
+		 */
+		speed: 50,
+		/**
+		 * @private
+		 */
+		termsRadio: undefined
+	},
+    statics: {
+    	i18n: {
+    	},
+    	api: {
+    		/**
+			 * @memberof TermsRadio
+			 * @property {Bins}
+			 * @default
+    		 */
+    		bins: 5,
+    	
+    		/**
+			 * @memberof TermsRadio
+			 * @property {Number} visibleBins How many segments or documents to show at once (default is 5).
+    		 * Note that this often works in parallel with the {@link #bins} value.
+			 * @default
+    		 */
+    		visibleBins: 5,
+    		
+    		/**
+			 * @memberof TermsRadio
+    		 * @property {String[]} docIdType The document type(s) to restrict results to.
+    		 * @default null
+    		 * @private
+    		 */
+    		docIdType: null,
+    		
+    		/**
+    		 * @memberof TermsRadio
+			 * @property {Limit}
+			 * @default
+    		 */
+    		limit: 50,
+    	
+    		/**
+        	 * @property mode What mode to operate at, either document or corpus.
+        	 * @choices document, corpus
+    		 * @private
+        	 */
+    		mode: null,
+    		
+    		/**
+			 * @memberof TermsRadio
+        	 * @property {Number} position The current shifted position of the visualization.
+        	 * @default 0
+    		 * @private
+        	 */
+    		position: 0,
+    		
+    		/**
+			 * @memberof TermsRadio
+    		 * @property {String[]} selectedWords The words that have been selected.
+    		 * @default null
+    		 * @private
+    		 */
+    		selectedWords: [],
+    		
+			/**
+			 * @memberof TermsRadio
+			 * @property {StopList}
+			 * @default
+			 */
+    		stopList: 'auto',
+    		
+    		/**
+    		 * @memberof TermsRadio
+			 * @property {Query}
+    		 */
+    		query: null,
+    		
+    		/**
+			 * @memberof TermsRadio
+    		 * @property {String} yAxisScale The scale for the y axis. Options are: 'log' or 'linear'.
+    		 * @default log
+    		 */
+    		yAxisScale: 'log',
+    			
+			/**
+			 * @memberof TermsRadio
+			 * @property {Number} speed How fast to animate the visualization.
+			 * @default
+			 */
+    		speed: 50,
+    		
+    		/**
+			 * @memberof TermsRadio
+    		 * @property {Boolean} slider Whether to show the slider.
+    		 * @default true
+    		 */
+    		slider: undefined
+    	},
+    	glyph: 'xf201@FontAwesome'
+    }
+	
+	/**
+	 * @private
+	 */
+	,constructor: function(config) {
+		
+		var onLoadHandler = function(mode, store, records, success, operation) {
+			this.setApiParams({mode: mode});
+
+			this.getTermsRadio().loadRecords(records);
+			
+			var query = this.getApiParam('query');
+			// check for no results
+			if (query) {
+				if (records.length==0 || (records.length==1 &amp;&amp; records[0].getRawFreq()==0)) {
+					this.toastInfo({
+						html: this.localize("termNotFound"),
+						align: 'bl'
+					});
+				} else {
+					this.getTermsRadio().highlightQuery(query, true);
+				}
+			}
+		};
+		
+		this.corpusStore = Ext.create("Voyant.data.store.CorpusTerms", {
+			listeners : {
+				load: {
+					fn : onLoadHandler.bind(this, 'corpus'),
+					scope : this
+				}
+			}
+		});
+		
+		this.documentStore = Ext.create("Voyant.data.store.DocumentTerms", {
+			listeners : {
+				load: {
+					fn : onLoadHandler.bind(this, 'document'),
+					scope : this
+				}
+			}
+		});
+		
+		Ext.apply(config, {
+			title: this.localize('title'),
+			legendMenu: Ext.create('Ext.menu.Menu', {
+				items: [
+        			{text: '', itemId: 'remove', glyph: 'xf068@FontAwesome'}
+        		]
+        	}),
+			tbar: new Ext.Toolbar({
+                overflowHandler: 'scroller',
+				items: {
+					xtype: 'legend',
+					store: new Ext.data.JsonStore({
+						fields : ['name', 'mark', 'selector']
+					}),
+					listeners: {
+						itemclick: function(view, record, el, index) {
+							var term = record.get('name');
+							if (this.getTermsRadio().isTermSelected(term)) {
+								this.getTermsRadio().doTermDeselect(term);
+							} else {
+								this.getTermsRadio().doTermSelect(term);
+							}
+						},
+						itemcontextmenu: function(view, record, el, index, event) {
+							event.preventDefault();
+			            	var xy = event.getXY();
+			            	
+			            	var term = record.get('name');
+			            	var text = (new Ext.Template(this.localize('removeTerm'))).apply([term]);
+		            		this.legendMenu.queryById('remove').setText(text);
+		            		
+		            		this.legendMenu.on('click', function(menu, item) {
+		            			if (item !== undefined) {
+		            				this.getTermsRadio().doTermDeselect(term, true);
+		            			}
+		            		}, this, {single: true});
+		            		this.legendMenu.showAt(xy);
+						},
+						scope: this
+					}
+				}
+			}),
+			bbar: {
+                overflowHandler: 'scroller',
+	            items: [{
+	            	xtype: 'querysearchfield'
+	            },{
+	    			glyph: 'xf04b@FontAwesome', // start with play button, which means we're paused
+	    			itemId: 'play',
+	    			handler: function(btn) {
+	    				var playing = btn.glyph=="xf04c@FontAwesome";
+	    				if (playing) {
+	    					this.getTermsRadio().continueTransition = false;
+	    					this.mask(this.localize("completingTransition"))
+	    					btn.setPlaying(false)
+	    				}
+	    				else {
+	    					this.getTermsRadio().toggleRightCheck();
+	    					btn.setPlaying(true);
+	    				}
+	    			},
+	    			scope: this,
+	    			setPlaying: function(bool) {
+	    				this.setGlyph(bool ? "xf04c@FontAwesome" : "xf04b@FontAwesome")
+	    			}
+	    		},{
+	    			glyph: 'xf0e2@FontAwesome',
+//	    			text: this.localize('reset')
+	    			tooltip : this.localize('resetTip'),
+	    			listeners : {
+	    				click : {fn : function() {
+	    					this.queryById("play").setPlaying(false);
+							this.getTermsRadio().shiftCount = 0;
+							this.getTermsRadio().prepareData();
+							this.getTermsRadio().redraw();
+    					}				
+	    					,scope : this
+	    				}
+	    			}
+	    		},{
+	    			xtype: 'label',
+	    			forId: 'terms',
+	    			text: this.localize('terms')
+	    		},{
+	    			xtype: 'slider',
+	    			itemId: 'terms',
+	    			hideLabel: true,
+	    			width : 60,
+	    			increment : 5,
+	    			minValue : 5,
+	    			maxValue : 100,
+	            	listeners: {
+	            		afterrender: function(slider) {
+	            			slider.setValue(parseInt(this.getApiParam("limit")))
+	            		},
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({limit: newvalue});
+	            			this.loadStore();
+	            		},
+	            		scope: this
+	            	}
+	    		},{
+	    			xtype: 'label',
+	    			forId: 'speed',
+	    			text: this.localize('speed')
+	    		},{
+	    			xtype: 'slider',
+	    			itemId: 'speed',
+	    			hideLabel: true,
+	    			width : 60,
+	    			increment : 5,
+	    			minValue : 5,
+	    			maxValue : 100,
+	            	listeners: {
+	            		afterrender: function(slider) {
+	            			slider.setValue(parseInt(this.getApiParam("speed")))
+	            			this.setSpeed(slider.getValue())
+	            		},
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({speed: newvalue});
+	            			this.setSpeed(newvalue)
+	            		},
+	            		scope: this
+	            	}
+	    		},{
+	    			xtype: 'label',
+	    			itemId: 'visibleSegmentsLabel',
+	    			forId: 'visibleBins',
+	    			text: this.localize('visibleSegments')
+	    		},{
+	    			xtype: 'slider',
+	    			itemId: 'visibleBins',
+	    			hideLabel: true,
+	    			width : 60,
+	    			increment : 1,
+	    			minValue : 1,
+	    			maxValue : 100,
+	            	listeners: {
+	            		afterrender: function(slider) {
+	            			slider.setValue(parseInt(this.getApiParam("visibleBins")))
+	            		},
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({visibleBins: newvalue});
+							this.numVisPoints = newvalue;
+							this.loadStore();
+							
+							if (this.numVisPoints == this.getCorpus().getDocumentsCount()) {
+								this.getTermsRadio().hideSlider();
+							} else if (this.getApiParam("slider") != 'false'){
+								this.getTermsRadio().showSlider();
+							}
+	            		},
+	            		scope: this
+	            	}
+	    		},{
+	    			xtype: 'label',
+	    			itemId: 'segmentsLabel',
+	    			forId: 'segments',
+	    			text: this.localize('segments')
+	    		},{
+	    			xtype: 'slider',
+	    			itemId: 'segments',
+	    			hideLabel: true,
+	    			width : 60,
+	    			increment : 1,
+	    			minValue : 1,
+	    			maxValue : 100,
+	            	listeners: {
+	            		afterrender: function(slider) {
+	            			slider.setValue(parseInt(this.getApiParam("bins")))
+	            		},
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({bins: newvalue});
+							this.numDataPoints = newvalue;
+							this.loadStore();
+							var visibleBins = this.queryById('visibleBins');
+							visibleBins.setMaxValue(newvalue) // only relevant for doc mode
+	            		},
+	            		scope: this
+	            	}
+	    		}]
+			}
+		});
+		
+		// need to add option here so we have access to localize
+		this.config.options.push({
+			xtype: 'combo',
+			queryMode : 'local',
+			triggerAction : 'all',
+			forceSelection : true,
+			editable : false,
+			fieldLabel : this.localize('yScale'),
+			labelAlign : 'right',
+			name : 'yAxisScale',
+			valueField : 'value',
+			displayField : 'name',
+			store: new Ext.data.JsonStore({
+				fields : ['name', 'value'],
+				data   : [{
+					name : this.localize('linear'),   value: 'linear'
+				},{
+					name : this.localize('log'),  value: 'log'
+				}]
+			}),
+			listeners: {
+				afterrender: function(combo) {
+					combo.setValue(this.getApiParam('yAxisScale'));
+				},
+				scope: this
+			}
+		});
+		
+		this.callParent(arguments);
+		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+		
+		this.on('boxready', function(component) {
+			var sliderParam = this.getApiParam('slider');
+			var showSlider = sliderParam === undefined ? true : sliderParam === 'true';
+			var config = {
+				parent: this,
+				container: this.body,
+				showSlider: showSlider
+			};
+			this.setTermsRadio(new TermsRadio(config));
+		}, this);
+		
+		/**
+		 * @event corpusTypesSelected
+		 * @type listener
+		 * @private
+		 */
+		this.addListener('corpusTermsClicked', function(src, terms){
+			if (this.getCorpus().getDocumentsCount() > 1) {
+        		terms.forEach(function(term) {
+        			var t = term.getTerm();
+        			this.setApiParams({query: t});
+        			this.loadStore();
+        		}, this);
+			}
+		});
+		
+		this.addListener('documentTermsClicked', function(src, terms){
+			if(src &amp;&amp; src.xtype==this.xtype) {return false;}
+			
+			terms.forEach(function(term) {
+    			var t = term.getTerm();
+    			this.setApiParams({query: t});
+    			this.loadStore();
+    		}, this);
+		});
+		
+		this.on('query', function(src, query){
+			this.fireEvent("termsClicked", src, query);
+	    });
+		
+		this.on("termsClicked", function(src, terms) {
+			// TODO load term distribution data
+			terms.forEach(function(term) {
+				var queryTerm;
+    			if (Ext.isString(term)) {queryTerm = term;}
+    			else if (term.term) {queryTerm = term.term;}
+    			else if (term.getTerm) {queryTerm = term.getTerm();}
+    			
+    			// TODO handling for multiple terms
+    			this.setApiParams({query: queryTerm});
+    			this.loadStore();
+    		}, this);
+    	});
+		
+		this.on("loadedCorpus", function(src, corpus) {
+    		this.documentStore.setCorpus(corpus);
+    		this.corpusStore.setCorpus(corpus);
+    		
+    		var params = this.getApiParams();
+			params.withDistributions = true;
+			if (params.type) {
+				delete params.limit;
+			}
+			var store;
+			
+			var docsCount = this.getCorpus().getDocumentsCount();
+			var segments = this.queryById("segments");
+			var visibleBins = this.queryById("visibleBins");
+			if (params.mode=='document' || docsCount == 1) {
+				this.setApiParam("mode", "document");
+				store = this.documentStore;
+				visibleBins.setMaxValue(segments.getValue())
+			} else {
+				this.setApiParam("mode", "corpus");
+				delete params.bins;
+				store = this.corpusStore;
+				segments.hide();
+				this.queryById("segmentsLabel").hide();
+				var visibleBins = this.queryById("visibleBins");
+				visibleBins.setMaxValue(docsCount);
+				if (parseInt(this.getApiParam("visibleBins")>docsCount)) {
+					visibleBins.setValue(docsCount);
+				}
+			}
+			
+			// select top 3 words
+			store.on('load', function(store, records) {
+				for (var i = 0; i &lt; 3; i++) {
+					var r = records[i];
+					if (r) {
+						this.getTermsRadio().highlightRecord(r, true);
+					}
+				}
+			}, this, {single: true});
+			store.load({params: params});
+    	}, this);		
+	}
+	
+    ,loadStore: function () {
+    	this.queryById('play').setPlaying(false);
+		var params = this.getApiParams();
+		params.withDistributions = true;
+		if(this.getApiParam('mode') === 'document') { 
+			this.documentStore.load({params: params});
+		}
+		if(this.getApiParam('mode') === 'corpus') {
+			delete params.bins;
+			this.corpusStore.load({params: params});
+		}
+	}
+    
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: Voyant/src/main/webapp/app/panel/StreamGraph.js | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
+ * 
+ * @class StreamGraph
+ * @memberof Tools
+ */
+Ext.define('Voyant.panel.StreamGraph', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.streamgraph',
+    statics: {
+    	i18n: {
+    	},
+    	api: {
+			/**
+			 * @memberof StreamGraph
+			 * @property {Limit}
+			 * @default
+			 */
+    		limit: 5,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {StopList}
+			 * @default
+			 */
+    		stopList: 'auto',
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {Query}
+			 */
+    		query: undefined,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {WithDistributions}
+			 * @default
+			 */
+    		withDistributions: 'relative',
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {Bins}
+			 * @default
+			 */
+    		bins: 50,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {DocIndex}
+			 */
+    		docIndex: undefined,
+
+			/**
+			 * @memberof StreamGraph
+			 * @property {DocId}
+			 */
+    		docId: undefined
+    	},
+		glyph: 'xf1fe@FontAwesome'
+    },
+    
+    config: {
+    	visLayout: undefined,
+    	vis: undefined,
+    	mode: 'corpus',
+    	
+    	layerData: undefined,
+    	
+    	graphId: undefined,
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}]
+    },
+    
+    graphMargin: {top: 20, right: 60, bottom: 110, left: 80},
+    
+    MODE_CORPUS: 'corpus',
+    MODE_DOCUMENT: 'document',
+    
+    constructor: function(config) {
+        this.callParent(arguments);
+    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+    	
+    	this.setGraphId(Ext.id(null, 'streamgraph_'));
+    },
+    
+    initComponent: function() {
+        var me = this;
+        
+        Ext.apply(me, {
+    		title: this.localize('title'),
+    		tbar: new Ext.Toolbar({
+                overflowHandler: 'scroller',
+				items: ['->',{
+					xtype: 'legend',
+					store: new Ext.data.JsonStore({
+						fields: ['name', 'mark', 'active']
+					}),
+					listeners: {
+						itemclick: function(view, record, el, index) {
+							var isActive = Ext.fly(el.firstElementChild).hasCls('x-legend-inactive');
+							record.set('active', isActive);
+							var terms = this.getCurrentTerms();
+							this.setApiParams({query: terms, limit: terms.length, stopList: undefined, categories: this.getApiParam("categories")});
+							this.loadFromCorpus();
+						},
+						scope: this
+					}
+				},'->']
+			}),
+			bbar: {
+                overflowHandler: 'scroller',
+				items: [{
+                	xtype: 'querysearchfield'
+                },{
+	            	xtype: 'button',
+	            	text: this.localize('clearTerms'),
+	            	handler: function() {
+	            		this.setApiParams({query: undefined});
+	            		this.loadFromRecords([]);
+	            	},
+	            	scope: this
+	            },{
+	            	xtype: 'corpusdocumentselector',
+	            	singleSelect: true
+	            },{
+	            	text: this.localize('freqsMode'),
+					glyph: 'xf201@FontAwesome',
+				    tooltip: this.localize('freqsModeTip'),
+				    menu: {
+				    	items: [{
+				               text: this.localize('relativeFrequencies'),
+				               checked: true,
+				               itemId: 'relative',
+				               group: 'freqsMode',
+				               checkHandler: function(item, checked) {
+				            	   if (checked) {
+				                	   this.setApiParam('withDistributions', 'relative');
+				                	   this.loadFromCorpus();
+				            	   }
+				               },
+				               scope: this
+				           }, {
+				               text: this.localize('rawFrequencies'),
+				               checked: false,
+				               itemId: 'raw',
+				               group: 'freqsMode',
+				               checkHandler: function(item, checked) {
+				            	   if (checked) {
+				                	   this.setApiParam('withDistributions', 'raw');
+				                	   this.loadFromCorpus();
+				            	   }
+				               },
+				               scope: this
+			           }]
+				    }
+	            },{
+	            	xtype: 'slider',
+	            	itemId: 'segmentsSlider',
+	            	fieldLabel: this.localize('segments'),
+	            	labelAlign: 'right',
+	            	labelWidth: 70,
+	            	width: 150,
+	            	increment: 10,
+	            	minValue: 10,
+	            	maxValue: 300,
+	            	listeners: {
+	            		afterrender: function(slider) {
+	            			slider.setValue(this.getApiParam('bins'));
+	            		},
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({bins: newvalue});
+	            			this.loadFromCorpus();
+	            		},
+	            		scope: this
+	            	}
+	            }]
+			}
+        });
+        
+        this.on('loadedCorpus', function(src, corpus) {
+        	if (this.getCorpus().getDocumentsCount() == 1 &amp;&amp; this.getMode() != this.MODE_DOCUMENT) {
+				this.setMode(this.MODE_DOCUMENT);
+			}
+			if (!('bins' in this.getModifiedApiParams())) {
+				if (this.getMode() == this.MODE_CORPUS) {
+					var count = corpus.getDocumentsCount();
+					var binsMax = 100;
+					this.setApiParam('bins', count > binsMax ? binsMax : count);
+				}
+			}
+    		if (this.isVisible()) {
+    			this.loadFromCorpus();
+    		}
+        }, this);
+        
+        this.on('corpusSelected', function(src, corpus) {
+    		if (src.isXType('corpusdocumentselector')) {
+    			this.setMode(this.MODE_CORPUS);
+    			this.setApiParams({docId: undefined, docIndex: undefined});
+    			this.setCorpus(corpus);
+        		this.loadFromCorpus();
+    		}
+    	});
+        
+        this.on('documentSelected', function(src, doc) {
+        	var docId = doc.getId();
+        	this.setApiParam('docId', docId);
+        	this.loadFromDocumentTerms();
+        }, this);
+        
+		this.on('query', function(src, query) {
+        	var terms = this.getCurrentTerms();
+        	terms.push(query);
+        	this.setApiParams({query: terms, limit: terms.length, stopList: undefined});
+        	if (this.getMode() === this.MODE_DOCUMENT) {
+        		this.loadFromDocumentTerms();
+        	} else {
+        		this.loadFromCorpusTerms(this.getCorpus().getCorpusTerms());
+        	}
+        }, this);
+		
+        this.on('resize', this.resizeGraph, this);
+        
+        this.on('boxready', this.initGraph, this);
+        
+        me.callParent(arguments);
+    },
+    
+    loadFromCorpus: function() {
+    	var corpus = this.getCorpus();
+		if (this.getApiParam('docId') || this.getApiParam('docIndex')) {
+			this.loadFromDocumentTerms();
+		} else if (corpus.getDocumentsCount() == 1) {
+			this.loadFromDocument(corpus.getDocument(0));
+		} else {
+			this.loadFromCorpusTerms(corpus.getCorpusTerms());
+		}
+	},
+
+    loadFromCorpusTerms: function(corpusTerms) {
+    	var params = this.getApiParams(['limit','stopList','query','withDistributions','bins','categories']);
+		// ensure that we're not beyond the number of documents
+		if (params.bins &amp;&amp; params.bins > this.getCorpus().getDocumentsCount()) {
+			params.bins = this.getCorpus().getDocumentsCount();
+		}
+		corpusTerms.load({
+		    callback: function(records, operation, success) {
+		    	if (success) {
+		    		this.setMode(this.MODE_CORPUS);
+			    	this.loadFromRecords(records);
+		    	} else {
+					Voyant.application.showResponseError(this.localize('failedGetCorpusTerms'), operation);
+		    	}
+		    },
+		    scope: this,
+		    params: params
+    	});
+    },
+    
+    loadFromDocument: function(document) {
+    	if (document.then) {
+    		var me = this;
+    		document.then(function(document) {me.loadFromDocument(document);});
+    	} else {
+    		var ids = [];
+    		if (Ext.getClassName(document)=="Voyant.data.model.Document") {
+        		this.setApiParams({
+        			docIndex: undefined,
+        			query: undefined,
+        			docId: document.getId()
+        		});
+        		if (this.isVisible()) {
+                	this.loadFromDocumentTerms();
+        		}
+    		}
+    	}
+    },
+    
+    loadFromDocumentTerms: function(documentTerms) {
+    	if (this.getCorpus()) {
+        	documentTerms = documentTerms || this.getCorpus().getDocumentTerms({autoLoad: false});
+    		documentTerms.load({
+    		    callback: function(records, operation, success) {
+    		    	if (success) {
+    		    		this.setMode(this.MODE_DOCUMENT);
+    		    		this.loadFromRecords(records);
+    		    	}
+    		    	else {
+    					Voyant.application.showResponseError(this.localize('failedGetDocumentTerms'), operation);
+    		    	}
+    		    },
+    		    scope: this,
+    		    params: this.getApiParams(['docId','docIndex','limit','stopList','query','withDistributions','bins','categories'])
+        	});
+    	}
+    },
+    
+    loadFromRecords: function(records) {
+    	var legendData = [];
+    	var layers = [];
+    	records.forEach(function(record, index) {
+    		var key = record.getTerm();
+    		var values = record.get('distributions');
+    		for (var i = 0; i &lt; values.length; i++) {
+    			if (layers[i] === undefined) {
+    				layers[i] = {};
+    			}
+    			layers[i][key] = values[i];
+    		}
+    		legendData.push({id: key, name: key, mark: this.getApplication().getColorForTerm(key, true), active: true});
+    	}, this);
+    	
+    	this.setLayerData(layers);
+    	
+    	this.down('[xtype=legend]').getStore().loadData(legendData);
+
+    	this.doLayout();
+    },
+    
+    doLayout: function(layers) {
+    	var layers = this.getLayerData();
+    	if (layers !== undefined) {
+    		var me = this;
+    		
+	    	var keys = [];
+	    	this.down('[xtype=legend]').getStore().each(function(r) { keys.push(r.getId()); });
+	    	
+	    	var steps;
+	    	if (this.getMode() === this.MODE_DOCUMENT) {
+	    		steps = this.getApiParam('bins');
+	    	} else {
+	    		var bins = this.getApiParam('bins');
+	    		var docsCount = this.getCorpus().getDocumentsCount();
+	    		
+	    		steps = bins &lt; docsCount ? bins : docsCount;
+	    	}
+	    	
+	    	this.getVisLayout().keys(keys);
+	    	var processedLayers = this.getVisLayout()(layers);
+	    	
+	    	var width = this.body.down('svg').getWidth() - this.graphMargin.left - this.graphMargin.right;
+	    	var x = d3.scaleLinear().domain([0, steps-1]).range([0, width]);
+	    	
+	    	var min = d3.min(processedLayers, function(layer) {
+	    		return d3.min(layer, function(d) { return d[0]; });
+	    	});
+	    	var max = d3.max(processedLayers, function(layer) {
+	    		return d3.max(layer, function(d) { return d[1]; });
+	    	});
+	    	
+	    	var height = this.body.down('svg').getHeight() - this.graphMargin.top - this.graphMargin.bottom;
+	    	var y = d3.scaleLinear().domain([min, max]).range([height, 0]);
+	    	
+	    	var area = d3.area()
+		    	.x(function(d, i) { return x(i); })
+			    .y0(function(d) { return y(d[0]); })
+			    .y1(function(d) { return y(d[1]); })
+			    .curve(d3.curveCatmullRom);
+	    	
+	    	var xAxis;
+	    	if (this.getMode() === this.MODE_CORPUS) {
+	    		var xAxisDomain = [];
+	    		this.getCorpus().getDocuments().each(function(doc) {
+	    			xAxisDomain.push(doc.getTinyLabel());
+	    		});
+	    		var xAxisScale = d3.scalePoint().domain(xAxisDomain).range([0, width]);    		
+	    		xAxis = d3.axisBottom(xAxisScale);
+	    	} else {
+	    		xAxis = d3.axisBottom(x);
+	    	}
+	    	
+	    	var yAxis = d3.axisLeft(y);
+	    	
+	    	var paths = this.getVis().selectAll('path').data(processedLayers, function(d) { return d; });
+	    	
+	    	paths
+	    		.attr('d', function(d) { return area(d); })
+		    	.style('fill', function(d) { return me.getApplication().getColorForTerm(d.key, true); })
+				.select('title').text(function (d) { return d.key; });
+	    	
+	    	paths.enter().append('path')
+				.attr('d', function(d) { return area(d); })
+				.style('fill', function(d) { return me.getApplication().getColorForTerm(d.key, true); })
+				.append('title').text(function (d) { return d.key; });
+	    	
+	    	paths.exit().remove();
+	    	
+	    	this.getVis().selectAll('g.axis').remove();
+	    	
+	    	this.getVis().append('g')
+	    		.attr('class', 'axis x')
+	    		.attr('transform', 'translate(0,'+height+')')
+	    		.call(xAxis);
+	    	
+	    	var xAxisText;
+	    	if (this.getMode() === this.MODE_CORPUS) {
+	    		this.getVis().select('g.axis.x').selectAll('text').each(function() {
+					d3.select(this)
+						.attr('text-anchor', 'end')
+						.attr('transform', 'rotate(-45)');
+	    		});
+	    		
+	    		xAxisText = this.localize('documents');
+	    	} else {
+	    		xAxisText = this.localize('documentSegments');
+	    	}
+	    	this.getVis().select('g.axis.x').append("text")
+				.attr('text-anchor', 'middle')
+				.attr('transform', 'translate('+width/2+', '+(this.graphMargin.bottom-30)+')')
+				.attr('fill', '#000')
+				.text(xAxisText);
+	    	
+	    	this.getVis().append('g')
+				.attr('class', 'axis y')
+				.attr('transform', 'translate(0,0)')
+				.call(yAxis);
+	    	
+	    	var yAxisText;
+	    	if (this.getApiParam('withDistributions') === 'raw') {
+	    		yAxisText = this.localize('rawFrequencies');
+	    	} else {
+	    		yAxisText = this.localize('relativeFrequencies');
+	    	}
+	    	this.getVis().select('g.axis.y').append("text")
+				.attr('text-anchor', 'middle')
+				.attr('transform', 'translate(-'+(this.graphMargin.left-20)+', '+height/2+') rotate(-90)')
+				.attr('fill', '#000')
+				.text(yAxisText);
+    	}
+    },
+    
+	getCurrentTerms: function() {
+    	var terms = [];
+    	this.down('[xtype=legend]').getStore().each(function(record) {
+    		if (record.get('active')) {
+    			terms.push(record.get('name'));
+    		}
+    	}, this);
+    	return terms;
+    },
+	
+    initGraph: function() {
+    	if (this.getVisLayout() === undefined) {
+	    	var el = this.getLayout().getRenderTarget();
+	    	
+	    	this.setVisLayout(d3.stack().offset(d3.stackOffsetWiggle).order(d3.stackOrderInsideOut));
+			this.setVis(d3.select(el.dom).append('svg').attr('id',this.getGraphId()).append('g').attr('transform', 'translate('+this.graphMargin.left+','+this.graphMargin.top+')'));
+			
+			this.resizeGraph();
+    	}
+    },
+    
+    resizeGraph: function() {
+    	var el = this.body;//getLayout().getRenderTarget();
+    	var width = el.getWidth();
+		var height = el.getHeight();
+		
+		d3.select(el.dom).select('svg').attr('width', width).attr('height', height);
+		
+		this.doLayout();
+    }
+});
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

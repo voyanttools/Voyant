@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: Voyant/src/main/webapp/app/panel/TextualArc.js | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
+ * 
+ * @class TextualArc
+ * @memberof Tools
+ */
+Ext.define('Voyant.panel.TextualArc', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.textualarc',
+    statics: {
+    	i18n: {
+    	},
+    	api: {
+    		/**
+    		 * @memberof TextualArc
+			 * @property {StopList}
+			 * @default
+    		 */
+    		stopList: 'auto',
+    		
+			/**
+    		 * @memberof TextualArc
+			 * @property {DocIndex}
+			 * @default
+    		 */
+    		docIndex: 0,
+    		
+			/**
+    		 * @memberof TextualArc
+			 * @property {Number} speed How fast to animate the visualization.
+			 * @default
+    		 */
+    		speed: 50,
+    		
+			/**
+    		 * @memberof TextualArc
+			 * @property {Number} minRawFreq The minimum raw frequency of terms to be considered.
+			 * @default
+    		 */
+    		minRawFreq: 2
+    			
+    	},
+    	glyph: 'xf06e@FontAwesome'
+	},
+	config: {
+    	options: [{xtype: 'stoplistoption'},{
+    		xtype: 'container',
+    		items: {
+    			xtype: 'numberfield',
+	    		name: 'minRawFreq',
+	    		minValue: 1,
+	    		maxValue: 10,
+	    		value: 2,
+	    		labelWidth: 150,
+	    		labelAlign: 'right',
+	    		initComponent: function() {
+	    			var panel = this.up('window').panel;
+	    			this.fieldLabel = panel.localize(this.fieldLabel);
+	    			this.on("afterrender", function(cmp) {
+			        	Ext.tip.QuickTipManager.register({
+			                 target: cmp.getEl(),
+			                 text: panel.localize('minRawFreqTip')
+			             });
+	    			});
+	    			this.on('beforedestroy', function(cmp) {
+                		Ext.tip.QuickTipManager.unregister(cmp.getEl());
+                	});
+	    			this.callParent(arguments);
+	    		},
+	    		fieldLabel: 'minRawFreq'
+    		}
+    	}],
+    	perim: [],
+    	diam: undefined
+	},
+	
+	tokensFetch: 500,
+	
+    constructor: function() {
+
+    	this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
+    	this.config.options[1].fieldLabel = this.localize(this.config.options[1].fieldLabel);
+    	Ext.apply(this, {
+    		title: this.localize('title'),
+			html: '&lt;canvas width="800" height="600">&lt;/canvas>',
+    		dockedItems: [{
+                dock: 'bottom',
+                xtype: 'toolbar',
+                overflowHandler: 'scroller',
+                items: [{
+                	xtype: 'combo',
+                	itemId: 'search',
+                	queryMode: 'local',
+                	displayField: 'term',
+                	valueField: 'term',
+                	width: 90,
+                	emptyText: this.localize('search'),
+                	forceSelection: true,
+                	disabled: true
+                },{
+	            	xtype: 'documentselectorbutton',
+	            	singleSelect: true
+	            },{
+					xtype: 'slider',
+					fieldLabel: this.localize('speed'),
+					labelAlign: 'right',
+					labelWidth: 40,
+					width: 100,
+					increment: 1,
+					minValue: 0,
+					maxValue: 100,
+					value: 30,
+					listeners: {
+	                	render: function(cmp) {
+	                		cmp.setValue(parseInt(this.getApiParam("speed")));
+	    		        	Ext.tip.QuickTipManager.register({
+	    		        		target: cmp.getEl(),
+	   		                 	text: this.localize('speedTip')
+	    		        	});
+	                		
+	                	},
+	                	beforedestroy: function(cmp) {
+	                		Ext.tip.QuickTipManager.unregister(cmp.getEl());
+	                	},
+	                    changecomplete: function(cmp, val) {
+	                    	this.setApiParam('speed', val);
+                    		this.isReading = val!==0
+                    		this.draw();
+	                    },
+	                    scope: this
+					}
+				},{xtype: 'tbfill'}, {
+	    			xtype: 'tbtext',
+	    			html: this.localize('adaptation')
+	    		}]
+    		}]
+    	});
+        this.callParent(arguments);
+    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+    	
+    	this.on('boxready', function(cmp) {
+			var canvas = this.getTargetEl().dom.querySelector("canvas");
+	    	this.draw(canvas);
+
+    		canvas.addEventListener('mousemove', function(evt) {
+    			if (cmp.documentTerms) {
+        			var rect = canvas.getBoundingClientRect(), x =  evt.clientX - rect.left, y = evt.clientY - rect.top;
+        			
+        			var currentTerms = {};
+        			cmp.documentTerms.each(function(documentTerm) {
+        				var dx = documentTerm.get('x'), dy = documentTerm.get('y');
+        				if (dx>x-15 &amp;&amp; dx&lt;x+15 &amp;&amp; dy>y-15 &amp;&amp; dy&lt;y+15) {
+        					currentTerms[documentTerm.getTerm()] = true;
+        					return false;
+        				}
+        			})
+        			
+        			// no need to do anything if there are no current terms and none found
+        			if (Object.keys(cmp.currentTerms || {}).length==0 &amp;&amp; Object.keys(currentTerms).length==0) {return;}
+
+        			cmp.currentTerms = currentTerms;
+        			cmp.draw(canvas); // otherwise redraw
+    			}
+    			
+    	      }, false);
+    	})
+    	
+    	this.on('loadedCorpus', function(src, corpus) {
+			this.loadDocument();
+    	}, this);
+    	
+    	this.on("documentselected", function(src, doc) {
+    		this.setApiParam('docIndex', this.getCorpus().getDocument(doc).getIndex());
+    		this.loadDocument();
+    	});
+    	
+    	this.on("resize", function() {
+    		var gutter = 20,
+			availableWidth = this.getTargetEl().getWidth() - gutter - gutter,
+			availableHeight = this.getTargetEl().getHeight() - gutter - gutter,
+			diam = Math.max(availableWidth, availableHeight), rad = diam /2,
+			ratio = Math.min(availableWidth, availableHeight) / diam,
+			canvas = this.getTargetEl().dom.querySelector("canvas");
+    		
+			canvas.width = this.getTargetEl().getWidth();
+			canvas.height = this.getTargetEl().getHeight();
+			this.setDiam(diam);
+			this.setPerim([]);
+			var i = parseInt(diam*.75)
+			while (this.getPerim().length&lt;diam) {
+	    		this.getPerim().push({
+	    			x:  gutter+(availableWidth/2)+(rad * (availableWidth>availableHeight ? 1 : ratio) * Math.cos(2 * Math.PI * i / diam)),
+	    			y:  gutter+(availableHeight/2)+(rad * (availableHeight>availableWidth ? 1 : ratio) * Math.sin(2 * Math.PI * i / diam))
+	    		})
+	    		if (i++==diam) {i=0;}
+			}
+			
+			// TODO clear previous/current drawing
+    	})
+    },
+    
+    draw: function(canvas, ctx) {
+    	canvas = canvas ||  this.getTargetEl().dom.querySelector("canvas");
+    	ctx = ctx || canvas.getContext("2d");
+    	ctx.clearRect(0,0,canvas.width,canvas.height);
+		ctx.fillStyle = "rgba(0,0,0,.1)";
+    	this.getPerim().forEach(function(p,i) {
+    		if (i%3==0) {
+        		ctx.fillRect(p.x-5,p.y,10,1)
+    		}
+    	})
+    	if (this.documentTerms) {
+        	this.drawTerms(canvas, ctx);
+        	this.drawReading(canvas,ctx);
+        	if (this.isReading) {
+        		var me = this;
+        		setTimeout(function() {
+        			me.draw();
+        		}, 10)
+        	}
+    	}
+    },
+    
+    drawReading: function(canvas, ctx) {
+    	ctx = ctx || this.getTargetEl().dom.querySelector("canvas").getContext("2d");
+    	var delay = 2000-(parseInt(this.getApiParam('speed'))*1999/100);
+    	if (this.isReading &amp;&amp; this.documentTerms) {
+    		var current = parseInt(this.readingIndex * this.getPerim().length / this.lastToken);
+    		ctx.fillStyle = "purple";
+    		ctx.fillRect(this.getPerim()[current].x,this.getPerim()[current].y, 5, 5)
+			var first = this.readingStartTime == undefined;
+			this.readingStartTime = this.readingStartTime || new Date().getTime();
+			var delta = this.readingStartTime+delay-new Date().getTime();
+    		if (this.sourceTerm &amp;&amp; this.targetTerm) {
+    			var maxTail = 10;
+    			if (first || delta&lt;=0) {
+    				this.previousBeziers = this.previousBeziers || []; // this should be reset by tokens reader during first read
+        			var sx = this.sourceTerm.get('x'), sy = this.sourceTerm.get('y'), tx = this.targetTerm.get('x'), ty = this.targetTerm.get('y'),
+    					px = this.previousTerm ? this.previousTerm.get('x') : sx, py = this.previousTerm ? this.previousTerm.get('y') : sy,
+    					round = 100, multiplier = .3;
+    				
+        			var ix, iy, xd = Math.max(round, Math.abs(sx-tx) * .5), yd = Math.max(round, Math.abs(sy-ty) * .5);
+        			ix = sx > tx ? sx - xd : sx + xd;
+        			iy = ty > sy ? sy + yd : sy - yd;
+    				this.previousBeziers.unshift([sx,sy,ix,iy,tx,ty]);
+    				if (this.previousBeziers.length>maxTail) {this.previousBeziers.pop()}
+    			}
+    			
+    			for (var i=0; i&lt;this.previousBeziers.length; i++) {
+	        		ctx.strokeStyle="rgba(0,0,255,"+(1-(i*.1))+")";
+    				var start = i+1 == this.previousBeziers.length ? 1-(delta/delay) : 0;
+    				var end = i==0 ? 1-(delta/delay) : 1;
+            		this.drawBezierSplit.apply(this, Ext.Array.merge([ctx], this.previousBeziers[i], [start], [end]));
+    			}
+    			if (delta&lt;=0) {
+        			this.readingStartTime = undefined;
+        			this.read();
+    			}
+    		}
+    		var nextReadingIndex = this.readingIndex+1;
+    		for (var len=this.tokens.getCount(); nextReadingIndex&lt;len; nextReadingIndex++) {
+    			if (this.tokens.getAt(nextReadingIndex).getTerm().toLowerCase()==this.targetTerm.getTerm()) {
+    				break;
+    			}
+    		}
+    		var startReadingIndex = nextReadingIndex-parseInt(delta*(nextReadingIndex-this.readingIndex)/delay), count = this.tokens.getCount();
+    		for (; startReadingIndex&lt;nextReadingIndex; startReadingIndex++) {
+    			if (startReadingIndex &lt; count &amp;&amp; this.tokens.getAt(startReadingIndex).isWord()) {
+    				break;
+    			}
+    		}
+    		var tokens = this.tokens.getRange(startReadingIndex, len=Math.min(this.readingIndex+50, this.tokens.getCount())).map(function(token) {
+    			return token.getTerm();
+    		})
+	    	ctx.font = "14px sans-serif";
+    		ctx.fillStyle = "rgba(0,0,0,.5)";
+        	ctx.textAlign = "left";
+    		ctx.fillText(tokens.join(""), canvas.width/4, canvas.height-5);
+    		ctx.clearRect(canvas.width*.75, canvas.height-20, canvas.width, 30)
+    	} else if (this.documentTerms &amp;&amp; this.documentTerms.getCount()&lt;this.documentTerms.getTotalCount()) {
+    		var x = canvas.width / 4;
+    		ctx.strokeStyle="rgba(0,0,0,.5)";
+    		ctx.fillStyle = "rgba(0,0,0,.2)";
+    		ctx.strokeRect(x,canvas.height-12,x*2,10);
+    		ctx.fillRect(x,canvas.height-12,(this.documentTerms.getCount()*x*2)/this.documentTerms.getTotalCount(),10);
+    	}
+    },
+    
+    drawTerms: function(canvas, ctx) {
+    	canvas = canvas || this.getTargetEl().dom.querySelector("canvas");
+    	ctx = ctx || canvas.getContext("2d");
+    	ctx.textAlign = "center";
+    	if (this.documentTerms &amp;&amp; this.getPerim().length > 0) {
+    		this.documentTerms.each(function(documentTerm) {
+    			var me = this, freq = documentTerm.getRawFreq(), term = documentTerm.getTerm(),
+    				x = documentTerm.get('x'), y = documentTerm.get('y');
+    			isCurrentTerm = me.currentTerms &amp;&amp; (term in me.currentTerms);
+    			isReadingTerm = this.sourceTerm &amp;&amp; this.sourceTerm.getTerm() == term;
+    	    	ctx.font = ((Math.log(freq)*(canvas.width*10/800)/Math.log(this.maxRawFreq))+(isCurrentTerm || isReadingTerm ? 10 : 5)) + "px sans-serif";
+    	    	if (isCurrentTerm) {
+    	    		ctx.fillStyle = "red";
+    	    	} else if (isReadingTerm) {
+    	    		ctx.fillStyle = "blue";
+    	    	} else {
+    	    		ctx.fillStyle = "rgba(0,0,0,"+((freq*.9/this.maxRawFreq)+.1)+")";
+    	    	}
+    	    	if (isCurrentTerm || isReadingTerm) {
+    	    		ctx.strokeStyle = isCurrentTerm ? "rgba(255,0,0,.2)" : "rgba(0,255,0,.4)";
+    	    		documentTerm.getDistributions().forEach(function(d, i) {
+    	    			if (d>0 &amp;&amp; this.getPerim()[i]) {
+    	    				ctx.beginPath();
+    	    				ctx.moveTo(x, y);
+    	    				ctx.lineTo(this.getPerim()[i].x,this.getPerim()[i].y);
+    	    				ctx.stroke();
+    	    			}
+    	    		}, this)
+    	    	}
+    			ctx.fillText(term, x, y);
+    			
+    		}, this)    		
+    	}
+    },
+    
+    read: function(index) {
+    	if (Ext.isNumber(index)) {this.readingIndex=index;}
+    	else {this.readingIndex++;}
+    	if (this.sourceTerm) {this.previousTerm=this.sourceTerm;}
+    	for (var i=this.readingIndex, len = this.tokens.getCount(); i&lt;len; i++) {
+    		var token = this.tokens.getAt(i), term = token.getTerm().toLowerCase();
+    		if (term in this.termsMap) {
+    			this.sourceTerm = this.termsMap[term];
+    			if (this.sourceTerm.getRawFreq()>=1) {
+        			this.readingIndex = i;
+        			break
+    			}
+    		}
+    	}
+    	for (var i=this.readingIndex+1, len = this.tokens.getCount(); i&lt;len; i++) {
+    		var token = this.tokens.getAt(i), term = token.getTerm().toLowerCase();
+    		if (term in this.termsMap) {
+    			this.targetTerm = this.termsMap[term];
+    			if (this.targetTerm.getRawFreq()>=1) {
+        			break;
+    			}
+    		}
+    	}
+    	if (!this.tokensLoading &amp;&amp; this.tokens.getCount()-this.readingIndex&lt;this.tokensFetch) {
+    		this.fetchMoreTokens();
+    	}
+    	this.draw();
+    },
+    
+    
+    loadDocument: function() {
+    	if (this.documentTerms) {this.documentTerms.destroy();this.documentTerms=undefined;}
+    	this.termsMap = {};
+    	this.draw();
+    	var doc =  this.getCorpus().getDocument(parseInt(this.getApiParam('docIndex')));
+    	// if we're not in a tab panel, set the document title as part of the header
+    	if (!this.up("tabpanel")) {
+        	this.setTitle(this.localize('title') + " &lt;span class='subtitle'>"+doc.getFullLabel()+"&lt;/span>");
+    	}
+    	this.lastToken = parseInt(doc.get('lastTokenStartOffset-lexical'));
+    	this.documentTerms = doc.getDocumentTerms({
+    		proxy: {
+    			extraParams: {
+    				stopList: this.getApiParam('stopList'),
+    				bins: this.getDiam(),
+    				withDistributions: 'raw',
+    				minRawFreq: parseInt(this.getApiParam('minRawFreq'))
+    			}
+    		}
+    	});
+    	var search = this.queryById('search');
+    	search.setDisabled(true);
+    	search.setStore(this.documentTerms);
+    	this.fetchMoreDocumentTerms();
+    },
+    
+    fetchMoreDocumentTerms: function() {
+    	if (!this.documentTerms) {this.loadDocument(); return;}
+    	this.documentTerms.load({
+    		params: {
+    			start: this.documentTerms.getCount(),
+    			limit: this.documentTerms.getCount() == 0 ? 10 : 250
+    		},
+    		callback: function(records) {
+    			if (records.length>0) {
+            		this.maxRawFreq = this.documentTerms.max('rawFreq');
+            		records.forEach(function(documentTerm) {
+            			var x = y = 0;
+            			documentTerm.get('distributions').forEach(function(d, i) {
+            				x += (this.getPerim()[i].x*d);
+            				y += (this.getPerim()[i].y*d);
+            			}, this)
+            			documentTerm.set('x', x/documentTerm.getRawFreq());
+            			documentTerm.set('y', y/documentTerm.getRawFreq());
+            		}, this);
+    				Ext.Function.defer(this.fetchMoreDocumentTerms, 0, this);
+    				this.draw();
+    			} else {
+    				this.queryById('search').setDisabled(false);
+    				this.termsMap = {};
+    				this.documentTerms.each(function(documentTerm) {
+    					this.termsMap[documentTerm.getTerm()] = documentTerm;
+    				}, this)
+    				if (this.tokens) {this.tokens.removeAll(true)}
+    				this.fetchMoreTokens();
+    			}
+    		},
+    		addRecords: true,
+    		scope: this
+    	})
+    },
+    
+    fetchMoreTokens: function() {
+		if (!this.tokens) {
+			this.tokens = this.getCorpus().getDocument(parseInt(this.getApiParam('docIndex'))).getTokens({
+				proxy: {
+					extraParams: {
+	    				stripTags: 'all'
+					}
+				}
+			});
+			this.noMoreTokens = false;
+		} else if (this.noMoreTokens) {return;}
+		
+		var first = this.tokens.getCount() == 0;
+		this.tokensLoading = true;
+		var speed = parseInt(this.getApiParam('speed'));
+    	this.tokens.load({
+    		params: {
+    			start: this.tokens.getCount(),
+    			limit: speed==50 &amp;&amp; first ? 200 : Math.pow(110-speed, 2)
+    		},
+    		callback: function(records) {
+    			this.tokensLoading = false;
+    			if (records.length>0) {
+    				records.forEach(function(token) {
+    					if (token.getTokenType()=='other') {
+    						token.set('term', token.getTerm().replace(/\s+/g, " "))
+    					}
+    				})
+        			if (first) {
+        				this.previousBeziers = [];
+        				// TODO
+//        				if (this.getApiParam('speed') > 0) {
+	        				this.isReading = true;
+	        				this.read(0);
+//        				}
+        			}
+    			} else {
+    				this.noMoreTokens = true;
+    			}
+    		},
+    		addRecords: true,
+    		scope: this
+
+    	});
+    },
+    
+    /* The functions below adapted from http://www.pjgalbraith.com/drawing-animated-curves-javascript/ */
+    
+    /**
+     * Animates bezier-curve
+     * 
+     * @param ctx       The canvas context to draw to
+     * @param x0        The x-coord of the start point
+     * @param y0        The y-coord of the start point
+     * @param x1        The x-coord of the control point
+     * @param y1        The y-coord of the control point
+     * @param x2        The x-coord of the end point
+     * @param y2        The y-coord of the end point
+     * @param duration  The duration in milliseconds
+     * @private
+     */
+    animatePathDrawing: function(ctx, x0, y0, x1, y1, x2, y2, duration) {
+        var start = null;
+        
+        var step = function animatePathDrawingStep(timestamp) {
+            if (start === null)
+                start = timestamp;
+            
+            var delta = timestamp - start,
+                progress = Math.min(delta / duration, 1);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            
+            // Draw curve
+            drawBezierSplit(ctx, x0, y0, x1, y1, x2, y2, 0, progress);
+            
+            if (progress &lt; 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        
+        window.requestAnimationFrame(step);
+    },
+    
+    /**
+     * Draws a splitted bezier-curve
+     * 
+     * @param ctx       The canvas context to draw to
+     * @param x0        The x-coord of the start point
+     * @param y0        The y-coord of the start point
+     * @param x1        The x-coord of the control point
+     * @param y1        The y-coord of the control point
+     * @param x2        The x-coord of the end point
+     * @param y2        The y-coord of the end point
+     * @param t0        The start ratio of the splitted bezier from 0.0 to 1.0
+     * @param t1        The start ratio of the splitted bezier from 0.0 to 1.0
+     * @private
+     */
+    drawBezierSplit: function(ctx, x0, y0, x1, y1, x2, y2, t0, t1) {
+        ctx.beginPath();
+        
+        if( 0.0 == t0 &amp;&amp; t1 == 1.0 ) {
+            ctx.moveTo( x0, y0 );
+            ctx.quadraticCurveTo( x1, y1, x2, y2 );
+        } else if( t0 != t1 ) {
+            var t00 = t0 * t0,
+                t01 = 1.0 - t0,
+                t02 = t01 * t01,
+                t03 = 2.0 * t0 * t01;
+            
+            var nx0 = t02 * x0 + t03 * x1 + t00 * x2,
+                ny0 = t02 * y0 + t03 * y1 + t00 * y2;
+            
+            t00 = t1 * t1;
+            t01 = 1.0 - t1;
+            t02 = t01 * t01;
+            t03 = 2.0 * t1 * t01;
+            
+            var nx2 = t02 * x0 + t03 * x1 + t00 * x2,
+                ny2 = t02 * y0 + t03 * y1 + t00 * y2;
+            
+            var nx1 = this.lerp ( this.lerp ( x0 , x1 , t0 ) , this.lerp ( x1 , x2 , t0 ) , t1 ),
+                ny1 = this.lerp ( this.lerp ( y0 , y1 , t0 ) , this.lerp ( y1 , y2 , t0 ) , t1 );
+            
+            ctx.moveTo( nx0, ny0 );
+            ctx.quadraticCurveTo( nx1, ny1, nx2, ny2 );
+        }
+        
+        ctx.stroke();
+        ctx.closePath();
+    },
+    
+    /**
+     * Linearly interpolate between two numbers v0, v1 by t
+     * @private
+     */
+    lerp: function(v0, v1, t) {
+        return ( 1.0 - t ) * v0 + t * v1;
+    }
+    
+    
+    
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
