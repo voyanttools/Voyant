@@ -1,7 +1,14 @@
 /**
+ * My namespace.
+ * @namespace Tools
+ */
+
+
+/**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
  * @class CorpusTerms
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.CorpusTerms', {
 	extend: 'Ext.grid.Panel',

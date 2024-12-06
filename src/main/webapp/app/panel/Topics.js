@@ -2,6 +2,7 @@
  * The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
  * 
  * @class Topics
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Topics', {
 	extend: 'Ext.panel.Panel',

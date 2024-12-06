@@ -7,9 +7,18 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			overview: 'Overview',
 			configs: 'Configs',
 			methods: 'Methods',
+
 			docs: 'Docs',
 			openFull: 'Open Full Documentation',
-			outlineIntro: 'This is an inline version of the API documentation for <a href="#!/guide/notebook">Spyral Notebooks</a>. You can also <a href="#!/api">view the full documentation</a> in a new window.<br/><br/>For tutorials on how to use Spyral check out the <a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/">Spyral Tutorials Table of Contents</a>.',
+			outlineIntro: 'Welcome to the Spyral Docs. Here are some links to help you navigate.<br><br>' +
+			    '<a href="#!/api/Spyral.Corpus">LoadCorpus</a> - Get Started with LoadCorpus.<br>' +
+			    '<a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/">Tutorials</a> - Link to tutorial notebooks.<br>' +
+			    '<a href="#!/api/Spyral.Corpus-method-tool">Tools Documentation</a> - Full Tools Documentation.<br>' +
+			    '<br>' +
+			    'Alternativly take a look at our detailed Documentation:<br>' +
+			    '<br>' +
+			    '<a href="#!/api">Full API Documentation</a> - Open up detailed API Documentation<br>' +
+			    '<a href="#!/guide/tools">Full Tool Documentation</a> - Open up detailed Tool Documentation<br><hr>',
 			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
 			loadingDocs: 'Loading Docs'
 		}

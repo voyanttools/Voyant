@@ -2,6 +2,7 @@
  * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
  * 
  * @class Contexts
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Contexts', {
 	extend: 'Ext.grid.Panel',
