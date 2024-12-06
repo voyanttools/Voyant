@@ -446,7 +446,7 @@
  * - **formats**:
  * 	- **Text**: {@link #inputRemoveFrom}, {@link #inputRemoveFromAfter}, {@link #inputRemoveUntil}, {@link #inputRemoveUntilAfter}
  * 	- **XML**: {@link #xmlAuthorXpath}, {@link #xmlCollectionXpath}, {@link #xmlContentXpath}, {@link #xmlExtraMetadataXpath}, {@link #xmlKeywordXpath}, {@link #xmlPubPlaceXpath}, {@link #xmlPublisherXpath}, {@link #xmlTitleXpath}
- * 	- **Tables**: {@link #tableAuthor}, {@link #tableContent}, {@link #tableDocuments}, {@link #tableNoHeadersRow}, {@link #tableTitle}
+ * 	- **Tables**: {@link #tableAuthor}, {@link #tableContent}, {@link #tableDocuments}, {@link #tableNoHeadersRow}, {@link #tableTitle}, {@link #tableGroupBy}
  * - **other**: {@link #inputFormat}, {@link #subTitle}, {@link #title}, {@link #tokenization}
  * @class Spyral.Corpus
  */
@@ -528,7 +528,7 @@
  * - **rows**: each row of the table is a separate document
  * - **columns**: each column of the table is a separate document
  * 
- * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+ * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
  */
 
 
@@ -544,7 +544,7 @@
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
  * 
- * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+ * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
  */
 
 
@@ -560,7 +560,7 @@
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
  * 
- * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+ * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
  */
 
 
@@ -576,7 +576,23 @@
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
  * 
- * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+ * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
+ */
+
+
+/**
+* @cfg {String} tableGroupBy Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.
+ * 
+ * Columns are referred to by numbers, the first is column 1 (not 0).
+ * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
+ * 
+ * Some examples:
+ * 
+ * - **1**: use column 1
+ * - **1,2**: use columns 1 and 2 separately
+ * - **1+2,3**: combine columns 1 and two and use column 3 separately
+ * 
+ * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
  */
 
 
@@ -585,7 +601,7 @@
  * 
  * Provide a value of "true" if there is no header row, otherwise leave it blank or undefined (default).
  * 
- * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tables).
+ * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
  */
 
 
@@ -687,7 +703,7 @@
 
 
 /**
-* @cfg {String} xmlGroupByXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
+* @cfg {String} xmlGroupByXpath The XPath expression by which to group multiple documents; only used for XML-based documents.
  * 
  * 		loadCorpus("<doc><sp s='Juliet'>Hello!</sp><sp s='Romeo'>Hi!</sp><sp s='Juliet'>Bye!</sp></doc>", {
  * 			 xmlDocumentsXpath: '//sp',
@@ -1075,8 +1091,8 @@
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
 	 * @param {number} config.minRawFreq the minimum raw frequency of terms
-	 * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
-	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.query a term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
+	 * @param {string} config.stopList a list of stopwords to include (see <a href="https://voyant-tools.org/docs/#!/guide/stopwords" target="_blank">https://voyant-tools.org/docs/#!/guide/stopwords</a>)
 	 * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	 * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -1188,7 +1204,7 @@
      * 
      *  * **start**: the zero-based start index of the list (for paging)
      *  * **limit**: the maximum number of terms to provide per request
-     *  * **query**: a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     *  * **query**: a term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
      *  * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -1214,7 +1230,7 @@
      * @param {Object} config an Object specifying parameters (see above)
      * @param {number} config.start the zero-based start index of the list (for paging)
      * @param {number} config.limit the maximum number of terms to provide per request
-     * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     * @param {string} config.query a term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
      * @param {string} config.sort the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
      * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -1426,11 +1442,14 @@
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **minRawFreq**: the minimum raw frequency of the collocate terms
 	 *  * **termsOnly**: a very compact data view of the correlations
 	 *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      * 
+	 * The following is specific to corpus mode:
+	 * 
+	 *  * **minInDocumentsCountRatio**: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
+	 * 
      * The following are specific to documents mode:
      * 
 	 *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
@@ -1444,7 +1463,7 @@
      * @param {Object} config an Object specifying parameters (see above)
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
-	 * @param {number} config.minRawFreq the minimum raw frequency of the collocate terms
+	 * @param {number} config.minInDocumentsCountRatio the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
 	 * @param {boolean} config.termsOnly a very compact data view of the correlations
 	 * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
 	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
@@ -1464,9 +1483,30 @@
 /**
 * Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:
 	 * 
-	 * * **topicWords**: a list of topics (words organized into bunches of a specified size)
-	 * * **topicDocuments**: a list of documents and their topic weights
+	 * * **topics**: an array of topics (words organized into bunches of a specified size)
+	 * * **topicDocuments**: an array of documents and their topic weights
 	 *
+	 * Each topic in the **topics** array is an object with the following properties:
+	 * 
+	 * * **words**: an array of the actual words that form the topic. Each word has the same properties as the topic, as well as a "word" property that contains the text content.
+	 * * tokens
+	 * * documentEntropy
+	 * * wordLength
+	 * * coherence
+	 * * uniformDist
+	 * * corpusDist
+	 * * effNumWords
+	 * * tokenDocDiff
+	 * * rank1Docs
+	 * * allocationRatio
+	 * * allocationCount
+	 * * exclusivity
+	 * 
+	 * Each document in the **topicDocuments** array is an object with the following properties:
+	 * 
+	 *  * docId: the document ID
+	 *  * weights: an array of the numbers corresponding to the the weight of each topic in this document
+	 * 
 	 * The config object as parameter can contain the following:
 	 * 
 	 * * **topics**: the number of topics to get (default is 10)
@@ -1482,7 +1522,7 @@
 	 * @param {number} config.iterations the number of iterations to do, more iterations = more accurate (default is 100)
 	 * @param {number} config.perDocLimit specify a token limit per document, starting at the beginning of the document
 	 * @param {number} config.seed specify a particular seed to use for random number generation
-	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.stopList a list of stopwords to include (see <a href="https://voyant-tools.org/docs/#!/guide/stopwords" target="_blank">https://voyant-tools.org/docs/#!/guide/stopwords</a>)
 	 * @returns {Promise<Object>}
 	  * @method topics
  */
@@ -1494,13 +1534,37 @@
 	 * The config object as parameter can contain the following:
 	 * 
 	 *  * **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  * **annotator**: the annotator to use: 'stanford' or 'nssi'
+	 *  * **annotator**: the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	 * 
 	 * @param {Object} config
 	 * @param {(number|string)} config.docIndex document index to restrict to (can be comma-separated list)
-	 * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi'
+	 * @param {string} config.annotator the annotator to use: 'stanford' or 'nssi' or 'spacy'
 	 * @returns {Promise<Array>}
 	  * @method entities
+ */
+
+
+/**
+* Performs one of several dimension reduction statistical analysis techniques.
+	 * 
+	 * For more details see <a href="https://voyant-tools.org/docs/#!/guide/scatterplot" target="_blank">https://voyant-tools.org/docs/#!/guide/scatterplot</a>.
+	 * 
+	 * @param {Object} config 
+	 * @param {string} config.type The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'
+	 * @param {number} config.start The zero-based start of the list
+	 * @param {number} config.limit A limit to the number of items to return at a time
+	 * @param {number} config.dimensions The number of dimensions to render, either 2 or 3.
+	 * @param {number} config.bins The number of bins to separate a document into.
+	 * @param {number} config.clusters The number of clusters within which to group words.
+	 * @param {number} config.perplexity The TSNE perplexity value.
+	 * @param {number} config.iterations The TSNE iterations value.
+	 * @param {string} config.comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
+	 * @param {string} config.target The term to set as the target. This will filter results to terms that are near the target.
+	 * @param {string} config.term Used in combination with "target" as a white list of terms to keep.
+	 * @param {string} config.query A term query (see <a href="https://voyant-tools.org/docs/#!/guide/search" target="_blank">https://voyant-tools.org/docs/#!/guide/search</a>)
+	 * @param {string} config.stopList A list of stopwords to include (see <a href="https://voyant-tools.org/docs/#!/guide/stopwords" target="_blank">https://voyant-tools.org/docs/#!/guide/stopwords</a>)
+	 * @returns {Promise<Object>}
+	  * @method analysis
  */
 
 
@@ -2515,6 +2579,15 @@
  */
 
 
+/**
+* Takes a file extension and returns the corresponding Voyant Document Format name.
+	 * @param {String} fileExtension 
+	 * @returns {String}
+	 * @static
+ * @method getVoyantDocumentFormatFromFileExtension
+ */
+
+
 
 
 // *** Documentation extracted from: ..\spyral\src\dataviewer.js ***
@@ -2655,7 +2728,7 @@
 
 
 /**
-* Returns the target element
+* Returns the first DIV element that's a child of the document body. If none exists then one will be created.
 	 * @returns {element}
 	 * @static
  * @method getTarget

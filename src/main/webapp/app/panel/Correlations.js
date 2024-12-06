@@ -1,3 +1,8 @@
+/**
+ * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
+ * 
+ * @class Correlations
+ */
 Ext.define('Voyant.panel.Correlations', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -6,11 +11,68 @@ Ext.define('Voyant.panel.Correlations', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Correlations
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Correlations
+			 * @property {Number} minInDocumentsCountRatio The minimum coverage (as a percentage) for terms. For instance, if a corpus has 10 documents and the minimum coverage is 20%, at least two of the documents must contain the term or it will be ignored.
+			 * @default
+			 */
     		minInDocumentsCountRatio: 100,
+
+			/**
+			 * @memberof Correlations
+			 * @property {WithDistributions}
+			 * @default
+			 */
+			withDistributions: 'relative',
+
+			/**
+			 * @memberof Correlations
+			 * @property {Columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
+			 */
+			columns: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {SortColumn}
+			 */
+			sort: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {SortDir}
+			 */
+			dir: undefined,
+
+			/**
+			 * @memberof Correlations
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'

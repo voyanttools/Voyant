@@ -168,6 +168,10 @@ Ext.define('Voyant.panel.Catalogue', {
     	
         // create a listener for corpus loading (defined here, in case we need to load it next)
     	this.on('loadedCorpus', function(src, corpus) {
+			if (this.hasModifyCorpusAccess(corpus) === false) {
+				this.queryById('sendToVoyant').hide();
+				this.queryById('export').hide();
+			}
     		this.queryById('status').update(new Ext.XTemplate(this.localize('noMatches')).apply([corpus.getDocumentsCount()]))
     		if (!this.getCustomResultsHtml()) {
     			if (this.getApiParam("splash")) {
@@ -339,7 +343,6 @@ Ext.define('Voyant.panel.Catalogue', {
 	    	}
     	}
 		var results = this.queryById("results").getTargetEl();
-		var catalogue = this;
 		results.update(this.getCustomResultsHtml() ? this.getCustomResultsHtml() : new Ext.XTemplate(this.localize('noMatches')).apply([this.getCorpus().getDocumentsCount()]));
 		this.queryById('status').update(new Ext.XTemplate(this.localize('noMatches')).apply([this.getCorpus().getDocumentsCount()]))
 		this.queryById('sendToVoyant').setDisabled(true);

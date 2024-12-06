@@ -1,3 +1,8 @@
+/**
+ * The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
+ * 
+ * @class Phrases
+ */
 Ext.define('Voyant.panel.Phrases', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -7,15 +12,71 @@ Ext.define('Voyant.panel.Phrases', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Phrases
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Phrases
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Phrases
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Phrases
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
-    		sort: 'length',
-    		dir: 'desc',
+
+			/**
+			 * @memberof Phrases
+			 * @property {Number} minLength The minimum length (number of words) of the phrase to consider.
+			 * @default
+			 */
     		minLength: 2,
+
+			/**
+			 * @memberof Phrases
+			 * @property {Number} maxLength The maximum length (number of words) of the phrase to consider.
+			 * @default
+			 */
     		maxLength: 50,
-    		overlapFilter: 'length'
+
+			/**
+			 * @memberof Phrases
+			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See <a href="#!/guide/phrases-section-options">Phrases options</a> for more info.
+			 * @default
+			 */
+    		overlapFilter: 'length',
+
+			/**
+			 * @memberof Phrases
+			 * @property {Columns} columns 'term', 'rawFreq', 'length', 'distributions'
+			 */
+			columns: undefined,
+
+			/**
+			 * @memberof Phrases
+			 * @property {SortColumn}
+			 * @default
+			 */
+			sort: 'length',
+
+			/**
+			 * @memberof Phrases
+			 * @property {SortDir}
+			 * @default
+			 */
+			dir: 'desc'
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -140,8 +201,8 @@ Ext.define('Voyant.panel.Phrases', {
                 }, {
                 	xtype: 'slider',
                 	minValue: 2,
-                	values: [2, 30],
-                	maxValue: 30,
+                	values: [2, 50],
+                	maxValue: 50,
                 	increment: 1,
                 	width: 75,
                 	tooltip: this.localize("lengthTip"),
@@ -198,7 +259,7 @@ Ext.define('Voyant.panel.Phrases', {
                                group: 'overlap',
                                inputValue: 'rawFreq',
                                checkHandler: function() {
-                            	   this.setApiParam('overlapFilter', 'rawfreq')
+                            	   this.setApiParam('overlapFilter', 'rawFreq')
                             	   this.getStore().load({params: this.getApiParams()})
                                },
                                scope: this

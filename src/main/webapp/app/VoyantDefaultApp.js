@@ -17,6 +17,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			rtl: undefined
 		}
 	},
+	config: {
+		showServerMessage: 'false'
+	},
 	
 	listeners: {
     	loadedCorpus: function(src, corpus) {
@@ -64,7 +67,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			});
 			xtype = 'corpusset'; // switch to default view
 		}
-		var SPLIT_SIZE = 5;
+
 		this.viewport = Ext.create('Ext.container.Viewport', {
 		    layout: 'border',
 		    rtl: (this.getApiParam('rtl')!==undefined || Voyant.util.Localization.LANGUAGE=="ar" || Voyant.util.Localization.LANGUAGE=="he"),
@@ -99,11 +102,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 						"</div>"
 					},{
 						xtype: 'container',
-						width: 'auto',
+						width: 800,
 						html: ""+
-						"<div style='font-style: italic; text-align: center; margin-top: 10px;'>"+
-							"<div>"+this.localize('serverMessage')+"</div>"+
-						"</div>"
+						"<div id='voyantServerMessage' style='font-style: italic; text-align: center; margin-top: 10px;'></div>"
 					}]	
 				},{
 					layout: 'fit',
@@ -114,6 +115,22 @@ Ext.define('Voyant.VoyantDefaultApp', {
 				}]
 		    }]
 		});
+		if (this.getShowServerMessage() === 'true') {
+			this.getServerMessage();
+		}
 		this.callParent(arguments);
+	},
+	getServerMessage: function() {
+		$.get('trombone', {
+			fetchData: 'https://raw.githubusercontent.com/wiki/voyanttools/voyant/Announcements.md'
+		}, function(data) {
+			var converter = new showdown.Converter();
+			var html = converter.makeHtml(data);
+			var cleanHtml = DOMPurify.sanitize(html);
+			$('#voyantServerMessage').html(cleanHtml);
+		}, 'text')
+		.fail(function() {
+			console.log('failed to fetch server message')
+		});
 	}
 });

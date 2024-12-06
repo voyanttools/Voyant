@@ -25,6 +25,9 @@ def parse_file(fullfilename):
             if "@see" in comments:
                 # match see links that are on their own line and remove them (since they are links to the API)
                 comments = re.sub(r'\s*\*\s+@see\s+\{@link.*?\}', "", comments)
+            if "@link" in comments:
+                # convert external links to <a href>
+                comments = re.sub(r'\{@link\s+(http.*?)\}', r'<a href="\1" target="_blank">\1</a>', comments)
             if "@typedef" in comments:
                 typeDefMatch = typeDefRe.search(comments)
                 typeDefType = typeDefMatch.group(1)

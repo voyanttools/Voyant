@@ -1,3 +1,8 @@
+/**
+ * Embedder provides a way to embed a web page into your Voyant Tools experience.
+ * 
+ * @class Embedder
+ */
 Ext.define('Voyant.panel.Embedder', {
 	extend: 'Ext.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -11,6 +16,10 @@ Ext.define('Voyant.panel.Embedder', {
 			helpTip: 'Embedder provides a way to embed a web page into your Voyant Tools experience.'
 		},
 		api: {
+			/**
+			 * @memberof Embedder
+			 * @property {String} url The URL of the web page to embed.
+			 */
 			url: undefined
 		},
 		glyph: 'xf0c1@FontAwesome'

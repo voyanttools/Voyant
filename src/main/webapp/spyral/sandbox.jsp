@@ -48,6 +48,7 @@ table.spyral-table td:last-child {
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/offline-exporting.js"></script-->
 
 		<script type="text/javascript" src="<%=base %>/resources/d3/current/d3.min.js"></script>
+		<script type="text/javascript" src="<%=base %>/resources/d3/d3-scale-chromatic.min.js"></script>
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
 

@@ -1,15 +1,8 @@
 // assuming Cirrus library is loaded by containing page (via voyant.jsp)
 /**
- * Cirrus tool, a wordcloud-like visuaization.
+ * Cirrus tool, a wordcloud-like visualization.
  * 
- * 	// simple cirrus
- * 	loadCorpus("austen").tool("cirrus");
- *
- * 	// define stopwords list and styling
- * 	loadCorpus("austen").tool("cirrus", {
- * 		stopList: 'auto',
- * 		style: 'width: 500px; height: 400px'
- * 	});
+ * @class Cirrus
  */
 Ext.define('Voyant.panel.Cirrus', {
 	extend: 'Ext.panel.Panel',
@@ -20,36 +13,68 @@ Ext.define('Voyant.panel.Cirrus', {
     	},
     	api: {
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * @default auto
-    		 * 
-    		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof Cirrus
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
+			/**
+			 * @memberof Cirrus
+			 * @property {Categories}
+			 */
     		categories: undefined,
-    		whiteList: undefined, // specify a list of words to use
+
+			/**
+			 * @memberof Cirrus
+			 * @property {String|String[]} whiteList a list of words to always include
+			 */
+    		whiteList: undefined,
     		
     		/**
-    		 * @cfg {Number} limit Specify the number of terms to load (which is separate from the number of {@link #visible} terms to show) at a time).
+			 * @memberof Cirrus
+    		 * @property {Number} limit Specify the number of terms to load (which is separate from the number of {@link Cirrus.visible} terms to show) at a time).
     		 * @default 500
     		 */
     		limit: 500,
     		
     		/**
-    		 * @cfg {Number} visible Specify the number of terms that are visible at a time.
+			 * @memberof Cirrus
+    		 * @property {Number} visible Specify the number of terms that are visible at a time.
     		 * @default 50
     		 */
     		visible: 50,
+
+			// TODO unused??
     		terms: undefined,
+
+			/**
+			 * @memberof Cirrus
+    		 * @property {DocId}
+			 */
     		docId: undefined,
+			/**
+			 * @memberof Cirrus
+    		 * @property {DocIndex}
+			 */
     		docIndex: undefined,
     		
-    		inlineData: undefined, // format should match CorpusTerm model, only term and rawFreq required
+			/**
+			 * @memberof Cirrus
+			 * @property {String} inlineData Directly specify the terms and their relative sizes.
+			 * There data format is a comma-separated list of colon-separated term/size pairs.
+			 * For example: love:20,like:15,dear:10,child:6
+			 */
+    		inlineData: undefined,
 
+			/**
+			 * @memberof Cirrus
+			 * @property {String} fontFamily The CSS font-family to use for the terms
+			 * @default
+			 */
     		fontFamily: '"Palatino Linotype", "Book Antiqua", Palatino, serif',
-    		cirrusForceFlash: false,
+    		
+			// TODO remove these flash specific params
+			cirrusForceFlash: false,
     		background: '0xffffff',
     		fade: true,
     		smoothness: 2,
@@ -172,9 +197,14 @@ Ext.define('Voyant.panel.Cirrus', {
 	            	maxValue: 500,
 	            	listeners: {
 	            		afterrender: function(slider) {
-	            			slider.maxValue = this.getApiParam("limit")
-	            			slider.increment = parseInt(slider.maxValue/50)
-	            			slider.setValue(this.getApiParam("visible"))
+							slider.maxValue = this.getApiParam("limit")
+							slider.minValue = Math.round(Math.max(5, parseInt(slider.maxValue/20)));
+							if (slider.maxValue % 25 === 0 && slider.minValue % 25 === 0) {
+								slider.increment = 25; // default values handling
+							} else {
+	            				slider.increment = Math.round((slider.maxValue - slider.minValue)/10); // 10 steps across entire range
+							}
+	            			slider.setValue(this.getApiParam("visible"));
 	            		},
 	            		changecomplete: function(slider, newvalue) {
 	            			this.setApiParams({visible: newvalue});

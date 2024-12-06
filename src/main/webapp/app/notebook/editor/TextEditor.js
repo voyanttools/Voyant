@@ -85,7 +85,7 @@ Ext.define('Voyant.notebook.editor.TextEditor', {
 		editor.on('focus', function(evt) {
 			if (this.getIsFresh()) {
 				this.setIsFresh(false);
-				this.getTargetEl().update('<p></p>'); // insert paragraphs because otherwise ckeditor will do it automatically
+				editor.setData('<p></p>'); // insert paragraphs because otherwise ckeditor will do it automatically
 			}
 		}, this);
 		

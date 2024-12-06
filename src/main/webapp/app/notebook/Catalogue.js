@@ -14,6 +14,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 			noResults: 'No matching notebooks',
 			suggested: 'Suggested Notebooks',
 			load: 'Open Selected Notebook',
+			new: 'New Notebook',
 			close: 'Close'
 		}
 	},
@@ -211,6 +212,13 @@ Ext.define('Voyant.notebook.Catalogue', {
 						this.window.close();
 					},
 					scope: this
+				},{
+					text: this.localize('new'),
+					glyph: 'xf067@FontAwesome',
+					handler: function(but) {
+						let url = Voyant.application.getBaseUrl()+"spyral/";
+						Voyant.application.openUrl(url);
+					}
 				},{
 					text: this.localize('load'),
 					glyph: 'xf115@FontAwesome',

@@ -17,6 +17,7 @@ The user interface of Voyant Tools is available in several languages. By default
 * [Italian](../?lang=it)
 * [Japanese](../?lang=ja)
 * [Portuguese](../?lang=pt)
+* [Russian](../?lang=ru)
 * [Serbian](../?lang=sr)
 * [Spanish](../?lang=es)
 

@@ -1,4 +1,9 @@
 // assuming Knots library is loaded by containing page (via voyant.jsp)
+/**
+ * Knots is a creative visualization that represents terms in a single document as a series of twisted lines.
+ * 
+ * @class Knots
+ */
 Ext.define('Voyant.panel.Knots', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,25 +13,28 @@ Ext.define('Voyant.panel.Knots', {
     	},
     	api: {
     		/**
-        	 * @property query A string to search for in a document.
-        	 * @type String
-    		 * @private
+        	 * @memberof Knots
+			 * @property {Query}
         	 */
     		query: null,
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+			 * @memberof Knots
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
+
     		/**
-    		 * @property docId The document ID to restrict results to.
-    		 * @type String
-    		 * @private
+			 * @memberof Knots
+    		 * @property {DocId}
     		 */
     		docId: undefined,
     		
+			/**
+			 * @memberof Knots
+			 * @property {Boolean} audio Whether or not to play audio during the visualization.
+			 * @default
+			 */
     		audio: false
     	},
     	glyph: 'xf06e@FontAwesome'

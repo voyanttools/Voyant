@@ -1,3 +1,8 @@
+/**
+ * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
+ * 
+ * @class Reader
+ */
 Ext.define('Voyant.panel.Reader', {
 	extend: 'Ext.panel.Panel',
 	requires: ['Voyant.data.store.Tokens'],
@@ -13,9 +18,30 @@ Ext.define('Voyant.panel.Reader', {
 			nerSpacy: 'Entity Identification with SpaCy'
     	},
     	api: {
+			/**
+			 * @memberof Reader
+			 * @property {Start}
+			 * @default
+			 */
     		start: 0,
+
+			/**
+			 * @memberof Reader
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 1000,
+
+			/**
+			 * @memberof Reader
+			 * @property {String} skipToDocId The document ID to start reading from, defaults to the first document in the corpus.
+			 */
     		skipToDocId: undefined,
+
+			/**
+			 * @memberof Reader
+			 * @property {Query}
+			 */
     		query: undefined
     	},
     	glyph: 'xf0f6@FontAwesome'
@@ -26,6 +52,7 @@ Ext.define('Voyant.panel.Reader', {
     	documentsStore: undefined, // for storing a copy of the corpus document models
     	documentTermsStore: undefined, // for getting document term positions for highlighting
 		documentEntitiesStore: undefined, // for storing the results of an entities call
+		enableEntitiesList: true, // set to false when using reader as part of entitiesset
     	exportVisualization: false,
     	lastScrollTop: 0,
 		scrollIntoView: false,
@@ -45,6 +72,7 @@ Ext.define('Voyant.panel.Reader', {
 	MAX_TOKENS_FOR_NER: 100000, // upper limit on document size for ner submission
 
     constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
@@ -285,7 +313,7 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerSpacy'),
 							itemId: 'spacy',
 							checked: true,
-							handler: this.nerSeviceHandler,
+							handler: this.nerServiceHandler,
 							scope: this
 						},{
 							xtype: 'menucheckitem',
@@ -293,7 +321,7 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerNssi'),
 							itemId: 'nssi',
 							checked: false,
-							handler: this.nerSeviceHandler,
+							handler: this.nerServiceHandler,
 							scope: this
 						},{
 							xtype: 'menucheckitem',
@@ -301,7 +329,7 @@ Ext.define('Voyant.panel.Reader', {
 							text: this.localize('nerVoyant'),
 							itemId: 'stanford',
 							checked: false,
-							handler: this.nerSeviceHandler,
+							handler: this.nerServiceHandler,
 							scope: this
 						}
 						// ,{
@@ -310,7 +338,7 @@ Ext.define('Voyant.panel.Reader', {
 						// 	text: 'NER with Voyant (OpenNLP)',
 						// 	itemId: 'opennlp',
 						// 	checked: false,
-						// 	handler: this.nerSeviceHandler,
+						// 	handler: this.nerServiceHandler,
 						// 	scope: this
 						// }
 						]
@@ -390,12 +418,24 @@ Ext.define('Voyant.panel.Reader', {
     					this.fireEvent('termLocationClicked', this, [termRec]);
         			}
         		},
-				entityClicked: function(src, entity) {
-					var docIndex = entity.get('docIndex');
-					var position = entity.get('positions')[0];
-					if (Array.isArray(position)) position = position[0];
-					this.showTermLocation(docIndex, position, entity);
-					
+				entityResults: function(src, entities) {
+					if (entities !== null) {
+						this.clearEntityHighlights(); // clear again in case failed documents were rerun
+						this.setDocumentEntitiesStore(entities);
+						this.highlightEntities();
+						if (this.getEnableEntitiesList()) {
+							this.down('entitieslist').expand().show();
+						}
+					}
+				},
+				entitiesClicked: function(src, entities) {
+					if (entities[0] !== undefined) {
+						var entity = entities[0];
+						var docIndex = entity.get('docIndex');
+						var position = entity.get('positions')[0];
+						if (Array.isArray(position)) position = position[0];
+						this.showTermLocation(docIndex, position, entity);
+					}
 				},
 				entityLocationClicked: function(src, entity, positionIndex) {
 					var docIndex = entity.get('docIndex');
@@ -433,7 +473,7 @@ Ext.define('Voyant.panel.Reader', {
 		}
     },
 
-	showTermLocation(docIndex, position, term) {
+	showTermLocation: function(docIndex, position, term) {
 		var bufferPosition = position - (this.getApiParam('limit')/2);
 		var doc = this.getCorpus().getDocument(docIndex);
 		this.setApiParams({'skipToDocId': doc.getId(), start: bufferPosition < 0 ? 0 : bufferPosition});
@@ -500,7 +540,7 @@ Ext.define('Voyant.panel.Reader', {
 		}, this);
 	},
 
-	nerSeviceHandler: function(menuitem) {
+	nerServiceHandler: function(menuitem) {
 		var annotator = menuitem.itemId;
 
 		var docIndex = [];
@@ -515,19 +555,9 @@ Ext.define('Voyant.panel.Reader', {
 
 		this.clearEntityHighlights();
 
-		var me = this;
-		new Voyant.data.util.DocumentEntities({
-			annotator: annotator,
-			includeEntities: true,
-			docIndex: docIndex
-		}, function(entities) {
-			if (entities) {
-				me.clearEntityHighlights(); // clear again in case failed documents were rerun
-				me.setDocumentEntitiesStore(entities);
-				me.highlightEntities();
-				me.down('entitieslist').show().addEntities(entities);
-			}
-		});
+		var entitiesList = this.down('entitieslist');
+		entitiesList.clearEntities();
+		entitiesList.getEntities(annotator, docIndex);
 	},
 
 	clearEntityHighlights: function() {
@@ -763,7 +793,7 @@ Ext.define('Voyant.panel.Reader', {
 
 			var docTokens = {};
 			var totalTokens = 0;
-			var showNerButton = this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
+			var showNerButton = this.getEnableEntitiesList() && this.getApplication().getEntitiesEnabled ? this.getApplication().getEntitiesEnabled() : false;
 			var currIndex = info1.docIndex;
 			while (currIndex <= info2.docIndex) {
 				var tokens = corpus.getDocument(currIndex).get('tokensCount-lexical');

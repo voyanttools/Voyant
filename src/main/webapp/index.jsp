@@ -52,6 +52,7 @@ Ext.onReady(function(){
 			openMenu: '<%= System.getProperty("org.voyanttools.voyant.openmenu")==null ? "" : System.getProperty("org.voyanttools.voyant.openmenu") %>',
 			allowInput: '<%= System.getProperty("org.voyanttools.server.allowinput")==null ? "" : System.getProperty("org.voyanttools.server.allowinput") %>',
 			allowDownload: '<%= System.getProperty("org.voyanttools.server.allowdownload")==null ? "" : System.getProperty("org.voyanttools.server.allowdownload") %>',
+			showServerMessage: '<%= System.getProperty("org.voyanttools.server.showservermessage")==null ? "false" : System.getProperty("org.voyanttools.server.showservermessage") %>',
 			entitiesEnabled: <%= application.getInitParameter("entitiesenabled") %>
 		},
 		launch: function() {

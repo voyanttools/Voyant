@@ -1,16 +1,7 @@
 /**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
- * <iframe src="../?corpus=austen&view=corpusterms" style="max-width: 500px; height: 300px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('CorpusTerms'); // simply embed
- * 			austen.embed('CorpusTerms', {query: '^lov*'}); // embed with query
- * 		});
+ * @class CorpusTerms
  */
 Ext.define('Voyant.panel.CorpusTerms', {
 	extend: 'Ext.grid.Panel',
@@ -18,49 +9,66 @@ Ext.define('Voyant.panel.CorpusTerms', {
 	alias: 'widget.corpusterms',
     statics: {
     	i18n: {
+			comparisonCorpus: 'Comparison Corpus'
     	},
     	api: {
     		
     		/**
-    		 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-    		 * 
-    		 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    		 *  
-    		 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof CorpusTerms
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @cfg {String/String[]} query A query or array of queries (queries can be separated by a comma).
-    		 * 
-    		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+    		 * @memberof CorpusTerms
+			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @cfg {Number} maxBins The maximum number of bins to use for distributions in Trend.
+			 * @memberof CorpusTerms
+    		 * @property {Number} maxBins The maximum number of bins to use for distributions in Trend.
     		 * 
     		 * By default this is set to 100 (in other words, if there are more than 100 documents in the corpus, they will be forced into 100 bins).
     		 * Higher values are possible but it can cause performance issues and necessitate more data transfer (values for each one of the bins for each one of the terms).
-    		 * @cfg
+			 * @default
     		 */
     		maxBins: 100,
 
 			/**
-			 * @cfg {String} termColors Which term colors to show in the grid.
-			 * 
-			 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
-			 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+			 * @memberof CorpusTerms
+			 * @property {TermColors}
+			 * @default
 			 */
 			termColors: 'categories',
 
     		/**
-    		 * @cfg {String} comparisonCorpus An existing corpus to be used for comparison purposes.
+			 * @memberof CorpusTerms
+    		 * @property {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 
     		 * None of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the "Comparison" column is shown.
     		 * The comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus.
     		 */
-    		comparisonCorpus: undefined
+    		comparisonCorpus: undefined,
+
+			/**
+			 * @memberof CorpusTerms
+			 * @property {Columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
+			 */
+			columns: undefined,
+
+			/**
+			 * @memberof CorpusTerms
+			 * @property {SortColumn}
+			 */
+			sort: undefined,
+
+			/**
+			 * @memberof CorpusTerms
+			 * @property {SortDir}
+			 */
+			dir: undefined,
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -76,8 +84,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			xtype: 'termcolorsoption'
 		},{
     		xtype: 'corpusselector',
-    		name: 'comparisonCorpus',
-    		fieldLabel: 'comparison corpus'
+    		name: 'comparisonCorpus'
     	}]
     },
 
@@ -87,6 +94,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     constructor: function(config) {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
+		this.getOptions().filter(function(option) { return option.xtype === 'corpusselector'})[0].fieldLabel = this.localize('comparisonCorpus');
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
     
@@ -175,9 +183,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
             	tooltip: this.localize("relativeFreqTip"),
             	dataIndex: 'relativeFreq',
             	renderer: function(val) {
-            		var percent = val*100;
-            		return Ext.util.Format.number(val*1000000, "0,000")/* + " (%"+
-            			(val*100 <  .1 ? "<0.1" : Ext.util.Format.number(val*100, "0.0"))+")"*/
+            		return Ext.util.Format.number(val*1000000, "0,000")
             	},
                 width: 'autoSize',
                 hidden: true,
@@ -232,17 +238,22 @@ Ext.define('Voyant.panel.CorpusTerms', {
         });
         
     	me.on('loadedCorpus', function(src, corpus) {
-//    		this.setApiParam('query', undefined);
     		if (corpus.getDocumentsCount()>100) {
     			this.getStore().getProxy().setExtraParam('bins', this.getApiParam('maxBins'));
     		}
     		if (this.isVisible()) {
-        		this.getStore().load()
+				if (corpus.getDocumentsCount() === 1) {
+					this.getColumns().filter(function(col) { return col.dataIndex === 'distributions'})[0].hide();
+				}
+        		this.getStore().load();
     		}
     	}, me);
     	
     	me.on("activate", function() { // load after tab activate (if we're in a tab panel)
     		if (me.getStore().getCorpus()) {
+				if (me.getStore().getCorpus().getDocumentsCount() === 1) {
+					this.getColumns().filter(function(col) { return col.dataIndex === 'distributions'})[0].hide();
+				}
     			me.getStore().load({params: this.getApiParams()});
     		}
     	}, me);

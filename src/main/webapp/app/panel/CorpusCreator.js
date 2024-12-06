@@ -8,7 +8,9 @@ Ext.define('Voyant.panel.CorpusCreator', {
     	i18n: {
 			corpusSortInitialOrder: 'initial order',
 			dtocIndexDoc: 'DToC Index Document',
-			textEncoding: 'Text Encoding'
+			textEncoding: 'Text Encoding',
+			groupByColumn: 'Group By Column',
+			groupByColumnText: 'Specify a column (or columns) by which to group documents. Only applicable when extracting documents from cells in each row.'
     	},
     	api: {
     		inputFormat: undefined,
@@ -52,6 +54,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
     		accessPassword: undefined,
     		noPasswordAccess: undefined,
     		tableDocuments: undefined,
+			tableGroupBy: undefined,
     		tableContent: undefined,
     		tableTitle: undefined,
     		tableAuthor: undefined,
@@ -249,6 +252,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    	        	var input = btn.up('form').down('#input').getValue();
 	    	        	if (input !== '') {
 	    	        		var api = me.getApiParams();
+							delete api.corpus;
 	    	            	delete api.view;
 	    	            	delete api.stopList;
 	    	        		if (api.inputFormat && input.trim().indexOf("<")!==0) {
@@ -287,7 +291,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
         
         me.on("boxready", function(panel) {
         	var app = this.getApplication();
-        	if (app.getAllowInput && app.getAllowInput()=="false") {
+        	if (app.getAllowInput() === false) {
 				panel.getDockedItems().forEach(function(docked) {
 					panel.removeDocked(docked);
 				})
@@ -305,13 +309,15 @@ Ext.define('Voyant.panel.CorpusCreator', {
     
     loadForm: function(form) {
     	var params = {tool: this.getCorpus() ? 'corpus.CorpusMetadata' : 'corpus.CorpusCreator'};
+		var apiParams = this.getApiParams();
     	if (this.getCorpus()) {
     		Ext.apply(params, {
     			corpus: this.getCorpus().getId(),
     			addDocuments: true
     		})
-    	};
-    	var apiParams = this.getApiParams();
+    	} else {
+			delete apiParams.corpus;
+		}
     	delete apiParams.view;
     	delete apiParams.stopList;
     	Ext.apply(params, apiParams);
@@ -685,6 +691,14 @@ Ext.define('Voyant.panel.CorpusCreator', {
 									fieldLabel: me.localize('tableContent'),
 									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
 									name: 'tableContent'
+								},{
+									xtype: 'container',
+									html: '<p><i>'+me.localize('groupByColumnText')+'</i></p>',
+									width: 375
+								},{
+									fieldLabel: me.localize('groupByColumn'),
+									validator: function(val) {return me.validatePositiveNumbersCsv.call(me, val)},
+									name: 'tableGroupBy'
 								},{
 	    							xtype: 'container',
 	    							html: '<p><i>'+me.localize("tableMetadataText")+'</i></p>',

@@ -1,18 +1,7 @@
 /**
- * Terms Radio tool, a visualization for term distributions.
+ * TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
  * 
- * <iframe src="../?corpus=austen&view=termsradio" style="max-width: 600px; height: 600px"></iframe>
- * 
- * The typical use is not to instantiate this class directly, but to embed the tool from a corpus.
- * 
- * 		var austen;
- * 		new Corpus("austen").then(function(corpus) {
- * 			austen = corpus;
- * 			austen.embed('TermsRadio'); // simply embed
- * 			austen.embed('TermsRadio', {visibleBins: 8}); // embed with parameter
- * 		});
- * 
- * @class Voyant.panel.TermsRadio
+ * @class TermsRadio
  * @author Mark Turcato
  * @author Andrew MacDonald
  */
@@ -39,93 +28,91 @@ Ext.define('Voyant.panel.TermsRadio', {
     	},
     	api: {
     		/**
-    		 * @private (this shouldn't be modified but it needs to be part of the parameters)
+			 * @memberof TermsRadio
+			 * @property {Bins}
+			 * @default
     		 */
-    		withDistributions: true,
-
-    		/**
-    		 * @cfg {Number} bins How many document segments to show if the corpus has a single document (default is 10); otherwise, the number of bins corresponds to the number of documents in the corpus.
-    		 * 
-    		 * Note that this often works in parallel with the {@link #bins} value.
-    		 */
-    		bins: 5
+    		bins: 5,
     	
     		/**
-    		 * @cfg {Number} visibleBins How many segments or documents to show at once (default is 5).
-    		 * 
+			 * @memberof TermsRadio
+			 * @property {Number} visibleBins How many segments or documents to show at once (default is 5).
     		 * Note that this often works in parallel with the {@link #bins} value.
+			 * @default
     		 */
-    		,visibleBins: 5
+    		visibleBins: 5,
     		
     		/**
-    		 * @property docIdType The document type(s) to restrict results to.
-    		 * @type String|Array
+			 * @memberof TermsRadio
+    		 * @property {String[]} docIdType The document type(s) to restrict results to.
     		 * @default null
     		 * @private
     		 */
-    		,docIdType: null
+    		docIdType: null,
     		
     		/**
-    		 * @cfg {Number} limit Determine the number of terms to show (larger numbers may make the graph unusable).
+    		 * @memberof TermsRadio
+			 * @property {Limit}
+			 * @default
     		 */
-    		,limit: 50
+    		limit: 50,
     	
     		/**
         	 * @property mode What mode to operate at, either document or corpus.
         	 * @choices document, corpus
     		 * @private
         	 */
-    		,mode: null
+    		mode: null,
     		
     		/**
-        	 * @property position The current shifted position of the visualization.
-        	 * @type Integer
+			 * @memberof TermsRadio
+        	 * @property {Number} position The current shifted position of the visualization.
         	 * @default 0
     		 * @private
         	 */
-    		,position: 0
+    		position: 0,
     		
     		/**
-    		 * @property selectedWords The words that have been selected.
-    		 * @type String|Array
+			 * @memberof TermsRadio
+    		 * @property {String[]} selectedWords The words that have been selected.
     		 * @default null
     		 * @private
     		 */
-    		,selectedWords: []
+    		selectedWords: [],
     		
 			/**
-			 * @cfg {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-			 * 
-			 *  By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-			 *  
-			 * For more information see the <a href="#!/guide/search">Stopwords documentation</a>.
+			 * @memberof TermsRadio
+			 * @property {StopList}
+			 * @default
 			 */
-    		,stopList: 'auto'
+    		stopList: 'auto',
     		
     		/**
-    		 * @property query The corpus type(s) to restrict results to.
-    		 * @type String
-    		 * @default null
-    		 * @private
+    		 * @memberof TermsRadio
+			 * @property {Query}
     		 */
-    		,query: null
+    		query: null,
     		
     		/**
-    		 * @property yAxisScale The scale for the y axis.
-    		 * @type String
+			 * @memberof TermsRadio
+    		 * @property {String} yAxisScale The scale for the y axis. Options are: 'log' or 'linear'.
     		 * @default log
-    		 * @private
     		 */
-    		,yAxisScale: 'log'
+    		yAxisScale: 'log',
     			
-    		,speed: 50
+			/**
+			 * @memberof TermsRadio
+			 * @property {Number} speed How fast to animate the visualization.
+			 * @default
+			 */
+    		speed: 50,
     		
     		/**
-    		 * @property slider Whether to show the slider
-    		 * @type Boolean
+			 * @memberof TermsRadio
+    		 * @property {Boolean} slider Whether to show the slider.
     		 * @default true
     		 */
-    		,slider: undefined
+    		slider: undefined
     	},
     	glyph: 'xf201@FontAwesome'
     }
@@ -446,6 +433,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     		this.corpusStore.setCorpus(corpus);
     		
     		var params = this.getApiParams();
+			params.withDistributions = true;
 			if (params.type) {
 				delete params.limit;
 			}
@@ -487,6 +475,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     ,loadStore: function () {
     	this.queryById('play').setPlaying(false);
 		var params = this.getApiParams();
+		params.withDistributions = true;
 		if(this.getApiParam('mode') === 'document') { 
 			this.documentStore.load({params: params});
 		}

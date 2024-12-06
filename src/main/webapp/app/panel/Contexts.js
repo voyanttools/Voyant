@@ -1,3 +1,8 @@
+/**
+ * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
+ * 
+ * @class Contexts
+ */
 Ext.define('Voyant.panel.Contexts', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,12 +13,68 @@ Ext.define('Voyant.panel.Contexts', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof Contexts
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof Contexts
+			 * @property {Context}
+			 * @default
+			 */
     		context: 5,
+
+			/**
+			 * @memberof Contexts
+			 * @property {Number} expand  How many terms to show when you expand any given row
+			 * @default
+			 */
     		expand: 50,
+
+			/**
+			 * @memberof Contexts
+			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
+			 */
+			columns: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {SortColumn}
+			 */
+			sort: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {SortDir}
+			 */
+			dir: undefined,
+
+			/**
+			 * @memberof Contexts
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -22,6 +83,7 @@ Ext.define('Voyant.panel.Contexts', {
     	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},{xtype: 'termcolorsoption'}]
     },
     constructor: function() {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
         this.callParent(arguments);
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     },
@@ -226,9 +288,13 @@ Ext.define('Voyant.panel.Contexts', {
                 	            	corpus: me.getStore().getCorpus()
                 	            });
                 	            var data = record.getData();
+								var query = data.query;
+								if (query.match(/^[\^@]/) !== null) {
+									query = data.term; // if it's a category query then use term instead
+								}
                 	            store.load({
                 	            	params: {
-                    	            	query: data.query,
+                    	            	query: query,
                     	            	docIndex: data.docIndex,
                     	            	position: data.position,
                     	            	limit: 1,
@@ -255,22 +321,28 @@ Ext.define('Voyant.panel.Contexts', {
         		this.mask(this.localize('limitedAccess'), 'mask-no-spinner');
         	}
         	else {
-        		var corpusTerms = corpus.getCorpusTerms({autoLoad: false});
-        		corpusTerms.load({
-        		    callback: function(records, operation, success) {
-        		    	if (success && records.length>0) {
-        		    		this.setApiParam("query", [records[0].getTerm()]);
-        		    		this.getStore().clearAndLoad({params: this.getApiParams()});
-        		    	}
-        		    },
-        		    scope: me,
-        		    params: {
-        				limit: 1,
-        				query: this.getApiParam("query"),
-        				stopList: this.getApiParam("stopList"),
-        				forTool: 'contexts'
-        			}
-            	});
+				var query = Ext.Array.from(this.getApiParam("query"));
+				if (query.length > 0 && query[0].match(/^[\^@]/) !== null) {
+					// query is a category so just load
+					this.getStore().clearAndLoad({params: this.getApiParams()});
+				} else {
+					var corpusTerms = corpus.getCorpusTerms({autoLoad: false});
+					corpusTerms.load({
+						callback: function(records, operation, success) {
+							if (success && records.length>0) {
+								this.setApiParam("query", [records[0].getTerm()]);
+								this.getStore().clearAndLoad({params: this.getApiParams()});
+							}
+						},
+						scope: me,
+						params: {
+							limit: 1,
+							query: query,
+							stopList: this.getApiParam("stopList"),
+							forTool: 'contexts'
+						}
+					});
+				}
         	}
         });
         

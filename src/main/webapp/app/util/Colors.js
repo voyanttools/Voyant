@@ -21,6 +21,14 @@ Ext.define('Voyant.util.Colors', {
 		textColorsForBackgroundColors: {}
 	},
 
+	d3Palettes: {
+		categorical: ["Category10","Tableau10","Observable10","Set1","Set2","Set3","Accent","Dark2","Pastel1","Pastel2","Paired"],
+		cyclical: ["Rainbow","Sinebow"],
+		sequentialDiverging: ["BrBG","PRGn","PiYG","PuOr","RdBu","RdGy","RdYlBu","RdYlGn","Spectral"],
+		sequentialMulti: ["BuGn","BuPu","GnBu","OrRd","PuBuGn","PuBu","PuRd","RdPu","YlGnBu","YlGn","YlOrBr","YlOrRd","Cividis","Viridis","Inferno","Magma","Plasma","Warm","Cool","CubehelixDefault","Turbo"],
+		sequentialSingle: ["Blues","Greens","Greys","Oranges","Purples","Reds"]
+	},
+
 	lastUsedPaletteIndex: -1, // for tracking the last palette index that was used when getting a new color for a term
 
 	constructor: function(config) {
@@ -31,16 +39,10 @@ Ext.define('Voyant.util.Colors', {
 
 		// palettes
 		if (d3 !== undefined) {
-			var cat10 = d3.scaleOrdinal(d3.schemeCategory10).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var cat20a = d3.scaleOrdinal(d3.schemeCategory20).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var cat20b = d3.scaleOrdinal(d3.schemeCategory20b).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var cat20c = d3.scaleOrdinal(d3.schemeCategory20c).range().map(function(val) { return this.hexToRgb(val); }, this);
-			var set3 = ['#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462','#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f'].map(function(val) { return this.hexToRgb(val); }, this);
-			this.addColorPalette('d3_cat10', cat10);
-			this.addColorPalette('d3_cat20a', cat20a);
-			this.addColorPalette('d3_cat20b', cat20b);
-			this.addColorPalette('d3_cat20c', cat20c);
-			this.addColorPalette('d3_set3', set3);
+			this.d3Palettes.categorical.forEach(function(palName) {
+				var rgbs = d3.scaleOrdinal(d3['scheme'+palName]).range().map(function(val) { return this.hexToRgb(val); }, this);
+				this.addColorPalette(palName, rgbs);
+			}, this);
 		}
 		
 		var extjs = Ext.create('Ext.chart.theme.Base').getColors().map(function(val) { return this.hexToRgb(val); }, this);
@@ -103,6 +105,49 @@ Ext.define('Voyant.util.Colors', {
 		} else {
 			return palette;
 		}
+	},
+
+	/**
+	 * Generate a color palette from one of the D3 color palettes.
+	 * Available palettes: "Blues", "Greens", "Greys", "Oranges", "Purples", "Reds", "BuGn", "BuPu", "GnBu", "OrRd", "PuBuGn", "PuBu", "PuRd", "RdPu", "YlGnBu", "YlGn", "YlOrBr", "YlOrRd", "Cividis", "Viridis", "Inferno", "Magma", "Plasma", "Warm", "Cool", "CubehelixDefault", "Turbo", "BrBG", "PRGn", "PiYG", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral", "Rainbow", "Sinebow"
+	 * @param {String} d3Name The D3 color palette name
+	 * @param {Number} [steps] How many steps to divide the palette into, defaults to 10
+	 * @param {Boolean} [returnHex] True to return a hexadecimal representation of each color, defaults to rgb values
+	 */
+	createD3ColorPalette: function(d3Name, steps, returnHex) {
+		var colors;
+		steps = steps === undefined ? 10 : steps;
+		returnHex = returnHex === undefined ? false : returnHex;
+
+		if (d3['scheme'+d3Name] === undefined && d3['interpolate'+d3Name] === undefined) {
+			throw new Error('Invalid color palette name');
+		}
+
+		if (d3['interpolate'+d3Name]) {
+			var interpolate = d3['interpolate'+d3Name];
+			colors = [];
+			for (var i = 0; i < steps; ++i) {
+				colors.push(d3.rgb(interpolate(i / (steps - 1))));
+			}
+		} else {
+			if (d3['scheme'+d3Name][steps] === undefined) {
+				steps = d3['scheme'+d3Name].length - 1;
+			}
+			colors = Array.isArray(d3['scheme'+d3Name][steps]) ? d3['scheme'+d3Name][steps] : d3['scheme'+d3Name]; // handling for both flat and multi-dimensional palette arrays
+			colors = colors.map(function(c) { return d3.rgb(c)});
+		}
+
+		colors = colors.map(function(c) {
+			return [c.r, c.g, c.b];
+		}, this);
+		
+		if (returnHex) {
+			colors = colors.map(function(c) {
+				return this.rgbToHex([c.r, c.g, c.b]);
+			}, this);
+		}
+
+		return colors;
 	},
 
 	saveCustomColorPalette: function(paletteArray) {
@@ -257,7 +302,7 @@ Ext.define('Voyant.util.Colors', {
 				index = 8;
 		}
 
-		var color = this.getPalettes()['d3_set3'][index];
+		var color = this.getPalettes()['Set3'][index];
 		if (returnHex) {
 			color = this.rgbToHex(color);
 		}

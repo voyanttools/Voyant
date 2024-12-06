@@ -92,6 +92,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	spyralTernDocs: undefined,
 	ecmaTernDocs: undefined,
 	browserTernDocs: undefined,
+	toolTernDocs: undefined,
     
     /**
      * @private
@@ -329,6 +330,9 @@ Ext.define('Voyant.notebook.Notebook', {
 						this.loadFromString(fileData);
 					});
 				},
+				'fileSaving': function() {
+					this.mask(this.localize('saving'));	
+				},
 				'fileSaved': function(src, notebookId, error) {
 					this.unmask();
 					if (notebookId !== null) {
@@ -349,7 +353,6 @@ Ext.define('Voyant.notebook.Notebook', {
 				'saveCancelled': function() {
 				},
 				'close': function() {
-					this.unmask();
 				},
 				scope: this
 			}
@@ -369,6 +372,9 @@ Ext.define('Voyant.notebook.Notebook', {
 							url: url
 						}, 'Spyral Notebook: '+id, url);
 					}
+				},
+				'fileSaving': function() {
+					this.mask(this.localize('saving'));	
 				},
 				'fileSaved': function(src, {owner, repo, branch, path}) {
 					this.githubDialogs.close();
@@ -413,12 +419,13 @@ Ext.define('Voyant.notebook.Notebook', {
 		Ext.Promise.all([
 			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/spyral.json'}),
 			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/ecmascript.json'}),
-			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'})
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/browser.json'}),
+			Ext.Ajax.request({url: this.getApplication().getBaseUrlFull()+'resources/spyral/docs/tools.json'})
 		]).then(function(responses) {
 			this.spyralTernDocs = Ext.JSON.decode(responses[0].responseText);
 			this.ecmaTernDocs = Ext.JSON.decode(responses[1].responseText);
 			this.browserTernDocs = Ext.JSON.decode(responses[2].responseText);
-
+			this.toolTernDocs = Ext.JSON.decode(responses[3].responseText);
 			this.loadFromQueryParams();
 		}.bind(this), function() {
 			this.loadFromQueryParams();
@@ -440,8 +447,6 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 
 	showSaveDialog: function(saveAs) {
-		this.mask(this.localize('saving'));
-		
 		this.getMetadata().setDateNow('modified');
 		this.getMetadata().set({userId: this.accountInfo.id});
 

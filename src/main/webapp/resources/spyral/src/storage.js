@@ -13,6 +13,7 @@ class Storage {
 	 * Store a resource
 	 * @name Spyral.Util.Storage.storeResource
 	 * @function
+	 * @static
 	 * @param {String} id 
 	 * @param {*} data 
 	 * @returns {Promise}
@@ -61,11 +62,11 @@ class Storage {
 	 * Get the URL for trombone
 	 * @name Spyral.Util.Storage.getTromboneUrl
 	 * @function
+	 * @static
 	 * @returns {String}
 	 */
 	static getTromboneUrl() {
-		return 'https://beta.voyant-tools.org/trombone'
-		// return 'http://localhost:8080/voyant/trombone'
+		return Voyant.application.getTromboneUrl();
 	}
 	
 	static _doStore(id, dataString) {
@@ -83,6 +84,7 @@ class Storage {
 	 * Get a stored resource
 	 * @name Spyral.Util.Storage.getStoredResource
 	 * @function
+	 * @static
 	 * @param {String} id 
 	 * @returns {Promise}
 	 */

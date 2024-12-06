@@ -47,6 +47,7 @@ app/data/model/RelatedTerm.js
 app/data/model/StatisticalAnalysis.js
 app/data/model/Token.js
 app/data/model/TermCorrelation.js
+app/data/model/Entity.js
 
 # STORES
 app/data/store/VoyantStore.js
@@ -118,6 +119,7 @@ app/panel/CorpusTermSummary.js
 app/panel/Correlations.js
 app/panel/CorpusCreator.js
 app/panel/DreamScape.js
+app/panel/Entities.js
 app/panel/Knots.js
 app/panel/Phrases.js
 app/panel/CorpusTerms.js
@@ -150,12 +152,12 @@ app/panel/Subset.js
 app/panel/CollocatesSet.js
 app/panel/BubblelinesSet.js
 app/panel/CustomSet.js
+app/panel/EntitiesSet.js
 app/panel/Veliza.js
 app/panel/WordTree.js
 app/panel/WordWall.js
 app/panel/Topics.js
 app/panel/Via.js
-app/panel/NSSI.js
 
 # NOTEBOOKS
 app/notebook/editor/button/Add.js

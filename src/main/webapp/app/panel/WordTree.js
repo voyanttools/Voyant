@@ -1,3 +1,8 @@
+/**
+ * The Word Tree tool allows you to explore how keywords are used in different phrases in the corpus.
+ * 
+ * @class WordTree
+ */
 Ext.define('Voyant.panel.WordTree', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -6,11 +11,43 @@ Ext.define('Voyant.panel.WordTree', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof WordTree
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof WordTree
+			 * @property {DocId}
+			 */
     		docId: undefined,
+
+			/**
+			 * @memberof WordTree
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+
+			/**
+			 * @memberof WordTree
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+
+			/**
+			 * @memberof WordTree
+			 * @property {Context}
+			 * @default
+			 */
     		context: 10,
+
+			/**
+			 * @memberof WordTree
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 100
     	},
 		glyph: 'xf0e8@FontAwesome'

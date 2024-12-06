@@ -1,3 +1,8 @@
+/**
+ * Mandala is a conceptual visualization that shows the relationships between terms and documents.
+ * 
+ * @class Mandala
+ */
 Ext.define('Voyant.panel.Mandala', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -7,15 +12,23 @@ Ext.define('Voyant.panel.Mandala', {
     	},
     	api: {
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
-    		 */
+			 * @memberof Mandala
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
     		
+			/**
+			 * @memberof Mandala
+			 * @property {Query}
+			 */
     		query: undefined,
     		
+			/**
+			 * @memberof Mandala
+			 * @property {Boolean} labels Whether or not labels should be shown.
+			 * @default
+			 */
     		labels: true
     		
     	},

@@ -45,6 +45,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		let loadWin = undefined;
 		loadWin = Ext.create('Ext.window.Window', {
 			title: 'Load from GitHub',
+			modal: true,
 			width: 750,
 			height: 550,
 			closable: false,
@@ -103,6 +104,7 @@ Ext.define("Voyant.notebook.github.GitHubDialogs", {
 		let saveWin = undefined;
 		saveWin = Ext.create('Ext.window.Window', {
 			title: 'Save to GitHub',
+			modal: true,
 			width: 750,
 			height: 650,
 			closable: false,

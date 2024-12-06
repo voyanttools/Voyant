@@ -6,6 +6,8 @@ Ext.define('Voyant.widget.EntitiesList', {
 		i18n: {
 			term: 'Term',
 			count: 'Count',
+			type: 'Type',
+			docIndex: 'Document',
 			next: 'Next Occurrence',
 			prev: 'Previous Occurrence',
 			date: 'Date',
@@ -33,15 +35,14 @@ Ext.define('Voyant.widget.EntitiesList', {
 		}
 	},
 
-	bins: 25,
-
 	initComponent: function() {
 		var me = this;
+		var hasEntitiesParent = this.up().xtype === 'entities';
 		Ext.apply(this, {
 			title: 'Entities',
 			forceFit: true,
 			store: Ext.create('Ext.data.JsonStore', {
-				fields: ['term','normalized','type','docIndex','rawFreq','positions','offset'],
+				model: 'Voyant.data.model.Entity',
 				groupField: 'type',
 				sorters: [{
 					property: 'rawFreq',
@@ -51,14 +52,23 @@ Ext.define('Voyant.widget.EntitiesList', {
 			features: [{
 				ftype: 'grouping',
 				hideGroupedHeader: true,
-				enableGroupingMenu: false,
+				enableGroupingMenu: true,
 				startCollapsed: true,
 				groupHeaderTpl: ['{name:this.localizeName} ({children.length})',{
 					localizeName: function(name) {
-						return me.localize(name);
+						var localized = me.localize(name);
+						var bracketsCheck = localized.match(/^\[(.*)\]$/);
+						if (bracketsCheck !== null) {
+							// there was no localization so just show the value sans brackets
+							localized = bracketsCheck[1];
+						}
+						return localized;
 					}
 				}]
 			}],
+			selModel: {
+				mode: hasEntitiesParent ? 'SIMPLE' : 'SINGLE'
+			},
 			plugins: [{
 				ptype: 'rowexpander',
 				rowBodyTpl: new Ext.XTemplate(''),
@@ -82,7 +92,7 @@ Ext.define('Voyant.widget.EntitiesList', {
 									}
 
 									// programatically highlight the current bar
-									var dist = record.get('distribution');
+									var dist = record.get('distributions');
 									var distBinToHighlight = 0;
 									var distBinCount = 0;
 									for (var i = 0; i < dist.length; i++) {
@@ -124,7 +134,7 @@ Ext.define('Voyant.widget.EntitiesList', {
 									}
 								},{
 									xtype: 'sparklinebar',
-									values: record.get('distribution'),
+									values: record.get('distributions'),
 									highlightColor: '#f80',
 									height: 24,
 									tipTpl: false,
@@ -144,6 +154,16 @@ Ext.define('Voyant.widget.EntitiesList', {
 				}
 			},
 			columns: [{
+				text: this.localize('docIndex'),
+				dataIndex: 'docIndex',
+				hidden: true,
+				width: 100
+			},{
+				text: this.localize('type'),
+				dataIndex: 'type',
+				hidden: true,
+				flex: 1
+			},{
 				text: this.localize('term'),
 				dataIndex: 'term',
 				flex: 1
@@ -153,17 +173,43 @@ Ext.define('Voyant.widget.EntitiesList', {
 				width: 50
 			}],
 			listeners: {
-				select: function(cmp, record, index) {
-					Voyant.application.dispatchEvent('entityClicked', this, record);
+				selectionchange: function(cmp, records, index) {
+					Voyant.application.dispatchEvent('entitiesClicked', this, records);
 				},
 				columnresize: function(ct, column, width) {
-				}
+				},
+				entityResults: function(src, entities) {
+					this.addEntities(entities);
+				},
+				scope: this
 			}
 		});
 		
 		this.callParent(arguments);
 	},
 
+	clearEntities: function() {
+		var store = this.getStore();
+		if (store !== undefined) {
+			store.removeAll();
+		}
+	},
+
+	getEntities: function(annotator, docs) {
+		var docIds = [];
+		var corpus = Voyant.application.getCorpus();
+		if (docs) {
+			docs.forEach(function(doc) {
+				docIds.push(corpus.getDocument(doc).getId())
+			}, this);
+		}
+		new Voyant.data.util.DocumentEntities({
+			annotator: annotator,
+			includeEntities: true,
+			docId: docIds
+		});
+	},
+	
 	addEntities: function(entities) {
 		var store = this.getStore();
 		if (store !== undefined) {
@@ -173,14 +219,6 @@ Ext.define('Voyant.widget.EntitiesList', {
 				var newDocIndex = entities[0].docIndex;
 				append = oldDocIndex === newDocIndex;
 			}
-			entities.forEach(function(entity) {
-				if (entity.positions) {
-					entity.distribution = this.getDistributionFromPositions(entity.docIndex, entity.positions, this.bins);
-				} else {
-					console.warn('no positions for:',entity);
-					entity.distribution = [];
-				}
-			}, this);
 			store.loadData(entities, append);
 			if (append === false) {
 				this.view.findFeature('grouping').collapseAll();
@@ -188,23 +226,5 @@ Ext.define('Voyant.widget.EntitiesList', {
 		}
 	},
 
-	getDistributionFromPositions: function(docIndex, positions, bins) {
-		var totalTokens = Voyant.application.getCorpus().getDocument(docIndex).get('tokensCount-lexical');
-		var binSize = Math.floor(totalTokens/bins);
-		
-		var distribution = new Array(bins);
-		for (var i = 0; i < bins; i++) { distribution[i] = 0; }
-
-		positions.forEach(function(position) {
-			var bin;
-			if (Array.isArray(position)) {
-				bin = Math.floor(position[0] / binSize);
-			} else {
-				bin = Math.floor(position / binSize);
-			}
-			distribution[bin]++;
-		});
-
-		return distribution;
-	}
+	
 });

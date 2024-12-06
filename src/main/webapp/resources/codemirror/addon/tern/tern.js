@@ -120,6 +120,60 @@
 
     selectName: function(cm) { selectName(this, cm); },
 
+    showCorpusToolParamsHint: function(cm, toolParams) {
+      var list = Object.entries(toolParams).map(function(keyAndValue, array) {
+        var key = keyAndValue[0];
+        var value = keyAndValue[1];
+        var cssType = value.type.toLowerCase();
+        if (cssType === 'boolean') cssType = 'bool';
+        var docEl = document.createElement('span');
+        docEl.innerHTML = value.doc; // turn it into a element in order to convert links
+        return {
+          className: "CodeMirror-Tern-completion CodeMirror-Tern-completion-"+cssType,
+          text: key,
+          displayText: key,
+          data: {
+            doc: docEl,
+            guess: undefined,
+            name: key,
+            type: value.type
+          }
+        }
+      });
+      var cursor = cm.getCursor();
+      var obj = {list: list, from: {line: cursor.line, ch: cursor.ch}, to: {line: cursor.line, ch: cursor.ch}};
+      var me = this;
+      var cth = function(cm, c) { buildHint(me, cm, obj); c(obj); };
+      cth.async = true;
+      cm.showHint({hint: cth});
+    },
+
+    showCorpusToolsHint: function(cm, tools) {
+      var list = tools.map(function(entry, array) {
+        var toolName = entry[0];
+        var docEl = document.createElement('span');
+        docEl.innerHTML = entry[1]; // turn it into a element in order to convert links
+        var cssType = 'class';
+        return {
+          className: "CodeMirror-Tern-completion CodeMirror-Tern-completion-"+cssType,
+          text: toolName,
+          displayText: toolName,
+          data: {
+            doc: docEl,
+            guess: undefined,
+            name: toolName,
+            type: 'class'
+          }
+        }
+      });
+      var cursor = cm.getCursor();
+      var obj = {list: list, from: {line: cursor.line, ch: cursor.ch}, to: {line: cursor.line, ch: cursor.ch}};
+      var me = this;
+      var cth = function(cm, c) { buildHint(me, cm, obj); c(obj); };
+      cth.async = true;
+      cm.showHint({hint: cth});
+    },
+
     request: function (cm, query, c, pos) {
       var self = this;
       var doc = findDoc(this, cm.getDoc());
@@ -221,20 +275,23 @@
                           className: className,
                           data: completion});
       }
-
       var obj = {from: from, to: to, list: completions};
-      var tooltip = null;
-      CodeMirror.on(obj, "close", function() { remove(tooltip); });
-      CodeMirror.on(obj, "update", function() { remove(tooltip); });
-      CodeMirror.on(obj, "select", function(cur, node) {
-        remove(tooltip);
-        var content = ts.options.completionTip ? ts.options.completionTip(cur.data) : cur.data.doc;
-        if (content) {
-          tooltip = makeTooltip(node.parentNode.getBoundingClientRect().right + window.pageXOffset,
-                                node.getBoundingClientRect().top + window.pageYOffset, content, cm, cls + "hint-doc");
-        }
-      });
+      buildHint(ts, cm, obj);
       c(obj);
+    });
+  }
+
+  function buildHint(ts, cm, obj) {
+    var tooltip = null;
+    CodeMirror.on(obj, "close", function() { remove(tooltip); });
+    CodeMirror.on(obj, "update", function() { remove(tooltip); });
+    CodeMirror.on(obj, "select", function(cur, node) {
+      remove(tooltip);
+      var content = ts.options.completionTip ? ts.options.completionTip(cur.data) : cur.data.doc;
+      if (content) {
+        tooltip = makeTooltip(node.parentNode.getBoundingClientRect().right + window.pageXOffset,
+                              node.getBoundingClientRect().top + window.pageYOffset, content, cm, cls + "hint-doc");
+      }
     });
   }
 

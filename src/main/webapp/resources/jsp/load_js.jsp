@@ -1,3 +1,4 @@
+<% String voyant_js_id = "3639942a2a339636d74c86fd70125929"; %>
 <%
 String base_js = (String) request.getAttribute("base");
 String lang_js = (String) request.getAttribute("lang");
@@ -15,9 +16,21 @@ String rtl_js = (String) request.getAttribute("rtl");
 <script type="text/javascript" src="<%= base_js %>/resources/jquery/current/jquery.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/jquery/current/jquery-ui.min.js"></script>
 
+<%
+String showServerMessage = System.getProperty("org.voyanttools.server.showservermessage");
+if (showServerMessage != null && showServerMessage.equals("true")) {
+%>
+<!-- showdown -->
+<script type="text/javascript" src="<%= base_js %>/resources/showdown/showdown.min.js"></script>
+
+<!-- purify -->
+<script type="text/javascript" src="<%= base_js %>/resources/purify/purify.min.js"></script>
+<% } %>
+
 <!-- D3 -->
 <script type="text/javascript" src="<%= base_js %>/resources/d3/current/d3.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/d3/fisheye.js"></script>
+<script type="text/javascript" src="<%= base_js %>/resources/d3/d3-scale-chromatic.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/cirrus/html5/d3.layout.cloud.js"></script>
 
 <!-- spectrum -->
@@ -26,5 +39,5 @@ String rtl_js = (String) request.getAttribute("rtl");
 <!-- spyral -->
 <script type="text/javascript" src="<%= base_js %>/resources/spyral/build/spyral.js"></script>
 
-<script type="text/javascript" src="<%= base_js %>/resources/voyant/current/voyant<%= (request.getParameter("debug")!=null ? ".jsp?debug=true" : ".min.js") %>"></script>
+<script type="text/javascript" src="<%= base_js %>/resources/voyant/current/voyant.<%= voyant_js_id %>.min.js"></script>
 <script type="text/javascript" src="<%= base_js %>/resources/voyant/current/voyant-locale-<%= lang_js %>.js"></script>

@@ -114,7 +114,7 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				editor.on('keypress', function(ed, event) {
 					if (event.key === '.') {
 						Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
-					} else if (event.key === '{') {
+					} else if (event.key === '{' || event.key === ',') {
 						// many Spyral methods take a single config object
 						// so look out for that and display config object properties
 						var cursor = ed.getCursor();
@@ -123,6 +123,33 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 							// let closebrackets addon finish and then look for matches
 							setTimeout(function() {
 								Voyant.notebook.editor.CodeEditor.ternServer.complete(ed);
+							}, 50);
+						} else {
+							// special handling for corpus tools params
+							var toolNameCheck = range.match(/\.tool\(\s*['"]{1}(\w+)['"]{1}\s*,\s*/);
+							if (toolNameCheck !== null) {
+								setTimeout(function() {
+									var toolName = toolNameCheck[1];
+									var notebook = me.up('notebook');
+									var toolEntry = notebook.toolTernDocs[toolName];
+									if (toolEntry) {
+										Voyant.notebook.editor.CodeEditor.ternServer.showCorpusToolParamsHint(ed, toolEntry.params);
+									}
+								}, 50);
+							}
+						}
+					} else if (event.key === "'" || event.key === '"') {
+						// special handling for corpus tools names
+						var cursor = ed.getCursor();
+						var range = ed.getRange({line: cursor.line, ch: 0}, cursor);
+						var corpusToolFnCheck = range.match(/\.tool\(\s*$/);
+						if (corpusToolFnCheck !== null) {
+							setTimeout(function() {
+								var notebook = me.up('notebook');
+								var toolDescs = Object.keys(notebook.toolTernDocs)
+									.filter(function(key) { return key.charAt(0) !== '!'})
+									.map(function(key) { return [key, notebook.toolTernDocs[key].doc] });
+								Voyant.notebook.editor.CodeEditor.ternServer.showCorpusToolsHint(ed, toolDescs);
 							}, 50);
 						}
 					}
@@ -151,6 +178,10 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 				cmp.setEditor(undefined);
 			}
 		}
+		
+	},
+
+	getHintForTool: function(toolName, cm, self, data) {
 		
 	},
 

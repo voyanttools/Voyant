@@ -1,3 +1,8 @@
+/**
+ * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
+ * 
+ * @class Documents
+ */
 Ext.define('Voyant.panel.Documents', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel','Voyant.util.Downloadable'],
@@ -8,9 +13,41 @@ Ext.define('Voyant.panel.Documents', {
 			newCorpusError: 'There was an error creating the new the corpus. You may not have permission to do this.'
     	},
     	api: {
+			/**
+			 * @memberof Documents
+			 * @property {Query}
+			 */
     		query: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
-    		docId: undefined
+
+			/**
+			 * @memberof Documents
+			 * @property {DocId}
+			 */
+    		docId: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {Columns} columns 'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'
+			 */
+			columns: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {SortColumn}
+			 */
+			sort: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {SortDir}
+			 */
+			dir: undefined
     	},
 		glyph: 'xf0ce@FontAwesome'
     },
@@ -276,8 +313,7 @@ Ext.define('Voyant.panel.Documents', {
     			}, this);
     		}
 
-			var app = this.getApplication();
-    		if (this.hasCorpusAccess(corpus) === false || (app.getAllowDownload && app.getAllowDownload() === 'false')) {
+    		if (this.hasModifyCorpusAccess(corpus) === false) {
     			this.queryById('modifyButton').hide();
     			this.queryById('downloadButton').hide();
     		}

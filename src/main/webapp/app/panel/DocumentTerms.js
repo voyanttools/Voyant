@@ -1,3 +1,8 @@
+/**
+ * Document Terms is a table view of term frequencies for each document.
+ * 
+ * @class DocumentTerms
+ */
 Ext.define('Voyant.panel.DocumentTerms', {
 	extend: 'Ext.grid.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -16,11 +21,53 @@ Ext.define('Voyant.panel.DocumentTerms', {
     	i18n: {
     	},
     	api: {
+			/**
+			 * @memberof DocumentTerms
+			 * @property {StopList}
+			 * @default
+			 */
     		stopList: 'auto',
+			/**
+			 * @memberof DocumentTerms
+			 * @property {Query}
+			 */
     		query: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {DocId}
+			 */
     		docId: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {DocIndex}
+			 */
     		docIndex: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {Bins}
+			 * @default
+			 */
     		bins: 10,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {Columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
+			 */
+			columns: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {SortColumn}
+			 */
+			sort: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {SortDir}
+			 */
+			dir: undefined,
+			/**
+			 * @memberof DocumentTerms
+			 * @property {TermColors}
+			 * @default
+			 */
 			termColors: 'categories'
     	},
 		glyph: 'xf0ce@FontAwesome'
@@ -171,7 +218,9 @@ Ext.define('Voyant.panel.DocumentTerms', {
             	dataIndex: 'relativeFreq',
             	width: 'autoSize',
             	sortable: true,
-            	renderer: Ext.util.Format.numberRenderer('0,000')
+            	renderer: function(val) {
+            		return Ext.util.Format.number(val*1000000, "0,000")
+            	}
             },{
             	text: this.localize("tfidf"),
             	tooltip: this.localize("tfidfTip"),

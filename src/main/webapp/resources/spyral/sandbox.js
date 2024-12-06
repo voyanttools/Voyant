@@ -344,37 +344,58 @@ function Sandboxer(event) {
 						var newKeys = me.getNewWindowKeys();
 						var variables = [];
 						var variableValues = [];
+						var promiseVariables = [];
 						for (var i = 0; i < newKeys.length; i++) {
 							var varName = newKeys[i];
-							var varValue = window[varName];//eval.call(window, varName);
+							var varValue = window[varName];
 
 							if (varValue === me.result.value) {
 								me.result.name = varName;
 							}
 
-							var isSerializable = me.isVariableSerializable(varValue);
-
-							if (isSerializable) {
-								variables.push({name: varName, isSpyralClass: me.getSpyralClass(varValue)});
-								variableValues.push(me.var2Blob(varValue));
+							if (Spyral.Util.isPromise(varValue)) {
+								promiseVariables.push({name: varName, value: varValue});
 							} else {
-								me.result.warnings.push({type: 'serialization', warningInfo: varName})
+								var isSerializable = me.isVariableSerializable(varValue);
+								if (isSerializable) {
+									variables.push({name: varName, isSpyralClass: me.getSpyralClass(varValue)});
+									variableValues.push(me.var2Blob(varValue));
+								} else {
+									me.result.warnings.push({type: 'serialization', warningInfo: varName})
+								}
 							}
 						}
 
-						Promise.all(variableValues).then(function(prValues) {
+						// first resolve promises from the code
+						Promise.all(promiseVariables.map(pv => pv.value)).then(function(prValues) {
 							prValues.forEach(function(prValue, index) {
-								variables[index].value = prValue;
-							})
-							
-							me.result.variables = variables;
-							if (loadVariableErrors.length > 0) {
-								me.result.warnings = me.result.warnings.concat(loadVariableErrors);
-							}
-							me.resolveEvent();
+								var varName = promiseVariables[index].name;
+								var isSerializable = me.isVariableSerializable(prValue);
+								if (isSerializable) {
+									variables.push({name: varName, isSpyralClass: me.getSpyralClass(prValue)});
+									variableValues.push(me.var2Blob(prValue));
+								} else {
+									me.result.warnings.push({type: 'serialization', warningInfo: varName})
+								}
+							});
+
+							// now resolve the var2Blob promises
+							Promise.all(variableValues).then(function(prValues) {
+								prValues.forEach(function(prValue, index) {
+									variables[index].value = prValue;
+								})
+								
+								me.result.variables = variables;
+								if (loadVariableErrors.length > 0) {
+									me.result.warnings = me.result.warnings.concat(loadVariableErrors);
+								}
+								me.resolveEvent();
+							}, function(err) {
+								me.handleError(err);
+							});
 						}, function(err) {
 							me.handleError(err);
-						})
+						});
 					}, function(err) {
 						me.handleError(err);
 					})

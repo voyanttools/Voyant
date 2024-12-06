@@ -1,4 +1,9 @@
 // assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * Bubbles is a playful visualization of term frequencies by document.
+ * 
+ * @class Bubbles
+ */
 Ext.define('Voyant.panel.Bubbles', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,19 +13,37 @@ Ext.define('Voyant.panel.Bubbles', {
     	},
     	api: {
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+			 * @memberof Bubbles
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {DocIndex}
+			 */
     		docIndex: 0,
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {Limit}
+			 * @default
+			 */
     		limit: 100,
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {Boolean} audio Whether or not to play audio
+			 * @default
+			 */
     		audio: false,
     		
+			/**
+			 * @memberof Bubbles
+			 * @property {Number} speed How fast to play the visualization
+			 * @default
+			 */
     		speed: 30
     			
     			

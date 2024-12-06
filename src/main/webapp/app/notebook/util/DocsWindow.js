@@ -49,6 +49,7 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			width: 500,
 			height: 500,
 			minimizable: true,
+			alwaysOnTop: true,
 			closeAction: 'hide',
 			tbar: [{
 				text: this.localize('home'),

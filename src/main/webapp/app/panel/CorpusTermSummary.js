@@ -91,7 +91,18 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
         this.setApiParam('query', this.getRecord().getTerm());
         
         this.setCollocatesStore(Ext.create('Voyant.data.store.CorpusCollocates', { corpus: corpus }));
-        this.setCorrelationsStore(Ext.create('Voyant.data.store.TermCorrelations', { corpus: corpus }));
+        this.setCorrelationsStore(Ext.create('Voyant.data.store.TermCorrelations', {
+            corpus: corpus,
+            listeners: {
+                beforeload: function(store) {
+                    if (corpus.getDocumentsCount() === 1) {
+                        store.getProxy().setExtraParam('tool', 'corpus.DocumentTermCorrelations');
+                    } else {
+                        store.getProxy().setExtraParam('tool', 'corpus.CorpusTermCorrelations');
+                    }
+                }
+            }
+        }));
         this.setPhrasesStore(Ext.create('Voyant.data.store.CorpusNgrams', { corpus: corpus }));
         this.setDocumentTermsStore(Ext.create('Voyant.data.store.DocumentTerms', { corpus: corpus }));
         
@@ -122,7 +133,6 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
             listeners: {
                 afterrender: function(container) {
                     container.mask(this.localize('loading'));
-                    // TODO make distribution bins reflective of doc sizes
                     this.getDocumentTermsStore().load({
                         params: {
                             query: this.getApiParam('query'),
@@ -132,8 +142,11 @@ Ext.define('Voyant.widget.CorpusTermSummary', {
                         },
                         callback: function(records, op, success) {
                             if (success && records && records.length>0) {
+                                // sort by docIndex
+                                records.sort(function(a, b) { return a.getDocIndex() - b.getDocIndex(); });
                                 var arrays = records.map(function(r) { return r.getDistributions(); });
                                 var values = arrays.reduce(function(a,b) { return a.concat(b); });
+                                values = values.map(function(val) { return Math.floor(val*1000000); });
                                 this.down('#distLine').setValues(values);
                                 container.unmask();
                             }

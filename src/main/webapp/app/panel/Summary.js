@@ -1,6 +1,8 @@
 /**
  * The Summary panel provides an overview of a corpus, and the content will
  * depend on whether the corpus includes one document or many.
+ * 
+ * @class Summary
  */
 Ext.define('Voyant.panel.Summary', {
 	extend: 'Ext.panel.Panel',
@@ -16,28 +18,30 @@ Ext.define('Voyant.panel.Summary', {
     	api: {
     		
     		/**
-    		 * @cfg {String} stopList A list of words to exclude.
-    		 * 
-    		 * Stopword lists can take one of several forms and they can be combined with commas:
-    		 * 
-    		 * * *auto*: automatically detect the language (this is recommended and the default so it doesn't need to be specified)
-    		 * * specially named stopword lists including stop.ar.arabic-lucene.txt, stop.bg.bulgarian-lucene.txt, stop.br.breton-lucene.txt, stop.ca.catalan-lucene.txt, stop.ckb.kurdish-lucene.txt, stop.cn.chinese-lawrence.txt, stop.cz.czech-lucene.txt, stop.de.citelab.txt, stop.de.german.txt, stop.el.greek-lucene.txt, stop.en.glasgow.txt, stop.en.smart.txt, stop.en.taporware.txt, stop.es.spanish.txt, stop.eu.basque-luence.txt, stop.fa.farsi-lucene.txt, stop.fr.steffens.txt, stop.fr.veronis.txt, stop.ga.ga-irish.txt, stop.gl.galician-lucene.txt, stop.hi.hindi-lucene.txt, stop.hu.hungarian.txt, stop.hy.armenian-lucene.txt, stop.id.indonesian-lucene.txt, stop.it.italian.txt, stop.ja.japanese.txt, stop.lt.lithuanian-lucene.txt, stop.lv.latvian-lucene.txt, stop.mu.multi.txt, stop.nl.dutch.txt, stop.no.norwegian.txt, stop.ro.romanian-lucene.txt, stop.se.swedish-long.txt, stop.se.swedish-short.txt, stop.th.thai-lucene.txt, stop.tr.turkish-lucene.txt
-    		 * * individual words to be excluded
-    		 * * URLs that point to plain text UTF-8 files with one stopword per line (lines with leading hash symbols (#) are skipped)
+    		 * @memberof Summary
+			 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		
-    		
+    		/**
+			 * @memberof Summary
+			 * @property {Start}
+			 * @default
+			 */
     		start: 0,
     		
     		
     		/**
-    		 * @cfg {Number} limit The number of items to include in most lists (document length, vocabulary density, most frequent terms).
+    		 * @memberof Summary
+			 * @property {Limit}
+			 * @default
     		 */
     		limit: 5,
     		
     		/**
-    		 * @cfg {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
+			 * @memberof Summary
+    		 * @property {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
     		 */
     		numberOfDocumentsForDistinctiveWords: 10
     	},
