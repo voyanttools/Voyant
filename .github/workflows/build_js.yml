@@ -49,18 +49,11 @@ jobs:
     
     - name: Commit JS files
       run: |
-        cp resources/voyant/current/voyant.js ${{github.workspace}}/src/main/webapp/resources/voyant/current/voyant.js
-        cp resources/voyant/current/voyant.min.js ${{github.workspace}}/src/main/webapp/resources/voyant/current/voyant.min.js
+        cp resources/voyant/current/voyant.*.min.* ${{github.workspace}}/src/main/webapp/resources/voyant/current/
+        cp resources/jsp/load_js.jsp ${{github.workspace}}/src/main/webapp/resources/jsp/
         git config --global user.name 'Voyant Tools'
         git config --global user.email 'voyanttools@users.noreply.github.com'
-        git add src/main/webapp/resources/voyant/current/voyant.js src/main/webapp/resources/voyant/current/voyant.min.js
+        git add src/main/webapp/resources/voyant/current/
+        git add src/main/webapp/resources/jsp/load_js.jsp
         git commit -m "chore: add JS build files"
         git push
-    
-#     - name: Archive JS artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: js-files
-#         path: |
-#           resources/voyant/current/voyant.js
-#           resources/voyant/current/voyant.min.js
