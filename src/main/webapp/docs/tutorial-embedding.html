@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Embedding Voyant | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+<section>
+    <header>
+        <h2>Embedding Voyant</h2>
+    </header>
+
+    
+        <article class="readme">
+            <h1>Embedding Voyant Tools</h1>
+<p>Voyant is designed to function as a standalone environment (<a href="http://voyant-tools.org">voyant-tools.org</a>) or as a set
+of more independent modules that can be embedded into remote sites (much like a YouTube clip). Technically, this is
+done using an <a href="http://www.w3schools.com/tags/tag_iframe.asp">iframe</a> tag that creates a sandbox within your page
+where Voyant can do its thing (JavaScript security limits the interaction that's possible between your page and Voyant).</p>
+<div style="max-width: 500px; margin-left: auto; margin-right: auto;"><iframe src="../tool/Cirrus/?useReferer=true" style="width: 100%; height: 250px; margin-left: auto; margin-right: auto;"></iframe></div>
+<h2>Exported Corpus</h2>
+<p>The Voyant export feature allows you to generate an HTML snippet to embed the current corpus and tool (or skin). Click the <em>Export</em> icon, expand the <em>Export View</em> section, select <em>an HTML snippet</em> radio button, click the <em>Export</em> button, and copy the snippet that appears in the text box.</p>
+<p><img src="imgs/ui/embedding/export.png" alt="Export"></p>
+<p>Here's an example:</p>
+<pre><code>&lt;iframe src='http://voyant-tools.org/tool/Cirrus/?corpus=austen'
+	style='width: 400%; height: 400px'&gt;&lt;/iframe&gt;
+</code></pre>
+<p>The style attribute can be modified as needed for formatting on the containing page. Additional parameters can also
+be added (for <a href="tutorial-stopwords.html">stopword</a> lists, for instance).</p>
+<h2>Current Page</h2>
+<p>It's also possible to embed Voyant into the current page and to use the contents of the current page as a corpus.
+For instance, here is the Cirrus Tool for this page:</p>
+<pre><code>&lt;iframe src=&quot;http://voyant-tools.org/tool/Cirrus/?useReferer=true&quot;
+	style=&quot;width: 300px; height: 300px;&quot;&gt;&lt;/iframe&gt;
+</code></pre>
+<p>If the page has already been visited, Voyant will have a cached version of the corpus that it will use, unless the
+page has been modified, in which case it will fetch the contents again.</p>
+<h2>External Resource</h2>
+<p>You can also embed a specific page using the input parameter (or a variant format from a given page, such as
+generated XML or PDF):</p>
+<pre><code>&lt;iframe src=&quot;http://voyant-tools.org/tool/Cirrus/?input=http://digitalhumanities.org/dhq/vol/3/3/000067/000067.xml&quot;
+	style=&quot;width: 300px; height: 300px;&quot;&gt;&lt;/iframe&gt;
+</code></pre>
+<p>Multiple sources can be specified by using additional input parameters:</p>
+<pre><code>http://voyant-tools.org/tool/Cirrus/?input=http://digitalhumanities.org/dhq/vol/16/2/000646/000646.html&amp;input=http://digitalhumanities.org/dhq/vol/16/3/000645/000645.html
+</code></pre>
+<p>Here again, cached contents will be reused if possible, and Voyant will check the URL for modifications if needed.
+If ever Voyant doesn't updated its contents automatically, you can add a string query like <code>?v1</code> or <code>&amp;v1</code> to the
+source URL to force an update. Note that parameters in the source URL should be escaped as needed so as not to
+interfere with the parameters to Voyant:</p>
+<pre><code>http://voyant-tools.org/tool/Cirrus/?inputFormat=XML&amp;input=http://digitalhumanities.org/dhq/?version%3D1
+</code></pre>
+<p>In this case <code>inputFormat=XML</code> is a parameter of Voyant whereas <code>version%3D1</code> (escaped form of <code>version=1</code>) is a
+parameter of the source URL.</p>
+<h2>Additional Information</h2>
+<p>It's important to know that for security reasons some content management systems don't allow all authors to use the
+<code>&lt;iframe&gt;</code> tag. For WordPress, installing the <a href="https://wordpress.org/plugins/iframe/">iframe plugin</a> can help.</p>
+<p>We assume that screen real-estate is at a premium in embedded instances of Voyant, so the default embedded URL
+syntax removes the top header that normally appears:</p>
+<p><a href="../tool/Cirrus/?corpus=austen">voyant-tools.org/tool/Cirrus/?corpus=austen</a>  | <a href="../?corpus=austen&amp;view=Cirrus">voyant-tools.org/?corpus=austen&amp;view=Cirrus</a></p>
+<p><img src="imgs/ui/embedding/view.png" alt="View"> | <img src="imgs/ui/embedding/export.png" alt="Tool"></p>
+<h2>Next Steps</h2>
+<ul>
+<li><a href="tutorial-skins.html">skins</a></li>
+<li><a href="tutorial-tools_.html">explore the tools</a></li>
+<li>read <a href="tutorial-about.html">about Voyant Tools</a></li>
+</ul>
+        </article>
+    
+</section>
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        showLnbExamples();
+    </script>
+
+</body>
+</html>

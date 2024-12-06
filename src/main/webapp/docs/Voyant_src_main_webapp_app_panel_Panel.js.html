@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: Voyant/src/main/webapp/app/panel/Panel.js | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The base class for Voyant tool panels.
+ * 
+ * @class Panel
+ */
+Ext.define('Voyant.panel.Panel', {
+	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.util.Toolable','Voyant.util.DetailedError'],
+	requires: ['Voyant.widget.QuerySearchField','Voyant.widget.StopListOption','Voyant.categories.CategoriesOption','Voyant.widget.TotalPropertyStatus'],
+	alias: 'widget.voyantpanel',
+	statics: {
+		i18n: {
+		},
+		config: {
+			corpusValidated: false
+		},
+		// typedefs for commonly used API params
+		/**
+		 * @typedef {String} StopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
+		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+		 * For more information see the &lt;a href="#!/guide/stopwords">Stopwords documentation&lt;/a>.
+		 */
+
+		/**
+		 * @typedef {String|String[]} Query A query or array of queries (queries can be separated by a comma).
+		 * For query syntax, see the &lt;a href="#!/guide/search">search documentation&lt;/a>.
+		 */
+
+		/**
+		 * @typedef {String|String[]} DocId The document ID(s) to restrict the results to.
+		 */
+
+		/**
+		 * @typedef {Number|Number[]} DocIndex The document index(es) to restrict the results to.
+		 */
+
+		/**
+		 * @typedef {String} Categories The categories ID to use. For more information see the &lt;a href="#!/guide/categories">Categories documentation&lt;/a>.
+		 */
+
+		/**
+		 * @typedef {Number} Bins The number of "bins" to divide the result into.
+		 */
+
+		/**
+		 * @typedef {Number} Start The index of the item to start the results at.
+		 */
+
+		/**
+		 * @typedef {Number} Limit The number of items to limit the result to.
+		 */
+
+		/**
+		 * @typedef {Number} Context The number of terms to consider on each side of the keyword.
+		 */
+
+		/**
+		 * @typedef {String} WithDistributions Determines whether to show "raw" or "relative" frequencies (those are the two valid values).
+		 * The default value is "relative" (unless there's only one document in the corpus, in which case raw frequencies are shown).
+		 */
+
+		/**
+		 * @typedef {String} TermColors Which term colors to show in the grid.
+		 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
+		 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+		 */
+
+		/**
+		 * @typedef {String|String[]} Columns One or more column data indexes to display, separated by a comma.
+		 * Use this to modify the default set of visible columns.
+		 */
+
+		/**
+		 * @typedef {String} SortColumn The column to sort the results by
+		 */
+
+		/**
+		 * @typedef {String} SortDir The direction in which to sort the results: 'asc' or 'desc'
+		 */
+		api: {
+			/**
+			 * @memberof Panel
+			 * @property {String} corpus The ID of the corpus to use.
+			 */
+			corpus: undefined,
+
+			/**
+			 * @memberof Panel
+			 * @property {String|String[]} input Use to directly provide input, instead of specifying a corpus. Can be: one or more URLs, one or more chunks of text.
+			 */
+			input: undefined,
+
+			/**
+			 * @memberof Panel
+			 * @property {String} inputFormat The input format of the provided input (the default is auto-detect).
+			 */
+			inputFormat: undefined,
+			
+			/**
+			 * @memberof Panel
+			 * @property {String} subtitle Specify a subtitle to display in the tool's header.
+			 */
+			subtitle: undefined
+		}
+	},
+	config: {
+		corpus: undefined
+	},
+	constructor: function(config) {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
+		this.mixins['Voyant.util.Toolable'].constructor.apply(this, arguments);
+		if (!this.glyph) {
+			this.glyph = Ext.ClassManager.getClass(this).glyph
+		}
+		
+		this.on("afterrender", function() {
+			if (this.getXType()!='facet' &amp;&amp; this.getApiParam('subtitle') &amp;&amp; this.getTitle()) {
+				this.setTitle(this.getTitle()+" &lt;i style='font-size: smaller;'>"+this.getApiParam('subtitle')+"&lt;/i>")
+			}
+			if (this.isXType("grid")) {
+				this.on('boxready', function() {
+					var columns = this.getApiParam('columns');
+					if (columns !== undefined) {
+						if (Array.isArray(columns) === false) {
+							columns = columns.split(',');
+						}
+						if (columns.length > 0) {
+							var anyMatch = false;
+							this.getColumns().forEach(function(gcol) {
+								var match = columns.indexOf(gcol.dataIndex) !== -1;
+								anyMatch = match || anyMatch;
+								gcol.setVisible(match);
+							});
+							if (!anyMatch) {
+								this.getColumns().forEach(function(gcol) {
+									gcol.setVisible(gcol.initialConfig.hidden !== undefined ? !gcol.initialConfig.hidden : true);
+								});
+							}
+						}
+					}
+				}, this);
+				
+				this.getSelectionModel().on("selectionchange", function(store, records) {
+//					console.warn(records, this.selectedRecordsToRemember)
+//					this.selectedRecordsToRemember = records;
+				}, this);
+				this.getStore().on("beforeload", function() {
+					this.selectedRecordsToRemember = this.getSelection();
+				}, this)
+				this.getStore().on("load", function(store, records) {
+					if (Ext.Array.from(this.selectedRecordsToRemember).length>0) {
+						// combine contents of store with contents of remembered items, filtering out duplicates
+						var seen = {}
+						var mergedRecords = Ext.Array.merge(this.selectedRecordsToRemember, records).filter(function(item) {
+							if (!(item.getId() in seen)) {
+								seen[item.getId()]=true;
+								return true
+							} else {
+								return false;
+							}
+						});
+						if (store.isBufferedStore) {
+							if (store.currentPage==1) {
+								store.data.addAll(mergedRecords);
+								store.totalCount = mergedRecords.length;
+								store.fireEvent('refresh', store);
+							}
+						} else {
+							store.loadRecords(mergedRecords);
+							this.getSelectionModel().select(this.selectedRecordsToRemember);
+							store.fireEvent('refresh', store);
+							this.selectedRecordsToRemember = [];
+						}
+					}
+				}, this);
+			}
+		}, this);
+		
+		this.on({
+			loadedCorpus: {
+				fn: function(src, corpus) {
+		    		// make sure API is updated if we had a corpus and it's changed, this should be registered first, so hopefully be fired before tools receive notification
+		    		this.setApiParam("corpus", corpus.getAliasOrId());
+					this.setCorpus(corpus);
+				},
+				priority: 999, // very high priority
+				scope: this
+			}
+		});
+	},
+	
+	getApplication: function() {
+		return Voyant.application;
+	},
+	
+	getBaseUrl: function() {
+		return this.getApplication().getBaseUrl();
+	},
+	
+	openUrl: function(url) {
+		this.getApplication().openUrl.apply(this, arguments);
+	},
+	
+	getTromboneUrl: function() {
+		return this.getApplication().getTromboneUrl();
+	},
+	
+	dispatchEvent: function() {
+		var application = this.getApplication();
+		application.dispatchEvent.apply(application, arguments);
+	},
+	
+	showError: function(config, response) {
+		if (Ext.isString(config)) {
+			config = {
+				message: config
+			}
+		}
+		Ext.applyIf(config, {
+			title: this.localize("error")+" ("+this.localize("title")+")"
+		})
+		this.getApplication().showError(config, response)
+	},
+	
+	showResponseError: function(config, response) {
+		this.getApplication().showResponseError(config, response)
+	},
+	
+	toastError: function(config) {
+		if (Ext.isString(config)) {
+			config = {html: config}
+		}
+		Ext.applyIf(config, {
+			glyph: 'xf071@FontAwesome',
+			title: this.localize("error")
+		})
+		this.toast(config);
+	},
+	
+	toastInfo: function(config) {
+		if (Ext.isString(config)) {
+			config = {html: config}
+		}
+		Ext.applyIf(config, {
+			glyph: 'xf05a@FontAwesome',
+			title: this.localize("info")
+		})
+		this.toast(config);
+	},
+	
+	toast: function(config) {
+		if (Ext.isString(config)) {
+			config = {html: config}
+		}
+		Ext.applyIf(config, {
+			 slideInDuration: 500,
+			 shadow: true,
+			 align: 'b',
+			 anchor: this.getTargetEl()			
+		})
+		Ext.toast(config);
+	},
+
+	/**
+	 * Checks to see if we have access to this corpus, first by checking the application's
+	 * access setting for the corpus, then by checking the corpus setting.
+	 * @private
+	 */
+	hasCorpusAccess: function(corpus) {
+		var app = this.getApplication();
+		var corpusAccess = app.getCorpusAccess();  // undefined: corpus is unprotected, ACCESS: user entered the access password, ADMIN: user entered there admin password, LIMITED: no password entered
+		if (corpusAccess === 'ADMIN' || corpusAccess === 'ACCESS') return true;
+		if (!corpus) {
+			corpus = this.getCorpus();
+			if (!corpus) {
+				corpus = app.getCorpus();
+			}
+		}
+		return corpus.getNoPasswordAccess() === 'NORMAL'; // NORMAL: corpus is unprotected, NONE: corpus cannot be accessed except by password, NONCONSUMPTIVE: limited access without password
+	},
+	
+	/**
+	 * Checks to see if the user can modify the corpus.
+	 * @private
+	 */
+	hasModifyCorpusAccess: function(corpus) {
+		var allowDownload = this.getApplication().getAllowDownload();
+		if (!allowDownload) return false;
+
+		var allowInput = this.getApplication().getAllowInput();
+		if (!allowInput) return false;
+
+		var corpusAccess = this.getApplication().getCorpusAccess();
+		var noPasswordAccess = corpus.getNoPasswordAccess();
+		
+		var canModify = (corpusAccess === undefined &amp;&amp; noPasswordAccess === 'NORMAL') || corpusAccess === 'ADMIN';
+		
+		return canModify;
+	}
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

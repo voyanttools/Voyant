@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Dreamscape | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+<section>
+    <header>
+        <h2>Dreamscape</h2>
+    </header>
+
+    
+        <article class="readme">
+            <h1>Dreamscape</h1>
+<p>Dreamscape is an experimental tool for exploring geospatial aspects of texts.</p>
+<p>Use it with a <a href="../?view=Dreamscape&amp;corpus=austen">Jane Austen corpus</a> or with <a href="../?view=Dreamscape">your own corpus</a>.</p>
+<h2>Overview</h2>
+<p>Dreamscape is a preliminary attempt to explore how texts might be represented geo-spatially. The tool tries to identify
+locations (especially city names) mentioned in texts, and suggests patterns of recurring connections between locations,
+patterns that might help identify travel of people, ideas, goods, or anything else. The notion of travel here is to be
+interpreted loosely and critically: a sequence of locations may or may not signify anything at all, but Dreamscape
+seeks to help study them.</p>
+<p>A primary weakness of Dreamscape is that current tools for automatically identifying locations in texts usually produce
+a significant number of errors, tagging locations that aren't a location (false positive) and not tagging locations
+that are a location (false negative). Language is messy and the computer doesn't understand its meaning. Here's an
+example:</p>
+<blockquote>
+<p>Paris Hilton travelled to London to see the Jack London and the Bishop of Canterbury.</p>
+</blockquote>
+<p>Paris, London, Canterbury, all of these can have multiple meanings as people, and locations. Is <code>London</code> the city in
+England or one of the several other cities named London? Does <code>Canterbury</code> matter as a place name if it's part of a
+person's name? What about cities whose name has changed over the centuries or imaginary cities? The challenges are
+endless.</p>
+<p>So, most importantly <strong>DON'T TRUST THE DATA</strong></p>
+<p>That doesn't mean the data and the tool can't be of some use. Let's say that the tool correctly recognizes 75% of
+locations, perhaps with enough data that's sufficient to lead to some observations worth examining in more depth?
+Dreamscape also allows some correction of data, so with a bit of effort it's possible to make it even more accurate.
+More information about the location identification is in a section below.</p>
+<iframe src="../tool/Dreamscape/?corpus=austen&subtitle=The+Works+of+Jane+Austen" style="width: 90%; height: 300px;"></iframe>
+<div style="width: 90%; text-align: center; margin-bottom: 1em;">Dreamscape with the Works of Jane Austen. You can also <a href="../?view=Dreamscape" target="_blank">use Dreamscape with your own corpus</a>.</div>
+<p>By default Dreamscape is designed to help observe the following:</p>
+<ol>
+<li>The names of cities mentioned in the text as represented by the circles, the larger the city the more often it's mentioned (hovering over a city shows its name and frequency in the corpus).</li>
+<li>The frequency of connections between two locations in a document as represented by the arcs, in other words when two locations are mentioned together (Paris to Montreal to London would create two connections: Paris-&gt;Montreal and Montreal-&gt;London).</li>
+<li>The individual occurrences of connections as represented by the animated arc and the ticker text at the top (each connection is &quot;read&quot; in sequence in the text)</li>
+</ol>
+<h2>Options</h2>
+<p>There are a lot of options tucked beneath the controls in the bottom toolbar</p>
+<h3>Display</h3>
+<ul>
+<li><strong>Base Layer</strong>: you can choose from multiple base layers, each of which is represented by a thumbnail (the default is <a href="http://maps.stamen.com/watercolor/">Stamen Watercolor</a> for its aesthetic and load speed)</li>
+<li><strong>Projection</strong>: the earth is a globe but maps are represented flat, so <a href="https://en.wikipedia.org/wiki/Map_projection">map projection</a> (warping) is required (often with socio-political implications; the default is the commonly use <a href="https://en.wikipedia.org/wiki/Mercator_projection">Mercator Projection</a>)</li>
+<li><strong>Cities</strong>: displayed as circles (you can toggle their display using the checkbox)
+<ul>
+<li><strong>maximum count</strong>: determines the maximum number of cities to load and display</li>
+<li><strong>minimum population</strong>: determines the minimum population that cities must have to be displayed</li>
+<li><strong>minimum occurrences</strong>: determines the minimum number of times a city must be referenced in the text to be displayed</li>
+</ul>
+</li>
+<li><strong>Connections</strong>: displayed as arcs (you can toggle their display using the checkbox)
+<ul>
+<li><strong>maximum count</strong>: determines the maximum number of connections to load and display</li>
+<li><strong>minimum occurrences</strong>: determines the minimum number of times a connection must occur in the text to be displayed</li>
+</ul>
+</li>
+<li><strong>Animations</strong>: connection occurrences displayed as animated arcs (you can toggle their display using the checkbox)
+<ul>
+<li><strong>milliseconds per animation</strong>: determines how quickly the animations happen (slide left to go faster and right to go slower)</li>
+</ul>
+</li>
+</ul>
+<h3>Filters</h3>
+<p>Dreamscape supports multiple filters or views of the corpus, this can include the whole corpus (the default filter) or a filter defined by metadata (author, title, year if available) or text (all documents containing a specified <a href="(#!/guide/search)">query</a>.</p>
+<p>Click the &quot;Add Filter&quot; button to add a filter.</p>
+<p>The filters are represented by funnels and have the following options:</p>
+<ul>
+<li><strong>authors</strong>: documents containing matches for the author query (some documents may not have authors defined)</li>
+<li><strong>titles</strong>: documents containing matches for the title query</li>
+<li><strong>full text</strong>: documents containing matches for the full text query</li>
+<li><strong>dates</strong>: documents whose &quot;date&quot; (year) fall between the values in the range (some documents may not have dates defined (using pubDate metadata), an attempt is also made to use the first word of the title if it happens to be a number, like for the year in the Austen corpus)</li>
+<li>animation controls:
+<ul>
+<li>step back</li>
+<li>pause</li>
+<li>step forward</li>
+<li>restart animation</li>
+<li>keep animation in frame: ensures that the map changes scale to show the animated arc, if needed</li>
+</ul>
+</li>
+<li><strong>remove</strong>: remove this filter</li>
+</ul>
+<h2>Manipulating Features</h2>
+<p>You can manipulate and examine locations and connections more closely.</p>
+<p>Clicking on a location (the circles) will produce this menu:</p>
+<ul>
+<li>View Occurrences: view up to 25 occurrences of this location</li>
+<li>Open in Voyant: send this location name to Voyant in a new window</li>
+<li>Select Alternative Location: select an alternative location from a menu</li>
+<li>Remove Location: remove all occurrences of this location</li>
+</ul>
+<p>Click on an occurence (the arcs) will produce this menu:</p>
+<ul>
+<li>View Connection Occurrences: view up to 25 occurrences of this connection</li>
+</ul>
+<h2>Annotations</h2>
+<p>In the upper left-hand corner of the map, below the zoom controls, there's a comment icon that allows the user to
+annotate parts of the map. To begin, click on the comment, and then draw a shape on the map; you should then see a
+dialog box appear where you can enter a comment (click &quot;OK&quot; to save it).</p>
+<p>Annotated regions should appear on the map as shaded shapes, with the comment text when hovering above them.</p>
+<p>Annotations are stored on the server, if you want to share an annotated map you need to export a url
+(the link icon in the right side of the Dreamscape title bar).</p>
+<p>To remove an annotation, click on the shaded area, remove the text and click &quot;OK&quot;.</p>
+<h2>Location Recognition</h2>
+<p>N.B.: this aspect of Dreamscape is likely to change in the coming months.</p>
+<h2>Spyral</h2>
+<p>To use Dreamscape in Spyral you can use the following code as a starting point. Modify the config object to modify
+the visualization.</p>
+<pre class="prettyprint source"><code>
+let config = {};
+
+loadCorpus(&quot;austen&quot;).tool(&quot;Dreamscape&quot;, config);
+
+</code></pre>
+<h2>Additional Information</h2>
+<p>Dreamscape is a collaboration between Voyant Tools, the <a href="http://earlymodernconversions.com/">Early Modern Conversions Project</a>
+and the Centre de recherche informatique de Montréal (<a href="https://www.crim.ca">CRIM</a>).</p>
+<p><img src="guides/dreamscape/crim.png" style="float: right; max-width: 150px;">We wish to recognize in particular the
+contributions of researchers at CRIM:</p>
+<ul>
+<li>Jérôme Labonté: client-side development</li>
+<li>Lise Rebout: back-end geolocation development</li>
+<li>Frederic Osterrath: back-end integration</li>
+<li>Pierre-Andre Ménard: NER annotations evaluation</li>
+<li>Caroline Barrière: back-end geolocation development</li>
+<li>Gabriel Bernier-Colborne: back-end geolocation development</li>
+<li>Hans Bherer: project coordination</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+<li><a href="tutorial-start.html">Getting Started</a></li>
+<li><a href="tutorial-tools_.html">Tools</a></li>
+</ul>
+        </article>
+    
+</section>
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        showLnbExamples();
+    </script>
+
+</body>
+</html>

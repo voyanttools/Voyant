@@ -2,6 +2,7 @@
  * TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
  * 
  * @class TermsRadio
+ * @memberof Tools
  * @author Mark Turcato
  * @author Andrew MacDonald
  */

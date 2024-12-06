@@ -2,6 +2,7 @@
  * Mandala is a conceptual visualization that shows the relationships between terms and documents.
  * 
  * @class Mandala
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Mandala', {
 	extend: 'Ext.panel.Panel',

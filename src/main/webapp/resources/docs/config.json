@@ -1,0 +1,26 @@
+{
+    "opts": {
+        "recurse": true,
+        "tutorials": "en",
+        "template": "tui-jsdoc-template"
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+        "default": {
+            "staticFiles": {
+                "include": ["static"]
+            }
+        },
+        "footerText": "<a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a>",
+        "name": "Voyant Tools Help",
+        "logo": {
+            "url": "imgs/info/about/icon.png",
+            "width": "150px",
+            "height": "150px"
+        },
+        "tabNames": {
+            "api": "Voyant API",
+            "tutorials": "Guides"
+        }
+    }
+}

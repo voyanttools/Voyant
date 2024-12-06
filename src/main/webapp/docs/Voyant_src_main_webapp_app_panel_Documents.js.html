@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: Voyant/src/main/webapp/app/panel/Documents.js | Voyant Tools Help</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Guides</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Guides</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
+ * 
+ * @class Documents
+ * @memberof Tools
+ */
+Ext.define('Voyant.panel.Documents', {
+	extend: 'Ext.grid.Panel',
+	mixins: ['Voyant.panel.Panel','Voyant.util.Downloadable'],
+	alias: 'widget.documents',
+	isConsumptive: true,
+    statics: {
+    	i18n: {
+			newCorpusError: 'There was an error creating the new the corpus. You may not have permission to do this.'
+    	},
+    	api: {
+			/**
+			 * @memberof Documents
+			 * @property {Query}
+			 */
+    		query: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {DocIndex}
+			 */
+    		docIndex: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {DocId}
+			 */
+    		docId: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {Columns} columns 'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'
+			 */
+			columns: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {SortColumn}
+			 */
+			sort: undefined,
+
+			/**
+			 * @memberof Documents
+			 * @property {SortDir}
+			 */
+			dir: undefined
+    	},
+		glyph: 'xf0ce@FontAwesome'
+    },
+    
+    MODE_EDITING: 'editing',
+    MODE_NORMAL: 'normal',
+    config: {
+    	options: [{
+    		xtype: 'stoplistoption'
+    	},
+        	{xtype: 'categoriesoption'}
+        ],
+    	mode: this.MODE_NORMAL
+    },
+
+    constructor: function(config) {
+    	
+    	var store = Ext.create("Voyant.data.store.Documents", {
+    	    selModel: {pruneRemoved: false},
+    	    proxy: {
+    	    	extraParams: {
+    	    		forTool: 'documents'
+    	    	}
+    	    }
+    	});
+    	
+    	var dockedItemsItems = [{
+            xtype: 'querysearchfield'
+        }, {
+            xtype: 'totalpropertystatus'
+        }]
+    	
+    	var me = this;
+    	
+    	if (!config || config.mode!=this.MODE_EDITING) {
+    		dockedItemsItems.push({
+            	text: this.localize("modify"),
+            	tooltip: this.localize("modifyTip"),
+    			glyph: 'xf044@FontAwesome',
+    			scope: this,
+    			itemId: 'modifyButton',
+            	handler: function(btn) {
+            		var win = Ext.create('Ext.window.Window', {
+            		    title: this.localize("title"),
+            		    modal: true,
+            		    width: "80%",
+            		    minWidth: 300,
+            		    minHeight: 200,
+            		    height: "80%",
+            		    layout: 'fit',
+            		    frame: true,
+            		    border: true,
+            		    items: {
+            		    	xtype: 'documents',
+            		    	mode: this.MODE_EDITING,
+            		    	corpus: this.getStore().getCorpus(),
+            		    	header: false,
+            		    	viewConfig: {
+            		            plugins:{
+            		                ptype:'gridviewdragdrop'
+            		            },
+            		            listeners: {
+            		            	beforedrop: function(node, data, overModel, dropPosition, dropHandlers) {
+            		            		if (this.getStore().getCount()&lt;this.getStore().getCorpus().getDocumentsCount()) {
+            		            			var panel = this.up("panel");
+            		        				Ext.Msg.show({
+            		        				    title: panel.localize('error'),
+            		        				    message: panel.localize('reorderFilteredError'),
+            		        				    buttons: Ext.Msg.OK,
+            		        				    icon: Ext.Msg.ERROR
+            		        				});
+            		            			return false;
+            		            		}
+            		            		return true;
+            		            	}
+            		            }
+            		    	}
+            		    },
+            		    buttons: [{
+                			text: this.localize('add'),
+                			tooltip: this.localize("addTip"),
+                			glyph: 'xf067@FontAwesome',
+                			handler: function(btn) {
+                				btn.up("window").close();
+                				Ext.create('Ext.window.Window', {
+                					header: false,
+                        		    modal: true,
+                        		    layout: 'fit',
+                        		    items: {
+                        		    	xtype: 'corpuscreator',
+                        		    	corpus: this.getStore().getCorpus()
+                        		    }
+                        		}).show();
+                			},
+                			scope: this
+                		}, {
+                			text: this.localize('remove'),
+                			tooltip: this.localize("removeTip"),
+                			glyph: 'xf05e@FontAwesome',
+                			hidden: this.getStore().getCorpus().getDocumentsCount()==1,
+                			handler: this.keepRemoveReorderHandler,
+                			itemId: 'remove',
+                			scope: this
+                		}, {
+                			text: this.localize('keep'),
+                			tooltip: this.localize("keepTip"),
+                			glyph: 'xf00c@FontAwesome',
+                			hidden: this.getStore().getCorpus().getDocumentsCount()==1,
+                			handler: this.keepRemoveReorderHandler,
+                			itemId: 'keep',
+                			scope: this
+                		}, {
+                			text: this.localize('reorder'),
+                			tooltip: this.localize("reorderTip"),
+                			glyph: 'xf0dc@FontAwesome',
+                			hidden: this.getStore().getCorpus().getDocumentsCount()==1,
+                			handler: this.keepRemoveReorderHandler,
+                			itemId: 'reorder',
+                			scope: this
+                		},{
+            		        text: 'Cancel',
+                			glyph: 'xf00d@FontAwesome',
+            		        handler: function(btn) {
+            		        	btn.up("window").close();
+            		        }
+            		    }]
+            		}).show();
+
+            	}
+    		}, {
+    			text: this.localize('downloadButton'),
+		    	glyph: 'xf019@FontAwesome',
+    			itemId: 'downloadButton',
+    			handler: function() {
+    				me.downloadFromCorpusId(me.getStore().getCorpus().getId())
+    			}
+    		})
+    	}
+    	
+    	Ext.apply(this, {
+    		title: this.localize('title'),
+    		emptyText: this.localize("emptyText"),
+	    	columns:[
+	    	   {
+	    		   xtype: 'rownumberer',
+	    	        renderer: function(value, metaData, record) {return record.getIndex()+1},
+	    	        sortable: false
+	    	    },{
+	    	        text: this.localize('documentTitle'),
+	    	        dataIndex: 'title',
+	    	        sortable: true,
+	    	        renderer: function(val, metadata, record) {return record.getTitle();},
+	    	        flex: 3
+	    	    },{
+	    	        text: this.localize('documentAuthor'),
+	    	        dataIndex: 'author',
+	    	        sortable: true,
+	    	        hidden: true,
+	    	        renderer: function(val, metadata, record) {return record.getAuthor();},
+	    	        flex: 2
+	    	    },{
+	    	        text: this.localize('documentPubDate'),
+	    	        dataIndex: 'pubDate',
+	    	        sortable: true,
+	    	        hidden: true,
+	    	        renderer: function(val, metadata, record) {return record.getPubDate();},
+	    	        flex: 2
+	    	    },{
+	    	        text: this.localize('documentPublisher'),
+	    	        dataIndex: 'publisher',
+	    	        sortable: false,
+	    	        hidden: true,
+	    	        renderer: function(val, metadata, record) {return record.getPublisher();},
+	    	        flex: 2
+	    	    },{
+	    	        text: this.localize('documentPubPlace'),
+	    	        dataIndex: 'pubPlace',
+	    	        sortable: false,
+	    	        hidden: true,
+	    	        renderer: function(val, metadata, record) {return record.getPubPlace();},
+	    	        flex: 2
+	    	    },{
+	    	        text: this.localize('documentKeyword'),
+	    	        dataIndex: 'keyword',
+	    	        sortable: false,
+	    	        hidden: true,
+	    	        renderer: function(val, metadata, record) {return record.getKeyword();},
+	    	        flex: 2
+	    	    },{
+	    	        text: this.localize('documentCollection'),
+	    	        dataIndex: 'collection',
+	    	        sortable: false,
+	    	        hidden: true,
+	    	        renderer: function(val, metadata, record) {return record.getCollection();},
+	    	        flex: 2
+	    	    },{
+	    	        text: this.localize('tokensCountLexical'),
+	    	        dataIndex: 'tokensCount-lexical',
+	    	        renderer: Ext.util.Format.numberRenderer('0,000'),
+	    	        sortable: true,
+	    	        width: 'autoSize'
+	    	    },{
+	    	        text: this.localize('typesCountLexical'),
+	    	        dataIndex: 'typesCount-lexical',
+	    	        renderer: Ext.util.Format.numberRenderer('0,000'),
+	    	        width: 'autoSize'
+	    	    },{
+	    	        text: this.localize('typeTokenRatioLexical'),
+	    	        dataIndex: 'typeTokenRatio-lexical',
+	    	        renderer: function(val) {return Ext.util.Format.percent(val)},
+	    	        width: 'autoSize'
+	    	    },{
+	    	        text: this.localize('averageWordsPerSentence'),
+	    	        dataIndex: 'averageWordsPerSentence',
+	    	        renderer: Ext.util.Format.numberRenderer('0,000.0'),
+	            	tooltip: this.localize("averageWordsPerSentenceTip"),
+	    	        width: 'autoSize'
+	    	    },{
+	    	        text: this.localize('language'),
+	    	        dataIndex: 'language',
+	    	        hidden: true,
+	    	        renderer: function(val, metaData, record, rowIndex, colIndex, store, view) {return view.ownerCt.getLanguage(val);},
+	    	        width: 'autoSize'
+	    	    }
+	    	],
+	    	
+	        store: store,
+	    	
+	    	selModel: {
+	    		type: 'rowmodel',
+	    		mode: 'MULTI',
+                listeners: {
+                    selectionchange: {
+                    	fn: function(sm, selections) {
+                    		this.getApplication().dispatchEvent('documentsClicked', this, selections, this.getStore().getCorpus());
+                    	},
+                    	scope: this
+                    }
+                }
+            },
+            
+            dockedItems: [{
+                dock: 'bottom',
+                xtype: 'toolbar',
+                overflowHandler: 'scroller',
+                items: dockedItemsItems
+            }]
+    	});
+    	
+        this.callParent(arguments);
+    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+        
+        // create a listener for corpus loading (defined here, in case we need to load it next)
+    	this.on('loadedCorpus', function(src, corpus) {
+
+    		this.store.setCorpus(corpus);
+
+    		if (this.isVisible()) {
+        		this.store.load({params: this.getApiParams()});
+    		} else {
+    			this.on('afterrender', function() {
+            		this.store.load({params: this.getApiParams()});
+    			}, this);
+    		}
+
+    		if (this.hasModifyCorpusAccess(corpus) === false) {
+    			this.queryById('modifyButton').hide();
+    			this.queryById('downloadButton').hide();
+    		}
+    	});
+    	
+    	this.on("activate", function() { // load after tab activate (if we're in a tab panel)
+    		if (this.getStore().getCorpus()) {
+    			this.getStore().load({params: this.getApiParams()});
+    		}
+    	}, this);
+    	
+        // create a listener for corpus loading (defined here, in case we need to load it next)
+    	this.on('query', function(src, query) {
+    		this.setApiParam('query', query);
+    		this.store.load({params: this.getApiParams()});
+    	})
+    	
+    	if (config.embedded) {
+        	if (Ext.getClass(config.embedded).getName() == "Voyant.data.model.Corpus") {
+        		config.corpus = config.embedded
+        	}
+        	else if (Ext.getClass(config.embedded).getName() == "Voyant.data.store.Documents") {
+        		this.store.setRecords(config.embedded.getData())
+        		config.corpus = config.embedded.getCorpus()
+        	}
+    		
+    	}
+    	
+    	// if we have a corpus, load it
+    	if (config.corpus) {
+    		this.fireEvent('loadedCorpus', this, config.corpus)
+    	}
+    },
+    
+    keepRemoveReorderHandler: function(btn) {
+    	// we're not sure which scope we're in, so ensure we're talking about this buttons panel
+		var panel = btn.up("window").down("documents");
+		var selection = panel.getSelection();
+		var docs = panel.getStore().getCorpus().getDocumentsCount();
+		var btnMode = btn.getItemId();
+		// if reordering, check to make sure that we're not looking at a subset
+		if (btnMode=='reorder') {
+			if (panel.getStore().getCount()&lt;docs) {
+				return Ext.Msg.show({
+				    title: this.localize('error'),
+				    message: this.localize('reorderFilteredError'),
+				    buttons: Ext.Msg.OK,
+				    icon: Ext.Msg.ERROR
+				});
+			}
+			else {
+				docIndex = [];
+				panel.getStore().each(function(doc) {
+					docIndex.push(doc.getIndex())
+			    }, this);
+				for (var i=1; i&lt;docIndex.length; i++) {
+					if (docIndex[i-1]>docIndex[i]) {
+						return Ext.Msg.confirm(panel.localize('newCorpus'), new Ext.Template(panel.localize(btnMode+'Documents')).applyTemplate([selection.length]), function(confirmBtn){
+							if (confirmBtn==='yes') {
+								docIndex = [];
+								this.getStore().each(function(doc) {
+									docIndex.push(doc.getIndex())
+							    }, this);
+								var params = {docIndex: docIndex};
+								params[btnMode+"Documents"] = true;
+								this.editCorpus(params)
+							}
+						}, panel);
+					}
+				}
+				// if we get here it's because nothing's been reordered
+				return Ext.Msg.show({
+				    title: this.localize('error'),
+				    message: this.localize('reorderOriginalError'),
+				    buttons: Ext.Msg.OK,
+				    icon: Ext.Msg.ERROR
+				});
+			}
+			
+		}
+		
+		if (selection.length>0) {
+			if (selection.length==docs) {
+				if (docs==1) {
+					return Ext.Msg.show({
+					    title: this.localize('error'),
+					    message: this.localize('onlyOneError'),
+					    buttons: Ext.Msg.OK,
+					    icon: Ext.Msg.ERROR
+					});
+				}
+				else {
+					return Ext.Msg.show({
+					    title: this.localize('error'),
+					    message: this.localize('allSelectedError'),
+					    buttons: Ext.Msg.OK,
+					    icon: Ext.Msg.ERROR
+					});
+				}
+			}
+			else {
+				return Ext.Msg.confirm(this.localize('newCorpus'), new Ext.Template(this.localize(btnMode+'SelectedDocuments')).applyTemplate([selection.length]), function(confirmBtn){
+					if (confirmBtn==='yes') {
+						docIndex = [];
+						selection.forEach(function(doc){
+							docIndex.push(doc.getIndex())
+						})
+						var params = {docIndex: docIndex};
+						params[btnMode+"Documents"] = true;
+						this.editCorpus(params)
+					}
+				}, panel);
+			}
+		}
+		else if (panel.getApiParam("query") &amp;&amp; panel.getStore().getCount()&lt;docs) {
+			return Ext.Msg.confirm(this.localize('newCorpus'), new Ext.Template(this.localize(btnMode+'FilteredDocuments')).applyTemplate([selection.length]), function(confirmBtn){
+				if (confirmBtn==='yes') {
+					docIndex = [];
+					this.getStore().each(function(doc) {
+						docIndex.push(doc.getIndex())
+				    }, this);
+					var params = {docIndex: docIndex};
+					params[btnMode+"Documents"] = true;
+					this.editCorpus(params)
+				}
+			}, panel);
+		}
+		else {
+			return Ext.Msg.show({
+			    title: this.localize('error'),
+			    message: this.localize('selectOrFilterError'),
+			    buttons: Ext.Msg.OK,
+			    icon: Ext.Msg.ERROR
+			});
+		}    	
+    },
+    
+    editCorpus: function(params) {
+    	
+    	Ext.apply(params, {
+    		tool: 'corpus.CorpusManager',
+    		corpus: this.getStore().getCorpus().getId()
+    	})
+
+    	// mask main viewport while we create a new corpus
+    	var app = this.getApplication();
+    	var view = app.getViewport();
+		view.mask(this.localize("Creating new corpus…"));
+    	Ext.Ajax.request({
+    		url: this.getApplication().getTromboneUrl(),
+    		method: 'POST',
+    		params: params,
+    		success: function(response) {
+    			view.unmask();
+    			var obj = Ext.decode(response.responseText);
+				app.openUrl(app.getBaseUrl()+"?corpus="+obj.corpus.id);
+//    			view.mask("Loading new corpus…")
+//    			new Voyant.data.model.Corpus({corpus: obj.corpus.id}).then(function(corpus) {
+//    				view.unmask();
+//    				app.openUrl(app.getBaseUrl()+"/?corpus="+obj.corpus.id)
+//    				app.dispatchEvent('loadedCorpus', app, corpus);
+//    			}).fail(function(message, response) {
+//    				view.unmask();
+//    				app.showErrorResponse({message: message}, response);
+//    			});
+    		},
+			failure: function(response) {
+				view.unmask();
+				Ext.Msg.show({
+					title: this.localize('error'),
+					message: this.localize('newCorpusError'),
+					buttons: Ext.Msg.OK,
+					icon: Ext.Msg.ERROR
+				});
+			},
+			scope: this
+    	});
+    	
+    	// close editing window if we're in modal mode, should happen asynchronously while new corpus is created
+    	var win = this.up("window");
+    	if (win &amp;&amp; win.isFloating()) {win.close()}
+    }
+})</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

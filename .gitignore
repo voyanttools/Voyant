@@ -24,3 +24,8 @@ src/main/webapp/resources/spyral/node_modules
 src/main/resources/oath.properties
 /.pydevproject
 .vscode/
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/vcs.xml
+/src/main/webapp/resources/docs/node_modules/

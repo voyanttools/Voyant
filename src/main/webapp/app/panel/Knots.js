@@ -3,6 +3,7 @@
  * Knots is a creative visualization that represents terms in a single document as a series of twisted lines.
  * 
  * @class Knots
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Knots', {
 	extend: 'Ext.panel.Panel',
