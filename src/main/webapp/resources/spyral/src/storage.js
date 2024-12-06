@@ -13,6 +13,7 @@ class Storage {
 	 * Store a resource
 	 * @name Spyral.Util.Storage.storeResource
 	 * @function
+	 * @static
 	 * @param {String} id 
 	 * @param {*} data 
 	 * @returns {Promise}
@@ -61,6 +62,7 @@ class Storage {
 	 * Get the URL for trombone
 	 * @name Spyral.Util.Storage.getTromboneUrl
 	 * @function
+	 * @static
 	 * @returns {String}
 	 */
 	static getTromboneUrl() {
@@ -82,6 +84,7 @@ class Storage {
 	 * Get a stored resource
 	 * @name Spyral.Util.Storage.getStoredResource
 	 * @function
+	 * @static
 	 * @param {String} id 
 	 * @returns {Promise}
 	 */
