@@ -2,6 +2,7 @@
  * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
  * 
  * @class Reader
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Reader', {
 	extend: 'Ext.panel.Panel',

@@ -2,6 +2,7 @@
  * Microsearch visualizes the frequency and distribution of terms in a corpus.
  * 
  * @class MicroSearch
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.MicroSearch', {
 	extend: 'Ext.panel.Panel',
