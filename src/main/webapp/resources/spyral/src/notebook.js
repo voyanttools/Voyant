@@ -7,7 +7,8 @@ class Notebook {
 	/**
 	 * 
 	 * @param {*} contents 
-	 * @param {*} config 
+	 * @param {*} config
+	 * @static 
 	 */
 	static show(contents, config) {
 		var contents = Spyral.Util.toString(contents);
@@ -20,6 +21,7 @@ class Notebook {
 	/**
 	 * Returns the first DIV element that's a child of the document body. If none exists then one will be created.
 	 * @returns {element}
+	 * @static
 	 */
 	static getTarget() {
 		if (document.body.firstElementChild !== null && document.body.firstElementChild.nodeName === 'DIV') {
@@ -33,6 +35,7 @@ class Notebook {
 	/**
 	 * Returns a new promise
 	 * @returns {Promise} A promise
+	 * @static
 	 */
 	static getPromise() {
 		return new Promise();
@@ -42,6 +45,7 @@ class Notebook {
 	 * Fetch and return the content of a notebook or a particular cell in a notebook
 	 * @param {string} url The URL of the notebook to import
 	 * @param {number} [cellIndex] The index of the cell to import
+	 * @static
 	 */
 	static async import(url, cellIndex=undefined) {
 		const urlHasHash = url.indexOf('#') !== -1;

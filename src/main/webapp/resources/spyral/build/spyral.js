@@ -12776,7 +12776,8 @@ var Spyral = (function () {
 		/**
 		 * 
 		 * @param {*} contents 
-		 * @param {*} config 
+		 * @param {*} config
+		 * @static 
 		 */
 		static show(contents, config) {
 			var contents = Spyral.Util.toString(contents);
@@ -12789,6 +12790,7 @@ var Spyral = (function () {
 		/**
 		 * Returns the first DIV element that's a child of the document body. If none exists then one will be created.
 		 * @returns {element}
+		 * @static
 		 */
 		static getTarget() {
 			if (document.body.firstElementChild !== null && document.body.firstElementChild.nodeName === 'DIV') {
@@ -12802,6 +12804,7 @@ var Spyral = (function () {
 		/**
 		 * Returns a new promise
 		 * @returns {Promise} A promise
+		 * @static
 		 */
 		static getPromise() {
 			return new Promise();
@@ -12811,6 +12814,7 @@ var Spyral = (function () {
 		 * Fetch and return the content of a notebook or a particular cell in a notebook
 		 * @param {string} url The URL of the notebook to import
 		 * @param {number} [cellIndex] The index of the cell to import
+		 * @static
 		 */
 		static async import(url, cellIndex=undefined) {
 			const urlHasHash = url.indexOf('#') !== -1;
@@ -13052,6 +13056,7 @@ var Spyral = (function () {
 		 * Store a resource
 		 * @name Spyral.Util.Storage.storeResource
 		 * @function
+		 * @static
 		 * @param {String} id 
 		 * @param {*} data 
 		 * @returns {Promise}
@@ -13100,6 +13105,7 @@ var Spyral = (function () {
 		 * Get the URL for trombone
 		 * @name Spyral.Util.Storage.getTromboneUrl
 		 * @function
+		 * @static
 		 * @returns {String}
 		 */
 		static getTromboneUrl() {
@@ -13121,6 +13127,7 @@ var Spyral = (function () {
 		 * Get a stored resource
 		 * @name Spyral.Util.Storage.getStoredResource
 		 * @function
+		 * @static
 		 * @param {String} id 
 		 * @returns {Promise}
 		 */
