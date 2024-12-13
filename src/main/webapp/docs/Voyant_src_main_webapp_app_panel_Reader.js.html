@@ -35,11 +35,10 @@
     </div>
     
         <ol class="lnb-tab">
-            <li id="api-tab">
-                <a href="#"><h4>Voyant API</h4></a>
-            </li>
             <li id="examples-tab">
                 <a href="#"><h4>Guides</h4></a>
+            </li>            <li id="api-tab">
+                <a href="#"><h4>Voyant API</h4></a>
             </li>
         </ol>
     
@@ -936,7 +935,7 @@ Ext.define('Voyant.panel.Reader', {
 
         $selectedApi.removeClass('hidden');
         $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-        showLnbApi();
+        showLnbExamples();
     </script>
 
 </body>
