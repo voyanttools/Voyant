@@ -47,11 +47,17 @@ To use Reader widget in Spyral you can use the following code as a starting poin
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "Limit": null,
+    "Query": null,
+    "skipToDocId": null,
+    "Start": null
+}; 
 
 loadCorpus("austen").tool("Reader", config);
 ```
 
+Please see {@link Tools.Reader} for more information about configuration.
 
 ## Additional Information
 

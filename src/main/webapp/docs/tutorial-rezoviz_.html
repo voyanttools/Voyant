@@ -126,10 +126,19 @@ shown, their interconnectedness, etc.</p>
 <h2>Spyral</h2>
 <p>To use Reader widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
+<pre class="prettyprint source"><code>let config = {
+    &quot;DocId&quot;: null,
+    &quot;Limit&quot;: null,
+    &quot;minEdgeCount&quot;: null,
+    &quot;nerService&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: null,
+    &quot;type&quot;: null,
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Rezoviz&quot;, config);
 </code></pre>
+<p>Please see Tools.Rezoviz for more information about configuration.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="tutorial-start.html">Getting Started</a></li>

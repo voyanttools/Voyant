@@ -30,10 +30,15 @@ To use Microsearch widget in Spyral you can use the following code as a starting
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "Query": null,
+    "StopList": "auto"
+}; 
 
 loadCorpus("austen").tool("Microsearch", config);
 ```
+
+Please see {@link Tools.Microsearch} for more information about configuration.
 
 ## Additional Information
 

@@ -83,11 +83,17 @@ settings (click elsewhere to dismiss the options).</p>
 <p>To use Knots in Spyral you can use the following code as a starting point. Modify the config object to modify
 the visualization.</p>
 <pre class="prettyprint source"><code>
-let config = {}; 
+let config = {
+    &quot;audio&quot;: false,
+    &quot;DocId&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: &quot;auto&quot;
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Knots&quot;, config);
 
 </code></pre>
+<p>Please see <a href="Tools.Knots.html">Tools.Knots</a> for more information about configuration.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="tutorial-start.html">Getting Started</a></li>

@@ -25,6 +25,29 @@ The _Context_ slider determines how many terms to include when looking for collo
 Clicking on the [Options](#!/guide/options) icon also allows you to define a set of stopwords to exclude – see the [stopwords guide](#!/guide/stopwords) for more information.
 
 
+## Spyral
+
+To use Collocates Graph in Spyral you can use the following code as a starting point. Modify the config object to modify 
+the visualization.
+
+```
+
+let config = {
+    centralize: null, // If specified, will "centralize" on this keyword
+    context: 5, // The number of terms to consider on each side of the keyword.
+    limit: 5, // The number of items to limit the result to.
+    Query: null, // A query or array of queries (queries can be separated by a comma).
+    StopList: "auto", // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+};
+
+loadCorpus("austen").tool("CollocatesGraph", config);
+
+```
+
+Please see {@link Tools.CollocatesGraph} for more information about configuration.
+
+
+
 ## See Also
 
 - [Getting Started](#!/guide/start)

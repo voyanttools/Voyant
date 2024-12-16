@@ -43,16 +43,21 @@ the visualization.
 ```
 
 let config = {
-    bins: null, // for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    expand: null, // the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword
-    query: null, // a query for the keywords (can be comma-separated list)
-    stopList: null, // a named stopword list or comma-separated list of words
+    columns: null, // 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
+    comparisonCorpus: null, // An existing corpus to be used for comparison purposes. 
+    SortDir: null, // The direction in which to sort the results: 'asc' or 'desc'
+    maxBins: null, // The maximum number of bins to use for distributions in Trend.
+    Query: null, // A query or array of queries (queries can be separated by a comma). For query syntax, see the search documentation.
+    SortColumn: null, // The column to sort the results by
+    StopList: null, // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+    TermColors: null, // Which term colors to show in the grid. By default this is set to 'categories' which shows the term color only if it's been assigned by a category. The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
 };
 
 loadCorpus("austen").tool("Corpusterms", config);
 
 ```
+
+Please see {@link Tools.CorpusTerms} for more information about configuration.
 
 ## See Also
 - {@tutorial start}

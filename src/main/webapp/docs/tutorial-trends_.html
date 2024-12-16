@@ -119,17 +119,20 @@ are determined for each part.</p>
 <p>To use the Trends widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    stopList: null, // a named stopword list or comma-separated list of words
-    query: null, // a query for the keywords (can be comma-separated list)
-    limit: null, // the number of terms to show
-    withDistributions: null, // the type of distribution frequency to show (&quot;raw&quot; or &quot;relative&quot;), default is &quot;relative&quot;
-    bins: null, // for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    chartType: null, // the type of chart to show: &quot;barline&quot;, &quot;bar&quot;, &quot;line&quot;, &quot;area&quot;, &quot;stacked&quot;
-};
+    &quot;chartType&quot;: null,
+    &quot;DocId&quot;: null,
+    &quot;DocIndex&quot;: null,
+    &quot;labels&quot;: null,
+    &quot;Limit&quot;: null,
+    &quot;mode&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: null,
+    &quot;WithDistributions&quot;: null
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Trends&quot;, config);
 </code></pre>
+<p>Please see <a href="Tools.Trends.html">Tools.Trends</a> for more information about configuration.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="tutorial-start.html">Getting Started</a></li>

@@ -83,11 +83,19 @@ can use the author or title prefix to <em>only</em> look at one of those metadat
 <p>To use Documents in Spyral you can use the following code as a starting point. Modify the config object to modify
 the visualization.</p>
 <pre class="prettyprint source"><code>
-let config = {};
+let config = {
+    &quot;columns&quot;: null,
+    &quot;SortDir&quot;: null,
+    &quot;DocId&quot;: null,
+    &quot;DocIndex&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;SortColumn&quot;: null,
+};
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Documents&quot;, config);
 
 </code></pre>
+<p>Please see <a href="Tools.Documents.html">Tools.Documents</a> for more information about configuration.</p>
 <h2>Additional Information</h2>
 <p>The type/token <em>Ratio</em> value can be a useful way of expressing vocabulary richness, but the value is somewhat sensitve
 to document length and should be considered with circumspection. A more reliable way of measuring vocabulary richness

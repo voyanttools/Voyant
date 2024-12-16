@@ -24,19 +24,6 @@ You can filter documents  by typing a query into the search box and hitting ente
 advanced searching capabilities). Note that by default the query includes the full-text, the title and the author. You 
 can use the author or title prefix to *only* look at one of those metadata fields (e.g. _title:love_).
 
-## Spyral
-
-To use Catalogue in Spyral you can use the following code as a starting point. Modify the config object to modify 
-the visualization.
-
-```
-
-let config = {};
-
-loadCorpus("austen").tool("Bubbles", config);
-
-```
-
 ## Additional Information
 
 We hope to soon offer a better interface for users to select other facets.

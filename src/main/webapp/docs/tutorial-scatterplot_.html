@@ -100,10 +100,28 @@ panel also provides the following functionality:</p>
 <h2>Spyral</h2>
 <p>To use Scatterplot widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
+<pre class="prettyprint source"><code>let config = {
+    &quot;analysis&quot;: null,
+    &quot;Bins&quot;: null,
+    &quot;clusters&quot;: null,
+    &quot;comparisonType&quot;: null,
+    &quot;dimensions&quot;: null,
+    &quot;DocId&quot;: null,
+    &quot;iterations&quot;: null,
+    &quot;label&quot;: null,
+    &quot;Limit&quot;: null,
+    &quot;perplexity&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: null,
+    &quot;storeJson&quot;: null,
+    &quot;target&quot;: null,
+    &quot;term&quot;: null,
+    &quot;whitelist&quot;: null,
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Scatterplot&quot;, config);
 </code></pre>
+<p>Please see Tools.Scatterplot for more information about configuration.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="tutorial-start.html">Getting Started</a></li>

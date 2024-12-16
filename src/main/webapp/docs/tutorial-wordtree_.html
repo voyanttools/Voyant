@@ -79,10 +79,18 @@ keyword with context on each side), the branches shown are not necessarily based
 <h2>Spyral</h2>
 <p>To use the Wordtree widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
+<pre class="prettyprint source"><code>let config = {
+    &quot;Context&quot;: null,
+    &quot;DocId&quot;: null,
+    &quot;DocIndex&quot;: null,
+    &quot;Limit&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: null
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Wordtree&quot;, config);
 </code></pre>
+<p>Please see Tools.Wordtree for more information about configuration.</p>
 <h2>Additional Information</h2>
 <p>Word Tree is an adaptation of Chris Culy's <a href="http://linguistics.chrisculy.net/lx/software/DoubleTreeJS/">DoubleTreeJS</a>.</p>
 <h2>See Also</h2>

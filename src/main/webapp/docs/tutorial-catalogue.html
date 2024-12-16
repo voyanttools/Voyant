@@ -73,15 +73,6 @@ store, allowing you to filter documents.</p>
 <p>You can filter documents  by typing a query into the search box and hitting enter (see <a href="tutorial-search.html">Search</a> for more
 advanced searching capabilities). Note that by default the query includes the full-text, the title and the author. You
 can use the author or title prefix to <em>only</em> look at one of those metadata fields (e.g. <em>title:love</em>).</p>
-<h2>Spyral</h2>
-<p>To use Catalogue in Spyral you can use the following code as a starting point. Modify the config object to modify
-the visualization.</p>
-<pre class="prettyprint source"><code>
-let config = {};
-
-loadCorpus(&quot;austen&quot;).tool(&quot;Bubbles&quot;, config);
-
-</code></pre>
 <h2>Additional Information</h2>
 <p>We hope to soon offer a better interface for users to select other facets.</p>
 <p>The current interface may not work properly with corpora containing more than 1,000 documents.</p>

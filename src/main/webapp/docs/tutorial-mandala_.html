@@ -73,10 +73,15 @@ guide for more information.</p>
 <h2>Spyral</h2>
 <p>To use Mandala widget in Spyral you can use the following code as a starting point. Modify the config object to modify
 the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
+<pre class="prettyprint source"><code>let config = {
+    &quot;labels&quot;: true,
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: &quot;auto&quot;,
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Mandala&quot;, config);
 </code></pre>
+<p>Please see <a href="Tools.Mandala.html">Tools.Mandala</a> for more information about configuration.</p>
 <h2>Additional Information</h2>
 <p>The Mandala is an adaptation for Voyant Tools of the <a href="http://mandala.humviz.org/">Mandala Browser</a>, a project by Stéfan
 Sinclair, Stan Ruecker Sandra Gabriele and Teresa Dobson, based on a concept by Oksana Cheypesh.</p>

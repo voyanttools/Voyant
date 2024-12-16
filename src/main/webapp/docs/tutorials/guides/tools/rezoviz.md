@@ -88,10 +88,20 @@ To use Reader widget in Spyral you can use the following code as a starting poin
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "DocId": null,
+    "Limit": null,
+    "minEdgeCount": null,
+    "nerService": null,
+    "Query": null,
+    "StopList": null,
+    "type": null,
+}; 
 
 loadCorpus("austen").tool("Rezoviz", config);
 ```
+
+Please see {@link Tools.Rezoviz} for more information about configuration.
 
 ## See Also
 

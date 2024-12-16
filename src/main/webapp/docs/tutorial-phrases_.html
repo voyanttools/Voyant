@@ -94,13 +94,6 @@ strategies:</p>
 <li><strong>prioritize longest phrases)</strong>: Only the longest phrase is kept (the first: &quot;once upon a time&quot;).</li>
 <li><strong>prioritize the most frequent phrases</strong>: First consider the total count of phrase frequencies (if &quot;a time&quot; occurred elsewhere in the text, even if it's not part of this phrase, it would take precedence) – once a word is included in a phrase it won't be included in other phrases. If two phrases have the same frequency (e.g. &quot;once upon&quot; and &quot;upon a&quot;), the left-most phrase takes precedence (only &quot;once upon&quot; would be kept, not &quot;upon a&quot;).</li>
 </ul>
-<h2>Spyral</h2>
-<p>To use Phrases widget in Spyral you can use the following code as a starting point. Modify the config object to
-modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
-
-loadCorpus(&quot;austen&quot;).tool(&quot;Phrases&quot;, config);
-</code></pre>
 <h2>Additional Information</h2>
 <p>Note that at the moment stopwords are not used in the Phrases tool (that may change in the future).</p>
 <p>Note also that for a phrase to be considered repeating it has to repeat within a document – single occurrences of a phrase won't be included, even if they recur elsewhere in the corpus. This isn't the ideal functionality, but it's the current reality of how phrases are identified by Voyant (for reasons of efficiency).</p>

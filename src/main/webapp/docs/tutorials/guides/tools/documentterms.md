@@ -41,16 +41,22 @@ the visualization.
 ```
 
 let config = {
-    bins: null, // for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    expand: null, // the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword
-    query: null, // a query for the keywords (can be comma-separated list)
-    stopList: null, // a named stopword list or comma-separated list of words
+    "Bins": null,
+    "columns": null,
+    "SortDir": null,
+    "DocId": null,
+    "DocIndex": null,
+    "Query": null,
+    "SortColumn": null,
+    "StopList": null,
+    "TermColors": null,
 };
 
 loadCorpus("austen").tool("Documentterms", config);
 
 ```
+
+Please see {@link Tools.DocumentTerms} for more information about configuration.
 
 ## See Also
 - {@tutorial start}

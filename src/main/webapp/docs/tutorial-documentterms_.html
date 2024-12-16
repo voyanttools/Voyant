@@ -84,16 +84,21 @@ searching capabilities).</p>
 the visualization.</p>
 <pre class="prettyprint source"><code>
 let config = {
-    bins: null, // for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    expand: null, // the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword
-    query: null, // a query for the keywords (can be comma-separated list)
-    stopList: null, // a named stopword list or comma-separated list of words
+    &quot;Bins&quot;: null,
+    &quot;columns&quot;: null,
+    &quot;SortDir&quot;: null,
+    &quot;DocId&quot;: null,
+    &quot;DocIndex&quot;: null,
+    &quot;Query&quot;: null,
+    &quot;SortColumn&quot;: null,
+    &quot;StopList&quot;: null,
+    &quot;TermColors&quot;: null,
 };
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Documentterms&quot;, config);
 
 </code></pre>
+<p>Please see <a href="Tools.DocumentTerms.html">Tools.DocumentTerms</a> for more information about configuration.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="tutorial-start.html">Getting Started</a></li>

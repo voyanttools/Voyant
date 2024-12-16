@@ -73,10 +73,14 @@ more advanced searching capabilities).</p>
 <h2>Spyral</h2>
 <p>To use Microsearch widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
+<pre class="prettyprint source"><code>let config = {
+    &quot;Query&quot;: null,
+    &quot;StopList&quot;: &quot;auto&quot;
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Microsearch&quot;, config);
 </code></pre>
+<p>Please see Tools.Microsearch for more information about configuration.</p>
 <h2>Additional Information</h2>
 <p><a href="tutorial-bubblelines_.html">Bubblelines</a> is another tool for visualizing distribution of terms within documents on the scale of the entire corpus.</p>
 <h2>See Also</h2>

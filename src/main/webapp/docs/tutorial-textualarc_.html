@@ -80,10 +80,16 @@ the size of the document.</p>
 <h2>Spyral</h2>
 <p>To use Textualarc widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {}; 
+<pre class="prettyprint source"><code>let config = {
+    &quot;DocIndex&quot;: null,
+    &quot;minRawFreq&quot;: null,
+    &quot;speed&quot;: null,
+    &quot;StopList&quot;: null
+}; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Textualarc&quot;, config);
 </code></pre>
+<p>Please see Tools.Textualarc for more information about configuration.</p>
 <h2>Additional Information</h2>
 <p>TextualArc is heavily inspired by W. Bradford Paley's <a href="https://textarc.org">TextArc</a>. The concept has been adapted for
 use in Voyant and for performance considerations in the browser.</p>

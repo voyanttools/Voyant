@@ -39,10 +39,20 @@ To use Streamgraph widget in Spyral you can use the following code as a starting
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "Bins": null,
+    "DocId": null,
+    "DocIndex": null,
+    "Limit": null,
+    "Query": null,
+    "StopList": null,
+    "WithDistributions": null
+}; 
 
 loadCorpus("austen").tool("Streamgraph", config);
 ```
+
+Please see {@link Tools.Streamgraph} for more information about configuration.
 
 ## See Also
 

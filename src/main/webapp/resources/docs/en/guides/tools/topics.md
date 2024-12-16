@@ -57,10 +57,19 @@ To use the Topics widget in Spyral you can use the following code as a starting 
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "iterations": null,
+    "perDocLimit": null,
+    "seed": null,
+    "StopList": null,
+    "termsPerTopic": null,
+    "topics": null
+}; 
 
 loadCorpus("austen").tool("Topics", config);
 ```
+
+Please see {@link Tools.Topics} for more information about configuration.
 
 ## See Also
 

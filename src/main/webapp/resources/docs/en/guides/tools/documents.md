@@ -41,11 +41,20 @@ the visualization.
 
 ```
 
-let config = {};
+let config = {
+    "columns": null,
+    "SortDir": null,
+    "DocId": null,
+    "DocIndex": null,
+    "Query": null,
+    "SortColumn": null,
+};
 
 loadCorpus("austen").tool("Documents", config);
 
 ```
+
+Please see {@link Tools.Documents} for more information about configuration.
 
 ## Additional Information
 

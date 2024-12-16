@@ -39,6 +39,9 @@ Clicking on the {@tutorial options} icon allows you to define a set of stopwords
 To use Bubblelines in Spyral you can use the following code as a starting point. Modify the config object to modify 
 the visualization.
 
+{@link Tools.Bubblelines}
+
+
 ```
 
 let config = {
@@ -52,6 +55,9 @@ let config = {
 loadCorpus("austen").tool("Bubblelines", config);
 
 ```
+
+Please see {@link Tools.Bubblelines} for more information about configuration.
+
 
 ## Additional Information
 

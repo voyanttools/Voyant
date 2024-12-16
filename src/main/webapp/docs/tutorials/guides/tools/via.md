@@ -37,17 +37,6 @@ Clicking on the {@tutorial options} icon also allows produces a dialog box with 
 - will be shown in Cirrus (note that the stopwords list is still active, so you may want to choose "None" from the 
 - stopwords menu to deactivate it)
 
-## Spyral
-
-To use the Via widget in Spyral you can use the following code as a starting point. Modify the config object to 
-modify the visualization.
-
-```
-let config = {}; 
-
-loadCorpus("austen").tool("Via", config);
-```
-
 ## More information
 
 Via is inspired by the work of Sally Sedelow on her own Via system during the late 1960s and early 1970s. Sedelow's Via 

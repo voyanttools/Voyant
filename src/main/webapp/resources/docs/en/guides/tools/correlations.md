@@ -58,14 +58,23 @@ the visualization.
 ```
 
 let config = {
-    minInDocumentsCountRatio: null, // the minimum percentage of documents in which the correlation must appear
-    query: null, // a query for the keywords (can be comma-separated list)
-    stopList: null, // a named stopword list or comma-separated list of words
+    columns: null, 
+    SortDir: null, 
+    DocId: null, 
+    DocIndex: null, 
+    minInDocumentsCountRatio: null, 
+    Query: null, 
+    SortColumn: null, 
+    StopList: null,
+    TermColors: null,
+    WithDistributions: null
 };
 
 loadCorpus("austen").tool("Correlations", config);
 
 ```
+
+Please see {@link Tools.Correlations} for more information about configuration.
 
 ## Additional Information
 

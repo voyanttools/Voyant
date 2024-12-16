@@ -67,6 +67,22 @@
 <p>You can use the <em>Clear</em> button to clear all keywords in the graph (to start from scratch and add your own).</p>
 <p>The <em>Context</em> slider determines how many terms to include when looking for collocates. The value specifies the number of words to consider on <em>each</em> side of the keyword (so the total window of words is double). By default the context is set to 5 words per side, and the slider can have a maximum of 30.</p>
 <p>Clicking on the <a href="#!/guide/options">Options</a> icon also allows you to define a set of stopwords to exclude – see the <a href="#!/guide/stopwords">stopwords guide</a> for more information.</p>
+<h2>Spyral</h2>
+<p>To use Collocates Graph in Spyral you can use the following code as a starting point. Modify the config object to modify
+the visualization.</p>
+<pre class="prettyprint source"><code>
+let config = {
+    centralize: null, // If specified, will &quot;centralize&quot; on this keyword
+    context: 5, // The number of terms to consider on each side of the keyword.
+    limit: 5, // The number of items to limit the result to.
+    Query: null, // A query or array of queries (queries can be separated by a comma).
+    StopList: &quot;auto&quot;, // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+};
+
+loadCorpus(&quot;austen&quot;).tool(&quot;CollocatesGraph&quot;, config);
+
+</code></pre>
+<p>Please see <a href="Tools.CollocatesGraph.html">Tools.CollocatesGraph</a> for more information about configuration.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="#!/guide/start">Getting Started</a></li>

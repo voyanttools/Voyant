@@ -31,10 +31,16 @@ To use Mandala widget in Spyral you can use the following code as a starting poi
 the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "labels": true,
+    "Query": null,
+    "StopList": "auto",
+}; 
 
 loadCorpus("austen").tool("Mandala", config);
 ```
+
+Please see {@link Tools.Mandala} for more information about configuration.
 
 ## Additional Information
 

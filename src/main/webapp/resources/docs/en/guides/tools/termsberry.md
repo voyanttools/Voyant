@@ -42,15 +42,19 @@ modify the visualization.
 
 ```
 let config = {
-    query: null, // a query for the keywords (can be comma-separated list)
-    stopList: null, // a named stopword list or comma-separated list of words
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    context: null, // the size of the context (the number of words on each side of the keyword)
+    Categories: null, // a query for the keywords (can be comma-separated list)
+    Context: null, // a named stopword list or comma-separated list of words
+    DocId: null, // document index to restrict to (can be comma-separated list)
+    DocIndex: null, // the size of the context (the number of words on each side of the keyword)
     numInitialTerms: null, // the initial number of terms to display
+    Query: null, // the initial number of terms to display
+    StopList: null, // the initial number of terms to display
 }; 
 
 loadCorpus("austen").tool("Termsberry", config);
 ```
+
+Please see {@link Tools.Termsberry} for more information about configuration.
 
 ## See Also
 
