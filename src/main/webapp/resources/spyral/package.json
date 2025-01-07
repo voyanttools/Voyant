@@ -12,7 +12,9 @@
 		"tools-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tool-template -c tools.config.json",
 		"build-tern-worker": "rollup -c rollup.tern.config.js",
 		"docs-tern": "jsdoc -t jsdoc-tern-template -c jsdoc.config.json",
-		"docs-tern-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tern-template -c jsdoc.config.json"
+		"docs-tern-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tern-template -c jsdoc.config.json",
+		"inline-docs": "jsdoc -t inline-docs-template -c inlinedocs.config.json",
+		"inline-docs-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t inline-docs-template -c inlinedocs.config.json"
 	},
 	"repository": {
 		"type": "git",
@@ -33,6 +35,7 @@
 	"homepage": "https://github.com/voyanttools/Voyant",
 	"dependencies": {
 		"js-cookie": "^2.2.1",
+		"showdown": "^2.1.0",
 		"voyant": "^3.1.4"
 	},
 	"devDependencies": {
