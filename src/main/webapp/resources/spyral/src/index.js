@@ -27,6 +27,15 @@ const Spyral = {
 	Categories
 };
 
+/**
+ * Assign the result of a Promise to a new or existing global variable.
+ * @memberof Promise
+ * @param {String} variableName The name of the variable to which the result of the Promise should be assigned.
+ * @returns {*} The result of the Promise
+ */
+Promise.prototype.assign = function(variableName) {
+	return this.then(promiseResult => {window[variableName] = promiseResult; return promiseResult;});
+}
 
 /**
  * @class window
