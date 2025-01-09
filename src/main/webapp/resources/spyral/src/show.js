@@ -3,11 +3,10 @@
  * @memberof Spyral.Util
  * @method show
  * @static
- * @param {*} contents 
- * @param {*} len 
- * @param {*} mode 
+ * @param {*} contents The content to show. Tries to convert non-String and non-HTML variables.
+ * @param {Object} config A config object containing attributes to add to the containing element.
  */
-function show(contents, len, mode='info') {
+function show(contents, config = {}) {
 	if (this && this.then) {
 		var arg = contents;
 		this.then(function(val) {
@@ -24,16 +23,15 @@ function show(contents, len, mode='info') {
 		
 		if (contents.constructor === Object || Array.isArray(contents)) {
 			return contents; // it's JSON so use the dataviewer
-		} else if (typeof this === 'string' || this instanceof String) {
-			if (typeof contents === 'number' && isFinite(contents)) {
-				len = contents;
-			}
-			contents = this;
 		}
+
 		if (contents instanceof Node) {
 			if (contents instanceof Element) {
 				contents = contents.outerHTML;
 			} else if ((contents instanceof Document || contents instanceof DocumentFragment) && contents.firstElementChild !== null) {
+				if (contents.body) {
+					contents = contents.body;
+				}
 				contents = contents.firstElementChild.outerHTML;
 			}
 		}
@@ -47,11 +45,14 @@ function show(contents, len, mode='info') {
 		if (contents.then) { // check again to see if we have a promise (like from toString())
 			contents.then(function(text) {show(text, len)})
 		} else {
-			if (len && typeof len === 'number' && isFinite(len)) {
-				contents = contents.substring(0,len);
-			}
-			contents="<div class='"+mode+"'>"+contents+"</div>";
-			document.body.insertAdjacentHTML('beforeend', contents);
+			if (config['class'] === undefined) config['class'] = "info";
+			var html = "<div";
+			Object.keys(config).forEach(key => {
+				var value = config[key];
+				html += ` ${key}="${value}"`;
+			})
+			html += `>${contents}</div>`;
+			document.body.insertAdjacentHTML('beforeend', html);
 		}
 	}
 }
