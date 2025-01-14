@@ -8070,6 +8070,7 @@ var Spyral = (function () {
 	             * @param {(Object|String)} config an object specifying the parameters (see above)
 	             * @param {Object} api an object specifying any parameters for the trombone call
 	             * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
+	             * @static
 	             */
 	          }], [{
 	            key: "load",
@@ -8196,6 +8197,7 @@ var Spyral = (function () {
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	             * @param {HighchartsConfig} config 
 	             * @returns {Highcharts.Chart}
+	             * @static
 	             */
 	          }, {
 	            key: "bar",
@@ -8214,6 +8216,7 @@ var Spyral = (function () {
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
+	             * @static
 	             */
 	          }, {
 	            key: "column",
@@ -8232,6 +8235,7 @@ var Spyral = (function () {
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
+	             * @static
 	             */
 	          }, {
 	            key: "line",
@@ -8250,6 +8254,7 @@ var Spyral = (function () {
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
+	             * @static
 	             */
 	          }, {
 	            key: "scatter",
@@ -8268,6 +8273,7 @@ var Spyral = (function () {
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	             * @param {Object} config 
 	             * @returns {Highcharts.Chart}
+	             * @static
 	             */
 	          }, {
 	            key: "networkgraph",
@@ -8285,6 +8291,7 @@ var Spyral = (function () {
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	             * @param {Object} config 
 	             * @returns {Spyral.NetworkGraph}
+	             * @static
 	             */
 	          }], [{
 	            key: "create",
@@ -8395,6 +8402,7 @@ var Spyral = (function () {
 	             * Add the provided data to the config as a series
 	             * @param {Object} config 
 	             * @param {Array} data 
+	             * @static
 	             */
 	          }, {
 	            key: "setSeriesData",
@@ -8491,6 +8499,7 @@ var Spyral = (function () {
 	        var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 	        var _load = _interopRequireDefault(require("./load"));
 	        var _util = _interopRequireDefault(require("./util.js"));
+	        var _categories = _interopRequireDefault(require("./categories.js"));
 	        function ownKeys(object, enumerableOnly) {
 	          var keys = Object.keys(object);
 	          if (Object.getOwnPropertySymbols) {
@@ -9902,6 +9911,58 @@ var Spyral = (function () {
 	              });
 	            }
 	            /**
+	             * Returns a list of corpus terms, filtered by the provided category.
+	             * @param {String|Spyral.Categories} categories A categories ID or a Spyral.Categories instance.
+	             * @param {String} categoryName The name of the category within the instance.
+	             * @returns {Promise<Array>}
+	             */
+	          }, {
+	            key: "filterByCategory",
+	            value: function () {
+	              var _filterByCategory = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(categories, categoryName) {
+	                var catTerms;
+	                return _regenerator["default"].wrap(function _callee2$(_context2) {
+	                  while (1) {
+	                    switch (_context2.prev = _context2.next) {
+	                      case 0:
+	                        if (!(categories === undefined)) {
+	                          _context2.next = 2;
+	                          break;
+	                        }
+	                        return _context2.abrupt("return");
+	                      case 2:
+	                        if (!(categoryName === undefined)) {
+	                          _context2.next = 4;
+	                          break;
+	                        }
+	                        return _context2.abrupt("return");
+	                      case 4:
+	                        if (!(categories instanceof _categories["default"] === false)) {
+	                          _context2.next = 8;
+	                          break;
+	                        }
+	                        _context2.next = 7;
+	                        return _categories["default"].load(categories);
+	                      case 7:
+	                        categories = _context2.sent;
+	                      case 8:
+	                        catTerms = categories.getCategoryTerms(categoryName);
+	                        return _context2.abrupt("return", this.terms({
+	                          whiteList: catTerms
+	                        }));
+	                      case 10:
+	                      case "end":
+	                        return _context2.stop();
+	                    }
+	                  }
+	                }, _callee2, this);
+	              }));
+	              function filterByCategory(_x, _x2) {
+	                return _filterByCategory.apply(this, arguments);
+	              }
+	              return filterByCategory;
+	            }()
+	            /**
 	             * Performs one of several dimension reduction statistical analysis techniques.
 	             * 
 	             * For more details see {@link https://voyant-tools.org/docs/#!/guide/scatterplot}.
@@ -10230,6 +10291,7 @@ var Spyral = (function () {
 	             * @param {Object} config the Corpus config
 	             * @param {Object} api any additional API values
 	             * @returns {Promise<Corpus>}
+	             * @static
 	             */
 	          }], [{
 	            key: "setBaseUrl",
@@ -10334,6 +10396,7 @@ var Spyral = (function () {
 	        var _default = Corpus;
 	        exports["default"] = _default;
 	      }, {
+	        "./categories.js": 19,
 	        "./load": 22,
 	        "./util.js": 25,
 	        "@babel/runtime/helpers/asyncToGenerator": 4,
@@ -10389,6 +10452,7 @@ var Spyral = (function () {
 	            /**
 	             * Set the base URL for use with the Load class
 	             * @param {string} baseUrl 
+	             * @static
 	             */
 	            value: function setBaseUrl(baseUrl) {
 	              this.baseUrl = baseUrl;
@@ -10398,6 +10462,7 @@ var Spyral = (function () {
 	             * @param {Object} config 
 	             * @param {Object} params
 	             * @returns {JSON}
+	             * @static
 	             */
 	          }, {
 	            key: "trombone",
@@ -10482,6 +10547,7 @@ var Spyral = (function () {
 	             * @param {string} urlToFetch 
 	             * @param {Object} config
 	             * @returns {Response}
+	             * @static
 	             */
 	          }, {
 	            key: "load",
@@ -10507,6 +10573,7 @@ var Spyral = (function () {
 	             * Fetch HTML content from a URL
 	             * @param {string} url 
 	             * @returns {Document}
+	             * @static
 	             */
 	          }, {
 	            key: "html",
@@ -10519,6 +10586,7 @@ var Spyral = (function () {
 	             * Fetch XML content from a URL
 	             * @param {string} url 
 	             * @returns {XMLDocument}
+	             * @static
 	             */
 	          }, {
 	            key: "xml",
@@ -10531,6 +10599,7 @@ var Spyral = (function () {
 	             * Fetch JSON content from a URL
 	             * @param {string} url 
 	             * @returns {JSON}
+	             * @static
 	             */
 	          }, {
 	            key: "json",
@@ -10543,6 +10612,7 @@ var Spyral = (function () {
 	             * Fetch text content from a URL
 	             * @param {string} url 
 	             * @returns {string}
+	             * @static
 	             */
 	          }, {
 	            key: "text",
@@ -12146,6 +12216,7 @@ var Spyral = (function () {
 	             * @param {(Object|Array|String|Number)} data
 	             * @param {TableConfig} config
 	             * @returns {Spyral.Table}
+	             * @static
 	             */
 	          }], [{
 	            key: "create",
@@ -12161,6 +12232,7 @@ var Spyral = (function () {
 	             * @param {Object} api
 	             * @param {Object} config
 	             * @returns {Promise}
+	             * @static
 	             */
 	          }, {
 	            key: "fetch",
@@ -12180,6 +12252,7 @@ var Spyral = (function () {
 	             * Get the count of each unique value in the data
 	             * @param {Array} data
 	             * @returns {Object}
+	             * @static
 	             */
 	          }, {
 	            key: "counts",
@@ -12195,6 +12268,7 @@ var Spyral = (function () {
 	             * @param {(number|string)} a
 	             * @param {(number|string)} b
 	             * @returns {number}
+	             * @static
 	             */
 	          }, {
 	            key: "cmp",
@@ -12205,6 +12279,7 @@ var Spyral = (function () {
 	             * Get the sum of the provided values
 	             * @param {Array} data
 	             * @returns {number}
+	             * @static
 	             */
 	          }, {
 	            key: "sum",
@@ -12217,6 +12292,7 @@ var Spyral = (function () {
 	             * Get the mean of the provided values
 	             * @param {Array} data
 	             * @returns {number}
+	             * @static
 	             */
 	          }, {
 	            key: "mean",
@@ -12228,6 +12304,7 @@ var Spyral = (function () {
 	             * @param {Array} data
 	             * @param {number} neighbors
 	             * @returns {Array}
+	             * @static
 	             */
 	          }, {
 	            key: "rollingMean",
@@ -12247,6 +12324,7 @@ var Spyral = (function () {
 	             * Get the variance for the provided values
 	             * @param {Array} data
 	             * @returns {number}
+	             * @static
 	             */
 	          }, {
 	            key: "variance",
@@ -12260,6 +12338,7 @@ var Spyral = (function () {
 	             * Get the standard deviation for the provided values
 	             * @param {Array} data
 	             * @returns {number}
+	             * @static
 	             */
 	          }, {
 	            key: "standardDeviation",
@@ -12270,6 +12349,7 @@ var Spyral = (function () {
 	             * Get the z scores for the provided values
 	             * @param {Array} data
 	             * @returns {Array}
+	             * @static
 	             */
 	          }, {
 	            key: "zScores",
@@ -12284,6 +12364,7 @@ var Spyral = (function () {
 	             * Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia](https://en.wikipedia.org/wiki/Convolution_%28computer_science%29).
 	             * @param {Array} data
 	             * @returns {Array}
+	             * @static
 	             */
 	          }, {
 	            key: "zip",
@@ -12367,6 +12448,7 @@ var Spyral = (function () {
 	             * Generates a random ID of the specified length.
 	             * @param {Number} len The length of the ID to generate?
 	             * @returns {String}
+	             * @static
 	             */
 	            value: function id() {
 	              var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
@@ -12384,6 +12466,7 @@ var Spyral = (function () {
 	             * 
 	             * @param {Array|Object|String} contents 
 	             * @returns {String}
+	             * @static
 	             */
 	          }, {
 	            key: "toString",
@@ -12401,6 +12484,7 @@ var Spyral = (function () {
 	             * @param {String} before 
 	             * @param {String} more 
 	             * @param {String} after 
+	             * @static
 	             */
 	          }, {
 	            key: "more",
@@ -12411,6 +12495,7 @@ var Spyral = (function () {
 	             * Take a data URL and convert it to a Blob.
 	             * @param {String} dataUrl 
 	             * @returns {Blob}
+	             * @static
 	             */
 	          }, {
 	            key: "dataUrlToBlob",
@@ -12431,6 +12516,7 @@ var Spyral = (function () {
 	             * Take a Blob and convert it to a data URL.
 	             * @param {Blob} blob 
 	             * @returns {Promise<String>} a Promise for a data URL
+	             * @static
 	             */
 	          }, {
 	            key: "blobToDataUrl",
@@ -12451,6 +12537,7 @@ var Spyral = (function () {
 	             * Take a Blob and convert it to a String.
 	             * @param {Blob} blob 
 	             * @returns {Promise<String>} a Promise for a String
+	             * @static
 	             */
 	          }, {
 	            key: "blobToString",
@@ -12475,6 +12562,7 @@ var Spyral = (function () {
 	             * @param {(Document|String)} xslStylesheet The XSL to use for the transformation
 	             * @param {Boolean} [returnDoc=false] True to return a Document, false to return a DocumentFragment
 	             * @returns {Document}
+	             * @static
 	             */
 	          }, {
 	            key: "transformXml",
@@ -12521,6 +12609,7 @@ var Spyral = (function () {
 	             * @param {Document} doc 
 	             * @param {Boolean} [includePosition=false] True to include the error position information
 	             * @returns {Error|null}
+	             * @static
 	             */
 	          }, {
 	            key: "_getParserError",
@@ -12546,6 +12635,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a String.
 	             * @param {*} val 
 	             * @returns {Boolean} 
+	             * @static
 	             */
 	          }, {
 	            key: "isString",
@@ -12556,6 +12646,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a Number.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isNumber",
@@ -12566,6 +12657,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a Boolean.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isBoolean",
@@ -12576,6 +12668,7 @@ var Spyral = (function () {
 	             * Returns true if the value is Undefined.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isUndefined",
@@ -12586,6 +12679,7 @@ var Spyral = (function () {
 	             * Returns true if the value is an Array.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isArray",
@@ -12596,6 +12690,7 @@ var Spyral = (function () {
 	             * Returns true if the value is an Object.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isObject",
@@ -12606,6 +12701,7 @@ var Spyral = (function () {
 	             * Returns true if the value is Null.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isNull",
@@ -12616,6 +12712,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a Node.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isNode",
@@ -12626,6 +12723,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a Function.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isFunction",
@@ -12637,6 +12735,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a Promise.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isPromise",
@@ -12651,6 +12750,7 @@ var Spyral = (function () {
 	             * Returns true if the value is a Blob.
 	             * @param {*} val 
 	             * @returns {Boolean}
+	             * @static
 	             */
 	          }, {
 	            key: "isBlob",
@@ -12662,6 +12762,7 @@ var Spyral = (function () {
 	             * Only handles file types supported by Voyant.
 	             * @param {String} mimeType 
 	             * @returns {String}
+	             * @static
 	             */
 	          }, {
 	            key: "getFileExtensionFromMimeType",
@@ -12720,6 +12821,7 @@ var Spyral = (function () {
 	             * Takes a file extension and returns the corresponding Voyant Document Format name.
 	             * @param {String} fileExtension 
 	             * @returns {String}
+	             * @static
 	             */
 	          }, {
 	            key: "getVoyantDocumentFormatFromFileExtension",
@@ -13344,6 +13446,7 @@ var Spyral = (function () {
 	     * Generates a random ID of the specified length.
 	     * @param {Number} len The length of the ID to generate?
 	     * @returns {String}
+	     * @static
 	     */
 	    value: function id() {
 	      var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
@@ -13361,6 +13464,7 @@ var Spyral = (function () {
 	     * 
 	     * @param {Array|Object|String} contents 
 	     * @returns {String}
+	     * @static
 	     */
 	  }, {
 	    key: "toString",
@@ -13378,6 +13482,7 @@ var Spyral = (function () {
 	     * @param {String} before 
 	     * @param {String} more 
 	     * @param {String} after 
+	     * @static
 	     */
 	  }, {
 	    key: "more",
@@ -13388,6 +13493,7 @@ var Spyral = (function () {
 	     * Take a data URL and convert it to a Blob.
 	     * @param {String} dataUrl 
 	     * @returns {Blob}
+	     * @static
 	     */
 	  }, {
 	    key: "dataUrlToBlob",
@@ -13408,6 +13514,7 @@ var Spyral = (function () {
 	     * Take a Blob and convert it to a data URL.
 	     * @param {Blob} blob 
 	     * @returns {Promise<String>} a Promise for a data URL
+	     * @static
 	     */
 	  }, {
 	    key: "blobToDataUrl",
@@ -13428,6 +13535,7 @@ var Spyral = (function () {
 	     * Take a Blob and convert it to a String.
 	     * @param {Blob} blob 
 	     * @returns {Promise<String>} a Promise for a String
+	     * @static
 	     */
 	  }, {
 	    key: "blobToString",
@@ -13452,6 +13560,7 @@ var Spyral = (function () {
 	     * @param {(Document|String)} xslStylesheet The XSL to use for the transformation
 	     * @param {Boolean} [returnDoc=false] True to return a Document, false to return a DocumentFragment
 	     * @returns {Document}
+	     * @static
 	     */
 	  }, {
 	    key: "transformXml",
@@ -13498,6 +13607,7 @@ var Spyral = (function () {
 	     * @param {Document} doc 
 	     * @param {Boolean} [includePosition=false] True to include the error position information
 	     * @returns {Error|null}
+	     * @static
 	     */
 	  }, {
 	    key: "_getParserError",
@@ -13523,6 +13633,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a String.
 	     * @param {*} val 
 	     * @returns {Boolean} 
+	     * @static
 	     */
 	  }, {
 	    key: "isString",
@@ -13533,6 +13644,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a Number.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isNumber",
@@ -13543,6 +13655,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a Boolean.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isBoolean",
@@ -13553,6 +13666,7 @@ var Spyral = (function () {
 	     * Returns true if the value is Undefined.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isUndefined",
@@ -13563,6 +13677,7 @@ var Spyral = (function () {
 	     * Returns true if the value is an Array.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isArray",
@@ -13573,6 +13688,7 @@ var Spyral = (function () {
 	     * Returns true if the value is an Object.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isObject",
@@ -13583,6 +13699,7 @@ var Spyral = (function () {
 	     * Returns true if the value is Null.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isNull",
@@ -13593,6 +13710,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a Node.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isNode",
@@ -13603,6 +13721,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a Function.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isFunction",
@@ -13614,6 +13733,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a Promise.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isPromise",
@@ -13628,6 +13748,7 @@ var Spyral = (function () {
 	     * Returns true if the value is a Blob.
 	     * @param {*} val 
 	     * @returns {Boolean}
+	     * @static
 	     */
 	  }, {
 	    key: "isBlob",
@@ -13639,6 +13760,7 @@ var Spyral = (function () {
 	     * Only handles file types supported by Voyant.
 	     * @param {String} mimeType 
 	     * @returns {String}
+	     * @static
 	     */
 	  }, {
 	    key: "getFileExtensionFromMimeType",
@@ -13697,6 +13819,7 @@ var Spyral = (function () {
 	     * Takes a file extension and returns the corresponding Voyant Document Format name.
 	     * @param {String} fileExtension 
 	     * @returns {String}
+	     * @static
 	     */
 	  }, {
 	    key: "getVoyantDocumentFormatFromFileExtension",
