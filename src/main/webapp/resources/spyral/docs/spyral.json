@@ -631,7 +631,7 @@
     },
     "Util": {
       "show": {
-        "!type": "fn(contents: ?, len: ?, mode: ?)",
+        "!type": "fn(contents: ?, config: +Object)",
         "!doc": "Show contents in the results area.",
         "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Util-static-method-show"
       },
@@ -1050,6 +1050,11 @@
           "!doc": "Returns an array of entities.\n\nThe config object as parameter can contain the following:\n\n * **docIndex**: document index to restrict to (can be comma-separated list)\n * **annotator**: the annotator to use: 'stanford' or 'nssi' or 'spacy'",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-entities"
         },
+        "filterByCategory": {
+          "!type": "fn(categories: ?, categoryName: string) -> +Promise",
+          "!doc": "Returns a list of corpus terms, filtered by the provided category.",
+          "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-filterByCategory"
+        },
         "analysis": {
           "!type": "fn(config: +Spyral_Corpus_analysis_config) -> +Promise",
           "!doc": "Performs one of several dimension reduction statistical analysis techniques.\n\nFor more details see https://voyant-tools.org/docs/#!/guide/scatterplot.",
@@ -1180,7 +1185,7 @@
         },
         "rows": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of rows in this table.\rWhen the first argument is the boolean value `true` all rows are returned.\rWhen the first argument is a an array then the rows corresponding to the row\rindices or names are returned. When all arguments except are numbers or strings\rthen each of those is returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of rows in this table.\nWhen the first argument is the boolean value `true` all rows are returned.\nWhen the first argument is a an array then the rows corresponding to the row\nindices or names are returned. When all arguments except are numbers or strings\nthen each of those is returned.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rows"
         },
         "row": {
@@ -1190,7 +1195,7 @@
         },
         "columns": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of columns in this table.\rWhen the first argument is the boolean value `true` all columns are returned.\rWhen the first argument is a number a slice of the columns is returned and if\rthe second argument is a number it is treated as the length of the slice to\rreturn (note that it isn't the `end` index like with Array.slice()).",
+          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of columns in this table.\nWhen the first argument is the boolean value `true` all columns are returned.\nWhen the first argument is a number a slice of the columns is returned and if\nthe second argument is a number it is treated as the length of the slice to\nreturn (note that it isn't the `end` index like with Array.slice()).",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columns"
         },
         "column": {
@@ -1205,7 +1210,7 @@
         },
         "headers": {
           "!type": "fn(inds: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of headers in this table.\rWhen the first argument is the boolean value `true` all headers are returned.\rWhen the first argument is a number a slice of the headers is returned.\rWhen the first argument is an array the slices specified in the array are returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of headers in this table.\nWhen the first argument is the boolean value `true` all headers are returned.\nWhen the first argument is a number a slice of the headers is returned.\nWhen the first argument is an array the slices specified in the array are returned.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-headers"
         },
         "hasColumn": {
@@ -1215,7 +1220,7 @@
         },
         "forEach": {
           "!type": "fn(fn: fn())",
-          "!doc": "Runs the specified function on each row.\rThe function is passed the row and the row index.",
+          "!doc": "Runs the specified function on each row.\nThe function is passed the row and the row index.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-forEach"
         },
         "rowMin": {
@@ -1310,12 +1315,12 @@
         },
         "rowSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\rSort the specified rows",
+          "!doc": "TODO\nSort the specified rows",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-rowSort"
         },
         "columnSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\rSort the specified columns",
+          "!doc": "TODO\nSort the specified columns",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Table-method-columnSort"
         },
         "toCsv": {
@@ -1408,6 +1413,15 @@
       }
     }
   },
+  "Promise": {
+    "prototype": {
+      "assign": {
+        "!type": "fn(variableName: string) -> ?",
+        "!doc": "Assign the result of a Promise to a new or existing global variable.",
+        "!url": "https://voyant-tools.org/docs/#!/api/Promise-method-assign"
+      }
+    }
+  },
   "window": {
     "loadCorpus": {
       "!type": "fn(config: +Object, api: +Object) -> +Promise",
@@ -1420,7 +1434,7 @@
       "!url": "https://voyant-tools.org/docs/#!/api/window-static-method-createTable"
     },
     "show": {
-      "!type": "fn(contents: ?, len: ?, mode: ?)",
+      "!type": "fn(contents: ?, config: +Object)",
       "!doc": "Show contents in the results area.",
       "!url": "https://voyant-tools.org/docs/#!/api/window-static-method-show"
     },
