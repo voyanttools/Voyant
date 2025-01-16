@@ -47,17 +47,6 @@ strategies:
 * **prioritize longest phrases)**: Only the longest phrase is kept (the first: "once upon a time").
 * **prioritize the most frequent phrases**: First consider the total count of phrase frequencies (if "a time" occurred elsewhere in the text, even if it's not part of this phrase, it would take precedence) – once a word is included in a phrase it won't be included in other phrases. If two phrases have the same frequency (e.g. "once upon" and "upon a"), the left-most phrase takes precedence (only "once upon" would be kept, not "upon a").
 
-## Spyral
-
-To use Phrases widget in Spyral you can use the following code as a starting point. Modify the config object to 
-modify the visualization.
-
-```
-let config = {}; 
-
-loadCorpus("austen").tool("Phrases", config);
-```
-
 ## Additional Information
 
 Note that at the moment stopwords are not used in the Phrases tool (that may change in the future).

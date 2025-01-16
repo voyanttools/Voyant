@@ -50,6 +50,8 @@ loadCorpus("austen").tool("Bubbles", config);
 
 ```
 
+Please see {@link Tools.Bubbles} for more information about configuration.
+
 ## Additional Information
 
 Bubbles is an adaptation of Martin Ignacio Bereciartua's excellent [Letter Pairs](https://www.m-i-b.com.ar/letters/en/). 

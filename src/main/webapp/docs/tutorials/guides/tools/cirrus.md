@@ -60,6 +60,8 @@ loadCorpus("austen").tool("Cirrus", config);
 
 ```
 
+Please see {@link Tools.Cirrus} for more information about configuration.
+
 ## Additional Information
 
 The current implementation of Cirrus uses 

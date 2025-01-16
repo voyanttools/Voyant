@@ -38,11 +38,19 @@ To use the Wordtree widget in Spyral you can use the following code as a startin
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "Context": null,
+    "DocId": null,
+    "DocIndex": null,
+    "Limit": null,
+    "Query": null,
+    "StopList": null
+}; 
 
 loadCorpus("austen").tool("Wordtree", config);
 ```
 
+Please see {@link Tools.Wordtree} for more information about configuration.
 
 ## Additional Information
 

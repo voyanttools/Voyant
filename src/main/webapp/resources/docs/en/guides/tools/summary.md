@@ -31,11 +31,17 @@ To use Streamgraph widget in Spyral you can use the following code as a starting
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "Limit": null,
+    "numberOfDocumentsForDistinctiveWords": null,
+    "Start": null,
+    "StopList": null,
+}; 
 
 loadCorpus("austen").tool("Summary", config);
 ```
 
+Please see {@link Tools.Summary} for more information about configuration.
 
 ## See Also
 

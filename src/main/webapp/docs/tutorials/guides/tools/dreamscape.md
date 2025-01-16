@@ -110,19 +110,6 @@ To remove an annotation, click on the shaded area, remove the text and click "OK
 
 N.B.: this aspect of Dreamscape is likely to change in the coming months.
 
-## Spyral
-
-To use Dreamscape in Spyral you can use the following code as a starting point. Modify the config object to modify 
-the visualization.
-
-```
-
-let config = {};
-
-loadCorpus("austen").tool("Dreamscape", config);
-
-```
-
 ## Additional Information
 
 Dreamscape is a collaboration between Voyant Tools, the [Early Modern Conversions Project](http://earlymodernconversions.com/) 

@@ -80,17 +80,21 @@ modify the visualization.
 
 ```
 let config = {
-    stopList: null, // a named stopword list or comma-separated list of words
-    query: null, // a query for the keywords (can be comma-separated list)
-    limit: null, // the number of terms to show
-    withDistributions: null, // the type of distribution frequency to show ("raw" or "relative"), default is "relative"
-    bins: null, // for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    chartType: null, // the type of chart to show: "barline", "bar", "line", "area", "stacked"
-};
+    "chartType": null,
+    "DocId": null,
+    "DocIndex": null,
+    "labels": null,
+    "Limit": null,
+    "mode": null,
+    "Query": null,
+    "StopList": null,
+    "WithDistributions": null
+}; 
 
 loadCorpus("austen").tool("Trends", config);
 ```
+
+Please see {@link Tools.Trends} for more information about configuration.
 
 ## See Also
 

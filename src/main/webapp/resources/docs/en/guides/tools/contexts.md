@@ -44,14 +44,22 @@ the visualization.
 
 ```
 let config = {
-    context: null, // the size of the context (the number of words on each side of the keyword)
-    expand: null, // the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword
-    query: null, // a query for the keywords (can be comma-separated list)
-    stopList: null, // a named stopword list or comma-separated list of words
+    columns: null, // 'docIndex', 'left', 'term', 'right', 'position'
+    Context: 5, // The number of terms to consider on each side of the keyword.
+    SortDir: null, // The direction in which to sort the results: 'asc' or 'desc'
+    DocId: null, // The document ID(s) to restrict the results to.
+    DocIndex: null, // The document index(es) to restrict the results to.
+    expand: null, // How many terms to show when you expand any given row
+    Query: null, // A query or array of queries (queries can be separated by a comma).
+    SortColumn: null, // The column to sort the results by
+    StopList: null, // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+    TermColors: null // Which term colors to show in the grid. By default this is set to 'categories' which shows the term color only if it's been assigned by a category. The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
 };
 
 loadCorpus("austen").tool("Contexts", config);
 ```
+
+Please see {@link Tools.Contexts} for more information about configuration.
 
 ## Additional Information
 

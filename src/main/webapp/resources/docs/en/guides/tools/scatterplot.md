@@ -61,10 +61,29 @@ To use Scatterplot widget in Spyral you can use the following code as a starting
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "analysis": null,
+    "Bins": null,
+    "clusters": null,
+    "comparisonType": null,
+    "dimensions": null,
+    "DocId": null,
+    "iterations": null,
+    "label": null,
+    "Limit": null,
+    "perplexity": null,
+    "Query": null,
+    "StopList": null,
+    "storeJson": null,
+    "target": null,
+    "term": null,
+    "whitelist": null,
+}; 
 
 loadCorpus("austen").tool("Scatterplot", config);
 ```
+
+Please see {@link Tools.Scatterplot} for more information about configuration.
 
 ## See Also
 

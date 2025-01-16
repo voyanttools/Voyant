@@ -38,10 +38,17 @@ To use Textualarc widget in Spyral you can use the following code as a starting 
 modify the visualization.
 
 ```
-let config = {}; 
+let config = {
+    "DocIndex": null,
+    "minRawFreq": null,
+    "speed": null,
+    "StopList": null
+}; 
 
 loadCorpus("austen").tool("Textualarc", config);
 ```
+
+Please see {@link Tools.Textualarc} for more information about configuration.
 
 ## Additional Information
 

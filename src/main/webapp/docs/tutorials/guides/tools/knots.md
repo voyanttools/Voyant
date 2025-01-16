@@ -43,11 +43,18 @@ the visualization.
 
 ```
 
-let config = {}; 
+let config = {
+    "audio": false,
+    "DocId": null,
+    "Query": null,
+    "StopList": "auto"
+}; 
 
 loadCorpus("austen").tool("Knots", config);
 
 ```
+
+Please see {@link Tools.Knots} for more information about configuration.
 
 ## See Also
 - {@tutorial start}

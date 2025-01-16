@@ -5,5 +5,5 @@ OUTPUT_DIR="../../docs"
 CONFIG_FILE="config.json"
 
 npm install
-rm -r ../../docs/*
-node_modules/.bin/jsdoc -c "${CONFIG_FILE}" -d "${OUTPUT_DIR}" "${LOC1}" "${LOC2}" "${LOC3}"
+rm -r "${OUTPUT_DIR}"
+node_modules/.bin/jsdoc -c "${CONFIG_FILE}" -d "${OUTPUT_DIR}" --readme "en/guides/guides/start.md" "${LOC1}" "${LOC2}" "${LOC3}"

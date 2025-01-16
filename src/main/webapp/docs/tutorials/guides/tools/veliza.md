@@ -81,18 +81,6 @@ Voyant).
 
 Veliza is a playful tool and an ongoing experiment.
 
-
-## Spyral
-
-To use the Veliza widget in Spyral you can use the following code as a starting point. Modify the config object to 
-modify the visualization.
-
-```
-let config = {}; 
-
-loadCorpus("austen").tool("Veliza", config);
-```
-
 ## See Also
 
 - {@tutorial start}
