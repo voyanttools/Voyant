@@ -1051,8 +1051,8 @@
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-entities"
         },
         "filterByCategory": {
-          "!type": "fn(categories: ?, categoryName: string) -> +Promise",
-          "!doc": "Returns a list of corpus terms, filtered by the provided category.",
+          "!type": "fn(categories: ?, categoryName?: ?) -> +Promise",
+          "!doc": "Given a Categories instance or ID, returns an object mapping category names to corpus terms. The results can be limited to specific category names by providing one or more of them.",
           "!url": "https://voyant-tools.org/docs/#!/api/Spyral.Corpus-method-filterByCategory"
         },
         "analysis": {
