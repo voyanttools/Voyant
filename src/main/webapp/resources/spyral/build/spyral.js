@@ -9911,16 +9911,17 @@ var Spyral = (function () {
 	              });
 	            }
 	            /**
-	             * Returns a list of corpus terms, filtered by the provided category.
+	             * Given a Categories instance or ID, returns an object mapping category names to corpus terms. The results can be limited to specific category names by providing one or more of them.
 	             * @param {String|Spyral.Categories} categories A categories ID or a Spyral.Categories instance.
-	             * @param {String} categoryName The name of the category within the instance.
-	             * @returns {Promise<Array>}
+	             * @param {String|Array<String>} [categoryName] One or more names of categories within the instance.
+	             * @returns {Promise<Object>}
 	             */
 	          }, {
 	            key: "filterByCategory",
 	            value: function () {
 	              var _filterByCategory = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(categories, categoryName) {
-	                var catTerms;
+	                var _this2 = this;
+	                var categoryNames, termsResults, results;
 	                return _regenerator["default"].wrap(function _callee2$(_context2) {
 	                  while (1) {
 	                    switch (_context2.prev = _context2.next) {
@@ -9931,31 +9932,43 @@ var Spyral = (function () {
 	                        }
 	                        return _context2.abrupt("return");
 	                      case 2:
-	                        if (!(categoryName === undefined)) {
-	                          _context2.next = 4;
-	                          break;
-	                        }
-	                        return _context2.abrupt("return");
-	                      case 4:
 	                        if (!(categories instanceof _categories["default"] === false)) {
-	                          _context2.next = 8;
+	                          _context2.next = 6;
 	                          break;
 	                        }
-	                        _context2.next = 7;
+	                        _context2.next = 5;
 	                        return _categories["default"].load(categories);
-	                      case 7:
+	                      case 5:
 	                        categories = _context2.sent;
-	                      case 8:
-	                        catTerms = categories.getCategoryTerms(categoryName);
-	                        return _context2.abrupt("return", this.terms({
-	                          whiteList: catTerms
+	                      case 6:
+	                        categoryNames = [];
+	                        if (categoryName === undefined) {
+	                          categoryNames = categories.getCategoryNames();
+	                        } else if (_util["default"].isString(categoryName)) {
+	                          categoryNames = [categoryName];
+	                        } else {
+	                          categoryNames = categoryName;
+	                        }
+	                        _context2.next = 10;
+	                        return Promise.all(categoryNames.map(function (key) {
+	                          var catTerms = categories.getCategoryTerms(key);
+	                          return _this2.terms({
+	                            whiteList: catTerms
+	                          });
 	                        }));
 	                      case 10:
+	                        termsResults = _context2.sent;
+	                        results = {};
+	                        termsResults.forEach(function (terms, i) {
+	                          results[categoryNames[i]] = terms;
+	                        });
+	                        return _context2.abrupt("return", results);
+	                      case 14:
 	                      case "end":
 	                        return _context2.stop();
 	                    }
 	                  }
-	                }, _callee2, this);
+	                }, _callee2);
 	              }));
 	              function filterByCategory(_x, _x2) {
 	                return _filterByCategory.apply(this, arguments);
