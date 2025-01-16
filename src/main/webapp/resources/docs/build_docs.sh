@@ -1,4 +1,4 @@
-LOC1="/home/ryan/local/voyantjs/src/"
+LOC1="../../../../../../voyantjs/src/"
 LOC2="../spyral/src/"
 LOC3="../../app/panel"
 OUTPUT_DIR="../../docs"
