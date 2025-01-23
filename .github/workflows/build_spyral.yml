@@ -17,7 +17,7 @@ jobs:
 #           persist-credentials: false # required to install dependencies on github
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 18
       
       # required to install dependencies on github
       - name: Reconfigure git to use HTTP authentication
