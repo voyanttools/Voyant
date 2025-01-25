@@ -1,0 +1,152 @@
+{
+  "overview": "<p>Class embodying Load functionality.</p>",
+  "members": [
+    {
+      "name": "setBaseUrl",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "baseUrl",
+          "type": [
+            "string"
+          ]
+        }
+      ],
+      "desc": "<p>Set the base URL for use with the Load class</p>",
+      "static": true
+    },
+    {
+      "name": "trombone",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "params",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "JSON"
+        ]
+      },
+      "desc": "<p>Make a call to trombone</p>",
+      "static": true
+    },
+    {
+      "name": "load",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "urlToFetch",
+          "type": [
+            "string"
+          ]
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Response"
+        ]
+      },
+      "desc": "<p>Fetch content from a URL, often resolving cross-domain data constraints</p>",
+      "static": true
+    },
+    {
+      "name": "html",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "url",
+          "type": [
+            "string"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Document"
+        ]
+      },
+      "desc": "<p>Fetch HTML content from a URL</p>",
+      "static": true
+    },
+    {
+      "name": "xml",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "url",
+          "type": [
+            "string"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "XMLDocument"
+        ]
+      },
+      "desc": "<p>Fetch XML content from a URL</p>",
+      "static": true
+    },
+    {
+      "name": "json",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "url",
+          "type": [
+            "string"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "JSON"
+        ]
+      },
+      "desc": "<p>Fetch JSON content from a URL</p>",
+      "static": true
+    },
+    {
+      "name": "text",
+      "type": "function",
+      "memberof": "Spyral.Load",
+      "params": [
+        {
+          "name": "url",
+          "type": [
+            "string"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "string"
+        ]
+      },
+      "desc": "<p>Fetch text content from a URL</p>",
+      "static": true
+    }
+  ]
+}

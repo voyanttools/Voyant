@@ -27,6 +27,73 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	lastDocEntryClass: undefined,
 	lastDocEntryMethod: undefined,
 
+	classTemplate: new Ext.XTemplate(
+		'<div>',
+			'<div class="doc-contents">{overview}</div>',
+			'<div class="members">',
+			'<div class="members-section">',
+				'<h3 class="members-title icon-method">Type Definitions</h3>',
+				'<tpl for="typedefs">',
+				'<div class="subsection">',
+					'<h4 class="members-subtitle">{memberof}~{name}</h4>',
+					'<tpl for="props">',
+						'<div id="{[parent.memberof.replace(".","_")]}-{parent.name}-{name}" class="member">',
+							'<div class="title">',
+								'<a href="#!/api/{[parent.memberof.replace(".","_")]}-{parent.name}-{name}" class="name">{name}</a>',
+								'( <span class="pre">',
+								'<tpl for="type">{.}{[xindex < xcount ? "|" : ""]}</tpl>',
+								'</span> )',
+							'</div>',
+							'<div class="description">',
+								'<div class="long">{desc}</div>',
+							'</div>',
+						'</div>',
+					'</tpl>',
+				'</div>',
+				'</tpl>',
+			'</div>',
+			'<div class="members-section">',
+				'<h3 class="members-title icon-method">Methods</h3>',
+				'<div class="subsection">',
+				'<tpl for="members">',
+					'<div id="{[values.memberof.replace(".","_")]}-{type}-{name}" class="member">',
+						'<div class="title">',
+							'<a href="#!/api/{[values.memberof.replace(".","_")]}-{type}-{name}" class="name">{name}</a>',
+							'( <span class="pre">',
+							'<tpl for="params">{name}{[xindex < xcount ? ", " : ""]}</tpl>',
+							'</span> )',
+							'<tpl if="returns">',
+								' : {returns.type}',
+							'</tpl>',
+							'<tpl if="static">',
+								'<span class="signature"><span class="static">static</span></span>',
+							'</tpl>',
+						'</div>',
+						'<div class="description">',
+							'<div class="long">',
+								'{desc}',
+								'<tpl if="params">',
+									'<h3 class="pa">Parameters</h3>',
+									'<ul><tpl for="params">',
+										'<li><span class="pre">{name}</span> : {type} <div class="sub-desc">{desc}</div></li>',
+									'</tpl></ul>',
+								'</tpl>',
+								'<tpl if="returns">',
+									'<h3 class="pa">Returns</h3>',
+									'<ul><tpl for="returns.type">',
+										'<li><span class="pre">{.}</span><div class="sub-desc">{desc}</div></li>',
+									'</tpl></ul>',
+								'</tpl>',
+							'</div>',
+						'</div>',
+					'</div>',
+				'</tpl>',
+				'</div>',
+			'</div>',
+			'</div>',
+		'</div>'
+	),
+
 	outlineTemplate: new Ext.XTemplate(
 		'<ul>',
 			'<tpl for="groups">',
@@ -36,14 +103,25 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 			'</tpl>',
 		'</ul>'
 	),
+	typedefsTemplate: new Ext.XTemplate(
+		'<div class="members">',
+			'<tpl for=".">',
+				'<tpl for="props">',
+				'<div class="member">',
+					'<a href="#!/api/{[parent.memberof.replace(".","_")]}-{parent.name}-{name}">{parent.name}.{name}</a>',
+				'</div>',
+				'</tpl>',
+			'</tpl>',
+		'</div>'
+	),
 	membersTemplate: new Ext.XTemplate(
 		'<div class="members">',
 			'<tpl for=".">',
 				'<div class="member">',
-					'<tpl if="meta.static">',
+					'<tpl if="static">',
 						'<span class="static" title="static">s</span>',
 					'</tpl>',
-					'<a href="#!/api/{owner}-{id}">{name}</a>',
+					'<a href="#!/api/{[values.memberof.replace(".","_")]}-{type}-{name}">{name}</a>',
 				'</div>',
 			'</tpl>',
 		'</div>'
@@ -160,63 +238,48 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
 
-		Ext.Ajax.request({
-			// TODO inaccessible on server? Same with servers.json used by mirrors.jsp
-			url: Voyant.application.getBaseUrlFull()+'resources/docs/en/categories.json'
-		}).then(function(response) {
-			var json;
-			try {
-				json = JSON.parse(response.responseText);
-			} catch (e) {
-				console.warn('error parsing api doc json', e);
-			}
-			if (json) {
-				this._loadExtOutline(json[0]);
-			}
-		}.bind(this), function() {
-			this._loadExtOutline({
-				"name": "Spyral",
-				"groups": [
-					{
-						"name": "Base",
-						"classes": [
-							"Spyral.Corpus",
-							"Spyral.Table",
-							"Spyral.Chart",
-							"Spyral.Load",
-							"Spyral.Util",
-							"Spyral.Categories"
-						]
-					},{
-						"name": "Notebook",
-						"classes": [
-							"Spyral.Metadata",
-							"Spyral.Notebook",
-							"Spyral.Util.Storage"
-						]
-					},{
-						"name": "Global",
-						"classes": [
-							"window"
-						]
-					}
-				]
-			})
-		}.bind(this)).always(function() {
-			this.getLayout().setActiveItem(0);
-			this.getLayout().getRenderTarget().unmask();
-		}.bind(this));
+		this._loadExtOutline({
+			"name": "Spyral",
+			"groups": [
+				{
+					"name": "Base",
+					"classes": [
+						"Spyral.Corpus",
+						"Spyral.Table",
+						"Spyral.Chart",
+						"Spyral.Load",
+						"Spyral.Util",
+						"Spyral.Categories"
+					]
+				},{
+					"name": "Notebook",
+					"classes": [
+						"Spyral.Metadata",
+						"Spyral.Notebook",
+						"Spyral.Util.Storage"
+					]
+				},{
+					"name": "Global",
+					"classes": [
+						"window"
+					]
+				}
+			]
+		});
+		
+		this.getLayout().setActiveItem(0);
+		this.getLayout().getRenderTarget().unmask();
 	},
 
 	handleDocLink: function(link) {
 		var matches = link.match(/.*?\/api\/([\w.]+)-?(.*)?/);
 		if (matches) {
-			var linkClass = matches[1];
+			var linkClass = matches[1].replace('_', '.');
 			var linkMethod = matches[2];
 			if (linkClass !== this.lastDocEntryClass) {
 				this.showDocsForClassMethod(linkClass, linkMethod);
 			} else {
-				this._showDocEntry(linkMethod);
+				this._showDocEntry(linkClass, linkMethod);
 			}
 		} else {
 			if (link.indexOf('#!') === 0) {
@@ -228,18 +291,19 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 	},
 
 	showDocsForClassMethod: function(docClass, docMethod) {
+		console.log('showDocsForClassMethod', docClass, docMethod)
 		this.show().anchorTo(Ext.getBody(), 'br-br');
 		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
 
+		var docsUrl = Voyant.application.getBaseUrlFull()+'resources/spyral/inline/';
+
 		Ext.Ajax.request({
-			url: Voyant.application.getBaseUrlFull()+'docs/output/'+docClass+'.js'
+			url: docsUrl+docClass+'.json'
 		}).then(function(response) {
-			var jsonpText = response.responseText; // response has JSON-P wrapper which we'll need to remove
+			var jsonText = response.responseText;
 			var json;
 			try {
-				var startIndex = jsonpText.indexOf('{');
-				var endIndex = jsonpText.search(/\);\s*$/m);
-				json = JSON.parse(jsonpText.substring(startIndex, endIndex));
+				json = JSON.parse(jsonText);
 			} catch (e) {
 				console.warn('error parsing api doc json', e);
 			}
@@ -251,13 +315,20 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		}.bind(this));
 	},
 
-	_showDocEntry: function(entryId) {
+	_showDocEntry: function(entryClass, entryMember) {
+		console.log('showDocEntry', entryClass, entryMember)
 		if (this.isHidden()) {
 			this.show().anchorTo(Ext.getBody(), 'br-br');
 		}
 		var docsParentEl = this.down('#main').getEl().dom;
 		docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = true; });
-		this.lastDocEntryMethod = entryId;
+
+		this.lastDocEntryMethod = entryMember;
+		
+		var entryId = undefined;
+		if (entryClass && entryMember) {
+			entryId = entryClass.replace('.','_')+'-'+entryMember;
+		}
 		if (entryId) {
 			docsParentEl.querySelector('#'+entryId).hidden = false;
 		} else {
@@ -298,33 +369,20 @@ Ext.define('Voyant.notebook.util.DocsWindow', {
 		this.lastDocEntryClass = docClass;
 		this.lastDocEntryMethod = docMethod;
 
-		this.setTitle(this.localize('docs')+': '+json.name);
+		this.setTitle(this.localize('docs')+': '+docClass);
 		this.down('#restoreButton').hide();
 
-		this._setHtmlForCard('main', json.html);
+		this._setHtmlForCard('main', this.classTemplate.apply(json));
 
-		this._showDocEntry(docMethod);
+		this._showDocEntry(docClass, docMethod);
 
-		this.down('#overviewBtn').show();
+		this.down('#overviewBtn').show();		
 
-		var configMembers = [];
-		var methodMembers = [];
-		json.members.forEach(function(member) {
-			if (member.tagname === 'cfg') {
-				configMembers.push(member);
-			} else if (member.tagname === 'method') {
-				if (member.meta.static) {
-					// TODO add icon to indicate it's static?
-				}
-				methodMembers.push(member);
-			}
-		});
+		this._setHtmlForCard('configs', this.typedefsTemplate.apply(json.typedefs));
+		this.down('#configsBtn').setVisible(json.typedefs && json.typedefs.length > 0);
 
-		this._setHtmlForCard('configs', this.membersTemplate.apply(configMembers));
-		this.down('#configsBtn').setVisible(configMembers.length > 0);
-
-		this._setHtmlForCard('methods', this.membersTemplate.apply(methodMembers));
-		this.down('#methodsBtn').setVisible(methodMembers.length > 0);
+		this._setHtmlForCard('methods', this.membersTemplate.apply(json.members));
+		this.down('#methodsBtn').setVisible(json.members && json.members.length > 0);
 
 		if (this.getCollapsed()) {
 			this.expand(false);

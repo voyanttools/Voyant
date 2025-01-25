@@ -1,0 +1,1365 @@
+{
+  "typedefs": [
+    {
+      "name": "CorpusConfig",
+      "type": "typedef",
+      "memberof": "Spyral.Corpus",
+      "props": [
+        {
+          "name": "corpus",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The ID of a previously created corpus.</p>\n<p>A corpus ID can be used to try to retrieve a corpus that has been previously created.\nTypically the corpus ID is used as a first string argument, with an optional second\nargument for other parameters (especially those to recreate the corpus if needed).</p>\n<pre><code>loadCorpus(\"goldbug\");\n\nloadCorpus(\"goldbug\", {\n    // if corpus ID \"goldbug\" isn't found, use the input\n    input: \"https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt\",\n    inputRemoveUntil: 'THE GOLD-BUG',\n    inputRemoveFrom: 'FOUR BEASTS IN ONE'\n});\n</code></pre>"
+        },
+        {
+          "name": "input",
+          "type": [
+            "String",
+            "Array&lt;String&gt;"
+          ],
+          "desc": "<p>Input sources for the corpus.</p>\n<p>The input sources can be either normal text or URLs (starting with <code>http</code>).</p>\n<p>Typically input sources are specified as a string or an array in the first argument, with an optional second argument for other parameters.</p>\n<pre><code>    loadCorpus(\"Hello Voyant!\"); // one document with this string\n\n    loadCorpus([\"Hello Voyant!\", \"How are you?\"]); // two documents with these strings\n\n    loadCorpus(\"http://hermeneuti.ca/\"); // one document from URL\n\n    loadCorpus([\"http://hermeneuti.ca/\", \"https://en.wikipedia.org/wiki/Voyant_Tools\"]); // two documents from URLs\n\n    loadCorpus(\"Hello Voyant!\", \"http://hermeneuti.ca/\"]); // two documents, one from string and one from URL\n\n    loadCorpus(\"https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt\", {\n        inputRemoveUntil: 'THE GOLD-BUG',\n        inputRemoveFrom: 'FOUR BEASTS IN ONE'\n    });\n\n    // use a corpus ID but also specify an input source if the corpus can't be found\n    loadCorpus(\"goldbug\", {\n        input: \"https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt\",\n        inputRemoveUntil: 'THE GOLD-BUG',\n        inputRemoveFrom: 'FOUR BEASTS IN ONE'\n    });\n</code></pre>"
+        },
+        {
+          "name": "inputFormat",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The input format of the corpus (the default is to auto-detect).</p>\n<p>The auto-detect format is usually reliable and inputFormat should only be used if the default\nbehaviour isn't desired. Most of the relevant values are used for XML documents:</p>\n<ul>\n<li><strong>DTOC</strong>: Dynamic Table of Contexts XML format</li>\n<li><strong>HTML</strong>: Hypertext Markup Language</li>\n<li><strong>RSS</strong>: Really Simple Syndication XML format</li>\n<li><strong>TEI</strong>: Text Encoding Initiative XML format</li>\n<li><strong>TEICORPUS</strong>: Text Encoding Initiative Corpus XML format</li>\n<li><strong>TEXT</strong>: plain text</li>\n<li><strong>XML</strong>: treat the document as XML (sometimes overridding auto-detect of XML vocabularies like RSS and TEI)</li>\n</ul>\n<p>Other formats include <strong>PDF</strong>, <strong>MSWORD</strong>, <strong>XLSX</strong>, <strong>RTF</strong>, <strong>ODT</strong>, and <strong>ZIP</strong> (but again, these rarely need to be specified).</p>"
+        },
+        {
+          "name": "tableDocuments",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Determine what is a document in a table (the entire table, by row, by column); only used for table-based documents.</p>\n<p>Possible values are:</p>\n<ul>\n<li><strong>undefined or blank</strong> (default): the entire table is one document</li>\n<li><strong>rows</strong>: each row of the table is a separate document</li>\n<li><strong>columns</strong>: each column of the table is a separate document</li>\n</ul>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tables\">Creating a Corpus with Tables</a>.</p>"
+        },
+        {
+          "name": "tableContent",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Determine how to extract body content from the table; only used for table-based documents.</p>\n<p>Columns are referred to by numbers, the first is column 1 (not 0).\nYou can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>\n<p>Some examples:</p>\n<ul>\n<li><strong>1</strong>: use column 1</li>\n<li><strong>1,2</strong>: use columns 1 and 2 separately</li>\n<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>\n</ul>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tables\">Creating a Corpus with Tables</a>.</p>"
+        },
+        {
+          "name": "tableAuthor",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Determine how to extract the author from each document; only used for table-based documents.</p>\n<p>Columns are referred to by numbers, the first is column 1 (not 0).\nYou can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>\n<p>Some examples:</p>\n<ul>\n<li><strong>1</strong>: use column 1</li>\n<li><strong>1,2</strong>: use columns 1 and 2 separately</li>\n<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>\n</ul>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tables\">Creating a Corpus with Tables</a>.</p>"
+        },
+        {
+          "name": "tableTitle",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Determine how to extract the title from each document; only used for table-based documents.</p>\n<p>Columns are referred to by numbers, the first is column 1 (not 0).\nYou can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>\n<p>Some examples:</p>\n<ul>\n<li><strong>1</strong>: use column 1</li>\n<li><strong>1,2</strong>: use columns 1 and 2 separately</li>\n<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>\n</ul>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tables\">Creating a Corpus with Tables</a>.</p>"
+        },
+        {
+          "name": "tableGroupBy",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.</p>\n<p>Columns are referred to by numbers, the first is column 1 (not 0).\nYou can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>\n<p>Some examples:</p>\n<ul>\n<li><strong>1</strong>: use column 1</li>\n<li><strong>1,2</strong>: use columns 1 and 2 separately</li>\n<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>\n</ul>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tables\">Creating a Corpus with Tables</a>.</p>"
+        },
+        {
+          "name": "tableNoHeadersRow",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Determine if the table has a first row of headers; only used for table-based documents.</p>\n<p>Provide a value of \"true\" if there is no header row, otherwise leave it blank or undefined (default).</p>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tables\">Creating a Corpus with Tables</a>.</p>"
+        },
+        {
+          "name": "tokenization",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The tokenization strategy to use</p>\n<p>This should usually be undefined, unless specific behaviour is required. These are the valid values:</p>\n<ul>\n<li><strong>undefined or blank</strong>: use the default tokenization (which uses Unicode rules for word segmentation)</li>\n<li><strong>wordBoundaries</strong>: use any Unicode character word boundaries for tokenization</li>\n<li><strong>whitespace</strong>: tokenize by whitespace only (punctuation and other characters will be kept with words)</li>\n</ul>\n<p>See also <a href=\"#!/guide/corpuscreator-section-tokenization\">Creating a Corpus Tokenization</a>.</p>"
+        },
+        {
+          "name": "xmlContentXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of document content (the body); only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;head&gt;Hello world!&lt;/head&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlContentXpath: \"//body\"\n    }); // document would be: \"This is Voyant!\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlTitleXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document's title; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;title&gt;Hello world!&lt;/title&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlTitleXpath: \"//title\"\n    }); // title would be: \"Hello world!\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlAuthorXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document's author; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;author&gt;Stéfan Sinclair&lt;/author&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlAuthorXpath: \"//author\"\n    }); // author would be: \"Stéfan Sinclair\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlPubPlaceXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document's publication place; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;pubPlace&gt;Montreal&lt;/pubPlace&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlPubPlaceXpath: \"//pubPlace\"\n    }); // publication place would be: \"Montreal\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlPublisherXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document's publisher; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;publisher&gt;The Owl&lt;/publisher&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlPublisherXpath: \"//publisher\"\n    }); // publisher would be: \"The Owl\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlKeywordXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document's keywords; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;keyword&gt;text analysis&lt;/keyword&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlKeywordXpath: \"//keyword\"\n    }); // publisher would be: \"text analysis\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlCollectionXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document's collection name; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;collection&gt;documentation&lt;/collection&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlCollectionXpath: \"//collection\"\n    }); // publisher would be: \"documentation\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlDocumentsXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression that defines the location of each document; only used for XML-based documents.</p>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlGroupByXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>The XPath expression by which to group multiple documents; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;sp s='Juliet'&gt;Hello!&lt;/sp&gt;&lt;sp s='Romeo'&gt;Hi!&lt;/sp&gt;&lt;sp s='Juliet'&gt;Bye!&lt;/sp&gt;&lt;/doc&gt;\", {\n         xmlDocumentsXpath: '//sp',\n      xmlGroupByXpath: \"//@s\"\n    }); // two docs: \"Hello! Bye!\" (Juliet) and \"Hi!\" (Romeo)\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlExtraMetadataXpath",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>A value that defines the location of other metadata; only used for XML-based documents.</p>\n<pre><code>    loadCorpus(\"&lt;doc&gt;&lt;tool&gt;Voyant&lt;/tool&gt;&lt;phase&gt;1&lt;/phase&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;\", {\n         xmlExtraMetadataXpath: \"tool=//tool\\nphase=//phase\"\n    }); // tool would be \"Voyant\" and phase would be \"1\"\n</code></pre>\n<p>Note that <code>xmlExtraMetadataXpath</code> is a bit different from the other XPath expressions in that it's\npossible to define multiple values (each on its own line) in the form of name=xpath.</p>\n<p>See also <a href=\"#!/guide/corpuscreator-section-xml\">Creating a Corpus with XML</a>.</p>"
+        },
+        {
+          "name": "xmlExtractorTemplate",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Pass the XML document through the XSL template located at the specified URL before extraction (this is ignored in XML-based documents).</p>\n<p>This is an advanced parameter that allows you to define a URL of an XSL template that can\nbe called <em>before</em> text extraction (in other words, the other XML-based parameters apply\nafter this template has been processed).</p>"
+        },
+        {
+          "name": "inputRemoveUntil",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Omit text up until the start of the matching regular expression (this is ignored in XML-based documents).</p>\n<pre><code>    loadCorpus(\"Hello world! This is Voyant!\", {\n         inputRemoveUntil: \"This\"\n    }); // document would be: \"This is Voyant!\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-text\">Creating a Corpus with Text</a>.</p>"
+        },
+        {
+          "name": "inputRemoveUntilAfter",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Omit text up until the end of the matching regular expression (this is ignored in XML-based documents).</p>\n<pre><code>    loadCorpus(\"Hello world! This is Voyant!\", {\n         inputRemoveUntilAfter: \"world!\"\n    }); // document would be: \"This is Voyant!\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-text\">Creating a Corpus with Text</a>.</p>"
+        },
+        {
+          "name": "inputRemoveFrom",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Omit text from the start of the matching regular expression (this is ignored in XML-based documents).</p>\n<pre><code>    loadCorpus(\"Hello world! This is Voyant!\", {\n         inputRemoveFrom: \"This\"\n    }); // document would be: \"Hello World!\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-text\">Creating a Corpus with Text</a>.</p>"
+        },
+        {
+          "name": "inputRemoveFromAfter",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>Omit text from the end of the matching regular expression (this is ignored in XML-based documents).</p>\n<pre><code>    loadCorpus(\"Hello world! This is Voyant!\", {\n         inputRemoveFromAfter: \"This\"\n    }); // document would be: \"Hello World! This\"\n</code></pre>\n<p>See also <a href=\"#!/guide/corpuscreator-section-text\">Creating a Corpus with Text</a>.</p>"
+        },
+        {
+          "name": "subTitle",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>A sub-title for the corpus.</p>\n<p>This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a subtitle for later use.</p>"
+        },
+        {
+          "name": "title",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>A title for the corpus.</p>\n<p>This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a title for later use.</p>"
+        },
+        {
+          "name": "curatorTsv",
+          "type": [
+            "String"
+          ],
+          "desc": "<p>a simple TSV of paths and labels for the DToC interface (this isn't typically used outside of the specialized DToC context).</p>\n<p>The DToC skin allows curation of XML tags and attributes in order to constrain the entries shown in the interface or to provide friendlier labels. This assumes plain text unicode input with one definition per line where the simple XPath expression is separated by a tab from a label.</p>\n<pre><code>   p       paragraph\n   ref[@target*=\"religion\"]        religion\n</code></pre>\n<p>For more information see the DToC documentation on <a href=\"http://cwrc.ca/Documentation/public/index.html#DITA_Files-Various_Applications/DToC/CuratingTags.html\">Curating Tags</a></p>"
+        }
+      ]
+    }
+  ],
+  "overview": "<p>The Corpus class in Spyral. Here's a simple example:</p>\n<pre><code>loadCorpus(\"Hello World!\").summary();\n</code></pre>\n<p>This loads a corpus and returns an asynchronous <code>Promise</code>, but all of the methods\nof Corpus are appended to the Promise, so #summary will be called\nonce the Corpus promise is fulfilled. It's equivalent to the following:</p>\n<pre><code>loadCorpus(\"Hello World!\").then(corpus -&gt; corpus.summary());\n</code></pre>\n<p>Have a look at the #input configuration for more examples.</p>\n<p>There is a lot of flexibility in how corpora are created, here's a summary of the parameters:</p>\n<ul>\n<li><strong>sources</strong>: #corpus, #input</li>\n<li><strong>formats</strong>:<ul>\n<li><strong>Text</strong>: #inputRemoveFrom, #inputRemoveFromAfter, #inputRemoveUntil, #inputRemoveUntilAfter</li>\n<li><strong>XML</strong>: #xmlAuthorXpath, #xmlCollectionXpath, #xmlContentXpath, #xmlExtraMetadataXpath, #xmlKeywordXpath, #xmlPubPlaceXpath, #xmlPublisherXpath, #xmlTitleXpath</li>\n<li><strong>Tables</strong>: #tableAuthor, #tableContent, #tableDocuments, #tableNoHeadersRow, #tableTitle, #tableGroupBy</li></ul></li>\n<li><strong>other</strong>: #inputFormat, #subTitle, #title, #tokenization</li>\n</ul>",
+  "members": [
+    {
+      "name": "id",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "returns": {
+        "type": [
+          "Promise&lt;string&gt;"
+        ],
+        "desc": "<p>a Promise for the string ID of the corpus</p>"
+      },
+      "desc": "<p>Returns the ID of the corpus.</p>"
+    },
+    {
+      "name": "metadata",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;object&gt;"
+        ],
+        "desc": "<p>a Promise for an Object containing metadata</p>"
+      },
+      "desc": "<p>Returns the metadata object (of the corpus or document, depending on which mode is used).</p>\n<p>The following is an example of the object return for the metadata of the Jane Austen corpus:</p>\n<pre><code>{\n    \"id\": \"b50407fd1cbbecec4315a8fc411bad3c\",\n    \"alias\": \"austen\",\n    \"title\": \"\",\n    \"subTitle\": \"\",\n    \"documentsCount\": 8,\n    \"createdTime\": 1582429585984,\n    \"createdDate\": \"2020-02-22T22:46:25.984-0500\",\n    \"lexicalTokensCount\": 781763,\n    \"lexicalTypesCount\": 15368,\n    \"noPasswordAccess\": \"NORMAL\",\n    \"languageCodes\": [\n        \"en\"\n    ]\n}\n</code></pre>\n<p>The following is an example of what is returned as metadata for the first document:</p>\n<pre><code>[\n    {\n      \"id\": \"ddac6b12c3f4261013c63d04e8d21b45\",\n      \"extra.X-Parsed-By\": \"org.apache.tika.parser.DefaultParser\",\n      \"tokensCount-lexical\": \"33559\",\n      \"lastTokenStartOffset-lexical\": \"259750\",\n      \"parent_modified\": \"1548457455000\",\n      \"typesCount-lexical\": \"4235\",\n      \"typesCountMean-lexical\": \"7.924203\",\n      \"lastTokenPositionIndex-lexical\": \"33558\",\n      \"index\": \"0\",\n      \"language\": \"en\",\n      \"sentencesCount\": \"1302\",\n      \"source\": \"stream\",\n      \"typesCountStdDev-lexical\": \"46.626404\",\n      \"title\": \"1790 Love And Freindship\",\n      \"parent_queryParameters\": \"VOYANT_BUILD=M16&amp;textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&amp;VOYANT_REMOTE_ID=199.229.249.196&amp;accessIP=199.229.249.196&amp;VOYANT_VERSION=2.4&amp;palette=default&amp;suppressTools=false\",\n      \"extra.Content-Type\": \"text/plain; charset=windows-1252\",\n      \"parentType\": \"expansion\",\n      \"extra.Content-Encoding\": \"windows-1252\",\n      \"parent_source\": \"file\",\n      \"parent_id\": \"ae47e3a72cd3cad51e196e8a41e21aec\",\n      \"modified\": \"1432861756000\",\n      \"location\": \"1790 Love And Freindship.txt\",\n      \"parent_title\": \"Austen\",\n      \"parent_location\": \"Austen.zip\"\n    }\n]\n</code></pre>\n<p>In Corpus mode there's no reason to specify arguments. In documents mode you\ncan request specific documents in the config object:</p>\n<ul>\n<li><p><strong>start</strong>: the zero-based start of the list</p></li>\n<li><p><strong>limit</strong>: a limit to the number of items to return at a time</p></li>\n<li><p><strong>docIndex</strong>: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</p></li>\n<li><p><strong>docId</strong>: a set of document IDs; multiple documents can be separated by a comma</p></li>\n<li><p><strong>query</strong>: one or more term queries for the title, author or full-text</p></li>\n<li><p><strong>sort</strong>: one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></p></li>\n<li><p><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>\n<p>An example:</p>\n<p>// this would show the number 8 (the size of the corpus)\n loadCorpus(\"austen\").metadata().then(metadata =&gt; metadata.documentsCount)</p></li>\n</ul>"
+    },
+    {
+      "name": "summary",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "returns": {
+        "type": [
+          "Promise&lt;string&gt;"
+        ],
+        "desc": "<p>a Promise for a string containing a brief summary of the corpus metadata</p>"
+      },
+      "desc": "<p>Returns a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) </p>\n<p>An example:</p>\n<pre><code>loadCorpus(\"austen\").summary();\n</code></pre>"
+    },
+    {
+      "name": "titles",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start of the list</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>a limit to the number of items to return at a time</p>"
+        },
+        {
+          "name": "config.docIndex",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</p>"
+        },
+        {
+          "name": "config.docId",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a set of document IDs; multiple documents can be separated by a comma</p>"
+        },
+        {
+          "name": "config.query",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>one or more term queries for the title, author or full-text</p>"
+        },
+        {
+          "name": "config.sort",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of document titles</p>"
+      },
+      "desc": "<p>Returns an array of document titles for the corpus.</p>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start of the list</li>\n<li><strong>limit</strong>: a limit to the number of items to return at a time</li>\n<li><strong>docIndex</strong>: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</li>\n<li><strong>docId</strong>: a set of document IDs; multiple documents can be separated by a comma</li>\n<li><strong>query</strong>: one or more term queries for the title, author or full-text</li>\n<li><strong>sort</strong>: one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n</ul>\n<p>An example:</p>\n<pre><code>loadCorpus(\"austen\").titles().then(titles =&gt; \"The last work is: \"+titles[titles.length-1])\n</code></pre>"
+    },
+    {
+      "name": "documents",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start of the list</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>a limit to the number of items to return at a time</p>"
+        },
+        {
+          "name": "config.docIndex",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</p>"
+        },
+        {
+          "name": "config.docId",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a set of document IDs; multiple documents can be separated by a comma</p>"
+        },
+        {
+          "name": "config.query",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>one or more term queries for the title, author or full-text</p>"
+        },
+        {
+          "name": "config.sort",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of documents metadata</p>"
+      },
+      "desc": "<p>Returns an array of documents metadata for the corpus.</p>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start of the list</li>\n<li><strong>limit</strong>: a limit to the number of items to return at a time</li>\n<li><strong>docIndex</strong>: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</li>\n<li><strong>docId</strong>: a set of document IDs; multiple documents can be separated by a comma</li>\n<li><strong>query</strong>: one or more term queries for the title, author or full-text</li>\n<li><strong>sort</strong>: one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n</ul>"
+    },
+    {
+      "name": "text",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        },
+        {
+          "name": "config.noMarkup",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>strips away the markup</p>"
+        },
+        {
+          "name": "config.compactSpace",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>strips away superfluous spaces and multiple new lines</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>a limit to the number of characters (per text)</p>"
+        },
+        {
+          "name": "config.format",
+          "type": [
+            "string"
+          ],
+          "desc": "<p><code>text</code> for plain text, any other value for the simplified Voyant markup</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;string&gt;"
+        ],
+        "desc": "<p>a Promise for a string of the corpus</p>"
+      },
+      "desc": "<p>Returns the text of the entire corpus.</p>\n<p>Texts are concatenated together with two new lines and three dashes (\\n\\n---\\n\\n)</p>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>noMarkup</strong>: strips away the markup</li>\n<li><strong>compactSpace</strong>: strips away superfluous spaces and multiple new lines</li>\n<li><strong>limit</strong>: a limit to the number of characters (per text)</li>\n<li><strong>format</strong>: <code>text</code> for plain text, any other value for the simplified Voyant markup</li>\n</ul>\n<p>An example:</p>\n<pre><code>// fetch 1000 characters from each text in the corpus into a single string\nloadCorpus(\"austen\").text({limit:1000})\n</code></pre>"
+    },
+    {
+      "name": "texts",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        },
+        {
+          "name": "config.noMarkup",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>strips away the markup</p>"
+        },
+        {
+          "name": "config.compactSpace",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>strips away superfluous spaces and multiple new lines</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>a limit to the number of characters (per text)</p>"
+        },
+        {
+          "name": "config.format",
+          "type": [
+            "string"
+          ],
+          "desc": "<p><code>text</code> for plain text, any other value for the simplified Voyant markup</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of texts from the corpus</p>"
+      },
+      "desc": "<p>Returns an array of texts from the entire corpus.</p>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>noMarkup</strong>: strips away the markup</li>\n<li><strong>compactSpace</strong>: strips away superfluous spaces and multiple new lines</li>\n<li><strong>limit</strong>: a limit to the number of characters (per text)</li>\n<li><strong>format</strong>: <code>text</code> for plain text, any other value for the simplified Voyant markup</li>\n</ul>\n<p>An example:</p>\n<pre><code>// fetch 1000 characters from each text in the corpus into an Array\nloadCorpus(\"austen\").texts({limit:1000})\n</code></pre>"
+    },
+    {
+      "name": "terms",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.minRawFreq",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the minimum raw frequency of terms</p>"
+        },
+        {
+          "name": "config.query",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a term query (see https://voyant-tools.org/docs/#!/guide/search)</p>"
+        },
+        {
+          "name": "config.stopList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</p>"
+        },
+        {
+          "name": "config.withDistributions",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)</p>"
+        },
+        {
+          "name": "config.whiteList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a keyword list – terms will be limited to this list</p>"
+        },
+        {
+          "name": "config.tokenType",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the token type to use, by default <code>lexical</code> (other possible values might be <code>title</code> and <code>author</code>)</p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for a Array of Terms</p>"
+      },
+      "desc": "<p>Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).\nThese terms are actually types, so information about each type is collected (as opposed to the {#link tokens}\nmethod which is for every occurrence in document order).</p>\n<p>The mode is set to \"documents\" when any of the following is true</p>\n<ul>\n<li>the <code>mode</code> parameter is set to \"documents\"</li>\n<li>a <code>docIndex</code> parameter being set</li>\n<li>a <code>docId</code> parameter being set</li>\n</ul>\n<p>The following is an example a Corpus Term (corpus mode):</p>\n<pre><code>{\n    \"term\": \"the\",\n    \"inDocumentsCount\": 8,\n    \"rawFreq\": 28292,\n    \"relativeFreq\": 0.036189996,\n    \"comparisonRelativeFreqDifference\": 0\n}\n</code></pre>\n<p>The following is an example of Document Term (documents mode):</p>\n<pre><code>{\n    \"term\": \"the\",\n    \"rawFreq\": 1333,\n    \"relativeFreq\": 39721.086,\n    \"zscore\": 28.419,\n    \"zscoreRatio\": -373.4891,\n    \"tfidf\": 0.0,\n    \"totalTermsCount\": 33559,\n    \"docIndex\": 0,\n    \"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n}\n</code></pre>\n<p>The following config parameters are valid in both modes:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>minRawFreq</strong>: the minimum raw frequency of terms</li>\n<li><strong>query</strong>: a term query (see https://voyant-tools.org/docs/#!/guide/search)</li>\n<li><strong>stopList</strong>: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</li>\n<li><strong>withDistributions</strong>: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)</li>\n<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li>\n<li><strong>tokenType</strong>: the token type to use, by default <code>lexical</code> (other possible values might be <code>title</code> and <code>author</code>)</li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n</ul>\n<p>The following are specific to corpus mode:</p>\n<ul>\n<li><p><strong>bins</strong>: by default there are the same number of bins as there are documents (for distribution values), this can be modified</p></li>\n<li><p><strong>corpusComparison</strong>: you can provide the ID of a corpus for comparison of frequency values</p></li>\n<li><p><strong>inDocumentsCountOnly</strong>: if you don't need term frequencies but only frequency per document set this to true</p></li>\n<li><p><strong>sort</strong>: the order of the terms, one of the following: <code>INDOCUMENTSCOUNT, RAWFREQ, TERM, RELATIVEPEAKEDNESS, RELATIVESKEWNESS, COMPARISONRELATIVEFREQDIFFERENCE</code></p>\n<p>The following are specific to documents mode:</p></li>\n<li><p><strong>bins</strong>: by default the document is divided into 10 equal bins(for distribution values), this can be modified</p></li>\n<li><p><strong>sort</strong>: the order of the terms, one of the following: <code>RAWFREQ, RELATIVEFREQ, TERM, TFIDF, ZSCORE</code></p></li>\n<li><p><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p></li>\n<li><p><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</p></li>\n<li><p><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</p></li>\n</ul>\n<p>An example:</p>\n<pre><code>// show top 5 terms\nloadCorpus(\"austen\").terms({stopList: 'auto', limit: 5}).then(terms =&gt; terms.map(term =&gt; term.term))\n\n// show top term for each document\nloadCorpus(\"austen\").terms({stopList: 'auto', perDocLimit: 1, mode: 'documents'}).then(terms =&gt; terms.map(term =&gt; term.term))\n</code></pre>"
+    },
+    {
+      "name": "tokens",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.stopList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</p>"
+        },
+        {
+          "name": "config.whiteList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a keyword list – terms will be limited to this list</p>"
+        },
+        {
+          "name": "config.perDocLimit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p>"
+        },
+        {
+          "name": "config.noOthers",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>only include lexical forms, no other tokens</p>"
+        },
+        {
+          "name": "config.stripTags",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>one of the following: <code>ALL</code>, <code>BLOCKSONLY</code>, <code>NONE</code> (<code>BLOCKSONLY</code> tries to maintain blocks for line formatting)</p>"
+        },
+        {
+          "name": "config.withPosLemmas",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>include part-of-speech and lemma information when available (reliability of this may vary by instance)</p>"
+        },
+        {
+          "name": "config.docIndex",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based index of the documents to include (use commas to separate multiple values)</p>"
+        },
+        {
+          "name": "config.docId",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the document IDs to include (use commas to separate multiple values)</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of document tokens</p>"
+      },
+      "desc": "<p>Returns an array of document tokens.</p>\n<p>The promise returns an array of document token objects. A document token object can look something like this:</p>\n<pre><code>    {\n        \"docId\": \"8a61d5d851a69c03c6ba9cc446713574\",\n        \"docIndex\": 0,\n        \"term\": \"LOVE\",\n        \"tokenType\": \"lexical\",\n        \"rawFreq\": 54,\n        \"position\": 0,\n        \"startOffset\": 3,\n        \"endOffset\": 7\n    }\n</code></pre>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>stopList</strong>: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</li>\n<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li>\n<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>\n<li><strong>noOthers</strong>: only include lexical forms, no other tokens</li>\n<li><strong>stripTags</strong>: one of the following: <code>ALL</code>, <code>BLOCKSONLY</code>, <code>NONE</code> (<code>BLOCKSONLY</code> tries to maintain blocks for line formatting)</li>\n<li><strong>withPosLemmas</strong>: include part-of-speech and lemma information when available (reliability of this may vary by instance)</li>\n<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>\n<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>\n</ul>\n<p>An example:</p>\n<pre><code>// load the first 20 tokens (don't include tags, spaces, etc.)\nloadCorpus(\"austen\").tokens({limit: 20, noOthers: true})\n</code></pre>"
+    },
+    {
+      "name": "words",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.stopList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</p>"
+        },
+        {
+          "name": "config.whiteList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a keyword list – terms will be limited to this list</p>"
+        },
+        {
+          "name": "config.perDocLimit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p>"
+        },
+        {
+          "name": "config.docIndex",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based index of the documents to include (use commas to separate multiple values)</p>"
+        },
+        {
+          "name": "config.docId",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the document IDs to include (use commas to separate multiple values)</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of words</p>"
+      },
+      "desc": "<p>Returns an array of words from the corpus.</p>\n<p>The array of words are in document order, much like tokens.</p>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>stopList</strong>: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</li>\n<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li>\n<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>\n<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>\n<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>\n</ul>\n<p>An example:</p>\n<pre><code>// load the first 20 words in the corpus\nloadCorpus(\"austen\").tokens({limit: 20})\n</code></pre>"
+    },
+    {
+      "name": "contexts",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.query",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a term query (see https://voyant-tools.org/docs/#!/guide/search)</p>"
+        },
+        {
+          "name": "config.sort",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the order of the contexts: <code>TERM, DOCINDEX, POSITION, LEFT, RIGHT</code></p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        },
+        {
+          "name": "config.perDocLimit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p>"
+        },
+        {
+          "name": "config.stripTags",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>for the <code>left</code>, <code>middle</code> and <code>right</code> values, one of the following: <code>ALL</code>, <code>BLOCKSONLY</code> (tries to maintain blocks for line formatting), <code>NONE</code> (default)</p>"
+        },
+        {
+          "name": "config.context",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the size of the context (the number of words on each side of the keyword)</p>"
+        },
+        {
+          "name": "config.docIndex",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based index of the documents to include (use commas to separate multiple values)</p>"
+        },
+        {
+          "name": "config.docId",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the document IDs to include (use commas to separate multiple values)</p>"
+        },
+        {
+          "name": "config.overlapStrategy",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>determines how to handle cases where there's overlap between KWICs, such as \"to be or not to be\" when the keyword is \"be\"</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of KWIC Objects</p>"
+      },
+      "desc": "<p>Returns an array of Objects that contain keywords in contexts (KWICs).</p>\n<p>An individual KWIC Object looks something like this:</p>\n<pre><code>{\n        \"docIndex\": 0,\n        \"query\": \"love\",\n        \"term\": \"love\",\n        \"position\": 0,\n        \"left\": \"FREINDSHIP AND OTHER EARLY WORKS\",\n        \"middle\": \"Love\",\n        \"right\": \" And Friendship And Other Early\"\n}\n</code></pre>\n<p>The following are valid in the config parameter:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>query</strong>: a term query (see https://voyant-tools.org/docs/#!/guide/search)</li>\n<li><strong>sort</strong>: the order of the contexts: <code>TERM, DOCINDEX, POSITION, LEFT, RIGHT</code></li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>\n<li><strong>stripTags</strong>: for the <code>left</code>, <code>middle</code> and <code>right</code> values, one of the following: <code>ALL</code>, <code>BLOCKSONLY</code> (tries to maintain blocks for line formatting), <code>NONE</code> (default)</li>\n<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>\n<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>\n<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>\n<li><strong>overlapStrategy</strong>: determines how to handle cases where there's overlap between KWICs, such as \"to be or not to be\" when the keyword is \"be\"; here are the options:<ul>\n<li><strong>none</strong>: nevermind the overlap, keep all words<ul>\n<li>{left: \"to\", middle: \"be\", right: \"or not to be\"} </li>\n<li>{left: \"to be or not to\", middle: \"be\", right: \"\"} </li></ul></li>\n<li><strong>first</strong>: priority goes to the first occurrence (some may be dropped)<ul>\n<li>{left: \"to\", middle: \"be\", right: \"or not to be\"} </li></ul></li>\n<li><strong>merge</strong>: balance the words between overlapping occurrences<ul>\n<li>{left: \"to\", middle: \"be\", right: \"or\"} </li>\n<li>{left: \"not to\", middle: \"be\", right: \"\"} </li></ul></li></ul></li>\n</ul>\n<p>An example:</p>\n<pre><code>// load the first 20 words in the corpus\nloadCorpus(\"austen\").contexts({query: \"love\", limit: 10})\n</code></pre>"
+    },
+    {
+      "name": "collocates",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see list above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.query",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a term query (see https://voyant-tools.org/docs/#!/guide/search)</p>"
+        },
+        {
+          "name": "config.stopList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</p>"
+        },
+        {
+          "name": "config.collocatesWhitelist",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>collocates will be limited to this list</p>"
+        },
+        {
+          "name": "config.context",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the size of the context (the number of words on each side of the keyword)</p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for a Array of Terms</p>"
+      },
+      "desc": "<p>Returns an array of collocates (either document or corpus collocates, depending on the specified mode).</p>\n<p>The mode is set to \"documents\" when any of the following is true</p>\n<ul>\n<li>the <code>mode</code> parameter is set to \"documents\"</li>\n<li>a <code>docIndex</code> parameter being set</li>\n<li>a <code>docId</code> parameter being set</li>\n</ul>\n<p>The following is an example a Corpus Collocate (corpus mode):</p>\n<pre><code>{\n      \"term\": \"love\",\n      \"rawFreq\": 568,\n      \"contextTerm\": \"mr\",\n      \"contextTermRawFreq\": 24\n}\n</code></pre>\n<p>The following is an example of Document Collocate (documents mode):</p>\n<pre><code>{\n        \"docIndex\": 4,\n        \"keyword\": \"love\",\n        \"keywordContextRawFrequency\": 124,\n        \"term\": \"fanny\",\n        \"termContextRawFrequency\": 8,\n        \"termContextRelativeFrequency\": 0.021680217,\n        \"termDocumentRawFrequency\": 816,\n        \"termDocumentRelativeFrequency\": 0.0050853477,\n        \"termContextDocumentRelativeFrequencyDifference\": 0.01659487\n}\n</code></pre>\n<p>The following config parameters are valid in both modes:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>query</strong>: a term query (see https://voyant-tools.org/docs/#!/guide/search)</li>\n<li><strong>stopList</strong>: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</li>\n<li><strong>collocatesWhitelist</strong>: collocates will be limited to this list</li>\n<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n</ul>\n<p>The following are specific to corpus mode:</p>\n<ul>\n<li><p><strong>sort</strong>: the order of the terms, one of the following: <code>RAWFREQ, TERM, CONTEXTTERM, CONTEXTTERMRAWFREQ</code></p>\n<p>The following are specific to documents mode:</p></li>\n<li><p><strong>sort</strong>: the order of the terms, one of the following: <code>TERM, REL, REL, RAW, DOCREL, DOCRAW, CONTEXTDOCRELDIFF</code></p></li>\n<li><p><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</p></li>\n<li><p><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</p></li>\n</ul>\n<p>An example:</p>\n<pre><code>// show top 5 collocate terms\nloadCorpus(\"austen\").collocates({stopList: 'auto', limit: 5}).then(terms =&gt; terms.map(term =&gt; term.term))\n</code></pre>"
+    },
+    {
+      "name": "phrases",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.minLength",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the minimum length of the phrase</p>"
+        },
+        {
+          "name": "config.maxLength",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum length of the phrase</p>"
+        },
+        {
+          "name": "config.minRawFreq",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the minimum raw frequency of the phrase</p>"
+        },
+        {
+          "name": "config.sort",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the order of the terms, one of the following: <code>RAWFREQ, TERM, LENGTH</code></p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        },
+        {
+          "name": "config.overlapFilter",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>it happens that phrases contain other phrases and we need a strategy for handling overlap</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of phrase Objects</p>"
+      },
+      "desc": "<p>Returns an array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).</p>\n<p>The mode is set to \"documents\" when any of the following is true</p>\n<ul>\n<li>the <code>mode</code> parameter is set to \"documents\"</li>\n<li>a <code>docIndex</code> parameter being set</li>\n<li>a <code>docId</code> parameter being set</li>\n</ul>\n<p>The following is an example a Corpus phrase (corpus mode), without distributions requested:</p>\n<pre><code>{\n     \"term\": \"love with\",\n     \"rawFreq\": 103,\n     \"length\": 2\n}\n</code></pre>\n<p>The following is an example of Document phrase (documents mode), without positions requested:</p>\n<pre><code>{\n      \"term\": \"love with\",\n      \"rawFreq\": 31,\n      \"length\": 2,\n      \"docIndex\": 5\n}\n</code></pre>\n<p>The following config parameters are valid in both modes:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>minLength</strong>: the minimum length of the phrase</li>\n<li><strong>maxLength</strong>: the maximum length of the phrase</li>\n<li><strong>minRawFreq</strong>: the minimum raw frequency of the phrase<ul>\n<li><strong>sort</strong>: the order of the terms, one of the following: <code>RAWFREQ, TERM, LENGTH</code></li></ul></li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n<li><strong>overlapFilter</strong>: it happens that phrases contain other phrases and we need a strategy for handling overlap:<ul>\n<li><strong>NONE</strong>: nevermind the overlap, keep all phrases</li>\n<li><strong>LENGTHFIRST</strong>: priority goes to the longest phrases</li>\n<li><strong>RAWFREQFIRST</strong>: priority goes to the highest frequency phrases</li>\n<li><strong>POSITIONFIRST</strong>: priority goes to the first phrases</li></ul></li>\n</ul>\n<p>The following are specific to documents mode:</p>\n<ul>\n<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>\n<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>\n</ul>\n<p>An example:</p>\n<pre><code>// load the first 20 phrases in the corpus\nloadCorpus(\"austen\").phrases({query: \"love\", limit: 10})\n</code></pre>"
+    },
+    {
+      "name": "correlations",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see above)</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the zero-based start index of the list (for paging)</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the maximum number of terms to provide per request</p>"
+        },
+        {
+          "name": "config.minInDocumentsCountRatio",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents</p>"
+        },
+        {
+          "name": "config.termsOnly",
+          "type": [
+            "boolean"
+          ],
+          "desc": "<p>a very compact data view of the correlations</p>"
+        },
+        {
+          "name": "config.sort",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the order of the terms, one of the following: <code>CORRELATION</code>, <code>CORRELATIONABS</code></p>"
+        },
+        {
+          "name": "config.dir",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of phrase Objects</p>"
+      },
+      "desc": "<p>Returns an array of correlations (either document or corpus correlations, depending on the specified mode).</p>\n<p>The mode is set to \"documents\" when any of the following is true</p>\n<ul>\n<li>the <code>mode</code> parameter is set to \"documents\"</li>\n<li>a <code>docIndex</code> parameter being set</li>\n<li>a <code>docId</code> parameter being set</li>\n</ul>\n<p>The following is an example a Corpus correlation (corpus mode):</p>\n<pre><code>{\n    \"source\": {\n        \"term\": \"mrs\",\n        \"inDocumentsCount\": 8,\n        \"rawFreq\": 2531,\n        \"relativePeakedness\": 0.46444246,\n        \"relativeSkewness\": -0.44197384\n    },\n    \"target\": {\n        \"term\": \"love\",\n        \"inDocumentsCount\": 8,\n        \"rawFreq\": 568,\n        \"relativePeakedness\": 5.763066,\n        \"relativeSkewness\": 2.2536576\n    },\n    \"correlation\": -0.44287738,\n    \"significance\": 0.08580014\n}\n</code></pre>\n<p>The following is an example of Document correlation (documents mode), without positions requested:</p>\n<pre><code>{\n    \"source\": {\n        \"term\": \"confide\",\n        \"rawFreq\": 3,\n        \"relativeFreq\": 89.3948,\n        \"zscore\": -0.10560975,\n        \"zscoreRatio\": -0.7541012,\n        \"tfidf\": 1.1168874E-5,\n        \"totalTermsCount\": 33559,\n        \"docIndex\": 0,\n        \"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n    },\n    \"target\": {\n        \"term\": \"love\",\n        \"rawFreq\": 54,\n        \"relativeFreq\": 1609.1063,\n        \"zscore\": 53.830048,\n        \"zscoreRatio\": -707.44696,\n        \"tfidf\": 0.0,\n        \"totalTermsCount\": 33559,\n        \"docIndex\": 0,\n        \"docId\": \"8a61d5d851a69c03c6ba9cc446713574\"\n    },\n    \"correlation\": 0.93527687,\n    \"significance\": 7.0970666E-5\n}\n</code></pre>\n<p>The following config parameters are valid in both modes:</p>\n<ul>\n<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>\n<li><strong>limit</strong>: the maximum number of terms to provide per request</li>\n<li><strong>termsOnly</strong>: a very compact data view of the correlations</li>\n<li><strong>sort</strong>: the order of the terms, one of the following: <code>CORRELATION</code>, <code>CORRELATIONABS</code></li>\n<li><strong>dir</strong>: sort direction, <strong><code>ASC</code></strong>ending or <strong><code>DESC</code></strong>ending</li>\n</ul>\n<p>The following is specific to corpus mode:</p>\n<ul>\n<li><strong>minInDocumentsCountRatio</strong>: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents</li>\n</ul>\n<p>The following are specific to documents mode:</p>\n<ul>\n<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>\n<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>\n</ul>\n<p>An example:</p>\n<pre><code>// load the first 10 phrases in the corpus\nloadCorpus(\"austen\").correlations({query: \"love\", limit: 10})\n</code></pre>"
+    },
+    {
+      "name": "lemmas",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>an Object specifying parameters (see above)</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ],
+        "desc": "<p>a Promise for an Array of lemma Objects</p>"
+      },
+      "desc": "<p>Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })</p>"
+    },
+    {
+      "name": "topics",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>(see above)</p>"
+        },
+        {
+          "name": "config.topics",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the number of topics to get (default is 10)</p>"
+        },
+        {
+          "name": "config.termsPerTopic",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the number of terms for each topic (default is 10)</p>"
+        },
+        {
+          "name": "config.iterations",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>the number of iterations to do, more iterations = more accurate (default is 100)</p>"
+        },
+        {
+          "name": "config.perDocLimit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>specify a token limit per document, starting at the beginning of the document</p>"
+        },
+        {
+          "name": "config.seed",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>specify a particular seed to use for random number generation</p>"
+        },
+        {
+          "name": "config.stopList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Object&gt;"
+        ]
+      },
+      "desc": "<p>Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:</p>\n<ul>\n<li><strong>topics</strong>: an array of topics (words organized into bunches of a specified size)</li>\n<li><strong>topicDocuments</strong>: an array of documents and their topic weights</li>\n</ul>\n<p>Each topic in the <strong>topics</strong> array is an object with the following properties:</p>\n<ul>\n<li><strong>words</strong>: an array of the actual words that form the topic. Each word has the same properties as the topic, as well as a \"word\" property that contains the text content.</li>\n<li>tokens</li>\n<li>documentEntropy</li>\n<li>wordLength</li>\n<li>coherence</li>\n<li>uniformDist</li>\n<li>corpusDist</li>\n<li>effNumWords</li>\n<li>tokenDocDiff</li>\n<li>rank1Docs</li>\n<li>allocationRatio</li>\n<li>allocationCount</li>\n<li>exclusivity</li>\n</ul>\n<p>Each document in the <strong>topicDocuments</strong> array is an object with the following properties:</p>\n<ul>\n<li>docId: the document ID</li>\n<li>weights: an array of the numbers corresponding to the the weight of each topic in this document</li>\n</ul>\n<p>The config object as parameter can contain the following:</p>\n<ul>\n<li><strong>topics</strong>: the number of topics to get (default is 10)</li>\n<li><strong>termsPerTopic</strong>: the number of terms for each topic (default is 10)</li>\n<li><strong>iterations</strong>: the number of iterations to do, more iterations = more accurate (default is 100)</li>\n<li><strong>perDocLimit</strong>: the token limit per document, starting at the beginning of the document</li>\n<li><strong>seed</strong>: specify a particular seed to use for random number generation</li>\n<li><strong>stopList</strong>: a list of stopwords to include</li>\n</ul>"
+    },
+    {
+      "name": "entities",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "config.docIndex",
+          "type": [
+            "number",
+            "string"
+          ],
+          "desc": "<p>document index to restrict to (can be comma-separated list)</p>"
+        },
+        {
+          "name": "config.annotator",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>the annotator to use: 'stanford' or 'nssi' or 'spacy'</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Array&gt;"
+        ]
+      },
+      "desc": "<p>Returns an array of entities.</p>\n<p>The config object as parameter can contain the following:</p>\n<ul>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>annotator</strong>: the annotator to use: 'stanford' or 'nssi' or 'spacy'</li>\n</ul>"
+    },
+    {
+      "name": "filterByCategory",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "categories",
+          "type": [
+            "String",
+            "Spyral.Categories"
+          ],
+          "desc": "<p>A categories ID or a Spyral.Categories instance.</p>"
+        },
+        {
+          "name": "categoryName",
+          "type": [
+            "String",
+            "Array&lt;String&gt;"
+          ],
+          "desc": "<p>One or more names of categories within the instance.</p>",
+          "opt": true
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Object&gt;"
+        ]
+      },
+      "desc": "<p>Given a Categories instance or ID, returns an object mapping category names to corpus terms. The results can be limited to specific category names by providing one or more of them.</p>"
+    },
+    {
+      "name": "analysis",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "config.type",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'</p>"
+        },
+        {
+          "name": "config.start",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>The zero-based start of the list</p>"
+        },
+        {
+          "name": "config.limit",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>A limit to the number of items to return at a time</p>"
+        },
+        {
+          "name": "config.dimensions",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>The number of dimensions to render, either 2 or 3.</p>"
+        },
+        {
+          "name": "config.bins",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>The number of bins to separate a document into.</p>"
+        },
+        {
+          "name": "config.clusters",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>The number of clusters within which to group words.</p>"
+        },
+        {
+          "name": "config.perplexity",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>The TSNE perplexity value.</p>"
+        },
+        {
+          "name": "config.iterations",
+          "type": [
+            "number"
+          ],
+          "desc": "<p>The TSNE iterations value.</p>"
+        },
+        {
+          "name": "config.comparisonType",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.</p>"
+        },
+        {
+          "name": "config.target",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>The term to set as the target. This will filter results to terms that are near the target.</p>"
+        },
+        {
+          "name": "config.term",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>Used in combination with \"target\" as a white list of terms to keep.</p>"
+        },
+        {
+          "name": "config.query",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>A term query (see https://voyant-tools.org/docs/#!/guide/search)</p>"
+        },
+        {
+          "name": "config.stopList",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>A list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Object&gt;"
+        ]
+      },
+      "desc": "<p>Performs one of several dimension reduction statistical analysis techniques.</p>\n<p>For more details see https://voyant-tools.org/docs/#!/guide/scatterplot.</p>"
+    },
+    {
+      "name": "tool",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "tool",
+          "type": [
+            "string"
+          ],
+          "desc": "<p>The tool to display</p>"
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>The config object for the tool</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;string&gt;"
+        ]
+      },
+      "desc": "<p>Returns an HTML snippet that will produce the specified Voyant tools to appear.</p>\n<p>In its simplest form we can simply call the named tool:</p>\n<pre><code>loadCorpus(\"austen\").tool(\"Cirrus\");\n</code></pre>\n<p>Each tool supports some options (that are summarized below), and those can be specified as options:</p>\n<pre><code>loadCorpus(\"austen\").tool(\"Trends\", {query: \"love\"});\n</code></pre>\n<p>There are also parameters (width, height, style, float) that apply to the actual tool window:</p>\n<pre><code>loadCorpus(\"austen\").tool(\"Trends\", {query: \"love\", style: \"width: 500px; height: 500px\"});\n</code></pre>\n<p>It's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):</p>\n<pre><code>loadCorpus(\"austen\").tool(\"Cirrus\", \"Trends\");\n</code></pre>\n<p>One easy way to get connected tools is to use the <code>CustomSet</code> tool and experiment with the layout:</p>\n<pre><code>loadCorpus(\"austen\").tool(\"CustomSet\", {tableLayout: \"Cirrus,Trends\", style: \"width:800px; height: 500px\"});\n</code></pre>\n<p>Here's a partial list of the tools available as well as their significant parameters:</p>\n<ul>\n<li><a href=\"#!/guide/bubblelines\">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.<ul>\n<li><strong>bins</strong>: number of bins to separate a document into</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>maxDocs</strong>: maximum number of documents to show</li>\n<li><strong>query</strong>: a query to search for in the corpus</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/bubbles\">Bubbles</a> is a playful visualization of term frequencies by document.<ul>\n<li><strong>audio</strong>: whether or not to include audio</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>speed</strong>: speed of the animation (0 to 60 lower is slower)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/cirrus\">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.<ul>\n<li><strong>background</strong>: set the background colour of the word cloud</li>\n<li><strong>categories</strong>: set the categories for the word cloud (usually an ID of an existing categories definition)</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>fontFamily</strong>: the default font to use for the words (default: \"Palatino Linotype\", \"Book Antiqua\", Palatino, serif),</li>\n<li><strong>inlineData</strong>: user-defined data, most easily expressed like this: love:20,like:15,dear:10</li>\n<li><strong>limit</strong>: the number of terms to load (that are available, see also <code>visible</code> which determines how many are displayed),</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li>\n<li><strong>visible</strong>: the number of terms to display in the word cloud (default is 50)</li>\n<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li></ul></li>\n<li><a href=\"#!/guide/collocatesgraph\">CollocatesGraph</a> represents keywords and terms that occur in close proximity as a force directed network graph.<ul>\n<li><strong>centralize</strong>: the term to use for centralize mode (where things are focused on a single word)</li>\n<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>\n<li><strong>limit</strong>: the number of collocates to load for each keyword</li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/contexts\">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).<ul>\n<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>\n<li><strong>expand</strong>: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword </li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/corpuscollocates\">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.<ul>\n<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>sort</strong>: sort order of collocates, one of <code>contextTermRawFreq</code>, <code>contextTermRawFreq</code>, <code>rawFreq</code>, <code>term</code></li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/corpusterms\">CorpusTerms</a> is a table view of term frequencies in the entire corpus.<ul>\n<li><strong>bins</strong>: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>expand</strong>: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword </li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/correlations\">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).<ul>\n<li><strong>minInDocumentsCountRatio</strong>: the minimum percentage of documents in which the correlation must appear</li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/documentterms\">DocumentTerms</a> is a table view of document term frequencies.<ul>\n<li><strong>bins</strong>: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>expand</strong>: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword </li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li></ul></li>\n<li><a href=\"#!/guide/termsberry\">TermsBerry</a> provides a way of exploring high frequency terms and their collocates.<ul>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>\n<li><strong>numInitialTerms</strong>: the initial number of terms to display</li></ul></li>\n<li><a href=\"#!/guide/trends\">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.<ul>\n<li><strong>stopList</strong>: a named stopword list or comma-separated list of words</li>\n<li><strong>query</strong>: a query for the keywords (can be comma-separated list)</li>\n<li><strong>limit</strong>: the number of terms to show</li>\n<li><strong>withDistributions</strong>: the type of distribution frequency to show (\"raw\" or \"relative\"), default is \"relative\"</li>\n<li><strong>bins</strong>: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins</li>\n<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>\n<li><strong>chartType</strong>: the type of chart to show: \"barline\", \"bar\", \"line\", \"area\", \"stacked\"</li></ul></li>\n<li><a href=\"#!/guide/documents\">Documents</a> is a tool that shows a table of the documents in the corpus and includes functionality for modifying the corpus.</li>\n<li><a href=\"#!/guide/knots\">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.</li>\n<li><a href=\"#!/guide/mandala\">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.</li>\n<li><a href=\"#!/guide/microsearch\">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.</li>\n<li><a href=\"#!/guide/phrases\">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.</li>\n<li><a href=\"#!/guide/reader\">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.</li>\n<li><a href=\"#!/guide/scatterplot\">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.</li>\n<li><a href=\"#!/guide/streamgraph\">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).</li>\n<li><a href=\"#!/guide/summary\">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.</li>\n<li><a href=\"#!/guide/termsradio\">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).</li>\n<li><a href=\"#!/guide/textualarc\">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.</li>\n<li><a href=\"#!/guide/topics\">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.</li>\n<li><a href=\"#!/guide/veliza\">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.</li>\n<li><a href=\"#!/guide/wordtree\">WordTree</a> is a tool that allows you to explore how words are used in phrases.</li>\n</ul>"
+    },
+    {
+      "name": "toString",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "desc": "<p>An alias for #summary.</p>"
+    },
+    {
+      "name": "load",
+      "type": "function",
+      "memberof": "Spyral.Corpus",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Spyral.Corpus~CorpusConfig"
+          ],
+          "desc": "<p>the Corpus config</p>"
+        },
+        {
+          "name": "api",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>any additional API values</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Corpus&gt;"
+        ]
+      },
+      "desc": "<p>Load a Corpus using the provided config and api</p>",
+      "static": true
+    }
+  ]
+}

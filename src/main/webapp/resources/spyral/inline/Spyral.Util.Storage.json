@@ -1,0 +1,63 @@
+{
+  "overview": "<p>A class for simplying resource storage</p>",
+  "members": [
+    {
+      "name": "storeResource",
+      "type": "function",
+      "memberof": "Spyral.Util.Storage",
+      "params": [
+        {
+          "name": "id",
+          "type": [
+            "String"
+          ]
+        },
+        {
+          "name": "data",
+          "type": [
+            "*"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise"
+        ]
+      },
+      "desc": "<p>Store a resource</p>",
+      "static": true
+    },
+    {
+      "name": "getTromboneUrl",
+      "type": "function",
+      "memberof": "Spyral.Util.Storage",
+      "returns": {
+        "type": [
+          "String"
+        ]
+      },
+      "desc": "<p>Get the URL for trombone</p>",
+      "static": true
+    },
+    {
+      "name": "getStoredResource",
+      "type": "function",
+      "memberof": "Spyral.Util.Storage",
+      "params": [
+        {
+          "name": "id",
+          "type": [
+            "String"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise"
+        ]
+      },
+      "desc": "<p>Get a stored resource</p>",
+      "static": true
+    }
+  ]
+}

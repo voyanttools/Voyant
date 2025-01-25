@@ -1,0 +1,110 @@
+{
+  "members": [
+    {
+      "name": "loadCorpus",
+      "type": "function",
+      "memberof": "window",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Spyral.Corpus~CorpusConfig"
+          ],
+          "desc": "<p>the Corpus config</p>"
+        },
+        {
+          "name": "api",
+          "type": [
+            "Object"
+          ],
+          "desc": "<p>any additional API values</p>"
+        }
+      ],
+      "returns": {
+        "type": [
+          "Promise&lt;Corpus&gt;"
+        ]
+      },
+      "desc": "<p>Load a Corpus using the provided config and api</p>",
+      "static": true
+    },
+    {
+      "name": "createTable",
+      "type": "function",
+      "memberof": "window",
+      "params": [
+        {
+          "name": "data",
+          "type": [
+            "Object",
+            "Array",
+            "String",
+            "Number"
+          ]
+        },
+        {
+          "name": "config",
+          "type": [
+            "TableConfig"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Spyral.Table"
+        ]
+      },
+      "desc": "<p>Create a new Table</p>",
+      "static": true
+    },
+    {
+      "name": "show",
+      "type": "function",
+      "memberof": "window",
+      "params": [
+        {
+          "name": "contents",
+          "type": [
+            "*"
+          ]
+        },
+        {
+          "name": "len",
+          "type": [
+            "*"
+          ]
+        },
+        {
+          "name": "mode",
+          "type": [
+            "*"
+          ]
+        }
+      ],
+      "desc": "<p>Show contents in the results area.</p>",
+      "static": true
+    },
+    {
+      "name": "showError",
+      "type": "function",
+      "memberof": "window",
+      "params": [
+        {
+          "name": "error",
+          "type": [
+            "*"
+          ]
+        },
+        {
+          "name": "more",
+          "type": [
+            "*"
+          ]
+        }
+      ],
+      "desc": "<p>Show an error in the results area.</p>",
+      "static": true
+    }
+  ],
+  "overview": "These are helper methods that get added to global window variable."
+}

@@ -1,0 +1,407 @@
+{
+  "typedefs": [
+    {
+      "name": "HighchartsConfig",
+      "type": "typedef",
+      "memberof": "Spyral.Chart",
+      "props": [
+        {
+          "name": "title",
+          "type": [
+            "string",
+            "object"
+          ]
+        },
+        {
+          "name": "subtitle",
+          "type": [
+            "string",
+            "object"
+          ]
+        },
+        {
+          "name": "credits",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "xAxis",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "yAxis",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "chart",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "series",
+          "type": [
+            "Array&lt;Spyral.Chart~HighchartsSeriesConfig&gt;"
+          ]
+        },
+        {
+          "name": "plotOptions",
+          "type": [
+            "Object"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HighchartsSeriesConfig",
+      "type": "typedef",
+      "memberof": "Spyral.Chart",
+      "props": [
+        {
+          "name": "data",
+          "type": [
+            "Array"
+          ]
+        },
+        {
+          "name": "name",
+          "type": [
+            "string"
+          ],
+          "opt": true
+        }
+      ]
+    }
+  ],
+  "overview": "<p>The Chart class in Spyral.\nThis class provides methods for creating a variety of charts.\nCharts are created using the <a href=\"https://api.highcharts.com/highcharts/\">Highcharts Library</a>.\nHighcharts have many configuration options and Spyral.Chart helps to streamline the process.\nA simple example:</p>\n<pre><code>Spyral.Chart.line({ series: [{ data: [0,2,1,3] }] })\n</code></pre>\n<p>A more complex example:</p>\n<pre><code>Spyral.Chart.column({\n    title: 'Wildflowers',\n    series: [{\n        name: 'Ontario',\n        data: [13, 39, 139, 38]\n    },{\n        name: 'Quebec',\n        data: [14, 33, 94, 30]\n    }],\n    xAxis: {\n        title: 'Number of Petals',\n        categories: [3, 4, 5, 6]\n    }\n})\n</code></pre>",
+  "members": [
+    {
+      "name": "create",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Spyral.Chart~HighchartsConfig"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a new chart.\nSee <a href=\"https://api.highcharts.com/highcharts/\">Highcharts API</a> for full set of config options.</p>"
+    },
+    {
+      "name": "create",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Spyral.Chart~HighchartsConfig"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a new chart.\nSee <a href=\"https://api.highcharts.com/highcharts/\">Highcharts API</a> for full set of config options.</p>",
+      "static": true
+    },
+    {
+      "name": "setSeriesData",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        },
+        {
+          "name": "data",
+          "type": [
+            "Array"
+          ]
+        }
+      ],
+      "desc": "<p>Add the provided data to the config as a series</p>",
+      "static": true
+    },
+    {
+      "name": "bar",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "opt": true
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a bar chart</p>"
+    },
+    {
+      "name": "bar",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a bar chart</p>",
+      "static": true
+    },
+    {
+      "name": "column",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "opt": true
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a column chart</p>"
+    },
+    {
+      "name": "column",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a column chart</p>",
+      "static": true
+    },
+    {
+      "name": "line",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "opt": true
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a line chart</p>"
+    },
+    {
+      "name": "line",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a line chart</p>",
+      "static": true
+    },
+    {
+      "name": "scatter",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "opt": true
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a scatter plot</p>"
+    },
+    {
+      "name": "scatter",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Highcharts.Chart"
+        ]
+      },
+      "desc": "<p>Create a scatter plot</p>",
+      "static": true
+    },
+    {
+      "name": "networkgraph",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ],
+          "opt": true
+        }
+      ],
+      "returns": {
+        "type": [
+          "Spyral.NetworkGraph"
+        ]
+      },
+      "desc": "<p>Create a network graph</p>"
+    },
+    {
+      "name": "networkgraph",
+      "type": "function",
+      "memberof": "Spyral.Chart",
+      "params": [
+        {
+          "name": "target",
+          "type": [
+            "String",
+            "Element"
+          ],
+          "desc": "<p>An element or ID to use as the chart's target. If not specified, one will be created.</p>",
+          "opt": true
+        },
+        {
+          "name": "config",
+          "type": [
+            "Object"
+          ]
+        }
+      ],
+      "returns": {
+        "type": [
+          "Spyral.NetworkGraph"
+        ]
+      },
+      "desc": "<p>Create a network graph</p>",
+      "static": true
+    }
+  ]
+}

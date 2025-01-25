@@ -1,7 +1,7 @@
 {
 	"source": {
 		"include": ["src", "node_modules\\voyant\\src"],
-		"includePattern": "categories\\.js$"
+		"includePattern": ".*\\.js$"
 	},
 	"opts": {
 		"destination": "inline",
