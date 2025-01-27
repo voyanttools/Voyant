@@ -131,7 +131,7 @@ exports.publish = function(data, opts, tutorials) {
 				if (doc.returns) {
 					context['members'].push({
 						"name": 'constructor',
-						"type": 'constructor',
+						"type": 'method',
 						"memberof": doc.longname,
 						"params": convertParams(doc.params),
 						"returns": convertParams(doc.returns)[0],
@@ -189,7 +189,7 @@ exports.publish = function(data, opts, tutorials) {
 				
 				var member = {
 					name: name,
-					type: doc.kind,
+					type: doc.kind === 'function' ? 'method' : doc.kind,
 					memberof: doc.memberof
 				};
 				if (doc.params && doc.params.length > 0) member['params'] = convertParams(doc.params);
@@ -219,14 +219,14 @@ exports.publish = function(data, opts, tutorials) {
 				// auto-generate API urls
 				if (!desc) {
 					// link to overview by default
-					convertedEntry['url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname;
+					convertedEntry['!url'] = apiUrlRoot+'/docs/'+doc.longname+'.html';
 				} else {
 					if (doc.kind === 'class') {
-						convertedEntry['url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname+'-method-constructor';
+						convertedEntry['!url'] = apiUrlRoot+'/docs/'+doc.longname+'.html#method-constructor';
 					} else if (doc.scope === 'instance') {
-						convertedEntry['url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace('#', '-method-'));
+						convertedEntry['!url'] = apiUrlRoot+'/docs/'+(doc.longname.replace('#', '.html#method-'));
 					} else if (doc.scope === 'static') {
-						convertedEntry['url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace(/\.(\w+)$/, '-static-method-$1'));
+						convertedEntry['!url'] = apiUrlRoot+'/docs/'+(doc.longname.replace(/\.(\w+)$/, '.html#static-method-$1'));
 					}
 				}
 			}

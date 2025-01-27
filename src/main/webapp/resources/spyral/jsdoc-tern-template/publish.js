@@ -275,14 +275,14 @@ exports.publish = function(data, opts, tutorials) {
 				// auto-generate API urls
 				if (!desc) {
 					// link to overview by default
-					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname;
+					convertedEntry['!url'] = apiUrlRoot+'/docs/'+doc.longname+'.html';
 				} else {
 					if (doc.kind === 'class') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname+'-method-constructor';
+						convertedEntry['!url'] = apiUrlRoot+'/docs/'+doc.longname+'.html#method-constructor';
 					} else if (doc.scope === 'instance') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace('#', '-method-'));
+						convertedEntry['!url'] = apiUrlRoot+'/docs/'+(doc.longname.replace('#', '.html#method-'));
 					} else if (doc.scope === 'static') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace(/\.(\w+)$/, '-static-method-$1'));
+						convertedEntry['!url'] = apiUrlRoot+'/docs/'+(doc.longname.replace(/\.(\w+)$/, '.html#static-method-$1'));
 					}
 				}
 			}
