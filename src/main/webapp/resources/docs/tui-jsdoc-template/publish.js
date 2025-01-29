@@ -358,6 +358,14 @@ function buildSubNav(obj) {
     });
     count += typedef.length;
 
+    var members = find({
+        memberof: longname
+    });
+    members = members.filter((member) => {
+        return !methods.includes(member) && !events.includes(member) && !typedef.includes(member);
+    })
+    count += members.length;
+
     var children = [];
     if (Object.hasOwn(obj, "children")) {
         children = obj.children;
