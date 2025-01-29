@@ -335,10 +335,6 @@ function buildSubNav(obj) {
     var count = 0;
 
     var longname = obj.longname;
-    var members = find({
-        memberof: longname
-    });
-    count += members.length;
 
     var methods = find({
         kind: 'function',
