@@ -31,7 +31,7 @@ exports.publish = function(data, opts, tutorials) {
 		if (typeObj.names) {
 			return typeObj.names.map((name) => {
 				if (name.indexOf('~') !== -1) {
-					// it's a typdef
+					// it's a typedef
 					console.log('typedef encountered')
 				}
 				return name.replace('\.<', '<').replace('<','&lt;').replace('>','&gt;')
@@ -46,7 +46,7 @@ exports.publish = function(data, opts, tutorials) {
 			desc = convertLinks(desc);
 			desc = converter.makeHtml(desc);
 		} else {
-			console.warn('no description for', doc.longname)
+			//console.warn('no description for', doc.longname)
 		}
 		return desc;
 	}
@@ -69,17 +69,62 @@ exports.publish = function(data, opts, tutorials) {
 
 	function convertParams(params) {
 		if (params) {
-			return params.map((param) => {
+			var convertedParams = params.map((param) => {
+
 				var converted = {
 					name: param.name,
 					type: convertType(param.type),
 					desc: convertDescription(param.description)
 				}
+				
+				// handling for typedefs
+				// TODO maybe don't do this for Corpus??
+				if (converted.type[0].indexOf('~') !== -1) {
+					var typeMatches = converted.type[0].match(/(.*)?~(.*)/);
+					var longname = typeMatches[1];
+					var typedefName = typeMatches[2];
+					var entry = createEntriesForName(longname, output);
+					if (entry && entry.typedefs) {
+						var typedef = entry.typedefs.find(function(typedef) { return typedef.name === typedefName });
+						converted.type = typedef.type;
+						converted.subparams = typedef.props;
+					} else {
+						console.warn('no typedef entry for',typedefName)
+					}
+				}
+
 				if (param.optional) {
 					converted.opt = true;
 				}
 				return converted;
-			})
+			});
+
+			// handling for param properties
+			var parentParam = null;
+			convertedParams.forEach(function(param, i) {
+				var paramRegExp;
+
+				if (!param) { return; }
+
+				if (parentParam && parentParam.name && param.name) {
+					paramRegExp = new RegExp('^(?:' + parentParam.name + '(?:\\[\\])*)\\.(.+)$');
+
+					if (paramRegExp.test(param.name)) {
+						param.name = RegExp.$1;
+						parentParam.subparams = parentParam.subparams || [];
+						parentParam.subparams.push(param);
+						convertedParams[i] = null;
+					} else {
+						parentParam = param;
+					}
+				} else {
+					parentParam = param;
+				}
+			});
+
+			convertedParams = convertedParams.filter(function(param) { return param !== null });
+
+			return convertedParams;
 		}
 	}
 
@@ -137,9 +182,12 @@ exports.publish = function(data, opts, tutorials) {
 						"returns": convertParams(doc.returns)[0],
 						"desc": convertDescription(doc.description)
 					});
+					convertedEntry = context['members'][0];
+				} else {
+					convertedEntry = context;
 				}
 
-				convertedEntry = context;
+				
 
 			} else if (doc.kind === 'typedef' && doc.properties) {
 
@@ -154,7 +202,7 @@ exports.publish = function(data, opts, tutorials) {
 				}
 				var obj = {
 					"name": doc.name,
-					"type": doc.kind,
+					"type": doc.type.names,
 					"memberof": doc.memberof,
 					"props": convertParams(doc.properties)
 				};
@@ -210,6 +258,10 @@ exports.publish = function(data, opts, tutorials) {
 		}
 
 		if (convertedEntry !== undefined) {
+			if (doc.examples) {
+				convertedEntry['examples'] = doc.examples.map((example) => convertDescription("```\n"+example+"\n```"));
+			}
+
 			var url = convertSee(doc.see);
 			if (url) {
 				convertedEntry['url'] = url;

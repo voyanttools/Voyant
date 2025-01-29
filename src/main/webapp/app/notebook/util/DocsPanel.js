@@ -57,15 +57,15 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				'<h3 class="members-title icon-method">Methods</h3>',
 				'<div class="subsection">',
 				'<tpl for="members">',
-					'<div id="{[values.memberof.replace(".","_")]}-{type}-{name}" class="member">',
+					'<div id="{[values.memberof.replace(".","_")]}-{[values.static ? "static-" : ""]}{type}-{name}" class="member">',
 						'<div class="title">',
 							'<a href="/docs/{[values.memberof.replace(".","_")]}-{type}-{name}" class="name">{name}</a>',
 							'( <span class="pre">',
 							'<tpl for="params">{name}{[xindex < xcount ? ", " : ""]}</tpl>',
 							'</span> )',
-							'<tpl if="returns">',
-								' : {returns.type}',
-							'</tpl>',
+							'<tpl if="returns"> : <tpl for="returns.type">',
+								'{[this.getTypeLink(values)]}{[xindex < xcount ? "|" : ""]}',
+							'</tpl></tpl>',
 							'<tpl if="static">',
 								'<span class="signature"><span class="static">static</span></span>',
 							'</tpl>',
@@ -76,14 +76,26 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 								'<tpl if="params">',
 									'<h3 class="pa">Parameters</h3>',
 									'<ul><tpl for="params">',
-										'<li><span class="pre">{name}</span> : {type} <div class="sub-desc">{desc}</div></li>',
+										'<li><span class="pre">{name}</span> : <tpl for="type">{.}{[xindex < xcount ? "|" : ""]}</tpl>',
+										'<div class="sub-desc">{desc}</div></li>',
+										'<tpl if="subparams">',
+											'<div class="sub-desc"><ul>',
+												'<tpl for="subparams">',
+													'<li><span class="pre">{name}</span> : <tpl for="type">{.}{[xindex < xcount ? "|" : ""]}</tpl><div class="sub-desc">{desc}</div></li>',
+												'</tpl>',
+											'</ul></div>',
+										'</tpl>',
 									'</tpl></ul>',
 								'</tpl>',
 								'<tpl if="returns">',
 									'<h3 class="pa">Returns</h3>',
 									'<ul><tpl for="returns.type">',
-										'<li><span class="pre">{.}</span><div class="sub-desc">{desc}</div></li>',
+										'<li><span class="pre">{[this.getTypeLink(values)]}</span><div class="sub-desc">{desc}</div></li>',
 									'</tpl></ul>',
+								'</tpl>',
+								'<tpl if="examples">',
+									'<h3 class="pa">Example{[values.examples.length > 1 ? "s" : ""]}</h3>',
+									'<tpl for="examples">{.}</tpl>',
 								'</tpl>',
 							'</div>',
 						'</div>',
@@ -92,7 +104,15 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				'</div>',
 			'</div>',
 			'</div>',
-		'</div>'
+		'</div>',
+		{
+			disableFormats: true,
+			getTypeLink: function(type) {
+				console.log('getTypeLink', type)
+				if (type.indexOf('Spyral') !== 0) return type;
+				return '<a href="/docs/'+type+'">'+type+'</a>';
+			}
+		}
 	),
 
 	outlineTemplate: new Ext.XTemplate(
@@ -109,7 +129,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			'<tpl for=".">',
 				'<tpl for="props">',
 				'<div class="member">',
-					'<a href="/docs/{[parent.memberof.replace(".","_")]}-{parent.name}-{name}">{parent.name}.{name}</a>',
+					'<a href="/docs/{[parent.memberof.replace(".","_")]}~{parent.name}-{name}">{parent.name}.{name}</a>',
 				'</div>',
 				'</tpl>',
 			'</tpl>',
@@ -122,7 +142,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 					'<tpl if="static">',
 						'<span class="static" title="static">s</span>',
 					'</tpl>',
-					'<a href="/docs/{[values.memberof.replace(".","_")]}#{type}-{name}">{name}</a>',
+					'<a href="/docs/{[values.memberof.replace(".","_")]}#{[values.static ? "static-" : ""]}{type}-{name}">{name}</a>',
 				'</div>',
 			'</tpl>',
 		'</div>'
@@ -248,8 +268,8 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				this._showDocEntry(linkClass, linkMethod);
 			}
 		} else {
-			if (link.indexOf('#!') === 0) {
-				window.open(Voyant.application.getBaseUrlFull()+'docs/'+link, '_spyral_docs');
+			if (link.indexOf('/docs') === 0) {
+				window.open(Voyant.application.getBaseUrlFull()+link.substring(1), '_spyral_docs');
 			} else {
 				window.open(link, '_external');
 			}
@@ -261,7 +281,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		if (this.lastDocEntryClass) {
 			entryId += '/'+this.lastDocEntryClass+'.html';
 			if (this.lastDocEntryMethod) {
-				entryId += '#'+this.lastDocEntryMethod;
+				entryId += '#'+this.lastDocEntryMethod.replace('static-','.').replace('method-','').replace(/(~\w+)(-\w+)/,'$1');
 			}
 		}
 		window.open(Voyant.application.getBaseUrlFull()+'docs'+entryId, '_spyral_docs');
@@ -300,7 +320,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		
 		var entryId = undefined;
 		if (entryClass && entryMember) {
-			entryId = entryClass.replace('.','_')+'-'+entryMember;
+			entryId = entryClass.replace('.','_')+'-'+entryMember.replace('~','');
 		}
 		if (entryId) {
 			docsParentEl.querySelector('#'+entryId).hidden = false;
