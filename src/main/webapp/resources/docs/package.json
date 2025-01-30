@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "clean": "rm -r ../../docs",
+    "build-docs": "jsdoc -c config.json",
+    "build-docs-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -c config.json"
+  },
   "dependencies": {
     "cheerio": "^1.0.0",
     "jsdoc": "^4.0.4",
