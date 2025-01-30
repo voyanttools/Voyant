@@ -203,3 +203,15 @@ $lnb.find('.lnb-examples').each(function() {
             $(this).removeClass('hidden').on('click', toggleSubNav);
         });
 });
+
+$(document).ready(function() {
+    if (document.location.pathname.indexOf('Spyral') !== -1 || document.location.pathname.indexOf('Tools') !== -1) {
+        showLnbApi();
+    } else if (document.location.pathname.indexOf('tutorial') !== -1) {
+        var filename = document.location.pathname.match(/tutorial.*.html$/);
+        if (filename !== null) {
+            filename = filename[0];
+            $lnb.find('.lnb-examples a[href="'+filename+'"]').parents('div').prev('.toggle-subnav').click();
+        }
+    }
+})
