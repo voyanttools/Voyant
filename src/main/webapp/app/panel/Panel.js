@@ -1,7 +1,13 @@
 /**
+ * Each member of CorpusTool is available for use with the {@link Spyral.Corpus#tool} method.
+ * @namespace Tools
+ */
+
+/**
  * The base class for Voyant tool panels.
  * 
  * @class Panel
+ * @ignore
  */
 Ext.define('Voyant.panel.Panel', {
 	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.util.Toolable','Voyant.util.DetailedError'],
@@ -17,12 +23,12 @@ Ext.define('Voyant.panel.Panel', {
 		/**
 		 * @typedef {String} StopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
 		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-		 * For more information see the <a href="#!/guide/stopwords">Stopwords documentation</a>.
+		 * For more information see the [Stopwords documentation]{@tutorial stopwords}.
 		 */
 
 		/**
 		 * @typedef {String|String[]} Query A query or array of queries (queries can be separated by a comma).
-		 * For query syntax, see the <a href="#!/guide/search">search documentation</a>.
+		 * For query syntax, see the [search documentation]{@tutorial search}.
 		 */
 
 		/**
@@ -34,7 +40,7 @@ Ext.define('Voyant.panel.Panel', {
 		 */
 
 		/**
-		 * @typedef {String} Categories The categories ID to use. For more information see the <a href="#!/guide/categories">Categories documentation</a>.
+		 * @typedef {String} Categories The categories ID to use. For more information see the [Categories documentation]{@tutorial categories}.
 		 */
 
 		/**

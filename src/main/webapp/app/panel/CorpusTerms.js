@@ -1,10 +1,4 @@
 /**
- * My namespace.
- * @namespace Tools
- */
-
-
-/**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
  * @class CorpusTerms
