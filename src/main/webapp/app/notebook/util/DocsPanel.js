@@ -8,7 +8,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			overview: 'Overview',
 			configs: 'Configs',
 			methods: 'Methods',
-
+			openFull: 'Open Full Documentation',
 			docs: 'Docs',
 			splitView: 'Show Split View',
 			outlineIntro: 'Welcome to the Spyral Docs. Here are some links to help you navigate.<br><br>' +
@@ -76,12 +76,12 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 								'<tpl if="params">',
 									'<h3 class="pa">Parameters</h3>',
 									'<ul><tpl for="params">',
-										'<li><span class="pre">{name}</span> : <tpl for="type">{.}{[xindex < xcount ? "|" : ""]}</tpl>',
+										'<li><span class="pre">{name}</span> : <tpl for="type">{[this.getTypeLink(values)]}{[xindex < xcount ? "|" : ""]}</tpl>',
 										'<div class="sub-desc">{desc}</div></li>',
 										'<tpl if="subparams">',
 											'<div class="sub-desc"><ul>',
 												'<tpl for="subparams">',
-													'<li><span class="pre">{name}</span> : <tpl for="type">{.}{[xindex < xcount ? "|" : ""]}</tpl><div class="sub-desc">{desc}</div></li>',
+													'<li><span class="pre">{name}</span> : <tpl for="type">{[this.getTypeLink(values)]}{[xindex < xcount ? "|" : ""]}</tpl><div class="sub-desc">{desc}</div></li>',
 												'</tpl>',
 											'</ul></div>',
 										'</tpl>',
@@ -108,7 +108,6 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		{
 			disableFormats: true,
 			getTypeLink: function(type) {
-				console.log('getTypeLink', type)
 				if (type.indexOf('Spyral') !== 0) return type;
 				return '<a href="/docs/'+type+'">'+type+'</a>';
 			}
@@ -181,6 +180,13 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				handler: function(btn) {
 					btn.up('panel').getLayout().setActiveItem(2);
 				}
+			},'->',{
+				tooltip: this.localize('openFull'),
+				itemId: 'openfullBtn',
+				glyph: 'xf128@FontAwesome',
+				handler: function(btn) {
+					this.openFullDocumentation();
+				}.bind(this)
 			}],
 			layout: 'card',
 			items: [{
@@ -208,7 +214,8 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 							evt.preventDefault();
 							evt.stopPropagation();
 							var link = evt.target.getAttribute('href');
-							this.handleDocLink(link);
+							var rel = evt.target.getAttribute('rel');
+							this.handleDocLink(link, rel);
 						}
 					}, this);
 				},
@@ -255,23 +262,27 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		this.getLayout().getRenderTarget().unmask();
 	},
 
-	handleDocLink: function(link) {
-		console.log('handleDocLink', link);
-		var matches = link.match(/.*?\/docs\/([\w.]+)[#-]?(.*)?/);
-		console.log(matches);
-		if (matches) {
-			var linkClass = matches[1].replace('_', '.').replace('.html', '');
-			var linkMethod = matches[2];
-			if (linkClass !== this.lastDocEntryClass) {
-				this.showDocsForClassMethod(linkClass, linkMethod);
-			} else {
-				this._showDocEntry(linkClass, linkMethod);
-			}
-		} else {
-			if (link.indexOf('/docs') === 0) {
+	handleDocLink: function(link, rel) {
+		console.log('handleDocLink', link, rel);
+		if (rel) {
+			if (rel === 'external') {
+				window.open(link, '_external');
+			} else if (link.indexOf('/docs') === 0) {
 				window.open(Voyant.application.getBaseUrlFull()+link.substring(1), '_spyral_docs');
 			} else {
-				window.open(link, '_external');
+				console.log('unrecognized link', link, rel);
+			}
+		} else {
+			var matches = link.match(/.*?\/docs\/([\w.]+)[#-]?(.*)?/);
+			console.log(matches);
+			if (matches) {
+				var linkClass = matches[1].replace('_', '.').replace('.html', '');
+				var linkMethod = matches[2];
+				if (linkClass !== this.lastDocEntryClass) {
+					this.showDocsForClassMethod(linkClass, linkMethod);
+				} else {
+					this._showDocEntry(linkClass, linkMethod);
+				}
 			}
 		}
 	},
@@ -306,6 +317,8 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			if (json) {
 				this._loadExtDocs(json, docClass, docMethod);
 			}
+		}.bind(this), function(error) {
+			console.log(error);
 		}.bind(this)).always(function() {
 			this.getLayout().getRenderTarget().unmask();
 		}.bind(this));
@@ -318,19 +331,24 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 		this.lastDocEntryMethod = entryMember;
 		
-		var entryId = undefined;
-		if (entryClass && entryMember) {
-			entryId = entryClass.replace('.','_')+'-'+entryMember.replace('~','');
-		}
-		if (entryId) {
-			docsParentEl.querySelector('#'+entryId).hidden = false;
+		if (entryMember && entryMember.indexOf('~') !== -1 && entryMember.indexOf('-') === -1) {
+			// typedef parent handling
+			this.getLayout().setActiveItem(1);
 		} else {
-			docsParentEl.querySelector('.doc-contents').hidden = false;
+			var entryId = undefined;
+			if (entryClass && entryMember) {
+				entryId = entryClass.replace('.','_')+'-'+entryMember.replace('~','');
+			}
+			if (entryId) {
+				docsParentEl.querySelector('#'+entryId).hidden = false;
+			} else {
+				docsParentEl.querySelector('.doc-contents').hidden = false;
+			}
+			this.getLayout().setActiveItem(0);
+			setTimeout(function() {
+				this.down('#main').body.scrollTo('top', 0, false);
+			}.bind(this), 0);
 		}
-		this.getLayout().setActiveItem(0);
-		setTimeout(function() {
-			this.down('#main').body.scrollTo('top', 0, false);
-		}.bind(this), 0);
 	},
 
 	_loadExtOutline: function(json) {
