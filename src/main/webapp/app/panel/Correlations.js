@@ -14,24 +14,28 @@ Ext.define('Voyant.panel.Correlations', {
     	api: {
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -39,6 +43,7 @@ Ext.define('Voyant.panel.Correlations', {
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {Number} minInDocumentsCountRatio The minimum coverage (as a percentage) for terms. For instance, if a corpus has 10 documents and the minimum coverage is 20%, at least two of the documents must contain the term or it will be ignored.
 			 * @default
 			 */
@@ -46,6 +51,7 @@ Ext.define('Voyant.panel.Correlations', {
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {WithDistributions}
 			 * @default
 			 */
@@ -53,24 +59,28 @@ Ext.define('Voyant.panel.Correlations', {
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {Columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 
 			/**
 			 * @memberof Correlations
+			 * @instance
 			 * @property {TermColors}
 			 * @default
 			 */

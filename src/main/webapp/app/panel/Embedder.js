@@ -19,6 +19,7 @@ Ext.define('Voyant.panel.Embedder', {
 		api: {
 			/**
 			 * @memberof Embedder
+			 * @instance
 			 * @property {String} url The URL of the web page to embed.
 			 */
 			url: undefined

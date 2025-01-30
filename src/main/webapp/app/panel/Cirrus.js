@@ -15,24 +15,28 @@ Ext.define('Voyant.panel.Cirrus', {
     	api: {
     		/**
 			 * @memberof Cirrus
+    		 * @instance
     		 * @property {StopList}
 			 * @default
     		 */
     		stopList: 'auto',
 			/**
 			 * @memberof Cirrus
+			 * @instance
 			 * @property {Categories}
 			 */
     		categories: undefined,
 
 			/**
 			 * @memberof Cirrus
+			 * @instance
 			 * @property {String|String[]} whiteList a list of words to always include
 			 */
     		whiteList: undefined,
     		
     		/**
 			 * @memberof Cirrus
+    		 * @instance
     		 * @property {Number} limit Specify the number of terms to load (which is separate from the number of {@link Cirrus.visible} terms to show) at a time).
     		 * @default 500
     		 */
@@ -40,6 +44,7 @@ Ext.define('Voyant.panel.Cirrus', {
     		
     		/**
 			 * @memberof Cirrus
+    		 * @instance
     		 * @property {Number} visible Specify the number of terms that are visible at a time.
     		 * @default 50
     		 */
@@ -50,17 +55,20 @@ Ext.define('Voyant.panel.Cirrus', {
 
 			/**
 			 * @memberof Cirrus
+    		 * @instance
     		 * @property {DocId}
 			 */
     		docId: undefined,
 			/**
 			 * @memberof Cirrus
+    		 * @instance
     		 * @property {DocIndex}
 			 */
     		docIndex: undefined,
     		
 			/**
 			 * @memberof Cirrus
+			 * @instance
 			 * @property {String} inlineData Directly specify the terms and their relative sizes.
 			 * There data format is a comma-separated list of colon-separated term/size pairs.
 			 * For example: love:20,like:15,dear:10,child:6
@@ -69,6 +77,7 @@ Ext.define('Voyant.panel.Cirrus', {
 
 			/**
 			 * @memberof Cirrus
+			 * @instance
 			 * @property {String} fontFamily The CSS font-family to use for the terms
 			 * @default
 			 */

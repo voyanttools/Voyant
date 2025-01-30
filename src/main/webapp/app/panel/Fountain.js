@@ -9,10 +9,9 @@ Ext.define('Voyant.panel.Fountain', {
     	},
     	api: {
     		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
+    		 * @instance
+    		 * @property {StopList}
+			 * @default
     		 */
     		stopList: 'auto',
     		

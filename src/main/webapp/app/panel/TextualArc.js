@@ -14,6 +14,7 @@ Ext.define('Voyant.panel.TextualArc', {
     	api: {
     		/**
     		 * @memberof TextualArc
+			 * @instance
 			 * @property {StopList}
 			 * @default
     		 */
@@ -21,6 +22,7 @@ Ext.define('Voyant.panel.TextualArc', {
     		
 			/**
     		 * @memberof TextualArc
+			 * @instance
 			 * @property {DocIndex}
 			 * @default
     		 */
@@ -28,6 +30,7 @@ Ext.define('Voyant.panel.TextualArc', {
     		
 			/**
     		 * @memberof TextualArc
+			 * @instance
 			 * @property {Number} speed How fast to animate the visualization.
 			 * @default
     		 */
@@ -35,6 +38,7 @@ Ext.define('Voyant.panel.TextualArc', {
     		
 			/**
     		 * @memberof TextualArc
+			 * @instance
 			 * @property {Number} minRawFreq The minimum raw frequency of terms to be considered.
 			 * @default
     		 */

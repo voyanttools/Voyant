@@ -15,11 +15,13 @@ Ext.define('Voyant.panel.Knots', {
     	api: {
     		/**
         	 * @memberof Knots
+			 * @instance
 			 * @property {Query}
         	 */
     		query: null,
     		/**
 			 * @memberof Knots
+    		 * @instance
     		 * @property {StopList}
 			 * @default
     		 */
@@ -27,12 +29,14 @@ Ext.define('Voyant.panel.Knots', {
 
     		/**
 			 * @memberof Knots
+    		 * @instance
     		 * @property {DocId}
     		 */
     		docId: undefined,
     		
 			/**
 			 * @memberof Knots
+			 * @instance
 			 * @property {Boolean} audio Whether or not to play audio during the visualization.
 			 * @default
 			 */

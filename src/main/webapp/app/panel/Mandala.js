@@ -14,6 +14,7 @@ Ext.define('Voyant.panel.Mandala', {
     	api: {
     		/**
 			 * @memberof Mandala
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -21,12 +22,14 @@ Ext.define('Voyant.panel.Mandala', {
     		
 			/**
 			 * @memberof Mandala
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
     		
 			/**
 			 * @memberof Mandala
+			 * @instance
 			 * @property {Boolean} labels Whether or not labels should be shown.
 			 * @default
 			 */

@@ -15,6 +15,7 @@ Ext.define('Voyant.panel.Phrases', {
     	api: {
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -22,24 +23,28 @@ Ext.define('Voyant.panel.Phrases', {
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {Number} minLength The minimum length (number of words) of the phrase to consider.
 			 * @default
 			 */
@@ -47,6 +52,7 @@ Ext.define('Voyant.panel.Phrases', {
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {Number} maxLength The maximum length (number of words) of the phrase to consider.
 			 * @default
 			 */
@@ -54,6 +60,7 @@ Ext.define('Voyant.panel.Phrases', {
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See <a href="#!/guide/phrases-section-options">Phrases options</a> for more info.
 			 * @default
 			 */
@@ -61,12 +68,14 @@ Ext.define('Voyant.panel.Phrases', {
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {Columns} columns 'term', 'rawFreq', 'length', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {SortColumn}
 			 * @default
 			 */
@@ -74,6 +83,7 @@ Ext.define('Voyant.panel.Phrases', {
 
 			/**
 			 * @memberof Phrases
+			 * @instance
 			 * @property {SortDir}
 			 * @default
 			 */

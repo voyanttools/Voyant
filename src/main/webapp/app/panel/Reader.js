@@ -21,6 +21,7 @@ Ext.define('Voyant.panel.Reader', {
     	api: {
 			/**
 			 * @memberof Reader
+			 * @instance
 			 * @property {Start}
 			 * @default
 			 */
@@ -28,6 +29,7 @@ Ext.define('Voyant.panel.Reader', {
 
 			/**
 			 * @memberof Reader
+			 * @instance
 			 * @property {Limit}
 			 * @default
 			 */
@@ -35,12 +37,14 @@ Ext.define('Voyant.panel.Reader', {
 
 			/**
 			 * @memberof Reader
+			 * @instance
 			 * @property {String} skipToDocId The document ID to start reading from, defaults to the first document in the corpus.
 			 */
     		skipToDocId: undefined,
 
 			/**
 			 * @memberof Reader
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined

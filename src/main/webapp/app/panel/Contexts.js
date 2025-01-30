@@ -16,24 +16,28 @@ Ext.define('Voyant.panel.Contexts', {
     	api: {
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -41,6 +45,7 @@ Ext.define('Voyant.panel.Contexts', {
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {Context}
 			 * @default
 			 */
@@ -48,6 +53,7 @@ Ext.define('Voyant.panel.Contexts', {
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {Number} expand  How many terms to show when you expand any given row
 			 * @default
 			 */
@@ -55,24 +61,28 @@ Ext.define('Voyant.panel.Contexts', {
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {TermColors}
 			 * @default
 			 */

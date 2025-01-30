@@ -20,6 +20,7 @@ Ext.define('Voyant.panel.Summary', {
     		
     		/**
     		 * @memberof Summary
+			 * @instance
 			 * @property {StopList}
 			 * @default
     		 */
@@ -27,6 +28,7 @@ Ext.define('Voyant.panel.Summary', {
     		
     		/**
 			 * @memberof Summary
+			 * @instance
 			 * @property {Start}
 			 * @default
 			 */
@@ -35,6 +37,7 @@ Ext.define('Voyant.panel.Summary', {
     		
     		/**
     		 * @memberof Summary
+			 * @instance
 			 * @property {Limit}
 			 * @default
     		 */
@@ -42,6 +45,7 @@ Ext.define('Voyant.panel.Summary', {
     		
     		/**
 			 * @memberof Summary
+    		 * @instance
     		 * @property {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
     		 */
     		numberOfDocumentsForDistinctiveWords: 10

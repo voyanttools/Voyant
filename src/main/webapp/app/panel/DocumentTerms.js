@@ -24,48 +24,57 @@ Ext.define('Voyant.panel.DocumentTerms', {
     	api: {
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
     		stopList: 'auto',
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {Bins}
 			 * @default
 			 */
     		bins: 10,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {Columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
 			 */
 			columns: undefined,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 			/**
 			 * @memberof DocumentTerms
+			 * @instance
 			 * @property {TermColors}
 			 * @default
 			 */

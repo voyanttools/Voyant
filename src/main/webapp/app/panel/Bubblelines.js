@@ -15,6 +15,7 @@ Ext.define('Voyant.panel.Bubblelines', {
     	api: {
     		/**
 			 * @memberof Bubblelines
+    		 * @instance
     		 * @property {Bins}
 			 * @default
     		 */
@@ -22,12 +23,14 @@ Ext.define('Voyant.panel.Bubblelines', {
 
         	/**
 			 * @memberof Bubblelines
+        	 * @instance
         	 * @property {Query}
         	 */
     		query: null,
     		
     		/**
 			 * @memberof Bubblelines
+    		 * @instance
     		 * @property {StopList}
 			 * @default
     		 */
@@ -35,18 +38,21 @@ Ext.define('Voyant.panel.Bubblelines', {
 
     		/**
 			 * @memberof Bubblelines
+    		 * @instance
     		 * @property {DocId}
     		 */
     		docId: undefined,
 
     		/**
 			 * @memberof Bubblelines
+    		 * @instance
     		 * @property {DocIndex}
     		 */
     		docIndex: undefined,
 
     		/**
 			 * @memberof Bubblelines
+    		 * @instance
     		 * @property {Number} maxDocs The maximum number of documents to show.
     		 * @default
     		 */

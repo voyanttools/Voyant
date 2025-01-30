@@ -16,36 +16,42 @@ Ext.define('Voyant.panel.Documents', {
     	api: {
 			/**
 			 * @memberof Documents
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Documents
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Documents
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Documents
+			 * @instance
 			 * @property {Columns} columns 'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Documents
+			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Documents
+			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined

@@ -14,6 +14,7 @@ Ext.define('Voyant.panel.MicroSearch', {
     	api: {
 			/**
 			 * @memberof MicroSearch
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -21,6 +22,7 @@ Ext.define('Voyant.panel.MicroSearch', {
 
 			/**
 			 * @memberof MicroSearch
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined

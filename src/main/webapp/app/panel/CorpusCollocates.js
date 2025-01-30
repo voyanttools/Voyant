@@ -14,6 +14,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	api: {
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -21,6 +22,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {Context}
 			 * @default
 			 */
@@ -28,42 +30,49 @@ Ext.define('Voyant.panel.CorpusCollocates', {
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {Columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 
 			/**
 			 * @memberof CorpusCollocates
+			 * @instance
 			 * @property {TermColors}
 			 * @default
 			 */

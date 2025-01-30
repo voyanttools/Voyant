@@ -20,6 +20,7 @@ Ext.define('Voyant.panel.Entities', {
 		api: {
 			/**
 			 * @memberof Contexts
+			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,

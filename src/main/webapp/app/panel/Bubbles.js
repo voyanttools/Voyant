@@ -15,6 +15,7 @@ Ext.define('Voyant.panel.Bubbles', {
     	api: {
     		/**
 			 * @memberof Bubbles
+    		 * @instance
     		 * @property {StopList}
 			 * @default
     		 */
@@ -22,12 +23,14 @@ Ext.define('Voyant.panel.Bubbles', {
     		
 			/**
 			 * @memberof Bubbles
+			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: 0,
     		
 			/**
 			 * @memberof Bubbles
+			 * @instance
 			 * @property {Limit}
 			 * @default
 			 */
@@ -35,6 +38,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		
 			/**
 			 * @memberof Bubbles
+			 * @instance
 			 * @property {Boolean} audio Whether or not to play audio
 			 * @default
 			 */
@@ -42,6 +46,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		
 			/**
 			 * @memberof Bubbles
+			 * @instance
 			 * @property {Number} speed How fast to play the visualization
 			 * @default
 			 */

@@ -14,12 +14,14 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	api: {
 			/**
 			 * @memberof CollocatesGraph
+			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof CollocatesGraph
+			 * @instance
 			 * @property {Limit}
 			 * @default
 			 */
@@ -27,6 +29,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 
 			/**
 			 * @memberof CollocatesGraph
+			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
@@ -34,6 +37,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 
 			/**
 			 * @memberof CollocatesGraph
+			 * @instance
 			 * @property {Context}
 			 * @default
 			 */
@@ -41,6 +45,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 
 			/**
 			 * @memberof CollocatesGraph
+			 * @instance
 			 * @property {String} centralize If specified, will "centralize" on this keyword
 			 */
     		centralize: undefined
