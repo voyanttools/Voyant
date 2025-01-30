@@ -2,6 +2,7 @@
  * Document Terms is a table view of term frequencies for each document.
  * 
  * @class DocumentTerms
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.DocumentTerms', {

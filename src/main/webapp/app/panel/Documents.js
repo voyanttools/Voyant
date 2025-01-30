@@ -2,6 +2,7 @@
  * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
  * 
  * @class Documents
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Documents', {

@@ -7,7 +7,8 @@
  * The base class for Voyant tool panels.
  * 
  * @class Panel
- * @ignore
+ * @mixin
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Panel', {
 	mixins: ['Voyant.util.Localization','Voyant.util.Api','Voyant.util.Toolable','Voyant.util.DetailedError'],

@@ -2,6 +2,7 @@
  * The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).
  * 
  * @class TermsBerry
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.TermsBerry', {

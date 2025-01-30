@@ -2,6 +2,7 @@
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
  * @class CorpusTerms
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.CorpusTerms', {

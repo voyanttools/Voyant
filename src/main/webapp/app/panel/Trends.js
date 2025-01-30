@@ -2,6 +2,7 @@
  * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
  * 
  * @class Trends
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Trends', {

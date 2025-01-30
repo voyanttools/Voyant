@@ -2,7 +2,8 @@
  * CustomSet is a tool for creating a layout of other tools.
  * 
  * @class CustomSet
- * @ignore
+ * @mixes Tools.Panel
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.CustomSet', {
 	extend: 'Ext.panel.Panel',

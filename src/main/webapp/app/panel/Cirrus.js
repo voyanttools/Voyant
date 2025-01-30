@@ -3,6 +3,7 @@
  * Cirrus tool, a wordcloud-like visualization.
  * 
  * @class Cirrus
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Cirrus', {

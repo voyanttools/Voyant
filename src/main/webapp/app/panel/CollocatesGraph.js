@@ -2,6 +2,7 @@
  * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
  * 
  * @class CollocatesGraph
+ * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.CollocatesGraph', {
