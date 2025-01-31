@@ -1,6 +1,9 @@
 {
 	"source": {
-		"include": ["src", "node_modules\\voyant\\src"],
+		"include": [
+			"src", "node_modules\\voyant\\src",
+			"../../app/panel"
+		],
 		"includePattern": ".*\\.js$"
 	},
 	"opts": {

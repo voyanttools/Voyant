@@ -32,7 +32,7 @@ exports.publish = function(data, opts, tutorials) {
 			return typeObj.names.map((name) => {
 				if (name.indexOf('~') !== -1) {
 					// it's a typedef
-					console.log('typedef encountered')
+					console.log('typedef encountered', name)
 				}
 				return name.replace('\.<', '<').replace('<','&lt;').replace('>','&gt;')
 			});
@@ -56,21 +56,14 @@ exports.publish = function(data, opts, tutorials) {
 		// TODO support other link text formats: {@link URL|TEXT} and {@link URL TEXT}
 		return strWithLinks.replace(/(?:\[(.*?)\])?{@link\s+(.*?)}/g, function(match, p1, p2) {
 			if (p2.startsWith('http')) {
-				console.log('external link', strWithLinks);
+				console.log('external link', p2);
 				return `<a rel="external" href="${p2}">${p1 ? p1 : p2}</a>`;
 			} else {
 				return `<a rel="help" href="${apiUrlRoot}/docs/${p2}.html">${p1 ? p1 : p2}</a>`
 			}
-		});   
-	}
-
-	function convertSee(sees) {
-		if (sees) {
-			var see = sees[0];
-			if (see) {
-				return convertLinks(see);
-			}
-		}
+		}).replace(/(?:\[(.*?)\])?{@tutorial\s+(.*?)}/g, function(match, p1, p2) {
+			return `<a rel="help" href="${apiUrlRoot}/docs/tutorial-${p2}.html">${p1 ? p1 : p2}</a>`
+		});
 	}
 
 	function convertParams(params) {
@@ -152,7 +145,7 @@ exports.publish = function(data, opts, tutorials) {
 	function convertDoc(doc) {
 		var convertedEntry = undefined;
 
-		if (doc.ignore) {
+		if (doc.ignore || doc?.access === 'private') {
 			return;
 		}
 
@@ -166,103 +159,100 @@ exports.publish = function(data, opts, tutorials) {
 			doc.memberof = 'window';
 		}
 
-		if (doc.kind && doc.kind === 'namespace') {
+		if (doc.kind === undefined) {
+			console.log('no kind', doc.longname);
+			return;
+		}
+
+		if (doc.kind === 'namespace') {
 			createEntriesForName(doc.longname, output);
+		} else if (doc.kind === 'class') {
 
-		} else if (doc.kind && (doc.kind === 'module' || doc.kind === 'class' || doc.kind === 'typedef')) {
+			var context = createEntriesForName(doc.longname, output);
 
-			if (doc.kind === 'typedef') {
-				console.log(doc.longname)
-			}
-
-			if (doc.kind === 'class') {
-
-				var context = createEntriesForName(doc.longname, output);
-
-				context['overview'] = convertDescription(doc.classdesc);
-				context['members'] = [];
-				if (doc.returns) {
-					context['members'].push({
-						"name": 'constructor',
-						"type": 'method',
-						"memberof": doc.longname,
-						"params": convertParams(doc.params),
-						"returns": convertParams(doc.returns)[0],
-						"desc": convertDescription(doc.description)
-					});
-					convertedEntry = context['members'][0];
-				} else {
-					convertedEntry = context;
-				}
-
-				
-
-			} else if (doc.kind === 'typedef' && doc.properties) {
-
-				var context = output;
-				if (doc.scope === 'inner' && doc.memberof) {
-					context = createEntriesForName(doc.memberof, output);
-				} else {
-					context = createEntriesForName('global', output);
-				}
-				if (context['typedefs'] === undefined) {
-					context['typedefs'] = [];
-				}
-				var obj = {
-					"name": doc.name,
-					"type": doc.type.names,
-					"memberof": doc.memberof,
-					"props": convertParams(doc.properties)
-				};
-				context['typedefs'].push(obj);
-
-				convertedEntry = obj;
-
+			context['overview'] = convertDescription(doc.classdesc || doc.description);
+			context['members'] = [];
+			if (doc.returns) {
+				context['members'].push({
+					"name": 'constructor',
+					"type": 'method',
+					"memberof": doc.longname,
+					"params": convertParams(doc.params),
+					"returns": convertParams(doc.returns)[0],
+					"desc": convertDescription(doc.description)
+				});
+				convertedEntry = context['members'][0];
 			} else {
-				throw new Error("unhandled doc!", doc.longname);
+				convertedEntry = context;
 			}
+
+		} else if (doc.kind === 'typedef') {
+
+			var memberof = doc.memberof ? doc.memberof : 'global';
+			var context = createEntriesForName(memberof, output);
+			if (context['typedefs'] === undefined) {
+				context['typedefs'] = [];
+			}
+			var obj = {
+				"name": doc.name,
+				"type": convertType(doc.type),
+				"desc": convertDescription(doc.description),
+				"memberof": memberof
+			};
+			if (doc.properties) obj["props"] = convertParams(doc.properties);
+			context['typedefs'].push(obj);
+
+			convertedEntry = obj;
 
 		} else if (doc.kind === 'member' || doc.kind === 'function') {
-			if (doc.kind === 'member' && doc.type === undefined) {
-				return;
+
+			// @memberof Tools hack
+			if (doc.meta.path.match(/panel$/)) {
+				doc.memberof = 'Tools.'+doc.memberof;
+			}
+			var context = createEntriesForName(doc.memberof, output);
+			
+			var name = doc.name.replace('exports.', '');
+			
+			if (context['members'] === undefined) {
+				console.log('no members for',doc.longname);
+				context['members'] = [];
+			}
+			
+			var member = {
+				name: name,
+				type: doc.kind === 'function' ? 'method' : doc.kind,
+				memberof: doc.memberof
+			};
+			if (doc.params && doc.params.length > 0) member['params'] = convertParams(doc.params);
+			if (doc.returns) member['returns'] = convertParams(doc.returns)[0];
+			if (doc.description) member['desc'] = convertDescription(doc.description);
+			if (doc.properties) {
+				// assume it's a typedef and that there's only one
+				var typeDefName = doc.properties[0].type.names[0]
+				var globalTypeDef = output?.global?.typedefs.find((td) => td.name === typeDefName);
+				if (globalTypeDef) {
+					member['props'] = [{
+						name: globalTypeDef.name,
+						type: globalTypeDef.type,
+						desc: globalTypeDef.desc
+					}];
+				} else {
+					// console.log('no global typedef found', doc.longname, typeDefName);
+					member['props'] = convertParams(doc.properties);
+				}
 			}
 
-			var memberName = doc.memberof.replace('module:', '');
-			if (memberName === pkg.name) {
-				library[doc.name] = {
-					"sig": convertParams(doc)
-				};
-				convertedEntry = library[doc.name];
-			} else {
-				var context = createEntriesForName(memberName, output);
-				
-				var name = doc.name.replace('exports.', '');
-				
-				if (context['members'] === undefined) {
-					console.log('no members for',doc.longname);
-					context['members'] = [];
-				}
-				
-				var member = {
-					name: name,
-					type: doc.kind === 'function' ? 'method' : doc.kind,
-					memberof: doc.memberof
-				};
-				if (doc.params && doc.params.length > 0) member['params'] = convertParams(doc.params);
-				if (doc.returns) member['returns'] = convertParams(doc.returns)[0];
-				if (doc.description) member['desc'] = convertDescription(doc.description);
-
-				if (doc.scope === 'static') {
-					member['static'] = true;
-				}
-
-				context['members'].push(member);
-
-				convertedEntry = member;
+			if (doc.scope === 'static') {
+				member['static'] = true;
 			}
+
+			context['members'].push(member);
+
+			convertedEntry = member;
 		} else {
 			// unhandled kind
-			console.log('unhandled',doc.longname)
+			console.log('unhandled kind',doc.longname, doc.kind)
 		}
 
 		if (convertedEntry !== undefined) {
@@ -276,6 +266,12 @@ exports.publish = function(data, opts, tutorials) {
 		}
 	}
 
+	docs.sort(function(a, b) {
+		if (a.scope === 'global') return -1;
+		if (b.scope === 'global') return 1;
+		return 0;
+	})
+
 	for (var d in docs) {
 		var doc = docs[d];
 		convertDoc(doc);
@@ -285,20 +281,36 @@ exports.publish = function(data, opts, tutorials) {
 		output[pkg.name] = library;
 	}
 
-	Object.keys(output['Spyral']).forEach(key => {
-		const entry = output['Spyral'][key];
+	function writeFiles(parentKey) {
+		if (!output[parentKey]) return;
 		
-		const entrySubclasses = Object.keys(entry).filter(subkey => {
-			const firstLetter = subkey.charAt(0);
-			return firstLetter === firstLetter.toUpperCase();
-		});
-		entrySubclasses.forEach(subclassKey => {
-			fs.writeFileSync(opts.destination + '/Spyral.' + key + '.' + subclassKey + '.json', JSON.stringify(entry[subclassKey], null, 2));
-			delete entry[subclassKey];
-		})
+		var toc = [];
 
-		fs.writeFileSync(opts.destination + '/Spyral.' + key + '.json', JSON.stringify(entry, null, 2));
-	});
+		Object.keys(output[parentKey]).forEach(key => {
+			const entry = output[parentKey][key];
+			
+			const entrySubclasses = Object.keys(entry).filter(subkey => {
+				const firstLetter = subkey.charAt(0);
+				return firstLetter === firstLetter.toUpperCase();
+			});
+			entrySubclasses.forEach(subclassKey => {
+				var filename = parentKey+'.'+key+'.'+subclassKey;
+				toc.push(filename)
+				fs.writeFileSync(opts.destination+'/'+filename+'.json', JSON.stringify(entry[subclassKey], null, 2));
+				delete entry[subclassKey];
+			})
+	
+			var filename = parentKey+'.'+key;
+			toc.push(filename);
+			fs.writeFileSync(opts.destination+'/'+filename+'.json', JSON.stringify(entry, null, 2));
+		});
+
+		fs.writeFileSync(opts.destination+'/'+parentKey+'.json', JSON.stringify(toc, null, 0));
+	}
+
+	writeFiles('Tools');
+	writeFiles('Spyral');
+	
 
 	if (output['window']) {
 		output['window']['overview'] = 'These are helper methods that get added to global window variable.';
