@@ -259,6 +259,18 @@ function generate(title, docs, filename, resolveLinks) {
     }
 
     fs.writeFileSync(outpath, html, 'utf8');
+
+    if (outpath.match(/js\.html$/) === null) {
+        // now do the inline version
+        var dom = cheerio.load(html);
+        dom('.container-source').remove();
+        var inlineSection = dom('#main section');
+        var inlineOutpath = outpath.replace('\\docs\\', '\\docs\\inline\\');
+
+        var inlineDir = outdir+'\\inline';
+        fs.mkPath(inlineDir);
+        fs.writeFileSync(inlineOutpath, inlineSection.toString(), 'utf8');
+    }
 }
 
 function generateSourceFiles(sourceFiles, encoding) {
