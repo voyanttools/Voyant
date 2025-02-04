@@ -1,7 +1,7 @@
 var fs = require('fs');
 var helper = require("jsdoc/util/templateHelper");
 
-var apiUrlRoot = 'https://voyant-tools.org';
+var apiUrlRoot = '';//'https://voyant-tools.org';
 
 /**
  * Publish hook for the JSDoc template.  Writes to JSON stdout.
@@ -280,14 +280,14 @@ exports.publish = function(data, opts, tutorials) {
 				// auto-generate API urls
 				if (!desc) {
 					// link to overview by default
-					convertedEntry['!url'] = apiUrlRoot+'/docs/'+doc.longname+'.html';
+					convertedEntry['!url'] = apiUrlRoot+'/'+doc.longname+'.html';
 				} else {
 					if (doc.kind === 'class') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/'+doc.longname+'.html#method-constructor';
+						convertedEntry['!url'] = apiUrlRoot+'/'+doc.longname+'.html#constructor';
 					} else if (doc.scope === 'instance') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/'+(doc.longname.replace('#', '.html#method-'));
+						convertedEntry['!url'] = apiUrlRoot+'/'+(doc.longname.replace('#', '.html#'));
 					} else if (doc.scope === 'static') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/'+(doc.longname.replace(/\.(\w+)$/, '.html#static-method-$1'));
+						convertedEntry['!url'] = apiUrlRoot+'/'+(doc.longname.replace(/\.(\w+)$/, '.html#.$1'));
 					}
 				}
 			}
