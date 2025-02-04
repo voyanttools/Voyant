@@ -26,6 +26,11 @@ exports.publish = function(data, opts, tutorials) {
     function convertType(typeObj, returnString) {
         if (typeObj) {
             var type = typeObj.type.names.join('|');
+            //typedef
+            if (type.indexOf('~') !== -1) {
+                // remove typedef parent
+                type = type.replace(/(\w\.?)+~/, '');
+            }
             //pipes
             if (type.indexOf('|') !== -1) {
                 //ternjs doesn't support multiple types for a parameter
