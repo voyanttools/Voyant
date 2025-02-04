@@ -260,7 +260,7 @@ function generate(title, docs, filename, resolveLinks) {
 
     fs.writeFileSync(outpath, html, 'utf8');
 
-    if (outpath.match(/js\.html$/) === null) {
+    if (outpath.match(/js\.html$/) === null) { // don't handle src files
         // now do the inline version
         var dom = cheerio.load(html);
         dom('.container-source').remove();
@@ -504,11 +504,11 @@ function buildNav(members) {
 
     // Remove any class that is already in namespaces.
     var classes = members.classes.filter(item => {
-        if (nav.includes(item.name + "</a>")) {
-            return false;
-        } else {
+        // if (nav.includes(item.name + "</a>")) {
+        //     return false;
+        // } else {
             return true;
-        }
+        // }
     })
 
     nav += buildMemberNav(classes, 'Classes', seen, linkto);
@@ -610,6 +610,10 @@ exports.publish = function(taffyData, opts, tutorials) {
     data.sort('longname, version, since');
     helper.addEventListeners(data);
 
+    // @borrows creates 2 docs so we need special handling
+    // remove @borrows entries
+    data(function() { return this.comment && this.comment.indexOf('@borrows') !== -1}).remove();
+
     var sourceFiles = {};
     var sourceFilePaths = [];
     data().each(function(doclet) {
@@ -635,6 +639,12 @@ exports.publish = function(taffyData, opts, tutorials) {
                 doclet.see[i] = hashToLink(doclet, seeItem);
             });
         }
+
+        // special handling for borrowed entries that are members of window
+        if (doclet.longname.indexOf('window.') === 0) {
+            doclet.longname = doclet.longname.substring(0, doclet.longname.lastIndexOf('.'));
+            doclet.memberof = 'window';
+		}
 
         // build a list of source files
         var sourcePath;
