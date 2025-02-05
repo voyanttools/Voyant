@@ -3,6 +3,7 @@
  * depend on whether the corpus includes one document or many.
  * 
  * @class Summary
+ * @tutorial summary
  * @mixes Tools.Panel
  * @memberof Tools
  */

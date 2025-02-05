@@ -2,6 +2,7 @@
  * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
  * 
  * @class Reader
+ * @tutorial reader
  * @mixes Tools.Panel
  * @memberof Tools
  */

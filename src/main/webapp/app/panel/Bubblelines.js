@@ -3,6 +3,7 @@
  * Bubblelines visualizes the frequency and distribution of terms in a corpus.
  * 
  * @class Bubblelines
+ * @tutorial bubblelines
  * @mixes Tools.Panel
  * @memberof Tools
  */

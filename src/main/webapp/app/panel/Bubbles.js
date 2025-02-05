@@ -3,6 +3,7 @@
  * Bubbles is a playful visualization of term frequencies by document.
  * 
  * @class Bubbles
+ * @tutorial bubbles
  * @mixes Tools.Panel
  * @memberof Tools
  */

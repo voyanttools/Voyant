@@ -2,6 +2,7 @@
  * ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.
  * 
  * @class ScatterPlot
+ * @tutorial scatterplot
  * @mixes Tools.Panel
  * @memberof Tools
  */

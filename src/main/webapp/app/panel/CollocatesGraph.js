@@ -2,6 +2,7 @@
  * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
  * 
  * @class CollocatesGraph
+ * @tutorial collocatesgraph
  * @mixes Tools.Panel
  * @memberof Tools
  */

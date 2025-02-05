@@ -2,6 +2,7 @@
  * Microsearch visualizes the frequency and distribution of terms in a corpus.
  * 
  * @class MicroSearch
+ * @tutorial microsearch
  * @mixes Tools.Panel
  * @memberof Tools
  */

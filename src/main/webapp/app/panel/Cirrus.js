@@ -3,6 +3,7 @@
  * Cirrus tool, a wordcloud-like visualization.
  * 
  * @class Cirrus
+ * @tutorial cirrus
  * @mixes Tools.Panel
  * @memberof Tools
  */

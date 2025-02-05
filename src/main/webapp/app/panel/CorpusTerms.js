@@ -2,6 +2,7 @@
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
  * @class CorpusTerms
+ * @tutorial corpusterms
  * @mixes Tools.Panel
  * @memberof Tools
  */

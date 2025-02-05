@@ -2,6 +2,7 @@
  * Document Terms is a table view of term frequencies for each document.
  * 
  * @class DocumentTerms
+ * @tutorial documentterms
  * @mixes Tools.Panel
  * @memberof Tools
  */

@@ -1,4 +1,6 @@
-// assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * @ignore
+ */
 Ext.define('Voyant.panel.Fountain', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,11 +10,6 @@ Ext.define('Voyant.panel.Fountain', {
     		title: "FountainMeter"
     	},
     	api: {
-    		/**
-    		 * @instance
-    		 * @property {StopList}
-			 * @default
-    		 */
     		stopList: 'auto',
     		
     		docIndex: 0,

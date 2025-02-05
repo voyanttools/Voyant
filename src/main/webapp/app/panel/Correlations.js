@@ -2,6 +2,7 @@
  * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
  * 
  * @class Correlations
+ * @tutorial correlations
  * @mixes Tools.Panel
  * @memberof Tools
  */

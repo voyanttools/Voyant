@@ -2,6 +2,7 @@
  * The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).
  * 
  * @class TermsBerry
+ * @tutorial termsberry
  * @mixes Tools.Panel
  * @memberof Tools
  */

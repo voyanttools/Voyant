@@ -2,6 +2,7 @@
  * Mandala is a conceptual visualization that shows the relationships between terms and documents.
  * 
  * @class Mandala
+ * @tutorial mandala
  * @mixes Tools.Panel
  * @memberof Tools
  */

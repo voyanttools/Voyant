@@ -1,5 +1,5 @@
 /**
- * Each member of CorpusTool is available for use with the {@link Spyral.Corpus#tool} method.
+ * Each member of Tools is available for use with the {@link Spyral.Corpus#tool} method.
  * @namespace Tools
  */
 

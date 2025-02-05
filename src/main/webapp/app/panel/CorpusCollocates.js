@@ -2,6 +2,7 @@
  * Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
  * 
  * @class CorpusCollocates
+ * @tutorial corpuscollocates
  * @mixes Tools.Panel
  * @memberof Tools
  */

@@ -2,6 +2,7 @@
  * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
  * 
  * @class Contexts
+ * @tutorial contexts
  * @mixes Tools.Panel
  * @memberof Tools
  */

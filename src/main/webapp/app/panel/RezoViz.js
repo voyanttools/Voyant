@@ -2,6 +2,7 @@
  * RezoViz represents connections between people, places and organizations that co-occur in multiple documents.
  * 
  * @class RezoViz
+ * @tutorial rezoviz
  * @mixes Tools.Panel
  * @memberof Tools
  */
