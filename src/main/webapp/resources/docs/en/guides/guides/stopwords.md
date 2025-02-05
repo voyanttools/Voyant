@@ -11,7 +11,9 @@ Compare the following two displays:
 The one on the left uses the _Auto-detect_ setting (so the English stopword list in this case) and the one on the right 
 uses the _None_ setting.
 
-<div style="float: right; width: 200px;">{@img options.png Options}</div> In Voyant Tools you can select from pre-existing stopword lists in 
+![Options](imgs/ui/stopwords/options.png)
+
+In Voyant Tools you can select from pre-existing stopword lists in 
 various languages or create your own. For tools that support stopword lists, you can begin by clicking on the options 
 icon (the option may not appear if it's a tool that doesn't support stopwords).
 

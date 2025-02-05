@@ -60,7 +60,7 @@ Once you decompress the .zip file, you should see something like the following:
 	1. **Mac:**
 		1. You should right-click (control-click) on the `VoyantServer.jar` file and choose "_Open"_ from the menu.
 		2. Click on "_Open"_ in the next dialog. This is necessary the first time only. For subsequent uses of VoyantServer, all you need to do is double-click on the `VoyantServer.jar` file.
-{@img 01.png Open}
+![Open](imgs/server/01.png)
 		3. If the clicking on `VoyantServer.jar` fails, use the command-line approach below.
 
 	2. **Windows / Linux:**

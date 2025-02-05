@@ -291,11 +291,11 @@ The first option is for defining how Voyant should extract text from the table (
 
 <b>2: _from cells in each row_</b>: this option assumes that each row has one or more documents, either the entire row or specific cells
 
-<div style="max-width: 476px; margin-left: auto; margin-right: auto;">{@img fromcellsineachrow.png From Cells in Each Row}</div>
+![From Cells in Each Row](imgs/ui/corpuscreator/fromcellsineachrow.png)
 
 <b>3: _from entire columns_</b>: this option assumes that documents should be extracted from one or more columns
 
-<div style="max-width: 371px; margin-left: auto; margin-right: auto;">{@img fromentirecolumns.png From Entire Columns}</div>
+![From Entire Columns](imgs/ui/corpuscreator/fromentirecolumns.png)
 
 Whether you use _from cells in each row_ or _from entire columns_ you can also choose one or more columns for content. Columns are specified by number (even when there's a header row), and the left-most column is column 1. Content from multiple columns can be combined using the plus sign and columns can be specified separately by using commas. Here are some examples:
 
@@ -363,7 +363,11 @@ Voyant uses algorithms to determine the text encoding of the documents in your c
 
 ## Access Management
 
-<div style="max-width: 400px; float: right; padding: 1em;">{@img access-management.png Access Management}</div>
+<div style="max-width: 400px; float: right; padding: 1em;">
+
+![Access Management](imgs/ui/corpuscreator/access-management.png)
+
+</div>
 
 
 Voyant provides some basic access management functions that are intended to help control who can access a given corpus. It's worth mentioning that each corpus is given a unique 32-character code when it's created, which amounts to 2<sup>128</sup> or 340,282,366,920,938,463,463,374,607,431,768,211,456 possibilities. In other words, it's extremely unlikely that anyone would stumble upon your corpus by accident or by luck. That doesn't mean that your corpus is entirely safe from prying eyes, it's possible for a URL or for parameters to be detected during usual web communication, for instance.
