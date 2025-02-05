@@ -236,7 +236,7 @@ function getPathFromDoclet(doclet) {
         doclet.meta.filename;
 }
 
-function generate(title, docs, filename, resolveLinks) {
+function generate(title, docs, filename, resolveLinks, isTutorial=false) {
     var docData;
     var html;
     var outpath;
@@ -245,7 +245,7 @@ function generate(title, docs, filename, resolveLinks) {
 
     docData = {
         env: env,
-        isTutorial: false,
+        isTutorial: isTutorial,
         title: title,
         docs: docs,
         package: find({kind: 'package'})[0]
@@ -777,7 +777,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         generateSourceFiles(sourceFiles, opts.encoding);
     }
 
-    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }
+    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl, true, true); }
 
     // index page displays information from package.json
     var packages = find({kind: 'package'});
@@ -786,7 +786,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ),
-    indexUrl);
+    indexUrl, true, true);
 
     // set up the lists that we'll use to generate pages
     var classes = taffy(members.classes);
