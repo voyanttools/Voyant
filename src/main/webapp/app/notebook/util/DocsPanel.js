@@ -66,7 +66,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 						items: [],
 						listeners: {
 							click: function(menu, item) {
-								var method = item.itemId;
+								var method = item.itemId.replace(/^_/, '');
 								this._showDocEntry(this.lastEntry, method);
 							},
 							scope: this
@@ -211,7 +211,9 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				methodsMenu.remove(key);
 			});
 			methods.forEach(function(method) {
-				methodsMenu.add({text: method, itemId: method});
+				var text = method.replace(/^\./, '<span class="green">s</span> '); // static methods
+				text = text.replace(/^_/, '');
+				methodsMenu.add({text: text, itemId: '_'+method}); // prepend _ because some methods are reserved (e.g. toString)
 			});
 			methodsBtn.show();
 		} else {

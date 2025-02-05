@@ -267,9 +267,11 @@ function generate(title, docs, filename, resolveLinks, isTutorial=false) {
         var inlineSection = dom('#main section');
         var inlineOutpath = outpath.replace('\\docs\\', '\\docs\\inline\\');
 
+        inlineSection = inlineSection.toString().replace('id="toString"', 'id="_toString"'); // hack for ExtJS bug when id = toString
+
         var inlineDir = outdir+'\\inline';
         fs.mkPath(inlineDir);
-        fs.writeFileSync(inlineOutpath, inlineSection.toString(), 'utf8');
+        fs.writeFileSync(inlineOutpath, inlineSection, 'utf8');
     }
 }
 
