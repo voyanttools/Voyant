@@ -6,6 +6,9 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		i18n: {
 			home: 'Home',
 			overview: 'Overview',
+			classes: 'Classes',
+			tools: 'Tools',
+			globals: 'Globals',
 			configs: 'Configs',
 			methods: 'Methods',
 			openFull: 'Open Full Documentation',
@@ -16,7 +19,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				'<a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/">Tutorials</a> - Link to tutorial notebooks.<br>' +
 				'<a href="Spyral.html">Spyral Classes</a><br>' +
 				'<a href="Tools.html">Tools Documentation</a><br>' +
-				'<a href="global.html">Globals</a><br>' +
+				'<a href="window.html">Globals</a><br>' +
 				'<br>' +
 				'Alternatively take a look at our detailed Documentation:<br>' +
 				'<br>' +
@@ -33,9 +36,6 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 	fullDocsUrl: undefined,
 
 	constructor: function(config) {
-		this.inlineDocsUrl = Voyant.application.getBaseUrlFull()+'docs/inline/';
-		this.fullDocsUrl = Voyant.application.getBaseUrlFull()+'docs/';
-
 		this.mixins['Voyant.util.Localization'].constructor.apply(this, arguments);
 
 		config = config || {};
@@ -45,12 +45,56 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				xtype: 'toolbar',
 				dock: 'top',
 				items: [{
-					text: this.localize('home'),
-					itemId: 'homeBtn',
-					glyph: 'xf015@FontAwesome',
-					handler: function(btn) {
-						this.showDocs();
-					}.bind(this)
+					itemId: 'navBtn',
+					glyph: 'xf0c9@FontAwesome',
+					menu: {
+						items: [{
+							text: this.localize('home'),
+							glyph: 'xf015@FontAwesome',
+							handler: function(btn) {
+								this.showDocs();
+							}.bind(this)
+						},{
+							text: this.localize('classes'),
+							itemId: 'classesMenu',
+							glyph: 'xf02d@FontAwesome',
+							menu: {
+								items: [],
+								listeners: {
+									click: function(menu, item) {
+										this.loadDocsEntry('Spyral.'+item.itemId+'.html');
+									},
+									scope: this
+								}
+							}
+						},{
+							text: this.localize('tools'),
+							itemId: 'toolsMenu',
+							glyph: 'xf0ad@FontAwesome',
+							menu: {
+								items: [],
+								listeners: {
+									click: function(menu, item) {
+										this.loadDocsEntry('Tools.'+item.itemId+'.html');
+									},
+									scope: this
+								}
+							}
+						},{
+							text: this.localize('globals'),
+							itemId: 'globalsMenu',
+							glyph: 'xf0ad@FontAwesome',
+							menu: {
+								items: [],
+								listeners: {
+									click: function(menu, item) {
+										this.loadDocsEntry('window.html#'+item.itemId);
+									},
+									scope: this
+								}
+							}
+						}]
+					}
 				},{
 					text: this.localize('overview'),
 					itemId: 'overviewBtn',
@@ -105,13 +149,18 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		});
 
 		this.callParent([config]);
+
+		this.inlineDocsUrl = Voyant.application.getBaseUrlFull()+'docs/inline/';
+		this.fullDocsUrl = Voyant.application.getBaseUrlFull()+'docs/';
+
+		this._populateNavMenu('classesMenu', 'Spyral.html');
+		this._populateNavMenu('toolsMenu', 'Tools.html');
+		this._populateNavMenu('globalsMenu', 'window.html');
 	},
 
 	showDocs: function() {
 		this.lastEntry = undefined;
 		this.lastMember = undefined;
-
-		// this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
 
 		var html = '<p>'+this.localize('outlineIntro')+'</p>';
 			
@@ -122,7 +171,6 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		this._setHtmlForCard('main', html);
 
 		this.body.scrollTo('top', 0, false);
-		// this.getLayout().getRenderTarget().unmask();
 	},
 
 	handleDocLink: function(link, rel) {
@@ -137,13 +185,14 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 	},
 
 	openFullDocumentation: function() {
+		var url = this.fullDocsUrl;
 		if (this.lastEntry !== undefined) {
-			var url = this.fullDocsUrl+this.lastEntry;
-			if (this.lastMember !== undefined) {
-				url += '#'+this.lastMember;
-			}
-			window.open(url, '_spyral_docs');
+			url += this.lastEntry;
 		}
+		if (this.lastMember !== undefined) {
+			url += '#'+this.lastMember;
+		}
+		window.open(url, '_spyral_docs');
 	},
 
 	loadDocsEntry: function(entry) {
@@ -177,7 +226,12 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		var parser = new DOMParser();
 		var dom = parser.parseFromString(html, 'text/html');
 
-		var isNamespace = dom.querySelector('h2 .ancestors') === null;
+		var isNamespace = dom.querySelector('header h2 .ancestors') === null;
+		
+		var isToolsEntry = false;
+		if (!isNamespace) {
+			isToolsEntry = dom.querySelector('header h2 .ancestors a').textContent === 'Tools';
+		}
 
 		var title = '';
 		if (isNamespace) {
@@ -192,13 +246,15 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 		var docsParentEl = this.down('#main').getEl().dom;
 
-		docsParentEl.querySelectorAll('article > *').forEach(function(el) { el.hidden = !isNamespace; });
+		docsParentEl.querySelectorAll('article > *').forEach(function(el) { el.hidden = !isNamespace && !isToolsEntry; });
 
 		var methods = Array.from(docsParentEl.querySelectorAll('article > dl.methods > dt > h4')).map(function(h4) {
 			return h4.getAttribute('id');
 		});
 
-		// TODO handle constructor
+		if (!isNamespace && !isToolsEntry && docsParentEl.querySelector('article .container-overview') !== null) {
+			methods.unshift('constructor');
+		}
 
 		var methodsBtn = this.down('#methodsBtn');
 		if (methods.length > 0) {
@@ -228,12 +284,15 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 		var docsParentEl = this.down('#main').getEl().dom;
 
-		docsParentEl.querySelectorAll('article > *').forEach(function(el) { el.hidden = true; });
+		var isNamespace = docsParentEl.querySelector('header h2 .ancestors') === null;
+
+		docsParentEl.querySelectorAll('article > *').forEach(function(el) { el.hidden = !isNamespace; });
 
 		if (entryMember === undefined) {
 			// show overview
 			docsParentEl.querySelector('header').hidden = false;
 		} else if (entryMember === 'constructor') {
+			docsParentEl.querySelector('header').hidden = true;
 			docsParentEl.querySelector('article > .container-overview').hidden = false;
 		} else {
 			docsParentEl.querySelector('header').hidden = true;
@@ -252,43 +311,34 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			entryParent.hidden = false;
 		}
 
-		/*
-		this.lastDocEntryMethod = entryMember;
-		
-		if (entryMember && entryMember.indexOf('~') !== -1 && entryMember.indexOf('-') === -1) {
-			// typedef parent handling
-			// this.getLayout().setActiveItem(1);
-			console.log('typedef');
-		} else {
-			var entryId = undefined;
-			if (entryClass && entryMember) {
-				entryId = entryClass.replace('.','_')+'-'+entryMember.replace('~','');
-			}
-			if (entryId) {
-				docsParentEl.querySelector('#'+entryId).hidden = false;
-			} else {
-				if (entryClass === undefined) entryClass = this.lastDocEntryClass;
-				if (entryClass.indexOf('Tools') === 0) {
-					// special Tools handling
-					this.down('#overviewBtn').hide();
-					this.down('#configsBtn').hide();
-					this.down('#methodsBtn').hide();
-					docsParentEl.querySelectorAll('.doc-contents, .members-section > .subsection > div').forEach(function(el) { el.hidden = false; });
-				} else {
-					docsParentEl.querySelector('.doc-contents').hidden = false;
-				}
-			}
-			this.getLayout().setActiveItem(0);
-			setTimeout(function() {
-				this.down('#main').body.scrollTo('top', 0, false);
-			}.bind(this), 0);
-		}
-			*/
+		this.body.scrollTo('top', 0, false);
 	},
 
 	_setHtmlForCard: function(cardId, html) {
 		this.down('#'+cardId).setHtml(html);
 		var cardEl = this.down('#'+cardId).getEl().dom;
 		Ext.fly(cardEl).selectable();
+	},
+
+	_populateNavMenu: function(menuId, file) {
+		Ext.Ajax.request({
+			url: this.inlineDocsUrl+file
+		}).then(function(response) {
+			var parser = new DOMParser();
+			var dom = parser.parseFromString(response.responseText, 'text/html');
+			var dl = dom.querySelector('article > dl:first-of-type');
+			
+			var menuItems = [];
+			if (dl.className.indexOf('methods') !== -1) {
+				menuItems = Array.from(dl.querySelectorAll('h4')).map(function(h4) {
+					return {text: h4.id, itemId: h4.id};
+				});
+			} else {
+				menuItems = Array.from(dl.querySelectorAll('a')).map(function(link) {
+					return {text: link.textContent, itemId: link.textContent};
+				});
+			}
+			this.down('#'+menuId).getMenu().add(menuItems);
+		}.bind(this));
 	}
 });
