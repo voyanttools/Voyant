@@ -5,14 +5,14 @@ body {
 ul, ol, li {
     list-style:none;
     padding-left:0;
-    margin-left:5px;
+    margin-left:0px;
 }
 
 /* Navigation - LNB */
 .lnb {
     width: 290px;
     position: absolute;
-    bottom: 30px;
+    bottom: 20px;
     top: 0;
     overflow: auto;
     left: 0;
@@ -33,13 +33,13 @@ ul, ol, li {
 }
 .lnb h3 {
     font-size: 1.5em;
-    color: #fa3282;
+    color: #bf1b2c;
 }
 .lnb h3 a {
-    color: #fa3282;
+    color: #bf1b2c;
 }
 .lnb h3 a:hover {
-    color: #9a3282;
+    color: #931522;
 }
 .lnb .lnb-api li,
 .lnb .lnb-examples li {
@@ -48,19 +48,19 @@ ul, ol, li {
     border-bottom: 1px solid #1f292e;
 }
 .lnb .lnb-api h3 a {
-    color: #fa3282;
+    color: #bf1b2c;
 }
 .lnb .lnb-api h3 a:hover {
-    color: #fa3282;
+    color: #bf1b2c;
     text-decoration: underline;
 }
 .lnb .lnb-api a,
 .lnb .lnb-examples a {
-    color: #7cafc2;
+    color: #5BA8DF;
 }
 .lnb .lnb-api a:hover,
 .lnb .lnb-examples a:hover {
-    color: #a3cfdf;
+    color: #88C2EB;
 }
 .lnb .lnb-api .toggle-subnav {
     padding: 0 3px;
@@ -75,7 +75,7 @@ ul, ol, li {
 .lnb .member-type {
     margin-top: 5px;
     margin-left: 5px;
-    color: #568c3b;
+    color: #FF950C;
     font-weight: normal;
     font-size: 10px;
     cursor: text;
@@ -132,7 +132,7 @@ ul, ol, li {
     bottom: 0;
     position: absolute;
     overflow: auto;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
 }
 .main article ol,
 .main article ul {
@@ -147,7 +147,7 @@ ul, ol, li {
     font-size:18px;
     font-weight:bold;
     padding-left : 5px;
-    border-left: 5px solid #dc9656;
+    border-left: 5px solid #FF950C;
 }
 .main section article {
     padding: 10px;
@@ -159,7 +159,7 @@ ul, ol, li {
 }
 .main section article h3.subsection-title {
     font-size:16px;
-    color: #fa3282;
+    color: #bf1b2c;
     padding:35px 0 0 5px;
     border-bottom: 1px solid #dedede;
 }
@@ -172,7 +172,7 @@ ul, ol, li {
 }
 .main section article dl h4 .type-signature {
     font-size: 9pt;
-    color: #31708f;
+    color: #3893D4;
     font-weight: normal;
 }
 .main section article dl dt .name {
@@ -220,15 +220,17 @@ ul, ol, li {
     font-family: Verdana, sans-serif;
     vertical-align: top;
     border: 0;
-    padding: 1px 3px;
+    padding: 6px 3px;
+}
+.main section article table tr {
+    /* border-bottom: 1px solid #dedede; */
 }
 .main section article table td.name,
 .main section article table td.type,
 .main section article table td.attributes,
 .main section article table td.default {
-    max-width: 100px;
+    max-width: 160px;
     min-width: 80px;
-    word-break: break-all;
 }
 .main section article table td.type,
 .main section article table td.attributes {
@@ -277,12 +279,12 @@ ul, ol, li {
 /* FOOTER */
 footer {
     padding-top: 3px;
-    line-height: 35px;
-    height: 35px;
+    line-height: 20px;
+    height: 25px;
     position: fixed;
     width: 100%;
     bottom: 0;
-    background-color: #00beaa;
+    background-color: #88C2EB;
     color: #ebf8ff;
     text-align: center;
 }
@@ -300,13 +302,13 @@ footer {
     list-style: initial;
 }
 .readme img {
-    max-width: 50%;
+    max-width: 400px;
 }
 .readme h1 {
     font-size:24px;
     font-weight:normal;
     padding: 10px 0 5px 0;
-    border-bottom: 1px solid #428bca;
+    border-bottom: 1px solid #3893D4;
 }
 .readme pre {
     margin: 15px 3px;
@@ -316,7 +318,7 @@ footer {
     color: #333;
 }
 .readme p a {
-    color:#c7254e;
+    color:#157fcc;
 }
 .readme h2 {
     padding-bottom: 3px;
@@ -348,7 +350,7 @@ footer {
 .readme section header h2 {
     font-size:20px;
     padding-left:10px;
-    border-left:5px solid #fa3282;
+    border-left:5px solid #bf1b2c;
 }
 .readme section .container-overview {
     color:#333;
@@ -385,18 +387,15 @@ footer {
     color: #fff;
 }
 .search-container strong {
-    color: pink;
+    color: #FF950C;
     font-weight: normal;
 }
 .search-container ul {
     font-size: 13px;
     position: absolute;
+    z-index: 999;
     width: 100%;
-    background-color: #456e82;
-    border: 1px solid #1f292e;
-    border-radius: 0 0 2px 2px;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
+    background-color: #075F9E;
 }
 .search-container ul li {
     text-align: left;
@@ -412,12 +411,12 @@ footer {
 }
 .search-container ul li:hover a,
 .search-container ul li.highlight a {
-    color: #1f292e;
+    color: #032c49;
     text-decoration: underline;
 }
 .search-container ul li:hover strong,
 .search-container ul li.highlight strong {
-    color: #ff4141;
+    color: #b46600;
 }
 .search-container ul li .group {
     font-size: 11px;
@@ -449,7 +448,7 @@ footer {
     position: fixed;
     left: 290px;
     height: 100%;
-    background-color: #00beaa;
+    background-color: #88C2EB;
     cursor: col-resize;
 }
 span.param-type {
@@ -470,7 +469,7 @@ span.icon.green {
     border-color: #d6e9c6;
 }
 span.icon.blue {
-    color: #31708f;
+    color: #3893D4;
     background-color: #d9edf7;
     border-color: #bce8f1;
 }
