@@ -1,6 +1,6 @@
 body {
-    font-size: 12px;
-    font-family: Helvetica Neue, Helvetica, Arial, Malgun gothic, '돋움', AppleSDGothicNeo;
+    font-size: 13px;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 ul, ol, li {
     list-style:none;
@@ -28,18 +28,19 @@ ul, ol, li {
     padding: 0 0 15px;
 }
 .lnb .title .link {
+    font-size: 30px;
     color: #fff;
     font-style: italic;
 }
 .lnb h3 {
     font-size: 1.5em;
-    color: #bf1b2c;
+    color: #FF950C;
 }
 .lnb h3 a {
-    color: #bf1b2c;
+    color: #FF950C;
 }
 .lnb h3 a:hover {
-    color: #931522;
+    color: #FFA837;
 }
 .lnb .lnb-api li,
 .lnb .lnb-examples li {
@@ -75,9 +76,9 @@ ul, ol, li {
 .lnb .member-type {
     margin-top: 5px;
     margin-left: 5px;
-    color: #FF950C;
+    color: #d81e31;
     font-weight: normal;
-    font-size: 10px;
+    font-size: 13px;
     cursor: text;
 }
 .lnb .inner li {
@@ -211,13 +212,11 @@ ul, ol, li {
 .main section article table th,
 .main section article table td.type,
 .main section article table td.attributes {
-    font-family: Verdana, sans-serif;
     font-size: 90%;
 }
 .main section article table,
 .main section article table th,
 .main section article table td {
-    font-family: Verdana, sans-serif;
     vertical-align: top;
     border: 0;
     padding: 6px 3px;
@@ -229,7 +228,7 @@ ul, ol, li {
 .main section article table td.type,
 .main section article table td.attributes,
 .main section article table td.default {
-    max-width: 160px;
+    max-width: 180px;
     min-width: 80px;
 }
 .main section article table td.type,
@@ -291,7 +290,7 @@ footer {
 
 /* README*/
 .readme {
-    font-size: 14px;
+    font-size: 13px;
 }
 .readme p,
 .readme ul,
