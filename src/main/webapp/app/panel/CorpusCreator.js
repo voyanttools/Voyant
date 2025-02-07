@@ -415,11 +415,11 @@ Ext.define('Voyant.panel.CorpusCreator', {
 						    }
 						},{
 							xtype: 'container',
-							html: '<p><i>'+new Ext.Template(me.localize('advancedOptionsText')).applyTemplate([me.getBaseUrl()+'docs/#!/guide/corpuscreator-section-xml'])+'</i></p>',
+							html: '<p><i>'+new Ext.Template(me.localize('advancedOptionsText')).applyTemplate([me.getBaseUrl()+'docs/tutorial-corpuscreator.html'])+'</i></p>',
 							width: 375
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-titles' target='voyantdocs'>"+me.localize('corpusOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#titles' target='voyantdocs'>"+me.localize('corpusOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',
@@ -465,7 +465,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-text' target='voyantdocs'>"+me.localize('textOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#text' target='voyantdocs'>"+me.localize('textOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',
@@ -490,7 +490,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-xml' target='voyantdocs'>"+me.localize('xmlOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#xml' target='voyantdocs'>"+me.localize('xmlOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',
@@ -545,14 +545,14 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-html' target='voyantdocs'>"+me.localize('htmlOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#html' target='voyantdocs'>"+me.localize('htmlOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',
 	                        items: [
 	                            {
 	    							xtype: 'container',
-	    							html: '<p><i>'+new Ext.Template(me.localize('htmlOptionsText')).applyTemplate([me.getBaseUrl()+'docs/#!/guide/corpuscreator-section-html'])+'</i></p>',
+	    							html: '<p><i>'+new Ext.Template(me.localize('htmlOptionsText')).applyTemplate([me.getBaseUrl()+'docs/tutorial-corpuscreator.html#html'])+'</i></p>',
 	    							width: 375
 	                            },{
 									fieldLabel: me.localize('xpathContent'),
@@ -600,14 +600,14 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-json' target='voyantdocs'>"+me.localize('jsonOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#json' target='voyantdocs'>"+me.localize('jsonOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',
 	                        items: [
 	                            {
 	    							xtype: 'container',
-	    							html: '<p><i>'+new Ext.Template(me.localize('jsonOptionsText')).applyTemplate([me.getBaseUrl()+'docs/#!/guide/corpuscreator-section-json'])+'</i></p>',
+	    							html: '<p><i>'+new Ext.Template(me.localize('jsonOptionsText')).applyTemplate([me.getBaseUrl()+'docs/tutorial-corpuscreator.html#json'])+'</i></p>',
 	    							width: 375
 	                            },{
 									fieldLabel: me.localize('xpathContent'),
@@ -658,13 +658,13 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-tables' target='voyantdocs'>"+me.localize('tableOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#tables' target='voyantdocs'>"+me.localize('tableOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',
 	                        items: [{
 	    							xtype: 'container',
-	    							html: '<p><i>'+new Ext.Template(me.localize('tableOptionsText')).applyTemplate([me.getBaseUrl()+'docs/#!/guide/corpuscreator-section-tables'])+'</i></p>',
+	    							html: '<p><i>'+new Ext.Template(me.localize('tableOptionsText')).applyTemplate([me.getBaseUrl()+'docs/tutorial-corpuscreator.html#tables'])+'</i></p>',
 	    							width: 375
 	                        	},{
 								    xtype:'combo',
@@ -742,7 +742,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-processing' target='voyantdocs'>"+me.localize('processingOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#processing' target='voyantdocs'>"+me.localize('processingOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        items: [
@@ -774,7 +774,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 							]
 						},{
 	        				xtype: 'fieldset',
-	                        title: "<a href='"+me.getBaseUrl()+"docs/#!/guide/corpuscreator-section-access-management' target='voyantdocs'>"+me.localize('accessOptions')+"</a>",
+	                        title: "<a href='"+me.getBaseUrl()+"docs/tutorial-corpuscreator.html#access-management' target='voyantdocs'>"+me.localize('accessOptions')+"</a>",
 	                        collapsible: true,
 	                        collapsed: true,
 	                        defaultType: 'textfield',

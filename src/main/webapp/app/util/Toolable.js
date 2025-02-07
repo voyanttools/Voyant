@@ -906,11 +906,11 @@ Ext.define('Voyant.util.Toolable', {
 		if (panel.isXType('voyanttabpanel')) {panel = panel.getActiveTab()}
 		var help = panel.localize('help', {"default": false}) || panel.localize('helpTip');
 		if (help==panel._localizeClass(Ext.ClassManager.get("Voyant.util.Toolable"), "helpTip")) {
-			panel.openUrl( panel.getBaseUrl()+"docs/#!/guide/" + panel.getXType());
+			panel.openUrl( panel.getBaseUrl()+"docs/tutorial-"+panel.getXType()+'.html');
 		}
 		else {
 			Ext.Msg.alert(panel.localize('title'), help +"<p><a href='"+panel.getBaseUrl()+
-					"docs/"+ (panel.isXType('voyantheader') ? '' : "#!/guide/"+panel.getXType()) +"' target='voyantdocs'>"+panel.localize("moreHelp")+"</a></p>")
+					"docs/"+ (panel.isXType('voyantheader') ? '' : "tutorial-"+panel.getXType()+'.html') +"' target='voyantdocs'>"+panel.localize("moreHelp")+"</a></p>")
 		}
 	},
 	replacePanel: function(xtype) {
