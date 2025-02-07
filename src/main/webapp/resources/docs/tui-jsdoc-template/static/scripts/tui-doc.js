@@ -184,6 +184,22 @@ function removeWhiteSpace(value) {
     return value.replace(/\s/g, '');
 }
 
+/**************** CREATE TOC ******************/
+
+$(document).ready(function() {
+    if (document.querySelector('article.readme') !== null) {
+        var toc = Array.from(document.querySelectorAll('section article h2')).map(function(h2) {
+            return '<li><a href="#'+h2.id+'">'+h2.textContent+'</a></li>';
+        });
+        if (toc.length > 1) {
+            var tocEl = document.createElement('div');
+            tocEl.className = 'toc';
+            tocEl.innerHTML = '<div>Contents</div><ol>'+toc.join('')+'</ol>';
+            document.querySelector('section article h1').insertAdjacentElement('beforebegin', tocEl);
+        }
+    }
+})
+
 /*************** TOOGLE SUB NAV ***************/
 function toggleSubNav(e) {
     $(e.currentTarget).next().toggleClass('hidden');

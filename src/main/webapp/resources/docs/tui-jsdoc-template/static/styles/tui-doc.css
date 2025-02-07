@@ -370,6 +370,17 @@ footer {
     color: #777;
 }
 
+.readme .toc {
+    float: right;
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid #3893D4; 
+    background-color: #eee;
+}
+.readme .toc ol {
+    margin: 0 0 0 15px;
+}
+
 /* Search box */
 .search-container {
     position: relative;
