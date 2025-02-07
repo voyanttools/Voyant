@@ -296,21 +296,28 @@ footer {
 .readme p,
 .readme ul,
 .readme ol {
+    max-width: 900px;
     padding: 3px 0 3px 5px;
 }
 .readme li {
     list-style: initial;
 }
+.readme ol li {
+    list-style: decimal outside;
+}
 .readme img {
-    max-width: 400px;
+    max-width: 100%;
+    height: auto;
 }
 .readme h1 {
-    font-size:24px;
-    font-weight:normal;
+    font-size: 22px;
+    font-weight: bold;
     padding: 10px 0 5px 0;
+    margin: 10px 0;
     border-bottom: 1px solid #3893D4;
 }
 .readme pre {
+    max-width: 900px;
     margin: 15px 3px;
 }
 .readme li p {
@@ -322,6 +329,7 @@ footer {
 }
 .readme h2 {
     padding-bottom: 3px;
+    margin: 30px 0 10px 0;
     border-bottom: 1px solid #dedede;
     font-size: 22px;
 }
@@ -341,6 +349,14 @@ footer {
 }
 .readme table {
     margin: 5px 30px 20px;
+    max-width: 900px;
+}
+.readme table.gallery {
+    border-collapse: separate;
+    border-spacing: 6px 3px;
+}
+.readme table.gallery tr td:nth-of-type(2) {
+    text-wrap: nowrap;
 }
 .readme table th,
 .readme table td {
@@ -368,6 +384,24 @@ footer {
     margin: inherit;
     font-size: inherit;
     color: #777;
+}
+
+.readme table td {
+    font-weight: normal; color: inherit;
+}
+.readme table.fill {
+    width: 100%;
+}
+.readme table.grid {
+    border: thin solid #aaa;
+}
+.readme table th {
+    background-color: #eee;
+}
+.readme table.rows td,
+.readme table.rows th {
+    border-bottom: thin solid rgba(0,0,0,.1);
+    border-right: thin dotted rgba(0,0,0,.1);
 }
 
 .readme .toc {
@@ -497,4 +531,7 @@ span.icon.red {
 span.arrow {
     font-size: 8pt;
     padding-right: 5px;
+}
+span.keyword {
+    background-color: yellow;
 }
