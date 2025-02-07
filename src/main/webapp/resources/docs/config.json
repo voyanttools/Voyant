@@ -7,7 +7,7 @@
         "recurse": true,
         "tutorials": "en",
         "template": "tui-jsdoc-template",
-        "readme": "en/guides/guides/start.md"
+        "readme": "en/guides/home.md"
     },
     "plugins": ["plugins/markdown"],
     "markdown": {
@@ -24,6 +24,7 @@
         "name": "Voyant Tools Help",
         "logo": {
             "url": "imgs/info/about/icon.png",
+            "link": "index.html",
             "width": "150px",
             "height": "150px"
         },

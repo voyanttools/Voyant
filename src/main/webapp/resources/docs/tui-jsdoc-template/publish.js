@@ -402,7 +402,9 @@ function buildSubNavMembers(list, type, linktoFn) {
     var html = '';
 
     if (list.length) {
-        html += '<div class="member-type">' + type + '</div>';
+        if (type !== 'Guides') {
+            html += '<div class="member-type">' + type + '</div>';
+        }
         html += '<ul class="inner">';
         list.forEach(function(item) {
             html += '<li>' + linktoFn(item.longname, item.name) + '</li>';

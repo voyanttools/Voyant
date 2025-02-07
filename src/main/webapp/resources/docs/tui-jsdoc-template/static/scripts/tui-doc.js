@@ -187,7 +187,7 @@ function removeWhiteSpace(value) {
 /**************** CREATE TOC ******************/
 
 $(document).ready(function() {
-    if (document.querySelector('article.readme') !== null) {
+    if (document.querySelector('#no_toc') === null && document.querySelector('article.readme') !== null) {
         var toc = Array.from(document.querySelectorAll('section article h2')).map(function(h2) {
             return '<li><a href="#'+h2.id+'">'+h2.textContent+'</a></li>';
         });
