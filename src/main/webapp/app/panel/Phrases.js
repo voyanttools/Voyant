@@ -3,7 +3,6 @@
  * 
  * @class Phrases
  * @tutorial phrases
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Phrases', {
@@ -16,7 +15,7 @@ Ext.define('Voyant.panel.Phrases', {
     	},
     	api: {
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -24,28 +23,28 @@ Ext.define('Voyant.panel.Phrases', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {Number} minLength The minimum length (number of words) of the phrase to consider.
 			 * @default
@@ -53,7 +52,7 @@ Ext.define('Voyant.panel.Phrases', {
     		minLength: 2,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {Number} maxLength The maximum length (number of words) of the phrase to consider.
 			 * @default
@@ -61,22 +60,22 @@ Ext.define('Voyant.panel.Phrases', {
     		maxLength: 50,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See <a href="#!/guide/phrases-section-options">Phrases options</a> for more info.
+			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See [Phrases options](tutorial-phrases.html#options) for more info.
 			 * @default
 			 */
     		overlapFilter: 'length',
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {Columns} columns 'term', 'rawFreq', 'length', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {SortColumn}
 			 * @default
@@ -84,7 +83,7 @@ Ext.define('Voyant.panel.Phrases', {
 			sort: 'length',
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
 			 * @instance
 			 * @property {SortDir}
 			 * @default

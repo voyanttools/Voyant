@@ -3,7 +3,6 @@
  * 
  * @class RezoViz
  * @tutorial rezoviz
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.RezoViz', {
@@ -18,14 +17,14 @@ Ext.define('Voyant.panel.RezoViz', {
 		},
 		api: {
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {Query}
 			 */
 			query: undefined,
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -33,21 +32,21 @@ Ext.define('Voyant.panel.RezoViz', {
 			limit: 50,
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {String[]} type The entity types to include in the results. One or more of: 'location', 'organization', 'person'.
 			 */
 			type: ['organization','location','person'],
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {Number} minEdgeCount
 			 */
 			minEdgeCount: 2,
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -55,14 +54,14 @@ Ext.define('Voyant.panel.RezoViz', {
 			stopList: 'auto',
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {DocId}
 			 */
 			docId: undefined,
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
 			 * @instance
 			 * @property {String} nerService Which NER service to use: 'spacy', 'nssi', or 'voyant'.
 			 * @default

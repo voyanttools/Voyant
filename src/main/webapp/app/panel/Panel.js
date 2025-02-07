@@ -7,7 +7,6 @@
  * The base class for Voyant tool panels.
  * 
  * @class Panel
- * @mixin
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Panel', {
@@ -85,28 +84,28 @@ Ext.define('Voyant.panel.Panel', {
 		 */
 		api: {
 			/**
-			 * @memberof Panel
+			 * @memberof Tools.Panel
 			 * @instance
 			 * @property {String} corpus The ID of the corpus to use.
 			 */
 			corpus: undefined,
 
 			/**
-			 * @memberof Panel
+			 * @memberof Tools.Panel
 			 * @instance
 			 * @property {String|String[]} input Use to directly provide input, instead of specifying a corpus. Can be: one or more URLs, one or more chunks of text.
 			 */
 			input: undefined,
 
 			/**
-			 * @memberof Panel
+			 * @memberof Tools.Panel
 			 * @instance
 			 * @property {String} inputFormat The input format of the provided input (the default is auto-detect).
 			 */
 			inputFormat: undefined,
 			
 			/**
-			 * @memberof Panel
+			 * @memberof Tools.Panel
 			 * @instance
 			 * @property {String} subtitle Specify a subtitle to display in the tool's header.
 			 */

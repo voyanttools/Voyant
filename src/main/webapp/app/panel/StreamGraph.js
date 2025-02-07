@@ -3,7 +3,6 @@
  * 
  * @class StreamGraph
  * @tutorial streamgraph
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.StreamGraph', {
@@ -15,7 +14,7 @@ Ext.define('Voyant.panel.StreamGraph', {
     	},
     	api: {
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -23,7 +22,7 @@ Ext.define('Voyant.panel.StreamGraph', {
     		limit: 5,
 
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -31,14 +30,14 @@ Ext.define('Voyant.panel.StreamGraph', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {WithDistributions}
 			 * @default
@@ -46,7 +45,7 @@ Ext.define('Voyant.panel.StreamGraph', {
     		withDistributions: 'relative',
 
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {Bins}
 			 * @default
@@ -54,14 +53,14 @@ Ext.define('Voyant.panel.StreamGraph', {
     		bins: 50,
 
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof StreamGraph
+			 * @memberof Tools.StreamGraph
 			 * @instance
 			 * @property {DocId}
 			 */

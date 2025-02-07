@@ -3,7 +3,6 @@
  * 
  * @class ScatterPlot
  * @tutorial scatterplot
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.ScatterPlot', {
@@ -16,21 +15,21 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	},
     	api: {
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String} analysis The type of analysis to perform. Options are: 'ca', 'pca', 'tsne', and 'docSim'.
 			 */
     		analysis: 'ca',
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -38,7 +37,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		limit: 50,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Number} dimensions The number of dimensions to render, either 2 or 3.
 			 * @default
@@ -46,7 +45,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		dimensions: 3,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Bins}
 			 * @default
@@ -54,7 +53,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		bins: 10,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Number} clusters The number of clusters within which to group words.
 			 * @default
@@ -62,7 +61,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		clusters: 3,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Number} perplexity The TSNE perplexity value.
 			 * @default
@@ -70,7 +69,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		perplexity: 15,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Number} iterations The TSNE iterations value.
 			 * @default
@@ -78,7 +77,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		iterations: 1500,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String} comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
 			 * @default
@@ -86,7 +85,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		comparisonType: 'relative',
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -94,42 +93,42 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String} target The term to set as the target. This will filter results to terms that are near the target.
 			 */
     		target: undefined,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String[]} term Used in combination with "target" as a white list of terms to keep.
 			 */
     		term: undefined,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String} whitelist TODO Unused or only used in CA?
 			 */
     		whitelist: undefined,
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String[]} label The label types to show. One or more of: 'summary', 'docs', and 'terms'.
 			 */
     		label: ['summary', 'docs', 'terms'],
 
 			/**
-			 * @memberof ScatterPlot
+			 * @memberof Tools.ScatterPlot
 			 * @instance
 			 * @property {String} storeJson TODO used in embed
 			 */

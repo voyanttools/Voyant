@@ -120,15 +120,7 @@
     <?js } ?>
 
     <?js
-
-        // Our Ext classes don't align longname with members correctly. So in the special case of our Tools namespace,
-        // We need to use name not longname to find members.
-
         var longname = doc.longname;
-        if (longname !== undefined && longname.includes("Tools.")) {
-            longname = doc.name;
-        }
-
         var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : longname});
 
         // symbols that are assigned to module.exports are not globals, even though they're not a memberof anything

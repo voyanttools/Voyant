@@ -3,7 +3,6 @@
  * 
  * @class Topics
  * @tutorial topics
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Topics', {
@@ -18,7 +17,7 @@ Ext.define('Voyant.panel.Topics', {
 		},
 		api: {
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -26,7 +25,7 @@ Ext.define('Voyant.panel.Topics', {
 			stopList: 'auto',
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
 			 * @instance
 			 * @property {Number} topics The number of topics.
 			 * @default
@@ -34,7 +33,7 @@ Ext.define('Voyant.panel.Topics', {
 			topics: 10,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
 			 * @instance
 			 * @property {Number} termsPerTopic The number of terms per topic.
 			 * @default
@@ -42,7 +41,7 @@ Ext.define('Voyant.panel.Topics', {
 			termsPerTopic: 10,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
 			 * @instance
 			 * @property {Number} iterations The number of iterations.
 			 * @default
@@ -50,7 +49,7 @@ Ext.define('Voyant.panel.Topics', {
 			iterations: 100,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
 			 * @instance
 			 * @property {Number} perDocLimit The number of terms to limit each document to.
 			 * @default
@@ -58,7 +57,7 @@ Ext.define('Voyant.panel.Topics', {
 			perDocLimit: 1000,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
 			 * @instance
 			 * @property {Number} seed The seed to use for random number generation.
 			 * @default

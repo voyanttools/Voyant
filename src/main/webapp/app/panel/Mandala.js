@@ -3,7 +3,6 @@
  * 
  * @class Mandala
  * @tutorial mandala
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Mandala', {
@@ -15,7 +14,7 @@ Ext.define('Voyant.panel.Mandala', {
     	},
     	api: {
     		/**
-			 * @memberof Mandala
+			 * @memberof Tools.Mandala
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -23,14 +22,14 @@ Ext.define('Voyant.panel.Mandala', {
     		stopList: 'auto',
     		
 			/**
-			 * @memberof Mandala
+			 * @memberof Tools.Mandala
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
     		
 			/**
-			 * @memberof Mandala
+			 * @memberof Tools.Mandala
 			 * @instance
 			 * @property {Boolean} labels Whether or not labels should be shown.
 			 * @default

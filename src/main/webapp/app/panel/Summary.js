@@ -4,7 +4,6 @@
  * 
  * @class Summary
  * @tutorial summary
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Summary', {
@@ -21,7 +20,7 @@ Ext.define('Voyant.panel.Summary', {
     	api: {
     		
     		/**
-    		 * @memberof Summary
+    		 * @memberof Tools.Summary
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -29,7 +28,7 @@ Ext.define('Voyant.panel.Summary', {
     		stopList: 'auto',
     		
     		/**
-			 * @memberof Summary
+			 * @memberof Tools.Summary
 			 * @instance
 			 * @property {Start}
 			 * @default
@@ -38,7 +37,7 @@ Ext.define('Voyant.panel.Summary', {
     		
     		
     		/**
-    		 * @memberof Summary
+    		 * @memberof Tools.Summary
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -46,7 +45,7 @@ Ext.define('Voyant.panel.Summary', {
     		limit: 5,
     		
     		/**
-			 * @memberof Summary
+			 * @memberof Tools.Summary
     		 * @instance
     		 * @property {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
     		 */

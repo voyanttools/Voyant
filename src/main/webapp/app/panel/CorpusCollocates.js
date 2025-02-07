@@ -3,7 +3,6 @@
  * 
  * @class CorpusCollocates
  * @tutorial corpuscollocates
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.CorpusCollocates', {
@@ -15,7 +14,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	},
     	api: {
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -23,7 +22,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {Context}
 			 * @default
@@ -31,49 +30,49 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     		context: 5,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {Columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
+			 * @memberof Tools.CorpusCollocates
 			 * @instance
 			 * @property {TermColors}
 			 * @default

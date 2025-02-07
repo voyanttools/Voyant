@@ -3,7 +3,6 @@
  * 
  * @class Trends
  * @tutorial trends
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Trends', {
@@ -65,7 +64,7 @@ Ext.define('Voyant.panel.Trends', {
     	api: {
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -73,7 +72,7 @@ Ext.define('Voyant.panel.Trends', {
     		limit: 5,
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -81,14 +80,14 @@ Ext.define('Voyant.panel.Trends', {
     		stopList: 'auto',
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {WithDistributions}
 			 * @default
@@ -96,7 +95,7 @@ Ext.define('Voyant.panel.Trends', {
     		withDistributions: 'relative',
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {Bins}
     		 * 
@@ -112,21 +111,21 @@ Ext.define('Voyant.panel.Trends', {
     		bins: 10,
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {DocIndex}
     		 */
     		docIndex: undefined,
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {DocId}
     		 */
     		docId: undefined,
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
 			 * @default
@@ -134,7 +133,7 @@ Ext.define('Voyant.panel.Trends', {
     		mode: "corpus",
     		
 			/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {String} chartType The of chart to display: Options are: 'area', 'bar', 'line', 'stacked', and 'barline'.
 			 * @default
@@ -142,7 +141,7 @@ Ext.define('Voyant.panel.Trends', {
     		chartType: 'barline',
     		
 			/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
 			 * @instance
 			 * @property {Boolean} labels Whether to show term labels.
 			 * @default

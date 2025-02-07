@@ -3,7 +3,6 @@
  * 
  * @class TermsBerry
  * @tutorial termsberry
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.TermsBerry', {
@@ -15,7 +14,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     	},
     	api: {
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -23,7 +22,7 @@ Ext.define('Voyant.panel.TermsBerry', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {Context}
 			 * @default
@@ -31,35 +30,35 @@ Ext.define('Voyant.panel.TermsBerry', {
     		context: 2,
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {Number} numInitialTerms The number of initial terms to display.
 			 */
         	numInitialTerms: 75,
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
 			 * @instance
 			 * @property {Categories}
 			 */

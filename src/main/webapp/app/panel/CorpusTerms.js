@@ -3,7 +3,6 @@
  * 
  * @class CorpusTerms
  * @tutorial corpusterms
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.CorpusTerms', {
@@ -17,7 +16,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	api: {
     		
     		/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
     		 * @instance
     		 * @property {StopList}
 			 * @default
@@ -25,14 +24,14 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		stopList: 'auto',
     		
     		/**
-    		 * @memberof CorpusTerms
+    		 * @memberof Tools.CorpusTerms
 			 * @instance
 			 * @property {Query}
     		 */
     		query: undefined,
     		
     		/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
     		 * @instance
     		 * @property {Number} maxBins The maximum number of bins to use for distributions in Trend.
     		 * 
@@ -43,7 +42,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		maxBins: 100,
 
 			/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
 			 * @instance
 			 * @property {TermColors}
 			 * @default
@@ -51,7 +50,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			termColors: 'categories',
 
     		/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
     		 * @instance
     		 * @property {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 
@@ -61,21 +60,21 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		comparisonCorpus: undefined,
 
 			/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
 			 * @instance
 			 * @property {Columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
 			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
 			 * @instance
 			 * @property {SortDir}
 			 */

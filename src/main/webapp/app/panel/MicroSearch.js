@@ -3,7 +3,6 @@
  * 
  * @class MicroSearch
  * @tutorial microsearch
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.MicroSearch', {
@@ -15,7 +14,7 @@ Ext.define('Voyant.panel.MicroSearch', {
     	},
     	api: {
 			/**
-			 * @memberof MicroSearch
+			 * @memberof Tools.MicroSearch
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -23,7 +22,7 @@ Ext.define('Voyant.panel.MicroSearch', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof MicroSearch
+			 * @memberof Tools.MicroSearch
 			 * @instance
 			 * @property {Query}
 			 */

@@ -3,7 +3,6 @@
  * 
  * @class Contexts
  * @tutorial contexts
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Contexts', {
@@ -17,28 +16,28 @@ Ext.define('Voyant.panel.Contexts', {
     	},
     	api: {
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {StopList}
 			 * @default
@@ -46,7 +45,7 @@ Ext.define('Voyant.panel.Contexts', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {Context}
 			 * @default
@@ -54,7 +53,7 @@ Ext.define('Voyant.panel.Contexts', {
     		context: 5,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {Number} expand  How many terms to show when you expand any given row
 			 * @default
@@ -62,28 +61,28 @@ Ext.define('Voyant.panel.Contexts', {
     		expand: 50,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
 			 * @instance
 			 * @property {TermColors}
 			 * @default

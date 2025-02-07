@@ -4,7 +4,6 @@
  * 
  * @class Bubbles
  * @tutorial bubbles
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Bubbles', {
@@ -16,7 +15,7 @@ Ext.define('Voyant.panel.Bubbles', {
     	},
     	api: {
     		/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
     		 * @instance
     		 * @property {StopList}
 			 * @default
@@ -24,14 +23,14 @@ Ext.define('Voyant.panel.Bubbles', {
     		stopList: 'auto',
     		
 			/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: 0,
     		
 			/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -39,7 +38,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		limit: 100,
     		
 			/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
 			 * @instance
 			 * @property {Boolean} audio Whether or not to play audio
 			 * @default
@@ -47,7 +46,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		audio: false,
     		
 			/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
 			 * @instance
 			 * @property {Number} speed How fast to play the visualization
 			 * @default

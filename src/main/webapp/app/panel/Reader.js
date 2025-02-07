@@ -3,7 +3,6 @@
  * 
  * @class Reader
  * @tutorial reader
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Reader', {
@@ -22,7 +21,7 @@ Ext.define('Voyant.panel.Reader', {
     	},
     	api: {
 			/**
-			 * @memberof Reader
+			 * @memberof Tools.Reader
 			 * @instance
 			 * @property {Start}
 			 * @default
@@ -30,7 +29,7 @@ Ext.define('Voyant.panel.Reader', {
     		start: 0,
 
 			/**
-			 * @memberof Reader
+			 * @memberof Tools.Reader
 			 * @instance
 			 * @property {Limit}
 			 * @default
@@ -38,14 +37,14 @@ Ext.define('Voyant.panel.Reader', {
     		limit: 1000,
 
 			/**
-			 * @memberof Reader
+			 * @memberof Tools.Reader
 			 * @instance
 			 * @property {String} skipToDocId The document ID to start reading from, defaults to the first document in the corpus.
 			 */
     		skipToDocId: undefined,
 
 			/**
-			 * @memberof Reader
+			 * @memberof Tools.Reader
 			 * @instance
 			 * @property {Query}
 			 */

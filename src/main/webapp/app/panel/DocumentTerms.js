@@ -3,7 +3,6 @@
  * 
  * @class DocumentTerms
  * @tutorial documentterms
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.DocumentTerms', {
@@ -25,57 +24,57 @@ Ext.define('Voyant.panel.DocumentTerms', {
     	},
     	api: {
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {StopList}
 			 * @default
 			 */
     		stopList: 'auto',
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {Query}
 			 */
     		query: undefined,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {DocId}
 			 */
     		docId: undefined,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {DocIndex}
 			 */
     		docIndex: undefined,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {Bins}
 			 * @default
 			 */
     		bins: 10,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {Columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
 			 */
 			columns: undefined,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {SortColumn}
 			 */
 			sort: undefined,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {SortDir}
 			 */
 			dir: undefined,
 			/**
-			 * @memberof DocumentTerms
+			 * @memberof Tools.DocumentTerms
 			 * @instance
 			 * @property {TermColors}
 			 * @default

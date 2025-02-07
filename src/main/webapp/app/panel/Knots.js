@@ -4,7 +4,6 @@
  * 
  * @class Knots
  * @tutorial knots
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Knots', {
@@ -16,13 +15,13 @@ Ext.define('Voyant.panel.Knots', {
     	},
     	api: {
     		/**
-        	 * @memberof Knots
+        	 * @memberof Tools.Knots
 			 * @instance
 			 * @property {Query}
         	 */
     		query: null,
     		/**
-			 * @memberof Knots
+			 * @memberof Tools.Knots
     		 * @instance
     		 * @property {StopList}
 			 * @default
@@ -30,14 +29,14 @@ Ext.define('Voyant.panel.Knots', {
     		stopList: 'auto',
 
     		/**
-			 * @memberof Knots
+			 * @memberof Tools.Knots
     		 * @instance
     		 * @property {DocId}
     		 */
     		docId: undefined,
     		
 			/**
-			 * @memberof Knots
+			 * @memberof Tools.Knots
 			 * @instance
 			 * @property {Boolean} audio Whether or not to play audio during the visualization.
 			 * @default

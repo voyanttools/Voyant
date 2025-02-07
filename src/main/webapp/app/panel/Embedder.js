@@ -3,7 +3,6 @@
  * 
  * @class Embedder
  * @tutorial embedder
- * @mixes Tools.Panel
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Embedder', {
@@ -20,7 +19,7 @@ Ext.define('Voyant.panel.Embedder', {
 		},
 		api: {
 			/**
-			 * @memberof Embedder
+			 * @memberof Tools.Embedder
 			 * @instance
 			 * @property {String} url The URL of the web page to embed.
 			 */
