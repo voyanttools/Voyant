@@ -110,8 +110,26 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 						items: [],
 						listeners: {
 							click: function(menu, item) {
-								var method = item.itemId.replace(/^_/, '');
-								this._showDocEntry(this.lastEntry, method);
+								if (item) {
+									var method = item.itemId.replace(/^_/, '');
+									this._showDocEntry(this.lastEntry, method);
+								}
+							},
+							scope: this
+						}
+					}
+				},{
+					text: this.localize('configs'),
+					itemId: 'configsBtn',
+					glyph: 'xf013@FontAwesome',
+					width: 100,
+					menu: {
+						items: [],
+						listeners: {
+							click: function(menu, item) {
+								if (item) {
+									this._showDocEntry(this.lastEntry, item.itemId);
+								}
 							},
 							scope: this
 						}
@@ -167,6 +185,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		this.up().setTitle(this.localize('docs')+' '+this.localize('home'));
 		this.down('#overviewBtn').hide();
 		this.down('#methodsBtn').hide();
+		this.down('#configsBtn').hide();
 
 		this._setHtmlForCard('main', html);
 
@@ -248,14 +267,13 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 		docsParentEl.querySelectorAll('article > *').forEach(function(el) { el.hidden = !isNamespace && !isToolsEntry; });
 
+		// populate methods
 		var methods = Array.from(docsParentEl.querySelectorAll('article > dl.methods > dt > h4')).map(function(h4) {
 			return h4.getAttribute('id');
 		});
-
 		if (!isNamespace && !isToolsEntry && docsParentEl.querySelector('article .container-overview') !== null) {
 			methods.unshift('constructor');
 		}
-
 		var methodsBtn = this.down('#methodsBtn');
 		if (methods.length > 0) {
 			var methodsMenu = methodsBtn.getMenu();
@@ -267,13 +285,35 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				methodsMenu.remove(key);
 			});
 			methods.forEach(function(method) {
-				var text = method.replace(/^\./, '<span class="green">s</span> '); // static methods
+				var text = method.replace(/^\./, '<span class="green icon">static</span> '); // static methods
 				text = text.replace(/^_/, '');
 				methodsMenu.add({text: text, itemId: '_'+method}); // prepend _ because some methods are reserved (e.g. toString)
 			});
 			methodsBtn.show();
 		} else {
 			methodsBtn.hide();
+		}
+
+		// populate configs
+		var configs = Array.from(docsParentEl.querySelectorAll('article > dl.typedefs > dt > h4')).map(function(h4) {
+			return h4.getAttribute('id');
+		});
+		var configsBtn = this.down('#configsBtn');
+		if (configs.length > 0) {
+			var configsMenu = configsBtn.getMenu();
+			var toRemove = [];
+			configsMenu.items.eachKey(function(key) {
+				toRemove.push(key);
+			});
+			toRemove.forEach(function(key) {
+				configsMenu.remove(key);
+			});
+			configs.forEach(function(config) {
+				configsMenu.add({text: config, itemId: config});
+			});
+			configsBtn.show();
+		} else {
+			configsBtn.hide();
 		}
 	},
 
@@ -297,7 +337,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		} else {
 			docsParentEl.querySelector('header').hidden = true;
 
-			var entryEl = docsParentEl.querySelector('#'+entryMember.replace('.', '\\.')).parentElement;
+			var entryEl = docsParentEl.querySelector('#'+entryMember.replace('.', '\\.').replace('~', '\\~')).parentElement;
 			
 			// hide all other members
 			var entryParent = entryEl.closest('dl');

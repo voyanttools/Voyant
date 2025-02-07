@@ -264,7 +264,7 @@ body.exported-notebook {
 }
 .docsWindowContent section article h3.subsection-title {
 	font-size:16px;
-	color: #D9161F;
+	color: #bf1b2c;
 	border-bottom: 1px solid #dedede;
 }
 .docsWindowContent section article dl {
@@ -277,11 +277,12 @@ body.exported-notebook {
 .docsWindowContent section article dl h4 .signature {
 }
 .docsWindowContent section article dl h4 .type-signature {
-	color: #31708f;
+	color: #3893D4;
 	font-weight: normal;
 }
 .docsWindowContent section article dl dt .name {
 	padding: 3px 10px;
+	margin: 6px 0;
 	background-color: #f4f7f8;
 }
 .docsWindowContent section article dl dd {
@@ -298,6 +299,11 @@ body.exported-notebook {
 	text-align: right;
 	padding-right: 10px;
 }
+.docsWindowContent section article .container-params,
+.docsWindowContent section article .container-returns,
+.docsWindowContent section article table td.description {
+	clear: left;
+} 
 .docsWindowContent section article .container-returns {
 	margin-bottom: 7px;
 }
@@ -317,27 +323,30 @@ body.exported-notebook {
 .docsWindowContent section article table th,
 .docsWindowContent section article table td.type,
 .docsWindowContent section article table td.attributes {
-	font-family: Verdana, sans-serif;
 	font-size: 90%;
 }
 .docsWindowContent section article table,
 .docsWindowContent section article table th,
 .docsWindowContent section article table td {
-	font-family: Verdana, sans-serif;
 	vertical-align: top;
 	border: 0;
 	padding: 6px 3px;
 	text-align: left;
+	float: left;
 }
-.docsWindowContent section article table tr {
-	/* border-bottom: 1px solid #dedede; */
+.docsWindowContent section article table th {
+	display: none;
 }
 .docsWindowContent section article table td.name,
 .docsWindowContent section article table td.type,
 .docsWindowContent section article table td.attributes,
 .docsWindowContent section article table td.default {
-	max-width: 180px;
 	min-width: 80px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.docsWindowContent section article table td.description {
+	margin: 0 0 12px 12px;
 }
 .docsWindowContent section article table td.type,
 .docsWindowContent section article table td.attributes {
@@ -373,4 +382,40 @@ body.exported-notebook {
 	color:#181818;
 	font-size:11px;
 	text-decoration:none;
+}
+.docsWindowContent span.param-type {
+    color: #aaa;
+}
+.docsWindowContent pre.prettyprint {
+    font-size: 0.9em;
+    border-radius: 0;
+}
+span.icon {
+    font-size: 8pt;
+    border-radius: 3px;
+    padding: 1px 2px;
+}
+span.icon.green {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+span.icon.blue {
+    color: #3893D4;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+span.icon.yellow {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+span.icon.red {
+    color: #A94443;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.docsWindowContent span.arrow {
+    font-size: 8pt;
+    padding-right: 5px;
 }
