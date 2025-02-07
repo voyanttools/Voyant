@@ -39,21 +39,19 @@ To use Documents in Spyral you can use the following code as a starting point. M
 the visualization.
 
 ```
-
 let config = {
-    "Bins": null,
+    "bins": null,
     "columns": null,
-    "SortDir": null,
-    "DocId": null,
-    "DocIndex": null,
-    "Query": null,
-    "SortColumn": null,
-    "StopList": null,
-    "TermColors": null,
+    "dir": null,
+    "docId": null,
+    "docIndex": null,
+    "query": null,
+    "sort": null,
+    "stopList": null,
+    "termColors": null,
 };
 
-loadCorpus("austen").tool("Documentterms", config);
-
+loadCorpus("austen").tool("documentterms", config);
 ```
 
 Please see {@link Tools.DocumentTerms} for more information about configuration.

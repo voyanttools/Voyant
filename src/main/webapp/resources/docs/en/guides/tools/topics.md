@@ -61,7 +61,7 @@ let config = {
     "iterations": null,
     "perDocLimit": null,
     "seed": null,
-    "StopList": null,
+    "stopList": null,
     "termsPerTopic": null,
     "topics": null
 }; 

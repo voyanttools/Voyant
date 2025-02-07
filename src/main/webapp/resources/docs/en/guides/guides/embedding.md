@@ -5,18 +5,25 @@ of more independent modules that can be embedded into remote sites (much like a 
 done using an [iframe](http://www.w3schools.com/tags/tag_iframe.asp) tag that creates a sandbox within your page 
 where Voyant can do its thing (JavaScript security limits the interaction that's possible between your page and Voyant).   
 
-<div style="max-width: 500px; margin-left: auto; margin-right: auto;"><iframe src="../tool/Cirrus/?useReferer=true" style="width: 100%; height: 250px; margin-left: auto; margin-right: auto;"></iframe></div>
+<div style="max-width: 600px;">
+<iframe src="../tool/Cirrus/?useReferer=true" style="width: 100%; height: 300px; margin-left: auto; margin-right: auto;"></iframe>
+</div>
 
 ## Exported Corpus
 
 The Voyant export feature allows you to generate an HTML snippet to embed the current corpus and tool (or skin). Click the _Export_ icon, expand the _Export View_ section, select _an HTML snippet_ radio button, click the _Export_ button, and copy the snippet that appears in the text box. 
 
+<div style="max-width: 350px;">
+
 ![Export](imgs/ui/embedding/export.png)
+
+</div>
 
 Here's an example:
 
-	<iframe src='http://voyant-tools.org/tool/Cirrus/?corpus=austen'
-		style='width: 400%; height: 400px'></iframe>
+```
+<iframe src='http://voyant-tools.org/tool/Cirrus/?corpus=austen' style='width: 400%; height: 400px'></iframe>
+```
 
 The style attribute can be modified as needed for formatting on the containing page. Additional parameters can also 
 be added (for [stopword]{@tutorial stopwords} lists, for instance).
@@ -26,8 +33,9 @@ be added (for [stopword]{@tutorial stopwords} lists, for instance).
 It's also possible to embed Voyant into the current page and to use the contents of the current page as a corpus. 
 For instance, here is the Cirrus Tool for this page: 
 
-	<iframe src="http://voyant-tools.org/tool/Cirrus/?useReferer=true"
-		style="width: 300px; height: 300px;"></iframe>
+```
+<iframe src="http://voyant-tools.org/tool/Cirrus/?useReferer=true" style="width: 300px; height: 300px;"></iframe>
+```
 
 If the page has already been visited, Voyant will have a cached version of the corpus that it will use, unless the 
 page has been modified, in which case it will fetch the contents again. 
@@ -37,8 +45,10 @@ page has been modified, in which case it will fetch the contents again.
 You can also embed a specific page using the input parameter (or a variant format from a given page, such as 
 generated XML or PDF): 
 
-	<iframe src="http://voyant-tools.org/tool/Cirrus/?input=http://digitalhumanities.org/dhq/vol/3/3/000067/000067.xml"
-		style="width: 300px; height: 300px;"></iframe>
+```
+<iframe src="http://voyant-tools.org/tool/Cirrus/?input=http://digitalhumanities.org/dhq/vol/3/3/000067/000067.xml"
+	style="width: 300px; height: 300px;"></iframe>
+```
 		
 Multiple sources can be specified by using additional input parameters:
 
@@ -62,12 +72,30 @@ It's important to know that for security reasons some content management systems
 We assume that screen real-estate is at a premium in embedded instances of Voyant, so the default embedded URL 
 syntax removes the top header that normally appears: 
 
-[voyant-tools.org/tool/Cirrus/?corpus=austen](../tool/Cirrus/?corpus=austen)  | [voyant-tools.org/?corpus=austen&view=Cirrus](../?corpus=austen&view=Cirrus)
+<table>
+<tbody>
+<tr>
+<td>
+<div style="max-width: 400px; text-align: center">
 
+[voyant-tools.org/tool/Cirrus/?corpus=austen](../tool/Cirrus/?corpus=austen)
 
+![Tool](imgs/ui/embedding/tool.png)
 
-![View](imgs/ui/embedding/view.png) | ![Tool](imgs/ui/embedding/export.png)
+</div>
+</td>
+<td>
+<div style="max-width: 400px; text-align: center">
 
+[voyant-tools.org/?corpus=austen&view=Cirrus](../?corpus=austen&view=Cirrus)
+
+![View](imgs/ui/embedding/view.png)
+
+</div>
+</td>
+</tr>
+</tbody>
+</table>
 
 ## Next Steps
 

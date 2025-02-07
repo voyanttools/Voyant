@@ -15,7 +15,11 @@ Note that any modifications actually create a new corpus (so the URL will change
 
 Note that only one of these operations can be done at a time, so, for instance, you can first remove some documents and then in the new corpus you can reorder the remaining documents.
 
+<div style="max-width: 450px;">
+
 ![Modify Corpus](imgs/ui/modifyingcorpus/modify.png)
+
+</div>
 
 ## Next Steps
 

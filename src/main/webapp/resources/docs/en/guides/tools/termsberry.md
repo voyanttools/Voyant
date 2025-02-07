@@ -37,24 +37,24 @@ Clicking on the {@tutorial options} icon also allows you to define a set of stop
 
 ## Spyral
 
-To use Termsberry widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use TermsBerry widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
-    Categories: null, // a query for the keywords (can be comma-separated list)
-    Context: null, // a named stopword list or comma-separated list of words
-    DocId: null, // document index to restrict to (can be comma-separated list)
-    DocIndex: null, // the size of the context (the number of words on each side of the keyword)
+    categories: null, // a query for the keywords (can be comma-separated list)
+    context: null, // a named stopword list or comma-separated list of words
+    docId: null, // document index to restrict to (can be comma-separated list)
+    docIndex: null, // the size of the context (the number of words on each side of the keyword)
     numInitialTerms: null, // the initial number of terms to display
-    Query: null, // the initial number of terms to display
-    StopList: null, // the initial number of terms to display
+    query: null, // the initial number of terms to display
+    stopList: null, // the initial number of terms to display
 }; 
 
-loadCorpus("austen").tool("Termsberry", config);
+loadCorpus("austen").tool("termsberry", config);
 ```
 
-Please see {@link Tools.Termsberry} for more information about configuration.
+Please see {@link Tools.TermsBerry} for more information about configuration.
 
 ## See Also
 

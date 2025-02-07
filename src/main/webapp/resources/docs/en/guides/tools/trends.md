@@ -81,14 +81,14 @@ modify the visualization.
 ```
 let config = {
     "chartType": null,
-    "DocId": null,
-    "DocIndex": null,
+    "docId": null,
+    "docIndex": null,
     "labels": null,
-    "Limit": null,
+    "limit": null,
     "mode": null,
-    "Query": null,
-    "StopList": null,
-    "WithDistributions": null
+    "query": null,
+    "stopList": null,
+    "withDistributions": null
 }; 
 
 loadCorpus("austen").tool("Trends", config);

@@ -18,13 +18,21 @@ The following sources are supported:
 
 Unlike in the previous version of Voyant, you can now [add, remove and reorder documents]{@tutorial documents} after a corpus has been created.
 
+<div style="max-width: 600px;">
+
 ![Corpus Creator](imgs/ui/corpuscreator/corpuscreator.png)
+
+</div>
 
 ## Options
 
 Options should be specified before hitting the upload button or the reveal button.
 
+<div style="max-width: 400px;">
+
 ![Input Options](imgs/ui/corpuscreator/options.png)
+
+</div>
 
 ## Input Format
 
@@ -194,27 +202,31 @@ your HTML document.
 Selectors (as defined by the W3C and as implemented by Jsoup) are designed to select DOM elements or nodes. In many 
 cases, this is fine because simply want to use the text value of the element:
 
-	// for the "Title" field we could simply put "title" to select the title tag
-	<title>Title</title>
+```html
+// for the "Title" field we could simply put "title" to select the title tag
+<title>Title</title>
+```
 
 The problem is that in some cases, we want the value of an attribute instead of the text content of an element. This 
 isn't possible with selectors, but Voyant adds additional functionality by searching for an @ symbol and attribute 
 name at the end of a selector, and if it's there, selecting the value 
 
-	// for "Author" we could put "meta[name='author']@content"
-	<meta name="author" content="Jane Austen">
+```
+// for "Author" we could put "meta[name='author']@content"
+<meta name="author" content="Jane Austen">
+```
 	
 Note that in the case of grouped selectors, the same attribute applies to each group:
 
-	// only the value of author attribute is used: ".comment[author], header p[author] @author: 
-	<div class="comment" author="Jane Austen"></div><header><p author="Jane Austen"></p></header>
+```
+// only the value of author attribute is used: ".comment[author], header p[author] @author: 
+<div class="comment" author="Jane Austen"></div><header><p author="Jane Austen"></p></header>
+```
 	
 The <a href="https://try.jsoup.org" target="_blank">try Jsoup</a> tool does NOT support this attribute functionality,
 but you can use it to ensure that you have the right elements and then add the @attributename as desired in Voyant.
 
 ## JSON
-
-New and <span style="color: red">experimental</span>!
 
 You can now work with documents in JSON and use the [JSON Pointer](https://tools.ietf.org/html/rfc6901) syntax to 
 select parts of the document, the same way you do with XML XPath or HTML CSS Selectors. 
@@ -224,21 +236,23 @@ address to the location in the document.
 
 Given an example JSON document like this:
 
-	{
-		"rss": {
-	        	"items": [{
-		            "title": "A Special Event",
-		            "description": "A Special Teleconference for our customers about our products",
-		            "link": "http://www.yourdomain.com/events.htm",
-		            "author": "Joe Blow"
-	        	},{
-		            "title": "Announcing new Products",
-		            "description": "Announcing a new line of products",
-		            "link": "http://www.yourdomain.com/events.htm",
-		            "author": "Joe Blow"
-	        	}]
-		}
+```
+{
+	"rss": {
+		"items": [{
+			"title": "A Special Event",
+			"description": "A Special Teleconference for our customers about our products",
+			"link": "http://www.yourdomain.com/events.htm",
+			"author": "Joe Blow"
+		},{
+			"title": "Announcing new Products",
+			"description": "Announcing a new line of products",
+			"link": "http://www.yourdomain.com/events.htm",
+			"author": "Joe Blow"
+		}]
 	}
+}
+```
 	
 You could define the following:
 
@@ -291,11 +305,19 @@ The first option is for defining how Voyant should extract text from the table (
 
 <b>2: _from cells in each row_</b>: this option assumes that each row has one or more documents, either the entire row or specific cells
 
+<div style="max-width: 600px;">
+
 ![From Cells in Each Row](imgs/ui/corpuscreator/fromcellsineachrow.png)
+
+</div>
 
 <b>3: _from entire columns_</b>: this option assumes that documents should be extracted from one or more columns
 
+<div style="max-width: 500px;">
+
 ![From Entire Columns](imgs/ui/corpuscreator/fromentirecolumns.png)
+
+</div>
 
 Whether you use _from cells in each row_ or _from entire columns_ you can also choose one or more columns for content. Columns are specified by number (even when there's a header row), and the left-most column is column 1. Content from multiple columns can be combined using the plus sign and columns can be specified separately by using commas. Here are some examples:
 

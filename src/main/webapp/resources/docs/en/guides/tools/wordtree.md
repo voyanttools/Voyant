@@ -34,23 +34,23 @@ Clicking on the {@tutorial options} icon allows you to define a set of stopwords
 
 ## Spyral
 
-To use the Wordtree widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use the WordTree widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
-    "Context": null,
-    "DocId": null,
-    "DocIndex": null,
-    "Limit": null,
-    "Query": null,
-    "StopList": null
+    "context": null,
+    "docId": null,
+    "docIndex": null,
+    "limit": null,
+    "query": null,
+    "stopList": null
 }; 
 
-loadCorpus("austen").tool("Wordtree", config);
+loadCorpus("austen").tool("wordtree", config);
 ```
 
-Please see {@link Tools.Wordtree} for more information about configuration.
+Please see {@link Tools.WordTree} for more information about configuration.
 
 ## Additional Information
 

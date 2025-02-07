@@ -57,22 +57,28 @@ Once you decompress the .zip file, you should see something like the following:
 1. Open the folder you just decompressed or extracted.
 2. To start VoyantServer, you need to run the `VoyantServer.jar` file. This Java Archive file is a package with all the resources needed to run the server (including an embedded Jetty server). To run this, you need to [have Java installed](http://www.wikihow.com/Run-a-.Jar-Java-File). Note that the approach for running `VoyantServer.jar` is OS-specific. Please see below for the method that suits your computer's OS.
 
-	1. **Mac:**
-		1. You should right-click (control-click) on the `VoyantServer.jar` file and choose "_Open"_ from the menu.
-		2. Click on "_Open"_ in the next dialog. This is necessary the first time only. For subsequent uses of VoyantServer, all you need to do is double-click on the `VoyantServer.jar` file.
+
+<div style="float: right;">
+
 ![Open](imgs/server/01.png)
-		3. If the clicking on `VoyantServer.jar` fails, use the command-line approach below.
 
-	2. **Windows / Linux:**
-		1. You should be able to run VoyantServer by double-clicking on the `VoyantServer.jar` file
+</div>
 
-	1. **Command-line:**
-		1. It should also be possible to launch the application from the command-line if you're at the prompt in the same folder as the jar file: `java -jar VoyantServer.jar`
+### Mac
+
+1. You should right-click (control-click) on the `VoyantServer.jar` file and choose "_Open"_ from the menu.
+2. Click on "_Open"_ in the next dialog. This is necessary the first time only. For subsequent uses of VoyantServer, all you need to do is double-click on the `VoyantServer.jar` file.
+3. If the clicking on `VoyantServer.jar` fails, use the command-line approach below.
+
+### Windows / Linux
+
+1. You should be able to run VoyantServer by double-clicking on the `VoyantServer.jar` file
+
+### Command-line
+
+1. It should also be possible to launch the application from the command-line if you're at the prompt in the same folder as the jar file: `java -jar VoyantServer.jar`
 
 Once you run VoyantServer, you will see a control panel like the images below:
-
-![Control Panel](imgs/server/01.png)
-
 
 ![Control Panel](imgs/server/02.png)
 

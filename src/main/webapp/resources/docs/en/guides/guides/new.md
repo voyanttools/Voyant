@@ -1,5 +1,7 @@
 # What's New
 
+For the most recent updates to Voyant please see the [VoyantServer releases](https://github.com/voyanttools/VoyantServer/releases).
+
 ## Voyant 2.2
 
 Again, hundreds of bug fixes and refinements, most notably:
