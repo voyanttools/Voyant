@@ -19,14 +19,14 @@ Ext.define('Voyant.panel.RezoViz', {
 			/**
 			 * @memberof Tools.RezoViz
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
 			query: undefined,
 
 			/**
 			 * @memberof Tools.RezoViz
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
 			 */
 			limit: 50,
@@ -48,7 +48,7 @@ Ext.define('Voyant.panel.RezoViz', {
 			/**
 			 * @memberof Tools.RezoViz
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
 			stopList: 'auto',
@@ -56,7 +56,7 @@ Ext.define('Voyant.panel.RezoViz', {
 			/**
 			 * @memberof Tools.RezoViz
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
 			docId: undefined,
 

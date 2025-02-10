@@ -16,7 +16,7 @@ Ext.define('Voyant.panel.TextualArc', {
     		/**
     		 * @memberof Tools.TextualArc
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -24,7 +24,7 @@ Ext.define('Voyant.panel.TextualArc', {
 			/**
     		 * @memberof Tools.TextualArc
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 * @default
     		 */
     		docIndex: 0,

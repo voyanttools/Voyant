@@ -16,28 +16,28 @@ Ext.define('Voyant.panel.Correlations', {
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -53,7 +53,7 @@ Ext.define('Voyant.panel.Correlations', {
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {WithDistributions}
+			 * @property {withDistributions}
 			 * @default
 			 */
 			withDistributions: 'relative',
@@ -61,28 +61,28 @@ Ext.define('Voyant.panel.Correlations', {
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {Columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
+			 * @property {columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {SortColumn}
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {SortDir}
+			 * @property {dir}
 			 */
 			dir: undefined,
 
 			/**
 			 * @memberof Tools.Correlations
 			 * @instance
-			 * @property {TermColors}
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

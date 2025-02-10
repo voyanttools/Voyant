@@ -29,7 +29,10 @@
         if (prop.name) {
             props.hasName = true;
         } else {
-            var test = self.find({name: prop.type.names})[0];
+            var test = self.find({name: prop.type.names, kind: 'typedef'})[0]; // look for typedefs first
+            if (test === undefined) {
+                test = self.find({name: prop.type.names})[0];
+            }
             prop.name = test.name;
             prop.type = test.type;
             prop.description = test.description

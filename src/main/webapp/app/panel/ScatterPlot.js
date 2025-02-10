@@ -17,7 +17,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
@@ -31,7 +31,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 50,
@@ -47,7 +47,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {Bins}
+			 * @property {bins}
 			 * @default
 			 */
     		bins: 10,
@@ -87,7 +87,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -109,7 +109,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 

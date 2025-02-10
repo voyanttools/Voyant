@@ -17,7 +17,7 @@ Ext.define('Voyant.panel.Phrases', {
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -25,21 +25,21 @@ Ext.define('Voyant.panel.Phrases', {
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
@@ -70,14 +70,14 @@ Ext.define('Voyant.panel.Phrases', {
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {Columns} columns 'term', 'rawFreq', 'length', 'distributions'
+			 * @property {columns} columns 'term', 'rawFreq', 'length', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {SortColumn}
+			 * @property {sort}
 			 * @default
 			 */
 			sort: 'length',
@@ -85,7 +85,7 @@ Ext.define('Voyant.panel.Phrases', {
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
-			 * @property {SortDir}
+			 * @property {dir}
 			 * @default
 			 */
 			dir: 'desc'

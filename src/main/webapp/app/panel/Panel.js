@@ -21,66 +21,66 @@ Ext.define('Voyant.panel.Panel', {
 		},
 		// typedefs for commonly used API params
 		/**
-		 * @typedef {String} StopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
+		 * @typedef {String} stopList A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
 		 * By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
 		 * For more information see the [Stopwords documentation]{@tutorial stopwords}.
 		 */
 
 		/**
-		 * @typedef {String|String[]} Query A query or array of queries (queries can be separated by a comma).
+		 * @typedef {String|String[]} query A query or array of queries (queries can be separated by a comma).
 		 * For query syntax, see the [search documentation]{@tutorial search}.
 		 */
 
 		/**
-		 * @typedef {String|String[]} DocId The document ID(s) to restrict the results to.
+		 * @typedef {String|String[]} docId The document ID(s) to restrict the results to.
 		 */
 
 		/**
-		 * @typedef {Number|Number[]} DocIndex The document index(es) to restrict the results to.
+		 * @typedef {Number|Number[]} docIndex The document index(es) to restrict the results to.
 		 */
 
 		/**
-		 * @typedef {String} Categories The categories ID to use. For more information see the [Categories documentation]{@tutorial categories}.
+		 * @typedef {String} categories The categories ID to use. For more information see the [Categories documentation]{@tutorial categories}.
 		 */
 
 		/**
-		 * @typedef {Number} Bins The number of "bins" to divide the result into.
+		 * @typedef {Number} bins The number of "bins" to divide the result into.
 		 */
 
 		/**
-		 * @typedef {Number} Start The index of the item to start the results at.
+		 * @typedef {Number} start The index of the item to start the results at.
 		 */
 
 		/**
-		 * @typedef {Number} Limit The number of items to limit the result to.
+		 * @typedef {Number} limit The number of items to limit the result to.
 		 */
 
 		/**
-		 * @typedef {Number} Context The number of terms to consider on each side of the keyword.
+		 * @typedef {Number} context The number of terms to consider on each side of the keyword.
 		 */
 
 		/**
-		 * @typedef {String} WithDistributions Determines whether to show "raw" or "relative" frequencies (those are the two valid values).
+		 * @typedef {String} withDistributions Determines whether to show "raw" or "relative" frequencies (those are the two valid values).
 		 * The default value is "relative" (unless there's only one document in the corpus, in which case raw frequencies are shown).
 		 */
 
 		/**
-		 * @typedef {String} TermColors Which term colors to show in the grid.
+		 * @typedef {String} termColors Which term colors to show in the grid.
 		 * By default this is set to 'categories' which shows the term color only if it's been assigned by a category.
 		 * The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
 		 */
 
 		/**
-		 * @typedef {String|String[]} Columns One or more column data indexes to display, separated by a comma.
+		 * @typedef {String|String[]} columns One or more column data indexes to display, separated by a comma.
 		 * Use this to modify the default set of visible columns.
 		 */
 
 		/**
-		 * @typedef {String} SortColumn The column to sort the results by
+		 * @typedef {String} sort The column to sort the results by
 		 */
 
 		/**
-		 * @typedef {String} SortDir The direction in which to sort the results: 'asc' or 'desc'
+		 * @typedef {String} dir The direction in which to sort the results: 'asc' or 'desc'
 		 */
 		api: {
 			/**

@@ -16,7 +16,7 @@ Ext.define('Voyant.panel.MicroSearch', {
 			/**
 			 * @memberof Tools.MicroSearch
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -24,7 +24,7 @@ Ext.define('Voyant.panel.MicroSearch', {
 			/**
 			 * @memberof Tools.MicroSearch
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined
     	},

@@ -19,7 +19,7 @@ Ext.define('Voyant.panel.Topics', {
 			/**
 			 * @memberof Tools.Topics
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
 			stopList: 'auto',

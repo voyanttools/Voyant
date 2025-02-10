@@ -17,7 +17,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		/**
 			 * @memberof Tools.Bubbles
     		 * @instance
-    		 * @property {StopList}
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -25,14 +25,14 @@ Ext.define('Voyant.panel.Bubbles', {
 			/**
 			 * @memberof Tools.Bubbles
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: 0,
     		
 			/**
 			 * @memberof Tools.Bubbles
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 100,

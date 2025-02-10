@@ -17,13 +17,13 @@ Ext.define('Voyant.panel.Knots', {
     		/**
         	 * @memberof Tools.Knots
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
         	 */
     		query: null,
     		/**
 			 * @memberof Tools.Knots
     		 * @instance
-    		 * @property {StopList}
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -31,7 +31,7 @@ Ext.define('Voyant.panel.Knots', {
     		/**
 			 * @memberof Tools.Knots
     		 * @instance
-    		 * @property {DocId}
+    		 * @property {docId}
     		 */
     		docId: undefined,
     		

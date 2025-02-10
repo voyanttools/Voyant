@@ -21,7 +21,7 @@ Ext.define('Voyant.panel.Entities', {
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 		}

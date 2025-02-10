@@ -16,7 +16,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -24,7 +24,7 @@ Ext.define('Voyant.panel.CorpusCollocates', {
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {Context}
+			 * @property {context}
 			 * @default
 			 */
     		context: 5,
@@ -32,49 +32,49 @@ Ext.define('Voyant.panel.CorpusCollocates', {
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {Columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
+			 * @property {columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {SortColumn}
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {SortDir}
+			 * @property {dir}
 			 */
 			dir: undefined,
 
 			/**
 			 * @memberof Tools.CorpusCollocates
 			 * @instance
-			 * @property {TermColors}
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

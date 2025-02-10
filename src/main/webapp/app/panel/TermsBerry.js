@@ -16,7 +16,7 @@ Ext.define('Voyant.panel.TermsBerry', {
 			/**
 			 * @memberof Tools.TermsBerry
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -24,7 +24,7 @@ Ext.define('Voyant.panel.TermsBerry', {
 			/**
 			 * @memberof Tools.TermsBerry
 			 * @instance
-			 * @property {Context}
+			 * @property {context}
 			 * @default
 			 */
     		context: 2,
@@ -39,28 +39,28 @@ Ext.define('Voyant.panel.TermsBerry', {
 			/**
 			 * @memberof Tools.TermsBerry
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.TermsBerry
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Tools.TermsBerry
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Tools.TermsBerry
 			 * @instance
-			 * @property {Categories}
+			 * @property {categories}
 			 */
     		categories: undefined
     	},

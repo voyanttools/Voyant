@@ -26,57 +26,57 @@ Ext.define('Voyant.panel.DocumentTerms', {
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {Bins}
+			 * @property {bins}
 			 * @default
 			 */
     		bins: 10,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {Columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
+			 * @property {columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
 			 */
 			columns: undefined,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {SortColumn}
+			 * @property {sort}
 			 */
 			sort: undefined,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {SortDir}
+			 * @property {dir}
 			 */
 			dir: undefined,
 			/**
 			 * @memberof Tools.DocumentTerms
 			 * @instance
-			 * @property {TermColors}
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

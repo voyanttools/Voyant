@@ -23,7 +23,7 @@ Ext.define('Voyant.panel.Reader', {
 			/**
 			 * @memberof Tools.Reader
 			 * @instance
-			 * @property {Start}
+			 * @property {start}
 			 * @default
 			 */
     		start: 0,
@@ -31,7 +31,7 @@ Ext.define('Voyant.panel.Reader', {
 			/**
 			 * @memberof Tools.Reader
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 1000,
@@ -46,7 +46,7 @@ Ext.define('Voyant.panel.Reader', {
 			/**
 			 * @memberof Tools.Reader
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined
     	},

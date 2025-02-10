@@ -17,14 +17,14 @@ Ext.define('Voyant.panel.Cirrus', {
     		/**
 			 * @memberof Tools.Cirrus
     		 * @instance
-    		 * @property {StopList}
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
 			/**
 			 * @memberof Tools.Cirrus
 			 * @instance
-			 * @property {Categories}
+			 * @property {categories}
 			 */
     		categories: undefined,
 
@@ -57,13 +57,13 @@ Ext.define('Voyant.panel.Cirrus', {
 			/**
 			 * @memberof Tools.Cirrus
     		 * @instance
-    		 * @property {DocId}
+    		 * @property {docId}
 			 */
     		docId: undefined,
 			/**
 			 * @memberof Tools.Cirrus
     		 * @instance
-    		 * @property {DocIndex}
+    		 * @property {docIndex}
 			 */
     		docIndex: undefined,
     		

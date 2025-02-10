@@ -66,7 +66,7 @@ Ext.define('Voyant.panel.Trends', {
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
     		 */
     		limit: 5,
@@ -74,7 +74,7 @@ Ext.define('Voyant.panel.Trends', {
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -82,14 +82,14 @@ Ext.define('Voyant.panel.Trends', {
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
     		 */
     		query: undefined,
     		
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {WithDistributions}
+			 * @property {withDistributions}
 			 * @default
     		 */
     		withDistributions: 'relative',
@@ -97,7 +97,7 @@ Ext.define('Voyant.panel.Trends', {
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {Bins}
+			 * @property {bins}
     		 * 
     		 * TODO verify this:
 			 * 
@@ -113,14 +113,14 @@ Ext.define('Voyant.panel.Trends', {
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
     		 */
     		docIndex: undefined,
     		
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
     		 */
     		docId: undefined,
     		

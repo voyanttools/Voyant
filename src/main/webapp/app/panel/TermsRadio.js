@@ -32,7 +32,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     		/**
 			 * @memberof Tools.TermsRadio
 			 * @instance
-			 * @property {Bins}
+			 * @property {bins}
 			 * @default
     		 */
     		bins: 5,
@@ -58,7 +58,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     		/**
     		 * @memberof Tools.TermsRadio
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
     		 */
     		limit: 50,
@@ -92,7 +92,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 			/**
 			 * @memberof Tools.TermsRadio
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -100,7 +100,7 @@ Ext.define('Voyant.panel.TermsRadio', {
     		/**
     		 * @memberof Tools.TermsRadio
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
     		 */
     		query: null,
     		

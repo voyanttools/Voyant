@@ -18,7 +18,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		/**
 			 * @memberof Tools.CorpusTerms
     		 * @instance
-    		 * @property {StopList}
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -26,7 +26,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		/**
     		 * @memberof Tools.CorpusTerms
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
     		 */
     		query: undefined,
     		
@@ -44,7 +44,7 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			/**
 			 * @memberof Tools.CorpusTerms
 			 * @instance
-			 * @property {TermColors}
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories',
@@ -62,21 +62,21 @@ Ext.define('Voyant.panel.CorpusTerms', {
 			/**
 			 * @memberof Tools.CorpusTerms
 			 * @instance
-			 * @property {Columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
+			 * @property {columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Tools.CorpusTerms
 			 * @instance
-			 * @property {SortColumn}
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Tools.CorpusTerms
 			 * @instance
-			 * @property {SortDir}
+			 * @property {dir}
 			 */
 			dir: undefined,
     	},

@@ -17,7 +17,7 @@ Ext.define('Voyant.panel.Bubblelines', {
     		/**
 			 * @memberof Tools.Bubblelines
     		 * @instance
-    		 * @property {Bins}
+    		 * @property {bins}
 			 * @default
     		 */
     		bins: 50,
@@ -25,14 +25,14 @@ Ext.define('Voyant.panel.Bubblelines', {
         	/**
 			 * @memberof Tools.Bubblelines
         	 * @instance
-        	 * @property {Query}
+        	 * @property {query}
         	 */
     		query: null,
     		
     		/**
 			 * @memberof Tools.Bubblelines
     		 * @instance
-    		 * @property {StopList}
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -40,14 +40,14 @@ Ext.define('Voyant.panel.Bubblelines', {
     		/**
 			 * @memberof Tools.Bubblelines
     		 * @instance
-    		 * @property {DocId}
+    		 * @property {docId}
     		 */
     		docId: undefined,
 
     		/**
 			 * @memberof Tools.Bubblelines
     		 * @instance
-    		 * @property {DocIndex}
+    		 * @property {docIndex}
     		 */
     		docIndex: undefined,
 

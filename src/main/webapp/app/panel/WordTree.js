@@ -16,28 +16,28 @@ Ext.define('Voyant.panel.WordTree', {
 			/**
 			 * @memberof Tools.WordTree
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.WordTree
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Tools.WordTree
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Tools.WordTree
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -45,7 +45,7 @@ Ext.define('Voyant.panel.WordTree', {
 			/**
 			 * @memberof Tools.WordTree
 			 * @instance
-			 * @property {Context}
+			 * @property {context}
 			 * @default
 			 */
     		context: 10,
@@ -53,7 +53,7 @@ Ext.define('Voyant.panel.WordTree', {
 			/**
 			 * @memberof Tools.WordTree
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 100

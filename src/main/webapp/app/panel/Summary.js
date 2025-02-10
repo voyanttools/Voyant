@@ -22,7 +22,7 @@ Ext.define('Voyant.panel.Summary', {
     		/**
     		 * @memberof Tools.Summary
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
@@ -30,7 +30,7 @@ Ext.define('Voyant.panel.Summary', {
     		/**
 			 * @memberof Tools.Summary
 			 * @instance
-			 * @property {Start}
+			 * @property {start}
 			 * @default
 			 */
     		start: 0,
@@ -39,7 +39,7 @@ Ext.define('Voyant.panel.Summary', {
     		/**
     		 * @memberof Tools.Summary
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
     		 */
     		limit: 5,

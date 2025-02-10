@@ -16,14 +16,14 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			/**
 			 * @memberof Tools.CollocatesGraph
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.CollocatesGraph
 			 * @instance
-			 * @property {Limit}
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 5,
@@ -31,7 +31,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			/**
 			 * @memberof Tools.CollocatesGraph
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -39,7 +39,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			/**
 			 * @memberof Tools.CollocatesGraph
 			 * @instance
-			 * @property {Context}
+			 * @property {context}
 			 * @default
 			 */
     		context: 5,

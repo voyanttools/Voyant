@@ -18,28 +18,28 @@ Ext.define('Voyant.panel.Contexts', {
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {Query}
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {DocId}
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {DocIndex}
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {StopList}
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
@@ -47,7 +47,7 @@ Ext.define('Voyant.panel.Contexts', {
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {Context}
+			 * @property {context}
 			 * @default
 			 */
     		context: 5,
@@ -63,28 +63,28 @@ Ext.define('Voyant.panel.Contexts', {
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
+			 * @property {columns} columns 'docIndex', 'left', 'term', 'right', 'position'
 			 */
 			columns: undefined,
 
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {SortColumn}
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {SortDir}
+			 * @property {dir}
 			 */
 			dir: undefined,
 
 			/**
 			 * @memberof Tools.Contexts
 			 * @instance
-			 * @property {TermColors}
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'
