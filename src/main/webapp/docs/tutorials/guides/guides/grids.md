@@ -11,7 +11,11 @@ Several Voyant Tools display results in a grid or table. Although the exact appe
 	* a way of selecting additional columns to display
 * most columns can be reordered by dragging and dropping the column headers
 
+<div style="max-width: 450px;">
+
 ![Grid](imgs/ui/grids/grid.png)
+
+</div>
 
 Most grids have "infinite" scrolling, which means that more rows will be loaded dynamically as needed (as you scroll, if applicable).
 

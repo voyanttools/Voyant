@@ -35,24 +35,24 @@ Clicking on the {@tutorial options} icon also allows you to define a set of stop
 
 ## Spyral
 
-To use Streamgraph widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use StreamGraph widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
-    "Bins": null,
-    "DocId": null,
-    "DocIndex": null,
-    "Limit": null,
-    "Query": null,
-    "StopList": null,
-    "WithDistributions": null
+    "bins": null,
+    "docId": null,
+    "docIndex": null,
+    "limit": null,
+    "query": null,
+    "stopList": null,
+    "withDistributions": null
 }; 
 
-loadCorpus("austen").tool("Streamgraph", config);
+loadCorpus("austen").tool("streamgraph", config);
 ```
 
-Please see {@link Tools.Streamgraph} for more information about configuration.
+Please see {@link Tools.StreamGraph} for more information about configuration.
 
 ## See Also
 

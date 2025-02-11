@@ -1,6 +1,8 @@
-<h2>Examples of Voyant in Research</h2>
-<p>A wealth of projects have applied Voyant Tools to a variety of research interests. The below list of blog post and articles begin to spell out a type of collective methodology of text analysis with Voyant.</p>
-<table cellspacing="2" cellpadding="2">
+# Examples of Voyant in Research
+
+A wealth of projects have applied Voyant Tools to a variety of research interests. The below list of blog post and articles begin to spell out a type of collective methodology of text analysis with Voyant.
+
+<table class="gallery">
 <tbody>
 <tr>
 <td><a href="http://hdl.handle.net/10791/419">Exploration in Hermeneutics of Dedicated OER Policies and Implications for Post Secondary Institutions</a></td>
@@ -8,9 +10,9 @@
 <td>paper, usage</td>
 </tr>
 <tr>
-<td><a href="http://www.maxkemman.nl/2016/11/a-republic-of-emails-what-are-the-contents/"><span style="font-weight: 400">A Republic of Emails: What are the contents?</span></a></td>
-<td><span style="font-weight: 400">November 24, 2016</span></td>
-<td><span style="font-weight: 400">Blog post, usage, word trends, links, contexts</span></td>
+<td><a href="http://www.maxkemman.nl/2016/11/a-republic-of-emails-what-are-the-contents/">A Republic of Emails: What are the contents?</a></td>
+<td>November 24, 2016</td>
+<td>Blog post, usage, word trends, links, contexts</td>
 </tr>
 <tr>
 <td><a href="http://britishlibrary.typepad.co.uk/digital-scholarship/2013/05/on-metadata-and-cartoons.html">On metadata and cartoons</a></td>
@@ -75,10 +77,10 @@
 <tr>
 <td><a href="http://leminhkhai.wordpress.com/2012/09/30/text-mining-the-dai-viet-su-ky-toan-thu/">Text Mining the Đại Việt Sử Ký Toàn Thư</a></td>
 <td>September 30, 2012</td>
-<td>blog post,&nbsp;usage, screenshot, words in the entire corpus, keywords in context</td>
+<td>blog post, usage, screenshot, words in the entire corpus, keywords in context</td>
 </tr>
 <tr>
-<td>&nbsp;<a href="http://mosman1914-1918.net/project/blog/allan-allsops-war">Allan Allsop’s war</a></td>
+<td><a href="http://mosman1914-1918.net/project/blog/allan-allsops-war">Allan Allsop’s war</a></td>
 <td>August 22, 2012</td>
 <td>blog post, usage, screenshot, cirrus</td>
 </tr>
@@ -149,10 +151,12 @@
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
-<h2>Critical Approaches to Digital Humanities and Voyant Tools</h2>
-<p>Discussion surrounding the nature of Digital Humanities also engage with the computational tools that drive this emerging field. These blog posts introduce many different issues as well as implicate the tools, such as Voyant, in this discussion.</p>
-<table cellpadding="2">
+
+## Critical Approaches to Digital Humanities and Voyant Tools
+
+Discussion surrounding the nature of Digital Humanities also engage with the computational tools that drive this emerging field. These blog posts introduce many different issues as well as implicate the tools, such as Voyant, in this discussion.
+
+<table class="gallery">
 <tbody>
 <tr>
 <td><a href="http://blogs.dickinson.edu/dcc/2013/04/15/what-should-gregory-crane-do-dca-wrap-up/">What Should Gregory Crane Do? (DCA Wrap-Up)</a></td>
@@ -221,10 +225,12 @@
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
-<h2>Conferences and Workshops</h2>
-<p>Voyant has been discussed in several workshops and conferences (including DH2012 at the University of Hamburg,&nbsp;ASECS THATCamp 2012 workshop, Stan Ruecker Workshop on DH Prototypes for Interpretation, Ryerson Mini-Workshop in conjunction with the CWRC2 Space/Place/Play Conference, ThatCamp2013 Digital Humanities Unconference at UNCC, ThatCamp Kansas, DH Summer School, University of Bern, Switzerland, Digital Humanities 2013, ISA Summer Institute) however these few entries display the reactions of certain individuals to the talks and workshops given on Voyant.</p>
-<table cellpadding="2">
+
+## Conferences and Workshops
+
+Voyant has been discussed in several workshops and conferences (including DH2012 at the University of Hamburg, ASECS THATCamp 2012 workshop, Stan Ruecker Workshop on DH Prototypes for Interpretation, Ryerson Mini-Workshop in conjunction with the CWRC2 Space/Place/Play Conference, ThatCamp2013 Digital Humanities Unconference at UNCC, ThatCamp Kansas, DH Summer School, University of Bern, Switzerland, Digital Humanities 2013, ISA Summer Institute) however these few entries display the reactions of certain individuals to the talks and workshops given on Voyant.
+
+<table class="gallery">
 <tbody>
 <tr>
 <td><a href="http://www.outilsfroids.net/2016/02/voyant-tools-un-puissant-service-de-text-mining-en-open-source/">Voyant Tools, un puissant service de text mining en open source</a></td>
@@ -263,12 +269,16 @@
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
-<h2>Examples of Voyant in Teaching</h2>
-<p>Voyant has also found a place among the pedagogical techniques that are becoming another defining aspect of the Digital Humanities. Among other places Voyant is listed as a resource on the library pages of at least 6 universities, including the University of Pennsylvania, Duke University, University of California- Los Angeles, Western Michigan University, University of Wisconsin- Green Bay, and Indiana University.</p>
-<h3>Course Work</h3>
-<p>This series of links shows the use of Voyant in coursework assigned to Digital Humanities students.</p>
-<table cellpadding="2">
+
+## Examples of Voyant in Teaching
+
+Voyant has also found a place among the pedagogical techniques that are becoming another defining aspect of the Digital Humanities. Among other places Voyant is listed as a resource on the library pages of at least 6 universities, including the University of Pennsylvania, Duke University, University of California- Los Angeles, Western Michigan University, University of Wisconsin- Green Bay, and Indiana University.
+
+### Course Work
+
+This series of links shows the use of Voyant in coursework assigned to Digital Humanities students.
+
+<table class="gallery">
 <tbody>
 <tr>
 <td><a href="http://vlcarlson.com/2013/04/04/true-love-or-adolescence/">Romeo and Juliet: True Love or Adolescence</a></td>
@@ -312,9 +322,12 @@
 </tr>
 </tbody>
 </table>
-<h3>Critical Approaches to Teaching with the Digital Humanities and Voyant</h3>
-<p>Evaluating the use of the Digital Humanities toolkit in teaching has itself become a locus for discussion.</p>
-<table cellpadding="2">
+
+### Critical Approaches to Teaching with the Digital Humanities and Voyant
+
+Evaluating the use of the Digital Humanities toolkit in teaching has itself become a locus for discussion.
+
+<table class="gallery">
 <tbody>
 <tr>
 <td>“<a href="http://eprints.ucm.es/32726/">Resourceful reading experiences with postgraduate students: on Madame de Staël in the Spanish digitized press</a> and ”<a href="http://eprints.ucm.es/32725/">Resourceful reading experiences with undergraduates: on Madame de Staël in the British Newspapers Archive (1800-1830)</a></td>
@@ -343,68 +356,71 @@
 </tr>
 </tbody>
 </table>
-<h3>Course Syllabuses</h3>
-<p>While perhaps a bit dry these examples of course syllabuses provide a resource for teaching using Voyant.</p>
-<table cellpadding="2">
+
+### Course Syllabuses
+
+While perhaps a bit dry these examples of course syllabuses provide a resource for teaching using Voyant.
+
+<table class="gallery">
 <tbody>
 <tr>
-<td>&nbsp;<a href="http://blalbrit.github.io/courses/dlcl122_2016/"><span style="font-weight: 400">The Digital Middle Ages</span></a><span style="font-weight: 400">, Stanford University</span></td>
+<td><a href="http://blalbrit.github.io/courses/dlcl122_2016/">The Digital Middle Ages</a>, Stanford University</td>
 <td>Winter 2016</td>
 </tr>
 <tr>
-<td><a href="http://www.english.utoronto.ca/grad/courses/2016-17_Course_Descriptions/2000s.htm"><span style="font-weight: 400">Shakespeare’s Language</span></a><span style="font-weight: 400">, University of Toronto</span></td>
+<td><a href="http://www.english.utoronto.ca/grad/courses/2016-17_Course_Descriptions/2000s.htm">Shakespeare’s Language</a>, University of Toronto</td>
 <td>Fall 2016</td>
 </tr>
 <tr>
-<td><span style="font-weight: 400"><a href="https://elearning.salemstate.edu/courses/1104221/modules">Digital Humanities</a><span style="font-weight: 400">, Salem State University</span></span></td>
+<td><a href="https://elearning.salemstate.edu/courses/1104221/modules">Digital Humanities</a>, Salem State University</td>
 <td>Summer 2016</td>
 </tr>
 <tr>
-<td><a href="http://iris.haverford.edu/ovid16/syllabus-of-activities/"><span style="font-weight: 400">Ovid’s Metamorphoses</span></a><span style="font-weight: 400">, Haverford College</span></td>
+<td><a href="http://iris.haverford.edu/ovid16/syllabus-of-activities/">Ovid’s Metamorphoses</a>, Haverford College</td>
 <td>Spring 2016</td>
 </tr>
 <tr>
-<td><a href="http://jjbauer226.net/about/courses/arth851-alt-methods-digital-art-history/"><span style="font-weight: 400">Digital Art History</span></a><span style="font-weight: 400">, University of North Carolina at Chapel Hill</span></td>
+<td><a href="http://jjbauer226.net/about/courses/arth851-alt-methods-digital-art-history/">Digital Art History</a>, University of North Carolina at Chapel Hill</td>
 <td>Spring 2016</td>
 </tr>
 <tr>
-<td><a href="http://web.unitn.it/files/download/40522/datavisualization485-489syllabusspring2016.pdf"><span style="font-weight: 400">Big/Small Data &amp; Visualization</span></a><span style="font-weight: 400">, Emory University</span></td>
+<td><a href="http://web.unitn.it/files/download/40522/datavisualization485-489syllabusspring2016.pdf">Big/Small Data &amp; Visualization</a>, Emory University</td>
 <td>Spring 2016</td>
 </tr>
 <tr>
-<td><a href="http://blogs.carleton.edu/hacking-humanities/syllabus/"><span style="font-weight: 400">Hacking the Humanities</span></a><span style="font-weight: 400">, Carleton College</span></td>
+<td><a href="http://blogs.carleton.edu/hacking-humanities/syllabus/">Hacking the Humanities</a>, Carleton College</td>
 <td>Winter 2015</td>
 </tr>
 <tr>
-<td><a href="https://mattwilkens.com/teaching/computational-literary-history-fall-2015/"><span style="font-weight: 400">Computational Literary History,</span></a><span style="font-weight: 400"> University of Notre Dame</span></td>
+<td><a href="https://mattwilkens.com/teaching/computational-literary-history-fall-2015/">Computational Literary History,</a> University of Notre Dame</td>
 <td>Fall 2015</td>
 </tr>
 <tr>
-<td><a href="https://trello.com/b/juUdkmGK/al285-intro-to-digital-humanities-syllabus"><span style="font-weight: 400">Introduction to Digital Humanities</span></a><span style="font-weight: 400">, Michigan State University</span></td>
+<td><a href="https://trello.com/b/juUdkmGK/al285-intro-to-digital-humanities-syllabus">Introduction to Digital Humanities</a>, Michigan State University</td>
 <td>Fall 2015</td>
 </tr>
 <tr>
-<td><a href="https://miningblackculture.wordpress.com/about/syllabus-for-curs-4990/"><span style="font-weight: 400">Mining Black Culture</span></a><span style="font-weight: 400">, Georgia Regents University</span></td>
+<td><a href="https://miningblackculture.wordpress.com/about/syllabus-for-curs-4990/">Mining Black Culture</a>, Georgia Regents University</td>
 <td>Summer 2015</td>
 </tr>
 <tr>
-<td><a href="http://u.arizona.edu/~selisker/images/SeliskerENGL596K.pdf"><span style="font-weight: 400">Methods and Materials of Literary Research: Introduction to Digital Humanities Methods for Literary and Cultural Studies</span></a><span style="font-weight: 400">, University of Arizona</span></td>
+<td><a href="http://u.arizona.edu/~selisker/images/SeliskerENGL596K.pdf">Methods and Materials of Literary Research: Introduction to Digital Humanities Methods for Literary and Cultural Studies</a>, University of Arizona</td>
 <td>Fall 2014</td>
 </tr>
 <tr>
-<td><a href="http://stanford.edu/~jheppler/stanford.syllabus.hist205f.2014f.pdf"><span style="font-weight: 400">Digital History: Concepts, Methods, Problems</span></a><span style="font-weight: 400">, Stanford University</span></td>
+<td><a href="http://stanford.edu/~jheppler/stanford.syllabus.hist205f.2014f.pdf">Digital History: Concepts, Methods, Problems</a>, Stanford University</td>
 <td>Fall 2014</td>
 </tr>
 <tr>
-<td><a href="http://digitalhistory.blogs.rice.edu/syllabus/"><span style="font-weight: 400">Digital History Methods</span></a><span style="font-weight: 400">, Rice University</span></td>
+<td><a href="http://digitalhistory.blogs.rice.edu/syllabus/">Digital History Methods</a>, Rice University</td>
 <td>Spring 2014</td>
 </tr>
 <tr>
-<td><a href="http://torget.us/HIST5100/"><span style="font-weight: 400">Introduction to Digital Scholarship</span></a><span style="font-weight: 400">, University of North Texas</span></td>
-<td>&nbsp;Spring 2014</td>
+<td><a href="http://torget.us/HIST5100/">Introduction to Digital Scholarship</a>, University of North Texas</td>
+<td>Spring 2014</td>
 </tr>
 <tr>
-<td><a href="http://carleton.ca/grs/wp-content/uploads/CLCV3202a-HIST3101a-syllabus-Aug-21-Shawn-Graham.pdf"><span style="font-weight: 400">Roman Archaeology for Historians</span></a><span style="font-weight: 400">, Carleton University</span></td>
+<td><a href="http://carleton.ca/grs/wp-content/uploads/CLCV3202a-HIST3101a-syllabus-Aug-21-Shawn-Graham.pdf">Roman Archaeology for Historians</a>, Carleton University</td>
 <td>Fall 2013</td>
 </tr>
 <tr>

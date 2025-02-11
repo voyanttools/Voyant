@@ -34,21 +34,21 @@ the size of the document.
 
 ## Spyral
 
-To use Textualarc widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use TextualArc widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
-    "DocIndex": null,
+    "docIndex": null,
     "minRawFreq": null,
     "speed": null,
-    "StopList": null
+    "stopList": null
 }; 
 
-loadCorpus("austen").tool("Textualarc", config);
+loadCorpus("austen").tool("textualarc", config);
 ```
 
-Please see {@link Tools.Textualarc} for more information about configuration.
+Please see {@link Tools.TextualArc} for more information about configuration.
 
 ## Additional Information
 

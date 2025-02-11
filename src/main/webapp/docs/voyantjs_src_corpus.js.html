@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <title>Source: voyantjs/src/corpus.js | Voyant Tools Help</title>
 
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
@@ -22,7 +24,9 @@
 <nav class="lnb" id="lnb">
     <div class="logo" style="width: 150px; height: 150px">
         
-            <img src="imgs/info/about/icon.png" width="100%" height="100%">
+            <a href="index.html">
+                <img src="imgs/info/about/icon.png" width="100%" height="100%">
+            </a>
         
     </div>
     <div class="title">
@@ -42,7 +46,7 @@
             </li>
         </ol>
     
-    <div class="lnb-examples hidden"><h3>Voyant</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><div class="member-type">Guides</div><ul class="inner"><li><a href="tutorial-bubblelines_.html">Bubblelines</a></li><li><a href="tutorial-bubbles_.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus_.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates_.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph_.html">Collocates Graph</a></li><li><a href="tutorial-contexts_.html">Contexts</a></li><li><a href="tutorial-corpusterms_.html">Corpus Terms</a></li><li><a href="tutorial-correlations_.html">Correlations</a></li><li><a href="tutorial-documents_.html">Documents</a></li><li><a href="tutorial-documentterms_.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots_.html">Knots</a></li><li><a href="tutorial-mandala_.html">Mandala</a></li><li><a href="tutorial-microsearch_.html">MicroSearch</a></li><li><a href="tutorial-phrases_.html">Phrases</a></li><li><a href="tutorial-reader_.html">Reader</a></li><li><a href="tutorial-rezoviz_.html">RezoViz</a></li><li><a href="tutorial-scatterplot_.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph_.html">StreamGraph</a></li><li><a href="tutorial-summary_.html">Summary</a></li><li><a href="tutorial-termsberry_.html">TermsBerry</a></li><li><a href="tutorial-termsradio_.html">TermsRadio</a></li><li><a href="tutorial-textualarc_.html">TextualArc</a></li><li><a href="tutorial-topics_.html">Topics</a></li><li><a href="tutorial-trends_.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree_.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="CustomSet.html">CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="CustomSet.html#.layout">layout</a></li><li><a href="CustomSet.html#.tableLayout">tableLayout</a></li></ul></div></li><li><a href="Panel.html">Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Panel.html#.corpus">corpus</a></li><li><a href="Panel.html#.input">input</a></li><li><a href="Panel.html#.inputFormat">inputFormat</a></li><li><a href="Panel.html#.subtitle">subtitle</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li></ul></div>
+    <div class="lnb-examples hidden"><h3>Voyant</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><ul class="inner"><li><a href="tutorial-bubblelines.html">Bubblelines</a></li><li><a href="tutorial-bubbles.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph.html">Collocates Graph</a></li><li><a href="tutorial-contexts.html">Contexts</a></li><li><a href="tutorial-corpusterms.html">Corpus Terms</a></li><li><a href="tutorial-correlations.html">Correlations</a></li><li><a href="tutorial-documents.html">Documents</a></li><li><a href="tutorial-documentterms.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots.html">Knots</a></li><li><a href="tutorial-mandala.html">Mandala</a></li><li><a href="tutorial-microsearch.html">MicroSearch</a></li><li><a href="tutorial-phrases.html">Phrases</a></li><li><a href="tutorial-reader.html">Reader</a></li><li><a href="tutorial-rezoviz.html">RezoViz</a></li><li><a href="tutorial-scatterplot.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph.html">StreamGraph</a></li><li><a href="tutorial-summary.html">Summary</a></li><li><a href="tutorial-termsberry.html">TermsBerry</a></li><li><a href="tutorial-termsradio.html">TermsRadio</a></li><li><a href="tutorial-textualarc.html">TextualArc</a></li><li><a href="tutorial-topics.html">Topics</a></li><li><a href="tutorial-trends.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.CustomSet.html">CustomSet</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Panel.html">Panel</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li><li><a href="window.html">window</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="window_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="window.html#.createTable">createTable</a></li><li><a href="window.html#.loadCorpus">loadCorpus</a></li><li><a href="window.html#.show">show</a></li><li><a href="window.html#.showError">showError</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Spyral.Categories.html">Spyral.Categories</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Categories_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Categories.html#addCategory">addCategory</a></li><li><a href="Spyral.Categories.html#addFeature">addFeature</a></li><li><a href="Spyral.Categories.html#addTerm">addTerm</a></li><li><a href="Spyral.Categories.html#addTerms">addTerms</a></li><li><a href="Spyral.Categories.html#getCategories">getCategories</a></li><li><a href="Spyral.Categories.html#getCategoriesForTerm">getCategoriesForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryExportData">getCategoryExportData</a></li><li><a href="Spyral.Categories.html#getCategoryFeature">getCategoryFeature</a></li><li><a href="Spyral.Categories.html#getCategoryForTerm">getCategoryForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryNames">getCategoryNames</a></li><li><a href="Spyral.Categories.html#getCategoryRanking">getCategoryRanking</a></li><li><a href="Spyral.Categories.html#getCategoryTerms">getCategoryTerms</a></li><li><a href="Spyral.Categories.html#getFeatureForTerm">getFeatureForTerm</a></li><li><a href="Spyral.Categories.html#getFeatures">getFeatures</a></li><li><a href="Spyral.Categories.html#load">load</a></li><li><a href="Spyral.Categories.html#removeCategory">removeCategory</a></li><li><a href="Spyral.Categories.html#removeFeature">removeFeature</a></li><li><a href="Spyral.Categories.html#removeTerm">removeTerm</a></li><li><a href="Spyral.Categories.html#removeTerms">removeTerms</a></li><li><a href="Spyral.Categories.html#renameCategory">renameCategory</a></li><li><a href="Spyral.Categories.html#save">save</a></li><li><a href="Spyral.Categories.html#setCategoryFeature">setCategoryFeature</a></li><li><a href="Spyral.Categories.html#setCategoryRanking">setCategoryRanking</a></li><li><a href="Spyral.Categories.html#.load">load</a></li></ul></div></li><li><a href="Spyral.Chart.html">Spyral.Chart</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Chart_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Chart.html#bar">bar</a></li><li><a href="Spyral.Chart.html#column">column</a></li><li><a href="Spyral.Chart.html#create">create</a></li><li><a href="Spyral.Chart.html#line">line</a></li><li><a href="Spyral.Chart.html#networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#scatter">scatter</a></li><li><a href="Spyral.Chart.html#.bar">bar</a></li><li><a href="Spyral.Chart.html#.column">column</a></li><li><a href="Spyral.Chart.html#.create">create</a></li><li><a href="Spyral.Chart.html#.line">line</a></li><li><a href="Spyral.Chart.html#.networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#.scatter">scatter</a></li><li><a href="Spyral.Chart.html#.setSeriesData">setSeriesData</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Chart.html#~HighchartsConfig">HighchartsConfig</a></li><li><a href="Spyral.Chart.html#~HighchartsSeriesConfig">HighchartsSeriesConfig</a></li></ul></div></li><li><a href="Spyral.Corpus.html">Spyral.Corpus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Corpus_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Corpus.html#analysis">analysis</a></li><li><a href="Spyral.Corpus.html#collocates">collocates</a></li><li><a href="Spyral.Corpus.html#contexts">contexts</a></li><li><a href="Spyral.Corpus.html#correlations">correlations</a></li><li><a href="Spyral.Corpus.html#documents">documents</a></li><li><a href="Spyral.Corpus.html#entities">entities</a></li><li><a href="Spyral.Corpus.html#filterByCategory">filterByCategory</a></li><li><a href="Spyral.Corpus.html#id">id</a></li><li><a href="Spyral.Corpus.html#lemmas">lemmas</a></li><li><a href="Spyral.Corpus.html#metadata">metadata</a></li><li><a href="Spyral.Corpus.html#phrases">phrases</a></li><li><a href="Spyral.Corpus.html#summary">summary</a></li><li><a href="Spyral.Corpus.html#terms">terms</a></li><li><a href="Spyral.Corpus.html#text">text</a></li><li><a href="Spyral.Corpus.html#texts">texts</a></li><li><a href="Spyral.Corpus.html#titles">titles</a></li><li><a href="Spyral.Corpus.html#toString">toString</a></li><li><a href="Spyral.Corpus.html#tokens">tokens</a></li><li><a href="Spyral.Corpus.html#tool">tool</a></li><li><a href="Spyral.Corpus.html#topics">topics</a></li><li><a href="Spyral.Corpus.html#words">words</a></li><li><a href="Spyral.Corpus.html#.load">load</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Corpus.html#~CorpusConfig">CorpusConfig</a></li></ul></div></li><li><a href="Spyral.Load.html">Spyral.Load</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Load_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Load.html#.html">html</a></li><li><a href="Spyral.Load.html#.json">json</a></li><li><a href="Spyral.Load.html#.load">load</a></li><li><a href="Spyral.Load.html#.setBaseUrl">setBaseUrl</a></li><li><a href="Spyral.Load.html#.text">text</a></li><li><a href="Spyral.Load.html#.trombone">trombone</a></li><li><a href="Spyral.Load.html#.xml">xml</a></li></ul></div></li><li><a href="Spyral.Metadata.html">Spyral.Metadata</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Metadata_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Metadata.html#clone">clone</a></li><li><a href="Spyral.Metadata.html#getHeaders">getHeaders</a></li><li><a href="Spyral.Metadata.html#set">set</a></li><li><a href="Spyral.Metadata.html#setDateNow">setDateNow</a></li><li><a href="Spyral.Metadata.html#shortDate">shortDate</a></li></ul></div></li><li><a href="Spyral.Notebook.html">Spyral.Notebook</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Notebook_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Notebook.html#.getPromise">getPromise</a></li><li><a href="Spyral.Notebook.html#.getTarget">getTarget</a></li><li><a href="Spyral.Notebook.html#.import">import</a></li><li><a href="Spyral.Notebook.html#.show">show</a></li></ul></div></li><li><a href="Spyral.Table.html">Spyral.Table</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Table_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Table.html#addColumn">addColumn</a></li><li><a href="Spyral.Table.html#addRow">addRow</a></li><li><a href="Spyral.Table.html#addRows">addRows</a></li><li><a href="Spyral.Table.html#cell">cell</a></li><li><a href="Spyral.Table.html#chart">chart</a></li><li><a href="Spyral.Table.html#column">column</a></li><li><a href="Spyral.Table.html#columnCounts">columnCounts</a></li><li><a href="Spyral.Table.html#columnMax">columnMax</a></li><li><a href="Spyral.Table.html#columnMean">columnMean</a></li><li><a href="Spyral.Table.html#columnMin">columnMin</a></li><li><a href="Spyral.Table.html#columnRollingMean">columnRollingMean</a></li><li><a href="Spyral.Table.html#columnSort">columnSort</a></li><li><a href="Spyral.Table.html#columnStandardDeviation">columnStandardDeviation</a></li><li><a href="Spyral.Table.html#columnSum">columnSum</a></li><li><a href="Spyral.Table.html#columnVariance">columnVariance</a></li><li><a href="Spyral.Table.html#columnZScores">columnZScores</a></li><li><a href="Spyral.Table.html#columns">columns</a></li><li><a href="Spyral.Table.html#forEach">forEach</a></li><li><a href="Spyral.Table.html#getColumnIndex">getColumnIndex</a></li><li><a href="Spyral.Table.html#getRowIndex">getRowIndex</a></li><li><a href="Spyral.Table.html#hasColumn">hasColumn</a></li><li><a href="Spyral.Table.html#header">header</a></li><li><a href="Spyral.Table.html#headers">headers</a></li><li><a href="Spyral.Table.html#html">html</a></li><li><a href="Spyral.Table.html#row">row</a></li><li><a href="Spyral.Table.html#rowCounts">rowCounts</a></li><li><a href="Spyral.Table.html#rowMax">rowMax</a></li><li><a href="Spyral.Table.html#rowMean">rowMean</a></li><li><a href="Spyral.Table.html#rowMin">rowMin</a></li><li><a href="Spyral.Table.html#rowRollingMean">rowRollingMean</a></li><li><a href="Spyral.Table.html#rowSort">rowSort</a></li><li><a href="Spyral.Table.html#rowStandardDeviation">rowStandardDeviation</a></li><li><a href="Spyral.Table.html#rowSum">rowSum</a></li><li><a href="Spyral.Table.html#rowVariance">rowVariance</a></li><li><a href="Spyral.Table.html#rowZScores">rowZScores</a></li><li><a href="Spyral.Table.html#rows">rows</a></li><li><a href="Spyral.Table.html#setCell">setCell</a></li><li><a href="Spyral.Table.html#setColumn">setColumn</a></li><li><a href="Spyral.Table.html#setHeaders">setHeaders</a></li><li><a href="Spyral.Table.html#setRow">setRow</a></li><li><a href="Spyral.Table.html#toCsv">toCsv</a></li><li><a href="Spyral.Table.html#toHtml">toHtml</a></li><li><a href="Spyral.Table.html#toString">toString</a></li><li><a href="Spyral.Table.html#toTsv">toTsv</a></li><li><a href="Spyral.Table.html#updateCell">updateCell</a></li><li><a href="Spyral.Table.html#.cmp">cmp</a></li><li><a href="Spyral.Table.html#.counts">counts</a></li><li><a href="Spyral.Table.html#.create">create</a></li><li><a href="Spyral.Table.html#.fetch">fetch</a></li><li><a href="Spyral.Table.html#.mean">mean</a></li><li><a href="Spyral.Table.html#.rollingMean">rollingMean</a></li><li><a href="Spyral.Table.html#.standardDeviation">standardDeviation</a></li><li><a href="Spyral.Table.html#.sum">sum</a></li><li><a href="Spyral.Table.html#.variance">variance</a></li><li><a href="Spyral.Table.html#.zScores">zScores</a></li><li><a href="Spyral.Table.html#.zip">zip</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Table.html#~TableConfig">TableConfig</a></li></ul></div></li><li><a href="Spyral.Util.html">Spyral.Util</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html">Storage</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.html#.blobToDataUrl">blobToDataUrl</a></li><li><a href="Spyral.Util.html#.blobToString">blobToString</a></li><li><a href="Spyral.Util.html#.dataUrlToBlob">dataUrlToBlob</a></li><li><a href="Spyral.Util.html#.getFileExtensionFromMimeType">getFileExtensionFromMimeType</a></li><li><a href="Spyral.Util.html#.getVoyantDocumentFormatFromFileExtension">getVoyantDocumentFormatFromFileExtension</a></li><li><a href="Spyral.Util.html#.id">id</a></li><li><a href="Spyral.Util.html#.isArray">isArray</a></li><li><a href="Spyral.Util.html#.isBlob">isBlob</a></li><li><a href="Spyral.Util.html#.isBoolean">isBoolean</a></li><li><a href="Spyral.Util.html#.isFunction">isFunction</a></li><li><a href="Spyral.Util.html#.isNode">isNode</a></li><li><a href="Spyral.Util.html#.isNull">isNull</a></li><li><a href="Spyral.Util.html#.isNumber">isNumber</a></li><li><a href="Spyral.Util.html#.isObject">isObject</a></li><li><a href="Spyral.Util.html#.isPromise">isPromise</a></li><li><a href="Spyral.Util.html#.isString">isString</a></li><li><a href="Spyral.Util.html#.isUndefined">isUndefined</a></li><li><a href="Spyral.Util.html#.more">more</a></li><li><a href="Spyral.Util.html#.show">show</a></li><li><a href="Spyral.Util.html#.showError">showError</a></li><li><a href="Spyral.Util.html#.toString">toString</a></li><li><a href="Spyral.Util.html#.transformXml">transformXml</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Spyral.Util.Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li><li><a href="Tools.Bubblelines.html">Tools.Bubblelines</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubblelines_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html#bins">bins</a></li><li><a href="Tools.Bubblelines.html#docId">docId</a></li><li><a href="Tools.Bubblelines.html#docIndex">docIndex</a></li><li><a href="Tools.Bubblelines.html#maxDocs">maxDocs</a></li><li><a href="Tools.Bubblelines.html#query">query</a></li><li><a href="Tools.Bubblelines.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Bubbles.html">Tools.Bubbles</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubbles_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubbles.html#audio">audio</a></li><li><a href="Tools.Bubbles.html#docIndex">docIndex</a></li><li><a href="Tools.Bubbles.html#limit">limit</a></li><li><a href="Tools.Bubbles.html#speed">speed</a></li><li><a href="Tools.Bubbles.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Cirrus.html">Tools.Cirrus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Cirrus_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Cirrus.html#categories">categories</a></li><li><a href="Tools.Cirrus.html#docId">docId</a></li><li><a href="Tools.Cirrus.html#docIndex">docIndex</a></li><li><a href="Tools.Cirrus.html#fontFamily">fontFamily</a></li><li><a href="Tools.Cirrus.html#inlineData">inlineData</a></li><li><a href="Tools.Cirrus.html#limit">limit</a></li><li><a href="Tools.Cirrus.html#stopList">stopList</a></li><li><a href="Tools.Cirrus.html#visible">visible</a></li><li><a href="Tools.Cirrus.html#whiteList">whiteList</a></li></ul></div></li><li><a href="Tools.CollocatesGraph.html">Tools.CollocatesGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CollocatesGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CollocatesGraph.html#centralize">centralize</a></li><li><a href="Tools.CollocatesGraph.html#context">context</a></li><li><a href="Tools.CollocatesGraph.html#limit">limit</a></li><li><a href="Tools.CollocatesGraph.html#query">query</a></li><li><a href="Tools.CollocatesGraph.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Contexts.html">Tools.Contexts</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Contexts_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Contexts.html#columns">columns</a></li><li><a href="Tools.Contexts.html#context">context</a></li><li><a href="Tools.Contexts.html#dir">dir</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docIndex">docIndex</a></li><li><a href="Tools.Contexts.html#expand">expand</a></li><li><a href="Tools.Contexts.html#query">query</a></li><li><a href="Tools.Contexts.html#sort">sort</a></li><li><a href="Tools.Contexts.html#stopList">stopList</a></li><li><a href="Tools.Contexts.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusCollocates.html">Tools.CorpusCollocates</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusCollocates_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusCollocates.html#columns">columns</a></li><li><a href="Tools.CorpusCollocates.html#context">context</a></li><li><a href="Tools.CorpusCollocates.html#dir">dir</a></li><li><a href="Tools.CorpusCollocates.html#docId">docId</a></li><li><a href="Tools.CorpusCollocates.html#docIndex">docIndex</a></li><li><a href="Tools.CorpusCollocates.html#query">query</a></li><li><a href="Tools.CorpusCollocates.html#sort">sort</a></li><li><a href="Tools.CorpusCollocates.html#stopList">stopList</a></li><li><a href="Tools.CorpusCollocates.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusTerms.html">Tools.CorpusTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusTerms.html#columns">columns</a></li><li><a href="Tools.CorpusTerms.html#comparisonCorpus">comparisonCorpus</a></li><li><a href="Tools.CorpusTerms.html#dir">dir</a></li><li><a href="Tools.CorpusTerms.html#maxBins">maxBins</a></li><li><a href="Tools.CorpusTerms.html#query">query</a></li><li><a href="Tools.CorpusTerms.html#sort">sort</a></li><li><a href="Tools.CorpusTerms.html#stopList">stopList</a></li><li><a href="Tools.CorpusTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Correlations.html">Tools.Correlations</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Correlations_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Correlations.html#columns">columns</a></li><li><a href="Tools.Correlations.html#dir">dir</a></li><li><a href="Tools.Correlations.html#docId">docId</a></li><li><a href="Tools.Correlations.html#docIndex">docIndex</a></li><li><a href="Tools.Correlations.html#minInDocumentsCountRatio">minInDocumentsCountRatio</a></li><li><a href="Tools.Correlations.html#query">query</a></li><li><a href="Tools.Correlations.html#sort">sort</a></li><li><a href="Tools.Correlations.html#stopList">stopList</a></li><li><a href="Tools.Correlations.html#termColors">termColors</a></li><li><a href="Tools.Correlations.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.CustomSet.html">Tools.CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CustomSet.html#layout">layout</a></li><li><a href="Tools.CustomSet.html#tableLayout">tableLayout</a></li></ul></div></li><li><a href="Tools.DocumentTerms.html">Tools.DocumentTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.DocumentTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.DocumentTerms.html#bins">bins</a></li><li><a href="Tools.DocumentTerms.html#columns">columns</a></li><li><a href="Tools.DocumentTerms.html#dir">dir</a></li><li><a href="Tools.DocumentTerms.html#docId">docId</a></li><li><a href="Tools.DocumentTerms.html#docIndex">docIndex</a></li><li><a href="Tools.DocumentTerms.html#query">query</a></li><li><a href="Tools.DocumentTerms.html#sort">sort</a></li><li><a href="Tools.DocumentTerms.html#stopList">stopList</a></li><li><a href="Tools.DocumentTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Documents.html">Tools.Documents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Documents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Documents.html#columns">columns</a></li><li><a href="Tools.Documents.html#dir">dir</a></li><li><a href="Tools.Documents.html#docId">docId</a></li><li><a href="Tools.Documents.html#docIndex">docIndex</a></li><li><a href="Tools.Documents.html#query">query</a></li><li><a href="Tools.Documents.html#sort">sort</a></li></ul></div></li><li><a href="Tools.Embedder.html">Tools.Embedder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Embedder_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Embedder.html#url">url</a></li></ul></div></li><li><a href="Tools.Knots.html">Tools.Knots</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Knots_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Knots.html#audio">audio</a></li><li><a href="Tools.Knots.html#docId">docId</a></li><li><a href="Tools.Knots.html#query">query</a></li><li><a href="Tools.Knots.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Mandala.html">Tools.Mandala</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Mandala_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Mandala.html#labels">labels</a></li><li><a href="Tools.Mandala.html#query">query</a></li><li><a href="Tools.Mandala.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.MicroSearch.html">Tools.MicroSearch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.MicroSearch_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.MicroSearch.html#query">query</a></li><li><a href="Tools.MicroSearch.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Panel.html">Tools.Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Panel.html#corpus">corpus</a></li><li><a href="Tools.Panel.html#input">input</a></li><li><a href="Tools.Panel.html#inputFormat">inputFormat</a></li><li><a href="Tools.Panel.html#subtitle">subtitle</a></li></ul></div></li><li><a href="Tools.Phrases.html">Tools.Phrases</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Phrases_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Phrases.html#columns">columns</a></li><li><a href="Tools.Phrases.html#dir">dir</a></li><li><a href="Tools.Phrases.html#docId">docId</a></li><li><a href="Tools.Phrases.html#docIndex">docIndex</a></li><li><a href="Tools.Phrases.html#maxLength">maxLength</a></li><li><a href="Tools.Phrases.html#minLength">minLength</a></li><li><a href="Tools.Phrases.html#overlapFilter">overlapFilter</a></li><li><a href="Tools.Phrases.html#query">query</a></li><li><a href="Tools.Phrases.html#sort">sort</a></li><li><a href="Tools.Phrases.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Reader.html">Tools.Reader</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Reader_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Reader.html#limit">limit</a></li><li><a href="Tools.Reader.html#query">query</a></li><li><a href="Tools.Reader.html#skipToDocId">skipToDocId</a></li><li><a href="Tools.Reader.html#start">start</a></li></ul></div></li><li><a href="Tools.RezoViz.html">Tools.RezoViz</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.RezoViz_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.RezoViz.html#docId">docId</a></li><li><a href="Tools.RezoViz.html#limit">limit</a></li><li><a href="Tools.RezoViz.html#minEdgeCount">minEdgeCount</a></li><li><a href="Tools.RezoViz.html#nerService">nerService</a></li><li><a href="Tools.RezoViz.html#query">query</a></li><li><a href="Tools.RezoViz.html#stopList">stopList</a></li><li><a href="Tools.RezoViz.html#type">type</a></li></ul></div></li><li><a href="Tools.ScatterPlot.html">Tools.ScatterPlot</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.ScatterPlot_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.ScatterPlot.html#analysis">analysis</a></li><li><a href="Tools.ScatterPlot.html#bins">bins</a></li><li><a href="Tools.ScatterPlot.html#clusters">clusters</a></li><li><a href="Tools.ScatterPlot.html#comparisonType">comparisonType</a></li><li><a href="Tools.ScatterPlot.html#dimensions">dimensions</a></li><li><a href="Tools.ScatterPlot.html#docId">docId</a></li><li><a href="Tools.ScatterPlot.html#iterations">iterations</a></li><li><a href="Tools.ScatterPlot.html#label">label</a></li><li><a href="Tools.ScatterPlot.html#limit">limit</a></li><li><a href="Tools.ScatterPlot.html#perplexity">perplexity</a></li><li><a href="Tools.ScatterPlot.html#query">query</a></li><li><a href="Tools.ScatterPlot.html#stopList">stopList</a></li><li><a href="Tools.ScatterPlot.html#storeJson">storeJson</a></li><li><a href="Tools.ScatterPlot.html#target">target</a></li><li><a href="Tools.ScatterPlot.html#term">term</a></li><li><a href="Tools.ScatterPlot.html#whitelist">whitelist</a></li></ul></div></li><li><a href="Tools.StreamGraph.html">Tools.StreamGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.StreamGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.StreamGraph.html#bins">bins</a></li><li><a href="Tools.StreamGraph.html#docId">docId</a></li><li><a href="Tools.StreamGraph.html#docIndex">docIndex</a></li><li><a href="Tools.StreamGraph.html#limit">limit</a></li><li><a href="Tools.StreamGraph.html#query">query</a></li><li><a href="Tools.StreamGraph.html#stopList">stopList</a></li><li><a href="Tools.StreamGraph.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.Summary.html">Tools.Summary</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Summary_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Summary.html#limit">limit</a></li><li><a href="Tools.Summary.html#numberOfDocumentsForDistinctiveWords">numberOfDocumentsForDistinctiveWords</a></li><li><a href="Tools.Summary.html#start">start</a></li><li><a href="Tools.Summary.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsBerry.html">Tools.TermsBerry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsBerry_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsBerry.html#categories">categories</a></li><li><a href="Tools.TermsBerry.html#context">context</a></li><li><a href="Tools.TermsBerry.html#docId">docId</a></li><li><a href="Tools.TermsBerry.html#docIndex">docIndex</a></li><li><a href="Tools.TermsBerry.html#numInitialTerms">numInitialTerms</a></li><li><a href="Tools.TermsBerry.html#query">query</a></li><li><a href="Tools.TermsBerry.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsRadio.html">Tools.TermsRadio</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsRadio_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsRadio.html#bins">bins</a></li><li><a href="Tools.TermsRadio.html#limit">limit</a></li><li><a href="Tools.TermsRadio.html#query">query</a></li><li><a href="Tools.TermsRadio.html#slider">slider</a></li><li><a href="Tools.TermsRadio.html#speed">speed</a></li><li><a href="Tools.TermsRadio.html#stopList">stopList</a></li><li><a href="Tools.TermsRadio.html#visibleBins">visibleBins</a></li><li><a href="Tools.TermsRadio.html#yAxisScale">yAxisScale</a></li></ul></div></li><li><a href="Tools.TextualArc.html">Tools.TextualArc</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TextualArc_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TextualArc.html#docIndex">docIndex</a></li><li><a href="Tools.TextualArc.html#minRawFreq">minRawFreq</a></li><li><a href="Tools.TextualArc.html#speed">speed</a></li><li><a href="Tools.TextualArc.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Topics.html">Tools.Topics</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Topics_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Topics.html#iterations">iterations</a></li><li><a href="Tools.Topics.html#perDocLimit">perDocLimit</a></li><li><a href="Tools.Topics.html#seed">seed</a></li><li><a href="Tools.Topics.html#stopList">stopList</a></li><li><a href="Tools.Topics.html#termsPerTopic">termsPerTopic</a></li><li><a href="Tools.Topics.html#topics">topics</a></li></ul></div></li><li><a href="Tools.Trends.html">Tools.Trends</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Trends_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Trends.html#bins">bins</a></li><li><a href="Tools.Trends.html#chartType">chartType</a></li><li><a href="Tools.Trends.html#docId">docId</a></li><li><a href="Tools.Trends.html#docIndex">docIndex</a></li><li><a href="Tools.Trends.html#labels">labels</a></li><li><a href="Tools.Trends.html#limit">limit</a></li><li><a href="Tools.Trends.html#mode">mode</a></li><li><a href="Tools.Trends.html#query">query</a></li><li><a href="Tools.Trends.html#stopList">stopList</a></li><li><a href="Tools.Trends.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.WordTree.html">Tools.WordTree</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.WordTree_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.WordTree.html#context">context</a></li><li><a href="Tools.WordTree.html#docId">docId</a></li><li><a href="Tools.WordTree.html#docIndex">docIndex</a></li><li><a href="Tools.WordTree.html#limit">limit</a></li><li><a href="Tools.WordTree.html#query">query</a></li><li><a href="Tools.WordTree.html#stopList">stopList</a></li></ul></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -56,6 +60,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import Load from './load';
 import Util from './util.js';
+import Categories from './categories.js';
 
 
 // this is essentially a private method to determine if we're in corpus or documents mode.
@@ -65,39 +70,37 @@ function isDocumentsMode(config={}) {
 }
 
 /**
- * The Corpus class in Spyral. Here's a simple example:
+ * The Corpus class in Spyral. To get started you first need to load a Corpus, using either a
+ * pre-existing Corpus id, or some input data. For this you can use the [loadCorpus]{@link window.loadCorpus}
+ * method, which is an alias of {@link Spyral.Corpus.load}.
+ * 
+ * Here's a simple example:
  * 
  * 	loadCorpus("Hello World!").summary();
  * 
  * This loads a corpus and returns an asynchronous `Promise`, but all of the methods
- * of Corpus are appended to the Promise, so {@link #summary} will be called
+ * of Corpus are appended to the Promise, so {@link Spyral.Corpus#summary} will be called
  * once the Corpus promise is fulfilled. It's equivalent to the following:
  *
  * 	loadCorpus("Hello World!").then(corpus -> corpus.summary());
  *
- * Have a look at the {@link #input} configuration for more examples.
- * 
- * There is a lot of flexibility in how corpora are created, here's a summary of the parameters:
+ * Have a look at the {@link Spyral.Corpus~CorpusConfig} configuration for more examples.
  *
- * - **sources**: {@link #corpus}, {@link #input}
- * - **formats**:
- * 	- **Text**: {@link #inputRemoveFrom}, {@link #inputRemoveFromAfter}, {@link #inputRemoveUntil}, {@link #inputRemoveUntilAfter}
- * 	- **XML**: {@link #xmlAuthorXpath}, {@link #xmlCollectionXpath}, {@link #xmlContentXpath}, {@link #xmlExtraMetadataXpath}, {@link #xmlKeywordXpath}, {@link #xmlPubPlaceXpath}, {@link #xmlPublisherXpath}, {@link #xmlTitleXpath}
- * 	- **Tables**: {@link #tableAuthor}, {@link #tableContent}, {@link #tableDocuments}, {@link #tableNoHeadersRow}, {@link #tableTitle}, {@link #tableGroupBy}
- * - **other**: {@link #inputFormat}, {@link #subTitle}, {@link #title}, {@link #tokenization}
-
  * @memberof Spyral
  * @class
  */
 class Corpus {
-
+	
 /**
- * @cfg {String} corpus The ID of a previously created corpus.
- *
+ * The Corpus config
+ * @typedef {Object|String} Spyral.Corpus~CorpusConfig
+ * 
+ * @property {String} corpus The ID of a previously created corpus.
+ * 
  * A corpus ID can be used to try to retrieve a corpus that has been previously created.
  * Typically the corpus ID is used as a first string argument, with an optional second
  * argument for other parameters (especially those to recreate the corpus if needed).
- *
+ * 
  * 	loadCorpus("goldbug");
  *
  * 	loadCorpus("goldbug", {
@@ -106,44 +109,40 @@ class Corpus {
  * 		inputRemoveUntil: 'THE GOLD-BUG',
  * 		inputRemoveFrom: 'FOUR BEASTS IN ONE'
  * 	});
- */
-
-/**
- * @cfg {(String|String[])} input Input sources for the corpus.
  *
+ * @property {(String|String[])} input Input sources for the corpus.
+ * 
  * The input sources can be either normal text or URLs (starting with `http`).
- *
+ * 
  * Typically input sources are specified as a string or an array in the first argument, with an optional second argument for other parameters.
+ * 
+ * 	loadCorpus("Hello Voyant!"); // one document with this string
+ * 
+ * 	loadCorpus(["Hello Voyant!", "How are you?"]); // two documents with these strings
+ * 
+ * 	loadCorpus("http://hermeneuti.ca/"); // one document from URL
+ * 
+ * 	loadCorpus(["http://hermeneuti.ca/", "https://en.wikipedia.org/wiki/Voyant_Tools"]); // two documents from URLs
+ * 
+ * 	loadCorpus("Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
+ * 
+ * 	loadCorpus("https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt", {
+ * 		inputRemoveUntil: 'THE GOLD-BUG',
+ * 		inputRemoveFrom: 'FOUR BEASTS IN ONE'
+ * 	});
+ * 
+ * 	// use a corpus ID but also specify an input source if the corpus can't be found
+ * 	loadCorpus("goldbug", {
+ * 		input: "https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt",
+ * 		inputRemoveUntil: 'THE GOLD-BUG',
+ * 		inputRemoveFrom: 'FOUR BEASTS IN ONE'
+ * 	});
  *
- * 		loadCorpus("Hello Voyant!"); // one document with this string
- *
- * 		loadCorpus(["Hello Voyant!", "How are you?"]); // two documents with these strings
- *
- * 		loadCorpus("http://hermeneuti.ca/"); // one document from URL
- *
- * 		loadCorpus(["http://hermeneuti.ca/", "https://en.wikipedia.org/wiki/Voyant_Tools"]); // two documents from URLs
- *
- * 		loadCorpus("Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
- *
- * 		loadCorpus("https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt", {
- * 			inputRemoveUntil: 'THE GOLD-BUG',
- * 			inputRemoveFrom: 'FOUR BEASTS IN ONE'
- * 		});
- *
- * 		// use a corpus ID but also specify an input source if the corpus can't be found
- * 		loadCorpus("goldbug", {
- * 			input: "https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt",
- * 			inputRemoveUntil: 'THE GOLD-BUG',
- * 			inputRemoveFrom: 'FOUR BEASTS IN ONE'
- * 		});
- */
-
-/**
- * @cfg {String} inputFormat The input format of the corpus (the default is to auto-detect).
- *
+ * @property {String} inputFormat The input format of the corpus (the default is to auto-detect).
+ * 
  * The auto-detect format is usually reliable and inputFormat should only be used if the default
  * behaviour isn't desired. Most of the relevant values are used for XML documents:
- *
+ * 
  * - **DTOC**: Dynamic Table of Contexts XML format
  * - **HTML**: Hypertext Markup Language
  * - **RSS**: Really Simple Syndication XML format
@@ -151,279 +150,227 @@ class Corpus {
  * - **TEICORPUS**: Text Encoding Initiative Corpus XML format
  * - **TEXT**: plain text
  * - **XML**: treat the document as XML (sometimes overridding auto-detect of XML vocabularies like RSS and TEI)
- *
+ * 
  * Other formats include **PDF**, **MSWORD**, **XLSX**, **RTF**, **ODT**, and **ZIP** (but again, these rarely need to be specified).
- */
-
-/**
- * @cfg {String} tableDocuments Determine what is a document in a table (the entire table, by row, by column); only used for table-based documents.
  *
+ * @property {String} tableDocuments Determine what is a document in a table (the entire table, by row, by column); only used for table-based documents.
+ * 
  * Possible values are:
- *
+ * 
  * - **undefined or blank** (default): the entire table is one document
  * - **rows**: each row of the table is a separate document
  * - **columns**: each column of the table is a separate document
+ * 
+ * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
  *
- * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
- */
-
-/**
- * @cfg {String} tableContent Determine how to extract body content from the table; only used for table-based documents.
- *
+ * @property {String} tableContent Determine how to extract body content from the table; only used for table-based documents.
+ * 
  * Columns are referred to by numbers, the first is column 1 (not 0).
  * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
- *
+ * 
  * Some examples:
- *
+ * 
  * - **1**: use column 1
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
+ * 
+ * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
  *
- * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
- */
-
-/**
- * @cfg {String} tableAuthor Determine how to extract the author from each document; only used for table-based documents.
- *
+ * @property {String} tableAuthor Determine how to extract the author from each document; only used for table-based documents.
+ * 
  * Columns are referred to by numbers, the first is column 1 (not 0).
  * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
- *
+ * 
  * Some examples:
- *
+ * 
  * - **1**: use column 1
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
+ * 
+ * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
  *
- * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
- */
-
-/**
- * @cfg {String} tableTitle Determine how to extract the title from each document; only used for table-based documents.
- *
+ * @property {String} tableTitle Determine how to extract the title from each document; only used for table-based documents.
+ * 
  * Columns are referred to by numbers, the first is column 1 (not 0).
  * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
- *
+ * 
  * Some examples:
- *
+ * 
  * - **1**: use column 1
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
+ * 
+ * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
  *
- * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
- */
-
-/**
- * @cfg {String} tableGroupBy Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.
- *
+ * @property {String} tableGroupBy Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.
+ * 
  * Columns are referred to by numbers, the first is column 1 (not 0).
  * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
- *
+ * 
  * Some examples:
- *
+ * 
  * - **1**: use column 1
  * - **1,2**: use columns 1 and 2 separately
  * - **1+2,3**: combine columns 1 and two and use column 3 separately
+ * 
+ * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
  *
- * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
- */
-
-/**
- * @cfg {String} tableNoHeadersRow Determine if the table has a first row of headers; only used for table-based documents.
- *
+ * @property {String} tableNoHeadersRow Determine if the table has a first row of headers; only used for table-based documents.
+ * 
  * Provide a value of "true" if there is no header row, otherwise leave it blank or undefined (default).
+ * 
+ * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
  *
- * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
- */
-
-/**
- * @cfg {String} tokenization The tokenization strategy to use
- *
+ * @property {String} tokenization The tokenization strategy to use
+ * 
  * This should usually be undefined, unless specific behaviour is required. These are the valid values:
- *
+ * 
  * - **undefined or blank**: use the default tokenization (which uses Unicode rules for word segmentation)
  * - **wordBoundaries**: use any Unicode character word boundaries for tokenization
  * - **whitespace**: tokenize by whitespace only (punctuation and other characters will be kept with words)
+ * 
+ * See also [Creating a Corpus Tokenization](tutorial-corpuscreator.html#processing).
  *
- * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tokenization).
- */
-
-/**
- * @cfg {String} xmlContentXpath The XPath expression that defines the location of document content (the body); only used for XML-based documents.
+ * @property {String} xmlContentXpath The XPath expression that defines the location of document content (the body); only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;head>Hello world!&lt;/head>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlContentXpath: "//body"
+ * 	}); // document would be: "This is Voyant!"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * 		loadCorpus("&lt;doc>&lt;head>Hello world!&lt;/head>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlContentXpath: "//body"
- * 		}); // document would be: "This is Voyant!"
+ * @property {String} xmlTitleXpath The XPath expression that defines the location of each document's title; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;title>Hello world!&lt;/title>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlTitleXpath: "//title"
+ * 	}); // title would be: "Hello world!"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlTitleXpath The XPath expression that defines the location of each document's title; only used for XML-based documents.
+ * @property {String} xmlAuthorXpath The XPath expression that defines the location of each document's author; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;author>Stéfan Sinclair&lt;/author>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlAuthorXpath: "//author"
+ * 	}); // author would be: "Stéfan Sinclair"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * 		loadCorpus("&lt;doc>&lt;title>Hello world!&lt;/title>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlTitleXpath: "//title"
- * 		}); // title would be: "Hello world!"
+ * @property {String} xmlPubPlaceXpath The XPath expression that defines the location of each document's publication place; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;pubPlace>Montreal&lt;/pubPlace>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlPubPlaceXpath: "//pubPlace"
+ * 	}); // publication place would be: "Montreal"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlAuthorXpath The XPath expression that defines the location of each document's author; only used for XML-based documents.
+ * @property {String} xmlPublisherXpath The XPath expression that defines the location of each document's publisher; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;publisher>The Owl&lt;/publisher>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlPublisherXpath: "//publisher"
+ * 	}); // publisher would be: "The Owl"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * 		loadCorpus("&lt;doc>&lt;author>Stéfan Sinclair&lt;/author>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlAuthorXpath: "//author"
- * 		}); // author would be: "Stéfan Sinclair"
+ * @property {String} xmlKeywordXpath The XPath expression that defines the location of each document's keywords; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;keyword>text analysis&lt;/keyword>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlKeywordXpath: "//keyword"
+ * 	}); // publisher would be: "text analysis"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlPubPlaceXpath The XPath expression that defines the location of each document's publication place; only used for XML-based documents.
+ * @property {String} xmlCollectionXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;collection>documentation&lt;/collection>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlCollectionXpath: "//collection"
+ * 	}); // publisher would be: "documentation"
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * 		loadCorpus("&lt;doc>&lt;pubPlace>Montreal&lt;/pubPlace>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlPubPlaceXpath: "//pubPlace"
- * 		}); // publication place would be: "Montreal"
+ * @property {String} xmlDocumentsXpath The XPath expression that defines the location of each document; only used for XML-based documents.
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlPublisherXpath The XPath expression that defines the location of each document's publisher; only used for XML-based documents.
+ * @property {String} xmlGroupByXpath The XPath expression by which to group multiple documents; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;sp s='Juliet'>Hello!&lt;/sp>&lt;sp s='Romeo'>Hi!&lt;/sp>&lt;sp s='Juliet'>Bye!&lt;/sp>&lt;/doc>", {
+ * 		xmlDocumentsXpath: '//sp',
+ * 		xmlGroupByXpath: "//@s"
+ * 	}); // two docs: "Hello! Bye!" (Juliet) and "Hi!" (Romeo)
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * 		loadCorpus("&lt;doc>&lt;publisher>The Owl&lt;/publisher>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlPublisherXpath: "//publisher"
- * 		}); // publisher would be: "The Owl"
- *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlKeywordXpath The XPath expression that defines the location of each document's keywords; only used for XML-based documents.
- *
- * 		loadCorpus("&lt;doc>&lt;keyword>text analysis&lt;/keyword>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlKeywordXpath: "//keyword"
- * 		}); // publisher would be: "text analysis"
- *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlCollectionXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
- *
- * 		loadCorpus("&lt;doc>&lt;collection>documentation&lt;/collection>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlCollectionXpath: "//collection"
- * 		}); // publisher would be: "documentation"
- *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlDocumentsXpath The XPath expression that defines the location of each document; only used for XML-based documents.
- *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlGroupByXpath The XPath expression by which to group multiple documents; only used for XML-based documents.
- *
- * 		loadCorpus("&lt;doc>&lt;sp s='Juliet'>Hello!&lt;/sp>&lt;sp s='Romeo'>Hi!&lt;/sp>&lt;sp s='Juliet'>Bye!&lt;/sp>&lt;/doc>", {
- * 			 xmlDocumentsXpath: '//sp',
- *           xmlGroupByXpath: "//@s"
- * 		}); // two docs: "Hello! Bye!" (Juliet) and "Hi!" (Romeo)
- *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlExtraMetadataXpath A value that defines the location of other metadata; only used for XML-based documents.
- *
- * 		loadCorpus("&lt;doc>&lt;tool>Voyant&lt;/tool>&lt;phase>1&lt;/phase>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
- * 			 xmlExtraMetadataXpath: "tool=//tool\nphase=//phase"
- * 		}); // tool would be "Voyant" and phase would be "1"
- *
+ * @property {String} xmlExtraMetadataXpath A value that defines the location of other metadata; only used for XML-based documents.
+ * 
+ * 	loadCorpus("&lt;doc>&lt;tool>Voyant&lt;/tool>&lt;phase>1&lt;/phase>&lt;body>This is Voyant!&lt;/body>&lt;/doc>", {
+ * 		xmlExtraMetadataXpath: "tool=//tool\nphase=//phase"
+ * 	}); // tool would be "Voyant" and phase would be "1"
+ * 
  * Note that `xmlExtraMetadataXpath` is a bit different from the other XPath expressions in that it's
  * possible to define multiple values (each on its own line) in the form of name=xpath.
+ * 
+ * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
  *
- * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
- */
-
-/**
- * @cfg {String} xmlExtractorTemplate Pass the XML document through the XSL template located at the specified URL before extraction (this is ignored in XML-based documents).
- *
+ * @property {String} xmlExtractorTemplate Pass the XML document through the XSL template located at the specified URL before extraction (this is ignored in XML-based documents).
+ * 
  * This is an advanced parameter that allows you to define a URL of an XSL template that can
  * be called *before* text extraction (in other words, the other XML-based parameters apply
  * after this template has been processed).
- */
-
-/**
- * @cfg {String} inputRemoveUntil Omit text up until the start of the matching regular expression (this is ignored in XML-based documents).
  *
- * 		loadCorpus("Hello world! This is Voyant!", {
- * 			 inputRemoveUntil: "This"
- * 		}); // document would be: "This is Voyant!"
+ * @property {String} inputRemoveUntil Omit text up until the start of the matching regular expression (this is ignored in XML-based documents).
+ * 
+ * 	loadCorpus("Hello world! This is Voyant!", {
+ * 		inputRemoveUntil: "This"
+ * 	}); // document would be: "This is Voyant!"
+ * 
+ * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
  *
- * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
- */
-
-/**
- * @cfg {String} inputRemoveUntilAfter Omit text up until the end of the matching regular expression (this is ignored in XML-based documents).
+ * @property {String} inputRemoveUntilAfter Omit text up until the end of the matching regular expression (this is ignored in XML-based documents).
+ * 
+ * 	loadCorpus("Hello world! This is Voyant!", {
+ * 		inputRemoveUntilAfter: "world!"
+ * 	}); // document would be: "This is Voyant!"
+ * 
+ * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
  *
- * 		loadCorpus("Hello world! This is Voyant!", {
- * 			 inputRemoveUntilAfter: "world!"
- * 		}); // document would be: "This is Voyant!"
+ * @property {String} inputRemoveFrom Omit text from the start of the matching regular expression (this is ignored in XML-based documents).
+ * 
+ * 	loadCorpus("Hello world! This is Voyant!", {
+ * 		inputRemoveFrom: "This"
+ * 	}); // document would be: "Hello World!"
+ * 
+ * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
  *
- * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
- */
-
-/**
- * @cfg {String} inputRemoveFrom Omit text from the start of the matching regular expression (this is ignored in XML-based documents).
+ * @property {String} inputRemoveFromAfter Omit text from the end of the matching regular expression (this is ignored in XML-based documents).
+ * 
+ * 	loadCorpus("Hello world! This is Voyant!", {
+ * 		inputRemoveFromAfter: "This"
+ * 	}); // document would be: "Hello World! This"
+ * 
+ * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
  *
- * 		loadCorpus("Hello world! This is Voyant!", {
- * 			 inputRemoveFrom: "This"
- * 		}); // document would be: "Hello World!"
- *
- * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
- */
-
-/**
- * @cfg {String} inputRemoveFromAfter Omit text from the end of the matching regular expression (this is ignored in XML-based documents).
- *
- * 		loadCorpus("Hello world! This is Voyant!", {
- * 			 inputRemoveFromAfter: "This"
- * 		}); // document would be: "Hello World! This"
- *
- * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
- */
-
-/**
- * @cfg {String} subTitle A sub-title for the corpus.
- *
+ * @property {String} subTitle A sub-title for the corpus.
+ * 
  * This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a subtitle for later use.
- */
-
-/**
- * @cfg {String} title A title for the corpus.
  *
+ * @property {String} title A title for the corpus.
+ * 
  * This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a title for later use.
- */
-
-/**
- * @cfg {String} curatorTsv a simple TSV of paths and labels for the DToC interface (this isn't typically used outside of the specialized DToC context).
+ *
+ * @property {String} curatorTsv a simple TSV of paths and labels for the DToC interface (this isn't typically used outside of the specialized DToC context).
  *
  * The DToC skin allows curation of XML tags and attributes in order to constrain the entries shown in the interface or to provide friendlier labels. This assumes plain text unicode input with one definition per line where the simple XPath expression is separated by a tab from a label.
  *
  *   	 p    	 paragraph
  *   	 ref[@target*="religion"]    	 religion
  *
-  * For more information see the DToC documentation on [Curating Tags](http://cwrc.ca/Documentation/public/index.html#DITA_Files-Various_Applications/DToC/CuratingTags.html)
+  * For more information see the DToC documentation on [Curating Tags]{@link http://cwrc.ca/Documentation/public/index.html#DITA_Files-Various_Applications/DToC/CuratingTags.html}
  */
-
+	
 	/**
 	 * Create a new Corpus using the specified Corpus ID
 	 * @constructor
 	 * @param {string} id The Corpus ID
-	 * @param {object} test
-	 * @param.test {string} id The test id.
 	 */
 	constructor(id) {
 		this.corpusid = id;
@@ -750,8 +697,8 @@ class Corpus {
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
 	 *  * **minRawFreq**: the minimum raw frequency of terms
-	 *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **query**: a term query (see [search tutorial]{@tutorial search})
+	 *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 *  * **withDistributions**: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	 *  * **whiteList**: a keyword list – terms will be limited to this list
 	 *  * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -784,8 +731,8 @@ class Corpus {
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
 	 * @param {number} config.minRawFreq the minimum raw frequency of terms
-	 * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
-	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
+	 * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	 * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -828,7 +775,7 @@ class Corpus {
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 *  * **whiteList**: a keyword list – terms will be limited to this list
 	 *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	 *  * **noOthers**: only include lexical forms, no other tokens
@@ -845,7 +792,7 @@ class Corpus {
 	 * @param {Object} config an Object specifying parameters (see above)
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
-	 * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	 * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	 * @param {boolean} config.noOthers only include lexical forms, no other tokens
@@ -880,7 +827,7 @@ class Corpus {
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 *  * **whiteList**: a keyword list – terms will be limited to this list
 	 *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	 *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
@@ -894,7 +841,7 @@ class Corpus {
 	 * @param {Object} config an Object specifying parameters (see above)
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
-	 * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	 * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	 * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
@@ -939,7 +886,7 @@ class Corpus {
      * 
      *  * **start**: the zero-based start index of the list (for paging)
      *  * **limit**: the maximum number of terms to provide per request
-     *  * **query**: a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     *  * **query**: a term query (see [search tutorial]{@tutorial search})
      *  * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
      *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -965,7 +912,7 @@ class Corpus {
      * @param {Object} config an Object specifying parameters (see above)
      * @param {number} config.start the zero-based start index of the list (for paging)
      * @param {number} config.limit the maximum number of terms to provide per request
-     * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+     * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
      * @param {string} config.sort the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
      * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -1029,8 +976,8 @@ class Corpus {
 	 * 
 	 *  * **start**: the zero-based start index of the list (for paging)
 	 *  * **limit**: the maximum number of terms to provide per request
-	 *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	 *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 *  * **query**: a term query (see [search tutorial]{@tutorial search})
+	 *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 *  * **collocatesWhitelist**: collocates will be limited to this list
 	 *  * **context**: the size of the context (the number of words on each side of the keyword)
 	 *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
@@ -1053,8 +1000,8 @@ class Corpus {
 	 * @param {Object} config an Object specifying parameters (see list above)
 	 * @param {number} config.start the zero-based start index of the list (for paging)
 	 * @param {number} config.limit the maximum number of terms to provide per request
-	 * @param {string} config.query a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	 * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	 * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
+	 * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 * @param {string} config.collocatesWhitelist collocates will be limited to this list
 	 * @param {number} config.context the size of the context (the number of words on each side of the keyword)
 	 * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
@@ -1320,7 +1267,7 @@ class Corpus {
 	 * @param {number} config.iterations the number of iterations to do, more iterations = more accurate (default is 100)
 	 * @param {number} config.perDocLimit specify a token limit per document, starting at the beginning of the document
 	 * @param {number} config.seed specify a particular seed to use for random number generation
-	 * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 * @returns {Promise&lt;Object>}
 	 */
 	async topics(config = {topics: 10, termsPerTopic: 10, iterations: 100, seed: 0, stopList: 'auto'}) {
@@ -1385,9 +1332,48 @@ class Corpus {
 	}
 
 	/**
+	 * Given a Categories instance or ID, returns an object mapping category names to corpus terms. The results can be limited to specific category names by providing one or more of them.
+	 * @param {String|Spyral.Categories} categories A categories ID or a Spyral.Categories instance.
+	 * @param {String|Array&lt;String>} [categoryName] One or more names of categories within the instance.
+	 * @returns {Promise&lt;Object>}
+	 */
+	async filterByCategory(categories, categoryName) {
+		if (categories === undefined) return;
+		
+		if (categories instanceof Categories === false) {
+			categories = await Categories.load(categories);
+		}
+
+		let categoryNames = [];
+
+		// TODO make sure categoryName is a valid key for categories
+		if (categoryName === undefined) {
+			categoryNames = categories.getCategoryNames();
+		} else if (Util.isString(categoryName)) {
+			categoryNames = [categoryName];
+		} else {
+			categoryNames = categoryName;
+		}
+
+		const termsResults = await Promise.all(
+			categoryNames.map(key => {
+				let catTerms = categories.getCategoryTerms(key);
+				return this.terms({whiteList: catTerms});
+			})
+		);
+
+		let results = {};
+		termsResults.forEach((terms, i) => {
+			results[categoryNames[i]] = terms;
+		});
+
+		return results;
+	}
+
+	/**
 	 * Performs one of several dimension reduction statistical analysis techniques.
 	 * 
-	 * For more details see {@link https://voyant-tools.org/docs/#!/guide/scatterplot}.
+	 * For more details see the [scatterplot tutorial]{@tutorial scatterplot}.
 	 * 
 	 * @param {Object} config 
 	 * @param {string} config.type The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'
@@ -1401,8 +1387,8 @@ class Corpus {
 	 * @param {string} config.comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
 	 * @param {string} config.target The term to set as the target. This will filter results to terms that are near the target.
 	 * @param {string} config.term Used in combination with "target" as a white list of terms to keep.
-	 * @param {string} config.query A term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
-	 * @param {string} config.stopList A list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	 * @param {string} config.query A term query (see [search tutorial]{@tutorial search})
+	 * @param {string} config.stopList A list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	 * @returns {Promise&lt;Object>}
 	 */
 	analysis(config = {}) {
@@ -1456,89 +1442,7 @@ class Corpus {
 	 * 
 	 * 	loadCorpus("austen").tool("CustomSet", {tableLayout: "Cirrus,Trends", style: "width:800px; height: 500px"});
 	 * 
-	 * Here's a partial list of the tools available as well as their significant parameters:
-	 * 
-	 *  * {@tutorial bubblelines} visualizes the frequency and distribution of terms in a corpus.
-	 *  	* **bins**: number of bins to separate a document into
-	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **maxDocs**: maximum number of documents to show
-	 *  	* **query**: a query to search for in the corpus
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial bubbles} is a playful visualization of term frequencies by document.
-	 *  	* **audio**: whether or not to include audio
-	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **speed**: speed of the animation (0 to 60 lower is slower)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial cirrus} is a word cloud that visualizes the top frequency words of a corpus or document.
-	 *  	* **background**: set the background colour of the word cloud
-	 *  	* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)
-	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **fontFamily**: the default font to use for the words (default: "Palatino Linotype", "Book Antiqua", Palatino, serif),
-	 *  	* **inlineData**: user-defined data, most easily expressed like this: love:20,like:15,dear:10
-	 *  	* **limit**: the number of terms to load (that are available, see also `visible` which determines how many are displayed),
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  	* **visible**: the number of terms to display in the word cloud (default is 50)
-	 *  	* **whiteList**: a keyword list – terms will be limited to this list
-	 *  * {@tutorial collocatesgraph} represents keywords and terms that occur in close proximity as a force directed network graph.
-	 *  	* **centralize**: the term to use for centralize mode (where things are focused on a single word)
-     *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	 *  	* **limit**: the number of collocates to load for each keyword
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial contexts} (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
-     *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial corpuscollocates} is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
-     *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial corpusterms} is a table view of term frequencies in the entire corpus.
-     *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial correlations} tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
-	 *  	* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial documentterms} is a table view of document term frequencies.
-     *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  * {@tutorial termsberry} provides a way of exploring high frequency terms and their collocates.
-	 *  	* **query**: a query for the keywords (can be comma-separated list)
-	 *  	* **stopList**: a named stopword list or comma-separated list of words
-	 *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	 *  	* **numInitialTerms**: the initial number of terms to display
-	 *  * {@tutorial trends} shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.
-	 *   	* **stopList**: a named stopword list or comma-separated list of words
-	 *   	* **query**: a query for the keywords (can be comma-separated list)
-	 *   	* **limit**: the number of terms to show
-	 *   	* **withDistributions**: the type of distribution frequency to show ("raw" or "relative"), default is "relative"
-	 *   	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-	 *   	* **docIndex**: document index to restrict to (can be comma-separated list)
-	 *   	* **chartType**: the type of chart to show: "barline", "bar", "line", "area", "stacked"
-	 *  * {@tutorial documents} is a tool that shows a table of the documents in the corpus and includes functionality for modifying the corpus.
-	 *  * {@tutorial knots} is a creative visualization that represents terms in a single document as a series of twisted lines.
-	 *  * {@tutorial mandala} is a conceptual visualization that shows the relationships between terms and documents.
-	 *  * {@tutorial microsearch} visualizes the frequency and distribution of terms in a corpus.
-	 *  * {@tutorial phrases} shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
-	 *  * {@tutorial reader} provides a way of reading documents in the corpus, text is fetched on-demand as needed.
-	 *  * {@tutorial scatterplot} is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.
-	 *  * {@tutorial streamgraph} is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
-	 *  * {@tutorial summary} provides a simple, textual overview of the current corpus, including including information about words and documents.
-	 *  * {@tutorial termsradio} is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
-	 *  * {@tutorial textualarc} is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
-	 *  * {@tutorial topics} provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
-	 *  * {@tutorial veliza} is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.
-	 *  * {@tutorial wordtree} is a tool that allows you to explore how words are used in phrases.
+	 * See [the list of corpus tools]{@link Tools} for available tools and options.
 	 * 
 	 * @param {string} tool The tool to display
 	 * @param {Object} config The config object for the tool
@@ -1674,9 +1578,10 @@ class Corpus {
 
 	/**
 	 * Load a Corpus using the provided config and api
-	 * @param {Object} config the Corpus config
+	 * @param {Spyral.Corpus~CorpusConfig} config the Corpus config
 	 * @param {Object} api any additional API values
 	 * @returns {Promise&lt;Corpus>}
+	 * @static
 	 */
 	static load(config={}, api = {}) {
 		const promise = new Promise(function(resolve, reject) {
@@ -1784,7 +1689,7 @@ export default Corpus;
 
         $selectedApi.removeClass('hidden');
         $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-        showLnbExamples();
+        showLnbApi();
     </script>
 
 </body>

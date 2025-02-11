@@ -6,12 +6,21 @@ determiners and prepositions (the, a, in, to, from, etc.).
 
 Compare the following two displays:
 
-<table style="width: 90%; margin-left: auto; margin-right: auto;"><tr><td style="text-align: center;">With Stopwords<br /><iframe src="../tool/Cirrus/?useReferer=true" style="width: 100%; height: 200px; margin-left: auto; margin-right: auto;"></iframe></td><td style="text-align: center;">Without Stopwords<br /><iframe src="../tool/Cirrus/?useReferer=true&stopList=none" style="width: 100%; height: 200px; margin-left: auto; margin-right: auto;"></iframe></td></tr></table>
+<table style="width: 90%; margin-left: auto; margin-right: auto;"><tr>
+<td style="text-align: center;">With Stopwords<br /><iframe src="../tool/Cirrus/?useReferer=true" style="width: 100%; height: 250px; margin-left: auto; margin-right: auto;"></iframe></td>
+<td style="text-align: center;">Without Stopwords<br /><iframe src="../tool/Cirrus/?useReferer=true&stopList=none" style="width: 100%; height: 250px; margin-left: auto; margin-right: auto;"></iframe></td>
+</tr></table>
 
 The one on the left uses the _Auto-detect_ setting (so the English stopword list in this case) and the one on the right 
 uses the _None_ setting.
 
-<div style="float: right; width: 200px;">{@img options.png Options}</div> In Voyant Tools you can select from pre-existing stopword lists in 
+<div style="max-width: 350px">
+
+![Options](imgs/ui/stopwords/options.png)
+
+</div>
+
+In Voyant Tools you can select from pre-existing stopword lists in 
 various languages or create your own. For tools that support stopword lists, you can begin by clicking on the options 
 icon (the option may not appear if it's a tool that doesn't support stopwords).
 
@@ -27,8 +36,18 @@ also a good way of seeing what's in any given list, even if you don't intend to 
 of one word per line (though remember that what Voyant considers a word might be different from what's in the list). 
 Once you're done, you can save the list and then proceed to apply the options.
 
+<table style="max-width: 900px;"><tr>
+<td><div style="max-width: 450px;">
 
-![Stopwords Dialog](imgs/ui/stopwords/dialog.png) | ![Edit Dialog](imgs/ui/stopwords/edit.png)
+![Stopwords Dialog](imgs/ui/stopwords/dialog.png)
+
+</div></td>
+<td><div style="max-width: 300px;">
+
+![Edit Dialog](imgs/ui/stopwords/edit.png)
+
+</div></td>
+</tr></table>
 
 Rather than select an existing stopword list from the pull-down menu, it's also possible to type into the pull-down 
 menu the URL of an existing stopword list. The list should be plain text Unicode, with one word per line. Any line 

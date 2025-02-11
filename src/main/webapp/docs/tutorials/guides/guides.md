@@ -1,107 +1,29 @@
+# Guides
 
-<style>
-article img {
-    width: 150px; 
-    height: 150px;
-    float: left;
-    margin-right: 1em;
-}
+## {@tutorial start}
 
-article p.clear {
-    clear: left;
-}
+## {@tutorial corpuscreator}
 
-article {
-    display: flex;
-    flex-flow: row wrap;
-}
+## {@tutorial modifyingcorpus}
 
-article div.tool-row {
-    flex-shrink: 0;
-    flex-grow: 0;
-    flex-basis: 600px;
-    margin-bottom: 1em;
-    margin-right: 1em;
-}
+## {@tutorial embedding}
 
-</style>
+## {@tutorial skins}
 
+## {@tutorial languages}
 
-<div class="tool-row">
+## {@tutorial stopwords}
 
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial start}
+## {@tutorial categories}
 
-<p class="clear"></p></div>
-<div class="tool-row">
+## {@tutorial search}
 
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial corpuscreator}
+## {@tutorial palette}
 
-<p class="clear"></p></div>
-<div class="tool-row">
+## {@tutorial grids}
 
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial modifyingcorpus}
+## {@tutorial new}
 
-<p class="clear"></p></div>
-<div class="tool-row">
+## {@tutorial tutorial}
 
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial embedding}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial skins}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial languages}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial stopwords}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial categories}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial search}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial palette}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial grids}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial new}
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-![Icon](imgs/info/about/icon.png)
-#### {@tutorial tutorial}
-
-<p class="clear"></p></div>
+<span id="no_toc"/>

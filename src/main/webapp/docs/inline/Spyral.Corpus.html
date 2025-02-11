@@ -1,0 +1,7801 @@
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="Spyral.html">Spyral</a>.</span>Corpus<span class="signature">(id)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>The Corpus class in Spyral. To get started you first need to load a Corpus, using either a
+pre-existing Corpus id, or some input data. For this you can use the <a href="window.html#.loadCorpus">loadCorpus</a>
+method, which is an alias of <a href="Spyral.Corpus.html#.load">Spyral.Corpus.load</a>.</p>
+<p>Here's a simple example:</p>
+<pre><code>loadCorpus("Hello World!").summary();
+</code></pre>
+<p>This loads a corpus and returns an asynchronous <code>Promise</code>, but all of the methods
+of Corpus are appended to the Promise, so <a href="Spyral.Corpus.html#summary">Spyral.Corpus#summary</a> will be called
+once the Corpus promise is fulfilled. It's equivalent to the following:</p>
+<pre><code>loadCorpus("Hello World!").then(corpus -&gt; corpus.summary());
+</code></pre>
+<p>Have a look at the <a href="Spyral.Corpus.html#~CorpusConfig">Spyral.Corpus~CorpusConfig</a> configuration for more examples.</p></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="Corpus">
+            
+                new <span class="type-signature"></span>Corpus<span class="signature">(id)</span><span class="type-signature"></span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create a new Corpus using the specified Corpus ID</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Corpus ID</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl class="methods">
+                
+
+<dt>
+    
+        <h4 class="name" id="analysis">
+            
+                <span class="type-signature"></span>analysis<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Object&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Performs one of several dimension reduction statistical analysis techniques.</p>
+<p>For more details see the <a href="tutorial-scatterplot.html">scatterplot tutorial</a>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The zero-based start of the list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A limit to the number of items to return at a time</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dimensions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of dimensions to render, either 2 or 3.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of bins to separate a document into.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>clusters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of clusters within which to group words.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>perplexity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The TSNE perplexity value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iterations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The TSNE iterations value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>comparisonType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The term to set as the target. This will filter results to terms that are near the target.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>term</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Used in combination with "target" as a white list of terms to keep.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A term query (see <a href="tutorial-search.html">search tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Object&gt;</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="collocates">
+            
+                <span class="type-signature"></span>collocates<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of collocates (either document or corpus collocates, depending on the specified mode).</p>
+<p>The mode is set to "documents" when any of the following is true</p>
+<ul>
+<li>the <code>mode</code> parameter is set to "documents"</li>
+<li>a <code>docIndex</code> parameter being set</li>
+<li>a <code>docId</code> parameter being set</li>
+</ul>
+<p>The following is an example a Corpus Collocate (corpus mode):</p>
+<pre><code>{
+	"term": "love",
+	"rawFreq": 568,
+	"contextTerm": "mr",
+	"contextTermRawFreq": 24
+}
+</code></pre>
+<p>The following is an example of Document Collocate (documents mode):</p>
+<pre><code>{
+		"docIndex": 4,
+		"keyword": "love",
+		"keywordContextRawFrequency": 124,
+		"term": "fanny",
+		"termContextRawFrequency": 8,
+		"termContextRelativeFrequency": 0.021680217,
+		"termDocumentRawFrequency": 816,
+		"termDocumentRelativeFrequency": 0.0050853477,
+		"termContextDocumentRelativeFrequencyDifference": 0.01659487
+}
+</code></pre>
+<p>The following config parameters are valid in both modes:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>query</strong>: a term query (see <a href="tutorial-search.html">search tutorial</a>)</li>
+<li><strong>stopList</strong>: a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</li>
+<li><strong>collocatesWhitelist</strong>: collocates will be limited to this list</li>
+<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+</ul>
+<p>The following are specific to corpus mode:</p>
+<ul>
+<li><strong>sort</strong>: the order of the terms, one of the following: <code>RAWFREQ, TERM, CONTEXTTERM, CONTEXTTERMRAWFREQ</code></li>
+</ul>
+<p>The following are specific to documents mode:</p>
+<ul>
+<li><strong>sort</strong>: the order of the terms, one of the following: <code>TERM, REL, REL, RAW, DOCREL, DOCRAW, CONTEXTDOCRELDIFF</code></li>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+</ul>
+<p>An example:</p>
+<pre><code>// show top 5 collocate terms
+loadCorpus("austen").collocates({stopList: 'auto', limit: 5}).then(terms =&gt; terms.map(term =&gt; term.term))
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a term query (see <a href="tutorial-search.html">search tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>collocatesWhitelist</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>collocates will be limited to this list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the size of the context (the number of words on each side of the keyword)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for a Array of Terms</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="contexts">
+            
+                <span class="type-signature"></span>contexts<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of Objects that contain keywords in contexts (KWICs).</p>
+<p>An individual KWIC Object looks something like this:</p>
+<pre><code>{
+		"docIndex": 0,
+		"query": "love",
+		"term": "love",
+		"position": 0,
+		"left": "FREINDSHIP AND OTHER EARLY WORKS",
+		"middle": "Love",
+		"right": " And Friendship And Other Early"
+}
+</code></pre>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>query</strong>: a term query (see <a href="tutorial-search.html">search tutorial</a>)</li>
+<li><strong>sort</strong>: the order of the contexts: <code>TERM, DOCINDEX, POSITION, LEFT, RIGHT</code></li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>
+<li><strong>stripTags</strong>: for the <code>left</code>, <code>middle</code> and <code>right</code> values, one of the following: <code>ALL</code>, <code>BLOCKSONLY</code> (tries to maintain blocks for line formatting), <code>NONE</code> (default)</li>
+<li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+<li><strong>overlapStrategy</strong>: determines how to handle cases where there's overlap between KWICs, such as "to be or not to be" when the keyword is "be"; here are the options:
+<ul>
+<li><strong>none</strong>: nevermind the overlap, keep all words
+<ul>
+<li>{left: "to", middle: "be", right: "or not to be"}</li>
+<li>{left: "to be or not to", middle: "be", right: ""}</li>
+</ul>
+</li>
+<li><strong>first</strong>: priority goes to the first occurrence (some may be dropped)
+<ul>
+<li>{left: "to", middle: "be", right: "or not to be"}</li>
+</ul>
+</li>
+<li><strong>merge</strong>: balance the words between overlapping occurrences
+<ul>
+<li>{left: "to", middle: "be", right: "or"}</li>
+<li>{left: "not to", middle: "be", right: ""}</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>An example:</p>
+<pre><code>// load the first 20 words in the corpus
+loadCorpus("austen").contexts({query: "love", limit: 10})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a term query (see <a href="tutorial-search.html">search tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the order of the contexts: <code>TERM, DOCINDEX, POSITION, LEFT, RIGHT</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>perDocLimit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stripTags</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>for the <code>left</code>, <code>middle</code> and <code>right</code> values, one of the following: <code>ALL</code>, <code>BLOCKSONLY</code> (tries to maintain blocks for line formatting), <code>NONE</code> (default)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the size of the context (the number of words on each side of the keyword)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based index of the documents to include (use commas to separate multiple values)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the document IDs to include (use commas to separate multiple values)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>overlapStrategy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>determines how to handle cases where there's overlap between KWICs, such as "to be or not to be" when the keyword is "be"</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of KWIC Objects</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="correlations">
+            
+                <span class="type-signature"></span>correlations<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of correlations (either document or corpus correlations, depending on the specified mode).</p>
+<p>The mode is set to "documents" when any of the following is true</p>
+<ul>
+<li>the <code>mode</code> parameter is set to "documents"</li>
+<li>a <code>docIndex</code> parameter being set</li>
+<li>a <code>docId</code> parameter being set</li>
+</ul>
+<p>The following is an example a Corpus correlation (corpus mode):</p>
+<pre><code>{
+	"source": {
+		"term": "mrs",
+		"inDocumentsCount": 8,
+		"rawFreq": 2531,
+		"relativePeakedness": 0.46444246,
+		"relativeSkewness": -0.44197384
+	},
+	"target": {
+		"term": "love",
+		"inDocumentsCount": 8,
+		"rawFreq": 568,
+		"relativePeakedness": 5.763066,
+		"relativeSkewness": 2.2536576
+	},
+	"correlation": -0.44287738,
+	"significance": 0.08580014
+}
+</code></pre>
+<p>The following is an example of Document correlation (documents mode), without positions requested:</p>
+<pre><code>{
+	"source": {
+		"term": "confide",
+		"rawFreq": 3,
+		"relativeFreq": 89.3948,
+		"zscore": -0.10560975,
+		"zscoreRatio": -0.7541012,
+		"tfidf": 1.1168874E-5,
+		"totalTermsCount": 33559,
+		"docIndex": 0,
+		"docId": "8a61d5d851a69c03c6ba9cc446713574"
+	},
+	"target": {
+		"term": "love",
+		"rawFreq": 54,
+		"relativeFreq": 1609.1063,
+		"zscore": 53.830048,
+		"zscoreRatio": -707.44696,
+		"tfidf": 0.0,
+		"totalTermsCount": 33559,
+		"docIndex": 0,
+		"docId": "8a61d5d851a69c03c6ba9cc446713574"
+	},
+	"correlation": 0.93527687,
+	"significance": 7.0970666E-5
+}
+</code></pre>
+<p>The following config parameters are valid in both modes:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>termsOnly</strong>: a very compact data view of the correlations</li>
+<li><strong>sort</strong>: the order of the terms, one of the following: <code>CORRELATION</code>, <code>CORRELATIONABS</code></li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+</ul>
+<p>The following is specific to corpus mode:</p>
+<ul>
+<li><strong>minInDocumentsCountRatio</strong>: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents</li>
+</ul>
+<p>The following are specific to documents mode:</p>
+<ul>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+</ul>
+<p>An example:</p>
+<pre><code>// load the first 10 phrases in the corpus
+loadCorpus("austen").correlations({query: "love", limit: 10})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minInDocumentsCountRatio</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>termsOnly</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a very compact data view of the correlations</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the order of the terms, one of the following: <code>CORRELATION</code>, <code>CORRELATIONABS</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of phrase Objects</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="documents">
+            
+                <span class="type-signature"></span>documents<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of documents metadata for the corpus.</p>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start of the list</li>
+<li><strong>limit</strong>: a limit to the number of items to return at a time</li>
+<li><strong>docIndex</strong>: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</li>
+<li><strong>docId</strong>: a set of document IDs; multiple documents can be separated by a comma</li>
+<li><strong>query</strong>: one or more term queries for the title, author or full-text</li>
+<li><strong>sort</strong>: one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+</ul>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start of the list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a limit to the number of items to return at a time</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a set of document IDs; multiple documents can be separated by a comma</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one or more term queries for the title, author or full-text</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of documents metadata</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="entities">
+            
+                <span class="type-signature"></span>entities<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of entities.</p>
+<p>The config object as parameter can contain the following:</p>
+<ul>
+<li><strong>docIndex</strong>: document index to restrict to (can be comma-separated list)</li>
+<li><strong>annotator</strong>: the annotator to use: 'stanford' or 'nssi' or 'spacy'</li>
+</ul>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>docIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>document index to restrict to (can be comma-separated list)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>annotator</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the annotator to use: 'stanford' or 'nssi' or 'spacy'</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="filterByCategory">
+            
+                <span class="type-signature"><span class="icon green">async</span> </span>filterByCategory<span class="signature">(categories, categoryName<span class="signature-attributes">opt</span>)</span><span class="type-signature"> → {Promise.&lt;Object&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Given a Categories instance or ID, returns an object mapping category names to corpus terms. The results can be limited to specific category names by providing one or more of them.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>categories</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type"><a href="Spyral.Categories.html">Spyral.Categories</a></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A categories ID or a Spyral.Categories instance.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>categoryName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String&gt;</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>One or more names of categories within the instance.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Object&gt;</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="id">
+            
+                <span class="type-signature"></span>id<span class="signature">()</span><span class="type-signature"> → {Promise.&lt;string&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns the ID of the corpus.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;string&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for the string ID of the corpus</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="lemmas">
+            
+                <span class="type-signature"></span>lemmas<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see above)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of lemma Objects</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="metadata">
+            
+                <span class="type-signature"></span>metadata<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;object&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns the metadata object (of the corpus or document, depending on which mode is used).</p>
+<p>The following is an example of the object return for the metadata of the Jane Austen corpus:</p>
+<pre><code>{
+	"id": "b50407fd1cbbecec4315a8fc411bad3c",
+	"alias": "austen",
+	"title": "",
+	"subTitle": "",
+	"documentsCount": 8,
+	"createdTime": 1582429585984,
+	"createdDate": "2020-02-22T22:46:25.984-0500",
+	"lexicalTokensCount": 781763,
+	"lexicalTypesCount": 15368,
+	"noPasswordAccess": "NORMAL",
+	"languageCodes": [
+		"en"
+	]
+}
+</code></pre>
+<p>The following is an example of what is returned as metadata for the first document:</p>
+<pre><code>[
+	{
+	"id": "ddac6b12c3f4261013c63d04e8d21b45",
+	"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
+	"tokensCount-lexical": "33559",
+	"lastTokenStartOffset-lexical": "259750",
+	"parent_modified": "1548457455000",
+	"typesCount-lexical": "4235",
+	"typesCountMean-lexical": "7.924203",
+	"lastTokenPositionIndex-lexical": "33558",
+	"index": "0",
+	"language": "en",
+	"sentencesCount": "1302",
+	"source": "stream",
+	"typesCountStdDev-lexical": "46.626404",
+	"title": "1790 Love And Freindship",
+	"parent_queryParameters": "VOYANT_BUILD=M16&amp;textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&amp;VOYANT_REMOTE_ID=199.229.249.196&amp;accessIP=199.229.249.196&amp;VOYANT_VERSION=2.4&amp;palette=default&amp;suppressTools=false",
+	"extra.Content-Type": "text/plain; charset=windows-1252",
+	"parentType": "expansion",
+	"extra.Content-Encoding": "windows-1252",
+	"parent_source": "file",
+	"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
+	"modified": "1432861756000",
+	"location": "1790 Love And Freindship.txt",
+	"parent_title": "Austen",
+	"parent_location": "Austen.zip"
+	}
+]
+</code></pre>
+<p>In Corpus mode there's no reason to specify arguments. In documents mode you
+can request specific documents in the config object:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start of the list</li>
+<li><strong>limit</strong>: a limit to the number of items to return at a time</li>
+<li><strong>docIndex</strong>: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</li>
+<li><strong>docId</strong>: a set of document IDs; multiple documents can be separated by a comma</li>
+<li><strong>query</strong>: one or more term queries for the title, author or full-text</li>
+<li><strong>sort</strong>: one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+</ul>
+<p>An example:</p>
+<pre><code>// this would show the number 8 (the size of the corpus)
+loadCorpus("austen").metadata().then(metadata =&gt; metadata.documentsCount)
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;object&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Object containing metadata</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="phrases">
+            
+                <span class="type-signature"></span>phrases<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).</p>
+<p>The mode is set to "documents" when any of the following is true</p>
+<ul>
+<li>the <code>mode</code> parameter is set to "documents"</li>
+<li>a <code>docIndex</code> parameter being set</li>
+<li>a <code>docId</code> parameter being set</li>
+</ul>
+<p>The following is an example a Corpus phrase (corpus mode), without distributions requested:</p>
+<pre><code>{
+	"term": "love with",
+	"rawFreq": 103,
+	"length": 2
+}
+</code></pre>
+<p>The following is an example of Document phrase (documents mode), without positions requested:</p>
+<pre><code>{
+	"term": "love with",
+	"rawFreq": 31,
+	"length": 2,
+	"docIndex": 5
+}
+</code></pre>
+<p>The following config parameters are valid in both modes:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>minLength</strong>: the minimum length of the phrase</li>
+<li><strong>maxLength</strong>: the maximum length of the phrase</li>
+<li><strong>minRawFreq</strong>: the minimum raw frequency of the phrase
+<ul>
+<li><strong>sort</strong>: the order of the terms, one of the following: <code>RAWFREQ, TERM, LENGTH</code></li>
+</ul>
+</li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+<li><strong>overlapFilter</strong>: it happens that phrases contain other phrases and we need a strategy for handling overlap:
+<ul>
+<li><strong>NONE</strong>: nevermind the overlap, keep all phrases</li>
+<li><strong>LENGTHFIRST</strong>: priority goes to the longest phrases</li>
+<li><strong>RAWFREQFIRST</strong>: priority goes to the highest frequency phrases</li>
+<li><strong>POSITIONFIRST</strong>: priority goes to the first phrases</li>
+</ul>
+</li>
+</ul>
+<p>The following are specific to documents mode:</p>
+<ul>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+</ul>
+<p>An example:</p>
+<pre><code>// load the first 20 phrases in the corpus
+loadCorpus("austen").phrases({query: "love", limit: 10})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the minimum length of the phrase</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum length of the phrase</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minRawFreq</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the minimum raw frequency of the phrase</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the order of the terms, one of the following: <code>RAWFREQ, TERM, LENGTH</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>overlapFilter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>it happens that phrases contain other phrases and we need a strategy for handling overlap</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of phrase Objects</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="summary">
+            
+                <span class="type-signature"></span>summary<span class="signature">()</span><span class="type-signature"> → {Promise.&lt;string&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.)</p>
+<p>An example:</p>
+<pre><code>loadCorpus("austen").summary();
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;string&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for a string containing a brief summary of the corpus metadata</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="terms">
+            
+                <span class="type-signature"></span>terms<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).
+These terms are actually types, so information about each type is collected (as opposed to the {#link tokens}
+method which is for every occurrence in document order).</p>
+<p>The mode is set to "documents" when any of the following is true</p>
+<ul>
+<li>the <code>mode</code> parameter is set to "documents"</li>
+<li>a <code>docIndex</code> parameter being set</li>
+<li>a <code>docId</code> parameter being set</li>
+</ul>
+<p>The following is an example a Corpus Term (corpus mode):</p>
+<pre><code>{
+	"term": "the",
+	"inDocumentsCount": 8,
+	"rawFreq": 28292,
+	"relativeFreq": 0.036189996,
+	"comparisonRelativeFreqDifference": 0
+}
+</code></pre>
+<p>The following is an example of Document Term (documents mode):</p>
+<pre><code>{
+	"term": "the",
+	"rawFreq": 1333,
+	"relativeFreq": 39721.086,
+	"zscore": 28.419,
+	"zscoreRatio": -373.4891,
+	"tfidf": 0.0,
+	"totalTermsCount": 33559,
+	"docIndex": 0,
+	"docId": "8a61d5d851a69c03c6ba9cc446713574"
+}
+</code></pre>
+<p>The following config parameters are valid in both modes:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>minRawFreq</strong>: the minimum raw frequency of terms</li>
+<li><strong>query</strong>: a term query (see <a href="tutorial-search.html">search tutorial</a>)</li>
+<li><strong>stopList</strong>: a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</li>
+<li><strong>withDistributions</strong>: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)</li>
+<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li>
+<li><strong>tokenType</strong>: the token type to use, by default <code>lexical</code> (other possible values might be <code>title</code> and <code>author</code>)</li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+</ul>
+<p>The following are specific to corpus mode:</p>
+<ul>
+<li><strong>bins</strong>: by default there are the same number of bins as there are documents (for distribution values), this can be modified</li>
+<li><strong>corpusComparison</strong>: you can provide the ID of a corpus for comparison of frequency values</li>
+<li><strong>inDocumentsCountOnly</strong>: if you don't need term frequencies but only frequency per document set this to true</li>
+<li><strong>sort</strong>: the order of the terms, one of the following: <code>INDOCUMENTSCOUNT, RAWFREQ, TERM, RELATIVEPEAKEDNESS, RELATIVESKEWNESS, COMPARISONRELATIVEFREQDIFFERENCE</code></li>
+</ul>
+<p>The following are specific to documents mode:</p>
+<ul>
+<li><strong>bins</strong>: by default the document is divided into 10 equal bins(for distribution values), this can be modified</li>
+<li><strong>sort</strong>: the order of the terms, one of the following: <code>RAWFREQ, RELATIVEFREQ, TERM, TFIDF, ZSCORE</code></li>
+<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+</ul>
+<p>An example:</p>
+<pre><code>// show top 5 terms
+loadCorpus("austen").terms({stopList: 'auto', limit: 5}).then(terms =&gt; terms.map(term =&gt; term.term))
+
+// show top term for each document
+loadCorpus("austen").terms({stopList: 'auto', perDocLimit: 1, mode: 'documents'}).then(terms =&gt; terms.map(term =&gt; term.term))
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minRawFreq</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the minimum raw frequency of terms</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a term query (see <a href="tutorial-search.html">search tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>withDistributions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>whiteList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a keyword list – terms will be limited to this list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tokenType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the token type to use, by default <code>lexical</code> (other possible values might be <code>title</code> and <code>author</code>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for a Array of Terms</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="text">
+            
+                <span class="type-signature"></span>text<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;string&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns the text of the entire corpus.</p>
+<p>Texts are concatenated together with two new lines and three dashes (\n\n---\n\n)</p>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>noMarkup</strong>: strips away the markup</li>
+<li><strong>compactSpace</strong>: strips away superfluous spaces and multiple new lines</li>
+<li><strong>limit</strong>: a limit to the number of characters (per text)</li>
+<li><strong>format</strong>: <code>text</code> for plain text, any other value for the simplified Voyant markup</li>
+</ul>
+<p>An example:</p>
+<pre><code>// fetch 1000 characters from each text in the corpus into a single string
+loadCorpus("austen").text({limit:1000})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>noMarkup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>strips away the markup</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>compactSpace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>strips away superfluous spaces and multiple new lines</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a limit to the number of characters (per text)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><code>text</code> for plain text, any other value for the simplified Voyant markup</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;string&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for a string of the corpus</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="texts">
+            
+                <span class="type-signature"></span>texts<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of texts from the entire corpus.</p>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>noMarkup</strong>: strips away the markup</li>
+<li><strong>compactSpace</strong>: strips away superfluous spaces and multiple new lines</li>
+<li><strong>limit</strong>: a limit to the number of characters (per text)</li>
+<li><strong>format</strong>: <code>text</code> for plain text, any other value for the simplified Voyant markup</li>
+</ul>
+<p>An example:</p>
+<pre><code>// fetch 1000 characters from each text in the corpus into an Array
+loadCorpus("austen").texts({limit:1000})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>noMarkup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>strips away the markup</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>compactSpace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>strips away superfluous spaces and multiple new lines</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a limit to the number of characters (per text)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><code>text</code> for plain text, any other value for the simplified Voyant markup</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of texts from the corpus</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="titles">
+            
+                <span class="type-signature"></span>titles<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of document titles for the corpus.</p>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start of the list</li>
+<li><strong>limit</strong>: a limit to the number of items to return at a time</li>
+<li><strong>docIndex</strong>: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</li>
+<li><strong>docId</strong>: a set of document IDs; multiple documents can be separated by a comma</li>
+<li><strong>query</strong>: one or more term queries for the title, author or full-text</li>
+<li><strong>sort</strong>: one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></li>
+<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+</ul>
+<p>An example:</p>
+<pre><code>loadCorpus("austen").titles().then(titles =&gt; "The last work is: "+titles[titles.length-1])
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see list above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start of the list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a limit to the number of items to return at a time</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a set of document IDs; multiple documents can be separated by a comma</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one or more term queries for the title, author or full-text</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of the following sort orders: <code>INDEX</code>, <code>TITLE</code>, <code>AUTHOR</code>, <code>TOKENSCOUNTLEXICAL</code>, <code>TYPESCOUNTLEXICAL</code>, <code>TYPETOKENRATIOLEXICAL</code>, <code>PUBDATE</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of document titles</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="_toString">
+            
+                <span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>An alias for #summary.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="tokens">
+            
+                <span class="type-signature"></span>tokens<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of document tokens.</p>
+<p>The promise returns an array of document token objects. A document token object can look something like this:</p>
+<pre><code>	{
+		"docId": "8a61d5d851a69c03c6ba9cc446713574",
+		"docIndex": 0,
+		"term": "LOVE",
+		"tokenType": "lexical",
+		"rawFreq": 54,
+		"position": 0,
+		"startOffset": 3,
+		"endOffset": 7
+	}
+</code></pre>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>stopList</strong>: a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</li>
+<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li>
+<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>
+<li><strong>noOthers</strong>: only include lexical forms, no other tokens</li>
+<li><strong>stripTags</strong>: one of the following: <code>ALL</code>, <code>BLOCKSONLY</code>, <code>NONE</code> (<code>BLOCKSONLY</code> tries to maintain blocks for line formatting)</li>
+<li><strong>withPosLemmas</strong>: include part-of-speech and lemma information when available (reliability of this may vary by instance)</li>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+</ul>
+<p>An example:</p>
+<pre><code>// load the first 20 tokens (don't include tags, spaces, etc.)
+loadCorpus("austen").tokens({limit: 20, noOthers: true})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>whiteList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a keyword list – terms will be limited to this list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>perDocLimit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>noOthers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>only include lexical forms, no other tokens</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stripTags</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>one of the following: <code>ALL</code>, <code>BLOCKSONLY</code>, <code>NONE</code> (<code>BLOCKSONLY</code> tries to maintain blocks for line formatting)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>withPosLemmas</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>include part-of-speech and lemma information when available (reliability of this may vary by instance)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based index of the documents to include (use commas to separate multiple values)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the document IDs to include (use commas to separate multiple values)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of document tokens</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="tool">
+            
+                <span class="type-signature"></span>tool<span class="signature">(tool, config)</span><span class="type-signature"> → {Promise.&lt;string&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an HTML snippet that will produce the specified Voyant tools to appear.</p>
+<p>In its simplest form we can simply call the named tool:</p>
+<pre><code>loadCorpus("austen").tool("Cirrus");
+</code></pre>
+<p>Each tool supports some options (that are summarized below), and those can be specified as options:</p>
+<pre><code>loadCorpus("austen").tool("Trends", {query: "love"});
+</code></pre>
+<p>There are also parameters (width, height, style, float) that apply to the actual tool window:</p>
+<pre><code>loadCorpus("austen").tool("Trends", {query: "love", style: "width: 500px; height: 500px"});
+</code></pre>
+<p>It's also possible to have several tools appear at once, though they won't be connected by events (clicking in a window won't modify the other windows):</p>
+<pre><code>loadCorpus("austen").tool("Cirrus", "Trends");
+</code></pre>
+<p>One easy way to get connected tools is to use the <code>CustomSet</code> tool and experiment with the layout:</p>
+<pre><code>loadCorpus("austen").tool("CustomSet", {tableLayout: "Cirrus,Trends", style: "width:800px; height: 500px"});
+</code></pre>
+<p>See <a href="Tools.html">the list of corpus tools</a> for available tools and options.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tool</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The tool to display</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The config object for the tool</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;string&gt;</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="topics">
+            
+                <span class="type-signature"><span class="icon green">async</span> </span>topics<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Object&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:</p>
+<ul>
+<li><strong>topics</strong>: an array of topics (words organized into bunches of a specified size)</li>
+<li><strong>topicDocuments</strong>: an array of documents and their topic weights</li>
+</ul>
+<p>Each topic in the <strong>topics</strong> array is an object with the following properties:</p>
+<ul>
+<li><strong>words</strong>: an array of the actual words that form the topic. Each word has the same properties as the topic, as well as a "word" property that contains the text content.</li>
+<li>tokens</li>
+<li>documentEntropy</li>
+<li>wordLength</li>
+<li>coherence</li>
+<li>uniformDist</li>
+<li>corpusDist</li>
+<li>effNumWords</li>
+<li>tokenDocDiff</li>
+<li>rank1Docs</li>
+<li>allocationRatio</li>
+<li>allocationCount</li>
+<li>exclusivity</li>
+</ul>
+<p>Each document in the <strong>topicDocuments</strong> array is an object with the following properties:</p>
+<ul>
+<li>docId: the document ID</li>
+<li>weights: an array of the numbers corresponding to the the weight of each topic in this document</li>
+</ul>
+<p>The config object as parameter can contain the following:</p>
+<ul>
+<li><strong>topics</strong>: the number of topics to get (default is 10)</li>
+<li><strong>termsPerTopic</strong>: the number of terms for each topic (default is 10)</li>
+<li><strong>iterations</strong>: the number of iterations to do, more iterations = more accurate (default is 100)</li>
+<li><strong>perDocLimit</strong>: the token limit per document, starting at the beginning of the document</li>
+<li><strong>seed</strong>: specify a particular seed to use for random number generation</li>
+<li><strong>stopList</strong>: a list of stopwords to include</li>
+</ul>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>(see above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>topics</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the number of topics to get (default is 10)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>termsPerTopic</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the number of terms for each topic (default is 10)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iterations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the number of iterations to do, more iterations = more accurate (default is 100)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>perDocLimit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>specify a token limit per document, starting at the beginning of the document</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>seed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>specify a particular seed to use for random number generation</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Object&gt;</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="words">
+            
+                <span class="type-signature"></span>words<span class="signature">(config)</span><span class="type-signature"> → {Promise.&lt;Array&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns an array of words from the corpus.</p>
+<p>The array of words are in document order, much like tokens.</p>
+<p>The following are valid in the config parameter:</p>
+<ul>
+<li><strong>start</strong>: the zero-based start index of the list (for paging)</li>
+<li><strong>limit</strong>: the maximum number of terms to provide per request</li>
+<li><strong>stopList</strong>: a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</li>
+<li><strong>whiteList</strong>: a keyword list – terms will be limited to this list</li>
+<li><strong>perDocLimit</strong>: the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</li>
+<li><strong>docIndex</strong>: the zero-based index of the documents to include (use commas to separate multiple values)</li>
+<li><strong>docId</strong>: the document IDs to include (use commas to separate multiple values)</li>
+</ul>
+<p>An example:</p>
+<pre><code>// load the first 20 words in the corpus
+loadCorpus("austen").tokens({limit: 20})
+</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an Object specifying parameters (see above)</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based start index of the list (for paging)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the maximum number of terms to provide per request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>whiteList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a keyword list – terms will be limited to this list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>perDocLimit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the <code>limit</code> parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the zero-based index of the documents to include (use commas to separate multiple values)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>docId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the document IDs to include (use commas to separate multiple values)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Array&gt;</span>
+
+
+
+
+
+
+- <p>a Promise for an Array of words</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id=".load">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>load<span class="signature">(config, api)</span><span class="type-signature"> → {Promise.&lt;Corpus&gt;}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Load a Corpus using the provided config and api</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Spyral.Corpus.html#~CorpusConfig">Spyral.Corpus~CorpusConfig</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the Corpus config</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>api</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>any additional API values</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">Promise.&lt;Corpus&gt;</span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl class="typedefs">
+                
+
+<dt>
+<h4 class="name" id="~CorpusConfig">
+    CorpusConfig
+    
+    
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The Corpus config</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">String</span>
+
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>corpus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of a previously created corpus.</p>
+<p>A corpus ID can be used to try to retrieve a corpus that has been previously created.
+Typically the corpus ID is used as a first string argument, with an optional second
+argument for other parameters (especially those to recreate the corpus if needed).</p>
+<pre><code>loadCorpus("goldbug");
+
+loadCorpus("goldbug", {
+	// if corpus ID "goldbug" isn't found, use the input
+	input: "https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt",
+	inputRemoveUntil: 'THE GOLD-BUG',
+	inputRemoveFrom: 'FOUR BEASTS IN ONE'
+});
+</code></pre></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String&gt;</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Input sources for the corpus.</p>
+<p>The input sources can be either normal text or URLs (starting with <code>http</code>).</p>
+<p>Typically input sources are specified as a string or an array in the first argument, with an optional second argument for other parameters.</p>
+<pre><code>loadCorpus("Hello Voyant!"); // one document with this string
+
+loadCorpus(["Hello Voyant!", "How are you?"]); // two documents with these strings
+
+loadCorpus("http://hermeneuti.ca/"); // one document from URL
+
+loadCorpus(["http://hermeneuti.ca/", "https://en.wikipedia.org/wiki/Voyant_Tools"]); // two documents from URLs
+
+loadCorpus("Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
+
+loadCorpus("https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt", {
+	inputRemoveUntil: 'THE GOLD-BUG',
+	inputRemoveFrom: 'FOUR BEASTS IN ONE'
+});
+
+// use a corpus ID but also specify an input source if the corpus can't be found
+loadCorpus("goldbug", {
+	input: "https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt",
+	inputRemoveUntil: 'THE GOLD-BUG',
+	inputRemoveFrom: 'FOUR BEASTS IN ONE'
+});
+</code></pre></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inputFormat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The input format of the corpus (the default is to auto-detect).</p>
+<p>The auto-detect format is usually reliable and inputFormat should only be used if the default
+behaviour isn't desired. Most of the relevant values are used for XML documents:</p>
+<ul>
+<li><strong>DTOC</strong>: Dynamic Table of Contexts XML format</li>
+<li><strong>HTML</strong>: Hypertext Markup Language</li>
+<li><strong>RSS</strong>: Really Simple Syndication XML format</li>
+<li><strong>TEI</strong>: Text Encoding Initiative XML format</li>
+<li><strong>TEICORPUS</strong>: Text Encoding Initiative Corpus XML format</li>
+<li><strong>TEXT</strong>: plain text</li>
+<li><strong>XML</strong>: treat the document as XML (sometimes overridding auto-detect of XML vocabularies like RSS and TEI)</li>
+</ul>
+<p>Other formats include <strong>PDF</strong>, <strong>MSWORD</strong>, <strong>XLSX</strong>, <strong>RTF</strong>, <strong>ODT</strong>, and <strong>ZIP</strong> (but again, these rarely need to be specified).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tableDocuments</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Determine what is a document in a table (the entire table, by row, by column); only used for table-based documents.</p>
+<p>Possible values are:</p>
+<ul>
+<li><strong>undefined or blank</strong> (default): the entire table is one document</li>
+<li><strong>rows</strong>: each row of the table is a separate document</li>
+<li><strong>columns</strong>: each column of the table is a separate document</li>
+</ul>
+<p>See also <a href="tutorial-corpuscreator.html#tables">Creating a Corpus with Tables</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tableContent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Determine how to extract body content from the table; only used for table-based documents.</p>
+<p>Columns are referred to by numbers, the first is column 1 (not 0).
+You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>
+<p>Some examples:</p>
+<ul>
+<li><strong>1</strong>: use column 1</li>
+<li><strong>1,2</strong>: use columns 1 and 2 separately</li>
+<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>
+</ul>
+<p>See also <a href="tutorial-corpuscreator.html#tables">Creating a Corpus with Tables</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tableAuthor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Determine how to extract the author from each document; only used for table-based documents.</p>
+<p>Columns are referred to by numbers, the first is column 1 (not 0).
+You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>
+<p>Some examples:</p>
+<ul>
+<li><strong>1</strong>: use column 1</li>
+<li><strong>1,2</strong>: use columns 1 and 2 separately</li>
+<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>
+</ul>
+<p>See also <a href="tutorial-corpuscreator.html#tables">Creating a Corpus with Tables</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tableTitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Determine how to extract the title from each document; only used for table-based documents.</p>
+<p>Columns are referred to by numbers, the first is column 1 (not 0).
+You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>
+<p>Some examples:</p>
+<ul>
+<li><strong>1</strong>: use column 1</li>
+<li><strong>1,2</strong>: use columns 1 and 2 separately</li>
+<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>
+</ul>
+<p>See also <a href="tutorial-corpuscreator.html#tables">Creating a Corpus with Tables</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tableGroupBy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.</p>
+<p>Columns are referred to by numbers, the first is column 1 (not 0).
+You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.</p>
+<p>Some examples:</p>
+<ul>
+<li><strong>1</strong>: use column 1</li>
+<li><strong>1,2</strong>: use columns 1 and 2 separately</li>
+<li><strong>1+2,3</strong>: combine columns 1 and two and use column 3 separately</li>
+</ul>
+<p>See also <a href="tutorial-corpuscreator.html#tables">Creating a Corpus with Tables</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tableNoHeadersRow</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Determine if the table has a first row of headers; only used for table-based documents.</p>
+<p>Provide a value of "true" if there is no header row, otherwise leave it blank or undefined (default).</p>
+<p>See also <a href="tutorial-corpuscreator.html#tables">Creating a Corpus with Tables</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tokenization</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The tokenization strategy to use</p>
+<p>This should usually be undefined, unless specific behaviour is required. These are the valid values:</p>
+<ul>
+<li><strong>undefined or blank</strong>: use the default tokenization (which uses Unicode rules for word segmentation)</li>
+<li><strong>wordBoundaries</strong>: use any Unicode character word boundaries for tokenization</li>
+<li><strong>whitespace</strong>: tokenize by whitespace only (punctuation and other characters will be kept with words)</li>
+</ul>
+<p>See also <a href="tutorial-corpuscreator.html#processing">Creating a Corpus Tokenization</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlContentXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of document content (the body); only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;head&gt;Hello world!&lt;/head&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlContentXpath: "//body"
+}); // document would be: "This is Voyant!"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlTitleXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document's title; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;title&gt;Hello world!&lt;/title&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlTitleXpath: "//title"
+}); // title would be: "Hello world!"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlAuthorXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document's author; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;author&gt;Stéfan Sinclair&lt;/author&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlAuthorXpath: "//author"
+}); // author would be: "Stéfan Sinclair"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlPubPlaceXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document's publication place; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;pubPlace&gt;Montreal&lt;/pubPlace&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlPubPlaceXpath: "//pubPlace"
+}); // publication place would be: "Montreal"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlPublisherXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document's publisher; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;publisher&gt;The Owl&lt;/publisher&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlPublisherXpath: "//publisher"
+}); // publisher would be: "The Owl"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlKeywordXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document's keywords; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;keyword&gt;text analysis&lt;/keyword&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlKeywordXpath: "//keyword"
+}); // publisher would be: "text analysis"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlCollectionXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document's collection name; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;collection&gt;documentation&lt;/collection&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlCollectionXpath: "//collection"
+}); // publisher would be: "documentation"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlDocumentsXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression that defines the location of each document; only used for XML-based documents.</p>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlGroupByXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The XPath expression by which to group multiple documents; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;sp s='Juliet'&gt;Hello!&lt;/sp&gt;&lt;sp s='Romeo'&gt;Hi!&lt;/sp&gt;&lt;sp s='Juliet'&gt;Bye!&lt;/sp&gt;&lt;/doc&gt;", {
+	xmlDocumentsXpath: '//sp',
+	xmlGroupByXpath: "//@s"
+}); // two docs: "Hello! Bye!" (Juliet) and "Hi!" (Romeo)
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlExtraMetadataXpath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A value that defines the location of other metadata; only used for XML-based documents.</p>
+<pre><code>loadCorpus("&lt;doc&gt;&lt;tool&gt;Voyant&lt;/tool&gt;&lt;phase&gt;1&lt;/phase&gt;&lt;body&gt;This is Voyant!&lt;/body&gt;&lt;/doc&gt;", {
+	xmlExtraMetadataXpath: "tool=//tool\nphase=//phase"
+}); // tool would be "Voyant" and phase would be "1"
+</code></pre>
+<p>Note that <code>xmlExtraMetadataXpath</code> is a bit different from the other XPath expressions in that it's
+possible to define multiple values (each on its own line) in the form of name=xpath.</p>
+<p>See also <a href="tutorial-corpuscreator.html#xml">Creating a Corpus with XML</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlExtractorTemplate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Pass the XML document through the XSL template located at the specified URL before extraction (this is ignored in XML-based documents).</p>
+<p>This is an advanced parameter that allows you to define a URL of an XSL template that can
+be called <em>before</em> text extraction (in other words, the other XML-based parameters apply
+after this template has been processed).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inputRemoveUntil</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Omit text up until the start of the matching regular expression (this is ignored in XML-based documents).</p>
+<pre><code>loadCorpus("Hello world! This is Voyant!", {
+	inputRemoveUntil: "This"
+}); // document would be: "This is Voyant!"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#text">Creating a Corpus with Text</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inputRemoveUntilAfter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Omit text up until the end of the matching regular expression (this is ignored in XML-based documents).</p>
+<pre><code>loadCorpus("Hello world! This is Voyant!", {
+	inputRemoveUntilAfter: "world!"
+}); // document would be: "This is Voyant!"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#text">Creating a Corpus with Text</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inputRemoveFrom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Omit text from the start of the matching regular expression (this is ignored in XML-based documents).</p>
+<pre><code>loadCorpus("Hello world! This is Voyant!", {
+	inputRemoveFrom: "This"
+}); // document would be: "Hello World!"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#text">Creating a Corpus with Text</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>inputRemoveFromAfter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Omit text from the end of the matching regular expression (this is ignored in XML-based documents).</p>
+<pre><code>loadCorpus("Hello world! This is Voyant!", {
+	inputRemoveFromAfter: "This"
+}); // document would be: "Hello World! This"
+</code></pre>
+<p>See also <a href="tutorial-corpuscreator.html#text">Creating a Corpus with Text</a>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>subTitle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A sub-title for the corpus.</p>
+<p>This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a subtitle for later use.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A title for the corpus.</p>
+<p>This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a title for later use.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>curatorTsv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a simple TSV of paths and labels for the DToC interface (this isn't typically used outside of the specialized DToC context).</p>
+<p>The DToC skin allows curation of XML tags and attributes in order to constrain the entries shown in the interface or to provide friendlier labels. This assumes plain text unicode input with one definition per line where the simple XPath expression is separated by a tab from a label.</p>
+<pre><code> p    	 paragraph
+ ref[@target*="religion"]    	 religion
+</code></pre>
+<p>For more information see the DToC documentation on <a href="http://cwrc.ca/Documentation/public/index.html#DITA_Files-Various_Applications/DToC/CuratingTags.html">Curating Tags</a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>

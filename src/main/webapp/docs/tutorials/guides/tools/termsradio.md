@@ -41,25 +41,25 @@ Additional controls:
 
 ## Spyral
 
-To use Termsradio widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use TermsRadio widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
-	"Bins": 5,
-	"Limit": null,
-	"Query": null,
+	"bins": 5,
+	"limit": null,
+	"query": null,
 	"slider": null,
 	"speed": null,
-	"StopList": null,
+	"stopList": null,
 	"visibleBins": null,
 	"yAxisScale": null
 }; 
 
-loadCorpus("austen").tool("Termsradio", config);
+loadCorpus("austen").tool("termsradio", config);
 ```
 
-Please see {@link Tools.Termsradio} for more information about configuration.
+Please see {@link Tools.TermsRadio} for more information about configuration.
 
 ## See Also
 

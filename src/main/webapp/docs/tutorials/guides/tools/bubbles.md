@@ -38,7 +38,6 @@ To use Bubbles in Spyral you can use the following code as a starting point. Mod
 the visualization.
 
 ```
-
 let config = {
     audio: false, // whether or not to include audio
     docIndex: 1, // document index to restrict to (can be comma-separated list)
@@ -46,8 +45,7 @@ let config = {
     stopList: null, // a named stopword list or comma-separated list of words
 };
 
-loadCorpus("austen").tool("Bubbles", config);
-
+loadCorpus("austen").tool("bubbles", config);
 ```
 
 Please see {@link Tools.Bubbles} for more information about configuration.
