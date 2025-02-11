@@ -1,11 +1,11 @@
 /**
- * Show contents in the results area.
+ * Show contents in the results area. Will try to intelligently handle most types of content.
  * @memberof Spyral.Util
  * @method show
  * @static
- * @param {*} contents 
- * @param {*} len 
- * @param {*} mode 
+ * @param {*} contents The contents to show
+ * @param {Number} [len] A maximum length to trim the contents to
+ * @param {String} [mode=info] A CSS class to apply to the shown contents
  */
 function show(contents, len, mode='info') {
 	if (this && this.then) {
@@ -61,8 +61,8 @@ function show(contents, len, mode='info') {
  * @memberof Spyral.Util
  * @method showError
  * @static
- * @param {*} error 
- * @param {*} more 
+ * @param {*} error An Error to display
+ * @param {*} [more] Additional Error details
  */
 function showError(error, more) {
 	if (error !== undefined && error instanceof Error) {

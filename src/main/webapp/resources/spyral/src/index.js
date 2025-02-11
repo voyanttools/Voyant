@@ -14,6 +14,7 @@ import DataViewer from './dataviewer';
 Util.DataViewer = DataViewer;
 
 /**
+ * These are the classes specific to Spyral.
  * @namespace Spyral
  */
 const Spyral = {
@@ -29,8 +30,8 @@ const Spyral = {
 
 
 /**
- * @class window
  * These are helper methods that get added to global window variable.
+ * @namespace window
  */
 window;
 
