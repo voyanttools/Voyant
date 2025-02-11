@@ -14,16 +14,15 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			openFull: 'Open Full Documentation',
 			docs: 'Docs',
 			splitView: 'Show Split View',
-			outlineIntro: 'Welcome to the Spyral Docs. Here are some links to help you navigate.<br><br>' +
-				'<a href="Spyral.Corpus.html">LoadCorpus</a> - Get Started with LoadCorpus.<br>' +
-				'<a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/">Tutorials</a> - Link to tutorial notebooks.<br>' +
-				'<a href="Spyral.html">Spyral Classes</a><br>' +
-				'<a href="Tools.html">Tools Documentation</a><br>' +
-				'<a href="window.html">Globals</a><br>' +
-				'<br>' +
-				'Alternatively take a look at our detailed Documentation:<br>' +
-				'<br>' +
-				'<a href="" rel="help">Full API Documentation</a> - Open up detailed API Documentation<br>',
+			outlineIntro: '<h2>Spyral Documentation</h2><p>Welcome to the Spyral Docs. Here are some links to help you navigate.</p><ul>' +
+				'<li><a href="Spyral.Corpus.html">LoadCorpus</a> - Get Started with LoadCorpus.</li>' +
+				'<li><a href="https://voyant-tools.org/spyral/learnspyral@gh/Tutorials/">Tutorials</a> - Link to tutorial notebooks.</li>' +
+				'<li><a href="Spyral.html">Spyral Classes</a></li>' +
+				'<li><a href="Tools.html">Tools Documentation</a></li>' +
+				'<li><a href="window.html">Globals</a></li>' +
+				'</ul>' +
+				'<p>Alternatively take a look at our detailed Documentation:</p>' +
+				'<p><a href="Spyral.html" rel="help">Full API Documentation</a> - Open up detailed API Documentation</p>',
 			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
 			loadingDocs: 'Loading Docs'
 		}
@@ -287,7 +286,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			methods.forEach(function(method) {
 				var text = method.replace(/^\./, '<span class="green icon">static</span> '); // static methods
 				text = text.replace(/^_/, '');
-				methodsMenu.add({text: text, itemId: '_'+method}); // prepend _ because some methods are reserved (e.g. toString)
+				methodsMenu.add({text: text, itemId: '_'+method, margin: '0 0 0 -20px'}); // prepend _ because some methods are reserved (e.g. toString)
 			});
 			methodsBtn.show();
 		} else {
@@ -309,7 +308,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				configsMenu.remove(key);
 			});
 			configs.forEach(function(config) {
-				configsMenu.add({text: config, itemId: config});
+				configsMenu.add({text: config, itemId: config, margin: '0 0 0 -20px'});
 			});
 			configsBtn.show();
 		} else {
@@ -371,11 +370,12 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			var menuItems = [];
 			if (dl.className.indexOf('methods') !== -1) {
 				menuItems = Array.from(dl.querySelectorAll('h4')).map(function(h4) {
-					return {text: h4.id, itemId: h4.id};
+					var method = h4.id.replace(/^\./, '<span class="green icon">static</span> ');
+					return {text: method, itemId: h4.id, margin: '0 0 0 -20px'};
 				});
 			} else {
 				menuItems = Array.from(dl.querySelectorAll('a')).map(function(link) {
-					return {text: link.textContent, itemId: link.textContent};
+					return {text: link.textContent, itemId: link.textContent, margin: '0 0 0 -20px'};
 				});
 			}
 			this.down('#'+menuId).getMenu().add(menuItems);
