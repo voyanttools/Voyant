@@ -2,6 +2,8 @@
  * TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
  * 
  * @class TermsRadio
+ * @tutorial termsradio
+ * @memberof Tools
  * @author Mark Turcato
  * @author Andrew MacDonald
  */
@@ -28,14 +30,16 @@ Ext.define('Voyant.panel.TermsRadio', {
     	},
     	api: {
     		/**
-			 * @memberof TermsRadio
-			 * @property {Bins}
+			 * @memberof Tools.TermsRadio
+			 * @instance
+			 * @property {bins}
 			 * @default
     		 */
     		bins: 5,
     	
     		/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+			 * @instance
 			 * @property {Number} visibleBins How many segments or documents to show at once (default is 5).
     		 * Note that this often works in parallel with the {@link #bins} value.
 			 * @default
@@ -43,7 +47,8 @@ Ext.define('Voyant.panel.TermsRadio', {
     		visibleBins: 5,
     		
     		/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+    		 * @instance
     		 * @property {String[]} docIdType The document type(s) to restrict results to.
     		 * @default null
     		 * @private
@@ -51,13 +56,15 @@ Ext.define('Voyant.panel.TermsRadio', {
     		docIdType: null,
     		
     		/**
-    		 * @memberof TermsRadio
-			 * @property {Limit}
+    		 * @memberof Tools.TermsRadio
+			 * @instance
+			 * @property {limit}
 			 * @default
     		 */
     		limit: 50,
     	
     		/**
+        	 * @instance
         	 * @property mode What mode to operate at, either document or corpus.
         	 * @choices document, corpus
     		 * @private
@@ -65,7 +72,8 @@ Ext.define('Voyant.panel.TermsRadio', {
     		mode: null,
     		
     		/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+        	 * @instance
         	 * @property {Number} position The current shifted position of the visualization.
         	 * @default 0
     		 * @private
@@ -73,7 +81,8 @@ Ext.define('Voyant.panel.TermsRadio', {
     		position: 0,
     		
     		/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+    		 * @instance
     		 * @property {String[]} selectedWords The words that have been selected.
     		 * @default null
     		 * @private
@@ -81,34 +90,39 @@ Ext.define('Voyant.panel.TermsRadio', {
     		selectedWords: [],
     		
 			/**
-			 * @memberof TermsRadio
-			 * @property {StopList}
+			 * @memberof Tools.TermsRadio
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
     		
     		/**
-    		 * @memberof TermsRadio
-			 * @property {Query}
+    		 * @memberof Tools.TermsRadio
+			 * @instance
+			 * @property {query}
     		 */
     		query: null,
     		
     		/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+    		 * @instance
     		 * @property {String} yAxisScale The scale for the y axis. Options are: 'log' or 'linear'.
     		 * @default log
     		 */
     		yAxisScale: 'log',
     			
 			/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+			 * @instance
 			 * @property {Number} speed How fast to animate the visualization.
 			 * @default
 			 */
     		speed: 50,
     		
     		/**
-			 * @memberof TermsRadio
+			 * @memberof Tools.TermsRadio
+    		 * @instance
     		 * @property {Boolean} slider Whether to show the slider.
     		 * @default true
     		 */

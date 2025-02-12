@@ -2,6 +2,8 @@
  * Document Terms is a table view of term frequencies for each document.
  * 
  * @class DocumentTerms
+ * @tutorial documentterms
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.DocumentTerms', {
 	extend: 'Ext.grid.Panel',
@@ -22,50 +24,59 @@ Ext.define('Voyant.panel.DocumentTerms', {
     	},
     	api: {
 			/**
-			 * @memberof DocumentTerms
-			 * @property {StopList}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 			/**
-			 * @memberof DocumentTerms
-			 * @property {Query}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {DocId}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {DocIndex}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {Bins}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {bins}
 			 * @default
 			 */
     		bins: 10,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {Columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {columns} columns 'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'
 			 */
 			columns: undefined,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {SortColumn}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {sort}
 			 */
 			sort: undefined,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {SortDir}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {dir}
 			 */
 			dir: undefined,
 			/**
-			 * @memberof DocumentTerms
-			 * @property {TermColors}
+			 * @memberof Tools.DocumentTerms
+			 * @instance
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

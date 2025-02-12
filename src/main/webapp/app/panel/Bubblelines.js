@@ -3,6 +3,8 @@
  * Bubblelines visualizes the frequency and distribution of terms in a corpus.
  * 
  * @class Bubblelines
+ * @tutorial bubblelines
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Bubblelines', {
 	extend: 'Ext.panel.Panel',
@@ -13,39 +15,45 @@ Ext.define('Voyant.panel.Bubblelines', {
     	},
     	api: {
     		/**
-			 * @memberof Bubblelines
-    		 * @property {Bins}
+			 * @memberof Tools.Bubblelines
+    		 * @instance
+    		 * @property {bins}
 			 * @default
     		 */
     		bins: 50,
 
         	/**
-			 * @memberof Bubblelines
-        	 * @property {Query}
+			 * @memberof Tools.Bubblelines
+        	 * @instance
+        	 * @property {query}
         	 */
     		query: null,
     		
     		/**
-			 * @memberof Bubblelines
-    		 * @property {StopList}
+			 * @memberof Tools.Bubblelines
+    		 * @instance
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
 
     		/**
-			 * @memberof Bubblelines
-    		 * @property {DocId}
+			 * @memberof Tools.Bubblelines
+    		 * @instance
+    		 * @property {docId}
     		 */
     		docId: undefined,
 
     		/**
-			 * @memberof Bubblelines
-    		 * @property {DocIndex}
+			 * @memberof Tools.Bubblelines
+    		 * @instance
+    		 * @property {docIndex}
     		 */
     		docIndex: undefined,
 
     		/**
-			 * @memberof Bubblelines
+			 * @memberof Tools.Bubblelines
+    		 * @instance
     		 * @property {Number} maxDocs The maximum number of documents to show.
     		 * @default
     		 */

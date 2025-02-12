@@ -1,7 +1,7 @@
 var fs = require('fs');
 var helper = require("jsdoc/util/templateHelper");
 
-var apiUrlRoot = 'https://voyant-tools.org';
+var apiUrlRoot = '';//'https://voyant-tools.org';
 
 /**
  * Publish hook for the JSDoc template.  Writes to JSON stdout.
@@ -26,6 +26,11 @@ exports.publish = function(data, opts, tutorials) {
     function convertType(typeObj, returnString) {
         if (typeObj) {
             var type = typeObj.type.names.join('|');
+            //typedef
+            if (type.indexOf('~') !== -1) {
+                // remove typedef parent
+                type = type.replace(/(\w\.?)+~/, '');
+            }
             //pipes
             if (type.indexOf('|') !== -1) {
                 //ternjs doesn't support multiple types for a parameter
@@ -275,14 +280,14 @@ exports.publish = function(data, opts, tutorials) {
 				// auto-generate API urls
 				if (!desc) {
 					// link to overview by default
-					convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname;
+					convertedEntry['!url'] = apiUrlRoot+'/'+doc.longname+'.html';
 				} else {
 					if (doc.kind === 'class') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+doc.longname+'-method-constructor';
+						convertedEntry['!url'] = apiUrlRoot+'/'+doc.longname+'.html#constructor';
 					} else if (doc.scope === 'instance') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace('#', '-method-'));
+						convertedEntry['!url'] = apiUrlRoot+'/'+(doc.longname.replace('#', '.html#'));
 					} else if (doc.scope === 'static') {
-						convertedEntry['!url'] = apiUrlRoot+'/docs/#!/api/'+(doc.longname.replace(/\.(\w+)$/, '-static-method-$1'));
+						convertedEntry['!url'] = apiUrlRoot+'/'+(doc.longname.replace(/\.(\w+)$/, '.html#.$1'));
 					}
 				}
 			}

@@ -3,6 +3,8 @@
  * depend on whether the corpus includes one document or many.
  * 
  * @class Summary
+ * @tutorial summary
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Summary', {
 	extend: 'Ext.panel.Panel',
@@ -18,29 +20,33 @@ Ext.define('Voyant.panel.Summary', {
     	api: {
     		
     		/**
-    		 * @memberof Summary
-			 * @property {StopList}
+    		 * @memberof Tools.Summary
+			 * @instance
+			 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-			 * @memberof Summary
-			 * @property {Start}
+			 * @memberof Tools.Summary
+			 * @instance
+			 * @property {start}
 			 * @default
 			 */
     		start: 0,
     		
     		
     		/**
-    		 * @memberof Summary
-			 * @property {Limit}
+    		 * @memberof Tools.Summary
+			 * @instance
+			 * @property {limit}
 			 * @default
     		 */
     		limit: 5,
     		
     		/**
-			 * @memberof Summary
+			 * @memberof Tools.Summary
+    		 * @instance
     		 * @property {Number} numberOfDocumentsForDistinctiveWords The number of items to include in the list of distinctive words (similar to the limit parameter but specific to distinctive words).
     		 */
     		numberOfDocumentsForDistinctiveWords: 10

@@ -1,7 +1,7 @@
 /**
  * A class for simplying resource storage
- * @class Storage
  * @memberof Spyral.Util
+ * @class
  */
 class Storage {
 

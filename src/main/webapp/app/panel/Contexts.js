@@ -2,6 +2,8 @@
  * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
  * 
  * @class Contexts
+ * @tutorial contexts
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Contexts', {
 	extend: 'Ext.grid.Panel',
@@ -14,65 +16,75 @@ Ext.define('Voyant.panel.Contexts', {
     	},
     	api: {
 			/**
-			 * @memberof Contexts
-			 * @property {Query}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Contexts
-			 * @property {DocId}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof Contexts
-			 * @property {DocIndex}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof Contexts
-			 * @property {StopList}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof Contexts
-			 * @property {Context}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {context}
 			 * @default
 			 */
     		context: 5,
 
 			/**
-			 * @memberof Contexts
+			 * @memberof Tools.Contexts
+			 * @instance
 			 * @property {Number} expand  How many terms to show when you expand any given row
 			 * @default
 			 */
     		expand: 50,
 
 			/**
-			 * @memberof Contexts
-			 * @property {Columns} columns 'docIndex', 'left', 'term', 'right', 'position'
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {columns} columns 'docIndex', 'left', 'term', 'right', 'position'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof Contexts
-			 * @property {SortColumn}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof Contexts
-			 * @property {SortDir}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {dir}
 			 */
 			dir: undefined,
 
 			/**
-			 * @memberof Contexts
-			 * @property {TermColors}
+			 * @memberof Tools.Contexts
+			 * @instance
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

@@ -2,6 +2,8 @@
  * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
  * 
  * @class CollocatesGraph
+ * @tutorial collocatesgraph
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.CollocatesGraph', {
 	extend: 'Ext.panel.Panel',
@@ -12,34 +14,39 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	},
     	api: {
 			/**
-			 * @memberof CollocatesGraph
-			 * @property {Query}
+			 * @memberof Tools.CollocatesGraph
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof CollocatesGraph
-			 * @property {Limit}
+			 * @memberof Tools.CollocatesGraph
+			 * @instance
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 5,
 
 			/**
-			 * @memberof CollocatesGraph
-			 * @property {StopList}
+			 * @memberof Tools.CollocatesGraph
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof CollocatesGraph
-			 * @property {Context}
+			 * @memberof Tools.CollocatesGraph
+			 * @instance
+			 * @property {context}
 			 * @default
 			 */
     		context: 5,
 
 			/**
-			 * @memberof CollocatesGraph
+			 * @memberof Tools.CollocatesGraph
+			 * @instance
 			 * @property {String} centralize If specified, will "centralize" on this keyword
 			 */
     		centralize: undefined

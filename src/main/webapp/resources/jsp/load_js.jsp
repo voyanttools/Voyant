@@ -1,4 +1,4 @@
-<% String voyant_js_id = "12408c34cea610ae0bf40685b3f0e8e2"; %>
+<% String voyant_js_id = "77d88c94e326c1a3cdd2d494ffc2b535"; %>
 <%
 String base_js = (String) request.getAttribute("base");
 String lang_js = (String) request.getAttribute("lang");

@@ -119,22 +119,18 @@ public class JSCacher {
 			
 			String sourceMapFilename = "voyant."+newFileID+".min.js.map";
 			
-			String header = "/* This file created by JSCacher. Last modified: "+new Date().toString()+" */\n";
 			String footer = doSourceMap ? "\n//# sourceMappingURL=" + sourceMapFilename : "";
-			
-			StringBuffer cache = new StringBuffer(header);
 			
 			List<SourceFile> sourceFiles = new ArrayList<SourceFile>();
 			for (File file : files) {
-				String s = FileUtils.readFileToString(file, Charset.forName(ENCODING));
-				cache.append(s).append("\n"); // assuming UTF-8
-				sourceFiles.add(SourceFile.fromFile(file.getPath()));
+				sourceFiles.add(SourceFile.fromFile(file.getPath(), Charset.forName(ENCODING)));
 			}
 			
 			// minified version
 			Compiler compiler = new Compiler();
 			CompilerOptions options = new CompilerOptions();
 			
+			// support for non-standard tags to avoid JSC_BAD_JSDOC_ANNOTATION warnings
 			List<String> tags = new ArrayList<String>();
 			tags.add("cfg");
 			tags.add("exports");
@@ -164,8 +160,7 @@ public class JSCacher {
 			CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
 			Result result = compiler.compile(new ArrayList<SourceFile>(), sourceFiles, options);
 			
-			cache.setLength(0);
-			cache.append(header);
+			StringBuffer cache = new StringBuffer();
 			cache.append(compiler.toSource());
 			cache.append(footer);
 

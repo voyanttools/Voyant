@@ -1748,7 +1748,7 @@ Ext.define('Voyant.widget.GeonamesFilter', {
                             totalCitiesCount: totalCitiesCount,
                             currentConnectionsCount: currentConnectionsCount,
                             totalConnectionsCount: totalConnectionsCount,
-                            url: panel.getBaseUrl()+"docs/#!/guide/dreamscape"
+                            url: panel.getBaseUrl()+"docs/tutorial-dreamscape.html"
                         })
 
                     });

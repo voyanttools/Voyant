@@ -2,6 +2,8 @@
  * Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
  * 
  * @class CorpusCollocates
+ * @tutorial corpuscollocates
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.CorpusCollocates', {
 	extend: 'Ext.grid.Panel',
@@ -12,58 +14,67 @@ Ext.define('Voyant.panel.CorpusCollocates', {
     	},
     	api: {
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {StopList}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {Context}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {context}
 			 * @default
 			 */
     		context: 5,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {Query}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {DocId}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {DocIndex}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {Columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {columns} columns 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {SortColumn}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {SortDir}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {dir}
 			 */
 			dir: undefined,
 
 			/**
-			 * @memberof CorpusCollocates
-			 * @property {TermColors}
+			 * @memberof Tools.CorpusCollocates
+			 * @instance
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

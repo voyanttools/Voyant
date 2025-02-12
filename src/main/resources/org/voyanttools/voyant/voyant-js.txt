@@ -190,7 +190,7 @@ app/notebook/storage/voyant/StorageDialogs.js
 app/notebook/metadata/MetadataEditor.js
 app/notebook/util/FormatConverter.js
 app/notebook/util/NotebooksList.js
-app/notebook/util/DocsWindow.js
+app/notebook/util/DocsPanel.js
 app/notebook/Catalogue.js
 app/notebook/Authenticator.js
 app/notebook/Notebook.js

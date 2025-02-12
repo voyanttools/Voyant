@@ -2,6 +2,8 @@
  * RezoViz represents connections between people, places and organizations that co-occur in multiple documents.
  * 
  * @class RezoViz
+ * @tutorial rezoviz
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.RezoViz', {
 	extend: 'Ext.panel.Panel',
@@ -15,45 +17,52 @@ Ext.define('Voyant.panel.RezoViz', {
 		},
 		api: {
 			/**
-			 * @memberof RezoViz
-			 * @property {Query}
+			 * @memberof Tools.RezoViz
+			 * @instance
+			 * @property {query}
 			 */
 			query: undefined,
 
 			/**
-			 * @memberof RezoViz
-			 * @property {Limit}
+			 * @memberof Tools.RezoViz
+			 * @instance
+			 * @property {limit}
 			 * @default
 			 */
 			limit: 50,
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
+			 * @instance
 			 * @property {String[]} type The entity types to include in the results. One or more of: 'location', 'organization', 'person'.
 			 */
 			type: ['organization','location','person'],
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
+			 * @instance
 			 * @property {Number} minEdgeCount
 			 */
 			minEdgeCount: 2,
 
 			/**
-			 * @memberof RezoViz
-			 * @property {StopList}
+			 * @memberof Tools.RezoViz
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
 			stopList: 'auto',
 
 			/**
-			 * @memberof RezoViz
-			 * @property {DocId}
+			 * @memberof Tools.RezoViz
+			 * @instance
+			 * @property {docId}
 			 */
 			docId: undefined,
 
 			/**
-			 * @memberof RezoViz
+			 * @memberof Tools.RezoViz
+			 * @instance
 			 * @property {String} nerService Which NER service to use: 'spacy', 'nssi', or 'voyant'.
 			 * @default
 			 */

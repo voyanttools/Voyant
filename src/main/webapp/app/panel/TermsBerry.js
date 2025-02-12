@@ -2,6 +2,8 @@
  * The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).
  * 
  * @class TermsBerry
+ * @tutorial termsberry
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.TermsBerry', {
 	extend: 'Ext.panel.Panel',
@@ -12,46 +14,53 @@ Ext.define('Voyant.panel.TermsBerry', {
     	},
     	api: {
 			/**
-			 * @memberof TermsBerry
-			 * @property {StopList}
+			 * @memberof Tools.TermsBerry
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof TermsBerry
-			 * @property {Context}
+			 * @memberof Tools.TermsBerry
+			 * @instance
+			 * @property {context}
 			 * @default
 			 */
     		context: 2,
 
 			/**
-			 * @memberof TermsBerry
+			 * @memberof Tools.TermsBerry
+			 * @instance
 			 * @property {Number} numInitialTerms The number of initial terms to display.
 			 */
         	numInitialTerms: 75,
 
 			/**
-			 * @memberof TermsBerry
-			 * @property {Query}
+			 * @memberof Tools.TermsBerry
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof TermsBerry
-			 * @property {DocIndex}
+			 * @memberof Tools.TermsBerry
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof TermsBerry
-			 * @property {DocId}
+			 * @memberof Tools.TermsBerry
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof TermsBerry
-			 * @property {Categories}
+			 * @memberof Tools.TermsBerry
+			 * @instance
+			 * @property {categories}
 			 */
     		categories: undefined
     	},

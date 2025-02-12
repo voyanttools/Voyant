@@ -45,7 +45,7 @@ Ext.define('Voyant.panel.Veliza', {
         	        align: 'stretch'
         	    },
     			items: [{
-    				html: new Ext.XTemplate(this.localize('scriptIntro')).apply([me.getBaseUrl()+"docs/#!/guide/veliza"])
+    				html: new Ext.XTemplate(this.localize('scriptIntro')).apply([me.getBaseUrl()+"docs/tutorial-veliza.html"])
     			},{
     				xtype: 'textarea',
     				name: 'editor',

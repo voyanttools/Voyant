@@ -24,3 +24,4 @@ src/main/resources/oath.properties
 /.pydevproject
 .vscode/
 node_modules/
+.idea

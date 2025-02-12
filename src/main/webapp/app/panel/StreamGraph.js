@@ -2,6 +2,8 @@
  * StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
  * 
  * @class StreamGraph
+ * @tutorial streamgraph
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.StreamGraph', {
 	extend: 'Ext.panel.Panel',
@@ -12,48 +14,55 @@ Ext.define('Voyant.panel.StreamGraph', {
     	},
     	api: {
 			/**
-			 * @memberof StreamGraph
-			 * @property {Limit}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 5,
 
 			/**
-			 * @memberof StreamGraph
-			 * @property {StopList}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof StreamGraph
-			 * @property {Query}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof StreamGraph
-			 * @property {WithDistributions}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {withDistributions}
 			 * @default
 			 */
     		withDistributions: 'relative',
 
 			/**
-			 * @memberof StreamGraph
-			 * @property {Bins}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {bins}
 			 * @default
 			 */
     		bins: 50,
 
 			/**
-			 * @memberof StreamGraph
-			 * @property {DocIndex}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof StreamGraph
-			 * @property {DocId}
+			 * @memberof Tools.StreamGraph
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined
     	},

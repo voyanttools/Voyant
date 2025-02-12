@@ -3,6 +3,8 @@
  * Bubbles is a playful visualization of term frequencies by document.
  * 
  * @class Bubbles
+ * @tutorial bubbles
+ * @memberof Tools
  */
 Ext.define('Voyant.panel.Bubbles', {
 	extend: 'Ext.panel.Panel',
@@ -13,34 +15,39 @@ Ext.define('Voyant.panel.Bubbles', {
     	},
     	api: {
     		/**
-			 * @memberof Bubbles
-    		 * @property {StopList}
+			 * @memberof Tools.Bubbles
+    		 * @instance
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
     		
 			/**
-			 * @memberof Bubbles
-			 * @property {DocIndex}
+			 * @memberof Tools.Bubbles
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: 0,
     		
 			/**
-			 * @memberof Bubbles
-			 * @property {Limit}
+			 * @memberof Tools.Bubbles
+			 * @instance
+			 * @property {limit}
 			 * @default
 			 */
     		limit: 100,
     		
 			/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
+			 * @instance
 			 * @property {Boolean} audio Whether or not to play audio
 			 * @default
 			 */
     		audio: false,
     		
 			/**
-			 * @memberof Bubbles
+			 * @memberof Tools.Bubbles
+			 * @instance
 			 * @property {Number} speed How fast to play the visualization
 			 * @default
 			 */

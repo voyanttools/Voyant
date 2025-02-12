@@ -1,10 +1,11 @@
 /**
- * Show contents in the results area.
+ * Show contents in the results area. Will try to intelligently handle most types of content.
  * @memberof Spyral.Util
  * @method show
  * @static
- * @param {*} contents The content to show. Tries to convert non-String and non-HTML variables.
- * @param {Object} config A config object containing attributes to add to the containing element.
+ * @param {*} contents The contents to show
+ * @param {Number} [len] A maximum length to trim the contents to
+ * @param {String} [mode=info] A CSS class to apply to the shown contents
  */
 function show(contents, config = {}) {
 	if (contents === undefined) {
@@ -55,8 +56,8 @@ function show(contents, config = {}) {
  * @memberof Spyral.Util
  * @method showError
  * @static
- * @param {*} error 
- * @param {*} more 
+ * @param {*} error An Error to display
+ * @param {*} [more] Additional Error details
  */
 function showError(error, more) {
 	if (error !== undefined && error instanceof Error) {

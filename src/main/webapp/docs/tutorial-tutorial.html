@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Tutorial/Workshop | Voyant Tools Help</title>
+
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <a href="index.html">
+                <img src="imgs/info/about/icon.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="examples-tab">
+                <a href="#"><h4>Voyant</h4></a>
+            </li>            <li id="api-tab">
+                <a href="#"><h4>Spyral</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Voyant</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><ul class="inner"><li><a href="tutorial-bubblelines.html">Bubblelines</a></li><li><a href="tutorial-bubbles.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph.html">Collocates Graph</a></li><li><a href="tutorial-contexts.html">Contexts</a></li><li><a href="tutorial-corpusterms.html">Corpus Terms</a></li><li><a href="tutorial-correlations.html">Correlations</a></li><li><a href="tutorial-documents.html">Documents</a></li><li><a href="tutorial-documentterms.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots.html">Knots</a></li><li><a href="tutorial-mandala.html">Mandala</a></li><li><a href="tutorial-microsearch.html">MicroSearch</a></li><li><a href="tutorial-phrases.html">Phrases</a></li><li><a href="tutorial-reader.html">Reader</a></li><li><a href="tutorial-rezoviz.html">RezoViz</a></li><li><a href="tutorial-scatterplot.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph.html">StreamGraph</a></li><li><a href="tutorial-summary.html">Summary</a></li><li><a href="tutorial-termsberry.html">TermsBerry</a></li><li><a href="tutorial-termsradio.html">TermsRadio</a></li><li><a href="tutorial-textualarc.html">TextualArc</a></li><li><a href="tutorial-topics.html">Topics</a></li><li><a href="tutorial-trends.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.CustomSet.html">CustomSet</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Panel.html">Panel</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li><li><a href="window.html">window</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="window_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="window.html#.createTable">createTable</a></li><li><a href="window.html#.loadCorpus">loadCorpus</a></li><li><a href="window.html#.show">show</a></li><li><a href="window.html#.showError">showError</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Spyral.Categories.html">Spyral.Categories</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Categories_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Categories.html#addCategory">addCategory</a></li><li><a href="Spyral.Categories.html#addFeature">addFeature</a></li><li><a href="Spyral.Categories.html#addTerm">addTerm</a></li><li><a href="Spyral.Categories.html#addTerms">addTerms</a></li><li><a href="Spyral.Categories.html#getCategories">getCategories</a></li><li><a href="Spyral.Categories.html#getCategoriesForTerm">getCategoriesForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryExportData">getCategoryExportData</a></li><li><a href="Spyral.Categories.html#getCategoryFeature">getCategoryFeature</a></li><li><a href="Spyral.Categories.html#getCategoryForTerm">getCategoryForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryNames">getCategoryNames</a></li><li><a href="Spyral.Categories.html#getCategoryRanking">getCategoryRanking</a></li><li><a href="Spyral.Categories.html#getCategoryTerms">getCategoryTerms</a></li><li><a href="Spyral.Categories.html#getFeatureForTerm">getFeatureForTerm</a></li><li><a href="Spyral.Categories.html#getFeatures">getFeatures</a></li><li><a href="Spyral.Categories.html#load">load</a></li><li><a href="Spyral.Categories.html#removeCategory">removeCategory</a></li><li><a href="Spyral.Categories.html#removeFeature">removeFeature</a></li><li><a href="Spyral.Categories.html#removeTerm">removeTerm</a></li><li><a href="Spyral.Categories.html#removeTerms">removeTerms</a></li><li><a href="Spyral.Categories.html#renameCategory">renameCategory</a></li><li><a href="Spyral.Categories.html#save">save</a></li><li><a href="Spyral.Categories.html#setCategoryFeature">setCategoryFeature</a></li><li><a href="Spyral.Categories.html#setCategoryRanking">setCategoryRanking</a></li><li><a href="Spyral.Categories.html#.load">load</a></li></ul></div></li><li><a href="Spyral.Chart.html">Spyral.Chart</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Chart_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Chart.html#bar">bar</a></li><li><a href="Spyral.Chart.html#column">column</a></li><li><a href="Spyral.Chart.html#create">create</a></li><li><a href="Spyral.Chart.html#line">line</a></li><li><a href="Spyral.Chart.html#networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#scatter">scatter</a></li><li><a href="Spyral.Chart.html#.bar">bar</a></li><li><a href="Spyral.Chart.html#.column">column</a></li><li><a href="Spyral.Chart.html#.create">create</a></li><li><a href="Spyral.Chart.html#.line">line</a></li><li><a href="Spyral.Chart.html#.networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#.scatter">scatter</a></li><li><a href="Spyral.Chart.html#.setSeriesData">setSeriesData</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Chart.html#~HighchartsConfig">HighchartsConfig</a></li><li><a href="Spyral.Chart.html#~HighchartsSeriesConfig">HighchartsSeriesConfig</a></li></ul></div></li><li><a href="Spyral.Corpus.html">Spyral.Corpus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Corpus_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Corpus.html#analysis">analysis</a></li><li><a href="Spyral.Corpus.html#collocates">collocates</a></li><li><a href="Spyral.Corpus.html#contexts">contexts</a></li><li><a href="Spyral.Corpus.html#correlations">correlations</a></li><li><a href="Spyral.Corpus.html#documents">documents</a></li><li><a href="Spyral.Corpus.html#entities">entities</a></li><li><a href="Spyral.Corpus.html#filterByCategory">filterByCategory</a></li><li><a href="Spyral.Corpus.html#id">id</a></li><li><a href="Spyral.Corpus.html#lemmas">lemmas</a></li><li><a href="Spyral.Corpus.html#metadata">metadata</a></li><li><a href="Spyral.Corpus.html#phrases">phrases</a></li><li><a href="Spyral.Corpus.html#summary">summary</a></li><li><a href="Spyral.Corpus.html#terms">terms</a></li><li><a href="Spyral.Corpus.html#text">text</a></li><li><a href="Spyral.Corpus.html#texts">texts</a></li><li><a href="Spyral.Corpus.html#titles">titles</a></li><li><a href="Spyral.Corpus.html#toString">toString</a></li><li><a href="Spyral.Corpus.html#tokens">tokens</a></li><li><a href="Spyral.Corpus.html#tool">tool</a></li><li><a href="Spyral.Corpus.html#topics">topics</a></li><li><a href="Spyral.Corpus.html#words">words</a></li><li><a href="Spyral.Corpus.html#.load">load</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Corpus.html#~CorpusConfig">CorpusConfig</a></li></ul></div></li><li><a href="Spyral.Load.html">Spyral.Load</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Load_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Load.html#.html">html</a></li><li><a href="Spyral.Load.html#.json">json</a></li><li><a href="Spyral.Load.html#.load">load</a></li><li><a href="Spyral.Load.html#.setBaseUrl">setBaseUrl</a></li><li><a href="Spyral.Load.html#.text">text</a></li><li><a href="Spyral.Load.html#.trombone">trombone</a></li><li><a href="Spyral.Load.html#.xml">xml</a></li></ul></div></li><li><a href="Spyral.Metadata.html">Spyral.Metadata</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Metadata_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Metadata.html#clone">clone</a></li><li><a href="Spyral.Metadata.html#getHeaders">getHeaders</a></li><li><a href="Spyral.Metadata.html#set">set</a></li><li><a href="Spyral.Metadata.html#setDateNow">setDateNow</a></li><li><a href="Spyral.Metadata.html#shortDate">shortDate</a></li></ul></div></li><li><a href="Spyral.Notebook.html">Spyral.Notebook</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Notebook_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Notebook.html#.getPromise">getPromise</a></li><li><a href="Spyral.Notebook.html#.getTarget">getTarget</a></li><li><a href="Spyral.Notebook.html#.import">import</a></li><li><a href="Spyral.Notebook.html#.show">show</a></li></ul></div></li><li><a href="Spyral.Table.html">Spyral.Table</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Table_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Table.html#addColumn">addColumn</a></li><li><a href="Spyral.Table.html#addRow">addRow</a></li><li><a href="Spyral.Table.html#addRows">addRows</a></li><li><a href="Spyral.Table.html#cell">cell</a></li><li><a href="Spyral.Table.html#chart">chart</a></li><li><a href="Spyral.Table.html#column">column</a></li><li><a href="Spyral.Table.html#columnCounts">columnCounts</a></li><li><a href="Spyral.Table.html#columnMax">columnMax</a></li><li><a href="Spyral.Table.html#columnMean">columnMean</a></li><li><a href="Spyral.Table.html#columnMin">columnMin</a></li><li><a href="Spyral.Table.html#columnRollingMean">columnRollingMean</a></li><li><a href="Spyral.Table.html#columnSort">columnSort</a></li><li><a href="Spyral.Table.html#columnStandardDeviation">columnStandardDeviation</a></li><li><a href="Spyral.Table.html#columnSum">columnSum</a></li><li><a href="Spyral.Table.html#columnVariance">columnVariance</a></li><li><a href="Spyral.Table.html#columnZScores">columnZScores</a></li><li><a href="Spyral.Table.html#columns">columns</a></li><li><a href="Spyral.Table.html#forEach">forEach</a></li><li><a href="Spyral.Table.html#getColumnIndex">getColumnIndex</a></li><li><a href="Spyral.Table.html#getRowIndex">getRowIndex</a></li><li><a href="Spyral.Table.html#hasColumn">hasColumn</a></li><li><a href="Spyral.Table.html#header">header</a></li><li><a href="Spyral.Table.html#headers">headers</a></li><li><a href="Spyral.Table.html#html">html</a></li><li><a href="Spyral.Table.html#row">row</a></li><li><a href="Spyral.Table.html#rowCounts">rowCounts</a></li><li><a href="Spyral.Table.html#rowMax">rowMax</a></li><li><a href="Spyral.Table.html#rowMean">rowMean</a></li><li><a href="Spyral.Table.html#rowMin">rowMin</a></li><li><a href="Spyral.Table.html#rowRollingMean">rowRollingMean</a></li><li><a href="Spyral.Table.html#rowSort">rowSort</a></li><li><a href="Spyral.Table.html#rowStandardDeviation">rowStandardDeviation</a></li><li><a href="Spyral.Table.html#rowSum">rowSum</a></li><li><a href="Spyral.Table.html#rowVariance">rowVariance</a></li><li><a href="Spyral.Table.html#rowZScores">rowZScores</a></li><li><a href="Spyral.Table.html#rows">rows</a></li><li><a href="Spyral.Table.html#setCell">setCell</a></li><li><a href="Spyral.Table.html#setColumn">setColumn</a></li><li><a href="Spyral.Table.html#setHeaders">setHeaders</a></li><li><a href="Spyral.Table.html#setRow">setRow</a></li><li><a href="Spyral.Table.html#toCsv">toCsv</a></li><li><a href="Spyral.Table.html#toHtml">toHtml</a></li><li><a href="Spyral.Table.html#toString">toString</a></li><li><a href="Spyral.Table.html#toTsv">toTsv</a></li><li><a href="Spyral.Table.html#updateCell">updateCell</a></li><li><a href="Spyral.Table.html#.cmp">cmp</a></li><li><a href="Spyral.Table.html#.counts">counts</a></li><li><a href="Spyral.Table.html#.create">create</a></li><li><a href="Spyral.Table.html#.fetch">fetch</a></li><li><a href="Spyral.Table.html#.mean">mean</a></li><li><a href="Spyral.Table.html#.rollingMean">rollingMean</a></li><li><a href="Spyral.Table.html#.standardDeviation">standardDeviation</a></li><li><a href="Spyral.Table.html#.sum">sum</a></li><li><a href="Spyral.Table.html#.variance">variance</a></li><li><a href="Spyral.Table.html#.zScores">zScores</a></li><li><a href="Spyral.Table.html#.zip">zip</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Table.html#~TableConfig">TableConfig</a></li></ul></div></li><li><a href="Spyral.Util.html">Spyral.Util</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html">Storage</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.html#.blobToDataUrl">blobToDataUrl</a></li><li><a href="Spyral.Util.html#.blobToString">blobToString</a></li><li><a href="Spyral.Util.html#.dataUrlToBlob">dataUrlToBlob</a></li><li><a href="Spyral.Util.html#.getFileExtensionFromMimeType">getFileExtensionFromMimeType</a></li><li><a href="Spyral.Util.html#.getVoyantDocumentFormatFromFileExtension">getVoyantDocumentFormatFromFileExtension</a></li><li><a href="Spyral.Util.html#.id">id</a></li><li><a href="Spyral.Util.html#.isArray">isArray</a></li><li><a href="Spyral.Util.html#.isBlob">isBlob</a></li><li><a href="Spyral.Util.html#.isBoolean">isBoolean</a></li><li><a href="Spyral.Util.html#.isFunction">isFunction</a></li><li><a href="Spyral.Util.html#.isNode">isNode</a></li><li><a href="Spyral.Util.html#.isNull">isNull</a></li><li><a href="Spyral.Util.html#.isNumber">isNumber</a></li><li><a href="Spyral.Util.html#.isObject">isObject</a></li><li><a href="Spyral.Util.html#.isPromise">isPromise</a></li><li><a href="Spyral.Util.html#.isString">isString</a></li><li><a href="Spyral.Util.html#.isUndefined">isUndefined</a></li><li><a href="Spyral.Util.html#.more">more</a></li><li><a href="Spyral.Util.html#.show">show</a></li><li><a href="Spyral.Util.html#.showError">showError</a></li><li><a href="Spyral.Util.html#.toString">toString</a></li><li><a href="Spyral.Util.html#.transformXml">transformXml</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Spyral.Util.Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li><li><a href="Tools.Bubblelines.html">Tools.Bubblelines</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubblelines_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html#bins">bins</a></li><li><a href="Tools.Bubblelines.html#docId">docId</a></li><li><a href="Tools.Bubblelines.html#docIndex">docIndex</a></li><li><a href="Tools.Bubblelines.html#maxDocs">maxDocs</a></li><li><a href="Tools.Bubblelines.html#query">query</a></li><li><a href="Tools.Bubblelines.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Bubbles.html">Tools.Bubbles</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubbles_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubbles.html#audio">audio</a></li><li><a href="Tools.Bubbles.html#docIndex">docIndex</a></li><li><a href="Tools.Bubbles.html#limit">limit</a></li><li><a href="Tools.Bubbles.html#speed">speed</a></li><li><a href="Tools.Bubbles.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Cirrus.html">Tools.Cirrus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Cirrus_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Cirrus.html#categories">categories</a></li><li><a href="Tools.Cirrus.html#docId">docId</a></li><li><a href="Tools.Cirrus.html#docIndex">docIndex</a></li><li><a href="Tools.Cirrus.html#fontFamily">fontFamily</a></li><li><a href="Tools.Cirrus.html#inlineData">inlineData</a></li><li><a href="Tools.Cirrus.html#limit">limit</a></li><li><a href="Tools.Cirrus.html#stopList">stopList</a></li><li><a href="Tools.Cirrus.html#visible">visible</a></li><li><a href="Tools.Cirrus.html#whiteList">whiteList</a></li></ul></div></li><li><a href="Tools.CollocatesGraph.html">Tools.CollocatesGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CollocatesGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CollocatesGraph.html#centralize">centralize</a></li><li><a href="Tools.CollocatesGraph.html#context">context</a></li><li><a href="Tools.CollocatesGraph.html#limit">limit</a></li><li><a href="Tools.CollocatesGraph.html#query">query</a></li><li><a href="Tools.CollocatesGraph.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Contexts.html">Tools.Contexts</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Contexts_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Contexts.html#columns">columns</a></li><li><a href="Tools.Contexts.html#context">context</a></li><li><a href="Tools.Contexts.html#dir">dir</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docIndex">docIndex</a></li><li><a href="Tools.Contexts.html#expand">expand</a></li><li><a href="Tools.Contexts.html#query">query</a></li><li><a href="Tools.Contexts.html#sort">sort</a></li><li><a href="Tools.Contexts.html#stopList">stopList</a></li><li><a href="Tools.Contexts.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusCollocates.html">Tools.CorpusCollocates</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusCollocates_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusCollocates.html#columns">columns</a></li><li><a href="Tools.CorpusCollocates.html#context">context</a></li><li><a href="Tools.CorpusCollocates.html#dir">dir</a></li><li><a href="Tools.CorpusCollocates.html#docId">docId</a></li><li><a href="Tools.CorpusCollocates.html#docIndex">docIndex</a></li><li><a href="Tools.CorpusCollocates.html#query">query</a></li><li><a href="Tools.CorpusCollocates.html#sort">sort</a></li><li><a href="Tools.CorpusCollocates.html#stopList">stopList</a></li><li><a href="Tools.CorpusCollocates.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusTerms.html">Tools.CorpusTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusTerms.html#columns">columns</a></li><li><a href="Tools.CorpusTerms.html#comparisonCorpus">comparisonCorpus</a></li><li><a href="Tools.CorpusTerms.html#dir">dir</a></li><li><a href="Tools.CorpusTerms.html#maxBins">maxBins</a></li><li><a href="Tools.CorpusTerms.html#query">query</a></li><li><a href="Tools.CorpusTerms.html#sort">sort</a></li><li><a href="Tools.CorpusTerms.html#stopList">stopList</a></li><li><a href="Tools.CorpusTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Correlations.html">Tools.Correlations</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Correlations_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Correlations.html#columns">columns</a></li><li><a href="Tools.Correlations.html#dir">dir</a></li><li><a href="Tools.Correlations.html#docId">docId</a></li><li><a href="Tools.Correlations.html#docIndex">docIndex</a></li><li><a href="Tools.Correlations.html#minInDocumentsCountRatio">minInDocumentsCountRatio</a></li><li><a href="Tools.Correlations.html#query">query</a></li><li><a href="Tools.Correlations.html#sort">sort</a></li><li><a href="Tools.Correlations.html#stopList">stopList</a></li><li><a href="Tools.Correlations.html#termColors">termColors</a></li><li><a href="Tools.Correlations.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.CustomSet.html">Tools.CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CustomSet.html#layout">layout</a></li><li><a href="Tools.CustomSet.html#tableLayout">tableLayout</a></li></ul></div></li><li><a href="Tools.DocumentTerms.html">Tools.DocumentTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.DocumentTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.DocumentTerms.html#bins">bins</a></li><li><a href="Tools.DocumentTerms.html#columns">columns</a></li><li><a href="Tools.DocumentTerms.html#dir">dir</a></li><li><a href="Tools.DocumentTerms.html#docId">docId</a></li><li><a href="Tools.DocumentTerms.html#docIndex">docIndex</a></li><li><a href="Tools.DocumentTerms.html#query">query</a></li><li><a href="Tools.DocumentTerms.html#sort">sort</a></li><li><a href="Tools.DocumentTerms.html#stopList">stopList</a></li><li><a href="Tools.DocumentTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Documents.html">Tools.Documents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Documents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Documents.html#columns">columns</a></li><li><a href="Tools.Documents.html#dir">dir</a></li><li><a href="Tools.Documents.html#docId">docId</a></li><li><a href="Tools.Documents.html#docIndex">docIndex</a></li><li><a href="Tools.Documents.html#query">query</a></li><li><a href="Tools.Documents.html#sort">sort</a></li></ul></div></li><li><a href="Tools.Embedder.html">Tools.Embedder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Embedder_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Embedder.html#url">url</a></li></ul></div></li><li><a href="Tools.Knots.html">Tools.Knots</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Knots_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Knots.html#audio">audio</a></li><li><a href="Tools.Knots.html#docId">docId</a></li><li><a href="Tools.Knots.html#query">query</a></li><li><a href="Tools.Knots.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Mandala.html">Tools.Mandala</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Mandala_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Mandala.html#labels">labels</a></li><li><a href="Tools.Mandala.html#query">query</a></li><li><a href="Tools.Mandala.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.MicroSearch.html">Tools.MicroSearch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.MicroSearch_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.MicroSearch.html#query">query</a></li><li><a href="Tools.MicroSearch.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Panel.html">Tools.Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Panel.html#corpus">corpus</a></li><li><a href="Tools.Panel.html#input">input</a></li><li><a href="Tools.Panel.html#inputFormat">inputFormat</a></li><li><a href="Tools.Panel.html#subtitle">subtitle</a></li></ul></div></li><li><a href="Tools.Phrases.html">Tools.Phrases</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Phrases_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Phrases.html#columns">columns</a></li><li><a href="Tools.Phrases.html#dir">dir</a></li><li><a href="Tools.Phrases.html#docId">docId</a></li><li><a href="Tools.Phrases.html#docIndex">docIndex</a></li><li><a href="Tools.Phrases.html#maxLength">maxLength</a></li><li><a href="Tools.Phrases.html#minLength">minLength</a></li><li><a href="Tools.Phrases.html#overlapFilter">overlapFilter</a></li><li><a href="Tools.Phrases.html#query">query</a></li><li><a href="Tools.Phrases.html#sort">sort</a></li><li><a href="Tools.Phrases.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Reader.html">Tools.Reader</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Reader_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Reader.html#limit">limit</a></li><li><a href="Tools.Reader.html#query">query</a></li><li><a href="Tools.Reader.html#skipToDocId">skipToDocId</a></li><li><a href="Tools.Reader.html#start">start</a></li></ul></div></li><li><a href="Tools.RezoViz.html">Tools.RezoViz</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.RezoViz_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.RezoViz.html#docId">docId</a></li><li><a href="Tools.RezoViz.html#limit">limit</a></li><li><a href="Tools.RezoViz.html#minEdgeCount">minEdgeCount</a></li><li><a href="Tools.RezoViz.html#nerService">nerService</a></li><li><a href="Tools.RezoViz.html#query">query</a></li><li><a href="Tools.RezoViz.html#stopList">stopList</a></li><li><a href="Tools.RezoViz.html#type">type</a></li></ul></div></li><li><a href="Tools.ScatterPlot.html">Tools.ScatterPlot</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.ScatterPlot_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.ScatterPlot.html#analysis">analysis</a></li><li><a href="Tools.ScatterPlot.html#bins">bins</a></li><li><a href="Tools.ScatterPlot.html#clusters">clusters</a></li><li><a href="Tools.ScatterPlot.html#comparisonType">comparisonType</a></li><li><a href="Tools.ScatterPlot.html#dimensions">dimensions</a></li><li><a href="Tools.ScatterPlot.html#docId">docId</a></li><li><a href="Tools.ScatterPlot.html#iterations">iterations</a></li><li><a href="Tools.ScatterPlot.html#label">label</a></li><li><a href="Tools.ScatterPlot.html#limit">limit</a></li><li><a href="Tools.ScatterPlot.html#perplexity">perplexity</a></li><li><a href="Tools.ScatterPlot.html#query">query</a></li><li><a href="Tools.ScatterPlot.html#stopList">stopList</a></li><li><a href="Tools.ScatterPlot.html#storeJson">storeJson</a></li><li><a href="Tools.ScatterPlot.html#target">target</a></li><li><a href="Tools.ScatterPlot.html#term">term</a></li><li><a href="Tools.ScatterPlot.html#whitelist">whitelist</a></li></ul></div></li><li><a href="Tools.StreamGraph.html">Tools.StreamGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.StreamGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.StreamGraph.html#bins">bins</a></li><li><a href="Tools.StreamGraph.html#docId">docId</a></li><li><a href="Tools.StreamGraph.html#docIndex">docIndex</a></li><li><a href="Tools.StreamGraph.html#limit">limit</a></li><li><a href="Tools.StreamGraph.html#query">query</a></li><li><a href="Tools.StreamGraph.html#stopList">stopList</a></li><li><a href="Tools.StreamGraph.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.Summary.html">Tools.Summary</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Summary_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Summary.html#limit">limit</a></li><li><a href="Tools.Summary.html#numberOfDocumentsForDistinctiveWords">numberOfDocumentsForDistinctiveWords</a></li><li><a href="Tools.Summary.html#start">start</a></li><li><a href="Tools.Summary.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsBerry.html">Tools.TermsBerry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsBerry_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsBerry.html#categories">categories</a></li><li><a href="Tools.TermsBerry.html#context">context</a></li><li><a href="Tools.TermsBerry.html#docId">docId</a></li><li><a href="Tools.TermsBerry.html#docIndex">docIndex</a></li><li><a href="Tools.TermsBerry.html#numInitialTerms">numInitialTerms</a></li><li><a href="Tools.TermsBerry.html#query">query</a></li><li><a href="Tools.TermsBerry.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsRadio.html">Tools.TermsRadio</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsRadio_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsRadio.html#bins">bins</a></li><li><a href="Tools.TermsRadio.html#limit">limit</a></li><li><a href="Tools.TermsRadio.html#query">query</a></li><li><a href="Tools.TermsRadio.html#slider">slider</a></li><li><a href="Tools.TermsRadio.html#speed">speed</a></li><li><a href="Tools.TermsRadio.html#stopList">stopList</a></li><li><a href="Tools.TermsRadio.html#visibleBins">visibleBins</a></li><li><a href="Tools.TermsRadio.html#yAxisScale">yAxisScale</a></li></ul></div></li><li><a href="Tools.TextualArc.html">Tools.TextualArc</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TextualArc_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TextualArc.html#docIndex">docIndex</a></li><li><a href="Tools.TextualArc.html#minRawFreq">minRawFreq</a></li><li><a href="Tools.TextualArc.html#speed">speed</a></li><li><a href="Tools.TextualArc.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Topics.html">Tools.Topics</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Topics_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Topics.html#iterations">iterations</a></li><li><a href="Tools.Topics.html#perDocLimit">perDocLimit</a></li><li><a href="Tools.Topics.html#seed">seed</a></li><li><a href="Tools.Topics.html#stopList">stopList</a></li><li><a href="Tools.Topics.html#termsPerTopic">termsPerTopic</a></li><li><a href="Tools.Topics.html#topics">topics</a></li></ul></div></li><li><a href="Tools.Trends.html">Tools.Trends</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Trends_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Trends.html#bins">bins</a></li><li><a href="Tools.Trends.html#chartType">chartType</a></li><li><a href="Tools.Trends.html#docId">docId</a></li><li><a href="Tools.Trends.html#docIndex">docIndex</a></li><li><a href="Tools.Trends.html#labels">labels</a></li><li><a href="Tools.Trends.html#limit">limit</a></li><li><a href="Tools.Trends.html#mode">mode</a></li><li><a href="Tools.Trends.html#query">query</a></li><li><a href="Tools.Trends.html#stopList">stopList</a></li><li><a href="Tools.Trends.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.WordTree.html">Tools.WordTree</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.WordTree_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.WordTree.html#context">context</a></li><li><a href="Tools.WordTree.html#docId">docId</a></li><li><a href="Tools.WordTree.html#docIndex">docIndex</a></li><li><a href="Tools.WordTree.html#limit">limit</a></li><li><a href="Tools.WordTree.html#query">query</a></li><li><a href="Tools.WordTree.html#stopList">stopList</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+<section>
+    <!-- <header>
+        <h2>Tutorial/Workshop</h2>
+    </header> -->
+
+    
+        <article class="readme">
+            <h1 id="tutorial%2Fworkshop">Tutorial/Workshop</h1>
+<p>This page is intended to provide a possible starting point for tutorials or workshops on Voyant Tools. Please feel free
+to adapt it as needed. This page is also written to serve as a self-study guide.</p>
+<p>There are some core concepts in Voyant that can be covered during a workshop, but there are also many specific issues
+that arise depending on the background and interests of users and participants. We tend to view workshops on Voyant as
+serving two purposes:</p>
+<ol>
+<li>how to use Voyant and get a grasp on what's available (how to use it)</li>
+<li>how to think differently about texts with tools such as Voyant (why use it)</li>
+</ol>
+<p>Pre-prepared materials like this document are perhaps best suited for the first purpose but we also think that a
+workshop can provide a venue for spontaneous explorations about the strengths and limitations of text analysis in
+general and Voyant in particular.</p>
+<p>There is a hosted version of Voyant Tools (https://voyant-tools.org) but we very strongly encourage anyone following
+along to download and launch the desktop version. Things can become unpredictable when 30 people hit the same button on
+the hosted version of Voyant. Besides, running a local version is likely to be faster, more private, and more flexible
+(you can work &quot;offline&quot;). Running VoyantServer is easy, you just <a href="https://github.com/sgsinclair/VoyantServer/wiki/VoyantServer-Desktop">download</a>, unzip, and click on the application.
+We usually try to contact workshop participants in advance to ask that they install a local version and sometimes we
+provide USB keys with download file.</p>
+<h2 id="topics">Topics</h2>
+<p>The tutorial will cover the following topics:</p>
+<ul>
+<li>basic information about Voyant (essential background about the tool and its design)</li>
+<li>how to create (or use) a Voyant corpus (especially with URLs and file uploads)</li>
+<li>how to begin exploring a corpus in Voyant (the default tools and their interactions)</li>
+<li>digging deeper into Voyant functionality (power searches, working with grids, additional tools)</li>
+<li>beyond Voyant (exporting data, bookmarking, embedding tools elsewhere)</li>
+<li>getting involved (as a user, developer, translator, content provider)</li>
+<li>future directions (such as Spyral Notebooks)</li>
+</ul>
+<p>There is a lot of material here and if you are leading a workshop you may want to select parts to skip (or cover some
+things more quickly than others). Depending on how things are presented and how much time is given for discussion and
+exploration, this outline might work well for a full-day workshop. Shorter formats are of course possible by being more
+selective or having a more instructional rather than hands-on tutorial style.</p>
+<p>Before getting into the specific topics we often take a moment to ask people to introduce themselves, describe their
+areas of interests, their expectations of Voyant and the workshop, and to indicate any specific topics or areas that
+they would like covered in more detail. (This is also an opportunity for the workshop leaders to introduce themselves
+and describe their own areas of research and interests.)</p>
+<h2 id="basics-of-voyant">Basics of Voyant</h2>
+<p>The <a href="tutorial-about.html">About</a> page contains a useful introduction to Voyant: what it is, who has contributed, and some of the core
+design principles. It's worth reading as time permits.</p>
+<p>For the purposes of the workshop, we typically like to emphasize the following:</p>
+<ul>
+<li>Voyant Tools fits in a long tradition of humanities scholars building tools for reading, finding, analyzing and visualizing digital texts.</li>
+<li>Voyant Tools strives to lower the barrier of entry for text analysis and balance user-friendliness with powerful functionality. For instance, no installation or login are required, and you can work with texts in a wide variety of formats (plain text, PDF, XML, MS Word, RTF, etc.).</li>
+<li>Voyant Tools is open-source and is a work in progress, it may not always work as intended and it's best to approach all observations with some circumspection.</li>
+<li>Voyant Tools has the advantage of being able to work with almost any language (represented in Unicode) but has the disadvantage that it has almost no language-specific functionality (needed for things like semantic analysis).</li>
+<li>Voyant Tools is intended as a tool for exploration and to assist with interpretative practices, it is not intended to tell you what questions to ask or to provide irrefutable results, though you may notice some interesting things and you may be led to construct some compelling interpretations while using it.</li>
+<li>Voyant Tools has no ambition to be the only tool that you use, there may come a point where its pre-programmed functionality seems constraining or inappropriate and other tools may be more suitable (we're especially big fans of <a href="https://github.com/sgsinclair/alta/blob/2eb10ab6787d032e317ce883fb0bc3427406333d/ipynb/Useful%20Resources.ipynb">Python and Juypter Notebooks</a>).</li>
+<li>Voyant is designed to integrate into a collaborative research process, including the possibility of sharing corpora and embedding tools into web pages (as you might embed a video); we are interested in how tools and argumentation can be combined in scholarship.</li>
+</ul>
+<p>Ok, that's all somewhat abstract and conceptual, let's jump into using Voyant.</p>
+<h2 id="create-a-corpus">Create a Corpus</h2>
+<p>There's more detail in the <a href="tutorial-corpuscreator.html">Creating a Corpus</a> page, but there are four main ways of creating
+and using a corpus in Voyant (&quot;corpus&quot; is another word for a set of documents):</p>
+<ol>
+<li>open an existing corpus (click on the &quot;Open&quot; button under the text box)</li>
+<li>type or paste text into the main text box (this creates a corpus with one document)</li>
+<li>type or paste one or more URLs into the main text box (one URL per line)</li>
+<li>click the &quot;Upload&quot; button under the text box to use files from your computer</li>
+</ol>
+<p>Take a moment to try each kind of corpus source (open, text, URLs, upload) in the box below (or in a <a href="../" target="_blank">new window</a>).</p>
+<iframe src="../" style="width: 90%; height: 520px;"></iframe>
+<p>Some tips:</p>
+<ul>
+<li>typing or pasting text into the box is ok for shorter documents, but for longer documents it's probably best to upload a file</li>
+<li>when you upload files you can select multiple files at a time</li>
+<li>if you have several local files to upload, consider creating a zip archive first, then upload just that file</li>
+<li>URLs need to be visible to the Voyant server (not behind a firewall) so the contents can be fetched</li>
+<li>some servers (like Gutenberg) may limit the number of requests, which could cause URLs to behave sporadically</li>
+<li>it can take a while to fetch a long list of URLs, it's probably preferable to use another tool to download the files (or download them manually) and then upload them in a zip archive</li>
+<li>uploaded plain text files need to be in UTF-8</li>
+</ul>
+<p>If an error occurs during corpus creation you may see an error message appear. Unfortunately, sometimes the system just
+fails silently (especially if you're creating a big corpus and there's a server timeout). One advantage of using a
+local instance of VoyantServer is that you may see some helpful errors reported in the VoyantServer window.</p>
+<p>Voyant can be used with a corpus of variable size, from one document to many. Some of the functionality depends on
+multiple documents and some tools work less well when there are hundreds or more documents.</p>
+<p>It's good to think of a corpus as a fluid concept, you may be able to change the meaning as you proceed. For instance,
+if you have thousands of tweets, you could treat each one as a separate document, or combine tweets by time, by author,
+or by some other criteria. Sometimes you might want to edit a corpus or sometimes you might want to create a new corpus
+for comparison.</p>
+<p>We won't experiment for now with more advanced options for Corpus creation, but there are several
+<a href="tutorial-corpuscreator.html">options</a> available to tweak the processing of text, XML, and even spreadsheets. If you have a
+moment during the workshop you could start experimenting with these.</p>
+<h2 id="explore-a-corpus">Explore a Corpus</h2>
+<p>Once you create a corpus you will arrive at the default &quot;<a href="tutorial-skins.html">skin</a>&quot; or arrangement of tools. There is a lot happening
+at once, but we'll start by describing the tools that you see and how they can interact.</p>
+<h3 id="default-skin">Default Skin</h3>
+<p>At first you will see three tool panels along the top and two tool panels along the bottom:</p>
+<ul>
+<li><a href="tutorial-cirrus.html">Cirrus</a>: a kind of word cloud showing the most frequent terms</li>
+<li><a href="tutorial-reader.html">Reader</a>: an efficient corpus reader that fetches segments of text as you scroll</li>
+<li><a href="tutorial-trends.html">Trends</a>: a distribution graph showing terms across the corpus (or terms within a document)</li>
+<li><a href="tutorial-summary.html">Summary</a>: a tool that provides a simple, textual overview of the current corpus</li>
+<li><a href="tutorial-contexts.html">Contexts</a>: a concordance that shows each occurrence of a keyword with a bit of surrounding context</li>
+</ul>
+<iframe src="../?corpus=austen" style="width: 90%; height: 500px;"></iframe>
+<h3 id="tool-interactions">Tool Interactions</h3>
+<p>An essential part of Voyant is that events in one tool can cause changes in other tools (the exact interactions depend
+on a number of factors, including which tools are visible). For instance, try the following sequence in the window above:</p>
+<ul>
+<li>click on a word (like &quot;know&quot;) in Cirrus, the tool in the upper left</li>
+<li>notice how the Trends tool (upper right) now shows just the word you clicked</li>
+<li>click on one of the discs in the Trends tool</li>
+<li>notice that the Contexts tool (bottom right) has updated with just the clicked word</li>
+<li>click the first row of the Contexts tool (bottom right)</li>
+<li>notice how the Reader tool has jumped to a location where that word appears, highlighted</li>
+</ul>
+<h3 id="cirrus">Cirrus</h3>
+<iframe src="../tool/Cirrus/?corpus=austen" style="width: 500px; height: 300px; float: right; padding-left: 1em;"></iframe> 
+Now let's zoom in for a moment on Cirrus. We might ask ourselves several questions about what we're seeing. For 
+instance, what does size represent? What about colour? What about the placement of words? This is a text in English but 
+the most commonly occurring words aren't there (like "the" and "a"), why not? For a tool like Cirrus some of these 
+questions may be obvious, but for **all** tools it's good to continuing asking ourselves what we're seeing, what we're 
+not seeing, and why.
+<h3 id="options">Options</h3>
+<div style="float: left; max-width: 250px; padding-right: 1em;">
+<p><img src="imgs/ui/tutorial/cirrus-options.png" alt="Cirrus"></p>
+</div>
+<p>Some options in Cirrus (like other tools) are available directly within the tool panel, like the &quot;Scale&quot; button and the
+&quot;Terms&quot; slider (experiment with both of these to see what they do). Other options are accessible from the options
+dialog that appears when you click on slider in the grey bar of the tool (like the image to the left). The full list of
+options are described in the <a href="tutorial-cirrus.html">Cirrus</a> documentation page, but let's have a quick look
+at the Stopwords option by clicking the &quot;Edit List&quot; button. This will show a dialog box with a long list of words that
+are excluded from the top frequency words in Cirrus. These are generally &quot;function&quot; words, or words that carry less
+meaning, but you may be surprised to see some of the words included (like &quot;must&quot; or &quot;nobody&quot;). Likewise, you may want
+to add a word that's not currently in the list (like &quot;said&quot;). Either way it's good to know what's there and to confirm
+that's what you want. You can find <a href="tutorial-stopwords.html">more information on stopwords</a>.</p>
+<h3 id="summary">Summary</h3>
+<p>One last thing to point out from the Summary tool (bottom left): the &quot;Distinctive words&quot; list. Assuming your corpus has
+multiple documents, this shows the words that are not only high frequency, but high frequency and relatively distinctive
+to that document (the frequency is weighted by how often it's found i other documents using something called <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">TF-IDF</a>).</p>
+<iframe src="../?corpus=austen&view=summary" style="width: 90%; height: 300px;"></iframe>
+<p>Now that an initial presentation of the interface has been made, this would be a good time to allow participants an
+opportunity to further explore. We will see some more functionality and some more tools in the next section, so the
+emphasis can be on the tools that are visible in the default interface: What information is shown in the five tools?
+What interactions between tools are possible? What simple tweaks to the settings and options are worth trying?
+Participants can use the Austen corpus or a simple corpus of their own (ideally that contains multiple documents).</p>
+<h2 id="digging-deeper">Digging Deeper</h2>
+<p>Voyant is an ongoing negotiation between simplicity and power: the design tries to simplify (relatively) the interface
+while still allowing more advanced operations.</p>
+<h3 id="search">Search</h3>
+<iframe src="../tool/CorpusTerms/?corpus=austen" style="width: 350px; height: 350px; float: right"></iframe>
+<p>A good example of this is <a href="tutorial-search.html">search</a>, which is supported in several of the tools (including Reader, Trends and
+Contexts in the default view). It's possible to search for a single word, but more advanced searches are also supported
+with a special syntax (hovering over the question mark in the search box shows examples of the syntax). Try the search
+terms (in bold) in the list below (you can remove a query by hitting x in the box surrounding the query, or hitting
+backspace to delete it). Also notice that Voyant tries to suggest search terms as you type, you can click on a
+suggestion to add it to the queries.</p>
+<ul>
+<li><strong>love</strong>: exact word match</li>
+<li><strong>lov*</strong>: combine all words that start with &quot;lov&quot;</li>
+<li><strong>^lov*</strong>: separate all words that start with &quot;lov&quot;</li>
+<li><strong>love|loves</strong>: combine all words separated by a pipe |</li>
+<li><strong>&quot;he loves&quot;</strong>: exact phrase match</li>
+<li><em><em>&quot;she he love</em>&quot;~10</em>*: all words within a proximity of 10 words</li>
+</ul>
+<p>The notion of boolean operators (AND, OR) isn't relevant for most tools since we're querying for any instance of any of
+the <strong>words</strong> (unlike when we're wanting to find <strong>documents</strong> that contain any or all queries). Note also that Voyant
+doesn't support directly notions like singular and plural forms, but that you can determine what forms are present
+(&quot;<strong>^dog*</strong>&quot;) and then decide if you want to combine forms (&quot;<strong>dog|dogs</strong>&quot;) or keep them separate (&quot;<strong>dog,dogs</strong>&quot;).
+That helps for individual queries but of course doesn't help much when you would want to see all singular and plural
+forms combined in a frequency list.</p>
+<h3 id="grids">Grids</h3>
+<p>Another example of somewhat hidden power in the Voyant interface can be found in most grid-based tools (that look like
+spreadsheets, like Contexts in the default view). This is an overview of some of the functionality that may not be
+obvious:</p>
+<ul>
+<li>hover over the column header to get a short description of the column values</li>
+<li>some columns allow you to sort values by that column by clicking on it (and clicking again to reverse the order)</li>
+<li>most columns can be reordered by dragging and dropping the column headers</li>
+<li>most grids allow for row selection: select a row by clicking on it, select multiple rows by using the Shift or Ctrl/Command key</li>
+<li>some grids have checkboxes (leftmost column) that facilitate selecting multiple items</li>
+<li>selected rows should persist even when querying for additional data</li>
+<li>some grids have a plus icon (leftmost colunm) that allows the user to expand more information about that row</li>
+<li>most grids have &quot;infinite scrolling&quot; which means that more rows will be loaded dynamically as needed and as available</li>
+<li>hovering over most column headers will cause an arrow to appear in the right part of the column header, click on it for further options:
+<ul>
+<li>another way of sorting</li>
+<li>a way of selecting additional columns to display</li>
+</ul>
+</li>
+</ul>
+<div style="max-width: 450px;">
+<p><img src="imgs/ui/grids/grid.png" alt="Grid"></p>
+</div>
+<h3 id="additional-tools">Additional Tools</h3>
+<p>Voyant's default view (or skin) shows a collection of 5 tools, but in fact there are many more tools available in
+Voyant. You may have already discovered one way of accessing some of them: by clicking on a tab (for instance, the
+Cirrus tool can be replaced by the Terms or Links tools simply by clicking on the tab (and of course you can click on
+the Cirrus tab to return to the default view).</p>
+<p><img src="imgs/ui/start/more-tools.png" alt="More Tools"></p>
+<p>The tabs are pre-programmed alternatives, but you can also choose from a much longer list of tools by clicking on the
+little window icon that appears when hovering over the header (either the blue header at the top that replaces all of
+the tools in the window or the grey header in each tool panel that replaces just that tool). Additional tools are
+organized into the following categories (tools can appear in multiple categories):</p>
+<ul>
+<li>the first tools above the line are recommended alternatives</li>
+<li>corpus tools: showing data about the corpus as a whole</li>
+<li>document tools: showing data about individual documents</li>
+<li>visualization tools: presenting data as charts, graphs, and other visual forms</li>
+<li>grid tools: presenting data primarily in tabular form</li>
+<li>other tools: various other forms of data presentation</li>
+</ul>
+<p>Another convenient way of browsing tools is to consult the <a href="tutorial-tools_.html">list of tools</a>,
+especially as there is a small thumbnail image and short description for each tool.</p>
+<h2 id="beyond-voyant">Beyond Voyant</h2>
+<p>Voyant is designed to</p>
+<h3 id="boomarking">Boomarking</h3>
+<h3 id="exporting-data">Exporting Data</h3>
+<h3 id="embeddding-voyant">Embeddding Voyant</h3>
+<h2 id="get-involed">Get Involed</h2>
+<p>We think of Voyant as a community-driven project, enriched by bug reports and feature requests from users, code
+contributions from developers, translators of the interface, and content providers who integrate Voyant into their
+platforms.</p>
+<h3 id="users">Users</h3>
+<h3 id="developers">Developers</h3>
+<h3 id="translators">Translators</h3>
+<p>The interface of Voyant has been partially or fully translated from English into multiple languages, including
+<a href="../?lang=ar">Arabic</a>, <a href="../?lang=bs">Bosnian</a>, <a href="../?lang=cz">Czech</a>, <a href="../?lang=hr">Croatian</a>, <a href="../?lang=fr">French</a>, <a href="../?lang=he">Hebrew</a>, <a href="../?lang=it">Italian</a>,
+<a href="../?lang=ja">Japanese</a>, and <a href="../?lang=sr">Serbian</a>. Help would be welcome to complete or update most of these languages, and we would
+gratefully welcome anyone wanting to start a new language (or coordinate with a team to do so). Voyant is a great way
+for new users anywhere in the world to start experimenting with text analysis. Please contact us if you're interested
+in helping!</p>
+<h3 id="content-providers">Content Providers</h3>
+<h2 id="roadmap">Roadmap</h2>
+<p>Voyant is an ongoing effort and we're always balanacing multiple priorities, including the following:</p>
+<ul>
+<li>addressing bugs (see our <a href="https://github.com/voyanttools/Voyant/issues">issues tracker</a>)</li>
+<li>improving robustness of the application (especially for multiple concurrent users)</li>
+<li>adding requested features, in particular:
+<ul>
+<li>progress monitoring for corpus creation (important for larger corpora)</li>
+<li>a more useful and widely supported word groupings mechanism (creating simple lists of words that can function as a unit)</li>
+<li>a preliminary geospatial mapping tool</li>
+<li>some more language-specific functionality (lemmatization and semantic analysis)</li>
+</ul>
+</li>
+</ul>
+<h3 id="spyral">Spyral</h3>
+<p>Finally, we are working on a web-based notebook environment (like <a href="https://jupyter.org/">Juypter</a>) that combines text (argumentation or
+documentation) with code snippets and results. Spyral will have the advantage of requiring no installation (unlike
+Jupyter) and will leverage much of the functionality in Voyant (both back-end analysis and front-end tools).</p>
+<p>There is no end to the new functionality that we could add in Voyant, but Spyral will allow power users to implement
+some of that functionality themselves.</p>
+<p>Voyant is an environment for reading, analysis and visualization, Spyral will include that and also be a writing and
+coding environment: we envision it as a full scholarly environment for text analysis.</p>
+        </article>
+    
+</section>
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        showLnbExamples();
+    </script>
+
+</body>
+</html>

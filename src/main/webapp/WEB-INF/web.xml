@@ -133,6 +133,7 @@
 	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
 	<!-- make sure that Javascript is sent as UTF-8 (Jetty does this but Tomcat doesn't) -->
