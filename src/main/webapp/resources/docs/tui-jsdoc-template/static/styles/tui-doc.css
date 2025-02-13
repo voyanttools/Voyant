@@ -404,7 +404,9 @@ footer {
 }
 
 .readme .toc {
-    float: right;
+    position: fixed;
+    top: 6px;
+    right: 6px;
     padding: 6px;
     border-radius: 3px;
     border: 1px solid #3893D4; 
