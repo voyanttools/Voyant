@@ -24,7 +24,7 @@ jobs:
           node-version: 20
 
       - name: Fix voyantjs path
-      - uses: jacobtomlinson/gha-find-replace@v3
+        uses: jacobtomlinson/gha-find-replace@v3
         with:
           include: src/main/webapp/resources/docs/config.json
           find: "/voyantjs/src/"
