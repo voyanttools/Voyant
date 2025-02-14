@@ -73,7 +73,7 @@ The `id` and `index` properties can be used as `docId` and `docIndex` in subsequ
 
 ## Corpus Tools
 
-The overarching category of all tools that work with a corpus. These share the following common parameters:
+The overarching category of all Voyant tools. Here they are divided into 3 subsets: [Terms](#terms-tools), [Dimension Reduction](#dimension-reduction-tools), and [Other](#other-tools). These share the following common parameters:
 
 ### Common Parameters
 * **corpus** : `String`
@@ -91,8 +91,7 @@ A subset of [Corpus Tools](#corpus-tools) that work with terms. These share the 
 
 ### Common Parameters
 * **tokenType** : `String`
-  * value: `lexical` or `lemma`
-  * the type of token to consider
+  * the type of token to consider:  `lexical`, `lemma`, `opentag`, `closetag`, `other`, `emptytag`, `processinginstruction`
 * **start** : `Integer`
   * the term index at which to start the query
 * **limit** : `Integer`
@@ -108,72 +107,110 @@ A subset of [Corpus Tools](#corpus-tools) that work with terms. These share the 
 ### Tools
 
 #### corpus.CorpusTerms
-* inDocumentsCount
-* inDocumentsCountOnly
-* comparisonCorpus
-* whiteList
-* withDistributions
-* sort
-* dir
+* **inDocumentsCountOnly** : `Boolean`
+  * only include the inDocumentsCount for each term in the results
+* **comparisonCorpus** : `String`
+  * a corpus ID to compare with
+* **whiteList** : `String|Array<String>`
+  * a list of terms to always include in the results; the opposite of a stopList
+* **withDistributions** : `Boolean`
+  * whether to include term distributions in the results
+* **sort** : `String`
+  * the field to sort by: `term`, `rawFreq`, `relativePeakedness`, `relativeSkewness`, `comparisonRelativeFreqDifference`, `inDocumentsCount`, `comparisonRelativeFreqDifference`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 #### corpus.DocumentTerms
-* bins
-* withPositions
-* withOffsets
-* whiteList
-* withDistributions
-* sort
-* dir
+* **bins** : `Integer`
+  * the number of bins to split the distributions into
+* **withPositions** : `Boolean`
+  * whether to include term positions in the results
+* **withOffsets** : `Boolean`
+  * whether to include term offsets in the results
+* **whiteList** : `String|Array<String>`
+  * a list of terms to always include in the results; the opposite of a stopList
+* **withDistributions** : `Boolean`
+  * whether to include term distributions in the results
+* **sort** : `String`
+  * the field to sort by: `term`, `rawFreq`, `relativeFreq`, `tfidf`, `zscore`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 #### corpus.CorpusCollocates
-* collocatesWhitelist
-* context
-* position
+* **collocatesWhitelist** : `String|Array<String>`
+  * a white list of terms to always include in the results
+* **context** : `Integer`
+  * the number of terms to consider on each side of the keyword
 
 #### corpus.DocumentCollocates
-* collocatesWhitelist
-* context
-* position
+* **collocatesWhitelist** : `String|Array<String>`
+  * a white list of terms to always include in the results
+* **context** : `Integer`
+  * the number of terms to consider on each side of the keyword
 
 #### corpus.DocumentContexts
-* overlapStrategy
-* perDocLimit
-* accurateTotalNotNeeded
-* stripTags
-* context
-* position
-* sort
-* dir
+* **overlapStrategy** : `String`
+  * how to handle overlapping contexts: `none`, `first`, `merge`
+* **perDocLimit** : `Integer`
+  * the number of contexts to return per document
+* **stripTags** : `String`
+  * what tags if any to remove from the result: `all`, `blocksOnly`, `none`
+* **context** : `Integer`
+  * the number of terms to consider on each side of the keyword
+* **position** : `Integer`
+  * return only a specific position from within the results
+* **sort** : `String`
+  * the field to sort by: `docIndex`, `left`, `term`, `right`, `position`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 #### corpus.CorpusTermCorrelations
-* termsOnly
-* minInDocumentsCountRatio
-* withDistributions
-* sort
-* dir
+* **termsOnly** : `Boolean`
+  * only include the terms in the results and not additional metadata
+* **minInDocumentsCountRatio** : `Integer`
+  * the minimum coverage (as a percentage) for terms in documents, `50` means at least half of all documents must contain the term
+* **withDistributions** : `Boolean`
+  * whether to include term distributions in the results
+* **sort** : `String`
+  * the field to sort by: `correlation`, `significance`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 #### corpus.DocumentTermCorrelations
-* termsOnly
-* bins
-* withDistributions
-* sort
-* dir
+* **termsOnly** : `Boolean`
+  * only include the terms in the results and not additional metadata
+* **bins** : `Integer`
+  * the number of bins to split the distributions into
+* **withDistributions** : `Boolean`
+  * whether to include term distributions in the results
+* **sort** : `String`
+  * the field to sort by: `correlation`, `significance`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 #### corpus.CorpusEntities
-* annotator : `String`
-  * value: `spacy`, `nssi`, `opennlp`, `stanford`
-* type : `String|Array<String>`
+* **annotator** : `String`
+  * which annotator to use: `spacy`, `nssi`, `opennlp`, `stanford`
+* **type** : `String|Array<String>`
   * a subset of entity types to search for, valid types depend on the annotator
-* sort
-* dir
+* **sort** : `String`
+  * the field to sort by: `term`, `rawFreq`, `inDocumentsCount`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 #### corpus.CorpusNgrams
-* overlapFilter
-* minLength
-* maxLength
-* withDistributions
-* sort
-* dir
+* **overlapFilter** : `String`
+  * whether to filter out repeated ngrams: `none` (no filtering), `length` (keep longest), `rawFreq` (keep most frequent)
+* **minLength** : `Integer`
+  * the lower bound of the ngrams length
+* **maxLength** : `Integer`
+  * the upper bound of the ngrams length
+* **withDistributions** : `Boolean`
+  * whether to include term distributions in the results
+* **sort** : `String`
+  * the field to sort by: `rawFreq`, `term`, `length`
+* **dir** : `String`
+  * the sort direction: `asc` or `desc`
 
 ## Dimension Reduction Tools
 
@@ -188,10 +225,9 @@ A subset of [Corpus Tools](#corpus-tools) for performing [dimensionality reducti
 * **limit** : `Integer`
   * the number of terms to limit the query to
 * **clusters** : `Integer`
-  * value: `1`, `2`, `3`, `4`, `5`
+  * the number of clusters to group results into: `1`, `2`, `3`, `4`, `5`
 * **dimensions** : `Integer`
-  * value: `2`, `3`
-* **bins** : `Integer`
+  * the number of dimensions to reduce to: `2`, `3`
 * **comparisonType** : `String`
   * value: `tfidf`, `raw`, `relative`
 * **target** : `String`
@@ -217,24 +253,36 @@ Other [Corpus Tools](#corpus-tools).
 ### Tools
 
 #### corpus.DocumentTokens
-* start
-* limit
-* perDocLimit
-* tokenType
-* stripTags
-* withPosLemmas
-* noOthers
+* **start** : `Integer`
+  * the term index at which to start the query
+* **limit** : `Integer`
+  * the number of terms to limit the query to
+* **perDocLimit** : `Integer`
+  * the number of tokens to return per document
+* **tokenType** : `String`
+  * the type of token to consider: `lexical`, `lemma`, `opentag`, `closetag`, `other`, `emptytag`, `processinginstruction`
+* **stripTags** : `String`
+  * what tags if any to remove from the result: `all`, `blocksOnly`, `none`
+* **withPosLemmas** : `Boolean`
+  * whether to include part of speech lemmas in the results
+* **noOthers** : `Boolean`
+  * whether to exclude all non-lexical tokens
 
 #### corpus.CorpusTexts
-* noMarkup
-* compactSpace
-* format
+* **noMarkup** : `Boolean`
+  * whether to remove all markup (tags) from the result
+* **compactSpace** : `Boolean`
+  * whether to compact all whitespace in the results
 
 #### corpus.TopicModeling
-* iterations
-* topics
-* termsPerTopic
-* seed
+* **iterations** : `Integer`
+  * the number of iterations to run the modeling
+* **topics** : `Integer`
+  * the number of topics to return
+* **termsPerTopic** : `Integer`
+  * the number of terms to include in each topic
+* **seed** : `Integer`
+  * the seed for the random number generator
 
 ## Categories
 
@@ -243,9 +291,9 @@ Categories are term lists that be used within queries. See the [categories guide
 You can programmatically create categories and use the resulting categories ID in your [queries](#common-parameters-1).
 
 ### Parameters
-* tool : `String`
+* **tool** : `String`
   * value: `resource.StoredCategories`
-* storeResource : `JSON`
+* **storeResource** : `JSON`
   * value: see the [Spyral.Categories constructor]{@link Spyral.Categories} for an example
 
 ### Response
