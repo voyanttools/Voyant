@@ -18,10 +18,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: voyanttools/voyantjs
-          path: ../voyantjs
+          path: voyantjs
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Fix voyantjs path
+      - uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          include: src/main/webapp/resources/docs/config.json
+          find: "/voyantjs/src/"
+          replace: "/Voyant/voyantjs/src/"
+          regex: false
       
       # required to install dependencies on github
       - name: Reconfigure git to use HTTP authentication
