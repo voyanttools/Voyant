@@ -1,0 +1,44 @@
+name: Build Docs
+
+on:
+  push:
+      branches:
+        - master
+      paths:
+        - src/main/webapp/app/panel/**
+        - src/main/webapp/resources/spyral/**
+        - src/main/webapp/resources/docs/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+#         with:
+#           persist-credentials: false # required to install dependencies on github
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 20
+      
+      # required to install dependencies on github
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf
+          ssh://git@github.com/
+      
+      - name: Node install
+        run: npm ci
+        working-directory: src/main/webapp/resources/docs
+        
+      - name: Build Docs
+        run: npm run-script build-docs
+        working-directory: src/main/webapp/resources/docs
+        
+      - name: Commit JS files
+        run: |
+          git config --global user.name 'Voyant Tools'
+          git config --global user.email 'voyanttools@users.noreply.github.com'
+          git add src/main/webapp/docs
+          git commit -m "chore: add documentation build files"
+          git push
