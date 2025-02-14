@@ -14,10 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-#         with:
-#           persist-credentials: false # required to install dependencies on github
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: voyanttools/voyantjs
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       
