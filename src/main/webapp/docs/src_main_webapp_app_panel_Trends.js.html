@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: src/main/webapp/app/panel/Trends.js | Voyant Tools Help</title>
+
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <a href="index.html">
+                <img src="imgs/info/about/icon.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="examples-tab">
+                <a href="#"><h4>Voyant</h4></a>
+            </li>            <li id="api-tab">
+                <a href="#"><h4>Spyral</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Voyant</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><ul class="inner"><li><a href="tutorial-bubblelines.html">Bubblelines</a></li><li><a href="tutorial-bubbles.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph.html">Collocates Graph</a></li><li><a href="tutorial-contexts.html">Contexts</a></li><li><a href="tutorial-corpusterms.html">Corpus Terms</a></li><li><a href="tutorial-correlations.html">Correlations</a></li><li><a href="tutorial-documents.html">Documents</a></li><li><a href="tutorial-documentterms.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots.html">Knots</a></li><li><a href="tutorial-mandala.html">Mandala</a></li><li><a href="tutorial-microsearch.html">MicroSearch</a></li><li><a href="tutorial-phrases.html">Phrases</a></li><li><a href="tutorial-reader.html">Reader</a></li><li><a href="tutorial-rezoviz.html">RezoViz</a></li><li><a href="tutorial-scatterplot.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph.html">StreamGraph</a></li><li><a href="tutorial-summary.html">Summary</a></li><li><a href="tutorial-termsberry.html">TermsBerry</a></li><li><a href="tutorial-termsradio.html">TermsRadio</a></li><li><a href="tutorial-textualarc.html">TextualArc</a></li><li><a href="tutorial-topics.html">Topics</a></li><li><a href="tutorial-trends.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.CustomSet.html">CustomSet</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Panel.html">Panel</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li><li><a href="window.html">window</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="window_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="window.html#.createTable">createTable</a></li><li><a href="window.html#.loadCorpus">loadCorpus</a></li><li><a href="window.html#.show">show</a></li><li><a href="window.html#.showError">showError</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Spyral.Categories.html">Spyral.Categories</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Categories_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Categories.html#addCategory">addCategory</a></li><li><a href="Spyral.Categories.html#addFeature">addFeature</a></li><li><a href="Spyral.Categories.html#addTerm">addTerm</a></li><li><a href="Spyral.Categories.html#addTerms">addTerms</a></li><li><a href="Spyral.Categories.html#getCategories">getCategories</a></li><li><a href="Spyral.Categories.html#getCategoriesForTerm">getCategoriesForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryExportData">getCategoryExportData</a></li><li><a href="Spyral.Categories.html#getCategoryFeature">getCategoryFeature</a></li><li><a href="Spyral.Categories.html#getCategoryForTerm">getCategoryForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryNames">getCategoryNames</a></li><li><a href="Spyral.Categories.html#getCategoryRanking">getCategoryRanking</a></li><li><a href="Spyral.Categories.html#getCategoryTerms">getCategoryTerms</a></li><li><a href="Spyral.Categories.html#getFeatureForTerm">getFeatureForTerm</a></li><li><a href="Spyral.Categories.html#getFeatures">getFeatures</a></li><li><a href="Spyral.Categories.html#load">load</a></li><li><a href="Spyral.Categories.html#removeCategory">removeCategory</a></li><li><a href="Spyral.Categories.html#removeFeature">removeFeature</a></li><li><a href="Spyral.Categories.html#removeTerm">removeTerm</a></li><li><a href="Spyral.Categories.html#removeTerms">removeTerms</a></li><li><a href="Spyral.Categories.html#renameCategory">renameCategory</a></li><li><a href="Spyral.Categories.html#save">save</a></li><li><a href="Spyral.Categories.html#setCategoryFeature">setCategoryFeature</a></li><li><a href="Spyral.Categories.html#setCategoryRanking">setCategoryRanking</a></li><li><a href="Spyral.Categories.html#.load">load</a></li></ul></div></li><li><a href="Spyral.Chart.html">Spyral.Chart</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Chart_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Chart.html#bar">bar</a></li><li><a href="Spyral.Chart.html#column">column</a></li><li><a href="Spyral.Chart.html#create">create</a></li><li><a href="Spyral.Chart.html#line">line</a></li><li><a href="Spyral.Chart.html#networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#scatter">scatter</a></li><li><a href="Spyral.Chart.html#.bar">bar</a></li><li><a href="Spyral.Chart.html#.column">column</a></li><li><a href="Spyral.Chart.html#.create">create</a></li><li><a href="Spyral.Chart.html#.line">line</a></li><li><a href="Spyral.Chart.html#.networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#.scatter">scatter</a></li><li><a href="Spyral.Chart.html#.setSeriesData">setSeriesData</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Chart.html#~HighchartsConfig">HighchartsConfig</a></li><li><a href="Spyral.Chart.html#~HighchartsSeriesConfig">HighchartsSeriesConfig</a></li></ul></div></li><li><a href="Spyral.Corpus.html">Spyral.Corpus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Corpus_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Corpus.html#analysis">analysis</a></li><li><a href="Spyral.Corpus.html#collocates">collocates</a></li><li><a href="Spyral.Corpus.html#contexts">contexts</a></li><li><a href="Spyral.Corpus.html#correlations">correlations</a></li><li><a href="Spyral.Corpus.html#documents">documents</a></li><li><a href="Spyral.Corpus.html#entities">entities</a></li><li><a href="Spyral.Corpus.html#filterByCategory">filterByCategory</a></li><li><a href="Spyral.Corpus.html#id">id</a></li><li><a href="Spyral.Corpus.html#lemmas">lemmas</a></li><li><a href="Spyral.Corpus.html#metadata">metadata</a></li><li><a href="Spyral.Corpus.html#phrases">phrases</a></li><li><a href="Spyral.Corpus.html#summary">summary</a></li><li><a href="Spyral.Corpus.html#terms">terms</a></li><li><a href="Spyral.Corpus.html#text">text</a></li><li><a href="Spyral.Corpus.html#texts">texts</a></li><li><a href="Spyral.Corpus.html#titles">titles</a></li><li><a href="Spyral.Corpus.html#toString">toString</a></li><li><a href="Spyral.Corpus.html#tokens">tokens</a></li><li><a href="Spyral.Corpus.html#tool">tool</a></li><li><a href="Spyral.Corpus.html#topics">topics</a></li><li><a href="Spyral.Corpus.html#words">words</a></li><li><a href="Spyral.Corpus.html#.load">load</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Corpus.html#~CorpusConfig">CorpusConfig</a></li></ul></div></li><li><a href="Spyral.Load.html">Spyral.Load</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Load_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Load.html#.html">html</a></li><li><a href="Spyral.Load.html#.json">json</a></li><li><a href="Spyral.Load.html#.load">load</a></li><li><a href="Spyral.Load.html#.setBaseUrl">setBaseUrl</a></li><li><a href="Spyral.Load.html#.text">text</a></li><li><a href="Spyral.Load.html#.trombone">trombone</a></li><li><a href="Spyral.Load.html#.xml">xml</a></li></ul></div></li><li><a href="Spyral.Metadata.html">Spyral.Metadata</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Metadata_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Metadata.html#clone">clone</a></li><li><a href="Spyral.Metadata.html#getHeaders">getHeaders</a></li><li><a href="Spyral.Metadata.html#set">set</a></li><li><a href="Spyral.Metadata.html#setDateNow">setDateNow</a></li><li><a href="Spyral.Metadata.html#shortDate">shortDate</a></li></ul></div></li><li><a href="Spyral.Notebook.html">Spyral.Notebook</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Notebook_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Notebook.html#.getPromise">getPromise</a></li><li><a href="Spyral.Notebook.html#.getTarget">getTarget</a></li><li><a href="Spyral.Notebook.html#.import">import</a></li><li><a href="Spyral.Notebook.html#.show">show</a></li></ul></div></li><li><a href="Spyral.Table.html">Spyral.Table</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Table_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Table.html#addColumn">addColumn</a></li><li><a href="Spyral.Table.html#addRow">addRow</a></li><li><a href="Spyral.Table.html#addRows">addRows</a></li><li><a href="Spyral.Table.html#cell">cell</a></li><li><a href="Spyral.Table.html#chart">chart</a></li><li><a href="Spyral.Table.html#column">column</a></li><li><a href="Spyral.Table.html#columnCounts">columnCounts</a></li><li><a href="Spyral.Table.html#columnMax">columnMax</a></li><li><a href="Spyral.Table.html#columnMean">columnMean</a></li><li><a href="Spyral.Table.html#columnMin">columnMin</a></li><li><a href="Spyral.Table.html#columnRollingMean">columnRollingMean</a></li><li><a href="Spyral.Table.html#columnSort">columnSort</a></li><li><a href="Spyral.Table.html#columnStandardDeviation">columnStandardDeviation</a></li><li><a href="Spyral.Table.html#columnSum">columnSum</a></li><li><a href="Spyral.Table.html#columnVariance">columnVariance</a></li><li><a href="Spyral.Table.html#columnZScores">columnZScores</a></li><li><a href="Spyral.Table.html#columns">columns</a></li><li><a href="Spyral.Table.html#forEach">forEach</a></li><li><a href="Spyral.Table.html#getColumnIndex">getColumnIndex</a></li><li><a href="Spyral.Table.html#getRowIndex">getRowIndex</a></li><li><a href="Spyral.Table.html#hasColumn">hasColumn</a></li><li><a href="Spyral.Table.html#header">header</a></li><li><a href="Spyral.Table.html#headers">headers</a></li><li><a href="Spyral.Table.html#html">html</a></li><li><a href="Spyral.Table.html#row">row</a></li><li><a href="Spyral.Table.html#rowCounts">rowCounts</a></li><li><a href="Spyral.Table.html#rowMax">rowMax</a></li><li><a href="Spyral.Table.html#rowMean">rowMean</a></li><li><a href="Spyral.Table.html#rowMin">rowMin</a></li><li><a href="Spyral.Table.html#rowRollingMean">rowRollingMean</a></li><li><a href="Spyral.Table.html#rowSort">rowSort</a></li><li><a href="Spyral.Table.html#rowStandardDeviation">rowStandardDeviation</a></li><li><a href="Spyral.Table.html#rowSum">rowSum</a></li><li><a href="Spyral.Table.html#rowVariance">rowVariance</a></li><li><a href="Spyral.Table.html#rowZScores">rowZScores</a></li><li><a href="Spyral.Table.html#rows">rows</a></li><li><a href="Spyral.Table.html#setCell">setCell</a></li><li><a href="Spyral.Table.html#setColumn">setColumn</a></li><li><a href="Spyral.Table.html#setHeaders">setHeaders</a></li><li><a href="Spyral.Table.html#setRow">setRow</a></li><li><a href="Spyral.Table.html#toCsv">toCsv</a></li><li><a href="Spyral.Table.html#toHtml">toHtml</a></li><li><a href="Spyral.Table.html#toString">toString</a></li><li><a href="Spyral.Table.html#toTsv">toTsv</a></li><li><a href="Spyral.Table.html#updateCell">updateCell</a></li><li><a href="Spyral.Table.html#.cmp">cmp</a></li><li><a href="Spyral.Table.html#.counts">counts</a></li><li><a href="Spyral.Table.html#.create">create</a></li><li><a href="Spyral.Table.html#.fetch">fetch</a></li><li><a href="Spyral.Table.html#.mean">mean</a></li><li><a href="Spyral.Table.html#.rollingMean">rollingMean</a></li><li><a href="Spyral.Table.html#.standardDeviation">standardDeviation</a></li><li><a href="Spyral.Table.html#.sum">sum</a></li><li><a href="Spyral.Table.html#.variance">variance</a></li><li><a href="Spyral.Table.html#.zScores">zScores</a></li><li><a href="Spyral.Table.html#.zip">zip</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Table.html#~TableConfig">TableConfig</a></li></ul></div></li><li><a href="Spyral.Util.html">Spyral.Util</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html">Storage</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.html#.blobToDataUrl">blobToDataUrl</a></li><li><a href="Spyral.Util.html#.blobToString">blobToString</a></li><li><a href="Spyral.Util.html#.dataUrlToBlob">dataUrlToBlob</a></li><li><a href="Spyral.Util.html#.getFileExtensionFromMimeType">getFileExtensionFromMimeType</a></li><li><a href="Spyral.Util.html#.getVoyantDocumentFormatFromFileExtension">getVoyantDocumentFormatFromFileExtension</a></li><li><a href="Spyral.Util.html#.id">id</a></li><li><a href="Spyral.Util.html#.isArray">isArray</a></li><li><a href="Spyral.Util.html#.isBlob">isBlob</a></li><li><a href="Spyral.Util.html#.isBoolean">isBoolean</a></li><li><a href="Spyral.Util.html#.isFunction">isFunction</a></li><li><a href="Spyral.Util.html#.isNode">isNode</a></li><li><a href="Spyral.Util.html#.isNull">isNull</a></li><li><a href="Spyral.Util.html#.isNumber">isNumber</a></li><li><a href="Spyral.Util.html#.isObject">isObject</a></li><li><a href="Spyral.Util.html#.isPromise">isPromise</a></li><li><a href="Spyral.Util.html#.isString">isString</a></li><li><a href="Spyral.Util.html#.isUndefined">isUndefined</a></li><li><a href="Spyral.Util.html#.more">more</a></li><li><a href="Spyral.Util.html#.show">show</a></li><li><a href="Spyral.Util.html#.showError">showError</a></li><li><a href="Spyral.Util.html#.toString">toString</a></li><li><a href="Spyral.Util.html#.transformXml">transformXml</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Spyral.Util.Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li><li><a href="Tools.Bubblelines.html">Tools.Bubblelines</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubblelines_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html#bins">bins</a></li><li><a href="Tools.Bubblelines.html#docId">docId</a></li><li><a href="Tools.Bubblelines.html#docIndex">docIndex</a></li><li><a href="Tools.Bubblelines.html#maxDocs">maxDocs</a></li><li><a href="Tools.Bubblelines.html#query">query</a></li><li><a href="Tools.Bubblelines.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Bubbles.html">Tools.Bubbles</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubbles_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubbles.html#audio">audio</a></li><li><a href="Tools.Bubbles.html#docIndex">docIndex</a></li><li><a href="Tools.Bubbles.html#limit">limit</a></li><li><a href="Tools.Bubbles.html#speed">speed</a></li><li><a href="Tools.Bubbles.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Cirrus.html">Tools.Cirrus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Cirrus_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Cirrus.html#categories">categories</a></li><li><a href="Tools.Cirrus.html#docId">docId</a></li><li><a href="Tools.Cirrus.html#docIndex">docIndex</a></li><li><a href="Tools.Cirrus.html#fontFamily">fontFamily</a></li><li><a href="Tools.Cirrus.html#inlineData">inlineData</a></li><li><a href="Tools.Cirrus.html#limit">limit</a></li><li><a href="Tools.Cirrus.html#stopList">stopList</a></li><li><a href="Tools.Cirrus.html#visible">visible</a></li><li><a href="Tools.Cirrus.html#whiteList">whiteList</a></li></ul></div></li><li><a href="Tools.CollocatesGraph.html">Tools.CollocatesGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CollocatesGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CollocatesGraph.html#centralize">centralize</a></li><li><a href="Tools.CollocatesGraph.html#context">context</a></li><li><a href="Tools.CollocatesGraph.html#limit">limit</a></li><li><a href="Tools.CollocatesGraph.html#query">query</a></li><li><a href="Tools.CollocatesGraph.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Contexts.html">Tools.Contexts</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Contexts_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Contexts.html#columns">columns</a></li><li><a href="Tools.Contexts.html#context">context</a></li><li><a href="Tools.Contexts.html#dir">dir</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docIndex">docIndex</a></li><li><a href="Tools.Contexts.html#expand">expand</a></li><li><a href="Tools.Contexts.html#query">query</a></li><li><a href="Tools.Contexts.html#sort">sort</a></li><li><a href="Tools.Contexts.html#stopList">stopList</a></li><li><a href="Tools.Contexts.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusCollocates.html">Tools.CorpusCollocates</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusCollocates_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusCollocates.html#columns">columns</a></li><li><a href="Tools.CorpusCollocates.html#context">context</a></li><li><a href="Tools.CorpusCollocates.html#dir">dir</a></li><li><a href="Tools.CorpusCollocates.html#docId">docId</a></li><li><a href="Tools.CorpusCollocates.html#docIndex">docIndex</a></li><li><a href="Tools.CorpusCollocates.html#query">query</a></li><li><a href="Tools.CorpusCollocates.html#sort">sort</a></li><li><a href="Tools.CorpusCollocates.html#stopList">stopList</a></li><li><a href="Tools.CorpusCollocates.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusTerms.html">Tools.CorpusTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusTerms.html#columns">columns</a></li><li><a href="Tools.CorpusTerms.html#comparisonCorpus">comparisonCorpus</a></li><li><a href="Tools.CorpusTerms.html#dir">dir</a></li><li><a href="Tools.CorpusTerms.html#maxBins">maxBins</a></li><li><a href="Tools.CorpusTerms.html#query">query</a></li><li><a href="Tools.CorpusTerms.html#sort">sort</a></li><li><a href="Tools.CorpusTerms.html#stopList">stopList</a></li><li><a href="Tools.CorpusTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Correlations.html">Tools.Correlations</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Correlations_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Correlations.html#columns">columns</a></li><li><a href="Tools.Correlations.html#dir">dir</a></li><li><a href="Tools.Correlations.html#docId">docId</a></li><li><a href="Tools.Correlations.html#docIndex">docIndex</a></li><li><a href="Tools.Correlations.html#minInDocumentsCountRatio">minInDocumentsCountRatio</a></li><li><a href="Tools.Correlations.html#query">query</a></li><li><a href="Tools.Correlations.html#sort">sort</a></li><li><a href="Tools.Correlations.html#stopList">stopList</a></li><li><a href="Tools.Correlations.html#termColors">termColors</a></li><li><a href="Tools.Correlations.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.CustomSet.html">Tools.CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CustomSet.html#layout">layout</a></li><li><a href="Tools.CustomSet.html#tableLayout">tableLayout</a></li></ul></div></li><li><a href="Tools.DocumentTerms.html">Tools.DocumentTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.DocumentTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.DocumentTerms.html#bins">bins</a></li><li><a href="Tools.DocumentTerms.html#columns">columns</a></li><li><a href="Tools.DocumentTerms.html#dir">dir</a></li><li><a href="Tools.DocumentTerms.html#docId">docId</a></li><li><a href="Tools.DocumentTerms.html#docIndex">docIndex</a></li><li><a href="Tools.DocumentTerms.html#query">query</a></li><li><a href="Tools.DocumentTerms.html#sort">sort</a></li><li><a href="Tools.DocumentTerms.html#stopList">stopList</a></li><li><a href="Tools.DocumentTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Documents.html">Tools.Documents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Documents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Documents.html#columns">columns</a></li><li><a href="Tools.Documents.html#dir">dir</a></li><li><a href="Tools.Documents.html#docId">docId</a></li><li><a href="Tools.Documents.html#docIndex">docIndex</a></li><li><a href="Tools.Documents.html#query">query</a></li><li><a href="Tools.Documents.html#sort">sort</a></li></ul></div></li><li><a href="Tools.Embedder.html">Tools.Embedder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Embedder_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Embedder.html#url">url</a></li></ul></div></li><li><a href="Tools.Knots.html">Tools.Knots</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Knots_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Knots.html#audio">audio</a></li><li><a href="Tools.Knots.html#docId">docId</a></li><li><a href="Tools.Knots.html#query">query</a></li><li><a href="Tools.Knots.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Mandala.html">Tools.Mandala</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Mandala_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Mandala.html#labels">labels</a></li><li><a href="Tools.Mandala.html#query">query</a></li><li><a href="Tools.Mandala.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.MicroSearch.html">Tools.MicroSearch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.MicroSearch_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.MicroSearch.html#query">query</a></li><li><a href="Tools.MicroSearch.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Panel.html">Tools.Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Panel.html#corpus">corpus</a></li><li><a href="Tools.Panel.html#input">input</a></li><li><a href="Tools.Panel.html#inputFormat">inputFormat</a></li><li><a href="Tools.Panel.html#subtitle">subtitle</a></li></ul></div></li><li><a href="Tools.Phrases.html">Tools.Phrases</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Phrases_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Phrases.html#columns">columns</a></li><li><a href="Tools.Phrases.html#dir">dir</a></li><li><a href="Tools.Phrases.html#docId">docId</a></li><li><a href="Tools.Phrases.html#docIndex">docIndex</a></li><li><a href="Tools.Phrases.html#maxLength">maxLength</a></li><li><a href="Tools.Phrases.html#minLength">minLength</a></li><li><a href="Tools.Phrases.html#overlapFilter">overlapFilter</a></li><li><a href="Tools.Phrases.html#query">query</a></li><li><a href="Tools.Phrases.html#sort">sort</a></li><li><a href="Tools.Phrases.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Reader.html">Tools.Reader</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Reader_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Reader.html#limit">limit</a></li><li><a href="Tools.Reader.html#query">query</a></li><li><a href="Tools.Reader.html#skipToDocId">skipToDocId</a></li><li><a href="Tools.Reader.html#start">start</a></li></ul></div></li><li><a href="Tools.RezoViz.html">Tools.RezoViz</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.RezoViz_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.RezoViz.html#docId">docId</a></li><li><a href="Tools.RezoViz.html#limit">limit</a></li><li><a href="Tools.RezoViz.html#minEdgeCount">minEdgeCount</a></li><li><a href="Tools.RezoViz.html#nerService">nerService</a></li><li><a href="Tools.RezoViz.html#query">query</a></li><li><a href="Tools.RezoViz.html#stopList">stopList</a></li><li><a href="Tools.RezoViz.html#type">type</a></li></ul></div></li><li><a href="Tools.ScatterPlot.html">Tools.ScatterPlot</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.ScatterPlot_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.ScatterPlot.html#analysis">analysis</a></li><li><a href="Tools.ScatterPlot.html#bins">bins</a></li><li><a href="Tools.ScatterPlot.html#clusters">clusters</a></li><li><a href="Tools.ScatterPlot.html#comparisonType">comparisonType</a></li><li><a href="Tools.ScatterPlot.html#dimensions">dimensions</a></li><li><a href="Tools.ScatterPlot.html#docId">docId</a></li><li><a href="Tools.ScatterPlot.html#iterations">iterations</a></li><li><a href="Tools.ScatterPlot.html#label">label</a></li><li><a href="Tools.ScatterPlot.html#limit">limit</a></li><li><a href="Tools.ScatterPlot.html#perplexity">perplexity</a></li><li><a href="Tools.ScatterPlot.html#query">query</a></li><li><a href="Tools.ScatterPlot.html#stopList">stopList</a></li><li><a href="Tools.ScatterPlot.html#storeJson">storeJson</a></li><li><a href="Tools.ScatterPlot.html#target">target</a></li><li><a href="Tools.ScatterPlot.html#term">term</a></li><li><a href="Tools.ScatterPlot.html#whitelist">whitelist</a></li></ul></div></li><li><a href="Tools.StreamGraph.html">Tools.StreamGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.StreamGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.StreamGraph.html#bins">bins</a></li><li><a href="Tools.StreamGraph.html#docId">docId</a></li><li><a href="Tools.StreamGraph.html#docIndex">docIndex</a></li><li><a href="Tools.StreamGraph.html#limit">limit</a></li><li><a href="Tools.StreamGraph.html#query">query</a></li><li><a href="Tools.StreamGraph.html#stopList">stopList</a></li><li><a href="Tools.StreamGraph.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.Summary.html">Tools.Summary</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Summary_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Summary.html#limit">limit</a></li><li><a href="Tools.Summary.html#numberOfDocumentsForDistinctiveWords">numberOfDocumentsForDistinctiveWords</a></li><li><a href="Tools.Summary.html#start">start</a></li><li><a href="Tools.Summary.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsBerry.html">Tools.TermsBerry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsBerry_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsBerry.html#categories">categories</a></li><li><a href="Tools.TermsBerry.html#context">context</a></li><li><a href="Tools.TermsBerry.html#docId">docId</a></li><li><a href="Tools.TermsBerry.html#docIndex">docIndex</a></li><li><a href="Tools.TermsBerry.html#numInitialTerms">numInitialTerms</a></li><li><a href="Tools.TermsBerry.html#query">query</a></li><li><a href="Tools.TermsBerry.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsRadio.html">Tools.TermsRadio</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsRadio_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsRadio.html#bins">bins</a></li><li><a href="Tools.TermsRadio.html#limit">limit</a></li><li><a href="Tools.TermsRadio.html#query">query</a></li><li><a href="Tools.TermsRadio.html#slider">slider</a></li><li><a href="Tools.TermsRadio.html#speed">speed</a></li><li><a href="Tools.TermsRadio.html#stopList">stopList</a></li><li><a href="Tools.TermsRadio.html#visibleBins">visibleBins</a></li><li><a href="Tools.TermsRadio.html#yAxisScale">yAxisScale</a></li></ul></div></li><li><a href="Tools.TextualArc.html">Tools.TextualArc</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TextualArc_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TextualArc.html#docIndex">docIndex</a></li><li><a href="Tools.TextualArc.html#minRawFreq">minRawFreq</a></li><li><a href="Tools.TextualArc.html#speed">speed</a></li><li><a href="Tools.TextualArc.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Topics.html">Tools.Topics</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Topics_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Topics.html#iterations">iterations</a></li><li><a href="Tools.Topics.html#perDocLimit">perDocLimit</a></li><li><a href="Tools.Topics.html#seed">seed</a></li><li><a href="Tools.Topics.html#stopList">stopList</a></li><li><a href="Tools.Topics.html#termsPerTopic">termsPerTopic</a></li><li><a href="Tools.Topics.html#topics">topics</a></li></ul></div></li><li><a href="Tools.Trends.html">Tools.Trends</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Trends_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Trends.html#bins">bins</a></li><li><a href="Tools.Trends.html#chartType">chartType</a></li><li><a href="Tools.Trends.html#docId">docId</a></li><li><a href="Tools.Trends.html#docIndex">docIndex</a></li><li><a href="Tools.Trends.html#labels">labels</a></li><li><a href="Tools.Trends.html#limit">limit</a></li><li><a href="Tools.Trends.html#mode">mode</a></li><li><a href="Tools.Trends.html#query">query</a></li><li><a href="Tools.Trends.html#stopList">stopList</a></li><li><a href="Tools.Trends.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.WordTree.html">Tools.WordTree</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.WordTree_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.WordTree.html#context">context</a></li><li><a href="Tools.WordTree.html#docId">docId</a></li><li><a href="Tools.WordTree.html#docIndex">docIndex</a></li><li><a href="Tools.WordTree.html#limit">limit</a></li><li><a href="Tools.WordTree.html#query">query</a></li><li><a href="Tools.WordTree.html#stopList">stopList</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
+ * 
+ * @class Trends
+ * @tutorial trends
+ * @memberof Tools
+ */
+Ext.define('Voyant.panel.Trends', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	requires: ['Voyant.data.store.Documents'],
+	alias: 'widget.trends',
+	config: {
+	    /**
+	     * @private
+	     */
+    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},
+
+    		{
+    			name: 'bins',
+		    	xtype: 'slider',
+		    	labelAlign: 'right',
+		    	width: 200,
+		    	minValue: 2,
+		    	maxValue: 100,
+	        	listeners: {
+	        		afterrender: function(slider) {
+	        			var trends = slider.up("window").panel;
+	        			slider.setFieldLabel(trends.localize("segmentsSlider"));
+	        		}
+	        	}    		
+    		},{
+                xtype: 'radiogroup',
+		    	labelAlign: 'right',
+                columns: 3,
+                vertical: true,
+                name: 'withDistributions',
+                items: [{
+                    boxLabel: 'raw',
+                    name: 'withDistributions',
+                    inputValue: 'raw'
+                },{
+                    boxLabel: 'relative',
+                    name: 'withDistributions',
+                    inputValue: 'relative',
+                    style: 'margin-left: 1em;'
+                }],
+	        	listeners: {
+	        		afterrender: function(radiogroup) {
+	        			var panel = this.up("window").panel;
+	        			this.setFieldLabel(panel.localize("freqsMode"));
+	        			var val = panel.getApiParam("withDistributions");
+	        			radiogroup.getBoxes().forEach(function(item) {
+	        				item.setBoxLabel(panel.localize(item.inputValue));
+	        				item.checked = item.inputValue==val;
+	        			});
+	        			this.setValue({withDistributions: val});
+	        		}
+	        	}
+    		},{xtype: 'colorpaletteoption'}]
+	},
+    statics: {
+    	i18n: {},
+    	api: {
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {limit}
+			 * @default
+    		 */
+    		limit: 5,
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {stopList}
+			 * @default
+    		 */
+    		stopList: 'auto',
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {query}
+    		 */
+    		query: undefined,
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {withDistributions}
+			 * @default
+    		 */
+    		withDistributions: 'relative',
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {bins}
+    		 * 
+    		 * TODO verify this:
+			 * 
+			 * The default value will depend on the nature of the corpus:
+    		 * 
+    		 * - corpus has one document: the default number of bins is 10
+    		 * - corpus has multiple documents:
+    		 *   - corpus has up to 100 documents: the default number is the size of the corpus
+    		 *   - corpus has more than 1000 documents: the default number is 100
+    		 */
+    		bins: 10,
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {docIndex}
+    		 */
+    		docIndex: undefined,
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {docId}
+    		 */
+    		docId: undefined,
+    		
+    		/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
+			 * @default
+    		 */
+    		mode: "corpus",
+    		
+			/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {String} chartType The of chart to display: Options are: 'area', 'bar', 'line', 'stacked', and 'barline'.
+			 * @default
+    		 */
+    		chartType: 'barline',
+    		
+			/**
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {Boolean} labels Whether to show term labels.
+			 * @default
+    		 */
+    		labels: false
+    	},
+		glyph: 'xf201@FontAwesome'
+    },
+    
+    layout: 'fit',
+    documentTermsStore: undefined,
+    //segments: undefined,
+    
+    /**
+     * @private
+     */
+    constructor: function(config) {
+    	this.callParent(arguments);
+    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+    },
+    
+    initComponent: function() {
+		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments); // we need api
+    	Ext.apply(this, {
+    		title: this.localize('title'),
+            dockedItems: [{
+                dock: 'bottom',
+                xtype: 'toolbar',
+                overflowHandler: 'scroller',
+                items: [{
+                    xtype: 'querysearchfield'
+                },{
+                	itemId: 'reset',
+                	text: this.localize("reset"),
+                	tooltip: this.localize("resetTip"),
+                	handler: function(btn) {
+                		this.setApiParams({
+                			docIndex: undefined,
+                			mode: undefined,
+                			query: undefined
+                		});
+                		this.loadCorpusTerms();
+                	},
+                	scope: this
+				},{
+					text: this.localize('display'),
+					tooltip: this.localize('displayTip'),
+					glyph: 'xf013@FontAwesome',
+					menu: {
+						listeners: {
+							afterrender: function(menu) {
+								var val = this.getApiParam("chartType");
+								menu.items.each(function(item) {
+									if (item.getItemId()==val) {
+										item.addCls(item.activeCls);
+									}
+								})
+							},
+							scope: this
+						},
+	                    defaults: {
+	                        xtype: 'menuitem',
+	                        handler: function(item, checked) {
+	                        	if (item.xtype=="menucheckitem") { // labels
+		                        	this.setApiParam("labels", item.checked);
+	                        	} else {
+		                        	this.setApiParam("chartType", item.getItemId());
+	                        	}
+	                        	this.loadCorpusTerms();
+	                        },
+	                        scope: this
+	                    },
+	                    items: [{
+	                    	xtype: 'menucheckitem',
+	                    	text: this.localize('labels'),
+	                        tooltip: this.localize('labelsTip'),
+	                        checked: this.getApiParam("labels")===true || this.getApiParam("labels")=="true"
+	                    },'-',{
+	                        itemId: 'area',
+	                        text: this.localize('area'),
+	                        tooltip: this.localize('areaTip'),
+	                        glyph: 'xe76b@Sencha-Examples'
+	                    },{
+	                        itemId: 'bar',
+	                        text: this.localize('bar'),
+	                        tooltip: this.localize('barTip'),
+	                        glyph: 'xe768@Sencha-Examples'
+	                    },{
+	                        itemId: 'line',
+	                        text: this.localize('line'),
+	                        tooltip: this.localize('lineTip'),
+	                        glyph: 'xe773@Sencha-Examples'
+	                    },{
+	                        itemId: 'stacked',
+	                        text: this.localize('stacked'),
+	                        tooltip: this.localize('stackedTip'),
+	                        glyph: 'xe6c8@Sencha-Examples'
+	                    },{
+	                        itemId: 'barline',
+	                        text: this.localize('barline'),
+	                        tooltip: this.localize('barlineTip'),
+	                        glyph: 'xe779@Sencha-Examples'
+	                    }]
+					}
+				}]
+            }]
+    	});
+        this.callParent(arguments);
+    },
+    
+    listeners: {
+    	loadedCorpus: function(src, corpus) {
+    		this.loadCorpusTerms();
+    	},
+    	termsClicked: function(src, terms) {
+    		var queryTerms = [];
+    		terms.forEach(function(term) {
+    			if (Ext.isString(term)) {queryTerms.push(term);}
+    			else if (term.term) {queryTerms.push(term.term);}
+    			else if (term.getTerm) {queryTerms.push(term.getTerm());}
+
+    		});
+    		this.setApiParam("query", queryTerms &amp;&amp; queryTerms.length>0 ? queryTerms : undefined);
+    		this.loadCorpusTerms();
+    	},
+    	corpusTermsClicked: function(src, terms) {
+    		this.setApiParam("query", terms.map(function(term) {return term.getTerm()}));
+    		this.loadCorpusTerms();
+    	},
+    	documentSelected: function(src, document) {
+			this.setApiParam("docIndex", this.getCorpus().getDocument(document).getIndex());
+    		this.loadDocumentTerms();
+    	},
+    	documentsClicked: function(src, documents) {
+    		if (documents.length==1) {
+    			this.fireEvent("documentSelected", this, documents[0])
+    		}
+    	},
+    	query: function(src, query) {
+			this.fireEvent("termsClicked", this, query)
+    	},
+		entitiesClicked: function(src, ents) {
+			this.fireEvent("termsClicked", this, ents);
+		}
+    },
+    
+    loadCorpusTerms: function(params) {
+    	// if our corpus only has one document or if we have docIndex defined
+    	if (
+    		this.getCorpus().getDocumentsCount()&lt;2 || // only one document
+    		this.getApiParam("mode")=="document" || // in document mode
+    		Array.from(this.getApiParam("docIndex") || "").length>0 // we have a docIndex defined
+    		) {
+    		return this.loadDocumentTerms();
+    	}
+    	if (!this.getApiParam("query")) {
+        	this.getCorpus().getCorpusTerms().load({
+        		params: {
+        			limit: this.getApiParam('limit'),
+        			stopList: this.getApiParam("stopList")
+        		},
+        		callback: function(records, operation, success) {
+        			if (records.length==0) {
+        				if (operation &amp;&amp; operation.error) {
+        					this.showError(this.localize("noResults")+"&lt;p style='color: red'>"+operation.error+"&lt;/p>")
+        				} else {
+        					this.showError(this.localize("noResults"))
+        				}
+        			} else {
+            			this.setApiParam("query", records.map(function(r) {return r.getTerm()}))
+            			this.loadCorpusTerms();
+        			}
+        		},
+        		scope: this
+        	})
+    		return;
+    	}
+    	params = params || {};
+    	//this.segments.hide();
+    	var withDistributions = this.getApiParam("withDistributions");
+    	Ext.applyIf(params, {
+    		bins: this.getCorpus().getDocumentsCount(),
+			limit: 100, // should have query, so no limit 
+	    	stopList: "" // automatic queries should be stopped already
+    	});
+    	var docLabels = [];
+		var docLabelsFull = [];
+		this.getCorpus().each(function(doc) {
+			docLabels.push(doc.getTinyTitle());
+			docLabelsFull.push(doc.getTitle());
+		})
+    	if (Ext.Array.unique(docLabels).length&lt;docLabels.length) { // we have duplicates, add index
+    		docLabels = docLabels.map(function(doc,i) {return (i+1)+")"+ doc})
+    	}
+    	Ext.applyIf(params, this.getApiParams());
+    	this.getCorpus().getCorpusTerms().load({
+    		params: params,
+    		callback: function(records, operation, success) {
+    			var data = [], series = [], chartType = this.getApiParam('chartType');
+    			records.forEach(function(record, index) {
+    	    		var term = record.get('term');
+    	    		var color = this.getApplication().getColorForTerm(term, true);
+    	    		record.get('distributions').forEach(function(r, i) {
+    	    			if (!data[i]) {
+    	    				data[i] = {"index": docLabels[i], "docTitle": docLabelsFull[i]};
+    	    			}
+    	    			data[i]["_"+index] = withDistributions=='relative' ? r.toFixed(7) : r;
+    	    			data[i]["term"+index] = term;
+    	    		}, this);
+    	    		
+    	    		
+    	    		if (chartType!='bar') {
+    	    			var kinds = chartType=='barline' ? ["bar","line"] : [chartType];
+    	    			kinds.forEach(function(kind) {
+    	    	        	series.push({
+    	    	        		type: kind=='stacked' ? 'bar' : kind,
+    	    	    			title: term,
+    	    	    			xField: 'index',
+    	    	    			yField: '_'+index,
+    	    	    			term: term,
+    	    	    			colors: [color],
+    	    	    			label: chartType=='barline' &amp;&amp; kind=='bar' ? {
+    	    	    				display: 'none'
+    	    	    			} : {
+    	    	    				field: "term"+index
+    	    	    			}
+    	    	        	})
+    	    			}, this);
+    	    		}
+    			}, this);
+    			
+    			var terms = records.map(function(r) {return r.getTerm()})
+    			var colors = terms.map(function(term) {
+	    			return this.getApplication().getColorForTerm(term, true);
+	    		}, this);
+	    		if (chartType=='bar') {
+		    		series.push({
+		    			type:'bar',
+		    			title: terms,
+			    		colors: colors,
+		    			xField: 'index',
+		    			yField: data.length>0 ? Object.keys(data[0]).filter(function(field) {return field.charAt(0)=="_"}) : undefined,
+    	    			label: {
+    	    				field: records.map(function(r,i) {return "term"+i;})
+    	    			}
+		    		})
+	    		}
+	    		
+    	    	var store = Ext.create('Ext.data.JsonStore', {
+    	    		fields: data.length>0 ? Object.keys(data[0]) : undefined,
+    	    		data: data
+    	    	});
+    	    	
+    			this.buildChart({
+        			store: store,
+        			series: series,
+        			axes: [{
+                		type: 'numeric',
+                		position: 'left',
+                		increment: 1,
+                		title: {
+                			text: this.localize(this.getApiParam("withDistributions")+"Title")
+                		}
+        			},{
+        				type: 'category',
+                		position: 'bottom',
+                		title: {
+                			text: this.localize("corpusTitle")
+                		}
+                		
+        			}]
+    			})
+    		},
+    		scope: this
+    	});
+  
+    },   
+
+    loadDocumentTerms: function(params) {
+    	if (!this.getApiParam("query")) {
+        	this.getCorpus().getCorpusTerms().load({
+        		params: {
+        			limit: this.getApiParam('limit'),
+        			stopList: this.getApiParam("stopList")
+        		},
+        		callback: function(records, operation, success) {
+        			this.setApiParam("query", records.map(function(r) {return r.getTerm()}))
+        			this.loadDocumentTerms();
+        		},
+        		scope: this
+        	})
+    		return;
+    	}
+    	//this.segments.show();
+    	this.setApiParam("mode", "document"); // just to be sure
+    	params = params || {};
+    	var withDistributions = this.getApiParam("withDistributions");
+    	Ext.applyIf(params, {
+			limit: 0, // always have query, so no limit, no stopList
+			sort: 'termasc',
+			stopList: undefined
+    	});
+    	var singleDoc;
+    	if (this.getCorpus().getDocumentsCount()==1) {
+    		singleDoc=this.getCorpus().getDocument(0)
+    	}
+    	else {
+    		singleDoc=this.getCorpus().getDocument(this.getApiParam("docIndex"))
+    	}
+    	Ext.applyIf(params, this.getApiParams());
+    	
+    	this.getCorpus().getDocumentTerms().load({
+    		params: params,
+    		callback: function(records, operation, success) {
+    			var data = [], series = [],  chartType = this.getApiParam('chartType');
+    			if (!singleDoc) { // legend is easier to read if sorted by term then doc
+        			records.sort(function(a,b) {
+        				if (a.getTerm()==b.getTerm()) {
+        					return a.getDocIndex() - b.getDocIndex()
+        				}
+        				return a.getTerm().localeCompare(b.getTerm())
+        			})
+    			}
+    			records.forEach(function(record, index) {
+    	    		var term = record.get('term');
+    	    		var docIndex = record.get('docIndex');
+    	    		var color = singleDoc ? this.getApplication().getColorForTerm(term, true) : this.getApplication().getColor(docIndex, true);
+    	    		record.get('distributions').forEach(function(r, i) {
+    	    			if (!data[i]) {
+    	    				data[i] = {index: (i+1)};
+    	    			}
+    	    			data[i]["_"+index+"_"+docIndex] = withDistributions=='relative' ? r.toFixed(7) : r;
+    	    			data[i]["term"+index] = term;
+    	    		}, this);
+
+    	    		if (chartType!='bar') {
+    	    			var kinds = chartType=='barline' ? ["bar","line"] : [chartType];
+    	    			kinds.forEach(function(kind) {
+    	    	        	series.push({
+    	    	        		type: kind=='stacked' ? 'bar' : kind,
+    	    	    			title: singleDoc ? term : (docIndex+1)+") "+term,
+    	    	    			xField: 'index',
+    	    	    			yField: '_'+index+"_"+docIndex,
+    	    	    			term: term,
+    	    	    			colors: [color],
+    	    	    			label: chartType=='barline' &amp;&amp; kind=='bar' ? {
+    	    	    				display: 'none'
+    	    	    			} : {
+    	    	    				field: "term"+index
+    	    	    			}
+    	    	        	})
+    	    			}, this);
+    	    		}
+    	    		
+    			}, this);
+    			
+	    		if (chartType=='bar') {
+	    			var isOneTerm = Ext.Array.unique(records.map(function(r) {return r.getTerm()})).length === 1;
+	    			var terms = records.map(function(r) {return (1+r.get("docIndex"))	+") "+r.getTerm()})
+	    			var colors = records.map(function(r) {
+		    			return isOneTerm ? this.getApplication().getColor(r.get("docIndex"), true) : this.getApplication().getColorForTerm(r.getTerm(), true);
+		    		}, this);
+
+		    		series.push({
+		    			type:'bar',
+		    			title: terms.length>0 ? terms : this.localize("noResults"),
+			    		colors: colors,
+		    			xField: 'index',
+		    			yField: data.length>0 ? Object.keys(data[0]).filter(function(field) {return field.charAt(0)=="_"}) : undefined,
+		    			label: {
+		    				field: terms
+		    			}
+		    		})
+	    		}
+
+    			
+    	    	var store = Ext.create('Ext.data.JsonStore', {
+    	    		fields: data.length>0 ? Object.keys(data[0]) : undefined,
+    	    		data: data
+    	    	});
+
+    			this.buildChart({
+        			store: store,
+        			series: series,
+        			axes: [{
+                		type: 'numeric',
+                		position: 'left',
+                		title: {
+                			text: this.localize(this.getApiParam("withDistributions")+"Title")
+                		}
+        			},{
+        				type: 'category',
+                		position: 'bottom',
+                		title: {
+                			text: this.localize("segmentsTitle") + (singleDoc ? " ("+singleDoc.getTitle()+")" : "")
+                		}
+                		
+        			}]
+    			})
+    		},
+    		scope: this
+    	});
+  
+    },
+	    
+    getItemToolTip: function (toolTip, record, ctx) {
+    	var parts = ctx.field.split("_"),
+    		docIndex = parts.length==2 ? ctx.index : parts[2],
+    		pos = parseInt(parts[1]),
+    		title = ctx.series.getTitle(),
+    		term = Ext.isArray(title) ? title[pos] : title,
+    		colors = ctx.series.getColors(),
+    		color = colors.length==1 ? colors[0] : colors[pos];
+        var html = "&lt;span class='x-legend-item-marker' style='background:"+color+
+        		"; left: 2px;'>&lt;/span> &lt;span style='padding-left: 1.2em; font-weight: bold;'>"+
+        		term+"&lt;/span>: "+record.get(ctx.field)+
+    			"&lt;br/>&lt;i>"+this.getCorpus().getDocument(docIndex).getShortTitle()+"&lt;/i>"
+		if (this.getApiParam("mode")=="corpus") {
+    		html+="&lt;div style='font-size: smaller'>"+this.localize('dblClickItem')
+		} else {
+			html+="&lt;br/>"+this.localize('segment')+" "+(ctx.index+1)
+		}
+    	toolTip.setHtml(html);
+    },
+    
+    buildChart: function(config) {
+    	var chartType = this.getApiParam('chartType'), labels = false;
+    	if (this.getApiParam("labels")===true || this.getApiParam("labels")=="true") {labels=true}
+    	
+    	Ext.applyIf(config, {
+    		cls: this.getApiParam("mode")
+    	});
+
+    	config.series.forEach(function(serie) {
+    		Ext.applyIf(serie, {
+				stacked: serie.type=='bar' ? false : true,
+				showInLegend: chartType=='barline' &amp;&amp; serie.type=='line' ? false : true,
+    			smooth: true,
+    			showMarkers: serie.type=='bar' ? false : true,
+    			marker: chartType=='barline' &amp;&amp; serie.type=='line' ? null : {
+    			    type: 'circle',
+    			    radius: 2
+    			},
+                style: {
+                    lineWidth: 1,
+                    fillOpacity: chartType=='barline' &amp;&amp; serie.type=='bar' ? .01 : 1,
+                    strokeOpacity: chartType=='barline' &amp;&amp; serie.type=='bar' ? .1 : 1
+                },
+                highlight: true,
+                highlightCfg: {
+                	scaling: serie.type=="bar" ? 1.1 : 2
+                },
+    			label: {
+//    				display: 'none'
+    			},
+    			tooltip: {
+                    trackMouse: true,
+                    renderer: this.getItemToolTip,
+                    scope: this
+    			},
+                listeners: {
+                	itemclick: function(chart,item,event,eOpts ) {
+            			if (this.clickTimer) {clearTimeout(this.clickTimer);}
+            			if (this.blockClick) {return;} // set by dblclick to avoid menu disappearing
+            			this.blockClick = true // block other clicks within a sec
+            			Ext.defer(function() {
+            				this.blockClick = false;
+            			}, 1000, this);
+                		if (this.getApiParam("mode")=="document") {
+                			var parts = item.field.split("_"),
+                				docIndex = parseInt(parts[2]),
+                				doc = this.getCorpus().getDocument(docIndex),
+                				tokens = doc.get('tokensCount-lexical'),
+                				position = parseInt(item.index  * tokens / parseInt(this.getApiParam("bins")))
+                			this.dispatchEvent("documentIndexTermsClicked", this, [{
+                    			term: item.series.term,
+                    			docIndex: docIndex,
+                    			position: position
+                    		}]);
+                		} else {
+                			if (this.clickTimer) {clearTimeout(this.clickTimer);}
+                			var me = this;
+                			this.clickTimer = setTimeout(function() {
+                    			me.dispatchEvent("documentIndexTermsClicked", me, [{
+                        			term: item.series.term,
+                        			docIndex: item.index
+                        		}]);
+                			}, 300)
+                			
+                		}
+                	},
+                	itemdblclick: function(chart,item,event,eOpts )  {
+            			if (this.clickTimer) {clearTimeout(this.clickTimer);}
+            			// block future single clicks to allow menu to appear
+            			this.blockClick = true
+            			Ext.defer(function() {
+            				this.blockClick = false;
+            			}, 1000, this);
+            			// block future clicks
+                		if (this.getApiParam("mode")!="document") {
+                			var m = Ext.create('Ext.menu.Menu', {
+                				items: [{
+                	    				text: this.localize("drillTerm"),
+                	    				tooltip: this.localize("drillTermTip"),
+//                	    				glyph: 'xf02d@FontAwesome',
+                	    				handler: function() {
+                	    					this.setApiParams({
+                	    						mode: 'document',
+                	    						query: item.series.term
+                	    					});
+                	    					this.loadDocumentTerms();
+                	    				},
+                	    				scope: this
+                					},{
+                	    				text: this.localize("drillDocument"),
+                	    				tooltip: this.localize("drillDocumentTip"),
+//                	    				glyph: 'xf02d@FontAwesome',
+                	    				handler: function() {
+                	    					this.setApiParams({
+                	    						mode: 'document',
+                	    						docIndex: item.index
+                	    					});
+                	    					this.loadDocumentTerms();
+                	    				},
+                	    				scope: this
+                					}],
+                					listeners: {
+                						hide: function(m) {
+                							// defer hiding otherwise click handler not called
+                							Ext.defer(function() {this.destroy()}, 200, m)
+                						},
+                						scope: this
+                					}
+                			}).showAt(event.pageX, event.pageY) 
+                		}
+                	},
+                	scope: this
+                }
+    		})
+    		Ext.applyIf(serie.label, {
+                display: 'over',
+                field: 'index',
+                fontSize: 11,
+                translateY: chartType=='line' ? 9 : undefined
+    		});
+    		if (!labels) {serie.label.display="none";} // hide label 
+    	}, this)
+    	Ext.applyIf(config, {
+    		animation: true,
+    	    plugins: {
+    	        ptype: 'chartitemevents',
+    	        moveEvents: true
+    	    },
+    		legend: {
+    			docked:'top',
+    			listeners: {
+    				itemclick: function(legend, record, dom, index) {
+    					// make sure to hide related series
+    					if (legend.getStore().getCount()&lt;legend.chart.series.length &amp;&amp; this.getApiParam("chartType")=="barline") {
+        					var term = record.get("name"), disabled = record.get("disabled");
+        					legend.chart.series.forEach(function(serie) {
+        						if (serie.getTitle()==term) {
+        							serie.setHidden(disabled);
+        							
+        						}
+        					})
+        					legend.chart.redraw(); // not working?
+    					}
+    				},
+    				scope: this
+    			}
+    		},
+    		interactions: ['itemhighlight','crosszoom'],
+    	    listeners: {}
+    	});
+    	Ext.applyIf(config.listeners, {
+	        itemhighlightchange: function (chart, item) {
+	            chart.el.dom.style.cursor = item ? 'pointer' : '';
+	        },
+	        afterrender : function() {
+	        	return // TODO: this seems to cause problems, perhaps not destroying properly?
+	        	Ext.defer(function() { // seem to need to defer
+		        	Ext.tip.QuickTipManager.register({
+		        		target: this.getTargetEl().down(".x-legend-container"),
+	                 	text: this.localize("toggleTip")
+		        	});
+	        	},1, this)
+	        	
+	        },
+	        scope: this
+    	})
+    	config.axes.forEach(function(axis) {
+    		Ext.applyIf(axis, {
+    			title: {},
+    			label: {}
+    		})
+    		Ext.applyIf(axis.title, {scaling: .75});
+    		Ext.applyIf(axis.label, {scaling: .75});
+    		if (axis.type=='category') {
+    			var titles = "";
+    			config.store.each(function(r) {titles+=r.get("index")})
+    			if (titles.length>this.getTargetEl().getWidth()/9) {
+            		Ext.applyIf(axis.label, {rotate: {degrees:-30}});
+    			}
+        		Ext.applyIf(axis, {
+        			labelInSpan: true
+        		})
+    		}
+    	}, this)
+    	    	
+    	// remove existing chart
+    	this.query('chart').forEach(function(chart) {this.remove(chart, true);}, this);
+    	
+    	// create new chart
+		var chart = Ext.create("Ext.chart.CartesianChart", config);
+    	this.add(chart);
+    },
+    
+    reloadFromChart: function() {
+    	var chart = this.down('chart');
+    	if (chart) {
+    		var terms = [];
+    		chart.series.forEach(function(serie) {
+    			terms.push(serie.getTitle());
+    		});
+    		this.fireEvent("termsClicked", this, terms);
+    	}
+    },
+
+	getExtraDataExportItems: function() {
+		return [
+			{
+				name: 'export',
+				inputValue: 'dataAsTsv',
+				boxLabel: this.localize('exportGridCurrentTsv')
+			}
+		]
+	},
+
+	exportDataAsTsv: function(panel, form) {
+		var value = '';
+
+		var chart = panel.down('chart');
+		var store = chart.getStore();
+		var firstModel = store.first();
+		var data = firstModel.getData();
+
+		var fields = ['Index'];
+		
+		var termKeys = Object.keys(data).filter(function(key) {
+			return key.indexOf('term') === 0;
+		}).sort();
+		var terms = [];
+		termKeys.forEach(function(termKey) {
+			terms.push(data[termKey]);
+		});
+		
+		fields = fields.concat(terms);
+		value += fields.join("\t")+"\n";
+
+		var valueKeys = Object.keys(data).filter(function(key) {
+			return key.indexOf('_') === 0;
+		}).sort();
+
+		store.each(function(model) {
+			data = model.getData();
+			var entry = [];
+			if (data['docTitle'] !== undefined) {
+				entry.push(data['docTitle']);
+			} else {
+				entry.push(data['index']);
+			}
+			valueKeys.forEach(function(valueKey) {
+				entry.push(data[valueKey]);
+			});
+			value += entry.join("\t")+"\n";
+		}, panel);
+
+		Ext.Msg.show({
+			title: panel.localize('exportDataTitle'),
+			message: panel.localize('exportDataTsvMessage'),
+			buttons: Ext.Msg.OK,
+			icon: Ext.Msg.INFO,
+			prompt: true,
+			multiline: true,
+			value: value
+		});
+	}
+ });</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
