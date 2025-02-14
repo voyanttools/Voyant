@@ -265,11 +265,11 @@ function generate(title, docs, filename, resolveLinks, isTutorial=false) {
         var dom = cheerio.load(html);
         dom('.container-source').remove();
         var inlineSection = dom('#main section');
-        var inlineOutpath = outpath.replace('\\docs\\', '\\docs\\inline\\');
+        var inlineOutpath = outpath.replace(path.sep+'docs'+path.sep, path.sep+'docs'+path.sep+'inline'+path.sep);
 
         inlineSection = inlineSection.toString().replace('id="toString"', 'id="_toString"'); // hack for ExtJS bug when id = toString
 
-        var inlineDir = outdir+'\\inline';
+        var inlineDir = outdir+path.sep+'inline';
         fs.mkPath(inlineDir);
         fs.writeFileSync(inlineOutpath, inlineSection, 'utf8');
     }
