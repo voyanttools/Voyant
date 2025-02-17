@@ -60,7 +60,20 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "iterations": null,
+ *     "perDocLimit": null,
+ *     "seed": null,
+ *     "stopList": null,
+ *     "termsPerTopic": null,
+ *     "topics": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("Topics", config);
+ *
  * @class Topics
  * @tutorial topics
  * @memberof Tools
