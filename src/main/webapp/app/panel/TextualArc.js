@@ -1,6 +1,17 @@
 /**
  * TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "docIndex": null,
+ *     "minRawFreq": null,
+ *     "speed": null,
+ *     "stopList": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("textualarc", config);
+ *
  * @class TextualArc
  * @tutorial textualarc
  * @memberof Tools

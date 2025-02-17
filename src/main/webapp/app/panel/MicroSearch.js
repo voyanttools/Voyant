@@ -1,6 +1,15 @@
 /**
  * Microsearch visualizes the frequency and distribution of terms in a corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "query": null,
+ *     "stopList": "auto"
+ *   };
+ *
+ *   loadCorpus("austen").tool("microsearch", config);
+ *
  * @class MicroSearch
  * @tutorial microsearch
  * @memberof Tools

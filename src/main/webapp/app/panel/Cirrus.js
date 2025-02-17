@@ -1,7 +1,23 @@
 // assuming Cirrus library is loaded by containing page (via voyant.jsp)
 /**
  * Cirrus tool, a wordcloud-like visualization.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     background: null,
+ *     categories: null,
+ *     docIndex: null,
+ *     fontFamily: null,
+ *     inlineData: null,
+ *     limit: null,
+ *     stopList: null,
+ *     visible: null,
+ *     whiteList: null,
+ *   };
+ *
+ *   loadCorpus("austen").tool("cirrus", config);
+ *
  * @class Cirrus
  * @tutorial cirrus
  * @memberof Tools

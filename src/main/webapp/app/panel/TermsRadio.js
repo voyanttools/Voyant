@@ -1,6 +1,22 @@
 /**
  * TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *    "bins": 5,
+ *    "limit": null,
+ *    "query": null,
+ *    "slider": null,
+ *    "speed": null,
+ *    "stopList": null,
+ *    "visibleBins": null,
+ *    "yAxisScale": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("termsradio", config);
+ *
+ *
  * @class TermsRadio
  * @tutorial termsradio
  * @memberof Tools

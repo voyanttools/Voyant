@@ -1,6 +1,22 @@
 /**
  * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "chartType": null,
+ *     "docId": null,
+ *     "docIndex": null,
+ *     "labels": null,
+ *     "limit": null,
+ *     "mode": null,
+ *     "query": null,
+ *     "stopList": null,
+ *     "withDistributions": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("Trends", config);
+ *
  * @class Trends
  * @tutorial trends
  * @memberof Tools

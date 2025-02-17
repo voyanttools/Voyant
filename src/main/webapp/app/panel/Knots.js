@@ -1,7 +1,18 @@
 // assuming Knots library is loaded by containing page (via voyant.jsp)
 /**
  * Knots is a creative visualization that represents terms in a single document as a series of twisted lines.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "audio": false,
+ *     "docId": null,
+ *     "query": null,
+ *     "stopList": "auto"
+ *   };
+ *
+ *   loadCorpus("austen").tool("knots", config);
+ *
  * @class Knots
  * @tutorial knots
  * @memberof Tools

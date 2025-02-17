@@ -1,6 +1,18 @@
 /**
  * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     centralize: null,
+ *     context: 5,
+ *     limit: 5,
+ *     query: null,
+ *     stopList: "auto",
+ *   };
+ *
+ *   loadCorpus("austen").tool("collocatesgraph", config);
+ *
  * @class CollocatesGraph
  * @tutorial collocatesgraph
  * @memberof Tools
