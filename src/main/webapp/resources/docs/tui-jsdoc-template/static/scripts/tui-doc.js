@@ -184,6 +184,22 @@ function removeWhiteSpace(value) {
     return value.replace(/\s/g, '');
 }
 
+/**************** CREATE TOC ******************/
+
+$(document).ready(function() {
+    if (document.querySelector('#no_toc') === null && document.querySelector('article.readme') !== null) {
+        var toc = Array.from(document.querySelectorAll('section article h2')).map(function(h2) {
+            return '<li><a href="#'+h2.id+'">'+h2.textContent+'</a></li>';
+        });
+        if (toc.length > 1) {
+            var tocEl = document.createElement('div');
+            tocEl.className = 'toc';
+            tocEl.innerHTML = '<div>Contents</div><ol>'+toc.join('')+'</ol>';
+            document.querySelector('section article h1').insertAdjacentElement('beforebegin', tocEl);
+        }
+    }
+})
+
 /*************** TOOGLE SUB NAV ***************/
 function toggleSubNav(e) {
     $(e.currentTarget).next().toggleClass('hidden');
@@ -202,4 +218,14 @@ $lnb.find('.lnb-examples').each(function() {
         .each(function() {
             $(this).removeClass('hidden').on('click', toggleSubNav);
         });
+});
+
+$(document).ready(function() {
+    if (document.location.pathname.indexOf('tutorial') !== -1) {
+        var filename = document.location.pathname.match(/tutorial.*.html$/);
+        if (filename !== null) {
+            filename = filename[0];
+            $lnb.find('.lnb-examples a[href="'+filename+'"]').parents('div').prev('.toggle-subnav').click();
+        }
+    }
 });

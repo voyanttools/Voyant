@@ -86,7 +86,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	voyantStorageDialogs: undefined,
 	githubDialogs: undefined,
 	catalogueWindow: undefined,
-	docsWindow: undefined,
+	docsPanel: undefined,
 
 	// holds the content of the tern docs, for passing to the code editor
 	spyralTernDocs: undefined,
@@ -249,62 +249,80 @@ Ext.define('Voyant.notebook.Notebook', {
 				}
     		},
     		
-			scrollable: true,
-			layout: {
-				type: 'vbox',
-				align: 'middle',
-				padding: '50 0'
-			},
-			defaults: {
-				width: '100%',
-				maxWidth: 1100
-			},
-    		items: [{
-    			itemId: 'spyralHeader',
-    			cls: 'spyral-header',
-    			listeners: {
-    				afterrender: function(header) {
-    					Ext.tip.QuickTipManager.register({
-    						  target: header.getId(),
-    						  text: this.localize("clickToEdit")
-    						});
-    					var head = header;
-    					header.getTargetEl().on("click", function(header) {
-    						this.showMetadataEditor();
-    						head.removeCls("editable");
-    					}, this);
-    					header.mon(header.getEl(), "mouseover", function() {header.addCls("editable")});
-    					header.mon(header.getEl(), "mouseout", function() {header.removeCls("editable")});
-    				},
-    				scope: this
-    			}
-    		},{
-    			xtype: 'container',
-    			itemId: 'cells',
+			layout: 'border',
+			items: [{
+				itemId: 'notebookContainer',
+				region: 'center',
+				scrollable: true,
+				layout: {
+					type: 'vbox',
+					align: 'middle',
+					padding: '50 0'
+				},
 				defaults: {
-					margin: '10 0 10 0',
-					padding: '0 65 0 65'
-				}
-    		},{
-    			itemId: 'spyralFooter',
-    			cls: 'spyral-footer',
-    			listeners: {
-    				afterrender: function(footer) {
-    					Ext.tip.QuickTipManager.register({
-  						  target: footer.getId(),
-  						  text: this.localize("clickToEdit")
-  						});
-    					var foot = footer;
-    					footer.getTargetEl().on("click", function(footer) {
-    						this.showMetadataEditor();
-    						foot.removeCls("editable");
-    					}, this);
-    					footer.mon(footer.getEl(), "mouseover", function() {footer.addCls("editable")});
-    					footer.mon(footer.getEl(), "mouseout", function() {footer.removeCls("editable")});
-    				},
-    				scope: this
-    			}
-    		}],
+					width: '100%',
+					maxWidth: 1100
+				},
+				items: [{
+					itemId: 'spyralHeader',
+					cls: 'spyral-header',
+					listeners: {
+						afterrender: function(header) {
+							Ext.tip.QuickTipManager.register({
+								  target: header.getId(),
+								  text: this.localize("clickToEdit")
+								});
+							var head = header;
+							header.getTargetEl().on("click", function(header) {
+								this.showMetadataEditor();
+								head.removeCls("editable");
+							}, this);
+							header.mon(header.getEl(), "mouseover", function() {header.addCls("editable")});
+							header.mon(header.getEl(), "mouseout", function() {header.removeCls("editable")});
+						},
+						scope: this
+					}
+				},{
+					xtype: 'container',
+					itemId: 'cells',
+					defaults: {
+						margin: '10 0 10 0',
+						padding: '0 65 0 65'
+					}
+				},{
+					itemId: 'spyralFooter',
+					cls: 'spyral-footer',
+					listeners: {
+						afterrender: function(footer) {
+							Ext.tip.QuickTipManager.register({
+								target: footer.getId(),
+								text: this.localize("clickToEdit")
+							  });
+							var foot = footer;
+							footer.getTargetEl().on("click", function(footer) {
+								this.showMetadataEditor();
+								foot.removeCls("editable");
+							}, this);
+							footer.mon(footer.getEl(), "mouseover", function() {footer.addCls("editable")});
+							footer.mon(footer.getEl(), "mouseout", function() {footer.removeCls("editable")});
+						},
+						scope: this
+					}
+				}]
+			},{
+				region: 'east',
+				itemId: 'docsContainer',
+				split: true,
+				hidden: true,
+				collapsible: true,
+				animCollapse: false,
+				closable: true,
+				closeAction: 'hide',
+				layout: 'fit',
+				width: '33%',
+				items: { xtype: 'spyralDocsPanel' }
+			}],
+			
 			helpToolClick: this.showDocs.bind(this),
     		listeners: {
     			afterrender: this.init,
@@ -406,6 +424,8 @@ Ext.define('Voyant.notebook.Notebook', {
 				scope: this
 			}
 		});
+
+		this.docsPanel = this.getComponent('docsContainer').down('spyralDocsPanel');
     },
     
     init: function() {
@@ -436,13 +456,13 @@ Ext.define('Voyant.notebook.Notebook', {
     
     
     reset: function() {
-		this.getScrollable().scrollTo(0, 0);
-		this.getScrollable().trackingScrollTop = 0;
-		this.getScrollable().trackingScrollLeft = 0;
+		this.getComponent('notebookContainer').getScrollable().scrollTo(0, 0);
+		this.getComponent('notebookContainer').getScrollable().trackingScrollTop = 0;
+		this.getComponent('notebookContainer').getScrollable().trackingScrollLeft = 0;
 
 		this.setMetadata(new Spyral.Metadata());
 		this.voyantStorageDialogs.reset();
-    	var cells = this.getComponent("cells");
+    	var cells = this.getComponent('notebookContainer').getComponent("cells");
     	cells.removeAll();
 	},
 
@@ -889,7 +909,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		if (Ext.isString(block)) {
 			block = {input: block}
 		}
-		var cells = this.getComponent("cells");
+		var cells = this.getComponent('notebookContainer').getComponent("cells");
 		index = (typeof index === 'undefined') ? cells.items.length : index;
 		cellId = (typeof cellId === 'undefined') ? Spyral.Util.id() : cellId;
 		return cells.insert(index, Ext.apply(block, {
@@ -901,7 +921,7 @@ Ext.define('Voyant.notebook.Notebook', {
 
     
 	notebookWrapperMoveUp: function(wrapper) {
-		var cells = this.getComponent("cells");
+		var cells = this.getComponent('notebookContainer').getComponent("cells");
 		var i = cells.items.findIndex('id', wrapper.id);
 		if (i==0) {
 			Ext.Msg.show({
@@ -918,7 +938,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 	
 	notebookWrapperMoveDown: function(wrapper) {
-		var cells = this.getComponent("cells");
+		var cells = this.getComponent('notebookContainer').getComponent("cells");
 		var i = cells.items.findIndex('id', wrapper.id);
 		if (i==cells.items.getCount()-1) {
 			Ext.Msg.show({
@@ -935,7 +955,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 	
 	notebookWrapperRemove: function(wrapper) {
-		var cells = this.getComponent("cells");
+		var cells = this.getComponent('notebookContainer').getComponent("cells");
 		cells.remove(wrapper);
 		if (cells.items.length==0) {
 			this.addText("(Click to edit).")
@@ -944,7 +964,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 	
 	notebookWrapperAdd: function(wrapper, e) {
-		var cells = this.getComponent("cells");
+		var cells = this.getComponent('notebookContainer').getComponent("cells");
 		var i = cells.items.findIndex('id', wrapper.id);
 		var runnable = wrapper.getXTypes(wrapper).indexOf('notebookrunnableeditorwrapper') !== -1;
 		var cmp;
@@ -1021,8 +1041,8 @@ Ext.define('Voyant.notebook.Notebook', {
 		var metadata = this.getMetadata();
 		document.title = metadata.title+' - Spyral';
 
-		this.getComponent("spyralHeader").update(this.getInnerHeaderHtml());
-		this.getComponent("spyralFooter").update(this.getInnerFooterHtml());
+		this.getComponent('notebookContainer').getComponent("spyralHeader").update(this.getInnerHeaderHtml());
+		this.getComponent('notebookContainer').getComponent("spyralFooter").update(this.getInnerFooterHtml());
 
 		if (this.metadataEditor) {
 			this.metadataEditor.loadMetadata(metadata);
@@ -1083,23 +1103,17 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 
 	showDocs: function() {
-		if (this.docsWindow === undefined) {
-			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
-		}
-		this.docsWindow.showDocs();
+		this.getComponent('docsContainer').show().expand();
+		this.docsPanel.showDocs();
 	},
 
 	showDocsForClassMethod: function(docClass, docMethod) {
-		if (this.docsWindow === undefined) {
-			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
-		}
-		this.docsWindow.showDocsForClassMethod(docClass, docMethod);
+		this.getComponent('docsContainer').show().expand();
+		this.docsPanel.showDocsForClassMethod(docClass, docMethod);
 	},
 
 	handleDocLink: function(link) {
-		if (this.docsWindow === undefined) {
-			this.docsWindow = Ext.create('Voyant.notebook.util.DocsWindow');
-		}
-		this.docsWindow.handleDocLink(link);
+		this.getComponent('docsContainer').show().expand();
+		this.docsPanel.handleDocLink(link);
 	}
 });

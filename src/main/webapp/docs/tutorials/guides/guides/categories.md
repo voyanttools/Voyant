@@ -12,11 +12,17 @@ Place the cursor in the search field at the bottom of the tool above and try eac
 * *`@positive`*: this is the aggregate number of occurrences for all words in the `positive` categories group (4,041)
  * *`^@positive`*: this shows the frequencies for each word in the `positive` categories group (there may be other words in the group that don't appear in the text)
 
-<img src="guides/tutorial/cirrus-options.png" style="float: left; max-width: 200px; margin: 0 1em 1em 0;"> Where are categories defined? They are usually available by clicking on the "Options icon in the header of the current tool.
+<div style="float: left; max-width: 200px; margin: 0 1em 1em 0;">
+
+![Options](imgs/ui/categories/cirrus-options.png)
+
+</div>
+
+Where are categories defined? They are usually available by clicking on the "Options icon in the header of the current tool.
 
 Once you click on the "Options" icon then you should see a "Categories" control, a box in which you can copy and paste values (categories are transferable between corpora), as well as an "edit" button that allows you to edit the specified list. By default the "auto" categories are selected, which as we'll see is composed of a small number of built-in lists. If there is no "Categories" option then it's really not relevant for that tool. Once you hit the "edit" button you should see a box that allows you to add and remove categories. Please remember: when you edit a list the categories name changes (among other things that means that you need to export a new URL if you want to share your current results).
 
-{@img categories.png Categories}
+![Categories](imgs/ui/categories/categories.png)
 
 A few common tasks:
 
@@ -29,18 +35,18 @@ Terms can be added to multiple categories, and will adopt the features of the ca
 
 Features can be changed by switching to the Features tab in the top right of the categories window. There are currently three features: color, font, and orientation. Color is fairly widely supported amongst the tools. Font is supported by _Cirrus_, _Collocates Graph_, and _TermsBerry_. Orientation is a _Cirrus_ specific feature. There is also the option to customize a palette and then use it to set the color feature for your categories.
 
-{@img features.png Features}
+![Features](imgs/ui/categories/features.png)
 
 Finally, most grid based tools will let you directly add or remove terms from categories by right-clicking (control-clicking) the term.
 
-{@img terms_categories.png Terms Categories}
+![Terms Categories](imgs/ui/categories/terms_categories.png)
 
 These same tools have the option to select how much or little coloring to apply.
 
-{@img colors_terms_categories.png Colors Terms Categories}
+![Colors Terms Categories](imgs/ui/categories/colors_terms_categories.png)
 
 ## Next Steps
 
-- {@tutorial palette}
+- [palette]{@tutorial palette}
 - [explore the tools]{@tutorial tools}
 - read [about Voyant Tools]{@tutorial about}

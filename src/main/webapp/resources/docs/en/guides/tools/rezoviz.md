@@ -89,19 +89,19 @@ modify the visualization.
 
 ```
 let config = {
-    "DocId": null,
-    "Limit": null,
+    "docId": null,
+    "limit": null,
     "minEdgeCount": null,
     "nerService": null,
-    "Query": null,
-    "StopList": null,
+    "query": null,
+    "stopList": null,
     "type": null,
 }; 
 
-loadCorpus("austen").tool("Rezoviz", config);
+loadCorpus("austen").tool("rezoviz", config);
 ```
 
-Please see {@link Tools.Rezoviz} for more information about configuration.
+Please see {@link Tools.RezoViz} for more information about configuration.
 
 ## See Also
 

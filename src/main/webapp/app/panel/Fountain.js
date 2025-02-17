@@ -1,4 +1,6 @@
-// assuming Bubblelines library is loaded by containing page (via voyant.jsp)
+/**
+ * @ignore
+ */
 Ext.define('Voyant.panel.Fountain', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
@@ -8,12 +10,6 @@ Ext.define('Voyant.panel.Fountain', {
     		title: "FountainMeter"
     	},
     	api: {
-    		/**
-    		 * @property stopList The stop list to use to filter results.
-    		 * Choose from a pre-defined list, or enter a comma separated list of words, or enter an URL to a list of stop words in plain text (one per line).
-    		 * @type String
-    		 * @private
-    		 */
     		stopList: 'auto',
     		
     		docIndex: 0,

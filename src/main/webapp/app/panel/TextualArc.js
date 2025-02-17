@@ -2,6 +2,7 @@
  * TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
  * 
  * @class TextualArc
+ * @tutorial textualarc
  * @memberof Tools
  */
 Ext.define('Voyant.panel.TextualArc', {
@@ -13,28 +14,32 @@ Ext.define('Voyant.panel.TextualArc', {
     	},
     	api: {
     		/**
-    		 * @memberof TextualArc
-			 * @property {StopList}
+    		 * @memberof Tools.TextualArc
+			 * @instance
+			 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
     		
 			/**
-    		 * @memberof TextualArc
-			 * @property {DocIndex}
+    		 * @memberof Tools.TextualArc
+			 * @instance
+			 * @property {docIndex}
 			 * @default
     		 */
     		docIndex: 0,
     		
 			/**
-    		 * @memberof TextualArc
+    		 * @memberof Tools.TextualArc
+			 * @instance
 			 * @property {Number} speed How fast to animate the visualization.
 			 * @default
     		 */
     		speed: 50,
     		
 			/**
-    		 * @memberof TextualArc
+    		 * @memberof Tools.TextualArc
+			 * @instance
 			 * @property {Number} minRawFreq The minimum raw frequency of terms to be considered.
 			 * @default
     		 */

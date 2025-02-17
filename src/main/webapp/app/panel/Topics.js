@@ -2,6 +2,7 @@
  * The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
  * 
  * @class Topics
+ * @tutorial topics
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Topics', {
@@ -16,42 +17,48 @@ Ext.define('Voyant.panel.Topics', {
 		},
 		api: {
 			/**
-			 * @memberof Topics
-			 * @property {StopList}
+			 * @memberof Tools.Topics
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
 			stopList: 'auto',
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
+			 * @instance
 			 * @property {Number} topics The number of topics.
 			 * @default
 			 */
 			topics: 10,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
+			 * @instance
 			 * @property {Number} termsPerTopic The number of terms per topic.
 			 * @default
 			 */
 			termsPerTopic: 10,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
+			 * @instance
 			 * @property {Number} iterations The number of iterations.
 			 * @default
 			 */
 			iterations: 100,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
+			 * @instance
 			 * @property {Number} perDocLimit The number of terms to limit each document to.
 			 * @default
 			 */
 			perDocLimit: 1000,
 
 			/**
-			 * @memberof Topics
+			 * @memberof Tools.Topics
+			 * @instance
 			 * @property {Number} seed The seed to use for random number generation.
 			 * @default
 			 */

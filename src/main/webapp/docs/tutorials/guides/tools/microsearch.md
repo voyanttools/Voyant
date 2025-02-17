@@ -1,8 +1,8 @@
-# Microsearch
+# MicroSearch
 
-Microsearch visualizes the frequency and distribution of terms in a corpus. 
+MicroSearch visualizes the frequency and distribution of terms in a corpus. 
 
-Use it with a [Jane Austen corpus](../?view=Microsearch&corpus=austen) or with [your own corpus](../?view=Microsearch).
+Use it with a [Jane Austen corpus](../?view=microsearch&corpus=austen) or with [your own corpus](../?view=microsearch).
 
 ## Overview
 
@@ -26,19 +26,19 @@ Clicking on the {@tutorial options} icon allows you to define a set of stopwords
 
 ## Spyral
 
-To use Microsearch widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use MicroSearch widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
-    "Query": null,
-    "StopList": "auto"
+    "query": null,
+    "stopList": "auto"
 }; 
 
-loadCorpus("austen").tool("Microsearch", config);
+loadCorpus("austen").tool("microsearch", config);
 ```
 
-Please see {@link Tools.Microsearch} for more information about configuration.
+Please see {@link Tools.MicroSearch} for more information about configuration.
 
 ## Additional Information
 

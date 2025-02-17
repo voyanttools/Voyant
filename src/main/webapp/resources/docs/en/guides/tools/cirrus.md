@@ -43,7 +43,6 @@ To use Cirrus in Spyral you can use the following code as a starting point. Modi
 the visualization.
 
 ```
-
 let config = {
     background: null, // set the background colour of the word cloud
     categories: null, // set the categories for the word cloud (usually an ID of an existing categories definition)
@@ -56,8 +55,7 @@ let config = {
     whiteList: null, // a keyword list – terms will be limited to this list
 };
 
-loadCorpus("austen").tool("Cirrus", config);
-
+loadCorpus("austen").tool("cirrus", config);
 ```
 
 Please see {@link Tools.Cirrus} for more information about configuration.

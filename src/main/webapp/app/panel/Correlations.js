@@ -2,6 +2,7 @@
  * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
  * 
  * @class Correlations
+ * @tutorial correlations
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Correlations', {
@@ -13,65 +14,75 @@ Ext.define('Voyant.panel.Correlations', {
     	},
     	api: {
 			/**
-			 * @memberof Correlations
-			 * @property {Query}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Correlations
-			 * @property {DocId}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof Correlations
-			 * @property {DocIndex}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof Correlations
-			 * @property {StopList}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof Correlations
+			 * @memberof Tools.Correlations
+			 * @instance
 			 * @property {Number} minInDocumentsCountRatio The minimum coverage (as a percentage) for terms. For instance, if a corpus has 10 documents and the minimum coverage is 20%, at least two of the documents must contain the term or it will be ignored.
 			 * @default
 			 */
     		minInDocumentsCountRatio: 100,
 
 			/**
-			 * @memberof Correlations
-			 * @property {WithDistributions}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {withDistributions}
 			 * @default
 			 */
 			withDistributions: 'relative',
 
 			/**
-			 * @memberof Correlations
-			 * @property {Columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof Correlations
-			 * @property {SortColumn}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof Correlations
-			 * @property {SortDir}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {dir}
 			 */
 			dir: undefined,
 
 			/**
-			 * @memberof Correlations
-			 * @property {TermColors}
+			 * @memberof Tools.Correlations
+			 * @instance
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories'

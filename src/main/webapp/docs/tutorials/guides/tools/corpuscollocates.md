@@ -40,14 +40,14 @@ the visualization.
 ```
 let config = {
     columns: null, // 'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'
-    Context: null, // The number of terms to consider on each side of the keyword.
-    SortDir: null, // The direction in which to sort the results: 'asc' or 'desc'
-    DocId: null, // The document ID(s) to restrict the results to.
-    DocIndex: null, // The document index(es) to restrict the results to.
-    Query: null, // A query or array of queries (queries can be separated by a comma).
-    SortColumn: null, // The column to sort the results by
-    StopList: null, // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-    TermColors: null, // Which term colors to show in the grid. By default this is set to 'categories' which shows the term color only if it's been assigned by a category. The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
+    context: null, // The number of terms to consider on each side of the keyword.
+    dir: null, // The direction in which to sort the results: 'asc' or 'desc'
+    docId: null, // The document ID(s) to restrict the results to.
+    docIndex: null, // The document index(es) to restrict the results to.
+    query: null, // A query or array of queries (queries can be separated by a comma).
+    sort: null, // The column to sort the results by
+    stopList: null, // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+    termColors: null, // Which term colors to show in the grid. By default this is set to 'categories' which shows the term color only if it's been assigned by a category. The other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors.
 };
 
 loadCorpus("austen").tool("CorpusCollocates", config);

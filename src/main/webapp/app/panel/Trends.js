@@ -2,6 +2,7 @@
  * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
  * 
  * @class Trends
+ * @tutorial trends
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Trends', {
@@ -63,35 +64,40 @@ Ext.define('Voyant.panel.Trends', {
     	api: {
     		
     		/**
-    		 * @memberof Trends
-			 * @property {Limit}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {limit}
 			 * @default
     		 */
     		limit: 5,
     		
     		/**
-    		 * @memberof Trends
-			 * @property {StopList}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @memberof Trends
-			 * @property {Query}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {query}
     		 */
     		query: undefined,
     		
     		/**
-    		 * @memberof Trends
-			 * @property {WithDistributions}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {withDistributions}
 			 * @default
     		 */
     		withDistributions: 'relative',
     		
     		/**
-    		 * @memberof Trends
-			 * @property {Bins}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {bins}
     		 * 
     		 * TODO verify this:
 			 * 
@@ -105,33 +111,38 @@ Ext.define('Voyant.panel.Trends', {
     		bins: 10,
     		
     		/**
-    		 * @memberof Trends
-			 * @property {DocIndex}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {docIndex}
     		 */
     		docIndex: undefined,
     		
     		/**
-    		 * @memberof Trends
-			 * @property {DocId}
+    		 * @memberof Tools.Trends
+			 * @instance
+			 * @property {docId}
     		 */
     		docId: undefined,
     		
     		/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
+			 * @instance
 			 * @property {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
 			 * @default
     		 */
     		mode: "corpus",
     		
 			/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
+			 * @instance
 			 * @property {String} chartType The of chart to display: Options are: 'area', 'bar', 'line', 'stacked', and 'barline'.
 			 * @default
     		 */
     		chartType: 'barline',
     		
 			/**
-    		 * @memberof Trends
+    		 * @memberof Tools.Trends
+			 * @instance
 			 * @property {Boolean} labels Whether to show term labels.
 			 * @default
     		 */

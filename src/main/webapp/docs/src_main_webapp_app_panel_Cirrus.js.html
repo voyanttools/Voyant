@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: src/main/webapp/app/panel/Cirrus.js | Voyant Tools Help</title>
+
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 150px">
+        
+            <a href="index.html">
+                <img src="imgs/info/about/icon.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Voyant Tools Help</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="examples-tab">
+                <a href="#"><h4>Voyant</h4></a>
+            </li>            <li id="api-tab">
+                <a href="#"><h4>Spyral</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Voyant</h3><ul><li><a href="tutorial-guides.html">Guides</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="guides_sub"><ul class="inner"><li><a href="tutorial-start.html">Getting Started</a></li><li><a href="tutorial-corpuscreator.html">Creating a Corpus</a></li><li><a href="tutorial-modifyingcorpus.html">Modifying a Corpus</a></li><li><a href="tutorial-embedding.html">Embedding Voyant</a></li><li><a href="tutorial-skins.html">Skins</a></li><li><a href="tutorial-languages.html">Languages</a></li><li><a href="tutorial-stopwords.html">Stopwords</a></li><li><a href="tutorial-search.html">Search</a></li><li><a href="tutorial-categories.html">Categories</a></li><li><a href="tutorial-palette.html">Palette</a></li><li><a href="tutorial-grids.html">Grids</a></li><li><a href="tutorial-new.html">What's New</a></li><li><a href="tutorial-tutorial.html">Tutorial/Workshop</a></li></ul></div></li><li><a href="tutorial-info.html">Information</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="info_sub"><ul class="inner"><li><a href="tutorial-about.html">About</a></li><li><a href="tutorial-notebook.html">About Spyral</a></li><li><a href="tutorial-gallery.html">Gallery</a></li><li><a href="tutorial-mirrors.html">Mirrors</a></li><li><a href="tutorial-server.html">VoyantServer</a></li></ul></div></li><li><a href="tutorial-tools_.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tools_sub"><ul class="inner"><li><a href="tutorial-bubblelines.html">Bubblelines</a></li><li><a href="tutorial-bubbles.html">Bubbles</a></li><li><a href="tutorial-catalogue.html">Catalogue</a></li><li><a href="tutorial-cirrus.html">Cirrus</a></li><li><a href="tutorial-corpuscollocates.html">Corpus Collocates</a></li><li><a href="tutorial-collocatesgraph.html">Collocates Graph</a></li><li><a href="tutorial-contexts.html">Contexts</a></li><li><a href="tutorial-corpusterms.html">Corpus Terms</a></li><li><a href="tutorial-correlations.html">Correlations</a></li><li><a href="tutorial-documents.html">Documents</a></li><li><a href="tutorial-documentterms.html">Document Terms</a></li><li><a href="tutorial-dreamscape.html">Dreamscape</a></li><li><a href="tutorial-knots.html">Knots</a></li><li><a href="tutorial-mandala.html">Mandala</a></li><li><a href="tutorial-microsearch.html">MicroSearch</a></li><li><a href="tutorial-phrases.html">Phrases</a></li><li><a href="tutorial-reader.html">Reader</a></li><li><a href="tutorial-rezoviz.html">RezoViz</a></li><li><a href="tutorial-scatterplot.html">ScatterPlot</a></li><li><a href="tutorial-streamgraph.html">StreamGraph</a></li><li><a href="tutorial-summary.html">Summary</a></li><li><a href="tutorial-termsberry.html">TermsBerry</a></li><li><a href="tutorial-termsradio.html">TermsRadio</a></li><li><a href="tutorial-textualarc.html">TextualArc</a></li><li><a href="tutorial-topics.html">Topics</a></li><li><a href="tutorial-trends.html">Trends</a></li><li><a href="tutorial-veliza.html">Veliza</a></li><li><a href="tutorial-wordtree.html">WordTree</a></li><li><a href="tutorial-via.html">Via</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="Spyral.html">Spyral</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Categories.html">Categories</a></li><li><a href="Spyral.Chart.html">Chart</a></li><li><a href="Spyral.Corpus.html">Corpus</a></li><li><a href="Spyral.Load.html">Load</a></li><li><a href="Spyral.Metadata.html">Metadata</a></li><li><a href="Spyral.NetworkGraph.html">NetworkGraph</a></li><li><a href="Spyral.Notebook.html">Notebook</a></li><li><a href="Spyral.Table.html">Table</a></li><li><a href="Spyral.Util.html">Util</a></li></ul></div></li><li><a href="Tools.html">Tools</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html">Bubblelines</a></li><li><a href="Tools.Bubbles.html">Bubbles</a></li><li><a href="Tools.Cirrus.html">Cirrus</a></li><li><a href="Tools.CollocatesGraph.html">CollocatesGraph</a></li><li><a href="Tools.Contexts.html">Contexts</a></li><li><a href="Tools.CorpusCollocates.html">CorpusCollocates</a></li><li><a href="Tools.CorpusTerms.html">CorpusTerms</a></li><li><a href="Tools.Correlations.html">Correlations</a></li><li><a href="Tools.CustomSet.html">CustomSet</a></li><li><a href="Tools.DocumentTerms.html">DocumentTerms</a></li><li><a href="Tools.Documents.html">Documents</a></li><li><a href="Tools.Embedder.html">Embedder</a></li><li><a href="Tools.Knots.html">Knots</a></li><li><a href="Tools.Mandala.html">Mandala</a></li><li><a href="Tools.MicroSearch.html">MicroSearch</a></li><li><a href="Tools.Panel.html">Panel</a></li><li><a href="Tools.Phrases.html">Phrases</a></li><li><a href="Tools.Reader.html">Reader</a></li><li><a href="Tools.RezoViz.html">RezoViz</a></li><li><a href="Tools.ScatterPlot.html">ScatterPlot</a></li><li><a href="Tools.StreamGraph.html">StreamGraph</a></li><li><a href="Tools.Summary.html">Summary</a></li><li><a href="Tools.TermsBerry.html">TermsBerry</a></li><li><a href="Tools.TermsRadio.html">TermsRadio</a></li><li><a href="Tools.TextualArc.html">TextualArc</a></li><li><a href="Tools.Topics.html">Topics</a></li><li><a href="Tools.Trends.html">Trends</a></li><li><a href="Tools.WordTree.html">WordTree</a></li></ul></div></li><li><a href="window.html">window</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="window_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="window.html#.createTable">createTable</a></li><li><a href="window.html#.loadCorpus">loadCorpus</a></li><li><a href="window.html#.show">show</a></li><li><a href="window.html#.showError">showError</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Spyral.Categories.html">Spyral.Categories</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Categories_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Categories.html#addCategory">addCategory</a></li><li><a href="Spyral.Categories.html#addFeature">addFeature</a></li><li><a href="Spyral.Categories.html#addTerm">addTerm</a></li><li><a href="Spyral.Categories.html#addTerms">addTerms</a></li><li><a href="Spyral.Categories.html#getCategories">getCategories</a></li><li><a href="Spyral.Categories.html#getCategoriesForTerm">getCategoriesForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryExportData">getCategoryExportData</a></li><li><a href="Spyral.Categories.html#getCategoryFeature">getCategoryFeature</a></li><li><a href="Spyral.Categories.html#getCategoryForTerm">getCategoryForTerm</a></li><li><a href="Spyral.Categories.html#getCategoryNames">getCategoryNames</a></li><li><a href="Spyral.Categories.html#getCategoryRanking">getCategoryRanking</a></li><li><a href="Spyral.Categories.html#getCategoryTerms">getCategoryTerms</a></li><li><a href="Spyral.Categories.html#getFeatureForTerm">getFeatureForTerm</a></li><li><a href="Spyral.Categories.html#getFeatures">getFeatures</a></li><li><a href="Spyral.Categories.html#load">load</a></li><li><a href="Spyral.Categories.html#removeCategory">removeCategory</a></li><li><a href="Spyral.Categories.html#removeFeature">removeFeature</a></li><li><a href="Spyral.Categories.html#removeTerm">removeTerm</a></li><li><a href="Spyral.Categories.html#removeTerms">removeTerms</a></li><li><a href="Spyral.Categories.html#renameCategory">renameCategory</a></li><li><a href="Spyral.Categories.html#save">save</a></li><li><a href="Spyral.Categories.html#setCategoryFeature">setCategoryFeature</a></li><li><a href="Spyral.Categories.html#setCategoryRanking">setCategoryRanking</a></li><li><a href="Spyral.Categories.html#.load">load</a></li></ul></div></li><li><a href="Spyral.Chart.html">Spyral.Chart</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Chart_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Chart.html#bar">bar</a></li><li><a href="Spyral.Chart.html#column">column</a></li><li><a href="Spyral.Chart.html#create">create</a></li><li><a href="Spyral.Chart.html#line">line</a></li><li><a href="Spyral.Chart.html#networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#scatter">scatter</a></li><li><a href="Spyral.Chart.html#.bar">bar</a></li><li><a href="Spyral.Chart.html#.column">column</a></li><li><a href="Spyral.Chart.html#.create">create</a></li><li><a href="Spyral.Chart.html#.line">line</a></li><li><a href="Spyral.Chart.html#.networkgraph">networkgraph</a></li><li><a href="Spyral.Chart.html#.scatter">scatter</a></li><li><a href="Spyral.Chart.html#.setSeriesData">setSeriesData</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Chart.html#~HighchartsConfig">HighchartsConfig</a></li><li><a href="Spyral.Chart.html#~HighchartsSeriesConfig">HighchartsSeriesConfig</a></li></ul></div></li><li><a href="Spyral.Corpus.html">Spyral.Corpus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Corpus_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Corpus.html#analysis">analysis</a></li><li><a href="Spyral.Corpus.html#collocates">collocates</a></li><li><a href="Spyral.Corpus.html#contexts">contexts</a></li><li><a href="Spyral.Corpus.html#correlations">correlations</a></li><li><a href="Spyral.Corpus.html#documents">documents</a></li><li><a href="Spyral.Corpus.html#entities">entities</a></li><li><a href="Spyral.Corpus.html#filterByCategory">filterByCategory</a></li><li><a href="Spyral.Corpus.html#id">id</a></li><li><a href="Spyral.Corpus.html#lemmas">lemmas</a></li><li><a href="Spyral.Corpus.html#metadata">metadata</a></li><li><a href="Spyral.Corpus.html#phrases">phrases</a></li><li><a href="Spyral.Corpus.html#summary">summary</a></li><li><a href="Spyral.Corpus.html#terms">terms</a></li><li><a href="Spyral.Corpus.html#text">text</a></li><li><a href="Spyral.Corpus.html#texts">texts</a></li><li><a href="Spyral.Corpus.html#titles">titles</a></li><li><a href="Spyral.Corpus.html#toString">toString</a></li><li><a href="Spyral.Corpus.html#tokens">tokens</a></li><li><a href="Spyral.Corpus.html#tool">tool</a></li><li><a href="Spyral.Corpus.html#topics">topics</a></li><li><a href="Spyral.Corpus.html#words">words</a></li><li><a href="Spyral.Corpus.html#.load">load</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Corpus.html#~CorpusConfig">CorpusConfig</a></li></ul></div></li><li><a href="Spyral.Load.html">Spyral.Load</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Load_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Load.html#.html">html</a></li><li><a href="Spyral.Load.html#.json">json</a></li><li><a href="Spyral.Load.html#.load">load</a></li><li><a href="Spyral.Load.html#.setBaseUrl">setBaseUrl</a></li><li><a href="Spyral.Load.html#.text">text</a></li><li><a href="Spyral.Load.html#.trombone">trombone</a></li><li><a href="Spyral.Load.html#.xml">xml</a></li></ul></div></li><li><a href="Spyral.Metadata.html">Spyral.Metadata</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Metadata_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Metadata.html#clone">clone</a></li><li><a href="Spyral.Metadata.html#getHeaders">getHeaders</a></li><li><a href="Spyral.Metadata.html#set">set</a></li><li><a href="Spyral.Metadata.html#setDateNow">setDateNow</a></li><li><a href="Spyral.Metadata.html#shortDate">shortDate</a></li></ul></div></li><li><a href="Spyral.Notebook.html">Spyral.Notebook</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Notebook_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Notebook.html#.getPromise">getPromise</a></li><li><a href="Spyral.Notebook.html#.getTarget">getTarget</a></li><li><a href="Spyral.Notebook.html#.import">import</a></li><li><a href="Spyral.Notebook.html#.show">show</a></li></ul></div></li><li><a href="Spyral.Table.html">Spyral.Table</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Table_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Table.html#addColumn">addColumn</a></li><li><a href="Spyral.Table.html#addRow">addRow</a></li><li><a href="Spyral.Table.html#addRows">addRows</a></li><li><a href="Spyral.Table.html#cell">cell</a></li><li><a href="Spyral.Table.html#chart">chart</a></li><li><a href="Spyral.Table.html#column">column</a></li><li><a href="Spyral.Table.html#columnCounts">columnCounts</a></li><li><a href="Spyral.Table.html#columnMax">columnMax</a></li><li><a href="Spyral.Table.html#columnMean">columnMean</a></li><li><a href="Spyral.Table.html#columnMin">columnMin</a></li><li><a href="Spyral.Table.html#columnRollingMean">columnRollingMean</a></li><li><a href="Spyral.Table.html#columnSort">columnSort</a></li><li><a href="Spyral.Table.html#columnStandardDeviation">columnStandardDeviation</a></li><li><a href="Spyral.Table.html#columnSum">columnSum</a></li><li><a href="Spyral.Table.html#columnVariance">columnVariance</a></li><li><a href="Spyral.Table.html#columnZScores">columnZScores</a></li><li><a href="Spyral.Table.html#columns">columns</a></li><li><a href="Spyral.Table.html#forEach">forEach</a></li><li><a href="Spyral.Table.html#getColumnIndex">getColumnIndex</a></li><li><a href="Spyral.Table.html#getRowIndex">getRowIndex</a></li><li><a href="Spyral.Table.html#hasColumn">hasColumn</a></li><li><a href="Spyral.Table.html#header">header</a></li><li><a href="Spyral.Table.html#headers">headers</a></li><li><a href="Spyral.Table.html#html">html</a></li><li><a href="Spyral.Table.html#row">row</a></li><li><a href="Spyral.Table.html#rowCounts">rowCounts</a></li><li><a href="Spyral.Table.html#rowMax">rowMax</a></li><li><a href="Spyral.Table.html#rowMean">rowMean</a></li><li><a href="Spyral.Table.html#rowMin">rowMin</a></li><li><a href="Spyral.Table.html#rowRollingMean">rowRollingMean</a></li><li><a href="Spyral.Table.html#rowSort">rowSort</a></li><li><a href="Spyral.Table.html#rowStandardDeviation">rowStandardDeviation</a></li><li><a href="Spyral.Table.html#rowSum">rowSum</a></li><li><a href="Spyral.Table.html#rowVariance">rowVariance</a></li><li><a href="Spyral.Table.html#rowZScores">rowZScores</a></li><li><a href="Spyral.Table.html#rows">rows</a></li><li><a href="Spyral.Table.html#setCell">setCell</a></li><li><a href="Spyral.Table.html#setColumn">setColumn</a></li><li><a href="Spyral.Table.html#setHeaders">setHeaders</a></li><li><a href="Spyral.Table.html#setRow">setRow</a></li><li><a href="Spyral.Table.html#toCsv">toCsv</a></li><li><a href="Spyral.Table.html#toHtml">toHtml</a></li><li><a href="Spyral.Table.html#toString">toString</a></li><li><a href="Spyral.Table.html#toTsv">toTsv</a></li><li><a href="Spyral.Table.html#updateCell">updateCell</a></li><li><a href="Spyral.Table.html#.cmp">cmp</a></li><li><a href="Spyral.Table.html#.counts">counts</a></li><li><a href="Spyral.Table.html#.create">create</a></li><li><a href="Spyral.Table.html#.fetch">fetch</a></li><li><a href="Spyral.Table.html#.mean">mean</a></li><li><a href="Spyral.Table.html#.rollingMean">rollingMean</a></li><li><a href="Spyral.Table.html#.standardDeviation">standardDeviation</a></li><li><a href="Spyral.Table.html#.sum">sum</a></li><li><a href="Spyral.Table.html#.variance">variance</a></li><li><a href="Spyral.Table.html#.zScores">zScores</a></li><li><a href="Spyral.Table.html#.zip">zip</a></li></ul><div class="member-type">Typedef</div><ul class="inner"><li><a href="Spyral.Table.html#~TableConfig">TableConfig</a></li></ul></div></li><li><a href="Spyral.Util.html">Spyral.Util</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Spyral.Util.Storage.html">Storage</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.html#.blobToDataUrl">blobToDataUrl</a></li><li><a href="Spyral.Util.html#.blobToString">blobToString</a></li><li><a href="Spyral.Util.html#.dataUrlToBlob">dataUrlToBlob</a></li><li><a href="Spyral.Util.html#.getFileExtensionFromMimeType">getFileExtensionFromMimeType</a></li><li><a href="Spyral.Util.html#.getVoyantDocumentFormatFromFileExtension">getVoyantDocumentFormatFromFileExtension</a></li><li><a href="Spyral.Util.html#.id">id</a></li><li><a href="Spyral.Util.html#.isArray">isArray</a></li><li><a href="Spyral.Util.html#.isBlob">isBlob</a></li><li><a href="Spyral.Util.html#.isBoolean">isBoolean</a></li><li><a href="Spyral.Util.html#.isFunction">isFunction</a></li><li><a href="Spyral.Util.html#.isNode">isNode</a></li><li><a href="Spyral.Util.html#.isNull">isNull</a></li><li><a href="Spyral.Util.html#.isNumber">isNumber</a></li><li><a href="Spyral.Util.html#.isObject">isObject</a></li><li><a href="Spyral.Util.html#.isPromise">isPromise</a></li><li><a href="Spyral.Util.html#.isString">isString</a></li><li><a href="Spyral.Util.html#.isUndefined">isUndefined</a></li><li><a href="Spyral.Util.html#.more">more</a></li><li><a href="Spyral.Util.html#.show">show</a></li><li><a href="Spyral.Util.html#.showError">showError</a></li><li><a href="Spyral.Util.html#.toString">toString</a></li><li><a href="Spyral.Util.html#.transformXml">transformXml</a></li></ul></div></li><li><a href="Spyral.Util.Storage.html">Spyral.Util.Storage</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Spyral.Util.Storage_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="Spyral.Util.Storage.html#.getStoredResource">getStoredResource</a></li><li><a href="Spyral.Util.Storage.html#.getTromboneUrl">getTromboneUrl</a></li><li><a href="Spyral.Util.Storage.html#.storeResource">storeResource</a></li></ul></div></li><li><a href="Tools.Bubblelines.html">Tools.Bubblelines</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubblelines_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubblelines.html#bins">bins</a></li><li><a href="Tools.Bubblelines.html#docId">docId</a></li><li><a href="Tools.Bubblelines.html#docIndex">docIndex</a></li><li><a href="Tools.Bubblelines.html#maxDocs">maxDocs</a></li><li><a href="Tools.Bubblelines.html#query">query</a></li><li><a href="Tools.Bubblelines.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Bubbles.html">Tools.Bubbles</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Bubbles_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Bubbles.html#audio">audio</a></li><li><a href="Tools.Bubbles.html#docIndex">docIndex</a></li><li><a href="Tools.Bubbles.html#limit">limit</a></li><li><a href="Tools.Bubbles.html#speed">speed</a></li><li><a href="Tools.Bubbles.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Cirrus.html">Tools.Cirrus</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Cirrus_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Cirrus.html#categories">categories</a></li><li><a href="Tools.Cirrus.html#docId">docId</a></li><li><a href="Tools.Cirrus.html#docIndex">docIndex</a></li><li><a href="Tools.Cirrus.html#fontFamily">fontFamily</a></li><li><a href="Tools.Cirrus.html#inlineData">inlineData</a></li><li><a href="Tools.Cirrus.html#limit">limit</a></li><li><a href="Tools.Cirrus.html#stopList">stopList</a></li><li><a href="Tools.Cirrus.html#visible">visible</a></li><li><a href="Tools.Cirrus.html#whiteList">whiteList</a></li></ul></div></li><li><a href="Tools.CollocatesGraph.html">Tools.CollocatesGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CollocatesGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CollocatesGraph.html#centralize">centralize</a></li><li><a href="Tools.CollocatesGraph.html#context">context</a></li><li><a href="Tools.CollocatesGraph.html#limit">limit</a></li><li><a href="Tools.CollocatesGraph.html#query">query</a></li><li><a href="Tools.CollocatesGraph.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Contexts.html">Tools.Contexts</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Contexts_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Contexts.html#columns">columns</a></li><li><a href="Tools.Contexts.html#context">context</a></li><li><a href="Tools.Contexts.html#dir">dir</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docId">docId</a></li><li><a href="Tools.Contexts.html#docIndex">docIndex</a></li><li><a href="Tools.Contexts.html#expand">expand</a></li><li><a href="Tools.Contexts.html#query">query</a></li><li><a href="Tools.Contexts.html#sort">sort</a></li><li><a href="Tools.Contexts.html#stopList">stopList</a></li><li><a href="Tools.Contexts.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusCollocates.html">Tools.CorpusCollocates</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusCollocates_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusCollocates.html#columns">columns</a></li><li><a href="Tools.CorpusCollocates.html#context">context</a></li><li><a href="Tools.CorpusCollocates.html#dir">dir</a></li><li><a href="Tools.CorpusCollocates.html#docId">docId</a></li><li><a href="Tools.CorpusCollocates.html#docIndex">docIndex</a></li><li><a href="Tools.CorpusCollocates.html#query">query</a></li><li><a href="Tools.CorpusCollocates.html#sort">sort</a></li><li><a href="Tools.CorpusCollocates.html#stopList">stopList</a></li><li><a href="Tools.CorpusCollocates.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.CorpusTerms.html">Tools.CorpusTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CorpusTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CorpusTerms.html#columns">columns</a></li><li><a href="Tools.CorpusTerms.html#comparisonCorpus">comparisonCorpus</a></li><li><a href="Tools.CorpusTerms.html#dir">dir</a></li><li><a href="Tools.CorpusTerms.html#maxBins">maxBins</a></li><li><a href="Tools.CorpusTerms.html#query">query</a></li><li><a href="Tools.CorpusTerms.html#sort">sort</a></li><li><a href="Tools.CorpusTerms.html#stopList">stopList</a></li><li><a href="Tools.CorpusTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Correlations.html">Tools.Correlations</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Correlations_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Correlations.html#columns">columns</a></li><li><a href="Tools.Correlations.html#dir">dir</a></li><li><a href="Tools.Correlations.html#docId">docId</a></li><li><a href="Tools.Correlations.html#docIndex">docIndex</a></li><li><a href="Tools.Correlations.html#minInDocumentsCountRatio">minInDocumentsCountRatio</a></li><li><a href="Tools.Correlations.html#query">query</a></li><li><a href="Tools.Correlations.html#sort">sort</a></li><li><a href="Tools.Correlations.html#stopList">stopList</a></li><li><a href="Tools.Correlations.html#termColors">termColors</a></li><li><a href="Tools.Correlations.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.CustomSet.html">Tools.CustomSet</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.CustomSet_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.CustomSet.html#layout">layout</a></li><li><a href="Tools.CustomSet.html#tableLayout">tableLayout</a></li></ul></div></li><li><a href="Tools.DocumentTerms.html">Tools.DocumentTerms</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.DocumentTerms_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.DocumentTerms.html#bins">bins</a></li><li><a href="Tools.DocumentTerms.html#columns">columns</a></li><li><a href="Tools.DocumentTerms.html#dir">dir</a></li><li><a href="Tools.DocumentTerms.html#docId">docId</a></li><li><a href="Tools.DocumentTerms.html#docIndex">docIndex</a></li><li><a href="Tools.DocumentTerms.html#query">query</a></li><li><a href="Tools.DocumentTerms.html#sort">sort</a></li><li><a href="Tools.DocumentTerms.html#stopList">stopList</a></li><li><a href="Tools.DocumentTerms.html#termColors">termColors</a></li></ul></div></li><li><a href="Tools.Documents.html">Tools.Documents</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Documents_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Documents.html#columns">columns</a></li><li><a href="Tools.Documents.html#dir">dir</a></li><li><a href="Tools.Documents.html#docId">docId</a></li><li><a href="Tools.Documents.html#docIndex">docIndex</a></li><li><a href="Tools.Documents.html#query">query</a></li><li><a href="Tools.Documents.html#sort">sort</a></li></ul></div></li><li><a href="Tools.Embedder.html">Tools.Embedder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Embedder_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Embedder.html#url">url</a></li></ul></div></li><li><a href="Tools.Knots.html">Tools.Knots</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Knots_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Knots.html#audio">audio</a></li><li><a href="Tools.Knots.html#docId">docId</a></li><li><a href="Tools.Knots.html#query">query</a></li><li><a href="Tools.Knots.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Mandala.html">Tools.Mandala</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Mandala_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Mandala.html#labels">labels</a></li><li><a href="Tools.Mandala.html#query">query</a></li><li><a href="Tools.Mandala.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.MicroSearch.html">Tools.MicroSearch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.MicroSearch_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.MicroSearch.html#query">query</a></li><li><a href="Tools.MicroSearch.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Panel.html">Tools.Panel</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Panel_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Panel.html#corpus">corpus</a></li><li><a href="Tools.Panel.html#input">input</a></li><li><a href="Tools.Panel.html#inputFormat">inputFormat</a></li><li><a href="Tools.Panel.html#subtitle">subtitle</a></li></ul></div></li><li><a href="Tools.Phrases.html">Tools.Phrases</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Phrases_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Phrases.html#columns">columns</a></li><li><a href="Tools.Phrases.html#dir">dir</a></li><li><a href="Tools.Phrases.html#docId">docId</a></li><li><a href="Tools.Phrases.html#docIndex">docIndex</a></li><li><a href="Tools.Phrases.html#maxLength">maxLength</a></li><li><a href="Tools.Phrases.html#minLength">minLength</a></li><li><a href="Tools.Phrases.html#overlapFilter">overlapFilter</a></li><li><a href="Tools.Phrases.html#query">query</a></li><li><a href="Tools.Phrases.html#sort">sort</a></li><li><a href="Tools.Phrases.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Reader.html">Tools.Reader</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Reader_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Reader.html#limit">limit</a></li><li><a href="Tools.Reader.html#query">query</a></li><li><a href="Tools.Reader.html#skipToDocId">skipToDocId</a></li><li><a href="Tools.Reader.html#start">start</a></li></ul></div></li><li><a href="Tools.RezoViz.html">Tools.RezoViz</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.RezoViz_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.RezoViz.html#docId">docId</a></li><li><a href="Tools.RezoViz.html#limit">limit</a></li><li><a href="Tools.RezoViz.html#minEdgeCount">minEdgeCount</a></li><li><a href="Tools.RezoViz.html#nerService">nerService</a></li><li><a href="Tools.RezoViz.html#query">query</a></li><li><a href="Tools.RezoViz.html#stopList">stopList</a></li><li><a href="Tools.RezoViz.html#type">type</a></li></ul></div></li><li><a href="Tools.ScatterPlot.html">Tools.ScatterPlot</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.ScatterPlot_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.ScatterPlot.html#analysis">analysis</a></li><li><a href="Tools.ScatterPlot.html#bins">bins</a></li><li><a href="Tools.ScatterPlot.html#clusters">clusters</a></li><li><a href="Tools.ScatterPlot.html#comparisonType">comparisonType</a></li><li><a href="Tools.ScatterPlot.html#dimensions">dimensions</a></li><li><a href="Tools.ScatterPlot.html#docId">docId</a></li><li><a href="Tools.ScatterPlot.html#iterations">iterations</a></li><li><a href="Tools.ScatterPlot.html#label">label</a></li><li><a href="Tools.ScatterPlot.html#limit">limit</a></li><li><a href="Tools.ScatterPlot.html#perplexity">perplexity</a></li><li><a href="Tools.ScatterPlot.html#query">query</a></li><li><a href="Tools.ScatterPlot.html#stopList">stopList</a></li><li><a href="Tools.ScatterPlot.html#storeJson">storeJson</a></li><li><a href="Tools.ScatterPlot.html#target">target</a></li><li><a href="Tools.ScatterPlot.html#term">term</a></li><li><a href="Tools.ScatterPlot.html#whitelist">whitelist</a></li></ul></div></li><li><a href="Tools.StreamGraph.html">Tools.StreamGraph</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.StreamGraph_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.StreamGraph.html#bins">bins</a></li><li><a href="Tools.StreamGraph.html#docId">docId</a></li><li><a href="Tools.StreamGraph.html#docIndex">docIndex</a></li><li><a href="Tools.StreamGraph.html#limit">limit</a></li><li><a href="Tools.StreamGraph.html#query">query</a></li><li><a href="Tools.StreamGraph.html#stopList">stopList</a></li><li><a href="Tools.StreamGraph.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.Summary.html">Tools.Summary</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Summary_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Summary.html#limit">limit</a></li><li><a href="Tools.Summary.html#numberOfDocumentsForDistinctiveWords">numberOfDocumentsForDistinctiveWords</a></li><li><a href="Tools.Summary.html#start">start</a></li><li><a href="Tools.Summary.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsBerry.html">Tools.TermsBerry</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsBerry_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsBerry.html#categories">categories</a></li><li><a href="Tools.TermsBerry.html#context">context</a></li><li><a href="Tools.TermsBerry.html#docId">docId</a></li><li><a href="Tools.TermsBerry.html#docIndex">docIndex</a></li><li><a href="Tools.TermsBerry.html#numInitialTerms">numInitialTerms</a></li><li><a href="Tools.TermsBerry.html#query">query</a></li><li><a href="Tools.TermsBerry.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.TermsRadio.html">Tools.TermsRadio</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TermsRadio_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TermsRadio.html#bins">bins</a></li><li><a href="Tools.TermsRadio.html#limit">limit</a></li><li><a href="Tools.TermsRadio.html#query">query</a></li><li><a href="Tools.TermsRadio.html#slider">slider</a></li><li><a href="Tools.TermsRadio.html#speed">speed</a></li><li><a href="Tools.TermsRadio.html#stopList">stopList</a></li><li><a href="Tools.TermsRadio.html#visibleBins">visibleBins</a></li><li><a href="Tools.TermsRadio.html#yAxisScale">yAxisScale</a></li></ul></div></li><li><a href="Tools.TextualArc.html">Tools.TextualArc</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.TextualArc_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.TextualArc.html#docIndex">docIndex</a></li><li><a href="Tools.TextualArc.html#minRawFreq">minRawFreq</a></li><li><a href="Tools.TextualArc.html#speed">speed</a></li><li><a href="Tools.TextualArc.html#stopList">stopList</a></li></ul></div></li><li><a href="Tools.Topics.html">Tools.Topics</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Topics_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Topics.html#iterations">iterations</a></li><li><a href="Tools.Topics.html#perDocLimit">perDocLimit</a></li><li><a href="Tools.Topics.html#seed">seed</a></li><li><a href="Tools.Topics.html#stopList">stopList</a></li><li><a href="Tools.Topics.html#termsPerTopic">termsPerTopic</a></li><li><a href="Tools.Topics.html#topics">topics</a></li></ul></div></li><li><a href="Tools.Trends.html">Tools.Trends</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.Trends_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.Trends.html#bins">bins</a></li><li><a href="Tools.Trends.html#chartType">chartType</a></li><li><a href="Tools.Trends.html#docId">docId</a></li><li><a href="Tools.Trends.html#docIndex">docIndex</a></li><li><a href="Tools.Trends.html#labels">labels</a></li><li><a href="Tools.Trends.html#limit">limit</a></li><li><a href="Tools.Trends.html#mode">mode</a></li><li><a href="Tools.Trends.html#query">query</a></li><li><a href="Tools.Trends.html#stopList">stopList</a></li><li><a href="Tools.Trends.html#withDistributions">withDistributions</a></li></ul></div></li><li><a href="Tools.WordTree.html">Tools.WordTree</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Tools.WordTree_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Tools.WordTree.html#context">context</a></li><li><a href="Tools.WordTree.html#docId">docId</a></li><li><a href="Tools.WordTree.html#docIndex">docIndex</a></li><li><a href="Tools.WordTree.html#limit">limit</a></li><li><a href="Tools.WordTree.html#query">query</a></li><li><a href="Tools.WordTree.html#stopList">stopList</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// assuming Cirrus library is loaded by containing page (via voyant.jsp)
+/**
+ * Cirrus tool, a wordcloud-like visualization.
+ * 
+ * @class Cirrus
+ * @tutorial cirrus
+ * @memberof Tools
+ */
+Ext.define('Voyant.panel.Cirrus', {
+	extend: 'Ext.panel.Panel',
+	mixins: ['Voyant.panel.Panel'],
+	alias: 'widget.cirrus',
+    statics: {
+    	i18n: {
+    	},
+    	api: {
+    		/**
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {stopList}
+			 * @default
+    		 */
+    		stopList: 'auto',
+			/**
+			 * @memberof Tools.Cirrus
+			 * @instance
+			 * @property {categories}
+			 */
+    		categories: undefined,
+
+			/**
+			 * @memberof Tools.Cirrus
+			 * @instance
+			 * @property {String|String[]} whiteList a list of words to always include
+			 */
+    		whiteList: undefined,
+    		
+    		/**
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {Number} limit Specify the number of terms to load (which is separate from the number of {@link Cirrus.visible} terms to show) at a time).
+    		 * @default 500
+    		 */
+    		limit: 500,
+    		
+    		/**
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {Number} visible Specify the number of terms that are visible at a time.
+    		 * @default 50
+    		 */
+    		visible: 50,
+
+			// TODO unused??
+    		terms: undefined,
+
+			/**
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {docId}
+			 */
+    		docId: undefined,
+			/**
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {docIndex}
+			 */
+    		docIndex: undefined,
+    		
+			/**
+			 * @memberof Tools.Cirrus
+			 * @instance
+			 * @property {String} inlineData Directly specify the terms and their relative sizes.
+			 * There data format is a comma-separated list of colon-separated term/size pairs.
+			 * For example: love:20,like:15,dear:10,child:6
+			 */
+    		inlineData: undefined,
+
+			/**
+			 * @memberof Tools.Cirrus
+			 * @instance
+			 * @property {String} fontFamily The CSS font-family to use for the terms
+			 * @default
+			 */
+    		fontFamily: '"Palatino Linotype", "Book Antiqua", Palatino, serif',
+    		
+			// TODO remove these flash specific params
+			cirrusForceFlash: false,
+    		background: '0xffffff',
+    		fade: true,
+    		smoothness: 2,
+    		diagonals: 'none' // all, bigrams, none
+    	},
+		glyph: 'xf06e@FontAwesome'
+    },
+    
+    config: {
+    	/**
+    	 * @private
+    	 */
+    	mode: undefined,
+    	/**
+    	 * @private
+    	 */
+    	options: [
+    		{xtype: 'stoplistoption'},
+    		{
+	    		xtype: 'listeditor',
+	    		name: 'whiteList'
+    	    },
+    	    {xtype: 'categoriesoption'},
+//    	    {
+//    	    	// TODO this field does nothing
+//    	        xtype: 'numberfield',
+//    	        name: 'label',
+//    	        fieldLabel: 'Max words',
+//    	        labelAlign: 'right',
+//    	        value: 500,
+//    	        minValue: 50,
+//    	        step: 50,
+//    	        listeners: {
+//        	        afterrender: function(field) {
+//        	        	var win = field.up("window");
+//        	        	if (win &amp;&amp; win.panel) {field.setFieldLabel(win.panel.localize("maxTerms"))}
+//        	        }
+//    	        }
+//    	    },
+    	    {xtype: 'fontfamilyoption'},
+    	    {xtype: 'colorpaletteoption'}
+
+    	],
+    	/**
+    	 * @private
+    	 */
+    	records: undefined,
+    	/**
+    	 * @private
+    	 */
+    	terms: undefined,
+    	/**
+    	 * @private
+    	 */
+    	cirrusId: undefined,
+    	/**
+    	 * @private
+    	 */
+    	visLayout: undefined, // cloud layout algorithm
+    	/**
+    	 * @private
+    	 */
+    	vis: undefined, // actual vis
+    	/**
+    	 * @private
+    	 */
+    	tip: undefined,
+    	/**
+    	 * @private
+    	 */
+    	sizeAdjustment: 100, // amount to multiply a word's relative size by
+    	/**
+    	 * @private
+    	 */
+    	minFontSize: 12,
+    	/**
+    	 * @private
+    	 */
+    	largestWordSize: 0,
+    	/**
+    	 * @private
+    	 */
+    	smallestWordSize: 1000000
+    },
+    
+    MODE_CORPUS: 'corpus',
+    MODE_DOCUMENT: 'mode_document',
+    
+    layout: 'fit',
+    
+	/**
+	 * @private
+	 */
+    constructor: function(config) {
+        this.callParent(arguments);
+    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
+    	
+    	this.getApplication().getCategoriesManager().addFeature('orientation', function() { return ~~(Math.random() * 2) * 90; });
+    	
+    	this.setCirrusId(Ext.id(null, 'cirrus_'));
+    },
+    
+    initComponent: function (config) {
+    	Ext.apply(this, {
+    		title: this.localize('title'),
+    		dockedItems: [{
+                dock: 'bottom',
+                xtype: 'toolbar',
+                overflowHandler: 'scroller',
+                items: [{
+        			xtype: 'corpusdocumentselector',
+        			singleSelect: true
+        		},{
+        			fieldLabel: this.localize('visibleTerms'),
+        			labelWidth: 40,
+        			width: 120,
+        			xtype: 'slider',
+	            	increment: 25,
+	            	minValue: 25,
+	            	maxValue: 500,
+	            	listeners: {
+	            		afterrender: function(slider) {
+							slider.maxValue = this.getApiParam("limit")
+							slider.minValue = Math.round(Math.max(5, parseInt(slider.maxValue/20)));
+							if (slider.maxValue % 25 === 0 &amp;&amp; slider.minValue % 25 === 0) {
+								slider.increment = 25; // default values handling
+							} else {
+	            				slider.increment = Math.round((slider.maxValue - slider.minValue)/10); // 10 steps across entire range
+							}
+	            			slider.setValue(this.getApiParam("visible"));
+	            		},
+	            		changecomplete: function(slider, newvalue) {
+	            			this.setApiParams({visible: newvalue});
+	            			this.loadFromTermsRecords();
+	            		},
+	            		scope: this
+	            	}
+                }]
+    		}]
+    	});
+
+    	this.callParent(arguments);
+    	
+    	
+    },
+    
+    listeners: {
+    	boxready: function() {
+			this.initVisLayout(); // force in case we've changed fontFamily from options
+
+			var dataString = this.getApiParam('inlineData');
+        	if (dataString !== undefined) {
+        		if (dataString.charAt(0)=="[") {
+            		var jsonData = Ext.decode(dataString, true);
+        		} else {
+        			if (dataString.indexOf(":")>-1) {
+        				jsonData = [];
+        				dataString.split(",").forEach(function(term) {
+        					parts = term.split(":");
+        					jsonData.push({
+        						text: parts[0],
+        						rawFreq: parseInt(parts[1])
+        					})
+        				})
+        			} else {
+        				var terms = {}
+        				jsonData = [];
+        				dataString.split(",").forEach(function(term) {
+        					if (term in terms) {
+        						terms[term]++;
+        					} else {
+        						terms[term] = 1;
+        					}
+        				});
+        				for (term in terms) {
+        					jsonData.push({
+        						text: term,
+        						rawFreq: terms[term]
+        					})
+        				}
+        			}
+        		}
+        		if (jsonData !== null &amp;&amp; jsonData.length>0) {
+        			this.setApiParam('inlineData', jsonData);
+	        	    this.setTerms(jsonData);
+	        	    this.buildFromTerms();
+        		}
+        	}
+    	},
+    	resize: function(panel, width, height) {
+    		if (this.getVisLayout() &amp;&amp; this.getCorpus()) {
+    			this.setAdjustedSizes();
+    			
+    			var el = this.getLayout().getRenderTarget();
+    	    	width = el.getWidth();
+    			height = el.getHeight();
+    			
+    			el.down('svg').set({width: width, height: height});
+    			if (this.getTerms()) {
+        			this.getVisLayout().size([width, height]).stop().words(this.getTerms()).start();
+    			}
+    		}
+    	},
+    	
+    	loadedCorpus: function(src, corpus) {
+			this.getApplication().getCategoriesManager().addFeature('font', this.getApiParam('fontFamily')); // make sure the default for font is set from the api
+    		this.initVisLayout(); // force in case we've changed fontFamily from options
+    		if (this.getApiParam("docIndex")) {
+    			this.fireEvent("documentSelected", this, corpus.getDocument(this.getApiParam("docIndex")));
+    		} else if (this.getApiParam("docId")) {
+    			this.fireEvent("documentSelected", this, corpus.getDocument(this.getApiParam("docId")));
+    		} else {
+        		this.loadFromCorpus(corpus);
+			}
+    	},
+    	
+    	corpusSelected: function(src, corpus) {
+    		this.loadFromCorpus(corpus);
+    		
+    	},
+    	
+    	documentSelected: function(src, document) {
+    		if (document) {
+        		var corpus = this.getCorpus();
+        		var document = corpus.getDocument(document);
+        		this.setApiParam('docId', document.getId());
+        		var documentTerms = document.getDocumentTerms({autoload: false, corpus: corpus, pageSize: this.getApiParam("maxVisible"), parentPanel: this});
+        		this.loadFromDocumentTerms(documentTerms);
+    		}
+    	},
+    	
+    	ensureCorpusView: function(src, corpus) {
+    		if (this.getMode() != this.MODE_CORPUS) {this.loadFromCorpus(corpus);}
+    	}
+    },
+    
+    loadFromCorpus: function(corpus) {
+    	var jsonData = this.getApiParam('inlineData');
+    	if (jsonData === undefined) {
+			this.setApiParams({docId: undefined, docIndex: undefined});
+			this.loadFromCorpusTerms(corpus.getCorpusTerms({autoload: false, pageSize: this.getApiParam("maxVisible"), parentPanel: this}));
+    	} else {
+    		// if (jsonData !== undefined) {
+    		// 	var records = [];
+    		// 	for (var i = 0; i &lt; jsonData.length; i++) {
+			// 		var wordData = jsonData[i];
+			// 		wordData.term = wordData.text; // inlineData/CorpusTerm format mismatch
+    		// 		var record = Ext.create('Voyant.data.model.CorpusTerm', wordData);
+    		// 		records.push(record);
+    		// 	}
+    		// 	this.setRecords(records);
+    		// 	this.setMode(this.MODE_CORPUS);
+    		// 	this.loadFromTermsRecords();
+    		// }
+    	}
+    },
+    
+    loadFromDocumentTerms: function(documentTerms) {
+    	documentTerms.load({
+		    callback: function(records, operation, success) {
+		    	this.setMode(this.MODE_DOCUMENT);
+		    	this.setRecords(operation.getRecords()); // not sure why operation.records is different from records
+		    	this.loadFromTermsRecords();
+		    },
+		    scope: this,
+		    params: this.getApiParams()
+    	});
+    },
+    
+    loadFromCorpusTerms: function(corpusTerms) {
+		corpusTerms.load({
+		    callback: function(records, operation, success) {
+		    	this.setMode(this.MODE_CORPUS);
+		    	this.setRecords(operation.getRecords()); // not sure why operation.records is different from records
+				this.loadFromTermsRecords();
+		    },
+		    scope: this,
+		    params: this.getApiParams()
+    	});
+    },
+    
+    loadFromTermsRecords: function() {
+    	var records = this.getRecords();
+    	var visible = this.getApiParam("visible");
+    	if (visible>records.length) {visible=records.length;}
+    	var terms = [];
+    	for (var i=0; i&lt;visible; i++) {
+    		if (records[i].get('rawFreq')>0) {
+        		terms.push({text: records[i].get('term').replace(/"/g,''), rawFreq: records[i].get('rawFreq')});
+    		}
+    	}
+    	this.setTerms(terms);
+    	this.buildFromTerms();
+    },
+    
+    initVisLayout: function(forceLayout) {
+    	if (forceLayout || this.getVisLayout() == undefined) {
+    		var cirrusForceFlash = this.getApiParam('cirrusForceFlash');
+    		if (cirrusForceFlash == 'true' || cirrusForceFlash === true) {
+    			this.setApiParam('cirrusForceFlash', true);
+    			var id = this.getCirrusId();
+    			var appVars = {
+    				id: id
+    			};
+    			var keys = ['background','fade','smoothness','diagonals'];
+    			for (var i = 0; i &lt; keys.length; i++) {
+    				appVars[keys[i]] = this.getApiParam(keys[i]);
+    			}
+    			
+    			var swfscript = '&lt;script type="text/javascript" src="'+this.getApplication().getBaseUrl()+'resources/swfobject/swfobject.js'+'">&lt;/script>';
+    			var cirrusLinks = '&lt;script type="text/javascript">'+
+				'cirrusClickHandler'+id+' = function(word, value) {\n'+
+				'\tif (window.console &amp;&amp; console.info) console.info(word, value);\n'+
+				'\tvar cirrusTool = Ext.getCmp("'+this.id+'");\n'+
+				'\tcirrusTool.dispatchEvent("termsClicked", cirrusTool, [word]);\n'+
+				'}\n'+
+				'cirrusLoaded'+id+' = function() {\n'+
+				'\tif (window.console &amp;&amp; console.info) console.info("cirrus flash loaded");\n'+
+				'}\n'+
+				'cirrusPNGHandler'+id+' = function(base64String) {\n'+
+				'\tvar cirrusTool = Ext.getCmp("'+this.id+'");\n'+
+				'\tcirrusTool.cirrusPNGHandler(base64String);\n'+
+				'}'+
+				'&lt;/script>';
+    			
+    			this.update(swfscript+cirrusLinks, true, function() {
+    				function loadFlash(component) {
+    					if (typeof swfobject !== 'undefined') {
+    						var el = component.getLayout().getRenderTarget();
+    						var width = el.getWidth();
+    						var height = el.getHeight();
+    		    			
+	        				var cirrusFlash = component.getApplication().getBaseUrl()+'resources/cirrus/flash/Cirrus.swf';
+	        				component.add({
+	        					xtype: 'flash',
+	        					id: appVars.id,
+	        					url: cirrusFlash,
+	        					width: width,
+	        					height: height,
+	        					flashVars: appVars,
+	        					flashParams: {
+									menu: 'false',
+									scale: 'showall',
+									allowScriptAccess: 'always',
+									bgcolor: '#222222',
+									wmode: 'opaque'
+	        		            }
+	        				});
+	        				
+	        				component.cirrusFlashApp = Ext.get(appVars.id).first().dom;
+    					} else {
+    						setTimeout(loadFlash, 50, component);
+    					}
+        			}
+    				loadFlash(this);
+    				
+    			}, this);
+    		} else {
+    			var el = this.getLayout().getRenderTarget();
+    			el.update(""); // make sure to clear existing contents (especially for re-layout)
+    	    	var width = el.getWidth();
+				var height = el.getHeight();
+				this.setVisLayout(
+					d3.layoutCloud()
+						.size([width, height])
+						.overflow(true)
+						.padding(1)
+						.rotate(function(d) {
+							var orientation = this.getApplication().getCategoriesManager().getFeatureForTerm('orientation', d.text);
+							if (orientation === undefined) {
+								orientation = ~~(Math.random() * 2) * 90;
+							}
+							return orientation;
+						}.bind(this))
+						.spiral('archimedean')
+						.font(function(d) { return this.getApplication().getCategoriesManager().getFeatureForTerm('font', d.text); }.bind(this))
+						.fontSize(function(d) {return d.fontSize; }.bind(this))
+						.text(function(d) { return d.text; })
+						.on('end', this.draw.bind(this))
+				);
+				
+				var svg = d3.select(el.dom).append('svg').attr('id',this.getCirrusId()).attr('class', 'cirrusGraph').attr('width', width).attr('height', height);
+				this.setVis(svg.append('g').attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')'));
+				
+				if (this.getTip() === undefined) {
+					this.setTip(Ext.create('Ext.tip.Tip', {}));
+				}
+    		}
+    	}
+    },
+    
+    buildFromTerms: function() {
+		var terms = this.getTerms();
+    	if (this.rendered &amp;&amp; terms) {
+    		if (this.getApiParam('cirrusForceFlash') === true) {
+    			if (this.cirrusFlashApp !== undefined &amp;&amp; this.cirrusFlashApp.clearAll !== undefined) {
+	    			var words = [];
+	    			for (var i = 0; i &lt; terms.length; i++) {
+	    				var t = terms[i];
+	    				if (!t.text &amp;&amp; t.term) {t.text=t.term;}
+	    				words.push({word: t.text, size: t.rawFreq, label: t.rawFreq});
+	    			}
+	    			this.cirrusFlashApp.clearAll();
+	    			this.cirrusFlashApp.addWords(words);
+	    			this.cirrusFlashApp.arrangeWords();
+    			} else {
+    				Ext.defer(this.buildFromTerms, 50, this);
+    			}
+    		} else {
+	    		var minSize = 1000;
+	    		var maxSize = -1;
+	    		for (var i = 0; i &lt; terms.length; i++) {
+	    			var size = terms[i].rawFreq;
+	    			if (size &lt; minSize) minSize = size;
+	    			if (size > maxSize) maxSize = size;
+	    		}
+	    		this.setSmallestWordSize(minSize);
+	    		this.setLargestWordSize(maxSize);
+	    		
+	    		// set the relative sizes for each word (0.0 to 1.0), then adjust based on available area
+	    		this.setRelativeSizes();
+	    		this.setAdjustedSizes();
+
+	//    		var fontSizer = d3.scalePow().range([10, 100]).domain([minSize, maxSize]);
+
+	    		this.getVisLayout().words(terms).start();
+    		}
+    	} else {
+    		Ext.defer(this.buildFromTerms, 50, this);
+    	}
+    },
+    
+    draw: function(words, bounds) {
+    	var panel = this;
+    	var el = this.getLayout().getRenderTarget();
+    	var width = this.getVisLayout().size()[0];
+    	var height = this.getVisLayout().size()[1];
+    	
+    	var scale = bounds ? Math.min(
+			width / Math.abs(bounds[1].x - width / 2),
+			width / Math.abs(bounds[0].x - width / 2),
+			height / Math.abs(bounds[1].y - height / 2),
+			height / Math.abs(bounds[0].y - height / 2)
+    	) / 2 : 1;
+    	
+		var t = d3.transition().duration(1000);
+			
+		var nodes = this.getVis().selectAll('text').data(words, function(d) {return d.text;});
+		
+		nodes.exit().transition(t)
+			.style('font-size', '1px')
+			.remove();
+
+		var nodesEnter = nodes.enter().append('text')
+			.text(function(d) { return d.text; })
+			.attr('text-anchor', 'middle')
+			.attr('data-freq', function(d) { return d.rawFreq; })
+			.attr('transform', function(d) { return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')'; })
+			.style('font-family', function(d) { return panel.getApplication().getCategoriesManager().getFeatureForTerm('font', d.text); })
+			.style('fill', function(d) { return panel.getApplication().getColorForTerm(d.text, true); })
+			.style('font-size', '1px')
+			.on('click', function(obj) {panel.dispatchEvent('termsClicked', panel, [obj.text]);})
+			.on('mouseover', function(obj) {
+				this.getTip().show();
+			}.bind(this))
+			.on('mousemove', function(obj) {
+				var tip = this.getTip();
+				tip.update(obj.text+': '+obj.rawFreq);
+				var container = Ext.get(this.getCirrusId()).dom;
+				var coords = d3.mouse(container);
+				coords[1] += 30;
+				tip.setPosition(coords);
+			}.bind(this))
+			.on('mouseout', function(obj) {
+				this.getTip().hide();
+			}.bind(this));
+		
+		var nodesUpdate = nodes.merge(nodesEnter);
+		
+		nodesUpdate.transition(t)
+			.style('font-family', function(d) { return panel.getApplication().getCategoriesManager().getFeatureForTerm('font', d.text); })
+			.style('fill', function(d) { return panel.getApplication().getColorForTerm(d.text, true); })
+			.attr('transform', function(d) { return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')'; })
+			.style('font-size', function(d) { return d.fontSize + 'px'; });
+		
+		this.getVis().transition(t).attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + scale + ')');
+    },
+    
+    map: function(value, istart, istop, ostart, ostop) {
+		return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+	},
+	
+	calculateSizeAdjustment: function() {
+		var terms = this.getTerms();
+        if (terms !== undefined) {
+			var el = this.getLayout().getRenderTarget();
+			
+	        var stageArea = el.getWidth() * el.getHeight();
+	        if (stageArea &lt; 100000) this.setMinFontSize(8);
+	        else this.setMinFontSize(12);
+        
+	        var pixelsPerWord = stageArea / terms.length;
+	        var totalWordsSize = 0;
+	        for (var i = 0; i &lt; terms.length; i++) {
+	            var word = terms[i];
+	            var wordArea = this.calculateWordArea(word);
+	            totalWordsSize += wordArea;
+	        }
+
+	        this.setSizeAdjustment(stageArea / totalWordsSize);
+        }
+    },
+    
+    calculateWordArea: function(word) {
+        var baseSize = Math.log(word.relativeSize * 10) * Math.LOG10E; // take the relativeSize (0.1 to 1.0), multiply by 10, then get the base-10 log of it
+        var height = (baseSize + word.relativeSize) / 2; // find the average between relativeSize and the log
+        var width = 0; //(baseSize / 1.5) * word.text.length;
+        for (var i = 0; i &lt; word.text.length; i++ ) {
+            var letter = word.text.charAt(i);
+            if (letter == 'f' || letter == 'i' || letter == 'j' || letter == 'l' || letter == 'r' || letter == 't') width += baseSize / 3;
+            else if (letter == 'm' || letter == 'w') width += baseSize / (4 / 3);
+            else width += baseSize / 1.9;
+        }
+        var wordArea = height * width;
+        return wordArea;
+    },
+    
+    setAdjustedSizes: function() {
+    	this.calculateSizeAdjustment();
+    	var terms = this.getTerms();
+    	if (terms !== undefined) {
+			for (var i = 0; i &lt; terms.length; i++) {
+				var term = terms[i];
+				var adjustedSize = this.findNewRelativeSize(term);
+				term.fontSize = adjustedSize > this.getMinFontSize() ? adjustedSize : this.getMinFontSize();
+			}
+    	}
+    },
+    
+    setRelativeSizes: function() {
+    	var terms = this.getTerms();
+    	if (terms !== undefined) {
+	    	for (var i = 0; i &lt; terms.length; i++) {
+	            var word = terms[i];
+	            word.relativeSize = this.map(word.rawFreq, this.getSmallestWordSize(), this.getLargestWordSize(), 0.1, 1);
+	        }
+    	}
+    },
+    
+    findNewRelativeSize: function(word) {
+    	var areaMultiplier = this.getSizeAdjustment();
+        var area = this.calculateWordArea(word) * areaMultiplier;
+        // given the area = (x+6)*(2*x/3*y), solve for x
+        var newRelativeSize = (Math.sqrt(6) * Math.sqrt(6 * Math.pow(word.text.length, 2) + area * word.text.length) - 6 * word.text.length) / (2 * word.text.length);
+        return newRelativeSize;
+    }
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <div class="footer-text"><a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a></div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

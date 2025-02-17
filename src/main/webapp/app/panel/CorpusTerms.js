@@ -1,13 +1,8 @@
 /**
- * My namespace.
- * @namespace Tools
- */
-
-
-/**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
  * 
  * @class CorpusTerms
+ * @tutorial corpusterms
  * @memberof Tools
  */
 Ext.define('Voyant.panel.CorpusTerms', {
@@ -21,20 +16,23 @@ Ext.define('Voyant.panel.CorpusTerms', {
     	api: {
     		
     		/**
-			 * @memberof CorpusTerms
-    		 * @property {StopList}
+			 * @memberof Tools.CorpusTerms
+    		 * @instance
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
     		
     		/**
-    		 * @memberof CorpusTerms
-			 * @property {Query}
+    		 * @memberof Tools.CorpusTerms
+			 * @instance
+			 * @property {query}
     		 */
     		query: undefined,
     		
     		/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
+    		 * @instance
     		 * @property {Number} maxBins The maximum number of bins to use for distributions in Trend.
     		 * 
     		 * By default this is set to 100 (in other words, if there are more than 100 documents in the corpus, they will be forced into 100 bins).
@@ -44,14 +42,16 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		maxBins: 100,
 
 			/**
-			 * @memberof CorpusTerms
-			 * @property {TermColors}
+			 * @memberof Tools.CorpusTerms
+			 * @instance
+			 * @property {termColors}
 			 * @default
 			 */
 			termColors: 'categories',
 
     		/**
-			 * @memberof CorpusTerms
+			 * @memberof Tools.CorpusTerms
+    		 * @instance
     		 * @property {String} comparisonCorpus An existing corpus to be used for comparison purposes.
     		 * 
     		 * None of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the "Comparison" column is shown.
@@ -60,20 +60,23 @@ Ext.define('Voyant.panel.CorpusTerms', {
     		comparisonCorpus: undefined,
 
 			/**
-			 * @memberof CorpusTerms
-			 * @property {Columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
+			 * @memberof Tools.CorpusTerms
+			 * @instance
+			 * @property {columns} columns 'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof CorpusTerms
-			 * @property {SortColumn}
+			 * @memberof Tools.CorpusTerms
+			 * @instance
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof CorpusTerms
-			 * @property {SortDir}
+			 * @memberof Tools.CorpusTerms
+			 * @instance
+			 * @property {dir}
 			 */
 			dir: undefined,
     	},

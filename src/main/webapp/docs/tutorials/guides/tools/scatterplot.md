@@ -1,4 +1,4 @@
-# Scatterplot
+# ScatterPlot
 
 ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.
 
@@ -43,7 +43,7 @@ The toolbar mainly comprises options for tweaking and exploring the plotting of 
 
 ## Terms
 
-The Terms panel shows you which terms are displayed in the Scatterplot and it also allows you to control which terms 
+The Terms panel shows you which terms are displayed in the ScatterPlot and it also allows you to control which terms 
 are shown.
 
 The terms grid functions like other {@tutorial grids} and you can sort terms alphabetically or by frequency. The Terms 
@@ -57,33 +57,33 @@ panel also provides the following functionality:
 
 ## Spyral
 
-To use Scatterplot widget in Spyral you can use the following code as a starting point. Modify the config object to 
+To use ScatterPlot widget in Spyral you can use the following code as a starting point. Modify the config object to 
 modify the visualization.
 
 ```
 let config = {
     "analysis": null,
-    "Bins": null,
+    "bins": null,
     "clusters": null,
     "comparisonType": null,
     "dimensions": null,
-    "DocId": null,
+    "docId": null,
     "iterations": null,
     "label": null,
-    "Limit": null,
+    "limit": null,
     "perplexity": null,
-    "Query": null,
-    "StopList": null,
+    "query": null,
+    "stopList": null,
     "storeJson": null,
     "target": null,
     "term": null,
     "whitelist": null,
 }; 
 
-loadCorpus("austen").tool("Scatterplot", config);
+loadCorpus("austen").tool("scatterplot", config);
 ```
 
-Please see {@link Tools.Scatterplot} for more information about configuration.
+Please see {@link Tools.ScatterPlot} for more information about configuration.
 
 ## See Also
 

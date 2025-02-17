@@ -236,7 +236,7 @@ function getPathFromDoclet(doclet) {
         doclet.meta.filename;
 }
 
-function generate(title, docs, filename, resolveLinks) {
+function generate(title, docs, filename, resolveLinks, isTutorial=false) {
     var docData;
     var html;
     var outpath;
@@ -245,7 +245,7 @@ function generate(title, docs, filename, resolveLinks) {
 
     docData = {
         env: env,
-        isTutorial: false,
+        isTutorial: isTutorial,
         title: title,
         docs: docs,
         package: find({kind: 'package'})[0]
@@ -259,6 +259,20 @@ function generate(title, docs, filename, resolveLinks) {
     }
 
     fs.writeFileSync(outpath, html, 'utf8');
+
+    if (outpath.match(/js\.html$/) === null) { // don't handle src files
+        // now do the inline version
+        var dom = cheerio.load(html);
+        dom('.container-source').remove();
+        var inlineSection = dom('#main section');
+        var inlineOutpath = outpath.replace(path.sep+'docs'+path.sep, path.sep+'docs'+path.sep+'inline'+path.sep);
+
+        inlineSection = inlineSection.toString().replace('id="toString"', 'id="_toString"'); // hack for ExtJS bug when id = toString
+
+        var inlineDir = outdir+path.sep+'inline';
+        fs.mkPath(inlineDir);
+        fs.writeFileSync(inlineOutpath, inlineSection, 'utf8');
+    }
 }
 
 function generateSourceFiles(sourceFiles, encoding) {
@@ -335,10 +349,6 @@ function buildSubNav(obj) {
     var count = 0;
 
     var longname = obj.longname;
-    var members = find({
-        memberof: longname
-    });
-    count += members.length;
 
     var methods = find({
         kind: 'function',
@@ -357,6 +367,14 @@ function buildSubNav(obj) {
         memberof: longname
     });
     count += typedef.length;
+
+    var members = find({
+        memberof: longname
+    });
+    members = members.filter((member) => {
+        return !methods.includes(member) && !events.includes(member) && !typedef.includes(member);
+    })
+    count += members.length;
 
     var children = [];
     if (Object.hasOwn(obj, "children")) {
@@ -384,7 +402,9 @@ function buildSubNavMembers(list, type, linktoFn) {
     var html = '';
 
     if (list.length) {
-        html += '<div class="member-type">' + type + '</div>';
+        if (type !== 'Guides') {
+            html += '<div class="member-type">' + type + '</div>';
+        }
         html += '<ul class="inner">';
         list.forEach(function(item) {
             html += '<li>' + linktoFn(item.longname, item.name) + '</li>';
@@ -488,11 +508,11 @@ function buildNav(members) {
 
     // Remove any class that is already in namespaces.
     var classes = members.classes.filter(item => {
-        if (nav.includes(item.name + "</a>")) {
-            return false;
-        } else {
+        // if (nav.includes(item.name + "</a>")) {
+        //     return false;
+        // } else {
             return true;
-        }
+        // }
     })
 
     nav += buildMemberNav(classes, 'Classes', seen, linkto);
@@ -594,6 +614,10 @@ exports.publish = function(taffyData, opts, tutorials) {
     data.sort('longname, version, since');
     helper.addEventListeners(data);
 
+    // @borrows creates 2 docs so we need special handling
+    // remove @borrows entries
+    data(function() { return this.comment && this.comment.indexOf('@borrows') !== -1}).remove();
+
     var sourceFiles = {};
     var sourceFilePaths = [];
     data().each(function(doclet) {
@@ -619,6 +643,12 @@ exports.publish = function(taffyData, opts, tutorials) {
                 doclet.see[i] = hashToLink(doclet, seeItem);
             });
         }
+
+        // special handling for borrowed entries that are members of window
+        if (doclet.longname.indexOf('window.') === 0) {
+            doclet.longname = doclet.longname.substring(0, doclet.longname.lastIndexOf('.'));
+            doclet.memberof = 'window';
+		}
 
         // build a list of source files
         var sourcePath;
@@ -751,7 +781,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         generateSourceFiles(sourceFiles, opts.encoding);
     }
 
-    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl); }
+    if (members.globals.length) { generate('Global', [{kind: 'globalobj'}], globalUrl, true, true); }
 
     // index page displays information from package.json
     var packages = find({kind: 'package'});
@@ -760,7 +790,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         packages.concat(
             [{kind: 'mainpage', readme: opts.readme, longname: (opts.mainpagetitle) ? opts.mainpagetitle : 'Main Page'}]
         ),
-    indexUrl);
+    indexUrl, true, true);
 
     // set up the lists that we'll use to generate pages
     var classes = taffy(members.classes);

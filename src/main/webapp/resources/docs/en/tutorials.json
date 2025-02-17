@@ -23,11 +23,11 @@
       "stopwords": {
         "title": "Stopwords"
       },
-      "categories": {
-        "title": "Categories"
-      },
       "search": {
         "title": "Search"
+      },
+      "categories": {
+        "title": "Categories"
       },
       "palette": {
         "title": "Palette"

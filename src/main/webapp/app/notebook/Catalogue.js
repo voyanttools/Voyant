@@ -360,7 +360,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 	},
 
 	getSuggestedNotebooks: function() {
-		var notebookIds = ['Tutorials', 'aboutspyral', 'DialogicaWelcome'];
+		var notebookIds = ['learnspyral@gh_Tutorials', 'aboutspyral', 'DialogicaWelcome'];
 		var query = 'id:'+notebookIds.join('|id:');
 		var me = this;
 		Spyral.Load.trombone({

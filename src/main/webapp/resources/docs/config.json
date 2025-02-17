@@ -1,20 +1,30 @@
 {
+    "source": {
+        "include": ["../../../../../../voyantjs/src/","../spyral/src/","../../app/panel"]
+    },
     "opts": {
+        "destination": "../../docs",
         "recurse": true,
         "tutorials": "en",
-        "template": "tui-jsdoc-template"
+        "template": "tui-jsdoc-template",
+        "readme": "en/guides/home.md"
     },
     "plugins": ["plugins/markdown"],
+    "markdown": {
+        "idInHeadings": true
+    },
     "templates": {
         "default": {
             "staticFiles": {
                 "include": ["static"]
-            }
+            },
+            "useLongnameInNav": true
         },
         "footerText": "<a href='https://creativecommons.org/licenses/by/4.0/' style='text-decoration: none; color: black;'>© Stéfan Sinclair & Geoffrey Rockwell</a>",
         "name": "Voyant Tools Help",
         "logo": {
             "url": "imgs/info/about/icon.png",
+            "link": "index.html",
             "width": "150px",
             "height": "150px"
         },

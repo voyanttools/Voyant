@@ -3,6 +3,7 @@
  * Cirrus tool, a wordcloud-like visualization.
  * 
  * @class Cirrus
+ * @tutorial cirrus
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Cirrus', {
@@ -14,32 +15,37 @@ Ext.define('Voyant.panel.Cirrus', {
     	},
     	api: {
     		/**
-			 * @memberof Cirrus
-    		 * @property {StopList}
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {stopList}
 			 * @default
     		 */
     		stopList: 'auto',
 			/**
-			 * @memberof Cirrus
-			 * @property {Categories}
+			 * @memberof Tools.Cirrus
+			 * @instance
+			 * @property {categories}
 			 */
     		categories: undefined,
 
 			/**
-			 * @memberof Cirrus
+			 * @memberof Tools.Cirrus
+			 * @instance
 			 * @property {String|String[]} whiteList a list of words to always include
 			 */
     		whiteList: undefined,
     		
     		/**
-			 * @memberof Cirrus
+			 * @memberof Tools.Cirrus
+    		 * @instance
     		 * @property {Number} limit Specify the number of terms to load (which is separate from the number of {@link Cirrus.visible} terms to show) at a time).
     		 * @default 500
     		 */
     		limit: 500,
     		
     		/**
-			 * @memberof Cirrus
+			 * @memberof Tools.Cirrus
+    		 * @instance
     		 * @property {Number} visible Specify the number of terms that are visible at a time.
     		 * @default 50
     		 */
@@ -49,18 +55,21 @@ Ext.define('Voyant.panel.Cirrus', {
     		terms: undefined,
 
 			/**
-			 * @memberof Cirrus
-    		 * @property {DocId}
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {docId}
 			 */
     		docId: undefined,
 			/**
-			 * @memberof Cirrus
-    		 * @property {DocIndex}
+			 * @memberof Tools.Cirrus
+    		 * @instance
+    		 * @property {docIndex}
 			 */
     		docIndex: undefined,
     		
 			/**
-			 * @memberof Cirrus
+			 * @memberof Tools.Cirrus
+			 * @instance
 			 * @property {String} inlineData Directly specify the terms and their relative sizes.
 			 * There data format is a comma-separated list of colon-separated term/size pairs.
 			 * For example: love:20,like:15,dear:10,child:6
@@ -68,7 +77,8 @@ Ext.define('Voyant.panel.Cirrus', {
     		inlineData: undefined,
 
 			/**
-			 * @memberof Cirrus
+			 * @memberof Tools.Cirrus
+			 * @instance
 			 * @property {String} fontFamily The CSS font-family to use for the terms
 			 * @default
 			 */

@@ -16,9 +16,25 @@ then terms to show) and the second using a palette with only two colours defined
 
 For tools that support it, you can access the colour palette editor via the tool's options icon:
 
-![Options](imgs/ui/palette/options.png) | ![Edit](imgs/ui/palette/edit.png)
+<table style="max-width: 900px;"><tr>
+<td><div style="max-width: 250px;">
 
-![Edit](imgs/ui/palette/palette.png)  
+![Options](imgs/ui/palette/options.png)
+
+</div></td>
+<td><div style="max-width: 450px;">
+
+![Edit](imgs/ui/palette/edit.png)
+
+</div></td>
+</tr></table>
+
+<div style="float: right; margin-left: 1em; margin-bottom: 1em; max-width: 50%;">
+
+![Edit](imgs/ui/palette/palette.png)
+
+</div>
+
 The actual palette editor will open with the currently selected (or default) colour palette. You can perform the following operations:
 
 * select a colour using the gradients on the right or type in a [hexidecimal colour code](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet) and then click the **add** button

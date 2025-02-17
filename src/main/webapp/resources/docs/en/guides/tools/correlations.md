@@ -56,22 +56,20 @@ To use Correlations in Spyral you can use the following code as a starting point
 the visualization.
 
 ```
-
 let config = {
     columns: null, 
-    SortDir: null, 
-    DocId: null, 
-    DocIndex: null, 
+    dir: null, 
+    docId: null, 
+    docIndex: null, 
     minInDocumentsCountRatio: null, 
-    Query: null, 
-    SortColumn: null, 
-    StopList: null,
-    TermColors: null,
-    WithDistributions: null
+    query: null, 
+    sort: null, 
+    stopList: null,
+    termColors: null,
+    withDistributions: null
 };
 
-loadCorpus("austen").tool("Correlations", config);
-
+loadCorpus("austen").tool("correlations", config);
 ```
 
 Please see {@link Tools.Correlations} for more information about configuration.

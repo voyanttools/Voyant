@@ -42,16 +42,14 @@ To use Knots in Spyral you can use the following code as a starting point. Modif
 the visualization.
 
 ```
-
 let config = {
     "audio": false,
-    "DocId": null,
-    "Query": null,
-    "StopList": "auto"
+    "docId": null,
+    "query": null,
+    "stopList": "auto"
 }; 
 
-loadCorpus("austen").tool("Knots", config);
-
+loadCorpus("austen").tool("knots", config);
 ```
 
 Please see {@link Tools.Knots} for more information about configuration.

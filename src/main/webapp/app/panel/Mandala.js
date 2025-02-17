@@ -2,6 +2,7 @@
  * Mandala is a conceptual visualization that shows the relationships between terms and documents.
  * 
  * @class Mandala
+ * @tutorial mandala
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Mandala', {
@@ -13,20 +14,23 @@ Ext.define('Voyant.panel.Mandala', {
     	},
     	api: {
     		/**
-			 * @memberof Mandala
-			 * @property {StopList}
+			 * @memberof Tools.Mandala
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
     		
 			/**
-			 * @memberof Mandala
-			 * @property {Query}
+			 * @memberof Tools.Mandala
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
     		
 			/**
-			 * @memberof Mandala
+			 * @memberof Tools.Mandala
+			 * @instance
 			 * @property {Boolean} labels Whether or not labels should be shown.
 			 * @default
 			 */

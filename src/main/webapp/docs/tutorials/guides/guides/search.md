@@ -35,6 +35,6 @@ Note that Voyant doesn't currently support regular expressions.
 
 ## Next Steps
 
-- [categories]{@tutorial categories}
+* [categories]{@tutorial categories}
 * [explore the tools]{@tutorial tools}
 * read [about Voyant Tools]{@tutorial about}

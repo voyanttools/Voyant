@@ -48,10 +48,10 @@ modify the visualization.
 
 ```
 let config = {
-    "Limit": null,
-    "Query": null,
-    "skipToDocId": null,
-    "Start": null
+    "limit": null,
+    "query": null,
+    "skipTodocId": null,
+    "start": null
 }; 
 
 loadCorpus("austen").tool("Reader", config);

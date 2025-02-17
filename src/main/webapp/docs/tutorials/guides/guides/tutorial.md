@@ -140,7 +140,12 @@ not seeing, and why.
 
 ### Options
 
-![Cirrus](images/ui/tutorial/cirrus-options.png)
+<div style="float: left; max-width: 250px; padding-right: 1em;">
+
+![Cirrus](imgs/ui/tutorial/cirrus-options.png)
+
+</div>
+
 Some options in Cirrus (like other tools) are available directly within the tool panel, like the "Scale" button and the 
 "Terms" slider (experiment with both of these to see what they do). Other options are accessible from the options 
 dialog that appears when you click on slider in the grey bar of the tool (like the image to the left). The full list of 
@@ -214,7 +219,11 @@ obvious:
 	* a way of selecting additional columns to display
 
 
+<div style="max-width: 450px;">
+
 ![Grid](imgs/ui/grids/grid.png)
+
+</div>
 
 ### Additional Tools
 
@@ -223,7 +232,7 @@ Voyant. You may have already discovered one way of accessing some of them: by cl
 Cirrus tool can be replaced by the Terms or Links tools simply by clicking on the tab (and of course you can click on 
 the Cirrus tab to return to the default view).
 
-![Grid](imgs/ui/start/grid.png)
+![More Tools](imgs/ui/start/more-tools.png)
 
 The tabs are pre-programmed alternatives, but you can also choose from a much longer list of tools by clicking on the 
 little window icon that appears when hovering over the header (either the blue header at the top that replaces all of 
@@ -279,7 +288,7 @@ in helping!
 
 Voyant is an ongoing effort and we're always balanacing multiple priorities, including the following:
 
-* addressing bugs (see our issues tracker)
+* addressing bugs (see our [issues tracker](https://github.com/voyanttools/Voyant/issues))
 * improving robustness of the application (especially for multiple concurrent users)
 * adding requested features, in particular:
   * progress monitoring for corpus creation (important for larger corpora)
@@ -289,7 +298,7 @@ Voyant is an ongoing effort and we're always balanacing multiple priorities, inc
   
 ### Spyral
 
-Finally, we are working on a web-based notebook environment (like [Juypter](***)) that combines text (argumentation or 
+Finally, we are working on a web-based notebook environment (like [Juypter](https://jupyter.org/)) that combines text (argumentation or 
 documentation) with code snippets and results. Spyral will have the advantage of requiring no installation (unlike 
 Jupyter) and will leverage much of the functionality in Voyant (both back-end analysis and front-end tools).
 
@@ -298,5 +307,3 @@ some of that functionality themselves.
 
 Voyant is an environment for reading, analysis and visualization, Spyral will include that and also be a writing and 
 coding environment: we envision it as a full scholarly environment for text analysis.
-
-We have a working prototype and anticipate a more official release at some point in 2019. 

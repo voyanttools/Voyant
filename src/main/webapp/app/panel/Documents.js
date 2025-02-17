@@ -2,6 +2,7 @@
  * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
  * 
  * @class Documents
+ * @tutorial documents
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Documents', {
@@ -15,38 +16,44 @@ Ext.define('Voyant.panel.Documents', {
     	},
     	api: {
 			/**
-			 * @memberof Documents
-			 * @property {Query}
+			 * @memberof Tools.Documents
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Documents
-			 * @property {DocIndex}
+			 * @memberof Tools.Documents
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof Documents
-			 * @property {DocId}
+			 * @memberof Tools.Documents
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof Documents
-			 * @property {Columns} columns 'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'
+			 * @memberof Tools.Documents
+			 * @instance
+			 * @property {columns} columns 'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof Documents
-			 * @property {SortColumn}
+			 * @memberof Tools.Documents
+			 * @instance
+			 * @property {sort}
 			 */
 			sort: undefined,
 
 			/**
-			 * @memberof Documents
-			 * @property {SortDir}
+			 * @memberof Tools.Documents
+			 * @instance
+			 * @property {dir}
 			 */
 			dir: undefined
     	},

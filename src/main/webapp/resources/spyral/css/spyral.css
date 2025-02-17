@@ -232,3 +232,190 @@ body.exported-notebook {
 .docsWindowContent strong {
 	font-weight: 700;
 }
+
+
+/* styles ported from tui */
+.docsWindowContent h1, .docsWindowContent h2, .docsWindowContent h3, .docsWindowContent h4, .docsWindowContent h5, .docsWindowContent h6 {
+	margin: 10px 0;
+}
+
+.docsWindowContent article ol,
+.docsWindowContent article ul {
+	margin-left: 15px;
+}
+
+.docsWindowContent section header {
+	padding-top: 0;
+}
+.docsWindowContent section header h2 {
+	font-size:18px;
+	font-weight:bold;
+}
+.docsWindowContent section article {
+	padding: 0px;
+}
+.docsWindowContent section article p {
+	margin: 0px;
+}
+.docsWindowContent section article .container-overview {
+	padding: 10px;
+	border: 1px solid #dedede;
+	border-radius: 7px;
+}
+.docsWindowContent section article h3.subsection-title {
+	font-size:16px;
+	color: #bf1b2c;
+	border-bottom: 1px solid #dedede;
+}
+.docsWindowContent section article dl {
+	margin: 0px;
+}
+.docsWindowContent section article dl h4 {
+	font-size: 14px;
+	font-weight: bold;
+}
+.docsWindowContent section article dl h4 .signature {
+}
+.docsWindowContent section article dl h4 .type-signature {
+	color: #3893D4;
+	font-weight: normal;
+}
+.docsWindowContent section article dl dt .name {
+	padding: 3px 10px;
+	margin: 6px 0;
+	background-color: #f4f7f8;
+}
+.docsWindowContent section article dl dd {
+	padding: 0px 0px 0px 20px;
+	margin-left: 0px;
+}
+.docsWindowContent section article dl dd h5 {
+	font-weight: bold;
+}
+.docsWindowContent section article .container-source {
+	margin: -15px -15px 3px 0;
+	font-weight: normal;
+	font-size: 8pt;
+	text-align: right;
+	padding-right: 10px;
+}
+.docsWindowContent section article .container-params,
+.docsWindowContent section article .container-returns,
+.docsWindowContent section article table td.description {
+	clear: left;
+} 
+.docsWindowContent section article .container-returns {
+	margin-bottom: 7px;
+}
+.docsWindowContent section article .container-returns span,
+.docsWindowContent section article .container-params table {
+	border-left: 3px solid #eee;
+	margin-left: 7px;
+	padding-left: 3px;
+	margin-bottom: 5px;
+}
+.docsWindowContent section article .container-returns p {
+	display: inline;
+}
+.docsWindowContent section article .container-properties h5,
+.docsWindowContent section article .container-returns h5,
+.docsWindowContent section article .container-params h5,
+.docsWindowContent section article table th,
+.docsWindowContent section article table td.type,
+.docsWindowContent section article table td.attributes {
+	font-size: 90%;
+}
+.docsWindowContent section article table,
+.docsWindowContent section article table th,
+.docsWindowContent section article table td {
+	vertical-align: top;
+	border: 0;
+	padding: 6px 3px;
+	text-align: left;
+	float: left;
+}
+.docsWindowContent section article table th {
+	display: none;
+}
+.docsWindowContent section article table td.name,
+.docsWindowContent section article table td.type,
+.docsWindowContent section article table td.attributes,
+.docsWindowContent section article table td.default {
+	min-width: 80px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.docsWindowContent section article table td.description {
+	margin: 0 0 12px 12px;
+}
+.docsWindowContent section article table td.type,
+.docsWindowContent section article table td.attributes {
+	color: #aaa;
+}
+.docsWindowContent section article table td p {
+	padding: 0;
+	margin: 0;
+}
+.docsWindowContent section article table td h6 {
+	padding: 0 0 0 3px;
+	margin: 3px 0 0 3px;
+	font-size: 85%;
+}
+.docsWindowContent section article .container-properties table.props {
+	margin-top: -3px;
+}
+.docsWindowContent .main-content article {
+	padding:0;
+}
+.docsWindowContent .container-overview,
+.docsWindowContent .main-detail {
+	overflow: hidden;
+}
+.docsWindowContent .main-detail .tag-source {
+	float:left;
+	display:none;
+}
+.docsWindowContent .main-detail .tag-author {
+	float:left;
+}
+.docsWindowContent .main-detail .tag-author a {
+	color:#181818;
+	font-size:11px;
+	text-decoration:none;
+}
+.docsWindowContent span.param-type {
+    color: #aaa;
+}
+.docsWindowContent pre.prettyprint {
+    font-size: 0.9em;
+    border-radius: 0;
+}
+span.icon {
+    font-size: 8pt;
+    border-radius: 3px;
+    padding: 1px 2px;
+}
+span.icon.green {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+span.icon.blue {
+    color: #3893D4;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+span.icon.yellow {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+span.icon.red {
+    color: #A94443;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.docsWindowContent span.arrow {
+    font-size: 8pt;
+    padding-right: 5px;
+}

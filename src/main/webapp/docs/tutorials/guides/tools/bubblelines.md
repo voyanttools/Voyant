@@ -43,7 +43,6 @@ the visualization.
 
 
 ```
-
 let config = {
     bins: 5, // number of bins to separate a document into
     docIndex: 1, //document index to restrict to (can be comma-separated list)
@@ -52,8 +51,7 @@ let config = {
     stopList: null, // a named stopword list or comma-separated list of words
 };
 
-loadCorpus("austen").tool("Bubblelines", config);
-
+loadCorpus("austen").tool("bubblelines", config);
 ```
 
 Please see {@link Tools.Bubblelines} for more information about configuration.

@@ -10,11 +10,9 @@
 		"watch-spyral-local-voyant": "rollup -c --watch --sourcemap --environment LOCAL_VOYANT",
 		"tools": "jsdoc -t jsdoc-tool-template -c tools.config.json",
 		"tools-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tool-template -c tools.config.json",
-		"build-tern-worker": "rollup -c rollup.tern.config.js",
+		"build-tern-worker": "rollup -c rollup.tern.config.mjs",
 		"docs-tern": "jsdoc -t jsdoc-tern-template -c jsdoc.config.json",
-		"docs-tern-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tern-template -c jsdoc.config.json",
-		"inline-docs": "jsdoc -t inline-docs-template -c inlinedocs.config.json",
-		"inline-docs-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t inline-docs-template -c inlinedocs.config.json"
+		"docs-tern-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tern-template -c jsdoc.config.json"
 	},
 	"repository": {
 		"type": "git",
@@ -35,23 +33,22 @@
 	"homepage": "https://github.com/voyanttools/Voyant",
 	"dependencies": {
 		"js-cookie": "^2.2.1",
-		"showdown": "^2.1.0",
-		"voyant": "^3.1.4"
+		"voyant": "^3.2.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
 		"@babel/plugin-proposal-class-properties": "^7.8.3",
 		"@babel/preset-env": "^7.9.5",
-		"@rollup/plugin-commonjs": "^11.1.0",
-		"@rollup/plugin-node-resolve": "^7.1.3",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@rollup/plugin-commonjs": "^28.0.2",
+		"@rollup/plugin-node-resolve": "^16.0.0",
 		"acorn": "^8.4.1",
 		"acorn-loose": "^8.1.0",
 		"acorn-walk": "^8.1.1",
 		"core-js": "^3.6.5",
 		"jsdoc": "^4.0.3",
-		"rollup": "^2.6.1",
-		"rollup-plugin-babel": "^4.4.0",
-		"rollup-plugin-concatfiles": "git+https://github.com/kpulkit29/rollup-plugin-concatfiles.git",
+		"rollup": "^4.31.0",
+		"rollup-plugin-concat": "^1.0.4",
 		"tern": "^0.24.3"
 	}
 }

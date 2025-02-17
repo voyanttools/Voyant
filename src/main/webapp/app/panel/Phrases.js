@@ -2,6 +2,7 @@
  * The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
  * 
  * @class Phrases
+ * @tutorial phrases
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Phrases', {
@@ -14,67 +15,77 @@ Ext.define('Voyant.panel.Phrases', {
     	},
     	api: {
 			/**
-			 * @memberof Phrases
-			 * @property {StopList}
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {stopList}
 			 * @default
 			 */
     		stopList: 'auto',
 
 			/**
-			 * @memberof Phrases
-			 * @property {Query}
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Phrases
-			 * @property {DocId}
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {docId}
 			 */
     		docId: undefined,
 
 			/**
-			 * @memberof Phrases
-			 * @property {DocIndex}
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {docIndex}
 			 */
     		docIndex: undefined,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
+			 * @instance
 			 * @property {Number} minLength The minimum length (number of words) of the phrase to consider.
 			 * @default
 			 */
     		minLength: 2,
 
 			/**
-			 * @memberof Phrases
+			 * @memberof Tools.Phrases
+			 * @instance
 			 * @property {Number} maxLength The maximum length (number of words) of the phrase to consider.
 			 * @default
 			 */
     		maxLength: 50,
 
 			/**
-			 * @memberof Phrases
-			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See <a href="#!/guide/phrases-section-options">Phrases options</a> for more info.
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {String} overlapFilter Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See [Phrases options](tutorial-phrases.html#options) for more info.
 			 * @default
 			 */
     		overlapFilter: 'length',
 
 			/**
-			 * @memberof Phrases
-			 * @property {Columns} columns 'term', 'rawFreq', 'length', 'distributions'
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {columns} columns 'term', 'rawFreq', 'length', 'distributions'
 			 */
 			columns: undefined,
 
 			/**
-			 * @memberof Phrases
-			 * @property {SortColumn}
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {sort}
 			 * @default
 			 */
 			sort: 'length',
 
 			/**
-			 * @memberof Phrases
-			 * @property {SortDir}
+			 * @memberof Tools.Phrases
+			 * @instance
+			 * @property {dir}
 			 * @default
 			 */
 			dir: 'desc'
