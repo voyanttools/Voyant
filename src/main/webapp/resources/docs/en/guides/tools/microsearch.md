@@ -31,19 +31,11 @@ modify the visualization.
 
 ```
 let config = {
-    "columns": null,
-    "dir": null,
-    "docId": null,
-    "docIndex": null,
-    "maxLength": null,
-    "minLength": null,
-    "overlapFilter": null,
     "query": null,
-    "sort": null,
-    "stopList": null
+    "stopList": "auto"
 };
 
-loadCorpus("austen").tool("phrases", config);
+loadCorpus("austen").tool("microsearch", config);
 ```
 
 Please see {@link Tools.MicroSearch} for more information about configuration.

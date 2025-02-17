@@ -54,11 +54,19 @@ modify the visualization.
 
 ```
 let config = {
+    "columns": null,
+    "dir": null,
+    "docId": null,
+    "docIndex": null,
+    "maxLength": null,
+    "minLength": null,
+    "overlapFilter": null,
     "query": null,
-    "stopList": "auto"
-}; 
+    "sort": null,
+    "stopList": null
+};
 
-loadCorpus("austen").tool("microsearch", config);
+loadCorpus("austen").tool("phrases", config);
 ```
 
 Please see {@link Tools.Phrases} for more information about configuration.
