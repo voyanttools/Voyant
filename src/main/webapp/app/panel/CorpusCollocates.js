@@ -1,6 +1,23 @@
 /**
  * Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     columns: null,
+ *     context: null,
+ *     dir: null,
+ *     docId: null,
+ *     docIndex: null,
+ *     query: null,
+ *     sort: null,
+ *     stopList: null,
+ *     termColors: null
+ *   };
+ *
+ *   loadCorpus("austen").tool("CorpusCollocates", config);
+ *
+ *
  * @class CorpusCollocates
  * @tutorial corpuscollocates
  * @memberof Tools

@@ -1,6 +1,23 @@
 /**
  * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     columns: null,
+ *     context: 5,
+ *     dir: null,
+ *     docId: null,
+ *     docIndex: null,
+ *     expand: null,
+ *     query: null,
+ *     sort: null,
+ *     stopList: null,
+ *     termColors: null
+ *   };
+ *
+ *   loadCorpus("austen").tool("Contexts", config);
+ *
  * @class Contexts
  * @tutorial contexts
  * @memberof Tools

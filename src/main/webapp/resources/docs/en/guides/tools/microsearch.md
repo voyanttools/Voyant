@@ -33,7 +33,7 @@ modify the visualization.
 let config = {
     "query": null,
     "stopList": "auto"
-}; 
+};
 
 loadCorpus("austen").tool("microsearch", config);
 ```

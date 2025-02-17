@@ -1,7 +1,18 @@
 /**
  * The Summary panel provides an overview of a corpus, and the content will
  * depend on whether the corpus includes one document or many.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "limit": null,
+ *     "numberOfDocumentsForDistinctiveWords": null,
+ *     "start": null,
+ *     "stopList": null,
+ *   };
+ *
+ *   loadCorpus("austen").tool("Summary", config);
+ *
  * @class Summary
  * @tutorial summary
  * @memberof Tools

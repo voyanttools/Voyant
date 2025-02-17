@@ -1,6 +1,16 @@
 /**
  * Mandala is a conceptual visualization that shows the relationships between terms and documents.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "labels": true,
+ *     "query": null,
+ *     "stopList": "auto",
+ *   };
+ *
+ *   loadCorpus("austen").tool("Mandala", config);
+ *
  * @class Mandala
  * @tutorial mandala
  * @memberof Tools

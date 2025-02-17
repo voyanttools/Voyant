@@ -1,6 +1,23 @@
 /**
  * The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "columns": null,
+ *     "dir": null,
+ *     "docId": null,
+ *     "docIndex": null,
+ *     "maxLength": null,
+ *     "minLength": null,
+ *     "overlapFilter": null,
+ *     "query": null,
+ *     "sort": null,
+ *     "stopList": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("phrases", config);
+ *
  * @class Phrases
  * @tutorial phrases
  * @memberof Tools

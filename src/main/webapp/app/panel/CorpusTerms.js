@@ -1,6 +1,22 @@
 /**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     columns: null,
+ *     comparisonCorpus: null,
+ *     dir: null,
+ *     maxBins: null,
+ *     query: null,
+ *     sort: null,
+ *     stopList: null,
+ *     termColors: null
+ *   };
+ *
+ *   loadCorpus("austen").tool("corpusterms", config);
+ *
+ *
  * @class CorpusTerms
  * @tutorial corpusterms
  * @memberof Tools

@@ -1,6 +1,20 @@
 /**
  * StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "bins": null,
+ *     "docId": null,
+ *     "docIndex": null,
+ *     "limit": null,
+ *     "query": null,
+ *     "stopList": null,
+ *     "withDistributions": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("streamgraph", config);
+ *
  * @class StreamGraph
  * @tutorial streamgraph
  * @memberof Tools

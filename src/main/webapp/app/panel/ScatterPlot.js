@@ -1,6 +1,29 @@
 /**
  * ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "analysis": null,
+ *     "bins": null,
+ *     "clusters": null,
+ *     "comparisonType": null,
+ *     "dimensions": null,
+ *     "docId": null,
+ *     "iterations": null,
+ *     "label": null,
+ *     "limit": null,
+ *     "perplexity": null,
+ *     "query": null,
+ *     "stopList": null,
+ *     "storeJson": null,
+ *     "target": null,
+ *     "term": null,
+ *     "whitelist": null,
+ *   };
+ *
+ *   loadCorpus("austen").tool("scatterplot", config);
+ *
  * @class ScatterPlot
  * @tutorial scatterplot
  * @memberof Tools

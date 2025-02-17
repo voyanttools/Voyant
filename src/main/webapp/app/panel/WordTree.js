@@ -1,6 +1,19 @@
 /**
  * The Word Tree tool allows you to explore how keywords are used in different phrases in the corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "context": null,
+ *     "docId": null,
+ *     "docIndex": null,
+ *     "limit": null,
+ *     "query": null,
+ *     "stopList": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("wordtree", config);
+ *
  * @class WordTree
  * @tutorial wordtree
  * @memberof Tools

@@ -47,6 +47,30 @@ strategies:
 * **prioritize longest phrases)**: Only the longest phrase is kept (the first: "once upon a time").
 * **prioritize the most frequent phrases**: First consider the total count of phrase frequencies (if "a time" occurred elsewhere in the text, even if it's not part of this phrase, it would take precedence) – once a word is included in a phrase it won't be included in other phrases. If two phrases have the same frequency (e.g. "once upon" and "upon a"), the left-most phrase takes precedence (only "once upon" would be kept, not "upon a").
 
+## Spyral
+
+To use MicroSearch widget in Spyral you can use the following code as a starting point. Modify the config object to 
+modify the visualization.
+
+```
+let config = {
+    "columns": null,
+    "dir": null,
+    "docId": null,
+    "docIndex": null,
+    "maxLength": null,
+    "minLength": null,
+    "overlapFilter": null,
+    "query": null,
+    "sort": null,
+    "stopList": null
+};
+
+loadCorpus("austen").tool("phrases", config);
+```
+
+Please see {@link Tools.Phrases} for more information about configuration.
+
 ## Additional Information
 
 Note that at the moment stopwords are not used in the Phrases tool (that may change in the future).

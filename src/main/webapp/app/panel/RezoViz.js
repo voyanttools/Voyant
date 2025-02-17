@@ -1,6 +1,20 @@
 /**
  * RezoViz represents connections between people, places and organizations that co-occur in multiple documents.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "docId": null,
+ *     "limit": null,
+ *     "minEdgeCount": null,
+ *     "nerService": null,
+ *     "query": null,
+ *     "stopList": null,
+ *     "type": null,
+ *   };
+ *
+ *   loadCorpus("austen").tool("rezoviz", config);
+ *
  * @class RezoViz
  * @tutorial rezoviz
  * @memberof Tools

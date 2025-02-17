@@ -61,7 +61,19 @@
             <pre class="prettyprint source linenums"><code>// assuming Bubblelines library is loaded by containing page (via voyant.jsp)
 /**
  * Bubblelines visualizes the frequency and distribution of terms in a corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     bins: 5, // number of bins to separate a document into
+ *     docIndex: 1, //document index to restrict to (can be comma-separated list)
+ *     maxDocs: 5, // maximum number of documents to show
+ *     query: "love", // a query to search for in the corpus
+ *     stopList: null, // a named stopword list or comma-separated list of words
+ *   };
+ *
+ *   loadCorpus("austen").tool("bubblelines", config);
+ *
  * @class Bubblelines
  * @tutorial bubblelines
  * @memberof Tools

@@ -1,6 +1,19 @@
 /**
  * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "columns": null,
+ *     "dir": null,
+ *     "docId": null,
+ *     "docIndex": null,
+ *     "query": null,
+ *     "sort": null,
+ *   };
+ *
+ *   loadCorpus("austen").tool("documents", config);
+ *
  * @class Documents
  * @tutorial documents
  * @memberof Tools

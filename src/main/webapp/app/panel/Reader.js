@@ -1,6 +1,17 @@
 /**
  * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     "limit": null,
+ *     "query": null,
+ *     "skipTodocId": null,
+ *     "start": null
+ *   };
+ *
+ *   loadCorpus("austen").tool("Reader", config);
+ *
  * @class Reader
  * @tutorial reader
  * @memberof Tools

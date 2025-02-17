@@ -1,6 +1,24 @@
 /**
  * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
- * 
+ *
+ * @example
+ *
+ *   let config = {
+ *     columns: null,
+ *     dir: null,
+ *     docId: null,
+ *     docIndex: null,
+ *     minInDocumentsCountRatio: null,
+ *     query: null,
+ *     sort: null,
+ *     stopList: null,
+ *     termColors: null,
+ *     withDistributions: null
+ *   };
+ *
+ *   loadCorpus("austen").tool("correlations", config);
+ *
+ *
  * @class Correlations
  * @tutorial correlations
  * @memberof Tools
