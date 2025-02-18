@@ -150,8 +150,8 @@
       "mirrors": {
         "title": "Mirrors"
       },
-      "server": {
-        "title": "VoyantServer"
+      "local": {
+        "title": "Running Voyant Locally"
       }
     }
   }

@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: src/main/webapp/app/panel/Entities.js | Voyant Tools Help</title>
+    <title>Tutorial: Running Voyant Locally | Voyant Tools Help</title>
 
     <link rel="shortcut icon" type="image/ico" href="favicon.ico">
     
@@ -53,167 +51,31 @@
 <div class="main" id="main">
     
 
-
+<section>
+    <!-- <header>
+        <h2>Running Voyant Locally</h2>
+    </header> -->
 
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>Ext.define('Voyant.panel.Entities', {
-	extend: 'Ext.panel.Panel',
-	mixins: ['Voyant.panel.Panel'],
-	alias: 'widget.entities',
-
-	statics: {
-		i18n: {
-			title: 'Named Entity Recognition',
-			entity: 'Entity',
-			lemma: 'Lemma',
-			classification: 'Classification',
-			document: 'Document',
-			start: 'Start',
-			end: 'End',
-			entityType: 'entity type',
-			nerVoyant: 'Entity Identification with Voyant',
-			nerNssi: 'Entity Identification with NSSI',
-			nerSpacy: 'Entity Identification with SpaCy',
-		},
-		api: {
-			/**
-			 * @memberof Tools.Contexts
-			 * @instance
-			 * @property {docId}
-			 */
-    		docId: undefined,
-		}
-	},
-
-	constructor: function(config) {
-		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-		this.callParent(arguments);
-		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
-	},
-
-	initComponent: function() {
-		var me = this;
-
-		Ext.apply(me, {
-			title: this.localize('title'),
-			layout: 'fit',
-			items: [{
-				xtype: 'entitieslist',
-				listeners: {
-					boxready: function(cmp) {
-						cmp.getColumns().forEach(function(col) {
-							col.show();
-						})
-					},
-					scope: this
-				}
-			}],
-			dockedItems: [{
-				dock: 'bottom', 
-				xtype: 'toolbar',
-				items: [{
-					xtype: 'corpusdocumentselector'
-				},{
-					itemId: 'annotatorType',
-					xtype: 'combo',
-					queryMode: 'local',
-					triggerAction: 'all',
-					fieldLabel: 'NER Annotator',
-					labelAlign: 'right',
-					value: 'spacy',
-					forceSelection: true,
-					allowBlank: false,
-					editable: false,
-					valueField: 'value',
-					displayField: 'name',
-					store: new Ext.data.ArrayStore({
-						fields: ['name', 'value'],
-						data: [['Spacy', 'spacy'], ['NSSI', 'nssi'], ['Voyant', 'stanford']]
-					})
-				},{
-					xtype: 'button',
-					text: 'Find Entities',
-					handler: function(btn) {
-						var annotator = btn.up().queryById('annotatorType').getValue();
-						if (annotator !== null) {
-							this.nerServiceHandler(annotator);
-						}
-					},
-					scope: this
-				},'->',{
-					xtype: 'textfield',
-					itemId: 'entitySearch',
-					fieldLabel: 'Filter Entities',
-					labelAlign: 'right',
-					enableKeyEvents: true,
-					triggers: {
-						search: {
-							cls: 'fa-trigger form-fa-search-trigger',
-							handler: function(cmp) {
-								this.searchEntities(cmp.getValue());
-							},
-							scope: this
-						}
-					},
-					listeners: {
-						keyup: function(cmp, e) {
-							if (e.getCharCode() === 13) {
-								this.searchEntities(cmp.getValue());
-							}
-						},
-						scope: this
-					}
-				}]
-			}],
-			listeners: {
-				corpusSelected: function(src, corpus) {
-					this.setApiParam('docId', undefined);
-				},
-
-				documentsSelected: function(src, docIds) {
-					this.setApiParam('docId', docIds);
-				},
-
-				entitiesClicked: function(src, ents) {
-				},
-
-				entityLocationClicked: function(src, ent) {
-				},
-
-				scope: this
-			}
-		});
-
-		me.callParent(arguments);
-	},
-
-	nerServiceHandler: function(annotator) {
-		var entitiesList = this.down('entitieslist');
-		entitiesList.clearEntities();
-		entitiesList.getEntities(annotator, this.getApiParam('docId'));
-	},
-
-	searchEntities: function(query) {
-		query = query.trim().toLowerCase();
-		var entitiesList = this.down('entitieslist');
-		if (query.length > 0) {
-			entitiesList.getStore().filterBy(function(record) {
-				return record.getTerm().toLowerCase().indexOf(query) !== -1;
-			});
-			entitiesList.getView().findFeature('grouping').expandAll();
-		} else {
-			entitiesList.getStore().clearFilter();
-			entitiesList.getView().findFeature('grouping').collapseAll();
-		}
-	}
-});
-
-</code></pre>
+        <article class="readme">
+            <h1 id="running-voyant-tools-locally">Running Voyant Tools Locally</h1>
+<p>As an alternative to using the Voyant Tools website, you can run an instance of Voyant on your own computer.</p>
+<p>The benefits of this include:</p>
+<ul>
+<li>You can keep your texts confidential as our server will not cache your work.</li>
+<li>You can restart the server if it slows down or crashes.</li>
+<li>You can handle large texts without the connection timing out.</li>
+<li>You can work offline (without an Internet connection).</li>
+<li>You can have a group of users (like in a workshop or class) run their own instance without encountering load issues on our server.</li>
+</ul>
+<h2 id="options-for-running-voyant-locally">Options for Running Voyant Locally</h2>
+<h3 id="voyant-docker"><a href="https://github.com/voyanttools/docker/wiki/Voyant-Docker-Tutorial">Voyant Docker</a></h3>
+<p>A Dockerized version of Voyant Tools.</p>
+<h3 id="voyantserver"><a href="https://github.com/voyanttools/VoyantServer/wiki/VoyantServer-Tutorial">VoyantServer</a></h3>
+<p>A JAR based version of Voyant Tools.</p>
         </article>
-    </section>
-
+    
+</section>
 
 
 
@@ -228,13 +90,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
-        var selectedApi = document.getElementById(id); // do not use jquery selector
-        var $selectedApi = $(selectedApi);
-
-        $selectedApi.removeClass('hidden');
-        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-        showLnbApi();
+        showLnbExamples();
     </script>
 
 </body>
