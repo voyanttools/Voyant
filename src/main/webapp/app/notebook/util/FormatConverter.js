@@ -150,7 +150,7 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 		+"<header class='spyral-header'>"+this.getInnerHeaderHtml()+"</header>\n"
 		+"<article class='spyralArticle'>\n";
 
-		this.getComponent('docsContainer').getComponent("cells").items.each(function(item, i) {
+		this.getComponent('notebookContainer').getComponent("cells").items.each(function(item, i) {
 			out+="<section id='"+item.getCellId()+"' class='notebook-editor-wrapper "+item.xtype+"'>\n"+
 			"<div class='notebookwrappercounter'>"+(item.getIndex()+1)+"</div>";
 
@@ -206,7 +206,7 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 
 	generateExportJson: function() {
 		var cells = [];
-		this.getComponent('docsContainer').getComponent("cells").items.each(function(item, i) {
+		this.getComponent('notebookContainer').getComponent("cells").items.each(function(item, i) {
 			var type;
 			switch(item.xtype) {
 				case 'notebookcodeeditorwrapper':
