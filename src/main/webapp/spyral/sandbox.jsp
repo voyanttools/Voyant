@@ -20,7 +20,7 @@ body .error {
 }
 body .info {
 	margin-left: 6px;
-	white-space: pre;
+	white-space: pre-wrap;
 }
 body pre {
 	font-size: smaller;
