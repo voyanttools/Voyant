@@ -3,6 +3,14 @@ a {
     text-decoration: none;
 }
 
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
 #logo-container {
 	height: 200px;
 	width: 670px;
