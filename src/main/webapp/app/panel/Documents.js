@@ -159,7 +159,12 @@ Ext.define('Voyant.panel.Documents', {
                         		    layout: 'fit',
                         		    items: {
                         		    	xtype: 'corpuscreator',
-                        		    	corpus: this.getStore().getCorpus()
+                        		    	corpus: this.getStore().getCorpus(),
+										listeners: {
+											boxready: function(cmp) {
+												cmp.setStyle({borderColor: '#f5f5f5'});
+											}
+										}
                         		    }
                         		}).show();
                 			},
