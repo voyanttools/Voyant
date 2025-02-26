@@ -263,7 +263,13 @@ Ext.define('Voyant.panel.RezoViz', {
 						scope: this
 					}
 				}]
-			}]
+			}],
+			listeners: {
+				entityResults: function(src, entities) {
+					this.getEntities();
+				},
+				scope: this
+			}
 		});
 		
 		this.on('loadedCorpus', function(src, corpus) {
@@ -314,10 +320,7 @@ Ext.define('Voyant.panel.RezoViz', {
 	},
 
 	preloadEntities: function() {
-		var me = this;
-		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')}, function() {
-			me.getEntities();
-		});
+		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')});
 	},
 
 	getEntities: function() {
