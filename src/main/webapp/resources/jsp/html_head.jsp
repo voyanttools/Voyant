@@ -102,10 +102,6 @@
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/ext/6.2.0/theme-crisp/resources/ux-all<%= rtl %>-debug.css" />
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/ext/6.2.0/examples/style.css" />
 
-<!-- jQuery -->
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/jquery/current/jquery-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/jquery/current/jquery-ui.theme.min.css" />
-
 <!-- FontAwesome -->
 <link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.7.0/font-awesome.min.css" />
 
