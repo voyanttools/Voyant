@@ -53,6 +53,7 @@ jobs:
         cp resources/jsp/load_js.jsp ${{github.workspace}}/src/main/webapp/resources/jsp/
         git config --global user.name 'Voyant Tools'
         git config --global user.email 'voyanttools@users.noreply.github.com'
+        git pull
         git add src/main/webapp/resources/voyant/current/
         git add src/main/webapp/resources/jsp/load_js.jsp
         git commit -m "chore: add JS build files"
