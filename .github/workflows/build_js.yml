@@ -49,9 +49,10 @@ jobs:
 
     - name: Copy changes
       run: |
+        rm -r ${{github.workspace}}/src/main/webapp/resources/voyant/current/
         cp -Trv resources/voyant/current/ ${{github.workspace}}/src/main/webapp/resources/voyant/current/
         cp resources/jsp/load_js.jsp ${{github.workspace}}/src/main/webapp/resources/jsp/
-        git status
+        git status --porcelain
         deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
         echo "$deleted_files"
 
