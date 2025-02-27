@@ -54,6 +54,9 @@ jobs:
         git config --global user.name 'Voyant Tools'
         git config --global user.email 'voyanttools@users.noreply.github.com'
         git pull
-        git add -A
+        deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
+        echo "$deleted_files" | xargs git rm 
+        git add src/main/webapp/resources/voyant/current/
+        git add src/main/webapp/resources/jsp/load_js.jsp
         git commit -m "chore: add JS build files"
         git push
