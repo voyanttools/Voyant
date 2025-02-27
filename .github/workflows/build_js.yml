@@ -47,21 +47,23 @@ jobs:
       run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/
       working-directory: "WEB-INF"
 
-    - name: Show deleted files
+    - name: Copy changes
       run: |
-        git status
-    
-    - name: Commit JS files
-      run: |
-        cp resources/voyant/current/voyant.*.min.* ${{github.workspace}}/src/main/webapp/resources/voyant/current/
+        cp -T resources/voyant/current/ ${{github.workspace}}/src/main/webapp/resources/voyant/current/
         cp resources/jsp/load_js.jsp ${{github.workspace}}/src/main/webapp/resources/jsp/
-        git config --global user.name 'Voyant Tools'
-        git config --global user.email 'voyanttools@users.noreply.github.com'
-        git pull
+        git status
         deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
         echo "$deleted_files"
-        echo "$deleted_files" | xargs git rm 
-        git add src/main/webapp/resources/voyant/current/
-        git add src/main/webapp/resources/jsp/load_js.jsp
-        git commit -m "chore: add JS build files"
-        git push
+
+#    - name: Commit JS files
+#      run: |
+#        git config --global user.name 'Voyant Tools'
+#        git config --global user.email 'voyanttools@users.noreply.github.com'
+#        git pull
+#        deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
+#        echo "$deleted_files"
+#        echo "$deleted_files" | xargs git rm 
+#        git add src/main/webapp/resources/voyant/current/
+#        git add src/main/webapp/resources/jsp/load_js.jsp
+#        git commit -m "chore: add JS build files"
+#        git push
