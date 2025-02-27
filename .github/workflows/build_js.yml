@@ -49,6 +49,7 @@ jobs:
 
     - name: Show deleted files
       run: |
+        cd ${{github.workspace}}
         deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
         echo "$deleted_files"
     
