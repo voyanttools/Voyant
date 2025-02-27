@@ -46,6 +46,11 @@ jobs:
     - name: Run JSCacher
       run: sudo java -classpath "lib/*:classes/." org.voyanttools.voyant.JSCacher --webappPath=${{github.workspace}}/
       working-directory: "WEB-INF"
+
+    - name: Show deleted files
+      run: |
+        deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
+        echo "$deleted_files"
     
     - name: Commit JS files
       run: |
