@@ -49,10 +49,7 @@ jobs:
 
     - name: Show deleted files
       run: |
-        ls -l
-        cd ${{github.workspace}}
-        deleted_files=$(git status --porcelain | awk '$1 == "D" {print $2}')
-        echo "$deleted_files"
+        git status
     
     - name: Commit JS files
       run: |
