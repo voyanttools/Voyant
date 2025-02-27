@@ -156,18 +156,19 @@ public class JSCacher {
 
 	private static void cleanup(File basePath) {
 		// find the previously cached file and get its ID and modified date
-		List<File> lastCachedFiles = getCachedFiles(basePath);
+		File cacheDir = new File(basePath, CACHED_FILE_PATH);
+		List<File> lastCachedFiles = getCachedFiles(cacheDir);
 		
 		if (lastCachedFiles != null) {
 			for (File file : lastCachedFiles) {
 				Matcher idMatcher = Pattern.compile(CACHED_FILE_PATTERN).matcher(file.getName());
 				idMatcher.find();
 				String fileID = idMatcher.group(1);
-				System.out.println("JSCacher: remove previous build: "+fileID);
+				System.out.println("JSCacher: remove previous build: "+cacheDir.toString()+File.separator+fileID);
 				if (fileID != null) {
 					try {
-						FileUtils.delete(new File(basePath, CACHED_FILE_PATH+"voyant."+fileID+".min.js"));
-						FileUtils.delete(new File(basePath, CACHED_FILE_PATH+"voyant."+fileID+".min.js.map"));
+						FileUtils.delete(new File(cacheDir, "voyant."+fileID+".min.js"));
+						FileUtils.delete(new File(cacheDir, "voyant."+fileID+".min.js.map"));
 					} catch (Exception e) {
 						System.out.println(e);
 					}
@@ -176,9 +177,8 @@ public class JSCacher {
 		}
 	}
 	
-	private static List<File> getCachedFiles(File basePath) {
-		final Path dir = new File(basePath, CACHED_FILE_PATH).toPath();
-		try (Stream<Path> results = Files.find(dir, 1,
+	private static List<File> getCachedFiles(File cacheDir) {
+		try (Stream<Path> results = Files.find(cacheDir.toPath(), 1,
 				(path, basicFileAttributes) -> path.toFile().getName().matches(CACHED_FILE_PATTERN))) {
 			return results.map(p -> p.toFile()).collect(Collectors.toList());
 		} catch (Exception e) {
