@@ -5,7 +5,7 @@
 var fs = require('fs');
 var helper = require("jsdoc/util/templateHelper");
 
-var apiUrlRoot = '';//'https://voyant-tools.org';
+var apiUrlRoot = 'https://voyant-tools.org';
 
 /**
  * Publish hook for the JSDoc template.  Writes to JSON stdout.
@@ -103,7 +103,10 @@ exports.publish = function(data, opts, tutorials) {
 
     function convertLinks(strWithLinks) {
         if (strWithLinks) {
-            return strWithLinks.replace(/(?:{@link\s)(.*?)(?:(?:\|.*?})|})/g, '$1');  // extract the actual link from the link tag
+            return strWithLinks
+                .replace(/\[(.*?)\]\{@tutorial (.*?)\}/g, '<a target="_spyral_docs" href="'+apiUrlRoot+'/docs/tutorial-$2.html">$1</a>')
+                .replace(/\[(.*?)\]\{@link (http.*?)\}/g, '<a target="_external" href="$2">$1</a>')
+                .replace(/\[(.*?)\]\{@link (.*?)(#.*?)?\}/g, '<a target="_spyral_docs" href="'+apiUrlRoot+'/docs/$2.html$3">$1</a>')
         }   
     }
 
