@@ -50,6 +50,9 @@ jobs:
           npm run-script tern-spyral
           npm run-script tern-tools
         working-directory: src/main/webapp/resources/spyral
+
+      - name: Git status
+        run: git status
         
       - name: Commit JS files
         run: |
