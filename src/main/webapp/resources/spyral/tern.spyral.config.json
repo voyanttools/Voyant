@@ -1,6 +1,6 @@
 {
 	"source": {
-		"include": ["src", "D:\\Git\\voyantjs\\src"],
+		"include": ["src", "node_modules\\voyant\\src"],
 		"includePattern": ".+\\.js$"
 	},
 	"opts": {
