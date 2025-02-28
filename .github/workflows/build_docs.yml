@@ -44,11 +44,16 @@ jobs:
           npm run-script build-docs
         working-directory: src/main/webapp/resources/docs
 
-      - name: Build Tern Docs
-        run: >
-          npm ci
-          npm run-script tern-spyral
-          npm run-script tern-tools
+      - name: Build Spyral
+        run: npm ci
+        working-directory: src/main/webapp/resources/spyral
+        
+      - name: Build Tern Spyral Docs
+        run: npm run-script tern-spyral
+        working-directory: src/main/webapp/resources/spyral
+
+      - name: Build Tern Tools Docs
+        run: npm run-script tern-tools
         working-directory: src/main/webapp/resources/spyral
 
       - name: Git status
