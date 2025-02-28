@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: src/main/webapp/app/panel/Correlations.js | Voyant Tools Help</title>
+    <title>Class: NetworkGraph | Voyant Tools Help</title>
 
     <link rel="shortcut icon" type="image/ico" href="favicon.ico">
     
@@ -55,261 +53,671 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
- *
- * @example
- *
- *   let config = {
- *     columns: null,
- *     dir: null,
- *     docId: null,
- *     docIndex: null,
- *     minInDocumentsCountRatio: null,
- *     query: null,
- *     sort: null,
- *     stopList: null,
- *     termColors: null,
- *     withDistributions: null
- *   };
- *
- *   loadCorpus("austen").tool("correlations", config);
- *
- *
- * @class Correlations
- * @tutorial correlations
- * @memberof Tools
- */
-Ext.define('Voyant.panel.Correlations', {
-	extend: 'Ext.grid.Panel',
-	mixins: ['Voyant.panel.Panel'],
-	alias: 'widget.correlations',
-    statics: {
-    	i18n: {
-    	},
-    	api: {
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {query}
-			 */
-    		query: undefined,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {docId}
-			 */
-    		docId: undefined,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {docIndex}
-			 */
-    		docIndex: undefined,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {stopList}
-			 * @default
-			 */
-    		stopList: 'auto',
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {Number} minInDocumentsCountRatio The minimum coverage (as a percentage) for terms. For instance, if a corpus has 10 documents and the minimum coverage is 20%, at least two of the documents must contain the term or it will be ignored.
-			 * @default
-			 */
-    		minInDocumentsCountRatio: 100,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {withDistributions}
-			 * @default
-			 */
-			withDistributions: 'relative',
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {columns} columns 'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'
-			 */
-			columns: undefined,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {sort}
-			 */
-			sort: undefined,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {dir}
-			 */
-			dir: undefined,
-
-			/**
-			 * @memberof Tools.Correlations
-			 * @instance
-			 * @property {termColors}
-			 * @default
-			 */
-			termColors: 'categories'
-    	},
-		glyph: 'xf0ce@FontAwesome'
-    },
-    config: {
-    	options: [{xtype: 'stoplistoption'}, {xtype: 'categoriesoption'}, {xtype: 'termcolorsoption'}]
-    },
-    constructor: function() {
-        this.callParent(arguments);
-    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
-    },
+        <h2><span class="attribs"><span class="type-signature"></span></span>NetworkGraph<span class="signature">(target, config)</span><span class="type-signature"> &rarr; {<a href="NetworkGraph.html">NetworkGraph</a>}</span></h2>
+        
+            <div class="class-description"><p>A force directed layout network graph with labeled nodes.
+Uses the <a href="https://d3js.org/d3-force">d3</a> library for rendering.</p>
+<p>This graph should be created via the <a href="Spyral.Chart.html#.networkgraph">Spyral.Chart.networkgraph</a> method.</p></div>
+        
     
-    initComponent: function() {
-        var me = this;
+</header>
 
-        Ext.apply(me, { 
-    		title: this.localize('title'),
-    		emptyText: this.localize("emptyText"),
-    		store: Ext.create("Voyant.data.store.TermCorrelationsBuffered", {
-            	parentPanel: this,
-				leadingBufferZone: 100 // since these calls are expensive reduce buffer to 1 page
-	        }),
-
-    		columns: [{
-    			text: this.localize("source"),
-    			tooltip: this.localize("sourceTip"),
-        		dataIndex: 'sourceTerm',
-        		sortable: false,
-				xtype: 'coloredtermfield'
-    		},{
-                xtype: 'widgetcolumn',
-                tooltip: this.localize("trendTip"),
-                width: 100,
-                dataIndex: 'source-distributions',
-                widget: {
-                    xtype: 'sparklineline'
-                },
-                text: '←'
-            },{
-                xtype: 'widgetcolumn',
-                tooltip: this.localize("trendTip"),
-                width: 100,
-                dataIndex: 'target-distributions',
-                widget: {
-                    xtype: 'sparklineline'
-                },
-                text: '→',
-                align: 'right'
-            },{
-    			text: this.localize("target"),
-    			tooltip: this.localize("targetTip"),
-        		dataIndex: 'targetTerm',
-        		sortable: false,
-				xtype: 'coloredtermfield'
-    		},{
-    			text: this.localize("correlation"),
-    			tooltip: this.localize("correlationTip"),
-        		dataIndex: 'correlation'
-    		},{
-    			text: this.localize("significance"),
-    			tooltip: this.localize("significanceTip"),
-        		dataIndex: 'significance'
-    		}],
-    		
-
-            listeners: {
-            	scope: this,
-				corpusSelected: function() {
-					this.setApiParams({docIndex: undefined, docId: undefined});
-	        		this.getStore().getProxy().setExtraParam('tool', 'corpus.CorpusTermCorrelations');
-	        		this.getStore().load();
-				},
-				
-				documentsSelected: function(src, docs) {
-					var docIds = [];
-					var corpus = this.getStore().getCorpus();
-					docs.forEach(function(doc) {
-						docIds.push(corpus.getDocument(doc).getId())
-					}, this);
-					this.setApiParams({docId: docIds, docIndex: undefined})
-	        		this.getStore().getProxy().setExtraParam('tool', 'corpus.DocumentTermCorrelations');
-	        		this.getStore().load();
-				}
-
-            },
-            dockedItems: [{
-                dock: 'bottom',
-                xtype: 'toolbar',
-                overflowHandler: 'scroller',
-                items: [{
-                    xtype: 'querysearchfield'
-                },{
-                    xtype: 'totalpropertystatus'
-                }, {
-                	xtype: 'tbspacer'
-                }, {
-                	xtype: 'tbtext',
-                	itemId: 'minInDocumentsCountRatioLabel',
-                	text: me.localize('minInDocumentsCountRatioLabel')
-                }, {
-        			xtype: 'slider',
-	            	increment: 5,
-	            	minValue: 0,
-	            	maxValue: 100,
-	            	width: 75,
-	            	listeners: {
-	            		afterrender: function(slider) {
-	            			slider.setValue(this.getApiParam("minInDocumentsCountRatio"))
-	            			slider.up('toolbar').getComponent("minInDocumentsCountRatioLabel").setText(new Ext.XTemplate(me.localize("minInDocumentsCountRatioLabel")).apply([this.getApiParam("minInDocumentsCountRatio")]));
-	            		},
-	            		changecomplete: function(slider, newvalue) {
-	            			this.setApiParams({minInDocumentsCountRatio: newvalue});
-	            			slider.up('toolbar').getComponent("minInDocumentsCountRatioLabel").setText(new Ext.XTemplate(me.localize("minInDocumentsCountRatioLabel")).apply([newvalue]));
-	            			this.getStore().load();
-	            		},
-	            		scope: this
-	            	}
-                },{
-        			xtype: 'corpusdocumentselector'
-        		}]
-            }]
-        });
+<article>
+    
+        <div class="container-overview">
         
-        me.on("loadedCorpus", function(src, corpus) {
-        	if (corpus.getDocumentsCount()==1) { // switch to documents mode
-        		this.getStore().getProxy().setExtraParam('tool', 'corpus.DocumentTermCorrelations');
-        	}
-        	if (this.isVisible()) {
-        		this.getStore().load();
-        	}
-        });
-        
-    	me.on("activate", function() { // load after tab activate (if we're in a tab panel)
-    		if (this.getStore().getCorpus()) {this.getStore().load();}
-    	}, this)
+            
 
-    	me.on("query", function(src, query) {
-        	this.setApiParam("query", query);
-        	this.getStore().load();
-        }, me);
+<dt>
+    
+        <h4 class="name" id="NetworkGraph">
+            
+                new <span class="type-signature"></span>NetworkGraph<span class="signature">(target, config)</span><span class="type-signature"> &rarr; {<a href="NetworkGraph.html">NetworkGraph</a>}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="voyantjs_src_networkgraph.js.html">voyantjs/src/networkgraph.js</a></code>,
+                <code><a href="voyantjs_src_networkgraph.js.html#line29">line 29</a></code>
+            </div>
+            
+        </h4>
+
         
-        me.callParent(arguments);
-     }
-     
-});</code></pre>
-        </article>
-    </section>
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Construct a new NetworkGraph class</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The element to render the graph to</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="NetworkGraph.html#~Config">NetworkGraph~Config</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The NetworkGraph config</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="NetworkGraph.html">NetworkGraph</a></span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var nodes = [{
+  term: 'foo', value: 15
+},{
+  term: 'bar', value: 3
+},{
+  term: 'baz', value: 4
+}]
+var links = [{
+  source: 'foo', target: 'bar'
+},{
+  source: 'foo', target: 'baz'
+}]
+Spyral.Chart.networkgraph({
+  nodes: nodes, nodeIdField: 'term',
+  links: links
+})</code></pre>
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl class="typedefs">
+                
+
+<dt>
+<h4 class="name" id="~Config">
+    Config
+    
+    <div class="container-source members">
+        <code><a href="voyantjs_src_networkgraph.js.html">voyantjs/src/networkgraph.js</a></code>,
+        <code><a href="voyantjs_src_networkgraph.js.html#line40">line 40</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The NetworkGraph config</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array of node objects</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.links</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array of link objects</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeIdField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the ID field in the node object, or a function for accessing that field. Default is &quot;id&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeLabelField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the label field in the node object, or a function for accessing that field. If not specified, nodeIdField will be used.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeValueField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the value field in the node object, or a function for accessing that field. Default is &quot;value&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeCategoryField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the category field in the node object, or a function for accessing that field. Default is &quot;category&quot;. This applies a category attribute to the node in the graph which can then be used for targeting or styling purposes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.linkSourceField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the source field in the link object, or a function for accessing that field. Default is &quot;source&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.linkTargetField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the target field in the link object, or a function for accessing that field. Default is &quot;target&quot;.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.linkValueField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the value field in the link object, or a function for accessing that field. Default is &quot;value&quot;.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -325,7 +733,7 @@ Ext.define('Voyant.panel.Correlations', {
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'NetworkGraph_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

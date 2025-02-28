@@ -1,0 +1,658 @@
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>NetworkGraph<span class="signature">(target, config)</span><span class="type-signature"> → {<a href="NetworkGraph.html">NetworkGraph</a>}</span></h2>
+        
+            <div class="class-description"><p>A force directed layout network graph with labeled nodes.
+Uses the <a href="https://d3js.org/d3-force">d3</a> library for rendering.</p>
+<p>This graph should be created via the <a href="Spyral.Chart.html#.networkgraph">Spyral.Chart.networkgraph</a> method.</p></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="NetworkGraph">
+            
+                new <span class="type-signature"></span>NetworkGraph<span class="signature">(target, config)</span><span class="type-signature"> → {<a href="NetworkGraph.html">NetworkGraph</a>}</span>
+                
+            
+            
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Construct a new NetworkGraph class</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The element to render the graph to</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="NetworkGraph.html#~Config">NetworkGraph~Config</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The NetworkGraph config</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type"><a href="NetworkGraph.html">NetworkGraph</a></span>
+
+
+
+
+
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var nodes = [{
+  term: 'foo', value: 15
+},{
+  term: 'bar', value: 3
+},{
+  term: 'baz', value: 4
+}]
+var links = [{
+  source: 'foo', target: 'bar'
+},{
+  source: 'foo', target: 'baz'
+}]
+Spyral.Chart.networkgraph({
+  nodes: nodes, nodeIdField: 'term',
+  links: links
+})</code></pre>
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl class="typedefs">
+                
+
+<dt>
+<h4 class="name" id="~Config">
+    Config
+    
+    
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The NetworkGraph config</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array of node objects</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.links</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An array of link objects</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeIdField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the ID field in the node object, or a function for accessing that field. Default is "id".</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeLabelField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the label field in the node object, or a function for accessing that field. If not specified, nodeIdField will be used.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeValueField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the value field in the node object, or a function for accessing that field. Default is "value".</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.nodeCategoryField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the category field in the node object, or a function for accessing that field. Default is "category". This applies a category attribute to the node in the graph which can then be used for targeting or styling purposes.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.linkSourceField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the source field in the link object, or a function for accessing that field. Default is "source".</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.linkTargetField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the target field in the link object, or a function for accessing that field. Default is "target".</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.linkValueField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional&gt;<br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The name of the value field in the link object, or a function for accessing that field. Default is "value".</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>
