@@ -5,19 +5,18 @@ on:
       branches:
         - master
       paths:
-        - src/main/webapp/resources/spyral/**
+        - src/main/webapp/resources/spyral/src/**
+        - src/main/webapp/resources/spyral/package.json
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-#         with:
-#           persist-credentials: false # required to install dependencies on github
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
       
       # required to install dependencies on github
       - name: Reconfigure git to use HTTP authentication
@@ -25,16 +24,14 @@ jobs:
           git config --global url."https://github.com/".insteadOf
           ssh://git@github.com/
       
-      - name: Node install
-        run: npm ci
-        working-directory: src/main/webapp/resources/spyral
-        
       - name: Build Spyral
-        run: npm run-script build-spyral
+        run: >
+          npm ci
+          npm run-script build-spyral
         working-directory: src/main/webapp/resources/spyral
         
       - name: Commit JS files
-        run: |
+        run: >
           git config --global user.name 'Voyant Tools'
           git config --global user.email 'voyanttools@users.noreply.github.com'
           git add src/main/webapp/resources/spyral/build/spyral.js src/main/webapp/resources/spyral/build/spyral.js.map
