@@ -10335,30 +10335,22 @@ var Spyral = (function () {
 	            /**
 	             * Construct a new Categories class.
 	             * 
-	             * The following are valid in the config parameter:
-	             * 
-	             *  * **categories**: an object that maps arrays of terms to category names
-	             *  * **categoriesRanking**: an array of category names that determines their ranking, from high to low
-	             *  * **features**: an object that maps categories to feature names
-	             *  * **featureDefaults**: an object that maps default feature value to feature names
-	             * 
-	             * An example:
-	             * 
-	             *  new Spyral.Categories({
-	             *    categories: {
-	             *      positive: ['good', 'happy'],
-	             *      negative: ['bad', 'sad']
-	             *    },
-	             *    categoriesRanking: ['positive','negative'],
-	             *    features: {color: {}},
-	             *    featureDefaults: {color: '#333333'}
-	             *  })
+	             * @example
+	             * new Spyral.Categories({
+	             *   categories: {
+	             *     positive: ['good', 'happy'],
+	             *     negative: ['bad', 'sad']
+	             *   },
+	             *   categoriesRanking: ['positive','negative'],
+	             *   features: {color: {}},
+	             *   featureDefaults: {color: '#333333'}
+	             * })
 	             * @constructor
-	             * @param {Object} config
-	             * @param {Object} config.categories
-	             * @param {Array} config.categoriesRanking
-	             * @param {Object} config.features
-	             * @param {Object} config.featureDefaults
+	             * @param {Object} config The config object
+	             * @param {Object} config.categories An object that maps arrays of terms to category names
+	             * @param {Array} config.categoriesRanking An array of category names that determines their ranking, from high to low
+	             * @param {Object} config.features An object that maps categories to feature names
+	             * @param {Object} config.featureDefaults An object that maps default feature value to feature names
 	             * @returns {Spyral.Categories}
 	             */
 	            function Categories() {
@@ -10399,7 +10391,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Get the terms for a category.
-	               * @param {string} name The category name
+	               * @param {String} name The category name
 	               * @returns {Array}
 	               */
 	            }, {
@@ -10409,7 +10401,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Add a new category.
-	               * @param {string} name The category name
+	               * @param {String} name The category name
 	               */
 	            }, {
 	              key: "addCategory",
@@ -10421,8 +10413,8 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Rename a category.
-	               * @param {string} oldName The old category name
-	               * @param {string} newName The new category name
+	               * @param {String} oldName The old category name
+	               * @param {String} newName The new category name
 	               */
 	            }, {
 	              key: "renameCategory",
@@ -10441,7 +10433,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Remove a category.
-	               * @param {string} name The category name
+	               * @param {String} name The category name
 	               */
 	            }, {
 	              key: "removeCategory",
@@ -10457,7 +10449,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Gets the ranking for a category.
-	               * @param {string} name The category name
+	               * @param {String} name The category name
 	               * @returns {number}
 	               */
 	            }, {
@@ -10472,7 +10464,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Sets the ranking for a category.
-	               * @param {string} name The category name
+	               * @param {String} name The category name
 	               * @param {number} ranking The category ranking
 	               */
 	            }, {
@@ -10489,8 +10481,8 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Add a term to a category.
-	               * @param {string} category The category name
-	               * @param {string} term The term
+	               * @param {String} category The category name
+	               * @param {String} term The term
 	               */
 	            }, {
 	              key: "addTerm",
@@ -10499,7 +10491,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Add multiple terms to a category.
-	               * @param {string} category The category name
+	               * @param {String} category The category name
 	               * @param {Array} terms An array of terms
 	               */
 	            }, {
@@ -10520,8 +10512,8 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Remove a term from a category.
-	               * @param {string} category The category name
-	               * @param {string} term The term
+	               * @param {String} category The category name
+	               * @param {String} term The term
 	               */
 	            }, {
 	              key: "removeTerm",
@@ -10530,7 +10522,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Remove multiple terms from a category.
-	               * @param {string} category The category name
+	               * @param {String} category The category name
 	               * @param {Array} terms An array of terms
 	               */
 	            }, {
@@ -10551,7 +10543,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Get the category that a term belongs to, taking ranking into account.
-	               * @param {string} term The term
+	               * @param {String} term The term
 	               * @returns {string}
 	               */
 	            }, {
@@ -10569,7 +10561,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Get all the categories a term belongs to.
-	               * @param {string} term The term
+	               * @param {String} term The term
 	               * @returns {Array}
 	               */
 	            }, {
@@ -10585,8 +10577,8 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Get the feature for a term.
-	               * @param {string} feature The feature
-	               * @param {string} term The term
+	               * @param {String} feature The feature
+	               * @param {String} term The term
 	               * @returns {*}
 	               */
 	            }, {
@@ -10605,7 +10597,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Add a feature.
-	               * @param {string} name The feature name
+	               * @param {String} name The feature name
 	               * @param {*} defaultValue The default value
 	               */
 	            }, {
@@ -10620,7 +10612,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Remove a feature.
-	               * @param {string} name The feature name
+	               * @param {String} name The feature name
 	               */
 	            }, {
 	              key: "removeFeature",
@@ -10630,8 +10622,8 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Set the feature for a category.
-	               * @param {string} categoryName The category name
-	               * @param {string} featureName The feature name
+	               * @param {String} categoryName The category name
+	               * @param {String} featureName The feature name
 	               * @param {*} featureValue The feature value
 	               */
 	            }, {
@@ -10644,8 +10636,8 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Get the feature for a category.
-	               * @param {string} categoryName The category name
-	               * @param {string} featureName The feature name
+	               * @param {String} categoryName The category name
+	               * @param {String} featureName The feature name
 	               * @returns {*}
 	               */
 	            }, {
@@ -10681,7 +10673,8 @@ var Spyral = (function () {
 	              /**
 	               * Save the categories (if we're in a recognized environment).
 	               * @param {Object} config for the network call (specifying if needed the location of Trombone, etc., see {@link Spyral.Load#trombone}
-	               * @returns {Promise<string>} this returns a promise which eventually resolves to a string that is the ID reference for the stored categories
+	               * @param {Object} [api] an object specifying any parameters for the trombone call
+	               * @returns {Promise<String>} this returns a promise which eventually resolves to a string that is the ID reference for the stored categories
 	               */
 	            }, {
 	              key: "save",
@@ -10695,20 +10688,20 @@ var Spyral = (function () {
 	                })).then(function (data) {
 	                  return data.storedCategories.id;
 	                });
-	                // TODO save id as property
-	                // TODO somehow cache id so that it's not resaved everytime notebook is run
 	              }
 	              /**
 	               * Load the categories (if we're in a recognized environment).
 	               * 
 	               * In its simplest form this can be used with a single string ID to load:
+	               * 
 	               * 	new Spyral.Categories().load("categories.en.txt")
 	               * 
 	               * Which is equivalent to:
+	               * 
 	               * 	new Spyral.Categories().load({retrieveResourceId: "categories.en.txt"});
 	               * 
 	               * @param {(Object|String)} config an object specifying the parameters (see above)
-	               * @param {Object} api an object specifying any parameters for the trombone call
+	               * @param {Object} [api] an object specifying any parameters for the trombone call
 	               * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
 	               */
 	            }, {
@@ -10744,7 +10737,7 @@ var Spyral = (function () {
 	               * Load categories and return a promise that resolves to a new Spyral.Categories instance.
 	               * 
 	               * @param {(Object|String)} config an object specifying the parameters (see above)
-	               * @param {Object} api an object specifying any parameters for the trombone call
+	               * @param {Object} [api] an object specifying any parameters for the trombone call
 	               * @returns {Promise<Object>} this first returns a promise and when the promise is resolved it returns this categories object (with the loaded data included)
 	               * @static
 	               */
@@ -10784,7 +10777,7 @@ var Spyral = (function () {
 	          /**
 	           * The Chart class in Spyral.
 	           * This class provides methods for creating a variety of charts.
-	           * Charts are created using the [Highcharts Library](https://api.highcharts.com/highcharts/).
+	           * Charts are created using the [Highcharts Library]{@link https://api.highcharts.com/highcharts/}.
 	           * Highcharts have many configuration options and Spyral.Chart helps to streamline the process.
 	           * A simple example:
 	           * 
@@ -10813,20 +10806,20 @@ var Spyral = (function () {
 	          var Chart = /*#__PURE__*/function () {
 	            /**
 	             * The Highcharts config object
-	             * @typedef {Object} HighchartsConfig
+	             * @typedef {Object} Spyral.Chart~HighchartsConfig
 	             * @property {(string|object)} title
 	             * @property {(string|object)} subtitle
 	             * @property {Object} credits
 	             * @property {Object} xAxis
 	             * @property {Object} yAxis
 	             * @property {Object} chart
-	             * @property {Array<HighchartsSeriesConfig>} series
+	             * @property {Array<Spyral.Chart~HighchartsSeriesConfig>} series
 	             * @property {Object} plotOptions
 	             */
 
 	            /**
 	             * The series config object
-	             * @typedef {Object} HighchartsSeriesConfig
+	             * @typedef {Object} Spyral.Chart~HighchartsSeriesConfig
 	             * @property {Array} data
 	             * @property {string} [name]
 	             */
@@ -10853,9 +10846,9 @@ var Spyral = (function () {
 
 	            /**
 	             * Create a new chart.
-	             * See [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.
+	             * See [Highcharts API]{@link https://api.highcharts.com/highcharts/} for full set of config options.
 	             * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	             * @param {HighchartsConfig} config 
+	             * @param {Spyral.Chart~HighchartsConfig} config 
 	             * @returns {Highcharts.Chart}
 	             */
 	            (0, _createClass2["default"])(Chart, [{
@@ -10869,9 +10862,9 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Create a new chart.
-	               * See [Highcharts API](https://api.highcharts.com/highcharts/) for full set of config options.
+	               * See [Highcharts API]{@link https://api.highcharts.com/highcharts/} for full set of config options.
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	               * @param {HighchartsConfig} config 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @returns {Highcharts.Chart}
 	               * @static
 	               */
@@ -10879,7 +10872,7 @@ var Spyral = (function () {
 	              key: "bar",
 	              /**
 	               * Create a bar chart
-	               * @param {Object} [config]
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
 	              value: function bar() {
@@ -10890,7 +10883,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a bar chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	               * @param {Object} config 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @returns {Highcharts.Chart}
 	               * @static
 	               */
@@ -10898,7 +10891,7 @@ var Spyral = (function () {
 	              key: "column",
 	              /**
 	               * Create a column chart
-	               * @param {Object} [config]
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
 	              value: function column() {
@@ -10909,7 +10902,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a column chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	               * @param {Object} config 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @returns {Highcharts.Chart}
 	               * @static
 	               */
@@ -10917,7 +10910,7 @@ var Spyral = (function () {
 	              key: "line",
 	              /**
 	               * Create a line chart
-	               * @param {Object} [config]
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
 	              value: function line() {
@@ -10928,7 +10921,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a line chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	               * @param {Object} config 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @returns {Highcharts.Chart}
 	               * @static
 	               */
@@ -10936,7 +10929,7 @@ var Spyral = (function () {
 	              key: "scatter",
 	              /**
 	               * Create a scatter plot
-	               * @param {Object} [config]
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
 	              value: function scatter() {
@@ -10947,7 +10940,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a scatter plot
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	               * @param {Object} config 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @returns {Highcharts.Chart}
 	               * @static
 	               */
@@ -10955,8 +10948,8 @@ var Spyral = (function () {
 	              key: "networkgraph",
 	              /**
 	               * Create a network graph
-	               * @param {Object} [config]
-	               * @returns {Spyral.NetworkGraph}
+	               * @param {NetworkGraph~Config} [config]
+	               * @returns {NetworkGraph}
 	               */
 	              value: function networkgraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -10965,8 +10958,8 @@ var Spyral = (function () {
 	              /**
 	               * Create a network graph
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
-	               * @param {Object} config 
-	               * @returns {Spyral.NetworkGraph}
+	               * @param {NetworkGraph~Config} config 
+	               * @returns {NetworkGraph}
 	               * @static
 	               */
 	            }], [{
@@ -11076,7 +11069,7 @@ var Spyral = (function () {
 	              }
 	              /**
 	               * Add the provided data to the config as a series
-	               * @param {Object} config 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @param {Array} data 
 	               * @static
 	               */
@@ -11205,32 +11198,31 @@ var Spyral = (function () {
 	          }
 
 	          /**
-	           * The Corpus class in Spyral. Here's a simple example:
+	           * The Corpus class in Spyral. To get started you first need to load a Corpus, using either a
+	           * pre-existing Corpus id, or some input data. For this you can use the [loadCorpus]{@link window.loadCorpus}
+	           * method, which is an alias of {@link Spyral.Corpus.load}.
+	           * 
+	           * Here's a simple example:
 	           * 
 	           * 	loadCorpus("Hello World!").summary();
 	           * 
 	           * This loads a corpus and returns an asynchronous `Promise`, but all of the methods
-	           * of Corpus are appended to the Promise, so {@link #summary} will be called
+	           * of Corpus are appended to the Promise, so {@link Spyral.Corpus#summary} will be called
 	           * once the Corpus promise is fulfilled. It's equivalent to the following:
 	           *
 	           * 	loadCorpus("Hello World!").then(corpus -> corpus.summary());
 	           *
-	           * Have a look at the {@link #input} configuration for more examples.
-	           * 
-	           * There is a lot of flexibility in how corpora are created, here's a summary of the parameters:
-	           * 
-	           * - **sources**: {@link #corpus}, {@link #input}
-	           * - **formats**:
-	           * 	- **Text**: {@link #inputRemoveFrom}, {@link #inputRemoveFromAfter}, {@link #inputRemoveUntil}, {@link #inputRemoveUntilAfter}
-	           * 	- **XML**: {@link #xmlAuthorXpath}, {@link #xmlCollectionXpath}, {@link #xmlContentXpath}, {@link #xmlExtraMetadataXpath}, {@link #xmlKeywordXpath}, {@link #xmlPubPlaceXpath}, {@link #xmlPublisherXpath}, {@link #xmlTitleXpath}
-	           * 	- **Tables**: {@link #tableAuthor}, {@link #tableContent}, {@link #tableDocuments}, {@link #tableNoHeadersRow}, {@link #tableTitle}, {@link #tableGroupBy}
-	           * - **other**: {@link #inputFormat}, {@link #subTitle}, {@link #title}, {@link #tokenization}
-	          	 * @memberof Spyral
+	           * Have a look at the {@link Spyral.Corpus~CorpusConfig} configuration for more examples.
+	           *
+	           * @memberof Spyral
 	           * @class
 	           */
 	          var Corpus = /*#__PURE__*/function () {
 	            /**
-	             * @cfg {String} corpus The ID of a previously created corpus.
+	             * The Corpus config
+	             * @typedef {Object|String} Spyral.Corpus~CorpusConfig
+	             * 
+	             * @property {String} corpus The ID of a previously created corpus.
 	             * 
 	             * A corpus ID can be used to try to retrieve a corpus that has been previously created.
 	             * Typically the corpus ID is used as a first string argument, with an optional second
@@ -11244,40 +11236,36 @@ var Spyral = (function () {
 	             * 		inputRemoveUntil: 'THE GOLD-BUG',
 	             * 		inputRemoveFrom: 'FOUR BEASTS IN ONE'
 	             * 	});
-	             */
-
-	            /**
-	             * @cfg {(String|String[])} input Input sources for the corpus.
+	             *
+	             * @property {(String|String[])} input Input sources for the corpus.
 	             * 
 	             * The input sources can be either normal text or URLs (starting with `http`).
 	             * 
 	             * Typically input sources are specified as a string or an array in the first argument, with an optional second argument for other parameters.
 	             * 
-	             * 		loadCorpus("Hello Voyant!"); // one document with this string
+	             * 	loadCorpus("Hello Voyant!"); // one document with this string
 	             * 
-	             * 		loadCorpus(["Hello Voyant!", "How are you?"]); // two documents with these strings
+	             * 	loadCorpus(["Hello Voyant!", "How are you?"]); // two documents with these strings
 	             * 
-	             * 		loadCorpus("http://hermeneuti.ca/"); // one document from URL
+	             * 	loadCorpus("http://hermeneuti.ca/"); // one document from URL
 	             * 
-	             * 		loadCorpus(["http://hermeneuti.ca/", "https://en.wikipedia.org/wiki/Voyant_Tools"]); // two documents from URLs
+	             * 	loadCorpus(["http://hermeneuti.ca/", "https://en.wikipedia.org/wiki/Voyant_Tools"]); // two documents from URLs
 	             * 
-	             * 		loadCorpus("Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
+	             * 	loadCorpus("Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
 	             * 
-	             * 		loadCorpus("https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt", {
-	             * 			inputRemoveUntil: 'THE GOLD-BUG',
-	             * 			inputRemoveFrom: 'FOUR BEASTS IN ONE'
-	             * 		});
+	             * 	loadCorpus("https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt", {
+	             * 		inputRemoveUntil: 'THE GOLD-BUG',
+	             * 		inputRemoveFrom: 'FOUR BEASTS IN ONE'
+	             * 	});
 	             * 
-	             * 		// use a corpus ID but also specify an input source if the corpus can't be found
-	             * 		loadCorpus("goldbug", {
-	             * 			input: "https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt",
-	             * 			inputRemoveUntil: 'THE GOLD-BUG',
-	             * 			inputRemoveFrom: 'FOUR BEASTS IN ONE'
-	             * 		});
-	             */
-
-	            /**
-	             * @cfg {String} inputFormat The input format of the corpus (the default is to auto-detect).
+	             * 	// use a corpus ID but also specify an input source if the corpus can't be found
+	             * 	loadCorpus("goldbug", {
+	             * 		input: "https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt",
+	             * 		inputRemoveUntil: 'THE GOLD-BUG',
+	             * 		inputRemoveFrom: 'FOUR BEASTS IN ONE'
+	             * 	});
+	             *
+	             * @property {String} inputFormat The input format of the corpus (the default is to auto-detect).
 	             * 
 	             * The auto-detect format is usually reliable and inputFormat should only be used if the default
 	             * behaviour isn't desired. Most of the relevant values are used for XML documents:
@@ -11291,10 +11279,8 @@ var Spyral = (function () {
 	             * - **XML**: treat the document as XML (sometimes overridding auto-detect of XML vocabularies like RSS and TEI)
 	             * 
 	             * Other formats include **PDF**, **MSWORD**, **XLSX**, **RTF**, **ODT**, and **ZIP** (but again, these rarely need to be specified).
-	             */
-
-	            /**
-	             * @cfg {String} tableDocuments Determine what is a document in a table (the entire table, by row, by column); only used for table-based documents.
+	             *
+	             * @property {String} tableDocuments Determine what is a document in a table (the entire table, by row, by column); only used for table-based documents.
 	             * 
 	             * Possible values are:
 	             * 
@@ -11302,11 +11288,9 @@ var Spyral = (function () {
 	             * - **rows**: each row of the table is a separate document
 	             * - **columns**: each column of the table is a separate document
 	             * 
-	             * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
-	             */
-
-	            /**
-	             * @cfg {String} tableContent Determine how to extract body content from the table; only used for table-based documents.
+	             * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
+	             *
+	             * @property {String} tableContent Determine how to extract body content from the table; only used for table-based documents.
 	             * 
 	             * Columns are referred to by numbers, the first is column 1 (not 0).
 	             * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
@@ -11317,11 +11301,9 @@ var Spyral = (function () {
 	             * - **1,2**: use columns 1 and 2 separately
 	             * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	             * 
-	             * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
-	             */
-
-	            /**
-	             * @cfg {String} tableAuthor Determine how to extract the author from each document; only used for table-based documents.
+	             * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
+	             *
+	             * @property {String} tableAuthor Determine how to extract the author from each document; only used for table-based documents.
 	             * 
 	             * Columns are referred to by numbers, the first is column 1 (not 0).
 	             * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
@@ -11332,11 +11314,9 @@ var Spyral = (function () {
 	             * - **1,2**: use columns 1 and 2 separately
 	             * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	             * 
-	             * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
-	             */
-
-	            /**
-	             * @cfg {String} tableTitle Determine how to extract the title from each document; only used for table-based documents.
+	             * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
+	             *
+	             * @property {String} tableTitle Determine how to extract the title from each document; only used for table-based documents.
 	             * 
 	             * Columns are referred to by numbers, the first is column 1 (not 0).
 	             * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
@@ -11347,11 +11327,9 @@ var Spyral = (function () {
 	             * - **1,2**: use columns 1 and 2 separately
 	             * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	             * 
-	             * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
-	             */
-
-	            /**
-	             * @cfg {String} tableGroupBy Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.
+	             * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
+	             *
+	             * @property {String} tableGroupBy Specify a column (or columns) by which to group documents; only used for table-based documents, in rows mode.
 	             * 
 	             * Columns are referred to by numbers, the first is column 1 (not 0).
 	             * You can specify separate columns by using a comma or you can combined the contents of columns/cells by using a plus sign.
@@ -11362,19 +11340,15 @@ var Spyral = (function () {
 	             * - **1,2**: use columns 1 and 2 separately
 	             * - **1+2,3**: combine columns 1 and two and use column 3 separately
 	             * 
-	             * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
-	             */
-
-	            /**
-	             * @cfg {String} tableNoHeadersRow Determine if the table has a first row of headers; only used for table-based documents.
+	             * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
+	             *
+	             * @property {String} tableNoHeadersRow Determine if the table has a first row of headers; only used for table-based documents.
 	             * 
 	             * Provide a value of "true" if there is no header row, otherwise leave it blank or undefined (default).
 	             * 
-	             * See also [Creating a Corpus with Tables](#!/guide/corpuscreator-section-tables).
-	             */
-
-	            /**
-	             * @cfg {String} tokenization The tokenization strategy to use
+	             * See also [Creating a Corpus with Tables](tutorial-corpuscreator.html#tables).
+	             *
+	             * @property {String} tokenization The tokenization strategy to use
 	             * 
 	             * This should usually be undefined, unless specific behaviour is required. These are the valid values:
 	             * 
@@ -11382,178 +11356,142 @@ var Spyral = (function () {
 	             * - **wordBoundaries**: use any Unicode character word boundaries for tokenization
 	             * - **whitespace**: tokenize by whitespace only (punctuation and other characters will be kept with words)
 	             * 
-	             * See also [Creating a Corpus Tokenization](#!/guide/corpuscreator-section-tokenization).
-	             */
-
-	            /**
-	             * @cfg {String} xmlContentXpath The XPath expression that defines the location of document content (the body); only used for XML-based documents.
+	             * See also [Creating a Corpus Tokenization](tutorial-corpuscreator.html#processing).
+	             *
+	             * @property {String} xmlContentXpath The XPath expression that defines the location of document content (the body); only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><head>Hello world!</head><body>This is Voyant!</body></doc>", {
-	             * 			 xmlContentXpath: "//body"
-	             * 		}); // document would be: "This is Voyant!"
+	             * 	loadCorpus("<doc><head>Hello world!</head><body>This is Voyant!</body></doc>", {
+	             * 		xmlContentXpath: "//body"
+	             * 	}); // document would be: "This is Voyant!"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlTitleXpath The XPath expression that defines the location of each document's title; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlTitleXpath The XPath expression that defines the location of each document's title; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><title>Hello world!</title><body>This is Voyant!</body></doc>", {
-	             * 			 xmlTitleXpath: "//title"
-	             * 		}); // title would be: "Hello world!"
+	             * 	loadCorpus("<doc><title>Hello world!</title><body>This is Voyant!</body></doc>", {
+	             * 		xmlTitleXpath: "//title"
+	             * 	}); // title would be: "Hello world!"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlAuthorXpath The XPath expression that defines the location of each document's author; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlAuthorXpath The XPath expression that defines the location of each document's author; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><author>Stéfan Sinclair</author><body>This is Voyant!</body></doc>", {
-	             * 			 xmlAuthorXpath: "//author"
-	             * 		}); // author would be: "Stéfan Sinclair"
+	             * 	loadCorpus("<doc><author>Stéfan Sinclair</author><body>This is Voyant!</body></doc>", {
+	             * 		xmlAuthorXpath: "//author"
+	             * 	}); // author would be: "Stéfan Sinclair"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlPubPlaceXpath The XPath expression that defines the location of each document's publication place; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlPubPlaceXpath The XPath expression that defines the location of each document's publication place; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><pubPlace>Montreal</pubPlace><body>This is Voyant!</body></doc>", {
-	             * 			 xmlPubPlaceXpath: "//pubPlace"
-	             * 		}); // publication place would be: "Montreal"
+	             * 	loadCorpus("<doc><pubPlace>Montreal</pubPlace><body>This is Voyant!</body></doc>", {
+	             * 		xmlPubPlaceXpath: "//pubPlace"
+	             * 	}); // publication place would be: "Montreal"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlPublisherXpath The XPath expression that defines the location of each document's publisher; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlPublisherXpath The XPath expression that defines the location of each document's publisher; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><publisher>The Owl</publisher><body>This is Voyant!</body></doc>", {
-	             * 			 xmlPublisherXpath: "//publisher"
-	             * 		}); // publisher would be: "The Owl"
+	             * 	loadCorpus("<doc><publisher>The Owl</publisher><body>This is Voyant!</body></doc>", {
+	             * 		xmlPublisherXpath: "//publisher"
+	             * 	}); // publisher would be: "The Owl"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlKeywordXpath The XPath expression that defines the location of each document's keywords; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlKeywordXpath The XPath expression that defines the location of each document's keywords; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><keyword>text analysis</keyword><body>This is Voyant!</body></doc>", {
-	             * 			 xmlKeywordXpath: "//keyword"
-	             * 		}); // publisher would be: "text analysis"
+	             * 	loadCorpus("<doc><keyword>text analysis</keyword><body>This is Voyant!</body></doc>", {
+	             * 		xmlKeywordXpath: "//keyword"
+	             * 	}); // publisher would be: "text analysis"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlCollectionXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlCollectionXpath The XPath expression that defines the location of each document's collection name; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><collection>documentation</collection><body>This is Voyant!</body></doc>", {
-	             * 			 xmlCollectionXpath: "//collection"
-	             * 		}); // publisher would be: "documentation"
+	             * 	loadCorpus("<doc><collection>documentation</collection><body>This is Voyant!</body></doc>", {
+	             * 		xmlCollectionXpath: "//collection"
+	             * 	}); // publisher would be: "documentation"
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlDocumentsXpath The XPath expression that defines the location of each document; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlDocumentsXpath The XPath expression that defines the location of each document; only used for XML-based documents.
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlGroupByXpath The XPath expression by which to group multiple documents; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlGroupByXpath The XPath expression by which to group multiple documents; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><sp s='Juliet'>Hello!</sp><sp s='Romeo'>Hi!</sp><sp s='Juliet'>Bye!</sp></doc>", {
-	             * 			 xmlDocumentsXpath: '//sp',
-	             *           xmlGroupByXpath: "//@s"
-	             * 		}); // two docs: "Hello! Bye!" (Juliet) and "Hi!" (Romeo)
+	             * 	loadCorpus("<doc><sp s='Juliet'>Hello!</sp><sp s='Romeo'>Hi!</sp><sp s='Juliet'>Bye!</sp></doc>", {
+	             * 		xmlDocumentsXpath: '//sp',
+	             * 		xmlGroupByXpath: "//@s"
+	             * 	}); // two docs: "Hello! Bye!" (Juliet) and "Hi!" (Romeo)
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlExtraMetadataXpath A value that defines the location of other metadata; only used for XML-based documents.
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlExtraMetadataXpath A value that defines the location of other metadata; only used for XML-based documents.
 	             * 
-	             * 		loadCorpus("<doc><tool>Voyant</tool><phase>1</phase><body>This is Voyant!</body></doc>", {
-	             * 			 xmlExtraMetadataXpath: "tool=//tool\nphase=//phase"
-	             * 		}); // tool would be "Voyant" and phase would be "1"
+	             * 	loadCorpus("<doc><tool>Voyant</tool><phase>1</phase><body>This is Voyant!</body></doc>", {
+	             * 		xmlExtraMetadataXpath: "tool=//tool\nphase=//phase"
+	             * 	}); // tool would be "Voyant" and phase would be "1"
 	             * 
 	             * Note that `xmlExtraMetadataXpath` is a bit different from the other XPath expressions in that it's
 	             * possible to define multiple values (each on its own line) in the form of name=xpath.
 	             * 
-	             * See also [Creating a Corpus with XML](#!/guide/corpuscreator-section-xml).
-	             */
-
-	            /**
-	             * @cfg {String} xmlExtractorTemplate Pass the XML document through the XSL template located at the specified URL before extraction (this is ignored in XML-based documents).
+	             * See also [Creating a Corpus with XML](tutorial-corpuscreator.html#xml).
+	             *
+	             * @property {String} xmlExtractorTemplate Pass the XML document through the XSL template located at the specified URL before extraction (this is ignored in XML-based documents).
 	             * 
 	             * This is an advanced parameter that allows you to define a URL of an XSL template that can
 	             * be called *before* text extraction (in other words, the other XML-based parameters apply
 	             * after this template has been processed).
-	             */
-
-	            /**
-	             * @cfg {String} inputRemoveUntil Omit text up until the start of the matching regular expression (this is ignored in XML-based documents).
+	             *
+	             * @property {String} inputRemoveUntil Omit text up until the start of the matching regular expression (this is ignored in XML-based documents).
 	             * 
-	             * 		loadCorpus("Hello world! This is Voyant!", {
-	             * 			 inputRemoveUntil: "This"
-	             * 		}); // document would be: "This is Voyant!"
+	             * 	loadCorpus("Hello world! This is Voyant!", {
+	             * 		inputRemoveUntil: "This"
+	             * 	}); // document would be: "This is Voyant!"
 	             * 
-	             * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
-	             */
-
-	            /**
-	             * @cfg {String} inputRemoveUntilAfter Omit text up until the end of the matching regular expression (this is ignored in XML-based documents).
+	             * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
+	             *
+	             * @property {String} inputRemoveUntilAfter Omit text up until the end of the matching regular expression (this is ignored in XML-based documents).
 	             * 
-	             * 		loadCorpus("Hello world! This is Voyant!", {
-	             * 			 inputRemoveUntilAfter: "world!"
-	             * 		}); // document would be: "This is Voyant!"
+	             * 	loadCorpus("Hello world! This is Voyant!", {
+	             * 		inputRemoveUntilAfter: "world!"
+	             * 	}); // document would be: "This is Voyant!"
 	             * 
-	             * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
-	             */
-
-	            /**
-	             * @cfg {String} inputRemoveFrom Omit text from the start of the matching regular expression (this is ignored in XML-based documents).
+	             * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
+	             *
+	             * @property {String} inputRemoveFrom Omit text from the start of the matching regular expression (this is ignored in XML-based documents).
 	             * 
-	             * 		loadCorpus("Hello world! This is Voyant!", {
-	             * 			 inputRemoveFrom: "This"
-	             * 		}); // document would be: "Hello World!"
+	             * 	loadCorpus("Hello world! This is Voyant!", {
+	             * 		inputRemoveFrom: "This"
+	             * 	}); // document would be: "Hello World!"
 	             * 
-	             * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
-	             */
-
-	            /**
-	             * @cfg {String} inputRemoveFromAfter Omit text from the end of the matching regular expression (this is ignored in XML-based documents).
+	             * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
+	             *
+	             * @property {String} inputRemoveFromAfter Omit text from the end of the matching regular expression (this is ignored in XML-based documents).
 	             * 
-	             * 		loadCorpus("Hello world! This is Voyant!", {
-	             * 			 inputRemoveFromAfter: "This"
-	             * 		}); // document would be: "Hello World! This"
+	             * 	loadCorpus("Hello world! This is Voyant!", {
+	             * 		inputRemoveFromAfter: "This"
+	             * 	}); // document would be: "Hello World! This"
 	             * 
-	             * See also [Creating a Corpus with Text](#!/guide/corpuscreator-section-text).
-	             */
-
-	            /**
-	             * @cfg {String} subTitle A sub-title for the corpus.
+	             * See also [Creating a Corpus with Text](tutorial-corpuscreator.html#text).
+	             *
+	             * @property {String} subTitle A sub-title for the corpus.
 	             * 
 	             * This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a subtitle for later use.
-	             */
-
-	            /**
-	             * @cfg {String} title A title for the corpus.
+	             *
+	             * @property {String} title A title for the corpus.
 	             * 
 	             * This is currently not used, except in the Dynamic Table of Contexts skin. Still, it may be worth specifying a title for later use.
-	             */
-
-	            /**
-	             * @cfg {String} curatorTsv a simple TSV of paths and labels for the DToC interface (this isn't typically used outside of the specialized DToC context).
+	             *
+	             * @property {String} curatorTsv a simple TSV of paths and labels for the DToC interface (this isn't typically used outside of the specialized DToC context).
 	             *
 	             * The DToC skin allows curation of XML tags and attributes in order to constrain the entries shown in the interface or to provide friendlier labels. This assumes plain text unicode input with one definition per line where the simple XPath expression is separated by a tab from a label.
 	             *
 	             *   	 p    	 paragraph
 	             *   	 ref[@target*="religion"]    	 religion
 	             *
-	              * For more information see the DToC documentation on [Curating Tags](http://cwrc.ca/Documentation/public/index.html#DITA_Files-Various_Applications/DToC/CuratingTags.html)
+	              * For more information see the DToC documentation on [Curating Tags]{@link http://cwrc.ca/Documentation/public/index.html#DITA_Files-Various_Applications/DToC/CuratingTags.html}
 	             */
 
 	            /**
@@ -11856,7 +11794,7 @@ var Spyral = (function () {
 	              //	}
 	              /**
 	               * Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).
-	               * These terms are actually types, so information about each type is collected (as opposed to the {#link tokens}
+	               * These terms are actually types, so information about each type is collected (as opposed to the [tokens]{@link Spyral.Corpus#tokens}
 	               * method which is for every occurrence in document order).
 	               * 
 	               * The mode is set to "documents" when any of the following is true
@@ -11894,8 +11832,8 @@ var Spyral = (function () {
 	               *  * **start**: the zero-based start index of the list (for paging)
 	               *  * **limit**: the maximum number of terms to provide per request
 	               *  * **minRawFreq**: the minimum raw frequency of terms
-	               *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	               *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               *  * **query**: a term query (see [search tutorial]{@tutorial search})
+	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               *  * **withDistributions**: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	               *  * **whiteList**: a keyword list – terms will be limited to this list
 	               *  * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -11928,8 +11866,8 @@ var Spyral = (function () {
 	               * @param {number} config.start the zero-based start index of the list (for paging)
 	               * @param {number} config.limit the maximum number of terms to provide per request
 	               * @param {number} config.minRawFreq the minimum raw frequency of terms
-	               * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
-	               * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	               * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	               * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
@@ -11974,7 +11912,7 @@ var Spyral = (function () {
 	               * 
 	               *  * **start**: the zero-based start index of the list (for paging)
 	               *  * **limit**: the maximum number of terms to provide per request
-	               *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               *  * **whiteList**: a keyword list – terms will be limited to this list
 	               *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	               *  * **noOthers**: only include lexical forms, no other tokens
@@ -11991,7 +11929,7 @@ var Spyral = (function () {
 	               * @param {Object} config an Object specifying parameters (see above)
 	               * @param {number} config.start the zero-based start index of the list (for paging)
 	               * @param {number} config.limit the maximum number of terms to provide per request
-	               * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	               * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	               * @param {boolean} config.noOthers only include lexical forms, no other tokens
@@ -12028,7 +11966,7 @@ var Spyral = (function () {
 	               * 
 	               *  * **start**: the zero-based start index of the list (for paging)
 	               *  * **limit**: the maximum number of terms to provide per request
-	               *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               *  * **whiteList**: a keyword list – terms will be limited to this list
 	               *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	               *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
@@ -12042,7 +11980,7 @@ var Spyral = (function () {
 	               * @param {Object} config an Object specifying parameters (see above)
 	               * @param {number} config.start the zero-based start index of the list (for paging)
 	               * @param {number} config.limit the maximum number of terms to provide per request
-	               * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	               * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	               * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
@@ -12094,7 +12032,7 @@ var Spyral = (function () {
 	                  * 
 	                  *  * **start**: the zero-based start index of the list (for paging)
 	                  *  * **limit**: the maximum number of terms to provide per request
-	                  *  * **query**: a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+	                  *  * **query**: a term query (see [search tutorial]{@tutorial search})
 	                  *  * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
 	                  *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -12120,7 +12058,7 @@ var Spyral = (function () {
 	                  * @param {Object} config an Object specifying parameters (see above)
 	                  * @param {number} config.start the zero-based start index of the list (for paging)
 	                  * @param {number} config.limit the maximum number of terms to provide per request
-	                  * @param {string} config.query a term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
+	                  * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
 	                  * @param {string} config.sort the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
 	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
 	                  * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
@@ -12188,8 +12126,8 @@ var Spyral = (function () {
 	               * 
 	               *  * **start**: the zero-based start index of the list (for paging)
 	               *  * **limit**: the maximum number of terms to provide per request
-	               *  * **query**: a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	               *  * **stopList**: a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               *  * **query**: a term query (see [search tutorial]{@tutorial search})
+	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               *  * **collocatesWhitelist**: collocates will be limited to this list
 	               *  * **context**: the size of the context (the number of words on each side of the keyword)
 	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
@@ -12212,8 +12150,8 @@ var Spyral = (function () {
 	               * @param {Object} config an Object specifying parameters (see list above)
 	               * @param {number} config.start the zero-based start index of the list (for paging)
 	               * @param {number} config.limit the maximum number of terms to provide per request
-	               * @param {string} config.query a term query (see https://voyant-tools.org/docs/#!/guide/search)
-	               * @param {string} config.stopList a list of stopwords to include (see https://voyant-tools.org/docs/#!/guide/stopwords)
+	               * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @param {string} config.collocatesWhitelist collocates will be limited to this list
 	               * @param {number} config.context the size of the context (the number of words on each side of the keyword)
 	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
@@ -12489,7 +12427,7 @@ var Spyral = (function () {
 	               * @param {number} config.iterations the number of iterations to do, more iterations = more accurate (default is 100)
 	               * @param {number} config.perDocLimit specify a token limit per document, starting at the beginning of the document
 	               * @param {number} config.seed specify a particular seed to use for random number generation
-	               * @param {string} config.stopList a list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @returns {Promise<Object>}
 	               */
 	            }, {
@@ -12616,7 +12554,7 @@ var Spyral = (function () {
 	                        case 5:
 	                          categories = _context2.sent;
 	                        case 6:
-	                          categoryNames = [];
+	                          categoryNames = []; // TODO make sure categoryName is a valid key for categories
 	                          if (categoryName === undefined) {
 	                            categoryNames = categories.getCategoryNames();
 	                          } else if (_util["default"].isString(categoryName)) {
@@ -12653,7 +12591,7 @@ var Spyral = (function () {
 	              /**
 	               * Performs one of several dimension reduction statistical analysis techniques.
 	               * 
-	               * For more details see {@link https://voyant-tools.org/docs/#!/guide/scatterplot}.
+	               * For more details see the [scatterplot tutorial]{@tutorial scatterplot}.
 	               * 
 	               * @param {Object} config 
 	               * @param {string} config.type The type of analysis technique to use: 'ca', 'pca', 'tsne', 'docsim'
@@ -12667,8 +12605,8 @@ var Spyral = (function () {
 	               * @param {string} config.comparisonType The value to use for comparing terms. Options are: 'raw', 'relative', and 'tfidf'.
 	               * @param {string} config.target The term to set as the target. This will filter results to terms that are near the target.
 	               * @param {string} config.term Used in combination with "target" as a white list of terms to keep.
-	               * @param {string} config.query A term query (see {@link https://voyant-tools.org/docs/#!/guide/search})
-	               * @param {string} config.stopList A list of stopwords to include (see {@link https://voyant-tools.org/docs/#!/guide/stopwords})
+	               * @param {string} config.query A term query (see [search tutorial]{@tutorial search})
+	               * @param {string} config.stopList A list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @returns {Promise<Object>}
 	               */
 	            }, {
@@ -12738,89 +12676,7 @@ var Spyral = (function () {
 	               * 
 	               * 	loadCorpus("austen").tool("CustomSet", {tableLayout: "Cirrus,Trends", style: "width:800px; height: 500px"});
 	               * 
-	               * Here's a partial list of the tools available as well as their significant parameters:
-	               * 
-	               *  * <a href="#!/guide/bubblelines">Bubblelines</a> visualizes the frequency and distribution of terms in a corpus.
-	               *  	* **bins**: number of bins to separate a document into
-	               *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *  	* **maxDocs**: maximum number of documents to show
-	               *  	* **query**: a query to search for in the corpus
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/bubbles">Bubbles</a> is a playful visualization of term frequencies by document.
-	               *  	* **audio**: whether or not to include audio
-	               *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *  	* **speed**: speed of the animation (0 to 60 lower is slower)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/cirrus">Cirrus</a> is a word cloud that visualizes the top frequency words of a corpus or document.
-	               *  	* **background**: set the background colour of the word cloud
-	               *  	* **categories**: set the categories for the word cloud (usually an ID of an existing categories definition)
-	               *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *  	* **fontFamily**: the default font to use for the words (default: "Palatino Linotype", "Book Antiqua", Palatino, serif),
-	               *  	* **inlineData**: user-defined data, most easily expressed like this: love:20,like:15,dear:10
-	               *  	* **limit**: the number of terms to load (that are available, see also `visible` which determines how many are displayed),
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  	* **visible**: the number of terms to display in the word cloud (default is 50)
-	               *  	* **whiteList**: a keyword list – terms will be limited to this list
-	               *  * <a href="#!/guide/collocatesgraph">CollocatesGraph</a> represents keywords and terms that occur in close proximity as a force directed network graph.
-	               *  	* **centralize**: the term to use for centralize mode (where things are focused on a single word)
-	                  *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	               *  	* **limit**: the number of collocates to load for each keyword
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/contexts">Contexts</a> (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
-	                  *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	               *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/corpuscollocates">CorpusCollocates</a> is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
-	                  *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **sort**: sort order of collocates, one of `contextTermRawFreq`, `contextTermRawFreq`, `rawFreq`, `term`
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/corpusterms">CorpusTerms</a> is a table view of term frequencies in the entire corpus.
-	                  *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-	               *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/correlations">Correlations</a> tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
-	               *  	* **minInDocumentsCountRatio**: the minimum percentage of documents in which the correlation must appear
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/documentterms">DocumentTerms</a> is a table view of document term frequencies.
-	                  *  	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-	               *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *  	* **expand**: the size of the extended context (when you expand a context occurrence), the number of words on each side of the keyword 
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  * <a href="#!/guide/termsberry">TermsBerry</a> provides a way of exploring high frequency terms and their collocates.
-	               *  	* **query**: a query for the keywords (can be comma-separated list)
-	               *  	* **stopList**: a named stopword list or comma-separated list of words
-	               *  	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *  	* **context**: the size of the context (the number of words on each side of the keyword)
-	               *  	* **numInitialTerms**: the initial number of terms to display
-	               *  * <a href="#!/guide/trends">Trends</a> shows a line graph depicting the distribution of a word’s occurrence across a corpus or document.
-	               *   	* **stopList**: a named stopword list or comma-separated list of words
-	               *   	* **query**: a query for the keywords (can be comma-separated list)
-	               *   	* **limit**: the number of terms to show
-	               *   	* **withDistributions**: the type of distribution frequency to show ("raw" or "relative"), default is "relative"
-	               *   	* **bins**: for the purposes of analyzing distribution the documents are split into a specified number of segments or bins
-	               *   	* **docIndex**: document index to restrict to (can be comma-separated list)
-	               *   	* **chartType**: the type of chart to show: "barline", "bar", "line", "area", "stacked"
-	               *  * <a href="#!/guide/documents">Documents</a> is a tool that shows a table of the documents in the corpus and includes functionality for modifying the corpus.
-	               *  * <a href="#!/guide/knots">Knots</a> is a creative visualization that represents terms in a single document as a series of twisted lines.
-	               *  * <a href="#!/guide/mandala">Mandala</a> is a conceptual visualization that shows the relationships between terms and documents.
-	               *  * <a href="#!/guide/microsearch">Microsearch</a> visualizes the frequency and distribution of terms in a corpus.
-	               *  * <a href="#!/guide/phrases">Phrases</a> shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
-	               *  * <a href="#!/guide/reader">Reader</a> provides a way of reading documents in the corpus, text is fetched on-demand as needed.
-	               *  * <a href="#!/guide/scatterplot">ScatterPlot</a> is a graph visualization of how words cluster in a corpus using document similarity, correspondence analysis or principal component analysis.
-	               *  * <a href="#!/guide/streamgraph">StreamGraph</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
-	               *  * <a href="#!/guide/summary">Summary</a> provides a simple, textual overview of the current corpus, including including information about words and documents.
-	               *  * <a href="#!/guide/termsradio">TermsRadio</a> is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).
-	               *  * <a href="#!/guide/textualarc">TextualArc</a> is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.
-	               *  * <a href="#!/guide/topics">Topics</a> provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
-	               *  * <a href="#!/guide/veliza">Veliza</a> is an experimental tool for having a (limited) natural language exchange (in English) based on your corpus.
-	               *  * <a href="#!/guide/wordtree">WordTree</a> is a tool that allows you to explore how words are used in phrases.
+	               * See [the list of corpus tools]{@link Tools} for available tools and options.
 	               * 
 	               * @param {string} tool The tool to display
 	               * @param {Object} config The config object for the tool
@@ -12960,7 +12816,7 @@ var Spyral = (function () {
 	              //		return Corpus.load(config).then(corpus => corpus.tool(tool, config, api));
 	              //	}
 	              /**
-	               * An alias for {@link #summary}.
+	               * An alias for [summary]{@link Spyral.Corpus#summary}.
 	               */
 	            }, {
 	              key: "toString",
@@ -12976,7 +12832,7 @@ var Spyral = (function () {
 	              //	}
 	              /**
 	               * Load a Corpus using the provided config and api
-	               * @param {Object} config the Corpus config
+	               * @param {Spyral.Corpus~CorpusConfig} config the Corpus config
 	               * @param {Object} api any additional API values
 	               * @returns {Promise<Corpus>}
 	               * @static
@@ -13130,6 +12986,7 @@ var Spyral = (function () {
 	           * Class embodying Load functionality.
 	           * @memberof Spyral
 	           * @class
+	           * @hideconstructor
 	           */
 	          var Load = /*#__PURE__*/function () {
 	            function Load() {
@@ -13333,25 +13190,52 @@ var Spyral = (function () {
 	          var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 	          /* global d3 */
 	          /**
-	           * A d3 force directed layout with labeled nodes
-	           * @memberof Spyral
+	           * A force directed layout network graph with labeled nodes.
+	           * Uses the [d3]{@link https://d3js.org/d3-force} library for rendering.
+	           * 
+	           * This graph should be created via the [Spyral.Chart.networkgraph]{@link Spyral.Chart.networkgraph} method.
 	           * @class
+	           * 
+	           * @example
+	           * 
+	           * var nodes = [{
+	           *   term: 'foo', value: 15
+	           * },{
+	           *   term: 'bar', value: 3
+	           * },{
+	           *   term: 'baz', value: 4
+	           * }]
+	           * var links = [{
+	           *   source: 'foo', target: 'bar'
+	           * },{
+	           *   source: 'foo', target: 'baz'
+	           * }]
+	           * Spyral.Chart.networkgraph({
+	           *   nodes: nodes, nodeIdField: 'term',
+	           *   links: links
+	           * })
 	           */
 	          var NetworkGraph = /*#__PURE__*/function () {
 	            /**
+	             * The NetworkGraph config
+	             * @typedef {Object} NetworkGraph~Config
+	             * @property {Array} config.nodes An array of node objects
+	             * @property {Array} config.links An array of link objects
+	             * @property {String|Function} [config.nodeIdField=id] The name of the ID field in the node object, or a function for accessing that field. Default is "id".
+	             * @property {String|Function} [config.nodeLabelField] The name of the label field in the node object, or a function for accessing that field. If not specified, nodeIdField will be used.
+	             * @property {String|Function} [config.nodeValueField=value] The name of the value field in the node object, or a function for accessing that field. Default is "value".
+	             * @property {String|Function} [config.nodeCategoryField=category] The name of the category field in the node object, or a function for accessing that field. Default is "category". This applies a category attribute to the node in the graph which can then be used for targeting or styling purposes.
+	             * @property {String|Function} [config.linkSourceField=source] The name of the source field in the link object, or a function for accessing that field. Default is "source".
+	             * @property {String|Function} [config.linkTargetField=target] The name of the target field in the link object, or a function for accessing that field. Default is "target".
+	             * @property {String|Function} [config.linkValueField=value] The name of the value field in the link object, or a function for accessing that field. Default is "value".
+	             */
+
+	            /**
 	             * Construct a new NetworkGraph class
 	             * @constructor
-	             * @param {HTMLElement} target 
-	             * @param {Object} config 
-	             * @param {Array} config.nodes An array of nodes
-	             * @param {Array} config.links An array of links
-	             * @param {String|Function} [config.nodeIdField]
-	             * @param {String|Function} [config.nodeLabelField]
-	             * @param {String|Function} [config.nodeValueField]
-	             * @param {String|Function} [config.nodeCategoryField]
-	             * @param {String|Function} [config.linkSourceField]
-	             * @param {String|Function} [config.linkTargetField]
-	             * @param {String|Function} [config.linkValueField]
+	             * @param {HTMLElement} target The element to render the graph to
+	             * @param {NetworkGraph~Config} config The NetworkGraph config
+	             * 
 	             * @return {NetworkGraph}
 	             */
 	            function NetworkGraph(target, config) {
@@ -13373,7 +13257,7 @@ var Spyral = (function () {
 	              if (config.nodes === undefined) throw new Error('Missing nodes!');
 	              if (config.links === undefined) throw new Error('Missing links!');
 	              var nodeIdField = config.nodeIdField === undefined ? 'id' : config.nodeIdField;
-	              var nodeLabelField = config.nodeLabelField === undefined ? 'id' : config.nodeLabelField;
+	              var nodeLabelField = config.nodeLabelField === undefined ? nodeIdField : config.nodeLabelField;
 	              var nodeValueField = config.nodeValueField === undefined ? 'value' : config.nodeValueField;
 	              var nodeCategoryField = config.nodeCategoryField === undefined ? 'category' : config.nodeCategoryField;
 	              this.nodeData = config.nodes.map(function (node) {
@@ -13695,7 +13579,7 @@ var Spyral = (function () {
 	          var Table = /*#__PURE__*/function () {
 	            /**
 	             * The Table config object
-	             * @typedef {Object} TableConfig
+	             * @typedef {Object} Spyral.Table~TableConfig
 	             * @property {string} format The format of the provided data, either "tsv" or "csv"
 	             * @property {(Object|Array)} headers The table headers
 	             * @property {boolean} hasHeaders True if the headers are the first item in the data
@@ -13706,7 +13590,7 @@ var Spyral = (function () {
 	             * Create a new Table
 	             * @constructor
 	             * @param {(Object|Array|String|Number)} data An array of data or a string with CSV or TSV.
-	             * @param {TableConfig} config an Object for configuring the table initialization
+	             * @param {Spyral.Table~TableConfig} config an Object for configuring the table initialization
 	             * @returns {Spyral.Table}
 	             */
 	            function Table(data, config) {
@@ -14902,7 +14786,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a new Table
 	               * @param {(Object|Array|String|Number)} data
-	               * @param {TableConfig} config
+	               * @param {Spyral.Table~TableConfig} config
 	               * @returns {Spyral.Table}
 	               * @static
 	               */
@@ -15049,7 +14933,7 @@ var Spyral = (function () {
 	                });
 	              }
 	              /**
-	               * Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia](https://en.wikipedia.org/wiki/Convolution_%28computer_science%29).
+	               * Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia]{@link https://en.wikipedia.org/wiki/Convolution_%28computer_science%29}.
 	               * @param {Array} data
 	               * @returns {Array}
 	               * @static
@@ -15125,6 +15009,7 @@ var Spyral = (function () {
 	          /**
 	           * A helper for working with the Voyant Notebook app.
 	           * @memberof Spyral
+	           * @hideconstructor
 	           */
 	          var Util = /*#__PURE__*/function () {
 	            function Util() {
@@ -16120,6 +16005,7 @@ var Spyral = (function () {
 	/**
 	 * A helper for working with the Voyant Notebook app.
 	 * @memberof Spyral
+	 * @hideconstructor
 	 */
 	var Util = /*#__PURE__*/function () {
 	  function Util() {
