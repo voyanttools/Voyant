@@ -1,3 +1,7 @@
+/**
+ * This template produces the spyral.json file that is used to display all the Spyral related code suggestions.
+ */
+
 var fs = require('fs');
 var helper = require("jsdoc/util/templateHelper");
 

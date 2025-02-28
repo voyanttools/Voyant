@@ -1,3 +1,7 @@
+/**
+ * This template produces the tools.json file that is used to display the config options for the corpus.tool() method in Spyral.
+ */
+
 var fs = require('fs');
 var helper = require("jsdoc/util/templateHelper");
 
@@ -26,11 +30,17 @@ exports.publish = function(data, opts, tutorials) {
     function processDescription(desc) {
         if (desc) {
             desc = desc.replace(/\r+/g, "\n\n");
-            desc = desc.replace(/<a href="#!/g, '<a target="_spyral_docs" href="'+apiUrlRoot+'/docs/#!');
+            desc = convertLinks(desc);
         } else {
             desc = '';
         }
         return desc;
+    }
+
+    function convertLinks(strWithLinks) {
+        if (strWithLinks) {
+            return strWithLinks.replace(/(?:{@link\s)(.*?)(?:(?:\|.*?})|})/g, '$1');  // extract the actual link from the link tag
+        }   
     }
 
     
@@ -56,7 +66,7 @@ exports.publish = function(data, opts, tutorials) {
 
         if (doc.kind === 'class') {
             var desc = doc.description.replace("\r", ' ');
-            desc += "\n\n<a target=\"_spyral_docs\" href=\""+apiUrlRoot+"/docs/#!/guide/"+doc.name.toLowerCase()+"\">More documentation</a>";
+            desc += "\n\n<a target=\"_spyral_docs\" href=\""+apiUrlRoot+"/docs/"+doc.longname+".html\">More documentation</a>";
             output[doc.name] = {
                 doc: desc,
                 params: {
@@ -85,7 +95,7 @@ exports.publish = function(data, opts, tutorials) {
         if (doc.kind === 'typedef') continue;
 
         if (doc.kind === 'member') {
-            var parent = doc.memberof;
+            var parent = doc.memberof.replace(/^Tools\./, '');
             output[parent]['params'][doc.name] = {};
             
             // TODO handle multiple types

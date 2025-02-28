@@ -4,6 +4,7 @@
 		"includePattern": ".+\\.js$"
 	},
 	"opts": {
+		"template": "tern-tools-template",
 		"destination": "docs",
 		"recurse": false
 	}

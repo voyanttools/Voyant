@@ -8,11 +8,11 @@
 		"watch-spyral": "rollup -c --watch --sourcemap",
 		"build-spyral-local-voyant": "rollup -c --environment LOCAL_VOYANT",
 		"watch-spyral-local-voyant": "rollup -c --watch --sourcemap --environment LOCAL_VOYANT",
-		"tools": "jsdoc -t jsdoc-tool-template -c tools.config.json",
-		"tools-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tool-template -c tools.config.json",
 		"build-tern-worker": "rollup -c rollup.tern.config.mjs",
-		"docs-tern": "jsdoc -t jsdoc-tern-template -c jsdoc.config.json",
-		"docs-tern-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -t jsdoc-tern-template -c jsdoc.config.json"
+		"tern-tools": "jsdoc -c tern.tools.config.json",
+		"tern-tools-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -c tern.tools.config.json",
+		"tern-spyral": "jsdoc -c tern.spyral.config.json",
+		"tern-spyral-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -c tern.spyral.config.json"
 	},
 	"repository": {
 		"type": "git",
