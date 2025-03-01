@@ -1,6 +1,6 @@
 {
 	"source": {
-		"include": ["..\\..\\app\\panel\\"],
+		"include": ["../../app/panel/"],
 		"includePattern": ".+\\.js$"
 	},
 	"opts": {
