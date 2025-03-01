@@ -25,7 +25,7 @@ jobs:
           ssh://git@github.com/
       
       - name: Build Spyral
-        run: >
+        run: |
           npm ci
           npm run-script build-spyral
         working-directory: src/main/webapp/resources/spyral

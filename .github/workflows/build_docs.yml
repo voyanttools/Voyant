@@ -39,13 +39,13 @@ jobs:
           ssh://git@github.com/
       
       - name: Build Docs
-        run: >
+        run: |
           npm ci
           npm run-script build-docs
         working-directory: src/main/webapp/resources/docs
         
       - name: Build Tern Docs
-        run: >
+        run: |
           npm ci
           npm run-script tern-spyral
           npm run-script tern-tools
