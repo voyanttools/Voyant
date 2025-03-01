@@ -1,89 +1,89 @@
 {
   "!name": "tools",
   "!define": {
-    "StopList": {
+    "stopList": {
       "type": [
         "String"
       ],
-      "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+      "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
     },
-    "Query": {
+    "query": {
       "type": [
         "String",
         "Array.<String>"
       ],
-      "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+      "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
     },
-    "DocId": {
+    "docId": {
       "type": [
         "String",
         "Array.<String>"
       ],
       "doc": "The document ID(s) to restrict the results to."
     },
-    "DocIndex": {
+    "docIndex": {
       "type": [
         "Number",
         "Array.<Number>"
       ],
       "doc": "The document index(es) to restrict the results to."
     },
-    "Categories": {
+    "categories": {
       "type": [
         "String"
       ],
-      "doc": "The categories ID to use. For more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/categories\">Categories documentation</a>."
+      "doc": "The categories ID to use. For more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-categories.html\">Categories documentation</a>."
     },
-    "Bins": {
+    "bins": {
       "type": [
         "Number"
       ],
       "doc": "The number of \"bins\" to divide the result into."
     },
-    "Start": {
+    "start": {
       "type": [
         "Number"
       ],
       "doc": "The index of the item to start the results at."
     },
-    "Limit": {
+    "limit": {
       "type": [
         "Number"
       ],
       "doc": "The number of items to limit the result to."
     },
-    "Context": {
+    "context": {
       "type": [
         "Number"
       ],
       "doc": "The number of terms to consider on each side of the keyword."
     },
-    "WithDistributions": {
+    "withDistributions": {
       "type": [
         "String"
       ],
-      "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\n\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
+      "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
     },
-    "TermColors": {
+    "termColors": {
       "type": [
         "String"
       ],
-      "doc": "Which term colors to show in the grid.\n\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\n\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+      "doc": "Which term colors to show in the grid.\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
     },
-    "Columns": {
+    "columns": {
       "type": [
         "String",
         "Array.<String>"
       ],
-      "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns."
+      "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns."
     },
-    "SortColumn": {
+    "sort": {
       "type": [
         "String"
       ],
       "doc": "The column to sort the results by"
     },
-    "SortDir": {
+    "dir": {
       "type": [
         "String"
       ],
@@ -91,7 +91,7 @@
     }
   },
   "Bubblelines": {
-    "doc": "Bubblelines visualizes the frequency and distribution of terms in a corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/bubblelines\">More documentation</a>",
+    "doc": "Bubblelines visualizes the frequency and distribution of terms in a corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Bubblelines.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -111,11 +111,11 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -132,7 +132,7 @@
     }
   },
   "Bubbles": {
-    "doc": "Bubbles is a playful visualization of term frequencies by document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/bubbles\">More documentation</a>",
+    "doc": "Bubbles is a playful visualization of term frequencies by document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Bubbles.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -148,7 +148,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "docIndex": {
         "type": "Number",
@@ -169,7 +169,7 @@
     }
   },
   "Cirrus": {
-    "doc": "Cirrus tool, a wordcloud-like visualization.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/cirrus\">More documentation</a>",
+    "doc": "Cirrus tool, a wordcloud-like visualization.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Cirrus.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -185,11 +185,11 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "categories": {
         "type": "String",
-        "doc": "The categories ID to use. For more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/categories\">Categories documentation</a>."
+        "doc": "The categories ID to use. For more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-categories.html\">Categories documentation</a>."
       },
       "whiteList": {
         "type": "String",
@@ -213,7 +213,7 @@
       },
       "inlineData": {
         "type": "String",
-        "doc": "Directly specify the terms and their relative sizes.\n\nThere data format is a comma-separated list of colon-separated term/size pairs.\n\nFor example: love:20,like:15,dear:10,child:6"
+        "doc": "Directly specify the terms and their relative sizes.\nThere data format is a comma-separated list of colon-separated term/size pairs.\nFor example: love:20,like:15,dear:10,child:6"
       },
       "fontFamily": {
         "type": "String",
@@ -222,7 +222,7 @@
     }
   },
   "CollocatesGraph": {
-    "doc": "Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/collocatesgraph\">More documentation</a>",
+    "doc": "Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CollocatesGraph.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -238,7 +238,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "limit": {
         "type": "Number",
@@ -246,7 +246,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "context": {
         "type": "Number",
@@ -259,7 +259,7 @@
     }
   },
   "Contexts": {
-    "doc": "The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/contexts\">More documentation</a>",
+    "doc": "The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Contexts.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -275,7 +275,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -287,7 +287,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "context": {
         "type": "Number",
@@ -299,7 +299,7 @@
       },
       "columns": {
         "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'docIndex', 'left', 'term', 'right', 'position'"
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'docIndex', 'left', 'term', 'right', 'position'"
       },
       "sort": {
         "type": "String",
@@ -311,12 +311,12 @@
       },
       "termColors": {
         "type": "String",
-        "doc": "Which term colors to show in the grid.\n\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\n\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+        "doc": "Which term colors to show in the grid.\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
       }
     }
   },
   "CorpusCollocates": {
-    "doc": "Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/corpuscollocates\">More documentation</a>",
+    "doc": "Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CorpusCollocates.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -332,7 +332,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "context": {
         "type": "Number",
@@ -340,7 +340,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -352,7 +352,7 @@
       },
       "columns": {
         "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'"
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'term', 'rawFreq', 'contextTerm', 'contextTermRawFreq'"
       },
       "sort": {
         "type": "String",
@@ -364,12 +364,12 @@
       },
       "termColors": {
         "type": "String",
-        "doc": "Which term colors to show in the grid.\n\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\n\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+        "doc": "Which term colors to show in the grid.\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
       }
     }
   },
   "CorpusTerms": {
-    "doc": "Corpus Terms tool, a grid that shows the terms in the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/corpusterms\">More documentation</a>",
+    "doc": "Corpus Terms tool, a grid that shows the terms in the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CorpusTerms.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -385,27 +385,27 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "maxBins": {
         "type": "Number",
-        "doc": "The maximum number of bins to use for distributions in Trend.\n\nBy default this is set to 100 (in other words, if there are more than 100 documents in the corpus, they will be forced into 100 bins).\n\nHigher values are possible but it can cause performance issues and necessitate more data transfer (values for each one of the bins for each one of the terms)."
+        "doc": "The maximum number of bins to use for distributions in Trend.\n\nBy default this is set to 100 (in other words, if there are more than 100 documents in the corpus, they will be forced into 100 bins).\nHigher values are possible but it can cause performance issues and necessitate more data transfer (values for each one of the bins for each one of the terms)."
       },
       "termColors": {
         "type": "String",
-        "doc": "Which term colors to show in the grid.\n\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\n\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+        "doc": "Which term colors to show in the grid.\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
       },
       "comparisonCorpus": {
         "type": "String",
-        "doc": "An existing corpus to be used for comparison purposes.\n\nNone of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the \"Comparison\" column is shown.\n\nThe comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus."
+        "doc": "An existing corpus to be used for comparison purposes.\n\nNone of the columns visible by default use comparisonCorpus so this is an advanced parameter used when the \"Comparison\" column is shown.\nThe comparison column shows the relative frequency of the term in the corpus compared to the relative frequency of the same term in a comparison corpus."
       },
       "columns": {
         "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'"
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'term', 'rawFreq', 'relativeFreq', 'relativePeakedness', 'relativeSkewness', 'comparisonRelativeFreqDifference', 'distributions'"
       },
       "sort": {
         "type": "String",
@@ -418,7 +418,7 @@
     }
   },
   "Correlations": {
-    "doc": "The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/correlations\">More documentation</a>",
+    "doc": "The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Correlations.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -434,7 +434,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -446,7 +446,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "minInDocumentsCountRatio": {
         "type": "Number",
@@ -454,11 +454,11 @@
       },
       "withDistributions": {
         "type": "String",
-        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\n\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
+        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
       },
       "columns": {
         "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'"
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'sourceTerm', 'source-distributions', 'target-distributions', 'targetTerm', 'correlation', 'significance'"
       },
       "sort": {
         "type": "String",
@@ -470,12 +470,12 @@
       },
       "termColors": {
         "type": "String",
-        "doc": "Which term colors to show in the grid.\n\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\n\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+        "doc": "Which term colors to show in the grid.\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
       }
     }
   },
   "CustomSet": {
-    "doc": "CustomSet is a tool for creating a layout of other tools.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/customset\">More documentation</a>",
+    "doc": "CustomSet is a tool for creating a layout of other tools.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CustomSet.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -499,49 +499,8 @@
       }
     }
   },
-  "Documents": {
-    "doc": "The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/documents\">More documentation</a>",
-    "params": {
-      "style": {
-        "type": "String",
-        "doc": "A string of CSS properties to use as the style attribute for the tool's parent tag."
-      },
-      "width": {
-        "type": "Number",
-        "doc": "Specify the display width of the tool in pixels."
-      },
-      "height": {
-        "type": "Number",
-        "doc": "Specify the display height of the tool in pixels."
-      },
-      "query": {
-        "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
-      },
-      "docIndex": {
-        "type": "Number",
-        "doc": "The document index(es) to restrict the results to."
-      },
-      "docId": {
-        "type": "String",
-        "doc": "The document ID(s) to restrict the results to."
-      },
-      "columns": {
-        "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'"
-      },
-      "sort": {
-        "type": "String",
-        "doc": "The column to sort the results by"
-      },
-      "dir": {
-        "type": "String",
-        "doc": "The direction in which to sort the results: 'asc' or 'desc'"
-      }
-    }
-  },
   "DocumentTerms": {
-    "doc": "Document Terms is a table view of term frequencies for each document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/documentterms\">More documentation</a>",
+    "doc": "Document Terms is a table view of term frequencies for each document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.DocumentTerms.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -557,11 +516,11 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -577,7 +536,7 @@
       },
       "columns": {
         "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'"
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'docIndex', 'term', 'rawFreq', 'relativeFreq', 'tfidf', 'zscore', 'distributions'"
       },
       "sort": {
         "type": "String",
@@ -589,12 +548,53 @@
       },
       "termColors": {
         "type": "String",
-        "doc": "Which term colors to show in the grid.\n\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\n\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+        "doc": "Which term colors to show in the grid.\nBy default this is set to 'categories' which shows the term color only if it's been assigned by a category.\nThe other alternatives are 'terms' which shows all terms colors, and '' or undefined which shows no term colors."
+      }
+    }
+  },
+  "Documents": {
+    "doc": "The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Documents.html\">More documentation</a>",
+    "params": {
+      "style": {
+        "type": "String",
+        "doc": "A string of CSS properties to use as the style attribute for the tool's parent tag."
+      },
+      "width": {
+        "type": "Number",
+        "doc": "Specify the display width of the tool in pixels."
+      },
+      "height": {
+        "type": "Number",
+        "doc": "Specify the display height of the tool in pixels."
+      },
+      "query": {
+        "type": "String",
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
+      },
+      "docIndex": {
+        "type": "Number",
+        "doc": "The document index(es) to restrict the results to."
+      },
+      "docId": {
+        "type": "String",
+        "doc": "The document ID(s) to restrict the results to."
+      },
+      "columns": {
+        "type": "String",
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'title', 'author', 'pubDate', 'publisher', 'pubPlace', 'keyword', 'collection', 'tokensCount-lexical', 'typesCount-lexical', 'typeTokenRatio-lexical', 'averageWordsPerSentence', 'language'"
+      },
+      "sort": {
+        "type": "String",
+        "doc": "The column to sort the results by"
+      },
+      "dir": {
+        "type": "String",
+        "doc": "The direction in which to sort the results: 'asc' or 'desc'"
       }
     }
   },
   "Embedder": {
-    "doc": "Embedder provides a way to embed a web page into your Voyant Tools experience.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/embedder\">More documentation</a>",
+    "doc": "Embedder provides a way to embed a web page into your Voyant Tools experience.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Embedder.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -615,7 +615,7 @@
     }
   },
   "Knots": {
-    "doc": "Knots is a creative visualization that represents terms in a single document as a series of twisted lines.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/knots\">More documentation</a>",
+    "doc": "Knots is a creative visualization that represents terms in a single document as a series of twisted lines.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Knots.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -631,11 +631,11 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -648,7 +648,7 @@
     }
   },
   "Mandala": {
-    "doc": "Mandala is a conceptual visualization that shows the relationships between terms and documents.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/mandala\">More documentation</a>",
+    "doc": "Mandala is a conceptual visualization that shows the relationships between terms and documents.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Mandala.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -664,11 +664,11 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "labels": {
         "type": "Boolean",
@@ -677,7 +677,7 @@
     }
   },
   "MicroSearch": {
-    "doc": "Microsearch visualizes the frequency and distribution of terms in a corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/microsearch\">More documentation</a>",
+    "doc": "Microsearch visualizes the frequency and distribution of terms in a corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.MicroSearch.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -693,16 +693,16 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       }
     }
   },
   "Panel": {
-    "doc": "The base class for Voyant tool panels.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/panel\">More documentation</a>",
+    "doc": "The base class for Voyant tool panels.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Panel.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -735,7 +735,7 @@
     }
   },
   "Phrases": {
-    "doc": "The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/phrases\">More documentation</a>",
+    "doc": "The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Phrases.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -751,11 +751,11 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -775,11 +775,11 @@
       },
       "overlapFilter": {
         "type": "String",
-        "doc": "Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/phrases-section-options\">Phrases options</a> for more info."
+        "doc": "Specifies the strategory for prioritizing and filtering out phrases. Options are: 'none' (no filtering), 'length' (prioritize phrase length), or 'rawFreq' (prioritize phrase frequency). See [Phrases options](tutorial-phrases.html#options) for more info."
       },
       "columns": {
         "type": "String",
-        "doc": "One or more column data indexes to display, separated by a comma.\n\nUse this to modify the default set of visible columns.\n\n'term', 'rawFreq', 'length', 'distributions'"
+        "doc": "One or more column data indexes to display, separated by a comma.\nUse this to modify the default set of visible columns.\n\n'term', 'rawFreq', 'length', 'distributions'"
       },
       "sort": {
         "type": "String",
@@ -792,7 +792,7 @@
     }
   },
   "Reader": {
-    "doc": "The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/reader\">More documentation</a>",
+    "doc": "The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Reader.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -820,12 +820,12 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       }
     }
   },
   "RezoViz": {
-    "doc": "RezoViz represents connections between people, places and organizations that co-occur in multiple documents.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/rezoviz\">More documentation</a>",
+    "doc": "RezoViz represents connections between people, places and organizations that co-occur in multiple documents.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.RezoViz.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -841,7 +841,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "limit": {
         "type": "Number",
@@ -857,7 +857,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -870,7 +870,7 @@
     }
   },
   "ScatterPlot": {
-    "doc": "ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/scatterplot\">More documentation</a>",
+    "doc": "ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.ScatterPlot.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -922,7 +922,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "target": {
         "type": "String",
@@ -934,7 +934,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "whitelist": {
         "type": "String",
@@ -951,7 +951,7 @@
     }
   },
   "StreamGraph": {
-    "doc": "StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/streamgraph\">More documentation</a>",
+    "doc": "StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.StreamGraph.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -971,15 +971,15 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "withDistributions": {
         "type": "String",
-        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\n\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
+        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
       },
       "bins": {
         "type": "Number",
@@ -996,7 +996,7 @@
     }
   },
   "Summary": {
-    "doc": "The Summary panel provides an overview of a corpus, and the content will depend on whether the corpus includes one document or many.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/summary\">More documentation</a>",
+    "doc": "The Summary panel provides an overview of a corpus, and the content will\ndepend on whether the corpus includes one document or many.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Summary.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1012,7 +1012,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "start": {
         "type": "Number",
@@ -1029,7 +1029,7 @@
     }
   },
   "TermsBerry": {
-    "doc": "The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/termsberry\">More documentation</a>",
+    "doc": "The TermsBerry tool provides a way of exploring high frequency terms and their collocates (words that occur in proximity).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.TermsBerry.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1045,7 +1045,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "context": {
         "type": "Number",
@@ -1057,7 +1057,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docIndex": {
         "type": "Number",
@@ -1069,12 +1069,12 @@
       },
       "categories": {
         "type": "String",
-        "doc": "The categories ID to use. For more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/categories\">Categories documentation</a>."
+        "doc": "The categories ID to use. For more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-categories.html\">Categories documentation</a>."
       }
     }
   },
   "TermsRadio": {
-    "doc": "TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/termsradio\">More documentation</a>",
+    "doc": "TermsRadio is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.TermsRadio.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1094,7 +1094,7 @@
       },
       "visibleBins": {
         "type": "Number",
-        "doc": "How many segments or documents to show at once (default is 5).\n\nNote that this often works in parallel with the {@link #bins} value."
+        "doc": "How many segments or documents to show at once (default is 5).\nNote that this often works in parallel with the {@link #bins} value."
       },
       "limit": {
         "type": "Number",
@@ -1102,11 +1102,11 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "yAxisScale": {
         "type": "String",
@@ -1123,7 +1123,7 @@
     }
   },
   "TextualArc": {
-    "doc": "TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/textualarc\">More documentation</a>",
+    "doc": "TextualArc is a visualization of the terms in a document that includes a weighted centroid of terms and an arc that follows the terms in document order.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.TextualArc.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1139,7 +1139,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "docIndex": {
         "type": "Number",
@@ -1156,7 +1156,7 @@
     }
   },
   "Topics": {
-    "doc": "The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/topics\">More documentation</a>",
+    "doc": "The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Topics.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1172,7 +1172,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "topics": {
         "type": "Number",
@@ -1197,7 +1197,7 @@
     }
   },
   "Trends": {
-    "doc": "Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/trends\">More documentation</a>",
+    "doc": "Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Trends.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1217,19 +1217,19 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "withDistributions": {
         "type": "String",
-        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\n\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
+        "doc": "Determines whether to show \"raw\" or \"relative\" frequencies (those are the two valid values).\nThe default value is \"relative\" (unless there's only one document in the corpus, in which case raw frequencies are shown)."
       },
       "bins": {
         "type": "Number",
-        "doc": "The number of \"bins\" to divide the result into.\n\nverify this:\n\nThe default value will depend on the nature of the corpus:\n\n- corpus has one document: the default number of bins is 10\n\n- corpus has multiple documents:\n\n  - corpus has up to 100 documents: the default number is the size of the corpus\n\n  - corpus has more than 1000 documents: the default number is 100"
+        "doc": "The number of \"bins\" to divide the result into.\n\nverify this:\n\nThe default value will depend on the nature of the corpus:\n\n- corpus has one document: the default number of bins is 10\n- corpus has multiple documents:\n  - corpus has up to 100 documents: the default number is the size of the corpus\n  - corpus has more than 1000 documents: the default number is 100"
       },
       "docIndex": {
         "type": "Number",
@@ -1254,7 +1254,7 @@
     }
   },
   "WordTree": {
-    "doc": "The Word Tree tool allows you to explore how keywords are used in different phrases in the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/wordtree\">More documentation</a>",
+    "doc": "The Word Tree tool allows you to explore how keywords are used in different phrases in the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.WordTree.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1270,7 +1270,7 @@
       },
       "query": {
         "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\n\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/search\">search documentation</a>."
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
       "docId": {
         "type": "String",
@@ -1282,7 +1282,7 @@
       },
       "stopList": {
         "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\n\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\n\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/#!/guide/stopwords\">Stopwords documentation</a>."
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "context": {
         "type": "Number",
