@@ -31,7 +31,7 @@ jobs:
         working-directory: src/main/webapp/resources/spyral
         
       - name: Commit JS files
-        run: >
+        run: |
           git config --global user.name 'Voyant Tools'
           git config --global user.email 'voyanttools@users.noreply.github.com'
           git add src/main/webapp/resources/spyral/build/spyral.js src/main/webapp/resources/spyral/build/spyral.js.map
