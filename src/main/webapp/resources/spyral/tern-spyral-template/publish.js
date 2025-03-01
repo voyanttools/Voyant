@@ -310,6 +310,11 @@ exports.publish = function(data, opts, tutorials) {
         output[pkg.name] = library;
     }
 
-    fs.writeFileSync(opts.destination + '/' + pkg.name + '.json', JSON.stringify(output, null, 2));
+    try {
+        console.log('writing to:', opts.destination + '/' + pkg.name + '.json');
+        fs.writeFileSync(opts.destination + '/' + pkg.name + '.json', JSON.stringify(output, null, 2));
+    } catch(e) {
+        console.log(e);
+    }
 
 };
