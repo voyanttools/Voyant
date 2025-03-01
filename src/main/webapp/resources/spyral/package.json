@@ -9,9 +9,9 @@
 		"build-spyral-local-voyant": "rollup -c --environment LOCAL_VOYANT",
 		"watch-spyral-local-voyant": "rollup -c --watch --sourcemap --environment LOCAL_VOYANT",
 		"build-tern-worker": "rollup -c rollup.tern.config.mjs",
-		"tern-tools": "jsdoc -c tern.tools.config.json --verbose --debug",
+		"tern-tools": "jsdoc -c tern.tools.config.json",
 		"tern-tools-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -c tern.tools.config.json",
-		"tern-spyral": "jsdoc -c tern.spyral.config.json --verbose --debug",
+		"tern-spyral": "jsdoc -c tern.spyral.config.json",
 		"tern-spyral-debug": "node --inspect-brk=9229 node_modules/jsdoc/jsdoc.js -c tern.spyral.config.json"
 	},
 	"repository": {
