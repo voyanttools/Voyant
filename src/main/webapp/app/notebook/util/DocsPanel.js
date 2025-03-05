@@ -150,8 +150,8 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				html: ''
 			}],
 			listeners: {
-				boxready: function(win) {
-					win.body.addListener('click', function(evt) {
+				boxready: function(cmp) {
+					cmp.body.addListener('click', function(evt) {
 						if (evt.target.tagName.toLowerCase() === 'a') {
 							evt.preventDefault();
 							evt.stopPropagation();
@@ -193,6 +193,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 	handleDocLink: function(link, rel) {
 		console.log('handleDocLink', link, rel);
+		link = link.replace(/^https:\/\/voyant-tools.org\//, '');
 		if (link.indexOf('http') === 0) {
 			window.open(link, '_external');
 		} else if (link.indexOf('tutorial') === 0 || rel === 'help') {
