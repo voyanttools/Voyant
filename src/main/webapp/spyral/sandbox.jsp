@@ -40,6 +40,8 @@ table.spyral-table td:last-child {
 }
 		</style>
 
+		<script type="text/javascript" src="<%=base %>/resources/jquery/jquery.min.js"></script>
+
 		<!-- <link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/10/css/highcharts.css" /> -->
 		<!-- highcharts -->	
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/highcharts.js"></script>
@@ -50,6 +52,9 @@ table.spyral-table td:last-child {
 
 		<script type="text/javascript" src="<%=base %>/resources/d3/current/d3.min.js"></script>
 		<script type="text/javascript" src="<%=base %>/resources/d3/d3-scale-chromatic.min.js"></script>
+
+		<script type="text/javascript" src="<%=base %>/resources/datatables/datatables.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="<%=base %>/resources/datatables/datatables.min.css" rel="stylesheet" />
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
 
