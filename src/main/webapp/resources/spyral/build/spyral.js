@@ -13516,7 +13516,7 @@ var Spyral = (function () {
 	          var _chart = _interopRequireDefault(require("./chart.js"));
 	          var _util = _interopRequireDefault(require("./util.js"));
 	          /* eslint-disable linebreak-style */
-	          /* global Spyral */
+	          /* global Spyral, DataTable */
 	          /**
 	           * The Spyral.Table class in Spyral provides convenience functions for working with tabular
 	           * data.
@@ -14668,6 +14668,37 @@ var Spyral = (function () {
 	              value: function toHtml() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                return this.toString(config);
+	              }
+	              /**
+	               * Displays an interactive table using [DataTables]{@link https://datatables.net/}
+	               * @param {HTMLElement} [target]
+	               * @param {Object} config 
+	               * @returns {DataTable}
+	               */
+	            }, {
+	              key: "toDataTable",
+	              value: function toDataTable(target) {
+	                var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	                if (_util["default"].isNode(target) === false && (0, _typeof2["default"])(target) === 'object') {
+	                  config = target;
+	                  target = undefined;
+	                }
+	                if (target === undefined) {
+	                  if (typeof Spyral !== 'undefined' && Spyral.Notebook) {
+	                    target = Spyral.Notebook.getTarget();
+	                  } else {
+	                    target = document.createElement('div');
+	                    document.body.appendChild(target);
+	                  }
+	                } else {
+	                  if (_util["default"].isNode(target) && target.isConnected === false) {
+	                    throw new Error('The target node does not exist within the document.');
+	                  }
+	                }
+	                target = document.body.appendChild(target);
+	                this.html(target, config);
+	                var dataTable = new DataTable(target.firstElementChild);
+	                return dataTable;
 	              }
 	              /**
 	               * Get an HTML representation of the Table
