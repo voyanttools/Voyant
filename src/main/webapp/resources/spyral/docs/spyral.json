@@ -1305,7 +1305,7 @@
         },
         "rows": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of rows in this table.\nWhen the first argument is the boolean value `true` all rows are returned.\nWhen the first argument is a an array then the rows corresponding to the row\nindices or names are returned. When all arguments except are numbers or strings\nthen each of those is returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of rows in this table.\rWhen the first argument is the boolean value `true` all rows are returned.\rWhen the first argument is a an array then the rows corresponding to the row\rindices or names are returned. When all arguments except are numbers or strings\rthen each of those is returned.",
           "!url": "https://voyant-tools.org/Spyral.Table.html#rows"
         },
         "row": {
@@ -1315,7 +1315,7 @@
         },
         "columns": {
           "!type": "fn(inds?: ?, config?: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of columns in this table.\nWhen the first argument is the boolean value `true` all columns are returned.\nWhen the first argument is a number a slice of the columns is returned and if\nthe second argument is a number it is treated as the length of the slice to\nreturn (note that it isn't the `end` index like with Array.slice()).",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of columns in this table.\rWhen the first argument is the boolean value `true` all columns are returned.\rWhen the first argument is a number a slice of the columns is returned and if\rthe second argument is a number it is treated as the length of the slice to\rreturn (note that it isn't the `end` index like with Array.slice()).",
           "!url": "https://voyant-tools.org/Spyral.Table.html#columns"
         },
         "column": {
@@ -1330,7 +1330,7 @@
         },
         "headers": {
           "!type": "fn(inds: ?) -> ?",
-          "!doc": "This function returns different values depending on the arguments provided.\nWhen there are no arguments, it returns the number of headers in this table.\nWhen the first argument is the boolean value `true` all headers are returned.\nWhen the first argument is a number a slice of the headers is returned.\nWhen the first argument is an array the slices specified in the array are returned.",
+          "!doc": "This function returns different values depending on the arguments provided.\rWhen there are no arguments, it returns the number of headers in this table.\rWhen the first argument is the boolean value `true` all headers are returned.\rWhen the first argument is a number a slice of the headers is returned.\rWhen the first argument is an array the slices specified in the array are returned.",
           "!url": "https://voyant-tools.org/Spyral.Table.html#headers"
         },
         "hasColumn": {
@@ -1340,7 +1340,7 @@
         },
         "forEach": {
           "!type": "fn(fn: fn())",
-          "!doc": "Runs the specified function on each row.\nThe function is passed the row and the row index.",
+          "!doc": "Runs the specified function on each row.\rThe function is passed the row and the row index.",
           "!url": "https://voyant-tools.org/Spyral.Table.html#forEach"
         },
         "rowMin": {
@@ -1435,12 +1435,12 @@
         },
         "rowSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\nSort the specified rows",
+          "!doc": "TODO\rSort the specified rows",
           "!url": "https://voyant-tools.org/Spyral.Table.html#rowSort"
         },
         "columnSort": {
           "!type": "fn() -> +Spyral.Table",
-          "!doc": "TODO\nSort the specified columns",
+          "!doc": "TODO\rSort the specified columns",
           "!url": "https://voyant-tools.org/Spyral.Table.html#columnSort"
         },
         "toCsv": {
@@ -1462,6 +1462,11 @@
           "!type": "fn()",
           "!doc": "Same as {@link toString}.",
           "!url": "https://voyant-tools.org/Spyral.Table.html#toHtml"
+        },
+        "toDataTable": {
+          "!type": "fn(target?: +HTMLElement, config: +Object) -> +DataTable",
+          "!doc": "Displays an interactive table using <a target=\"_external\" href=\"https://datatables.net/\">DataTables</a>",
+          "!url": "https://voyant-tools.org/Spyral.Table.html#toDataTable"
         },
         "toString": {
           "!type": "fn(config?: +Object) -> string",
