@@ -137,7 +137,6 @@
 			<groupId>com.google.javascript</groupId>
 			<artifactId>closure-compiler</artifactId>
 			<version>v20240317</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
