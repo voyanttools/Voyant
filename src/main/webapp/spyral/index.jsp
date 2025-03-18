@@ -53,7 +53,7 @@ if (request.getServletPath().equals("/spiral")) {
 <script src="<%= base %>/resources/codemirror/addon/tern/tern.js"></script>
 
 <!-- google sign in-->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- script src="https://accounts.google.com/gsi/client" async defer></script -->
 
 <script>
 	Ext.Loader.setConfig({
