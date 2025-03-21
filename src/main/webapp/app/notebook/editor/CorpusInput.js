@@ -85,14 +85,17 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						editable: false,
 						forceSelection: true,
 						emptyText: this.localize('notebookVariables'),
-						store: { fields: ['text'] }
+						store: { fields: ['text'] },
+						listeners: {
+							change: function() {
+								this.setCorpusId(undefined);
+							},
+							scope: this
+						}
 					}],
 					listeners: {
 						activate: function(crd) {
 							this.populateVariables();
-						},
-						change: function() {
-							this.setCorpusId(undefined);
 						},
 						scope: this
 					}
