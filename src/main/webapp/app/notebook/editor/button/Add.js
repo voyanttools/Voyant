@@ -59,6 +59,10 @@ Ext.define("Voyant.notebook.editor.button.Add", {
 							data: 'text',
 							margin: '0 0 0 -20px'
 						},{
+							text: 'Table',
+							data: 'table',
+							margin: '0 0 0 -20px'
+						},{
 							text: 'XML',
 							data: 'xml',
 							margin: '0 0 0 -20px'

@@ -13,6 +13,7 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 			modeFile: 'File',
 			modeJson: 'JSON',
 			modeText: 'Text',
+			modeTable: 'Table',
 			modeXml: 'XML',
 			modeHtml: 'HTML',
 			ok: "OK",
@@ -70,19 +71,13 @@ Ext.define("Voyant.notebook.editor.button.CodeConfig", {
 								name  : 'codeMode',
 								inputValue: 'text',
 								flex  : 1
-							},/*{
-								xtype : 'radiofield',
-								boxLabel : buttonInstance.localize('modeCsv'),
-								name  : 'codeMode',
-								inputValue: 'csv',
-								flex  : 1													
 							},{
 								xtype : 'radiofield',
-								boxLabel : buttonInstance.localize('modeTsv'),
+								boxLabel : buttonInstance.localize('modeTable'),
 								name  : 'codeMode',
-								inputValue: 'tsv',
-								flex  : 1													
-							},*/{
+								inputValue: 'table',
+								flex  : 1
+							},{
 								xtype : 'radiofield',
 								boxLabel : buttonInstance.localize('modeXml'),
 								name  : 'codeMode',

@@ -68,7 +68,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			var dfd = new Ext.Deferred();
 
 			var outputPromise = null;
-			if (mode === 'file' || mode === 'corpus') {
+			if (mode === 'file' || mode === 'corpus' || mode === 'table') {
 				outputPromise = wrapper.cachedInput.getBlob();
 			} else {
 				outputPromise = wrapper.results.updateCachedOutput().then(function() {
@@ -96,7 +96,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 					}
 					fileType = output.type;
 					fileContent = output;
-				} else if (mode === 'javascript') {
+				} else if (mode === 'javascript' || mode === 'table') {
 					// corpus check
 					if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
 						corpusButton.setHidden(false);
