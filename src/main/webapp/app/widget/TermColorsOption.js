@@ -82,7 +82,7 @@ Ext.define('Voyant.widget.ColoredTermField', {
 			});
 			panel.on('rowcontextmenu', function(cmp, record, tr, rowIndex, evt) {
 				evt.preventDefault();
-					
+				panel.getSelectionModel().select(record, true, false); // force selection on mac
 				var terms = panel.getSelection().map(function(sel) { return sel.get('term') });
 				this.categoriesMenu.setTerms(terms);
 				this.categoriesMenu.showAt(evt.getXY());
