@@ -58,16 +58,11 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 					items: [{
 						itemId: 'text',
 						items: [{
-							xtype: 'textfield',
+							xtype: 'textarea',
 							width: '75%',
+							grow: false,
 							name: 'text',
-							fieldLabel: '',
-							listeners: {
-								change: function() {
-									this.setTable(undefined);
-								},
-								scope: this
-							}
+							fieldLabel: ''
 						}]
 					},{
 						itemId: 'variable',
@@ -226,12 +221,21 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 							grid.store.remove(sel);
 						}
 					}
+				},{
+					xtype: 'button',
+					text: 'Delete Table',
+					width: 135,
+					glyph: 'xf1f8@FontAwesome',
+					handler: function() {
+						this.setTable(undefined);
+					},
+					scope: this
 				}]
 			});
 		}
 	},
 
-	gridToSpyralTable: function() {
+	getRowsFromTable: function() {
 		var tableEditor = this.down('#tableEditor');
 		if (!tableEditor) return undefined;
 		var store = tableEditor.getStore();
@@ -248,9 +252,6 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 			return row;
 		});
 
-		// var spyralTable = new Spyral.Table(rows, {headers: headers});
-		// return spyralTable;
-
 		return rows;
 	},
 
@@ -264,7 +265,7 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 		// if the editor exists use that as the source
 		var tableEditor = this.down('#tableEditor');
 		if (tableEditor) {
-			var rows = this.gridToSpyralTable();
+			var rows = this.getRowsFromTable();
 			var val = varName+'=new Spyral.Table('+JSON.stringify(rows)+')';
 			dfd.resolve(val);
 			return dfd.promise;
@@ -282,14 +283,14 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 		} else if (type === 'file') {
 			var file = activeItem.getFile();
 			this.setValue(activeItem.getFileName());
-			Spyral.Util.blobToDataUrl(file).then(function(dataUrl) {
-				var val = varName+'=new Spyral.Table(Spyral.Util.dataUrlToBlob(`'+dataUrl+'`))';
+			Spyral.Util.blobToString(file).then(function(data) {
+				var val = varName+'=new Spyral.Table(`'+data+'`)';
 				dfd.resolve(val);
 			}, function() {
 				dfd.reject();
 			});
 		} else if (type === 'text') {
-			var text = activeItem.down('textfield').getValue().replace('"', '\"');
+			var text = activeItem.down('textfield').getValue().replaceAll('"', '\"').replaceAll('\t', '\\t').replaceAll('\n', '\\n');
 			this.setValue(text);
 			if (text !== '') {
 				var val = varName+'=new Spyral.Table("'+text+'")';
