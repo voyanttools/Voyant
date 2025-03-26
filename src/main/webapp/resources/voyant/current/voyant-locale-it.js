@@ -1022,11 +1022,13 @@ Ext.apply(Voyant.util.Localization.i18n, {
 "fr":"Francese",
 "languageTitle":"Language Interface Options",
 "es":"Spagnolo",
+"gu":"Gujarati",
 "ar":"Arabo",
 "bs":"Bosnian",
 "chooseLanguage":"Interface Language",
 "cz":"Ceco",
 "ja":"Giapponese",
+"sl":"Sloveno",
 "he":"Ebraico",
 "ro":"Romeno",
 "sr":"Serbian"});
