@@ -1453,6 +1453,11 @@
           "!doc": "Get a TSV representation of the Table",
           "!url": "https://voyant-tools.org/Spyral.Table.html#toTsv"
         },
+        "toArray": {
+          "!type": "fn(rowsAsObjects?: boolean) -> +Array",
+          "!doc": "Get an array of the rows of the Table.",
+          "!url": "https://voyant-tools.org/Spyral.Table.html#toArray"
+        },
         "html": {
           "!type": "fn(target: ?, config?: +Object) -> +Spyral.Table",
           "!doc": "Set the target's contents to an HTML representation of the Table",
