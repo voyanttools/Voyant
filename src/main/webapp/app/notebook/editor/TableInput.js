@@ -172,10 +172,21 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 
 		var prevTableEditor = this.down('#tableEditor');
 		if (prevTableEditor) prevTableEditor.destroy();
-		if (newVal !== undefined) {
+		if (newVal !== undefined && newVal.rows() > 0) {
 			var cellEditor = Ext.create('Ext.form.field.Text', {
 				allowBlank: false
 			});
+			var firstRow = newVal.row(0);
+			var fields = newVal.headers(true).map(function(val, index) {
+				var firstRowVal = firstRow[index];
+				var fieldDef = {name: val};
+				if (typeof firstRowVal === 'number') {
+					fieldDef.type = 'float';
+				} else {
+					fieldDef.type = 'string';
+				}
+				return fieldDef;
+			})
 			this.insert(1, {
 				xtype: 'gridpanel',
 				height: 250,
@@ -194,7 +205,7 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 				}),
 				store: {
 					xtype: 'store.array',
-					fields: newVal.headers(true),
+					fields: fields,
 					data: newVal.rows(true)
 				},
 				bbar: [{
