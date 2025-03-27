@@ -13601,7 +13601,8 @@ var Spyral = (function () {
 	              (0, _classCallCheck2["default"])(this, Table);
 	              this._rows = [];
 	              this._headers = {};
-	              this._rowKeyColumnIndex = 0;
+	              this._rowKeyColumnIndex = 0; // the key, i.e. id
+
 	              if (_util["default"].isPromise(data)) {
 	                throw new Error('Data cannot be a Promise');
 	              }
@@ -14634,6 +14635,26 @@ var Spyral = (function () {
 	                return config && 'noHeaders' in config && config.noHeaders ? '' : this.headers(true).join('\t') + '\n' + this._rows.map(function (row) {
 	                  return row.join('\t');
 	                }).join('\n');
+	              }
+	              /**
+	               * Get an array of the rows of the Table.
+	               * @param {Boolean} [rowsAsObjects=false] If true, each row will be returned as an object with the headers as keys
+	               * @returns {Array}
+	               */
+	            }, {
+	              key: "toArray",
+	              value: function toArray() {
+	                var rowsAsObjects = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	                if (!rowsAsObjects) return this.rows(true);else {
+	                  var headers = this.headers(true);
+	                  return this.rows(true).map(function (row) {
+	                    var rowObj = {};
+	                    row.forEach(function (cell, col) {
+	                      rowObj[headers[col]] = cell;
+	                    });
+	                    return rowObj;
+	                  });
+	                }
 	              }
 	              /**
 	               * Set the target's contents to an HTML representation of the Table
