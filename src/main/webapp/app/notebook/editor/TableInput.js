@@ -275,8 +275,8 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 			var inputVarName = activeItem.down('combo').getRawValue();
 			this.setValue(inputVarName);
 			if (inputVarName !== '') {
-				var val = varName+'=new Spyral.Table('+inputVarName+')';
-				dfd.resolve(val);
+				var code = `${varName}=${inputVarName} instanceof Spyral.Table ? ${inputVarName} : new Spyral.Table(${inputVarName})`;
+				dfd.resolve(code);
 			} else {
 				dfd.reject('No variable specified!');
 			}
