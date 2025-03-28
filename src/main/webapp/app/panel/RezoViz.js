@@ -320,13 +320,19 @@ Ext.define('Voyant.panel.RezoViz', {
 	},
 
 	preloadEntities: function() {
+		var types = this.getApiParam('type');
+		if (this.getApiParam('nerService') === 'spacy') {
+			types = types.map(function(type) {
+				return Voyant.data.util.DocumentEntities.getSpacyTypesFromStanfordType(type);
+			}, this).flat();
+			this.setApiParam('type', types);
+		}
 		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')});
 	},
 
 	getEntities: function() {
 		this.down('voyantnetworkgraph').resetGraph();
 
-		var corpusId = this.getCorpus().getId();
 		var el = this.getLayout().getRenderTarget();
 		el.mask(this.localize('loadingEntities'));
 
@@ -390,10 +396,14 @@ Ext.define('Voyant.panel.RezoViz', {
 		for (var i = 0; i < nodes.length; i++) {
 			var n = nodes[i];
 
+			var type = n.type;
+			if (this.getApiParam('nerService') === 'spacy') {
+				type = Voyant.data.util.DocumentEntities.getStanfordTypeFromSpacyType(n.type);
+			}
 			visNodes.push({
 				term: n.term,
 				title: n.term + ' ('+n.rawFreq+')',
-				type: n.type,
+				type: type,
 				value: n.rawFreq,
 				fixed: false,
 				x: cX,

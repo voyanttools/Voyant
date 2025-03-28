@@ -16,6 +16,58 @@ Ext.define('Voyant.data.util.DocumentEntities', {
 			statusQueued: 'Queued',
 			statusStarted: 'Started',
 			status413: 'Your document is too large for this service'
+		},
+
+		getStanfordTypeFromSpacyType(spacyType) {
+			//	DATE - Absolute or relative dates or periods
+			//	PERSON - People, including fictional
+			//	GPE - Countries, cities, states
+			//	LOC - Non-GPE locations, mountain ranges, bodies of water
+			//	MONEY - Monetary values, including unit
+			//	TIME - Times smaller than a day
+			//	PRODUCT - Objects, vehicles, foods, etc. (not services)
+			//	CARDINAL - Numerals that do not fall under another type
+			//	ORDINAL - "first", "second", etc.
+			//	QUANTITY - Measurements, as of weight or distance
+			//	EVENT - Named hurricanes, battles, wars, sports events, etc.
+			//	FAC - Buildings, airports, highways, bridges, etc.
+			//	LANGUAGE - Any named language
+			//	LAW - Named documents made into laws.
+			//	NORP - Nationalities or religious or political groups
+			//	PERCENT - Percentage, including "%"
+			//	WORK_OF_ART - Titles of books, songs, etc.
+			switch (spacyType.toLowerCase()) {
+				case "gpe":
+				case "loc":
+					return "location";
+				case "norp":
+					return "organization";
+				case "product":
+				case "cardinal":
+				case "ordinal":
+				case "quantity":
+				case "event":
+				case "fac":
+				case "language":
+				case "law":
+				case "work_of_art":
+					return "misc";
+				default:
+					return spacyType.toLowerCase();
+			}
+		},
+		
+		getSpacyTypesFromStanfordType(stanfordType) {
+			switch (stanfordType.toLowerCase()) {
+				case "location":
+					return ["loc", "gpe"];
+				case "organization":
+					return "norp";
+				case "misc":
+					return ["product","cardinal","ordinal","quantity","event","fac","language","law","work_of_art"];
+				default:
+					return stanfordType.toLowerCase();
+			}
 		}
 	},
 
