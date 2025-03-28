@@ -179,14 +179,15 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		this.lastEntry = undefined;
 		this.lastMember = undefined;
 
-		var html = '<p>'+this.localize('outlineIntro')+'</p>';
-			
 		this.up().setTitle(this.localize('docs')+' '+this.localize('home'));
 		this.down('#overviewBtn').hide();
 		this.down('#methodsBtn').hide();
 		this.down('#configsBtn').hide();
 
+		var html = '<p>'+this.localize('outlineIntro')+'</p>';
 		this._setHtmlForCard('main', html);
+
+		this.up().show().expand();
 
 		this.body.scrollTo('top', 0, false);
 	},
@@ -199,6 +200,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		} else if (link.indexOf('tutorial') === 0 || rel === 'help') {
 			window.open(this.fullDocsUrl+link, '_spyral_docs');
 		} else {
+			this.up().show().expand();
 			this.loadDocsEntry(link);
 		}
 	},

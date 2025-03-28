@@ -1103,17 +1103,10 @@ Ext.define('Voyant.notebook.Notebook', {
 	},
 
 	showDocs: function() {
-		this.getComponent('docsContainer').show().expand();
 		this.docsPanel.showDocs();
 	},
 
-	showDocsForClassMethod: function(docClass, docMethod) {
-		this.getComponent('docsContainer').show().expand();
-		this.docsPanel.showDocsForClassMethod(docClass, docMethod);
-	},
-
 	handleDocLink: function(link) {
-		this.getComponent('docsContainer').show().expand();
 		this.docsPanel.handleDocLink(link);
 	}
 });
