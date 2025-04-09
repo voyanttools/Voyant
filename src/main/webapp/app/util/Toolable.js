@@ -719,9 +719,11 @@ Ext.define('Voyant.util.Toolable', {
 			return btoa(encodeURIComponent(str)).replace(/=/g, "%3D");
 		}
 		let input = "['<h1>Spyral Notebook Imported from Voyant Tools</h1>',"+
-			"'<p>The proceeding code loads your corpus and tool. You can use this as a base to create your own notebook. Don\\'t forget to save your changes by clicking on the cloud icon!</p>','"+
-			'loadCorpus("'+this.getApplication().getCorpus().getAliasOrId()+'").tool("'+
-			(toolForUrl=="VoyantHeader" ? "" : toolForUrl)+'"'+(Object.keys(api).length>0 ? (","+Ext.encode(api)) : "")+ ");']"
+			"'<p>The proceeding code cells load your corpus, assign it to a variable, and then load your tool. You can use this as a base to create your own notebook.</p><p>Don\\'t forget to save your changes by clicking on the cloud icon!</p>','"+
+			'loadCorpus("'+this.getApplication().getCorpus().getAliasOrId()+'").assign("myCorpus");\',\''+
+			'myCorpus.tool("'+
+			(toolForUrl=="VoyantHeader" ? "" : toolForUrl)+'"'+(Object.keys(api).length>0 ? (","+Ext.encode(api)) : "")+
+			");']"
 		this.openUrl(this.getApplication().getBaseUrl()+"spyral/?run=true&"+(isDebug ? "debug=true&" : "")+"inputJsonArrayOfEncodedBase64="+enc(input));
 	},
 	exportGridCurrentJson: function(grid, form) {
