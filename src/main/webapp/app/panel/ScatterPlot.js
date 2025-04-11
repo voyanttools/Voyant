@@ -168,7 +168,8 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	termStore: null,
     	chartMenu: null,
     	newTerm: null,
-    	termsTimeout: null,
+    	termsLimitTimeout: null,
+		ignoreTermsLimitChange: false,
     	highlightData: {x: 0, y: 0, r: 0},
         highlightTask: null
 	},
@@ -340,17 +341,17 @@ Ext.define('Voyant.panel.ScatterPlot', {
         			xtype: 'numberfield',
         			minValue: 5,
         			listeners: {
-        				change: function(numb, newValue, oldValue) {
+        				change: function(cmp, newValue, oldValue) {
         					function doLoad() {
         						this.setApiParam('limit', newValue);
             					this.loadFromApis();
 							}
-							if (oldValue !== null) {
-								if (this.getTermsTimeout() !== null) {
-									clearTimeout(this.getTermsTimeout());
+							if (this.getIgnoreTermsLimitChange() === false) {
+								if (this.getTermsLimitTimeout() !== null) {
+									clearTimeout(this.getTermsLimitTimeout());
 								}
-								if (numb.isValid()) {
-									this.setTermsTimeout(setTimeout(doLoad.bind(this), 500));
+								if (cmp.isValid()) {
+									this.setTermsLimitTimeout(setTimeout(doLoad.bind(this), 500));
 								}
 							}
         				},
@@ -681,6 +682,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 		this.queryById('reloadButton').setVisible(analysis === 'tsne');
 		this.queryById('perplexity').setVisible(analysis === 'tsne');
 		this.queryById('iterations').setVisible(analysis === 'tsne');
+		this.queryById('limit').setDisabled(analysis === 'docSim');
 		if (analysis === 'ca') {
 			// TODO handling for when there's no corpus
 			if (this.getCorpus().getDocumentsCount() == 3) {
@@ -770,10 +772,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
         var maxFill = 0;
         var minFill = Number.MAX_VALUE;
         
-        
-        if (this.getApiParam('analysis') !== 'docSim') { // docSim doesn't return terms so keep the current ones
-	        this.getTermStore().removeAll();
-        }
+		this.getTermStore().removeAll();
 	        
         var tokens = rec.getTokens();
         var termData = [];
@@ -822,10 +821,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
         	}
         }, this);
         
-        var newCount = this.getTermStore().getCount();
-        this.queryById('limit').setRawValue(newCount);
-        this.setApiParam('limit', newCount);
-        
+        this.updateLimit();
         
     	var termSeriesStore = Ext.create('Ext.data.JsonStore', {
     		fields: ['term', 'x', 'y', 'z', 'rawFreq', 'relativeFreq', 'cluster', 'category', 'docIndex', 'disabled'],
@@ -1037,6 +1033,13 @@ Ext.define('Voyant.panel.ScatterPlot', {
         }
     },
 
+	updateLimit: function() {
+		var termCount = this.getCurrentTerms().length;
+		this.setIgnoreTermsLimitChange(true);
+        this.queryById('limit').setValue(termCount);
+		this.setIgnoreTermsLimitChange(false);
+        this.setApiParam('limit', termCount);
+	},
     
     getDefaultDocColor: function(returnHex) {
     	var color = this.getApplication().getColor(6, returnHex);
@@ -1212,8 +1215,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	index = this.getTermStore().findExact('term', term);
     	this.getTermStore().removeAt(index);
     	
-    	var newCount = this.getTermStore().getCount();
-        this.queryById('limit').setRawValue(newCount);
+    	this.updateLimit();
     },
     
     loadFromApis: function(keepCurrentTerms) {
@@ -1229,7 +1231,6 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		if (this.getNewTerm() !== null || keepCurrentTerms) {
     			params.query = terms.join(',');
     		}
-//    		params.term = terms;
     	}
     	Ext.apply(params, this.getApiParams());
     	if (params.target != null) {
