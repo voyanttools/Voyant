@@ -542,9 +542,24 @@ Ext.define('Voyant.panel.ScatterPlot', {
                     items: [{
                     	xtype: 'querysearchfield',
                     	itemId: 'addTerms',
-//                    	emptyText: this.localize('addTerm'),
+						multiSelect: false,
                     	flex: 1
-                    }]
+                    },{
+						xtype: 'button',
+						text: this.localize('addTerm'),
+						handler: function(btn) {
+							var queryField = this.queryById('addTerms');
+							var value = queryField.getValue();
+							if (value !== null && this.getTermStore().findExact('term', value) === -1) {
+								this.setNewTerm(value);
+								this.loadFromApis();
+							} else {
+								this.setNewTerm(null);
+							}
+							queryField.setValue('');
+						},
+						scope: this
+					}]
                 },
         		columns: [{
         			text: this.localize('term'),
@@ -599,14 +614,6 @@ Ext.define('Voyant.panel.ScatterPlot', {
         		listeners: {
         			expand: function(panel) {
         				panel.getView().refresh();
-        			},
-        			query: function(component, value) {
-        				if (value.length > 0 && this.getTermStore().findExact('term', value[0]) === -1) {
-	                		this.setNewTerm(value);
-	                		this.loadFromApis();
-    					} else {
-    						this.setNewTerm(null);
-    					}
         			},
         			scope: this
         		}
