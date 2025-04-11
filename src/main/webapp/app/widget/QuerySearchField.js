@@ -139,6 +139,13 @@ Ext.define('Voyant.widget.QuerySearchField', {
     	me.on("change", function(tags, queries) {
     		
     		if (!me.isClearing) {
+				// handling for multiSelect=false
+				if (queries === null) {
+					queries = [];
+				} else if (Ext.isArray(queries) === false) {
+					queries = [queries];
+				}
+				
 	    		queries = queries.map(function(query) {return query.replace(/^(\^?)\*/, "$1.*")});
 	    		me.up('panel').fireEvent("query", me, queries);
 	    		if (me.getClearOnQuery()) {
