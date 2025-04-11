@@ -1028,11 +1028,15 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	
     	this.doLabels();
     	
-    	if (this.getNewTerm() !== null) {
-        	this.selectTerm(this.getNewTerm()[0]);
-        	this.setNewTerm(null);
+		var newTerm = this.getNewTerm();
+    	if (newTerm !== null) {
+			setTimeout(function() {
+				this.selectTerm(newTerm);
+				this.setNewTerm(null);
+			}.bind(this), 0);
         }
     },
+
     
     getDefaultDocColor: function(returnHex) {
     	var color = this.getApplication().getColor(6, returnHex);
