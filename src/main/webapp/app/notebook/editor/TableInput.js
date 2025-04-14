@@ -322,9 +322,17 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 		return tableTsv;
 	},
 
+	getArray: function() {
+		var tableArray = undefined;
+		if (this.getTable()) {
+			tableArray = this.getTable().toArray(true);
+		}
+		return tableArray;
+	},
+
 	getInput: function() {
 		return {
-			table: this.getTSV(),
+			table: this.getArray(),
 			type: this.getType(),
 			value: this.getValue()
 		}
@@ -332,7 +340,7 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 
 	getBlob: function() {
 		var dfd = new Ext.Deferred();
-		dfd.resolve(this.getTSV());
+		dfd.resolve(this.getArray());
 		return dfd.promise;
 	}
 });
