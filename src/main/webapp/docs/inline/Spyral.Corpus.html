@@ -694,7 +694,8 @@ once the Corpus promise is fulfilled. It's equivalent to the following:</p>
 
     
     <div class="description">
-        <p>Returns an array of collocates (either document or corpus collocates, depending on the specified mode).</p>
+        <p>Returns an array of collocates (either document or corpus collocates, depending on the specified mode).
+Collocates are terms which appear more frequently in proximity to keywords across the corpus or document.</p>
 <p>The mode is set to "documents" when any of the following is true</p>
 <ul>
 <li>the <code>mode</code> parameter is set to "documents"</li>
@@ -730,7 +731,7 @@ once the Corpus promise is fulfilled. It's equivalent to the following:</p>
 <li><strong>stopList</strong>: a list of stopwords to include (see <a href="tutorial-stopwords.html">stopwords tutorial</a>)</li>
 <li><strong>collocatesWhitelist</strong>: collocates will be limited to this list</li>
 <li><strong>context</strong>: the size of the context (the number of words on each side of the keyword)</li>
-<li><strong>dir</strong>: sort direction, **<code>ASC</code>**ending or **<code>DESC</code>**ending</li>
+<li><strong>dir</strong>: sort direction, <code>ASC</code>ending or <code>DESC</code>ending</li>
 </ul>
 <p>The following are specific to corpus mode:</p>
 <ul>
