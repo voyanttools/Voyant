@@ -12092,6 +12092,7 @@ var Spyral = (function () {
 	              //	}
 	              /**
 	               * Returns an array of collocates (either document or corpus collocates, depending on the specified mode).
+	               * Collocates are terms which appear more frequently in proximity to keywords across the corpus or document.
 	               * 
 	               * The mode is set to "documents" when any of the following is true
 	               * 
@@ -12130,7 +12131,7 @@ var Spyral = (function () {
 	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               *  * **collocatesWhitelist**: collocates will be limited to this list
 	               *  * **context**: the size of the context (the number of words on each side of the keyword)
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	               * 
 	               * The following are specific to corpus mode:
 	               * 
@@ -12720,8 +12721,8 @@ var Spyral = (function () {
 	                            } // make sure we have object
 
 	                            // process width and height info
-	                            width = config['width'] !== undefined ? config['width'] + '' : '350';
-	                            height = config['height'] !== undefined ? config['height'] + '' : '350';
+	                            width = config['width'] !== undefined ? config['width'] + '' : '100%';
+	                            height = config['height'] !== undefined ? config['height'] + '' : '450';
 	                            if (width.search(/^\d+$/) === 0) width += 'px';
 	                            if (height.search(/^\d+$/) === 0) height += 'px';
 	                            if (config['style'] !== undefined) {
@@ -16021,37 +16022,42 @@ var Spyral = (function () {
 		show(error, {class: 'error'});
 	}
 
-	function _typeof(obj) {
+	function _classCallCheck(a, n) {
+	  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
+	}
+	function _defineProperties(e, r) {
+	  for (var t = 0; t < r.length; t++) {
+	    var o = r[t];
+	    o.enumerable = o.enumerable || false, o.configurable = true, "value" in o && (o.writable = true), Object.defineProperty(e, _toPropertyKey(o.key), o);
+	  }
+	}
+	function _createClass(e, r, t) {
+	  return _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+	    writable: false
+	  }), e;
+	}
+	function _toPrimitive(t, r) {
+	  if ("object" != typeof t || !t) return t;
+	  var e = t[Symbol.toPrimitive];
+	  if (undefined !== e) {
+	    var i = e.call(t, r);
+	    if ("object" != typeof i) return i;
+	    throw new TypeError("@@toPrimitive must return a primitive value.");
+	  }
+	  return (String )(t);
+	}
+	function _toPropertyKey(t) {
+	  var i = _toPrimitive(t, "string");
+	  return "symbol" == typeof i ? i : i + "";
+	}
+	function _typeof(o) {
 	  "@babel/helpers - typeof";
 
-	  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-	    _typeof = function (obj) {
-	      return typeof obj;
-	    };
-	  } else {
-	    _typeof = function (obj) {
-	      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-	    };
-	  }
-	  return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	}
-	function _defineProperties(target, props) {
-	  for (var i = 0; i < props.length; i++) {
-	    var descriptor = props[i];
-	    descriptor.enumerable = descriptor.enumerable || false;
-	    descriptor.configurable = true;
-	    if ("value" in descriptor) descriptor.writable = true;
-	    Object.defineProperty(target, descriptor.key, descriptor);
-	  }
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-	  _defineProperties(Constructor, staticProps);
-	  return Constructor;
+	  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+	    return typeof o;
+	  } : function (o) {
+	    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+	  }, _typeof(o);
 	}
 
 	/**
