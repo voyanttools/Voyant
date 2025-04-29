@@ -237,7 +237,7 @@ public class Trombone extends HttpServlet {
 //						resp.setContentType("application/json;charset=UTF-8");
 //					}
 //				}
-				IOUtils.copy(is, resp.getWriter());
+				IOUtils.copy(is, resp.getWriter(), "UTF-8");
 				resp.flushBuffer();
 			}
 			finally {
@@ -267,7 +267,7 @@ public class Trombone extends HttpServlet {
 				is = c.getInputStream();
 				//application/json
 				resp.setContentType("application/json;charset=UTF-8");
-				IOUtils.copy(is, resp.getWriter());
+				IOUtils.copy(is, resp.getWriter(), "UTF-8");
 				resp.flushBuffer();
 			}
 			finally {
@@ -336,7 +336,7 @@ public class Trombone extends HttpServlet {
 		if (parameters.getParameterValue("tool", "").equals("notebook.NotebookManager") && parameters.getParameterValue("action", "").equals("load") && parameters.getParameterValue("id","").trim().isEmpty()==false) {
 			File file = new File(getServletContext().getRealPath("/resources/spyral/notebooks"), parameters.getParameterValue("id")+".html");
 			if (file.exists()) {
-				String string = FileUtils.readFileToString(file);
+				String string = FileUtils.readFileToString(file, "UTF-8");
 				parameters.setParameter("data", string);
 				parameters.removeParameter("id"); // we can't overwrite this, so make sure to remove it
 			}
