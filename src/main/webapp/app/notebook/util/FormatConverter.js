@@ -166,15 +166,12 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 				+"<pre class='notebook-code-editor-raw editor-mode-"+content.mode+"'>"+content.input+"</pre>\n";
 
 				// code editor results
-				var output = content.output;
-				if (output === '') {
-					item.results.getResultsEl();
-				}
-				out += "<div class='notebook-code-results"+(content.expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
+				var expandResults = this._getHeightAwareExpandedResults(item, 300);
+				out += "<div class='notebook-code-results"+(expandResults ? '' : ' collapsed')+"'>\n"+content.output+"\n</div>\n";
 			}
 
 			out+="</section>\n"
-		})
+		}, this);
 		out += "</article>\n<footer class='spyral-footer'>"+this.getInnerFooterHtml()+"</footer>\n</body>\n</html>";
 		return out;
 	},
@@ -218,12 +215,16 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 				default:
 					type = 'text';
 			}
+			var content = item.getContent();
+			if (type !== 'text') {
+				content.expandResults = this._getHeightAwareExpandedResults(item, 300);
+			}
 			cells.push({
 				cellId: item.getCellId(),
 				type: type,
-				content: item.getContent()
+				content: content
 			});
-		});
+		}, this);
 
 		var json = {
 			metadata: this.getMetadata(),
@@ -233,6 +234,21 @@ Ext.define('Voyant.notebook.util.FormatConverter', {
 		return JSON.stringify(json);
 	},
 
+	// if the code editor results are the DataViewer and are too tall then keep them collapsed
+	_getHeightAwareExpandedResults: function(item, maxHeight) {
+		var expandResults = item.getContent().expandResults;
+		var resultsEl = item.results.getResultsEl();
+		if (resultsEl !== null) {
+			// check for DataViewer
+			if (item.results.getOutput().indexOf('"spyral-dv-container"') !== -1) {
+				var resultsHeight = item.results.getCachedResultsHeight();
+				if (isNaN(resultsHeight) === false && resultsHeight > maxHeight) {
+					expandResults = false;
+				}
+			}
+		}
+		return expandResults;
+	},
 
 	/*
 	 * Export dialog options below
