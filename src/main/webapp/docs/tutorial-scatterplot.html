@@ -72,10 +72,11 @@ dimensions (or components) represent the largest amount of variability in the da
 two or three dimensions, we will be left with a new data set which ideally contains most of the information in the
 original, but which is easy to visualize. In the resulting visualization, words that are grouped together are
 associated, i.e. they follow a similar usage in the corpus.</p>
-<p>Correspondence Analysis is also conceptually similar to PCA, but handles the data in such a way that both the rows and
+<p>Correspondence Analysis (CA) is also conceptually similar to PCA, but handles the data in such a way that both the rows and
 columns are analyzed. This means that given a table of word frequencies, both the words themselves and the document
 segments will be plotted in the resulting visualization.</p>
 <p>Document Similarity is essentially the same as Correspondence Analysis, but terms aren't shown in the graph.</p>
+<p>T-Distributed Stochastic Neighbor Embedding (t-SNE) analysis is another dimensionality reduction technique. Where PCA and CA use a linear approach, t-SNE is nonlinear. It is beyond the scope of this document to explain the differences, however this <a href="https://en.wikipedia.org/wiki/Dimensionality_reduction">Wikipedia article on dimensionality reduction</a> is a good starting point. Additionally, t-SNE is unique in that it will produce different results each time it is run. As the author of the algorithm Laurens van der Maaten <a href="https://lvdmaaten.github.io/tsne/">explains</a>: &quot;In contrast to, e.g., PCA, t-SNE has a non-convex objective function. The objective function is minimized using a gradient descent optimization that is initiated randomly. As a result, it is possible that different runs give you different solutions.&quot;</p>
 <p>The scatterplot is presented in the main display in the tool with a legend in the top left hand corner. Hovering over a
 word in the graph will display more information about the frequency of occurrence of that word.</p>
 <p>Above the main display is the primary toolbar and to the right of the display is sub-panel providing a list of words
@@ -85,7 +86,7 @@ that appear in the corpus as well as their frequencies.</p>
 <h2 id="options">Options</h2>
 <p>The toolbar mainly comprises options for tweaking and exploring the plotting of the graph.</p>
 <ul>
-<li><strong>Analysis</strong> allows the user to switch between plotting Document Similarity, Principal Component Analysis and Correspondence Analysis</li>
+<li><strong>Analysis</strong> allows the user to switch between plotting Document Similarity, Principal Component Analysis, Correspondence Analysis, and t-SNE.</li>
 <li><strong>Clusters</strong> allows the user to control the number of groups to cluster the words into. These clusters are determined automatically by the criteria of the analysis and words in a cluster would indicate a measure of similarity between words. Clusters of terms will appear as a single colour.</li>
 <li><strong>Dimensions</strong> allows the user to switch between two or three dimensions.</li>
 <li><strong>Labels</strong> allows the user to cycle through the label settings for the graph.</li>
