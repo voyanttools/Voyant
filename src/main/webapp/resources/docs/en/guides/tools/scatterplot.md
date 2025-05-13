@@ -38,6 +38,7 @@ that appear in the corpus as well as their frequencies.
 
 The toolbar mainly comprises options for tweaking and exploring the plotting of the graph.
 
+* **Frequencies** allows the user to switch between Raw (absolute count), Relative (count relative to document total), and [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).
 * **Analysis** allows the user to switch between plotting Document Similarity, Principal Component Analysis, Correspondence Analysis, and t-SNE.
 * **Clusters** allows the user to control the number of groups to cluster the words into. These clusters are determined automatically by the criteria of the analysis and words in a cluster would indicate a measure of similarity between words. Clusters of terms will appear as a single colour.
 * **Dimensions** allows the user to switch between two or three dimensions.
