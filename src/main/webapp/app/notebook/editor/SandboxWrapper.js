@@ -6,6 +6,8 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 		i18n: {
 			expandResults: 'Expand Results',
 			collapseResults: 'Collapse Results',
+			removeResults: 'Remove Results',
+			exportResults: 'Export Results',
 			viewWarnings: 'View Warning(s)',
 			generalWarning: 'Warning: {warningInfo}',
 			serializationWarning: 'The variable "{warningInfo}" cannot be passed between cells.',
@@ -98,6 +100,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					,{
 						itemId: 'exportButton',
 						glyph: 'xf08e@FontAwesome',
+						tooltip: this.localize('exportResults'),
 						handler: function(cmp) {
 							// hack to get the export menu item so we can pass it to the export window function
 							// TODO need a better way to do this
@@ -117,7 +120,7 @@ Ext.define("Voyant.notebook.editor.SandboxWrapper", {
 					}
 					,{
 						glyph: 'xf014@FontAwesome',
-						tooltip: 'Remove Results',
+						tooltip: this.localize('removeResults'),
 						handler: function() {
 							//this.resetResults();
 							this.clear();
