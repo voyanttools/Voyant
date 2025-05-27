@@ -118,6 +118,10 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		if (this.getShowServerMessage() === 'true') {
 			this.getServerMessage();
 		}
+		var doShowStorageMsg = Ext.util.Cookies.get('storageMsg');
+		if (doShowStorageMsg === null) {
+			this.showStorageMsg();
+		}
 		this.callParent(arguments);
 	},
 	getServerMessage: function() {
@@ -132,5 +136,31 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		.fail(function() {
 			console.log('failed to fetch server message')
 		});
+	},
+	showStorageMsg: function() {
+		var message = `<p>
+		The current Voyant Server has been in operation for three years now and our cached data is overflowing and starting to cause serious problems. Because of this, we have reluctantly decided to remove all datasets that have not been used in over a year.
+		</p><p>
+		Anytime a user accesses a resource, the "last access date" of that resource is reset to the current date. In order to guarantee that your resource is not deleted we ask that everyone simply load their Voyant Visualization or link in any web browser and click a few buttons to change something. This will reset the "last access date" for that resource and prevent it from being marked for deletion.
+		</p><p>
+		Moving forward, we have plans to implement a more robust system for Voyant Consortium members to be able to distinguish between temporary and permanent resources. Explanations about this new system will be shared with Consortium members and as part of our newsletter. However, until that feature is finished, we have no choice but to rely on file access dates to identify which resources are being used and which are not. Users of Voyant are encouraged to sign up for a free membership in the Consortium. (The Consortium site is at <a href="https://voyant-tools.info" target="_blank">voyant-tools.info</a>)</p>`;
+		var title = 'Attention!';
+		Ext.toast({
+			html: message,
+			title: title,
+			align: 'b',
+			width: '100%',
+			paddingY: 0,
+			shadow: 'frame',
+			autoClose: false,
+			buttonAlign: 'center',
+			buttons: [{
+				text: 'I understand',
+				handler: function(btn) {
+					Ext.util.Cookies.set('storageMsg', 'true', Ext.Date.add(new Date(), Ext.Date.YEAR, 1));
+					btn.up('window').close();
+				}
+			}]
+		})
 	}
 });
