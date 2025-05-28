@@ -936,9 +936,9 @@
         "type": "String",
         "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
       },
-      "whitelist": {
+      "whiteList": {
         "type": "String",
-        "doc": "TODO Unused or only used in CA?"
+        "doc": "A list of words to always include"
       },
       "label": {
         "type": "Array.<String>",
