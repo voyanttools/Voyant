@@ -139,9 +139,9 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {String} whitelist TODO Unused or only used in CA?
+			 * @property {String} whiteList A list of words to always include
 			 */
-    		whitelist: undefined,
+    		whiteList: undefined,
 
 			/**
 			 * @memberof Tools.ScatterPlot
@@ -160,7 +160,11 @@ Ext.define('Voyant.panel.ScatterPlot', {
 		glyph: 'xf06e@FontAwesome'
     },
 	config: {
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}],
+    	options: [
+			{xtype: 'stoplistoption'},
+			{xtype: 'listeditor', name: 'whiteList'},
+			{xtype: 'categoriesoption'}
+		],
     	caStore: null,
     	pcaStore: null,
     	tsneStore: null,
