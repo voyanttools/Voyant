@@ -87,9 +87,13 @@ Ext.define('Voyant.VoyantDefaultApp', {
 					layout: {
 						type: 'vbox',
 						pack: 'center',
-						align: 'center'
+						align: 'middle'
 					},
 					items: [{
+						xtype: 'container',
+						width: 800,
+						html: '<div id="voyantCorpusMessage" style="text-align: center; margin-top: -10px; margin-bottom: 10px;">Alert: We will be deleting unused corpora on August 15th. Check <a href="https://ggle.in/VoyantAlert" target="_blank">https://ggle.in/VoyantAlert</a> to learn more.</div>'
+					},{
 						xtype: 'corpuscreator'
 					},{
 						xtype: 'container',
@@ -103,8 +107,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 					},{
 						xtype: 'container',
 						width: 800,
-						html: ""+
-						"<div id='voyantServerMessage' style='font-style: italic; text-align: center; margin-top: 10px;'></div>"
+						html: "<div id='voyantServerMessage' style='font-style: italic; text-align: center; margin-top: 10px;'></div>"
 					}]	
 				},{
 					layout: 'fit',
@@ -117,6 +120,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		});
 		if (this.getShowServerMessage() === 'true') {
 			this.getServerMessage();
+		}
+		if (Ext.util.Cookies.get('storageMsg') === null) {
+			this.showStorageMsg();
 		}
 		this.callParent(arguments);
 	},
@@ -132,5 +138,29 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		.fail(function() {
 			console.log('failed to fetch server message')
 		});
+	},
+	showStorageMsg: function() {
+		var message = `<p><b style="font-weight: bold">Alert: Deleting Older Unused Corpora on Voyant Tools</b></p>
+		<p>We will be deleting all corpora that haven't been used in over a year on <b style="font-weight: bold">August 15th</b>.</p>
+		<p>Due to storage constraints on our server we have to delete unused corpora. If you don't want an older corpus deleted, load it in Voyant and click a few buttons to update its "last access date".<br/>For more information visit: <a href="https://ggle.in/VoyantAlert" target="_blank">https://ggle.in/VoyantAlert</a></p>
+		<p><b style="font-weight: bold">Warning: the corpora that we delete will be unrecoverable!</b></p>`;
+		var title = 'Attention!';
+		Ext.toast({
+			html: message,
+			title: title,
+			align: 'b',
+			width: '100%',
+			paddingY: 0,
+			shadow: 'frame',
+			autoClose: false,
+			buttonAlign: 'center',
+			buttons: [{
+				text: 'I understand',
+				handler: function(btn) {
+					Ext.util.Cookies.set('storageMsg', 'true', Ext.Date.add(new Date(), Ext.Date.YEAR, 1));
+					btn.up('window').close();
+				}
+			}]
+		})
 	}
 });
