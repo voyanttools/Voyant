@@ -7,8 +7,8 @@
 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.4.0/font-awesome-all.css" />
-<script src="<%= base %>/resources/jquery/current/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.7.0/font-awesome-all.css" />
+<script src="<%= base %>/resources/jquery/jquery.min.js"></script>
 <style>
 	body {
 		font-family: HelveticaNeue, helvetica, arial, clean, sans-serif;
