@@ -1,0 +1,29 @@
+{
+	"lastUpdate": "2021-11-15",
+	"servers": [{
+		"name": "Main Server",
+		"url": "https://voyant-tools.org/",
+		"check_url": "https://voyant-tools.org/",
+		"location": "Montreal, Canada",
+		"latlong": "45.5576136,-73.8533637",
+		"contact": "Stéfan Sinclair &amp; <a href='https://geoffreyrockwell.com' target='_blank'>Geoffrey Rockwell</a>"
+	},{
+		"name": "Beta (Auxiliary) Server",
+		"url": "https://beta.voyant-tools.org/",
+		"location": "Montreal, Canada",
+		"latlong": "45.5576136,-73.8533637",
+		"contact": "Stéfan Sinclair &amp; <a href='https://geoffreyrockwell.com' target='_blank'>Geoffrey Rockwell</a>"
+	},{
+		"name": "LINCS Project",
+		"url": "https://voyant.lincsproject.ca/",
+		"location": "Toronto, Canada",
+		"latlong": "43.6319,-79.3716",
+		"contact": ""
+	},{
+		"name": "South African Centre for Digital Language Resources (SADiLaR)",
+		"url": "https://service.sadilar.org/voyant/",
+		"location": "South Africa",
+		"latlong": "-26.7065869,27.2073277",
+		"contact": "<a href='mailto:Juan.Steyn@nwu.ac.za'>Juan Steyn</a>"
+	}]
+}
