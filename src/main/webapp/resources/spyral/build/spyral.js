@@ -15536,33 +15536,35 @@ var Spyral = (function () {
 		}
 
 		/**
-		 * Fetch and return the content of a notebook or a particular cell in a notebook
-		 * @param {string} url The URL of the notebook to import
+		 * Fetch and return the content of a notebook or a particular cell in a notebook.
+		 * All code and data cells from the imported notebook will have their functions and variables available for use.
+		 * One specific cell can be imported by providing the cellIndex, or by including the cellId in the URL, e.g. "learnspyral@gh/terms/#kwu44vrk".
+		 * @param {string} url The URL of the notebook to import. Can either be the full URL or a shortened version, e.g. "learnspyral@gh/terms"
 		 * @param {number} [cellIndex] The index of the cell to import
 		 * @static
 		 */
 		static async import(url, cellIndex=undefined) {
-			const urlHasHash = url.indexOf('#') !== -1;
-			const isAbsoluteUrl = url.indexOf('http') === 0;
-
 			let notebookId = '';
 			let cellId = undefined;
-			if (isAbsoluteUrl) {
-				const urlParts = url.match(/\/[\w-]+/g);
-				if (urlParts !== null) {
-					notebookId = urlParts[urlParts.length-1].replace('/', '');
+
+			if (url.indexOf('#') !== -1) {
+				[url, cellId] = url.split('#');
+			}
+			const urlParts = url.match(/\/?[\w@-]+/g);
+			if (urlParts !== null) {
+				if (urlParts.length === 1) {
+					notebookId = urlParts[0];
 				} else {
-					return;
-				}
-				if (urlHasHash) {
-					cellId = url.split('#')[1];
+					try {
+						let notebookName = urlParts[urlParts.length-1].replace('/', '');
+						let userId = urlParts[urlParts.length-2].replace('/', '');
+						notebookId = userId+'_'+notebookName;
+					} catch (e) {
+						throw new Error('There was an error importing the notebook. Please ensure the URL is correct.');
+					}
 				}
 			} else {
-				if (urlHasHash) {
-					[notebookId, cellId] = url.split('#');
-				} else {
-					notebookId = url;
-				}
+				notebookId = url;
 			}
 
 			let json;
@@ -15574,7 +15576,7 @@ var Spyral = (function () {
 					noCache: 1
 				});
 			} catch (e) {
-				throw new Error('There was an error importing the notebook. Please ensure the URL and ID are correct.');
+				throw new Error('There was an error importing the notebook. Please ensure the URL is correct.');
 			}
 
 			const notebook = JSON.parse(json.notebook.data);
