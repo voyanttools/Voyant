@@ -401,7 +401,7 @@
             
             <div class="container-source members">
                 <code><a href="src_main_webapp_resources_spyral_src_notebook.js.html">src/main/webapp/resources/spyral/src/notebook.js</a></code>,
-                <code><a href="src_main_webapp_resources_spyral_src_notebook.js.html#line50">line 50</a></code>
+                <code><a href="src_main_webapp_resources_spyral_src_notebook.js.html#line52">line 52</a></code>
             </div>
             
         </h4>
@@ -413,7 +413,9 @@
 
     
     <div class="description">
-        <p>Fetch and return the content of a notebook or a particular cell in a notebook</p>
+        <p>Fetch and return the content of a notebook or a particular cell in a notebook.
+All code and data cells from the imported notebook will have their functions and variables available for use.
+One specific cell can be imported by providing the cellIndex, or by including the cellId in the URL, e.g. &quot;learnspyral@gh/terms/#kwu44vrk&quot;.</p>
     </div>
     
 
@@ -476,7 +478,7 @@
 
             
 
-            <td class="description last"><p>The URL of the notebook to import</p></td>
+            <td class="description last"><p>The URL of the notebook to import. Can either be the full URL or a shortened version, e.g. &quot;learnspyral@gh/terms&quot;</p></td>
         </tr>
 
     

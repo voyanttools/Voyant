@@ -752,7 +752,7 @@
       },
       "import": {
         "!type": "fn(url: string, cellIndex?: number)",
-        "!doc": "Fetch and return the content of a notebook or a particular cell in a notebook",
+        "!doc": "Fetch and return the content of a notebook or a particular cell in a notebook.\nAll code and data cells from the imported notebook will have their functions and variables available for use.\nOne specific cell can be imported by providing the cellIndex, or by including the cellId in the URL, e.g. \"learnspyral@gh/terms/#kwu44vrk\".",
         "!url": "https://voyant-tools.org/Spyral.Notebook.html#.import"
       }
     },
