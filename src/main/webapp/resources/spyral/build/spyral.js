@@ -10767,6 +10767,8 @@ var Spyral = (function () {
 	            value: true
 	          });
 	          exports["default"] = undefined;
+	          var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+	          var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 	          var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 	          var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 	          var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -10926,6 +10928,44 @@ var Spyral = (function () {
 	               * @static
 	               */
 	            }, {
+	              key: "pie",
+	              /**
+	               * Create a pie chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function pie() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.pie(this.target, config);
+	              }
+	              /**
+	               * Create a pie chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "polar",
+	              /**
+	               * Create a polar chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function polar() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.polar(this.target, config);
+	              }
+	              /**
+	               * Create a polar chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
 	              key: "scatter",
 	              /**
 	               * Create a scatter plot
@@ -10953,6 +10993,7 @@ var Spyral = (function () {
 	               */
 	              value: function networkgraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
 	                return Chart.networkgraph(this.target, config);
 	              }
 	              /**
@@ -10960,6 +11001,234 @@ var Spyral = (function () {
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {NetworkGraph~Config} config 
 	               * @returns {NetworkGraph}
+	               * @static
+	               */
+	            }, {
+	              key: "arcdiagram",
+	              /**
+	               * Create an arc-diagram chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function arcdiagram() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.arcdiagram(this.target, config);
+	              }
+	              /**
+	               * Create an arc-diagram chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "dependencywheel",
+	              /**
+	               * Create a dependency wheel chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function dependencywheel() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.dependencywheel(this.target, config);
+	              }
+	              /**
+	               * Create a dependency wheel chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "dumbbell",
+	              /**
+	               * Create a dumbbell chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function dumbbell() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.dumbbell(this.target, config);
+	              }
+	              /**
+	               * Create a dumbbell chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "heatmap",
+	              /**
+	               * Create a heatmap chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function heatmap() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.heatmap(this.target, config);
+	              }
+	              /**
+	               * Create a heatmap chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "histogram",
+	              /**
+	               * Create a histogram chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function histogram() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.histogram(this.target, config);
+	              }
+	              /**
+	               * Create a histogram chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "item",
+	              /**
+	               * Create an item chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function item() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.item(this.target, config);
+	              }
+	              /**
+	               * Create an item chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "map",
+	              /**
+	               * Create a map chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function map() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.map(this.target, config);
+	              }
+	              /**
+	               * Create a map chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "sankey",
+	              /**
+	               * Create a sankey chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function sankey() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.sankey(this.target, config);
+	              }
+	              /**
+	               * Create a sankey chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "streamgraph",
+	              /**
+	               * Create a streamgraph chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function streamgraph() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.streamgraph(this.target, config);
+	              }
+	              /**
+	               * Create a streamgraph chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "sunburst",
+	              /**
+	               * Create a sunburst chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function sunburst() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.sunburst(this.target, config);
+	              }
+	              /**
+	               * Create a sunburst chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "treegraph",
+	              /**
+	               * Create a treegraph chart
+	               * @param {*} config 
+	               * @returns 
+	               */
+	              value: function treegraph() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.treegraph(this.target, config);
+	              }
+	              /**
+	               * Create a treegraph chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
+	               * @static
+	               */
+	            }, {
+	              key: "treemap",
+	              /**
+	               * Create a treemap chart
+	               * @param {Spyral.Chart~HighchartsConfig} [config]
+	               * @returns {Highcharts.Chart}
+	               */
+	              value: function treemap() {
+	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	                Chart.setSeriesData(config, this.data);
+	                return Chart.treemap(this.target, config);
+	              }
+	              /**
+	               * Create a treemap chart
+	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
 	               * @static
 	               */
 	            }], [{
@@ -11121,24 +11390,415 @@ var Spyral = (function () {
 	                return Highcharts.chart(target, config);
 	              }
 	            }, {
-	              key: "scatter",
-	              value: function scatter(target, config) {
+	              key: "pie",
+	              value: function pie(target, config) {
 	                var _Chart$_handleTargetA11 = Chart._handleTargetAndConfig(target, config);
 	                var _Chart$_handleTargetA12 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA11, 2);
 	                target = _Chart$_handleTargetA12[0];
 	                config = _Chart$_handleTargetA12[1];
+	                Chart._setDefaultChartType(config, 'pie');
+	                return Highcharts.chart(target, config);
+	              }
+	            }, {
+	              key: "polar",
+	              value: function polar(target, config) {
+	                var _Chart$_handleTargetA13 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA14 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA13, 2);
+	                target = _Chart$_handleTargetA14[0];
+	                config = _Chart$_handleTargetA14[1];
+	                Chart._setDefaultChartType(config, 'polar');
+	                return Highcharts.chart(target, config);
+	              }
+	            }, {
+	              key: "scatter",
+	              value: function scatter(target, config) {
+	                var _Chart$_handleTargetA15 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA16 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA15, 2);
+	                target = _Chart$_handleTargetA16[0];
+	                config = _Chart$_handleTargetA16[1];
 	                Chart._setDefaultChartType(config, 'scatter');
 	                return Highcharts.chart(target, config);
 	              }
 	            }, {
 	              key: "networkgraph",
 	              value: function networkgraph(target, config) {
-	                var _Chart$_handleTargetA13 = Chart._handleTargetAndConfig(target, config);
-	                var _Chart$_handleTargetA14 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA13, 2);
-	                target = _Chart$_handleTargetA14[0];
-	                config = _Chart$_handleTargetA14[1];
+	                var _Chart$_handleTargetA17 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA18 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA17, 2);
+	                target = _Chart$_handleTargetA18[0];
+	                config = _Chart$_handleTargetA18[1];
 	                return new _networkgraph["default"](target, config);
 	              }
+	            }, {
+	              key: "_loadHighchartsModule",
+	              value: function _loadHighchartsModule(moduleName) {
+	                return _util["default"].loadScript("../resources/highcharts/11/modules/".concat(moduleName, ".js"));
+	              }
+	            }, {
+	              key: "arcdiagram",
+	              value: function () {
+	                var _arcdiagram = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee(target, config) {
+	                  var _Chart$_handleTargetA19, _Chart$_handleTargetA20;
+	                  return _regenerator["default"].wrap(function _callee$(_context) {
+	                    while (1) {
+	                      switch (_context.prev = _context.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA19 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA20 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA19, 2);
+	                          target = _Chart$_handleTargetA20[0];
+	                          config = _Chart$_handleTargetA20[1];
+	                          Chart._setDefaultChartType(config, 'arcdiagram');
+	                          _context.next = 7;
+	                          return Chart._loadHighchartsModule('arc-diagram');
+	                        case 7:
+	                          return _context.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context.stop();
+	                      }
+	                    }
+	                  }, _callee);
+	                }));
+	                function arcdiagram(_x, _x2) {
+	                  return _arcdiagram.apply(this, arguments);
+	                }
+	                return arcdiagram;
+	              }()
+	            }, {
+	              key: "dependencywheel",
+	              value: function () {
+	                var _dependencywheel = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee2(target, config) {
+	                  var _Chart$_handleTargetA21, _Chart$_handleTargetA22;
+	                  return _regenerator["default"].wrap(function _callee2$(_context2) {
+	                    while (1) {
+	                      switch (_context2.prev = _context2.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA21 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA22 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA21, 2);
+	                          target = _Chart$_handleTargetA22[0];
+	                          config = _Chart$_handleTargetA22[1];
+	                          Chart._setDefaultChartType(config, 'dependencywheel');
+	                          _context2.next = 7;
+	                          return Chart._loadHighchartsModule('sankey');
+	                        case 7:
+	                          _context2.next = 9;
+	                          return Chart._loadHighchartsModule('dependency-wheel');
+	                        case 9:
+	                          return _context2.abrupt("return", Highcharts.chart(target, config));
+	                        case 10:
+	                        case "end":
+	                          return _context2.stop();
+	                      }
+	                    }
+	                  }, _callee2);
+	                }));
+	                function dependencywheel(_x3, _x4) {
+	                  return _dependencywheel.apply(this, arguments);
+	                }
+	                return dependencywheel;
+	              }()
+	            }, {
+	              key: "dumbbell",
+	              value: function () {
+	                var _dumbbell = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee3(target, config) {
+	                  var _Chart$_handleTargetA23, _Chart$_handleTargetA24;
+	                  return _regenerator["default"].wrap(function _callee3$(_context3) {
+	                    while (1) {
+	                      switch (_context3.prev = _context3.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA23 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA24 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA23, 2);
+	                          target = _Chart$_handleTargetA24[0];
+	                          config = _Chart$_handleTargetA24[1];
+	                          Chart._setDefaultChartType(config, 'dumbbell');
+	                          _context3.next = 7;
+	                          return Chart._loadHighchartsModule('dumbbell');
+	                        case 7:
+	                          return _context3.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context3.stop();
+	                      }
+	                    }
+	                  }, _callee3);
+	                }));
+	                function dumbbell(_x5, _x6) {
+	                  return _dumbbell.apply(this, arguments);
+	                }
+	                return dumbbell;
+	              }()
+	            }, {
+	              key: "heatmap",
+	              value: function () {
+	                var _heatmap = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee4(target, config) {
+	                  var _Chart$_handleTargetA25, _Chart$_handleTargetA26;
+	                  return _regenerator["default"].wrap(function _callee4$(_context4) {
+	                    while (1) {
+	                      switch (_context4.prev = _context4.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA25 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA26 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA25, 2);
+	                          target = _Chart$_handleTargetA26[0];
+	                          config = _Chart$_handleTargetA26[1];
+	                          Chart._setDefaultChartType(config, 'heatmap');
+	                          _context4.next = 7;
+	                          return Chart._loadHighchartsModule('heatmap');
+	                        case 7:
+	                          return _context4.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context4.stop();
+	                      }
+	                    }
+	                  }, _callee4);
+	                }));
+	                function heatmap(_x7, _x8) {
+	                  return _heatmap.apply(this, arguments);
+	                }
+	                return heatmap;
+	              }()
+	            }, {
+	              key: "histogram",
+	              value: function () {
+	                var _histogram = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee5(target, config) {
+	                  var _Chart$_handleTargetA27, _Chart$_handleTargetA28;
+	                  return _regenerator["default"].wrap(function _callee5$(_context5) {
+	                    while (1) {
+	                      switch (_context5.prev = _context5.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA27 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA28 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA27, 2);
+	                          target = _Chart$_handleTargetA28[0];
+	                          config = _Chart$_handleTargetA28[1];
+	                          Chart._setDefaultChartType(config, 'histogram');
+	                          _context5.next = 7;
+	                          return Chart._loadHighchartsModule('histogram-bellcurve');
+	                        case 7:
+	                          return _context5.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context5.stop();
+	                      }
+	                    }
+	                  }, _callee5);
+	                }));
+	                function histogram(_x9, _x10) {
+	                  return _histogram.apply(this, arguments);
+	                }
+	                return histogram;
+	              }()
+	            }, {
+	              key: "item",
+	              value: function () {
+	                var _item = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee6(target, config) {
+	                  var _Chart$_handleTargetA29, _Chart$_handleTargetA30;
+	                  return _regenerator["default"].wrap(function _callee6$(_context6) {
+	                    while (1) {
+	                      switch (_context6.prev = _context6.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA29 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA30 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA29, 2);
+	                          target = _Chart$_handleTargetA30[0];
+	                          config = _Chart$_handleTargetA30[1];
+	                          Chart._setDefaultChartType(config, 'item');
+	                          _context6.next = 7;
+	                          return Chart._loadHighchartsModule('item-series');
+	                        case 7:
+	                          return _context6.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context6.stop();
+	                      }
+	                    }
+	                  }, _callee6);
+	                }));
+	                function item(_x11, _x12) {
+	                  return _item.apply(this, arguments);
+	                }
+	                return item;
+	              }()
+	            }, {
+	              key: "map",
+	              value: function () {
+	                var _map = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee7(target, config) {
+	                  var _Chart$_handleTargetA31, _Chart$_handleTargetA32;
+	                  return _regenerator["default"].wrap(function _callee7$(_context7) {
+	                    while (1) {
+	                      switch (_context7.prev = _context7.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA31 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA32 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA31, 2);
+	                          target = _Chart$_handleTargetA32[0];
+	                          config = _Chart$_handleTargetA32[1];
+	                          Chart._setDefaultChartType(config, 'map');
+	                          _context7.next = 7;
+	                          return Chart._loadHighchartsModule('map');
+	                        case 7:
+	                          return _context7.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context7.stop();
+	                      }
+	                    }
+	                  }, _callee7);
+	                }));
+	                function map(_x13, _x14) {
+	                  return _map.apply(this, arguments);
+	                }
+	                return map;
+	              }()
+	            }, {
+	              key: "sankey",
+	              value: function () {
+	                var _sankey = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee8(target, config) {
+	                  var _Chart$_handleTargetA33, _Chart$_handleTargetA34;
+	                  return _regenerator["default"].wrap(function _callee8$(_context8) {
+	                    while (1) {
+	                      switch (_context8.prev = _context8.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA33 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA34 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA33, 2);
+	                          target = _Chart$_handleTargetA34[0];
+	                          config = _Chart$_handleTargetA34[1];
+	                          Chart._setDefaultChartType(config, 'sankey');
+	                          _context8.next = 7;
+	                          return Chart._loadHighchartsModule('sankey');
+	                        case 7:
+	                          return _context8.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context8.stop();
+	                      }
+	                    }
+	                  }, _callee8);
+	                }));
+	                function sankey(_x15, _x16) {
+	                  return _sankey.apply(this, arguments);
+	                }
+	                return sankey;
+	              }()
+	            }, {
+	              key: "streamgraph",
+	              value: function () {
+	                var _streamgraph = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee9(target, config) {
+	                  var _Chart$_handleTargetA35, _Chart$_handleTargetA36;
+	                  return _regenerator["default"].wrap(function _callee9$(_context9) {
+	                    while (1) {
+	                      switch (_context9.prev = _context9.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA35 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA36 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA35, 2);
+	                          target = _Chart$_handleTargetA36[0];
+	                          config = _Chart$_handleTargetA36[1];
+	                          Chart._setDefaultChartType(config, 'streamgraph');
+	                          _context9.next = 7;
+	                          return Chart._loadHighchartsModule('streamgraph');
+	                        case 7:
+	                          return _context9.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context9.stop();
+	                      }
+	                    }
+	                  }, _callee9);
+	                }));
+	                function streamgraph(_x17, _x18) {
+	                  return _streamgraph.apply(this, arguments);
+	                }
+	                return streamgraph;
+	              }()
+	            }, {
+	              key: "sunburst",
+	              value: function () {
+	                var _sunburst = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee10(target, config) {
+	                  var _Chart$_handleTargetA37, _Chart$_handleTargetA38;
+	                  return _regenerator["default"].wrap(function _callee10$(_context10) {
+	                    while (1) {
+	                      switch (_context10.prev = _context10.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA37 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA38 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA37, 2);
+	                          target = _Chart$_handleTargetA38[0];
+	                          config = _Chart$_handleTargetA38[1];
+	                          Chart._setDefaultChartType(config, 'sunburst');
+	                          _context10.next = 7;
+	                          return Chart._loadHighchartsModule('sunburst');
+	                        case 7:
+	                          return _context10.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context10.stop();
+	                      }
+	                    }
+	                  }, _callee10);
+	                }));
+	                function sunburst(_x19, _x20) {
+	                  return _sunburst.apply(this, arguments);
+	                }
+	                return sunburst;
+	              }()
+	            }, {
+	              key: "treegraph",
+	              value: function () {
+	                var _treegraph = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee11(target, config) {
+	                  var _Chart$_handleTargetA39, _Chart$_handleTargetA40;
+	                  return _regenerator["default"].wrap(function _callee11$(_context11) {
+	                    while (1) {
+	                      switch (_context11.prev = _context11.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA39 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA40 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA39, 2);
+	                          target = _Chart$_handleTargetA40[0];
+	                          config = _Chart$_handleTargetA40[1];
+	                          Chart._setDefaultChartType(config, 'treegraph');
+	                          _context11.next = 7;
+	                          return Chart._loadHighchartsModule('treemap');
+	                        case 7:
+	                          _context11.next = 9;
+	                          return Chart._loadHighchartsModule('treegraph');
+	                        case 9:
+	                          return _context11.abrupt("return", Highcharts.chart(target, config));
+	                        case 10:
+	                        case "end":
+	                          return _context11.stop();
+	                      }
+	                    }
+	                  }, _callee11);
+	                }));
+	                function treegraph(_x21, _x22) {
+	                  return _treegraph.apply(this, arguments);
+	                }
+	                return treegraph;
+	              }()
+	            }, {
+	              key: "treemap",
+	              value: function () {
+	                var _treemap = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee12(target, config) {
+	                  var _Chart$_handleTargetA41, _Chart$_handleTargetA42;
+	                  return _regenerator["default"].wrap(function _callee12$(_context12) {
+	                    while (1) {
+	                      switch (_context12.prev = _context12.next) {
+	                        case 0:
+	                          _Chart$_handleTargetA41 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA42 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA41, 2);
+	                          target = _Chart$_handleTargetA42[0];
+	                          config = _Chart$_handleTargetA42[1];
+	                          Chart._setDefaultChartType(config, 'treemap');
+	                          _context12.next = 7;
+	                          return Chart._loadHighchartsModule('treemap');
+	                        case 7:
+	                          return _context12.abrupt("return", Highcharts.chart(target, config));
+	                        case 8:
+	                        case "end":
+	                          return _context12.stop();
+	                      }
+	                    }
+	                  }, _callee12);
+	                }));
+	                function treemap(_x23, _x24) {
+	                  return _treemap.apply(this, arguments);
+	                }
+	                return treemap;
+	              }()
 	            }]);
 	            return Chart;
 	          }();
@@ -11147,11 +11807,13 @@ var Spyral = (function () {
 	        }, {
 	          "./networkgraph": 23,
 	          "./util.js": 25,
+	          "@babel/runtime/helpers/asyncToGenerator": 4,
 	          "@babel/runtime/helpers/classCallCheck": 5,
 	          "@babel/runtime/helpers/createClass": 7,
 	          "@babel/runtime/helpers/interopRequireDefault": 9,
 	          "@babel/runtime/helpers/slicedToArray": 14,
-	          "@babel/runtime/helpers/typeof": 15
+	          "@babel/runtime/helpers/typeof": 15,
+	          "@babel/runtime/regenerator": 17
 	        }],
 	        21: [function (require, module, exports) {
 
@@ -15258,6 +15920,26 @@ var Spyral = (function () {
 	                }
 	              }
 	              /**
+	               * Loads an external script for use with your notebook.
+	               * @param {String} scriptUrl The URL of the script to load.
+	               * @returns {Promise}
+	               */
+	            }, {
+	              key: "loadScript",
+	              value: function loadScript(scriptUrl) {
+	                return new Promise(function (resolve, reject) {
+	                  var scriptsEl = document.createElement('script');
+	                  scriptsEl.onload = function () {
+	                    resolve();
+	                  };
+	                  scriptsEl.onerror = function (oError) {
+	                    reject("The script ".concat(oError.target.src, " didn't load correctly."));
+	                  };
+	                  scriptsEl.setAttribute('src', scriptUrl);
+	                  document.body.appendChild(scriptsEl);
+	                });
+	              }
+	              /**
 	               * Returns true if the value is a String.
 	               * @param {*} val 
 	               * @returns {Boolean} 
@@ -16259,6 +16941,26 @@ var Spyral = (function () {
 	      } else {
 	        return null;
 	      }
+	    }
+	    /**
+	     * Loads an external script for use with your notebook.
+	     * @param {String} scriptUrl The URL of the script to load.
+	     * @returns {Promise}
+	     */
+	  }, {
+	    key: "loadScript",
+	    value: function loadScript(scriptUrl) {
+	      return new Promise(function (resolve, reject) {
+	        var scriptsEl = document.createElement('script');
+	        scriptsEl.onload = function () {
+	          resolve();
+	        };
+	        scriptsEl.onerror = function (oError) {
+	          reject("The script ".concat(oError.target.src, " didn't load correctly."));
+	        };
+	        scriptsEl.setAttribute('src', scriptUrl);
+	        document.body.appendChild(scriptsEl);
+	      });
 	    }
 	    /**
 	     * Returns true if the value is a String.
