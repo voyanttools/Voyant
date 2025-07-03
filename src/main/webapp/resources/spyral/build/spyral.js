@@ -11197,8 +11197,8 @@ var Spyral = (function () {
 	              key: "treegraph",
 	              /**
 	               * Create a treegraph chart
-	               * @param {*} config 
-	               * @returns 
+	               * @param {Spyral.Chart~HighchartsConfig} config 
+	               * @returns {Highcharts.Chart}
 	               */
 	              value: function treegraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
