@@ -823,6 +823,11 @@
         "!doc": "Takes an XML document and XSL stylesheet and returns the resulting transformation.",
         "!url": "https://voyant-tools.org/Spyral.Util.html#.transformXml"
       },
+      "loadScript": {
+        "!type": "fn(scriptUrl: string) -> +Promise",
+        "!doc": "Loads an external script for use with your notebook.",
+        "!url": "https://voyant-tools.org/Spyral.Util.html#.loadScript"
+      },
       "isString": {
         "!type": "fn(val: ?) -> boolean",
         "!doc": "Returns true if the value is a String.",
@@ -1039,6 +1044,16 @@
           "!doc": "Create a line chart",
           "!url": "https://voyant-tools.org/Spyral.Chart.html#line"
         },
+        "pie": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a pie chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#pie"
+        },
+        "polar": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a polar chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#polar"
+        },
         "scatter": {
           "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
           "!doc": "Create a scatter plot",
@@ -1048,6 +1063,66 @@
           "!type": "fn(config?: +Config) -> +NetworkGraph",
           "!doc": "Create a network graph",
           "!url": "https://voyant-tools.org/Spyral.Chart.html#networkgraph"
+        },
+        "arcdiagram": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create an arc-diagram chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#arcdiagram"
+        },
+        "dependencywheel": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a dependency wheel chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#dependencywheel"
+        },
+        "dumbbell": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a dumbbell chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#dumbbell"
+        },
+        "heatmap": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a heatmap chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#heatmap"
+        },
+        "histogram": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a histogram chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#histogram"
+        },
+        "item": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create an item chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#item"
+        },
+        "map": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a map chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#map"
+        },
+        "sankey": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a sankey chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#sankey"
+        },
+        "streamgraph": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a streamgraph chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#streamgraph"
+        },
+        "sunburst": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a sunburst chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#sunburst"
+        },
+        "treegraph": {
+          "!type": "fn(config: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a treegraph chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#treegraph"
+        },
+        "treemap": {
+          "!type": "fn(config?: +HighchartsConfig) -> +Highcharts.Chart",
+          "!doc": "Create a treemap chart",
+          "!url": "https://voyant-tools.org/Spyral.Chart.html#treemap"
         }
       },
       "!doc": "Construct a new Chart class",
@@ -1077,6 +1152,16 @@
         "!doc": "Create a line chart",
         "!url": "https://voyant-tools.org/Spyral.Chart.html#.line"
       },
+      "pie": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a pie chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.pie"
+      },
+      "polar": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a polar chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.polar"
+      },
       "scatter": {
         "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
         "!doc": "Create a scatter plot",
@@ -1086,6 +1171,66 @@
         "!type": "fn(target?: ?, config: +Config) -> +NetworkGraph",
         "!doc": "Create a network graph",
         "!url": "https://voyant-tools.org/Spyral.Chart.html#.networkgraph"
+      },
+      "arcdiagram": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create an arc-diagram chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.arcdiagram"
+      },
+      "dependencywheel": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a dependency wheel chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.dependencywheel"
+      },
+      "dumbbell": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a dumbbell chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.dumbbell"
+      },
+      "heatmap": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a heatmap chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.heatmap"
+      },
+      "histogram": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a histogram chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.histogram"
+      },
+      "item": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create an item chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.item"
+      },
+      "map": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a map chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.map"
+      },
+      "sankey": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a sankey chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.sankey"
+      },
+      "streamgraph": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a streamgraph chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.streamgraph"
+      },
+      "sunburst": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a sunburst chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.sunburst"
+      },
+      "treegraph": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a treegraph chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.treegraph"
+      },
+      "treemap": {
+        "!type": "fn(target?: ?, config: +HighchartsConfig) -> +Highcharts.Chart",
+        "!doc": "Create a treemap chart",
+        "!url": "https://voyant-tools.org/Spyral.Chart.html#.treemap"
       }
     },
     "Corpus": {
