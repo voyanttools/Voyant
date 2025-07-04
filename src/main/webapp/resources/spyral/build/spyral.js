@@ -11633,7 +11633,7 @@ var Spyral = (function () {
 	                          _context7.next = 7;
 	                          return Chart._loadHighchartsModule('map');
 	                        case 7:
-	                          return _context7.abrupt("return", Highcharts.chart(target, config));
+	                          return _context7.abrupt("return", Highcharts.mapChart(target, config));
 	                        case 8:
 	                        case "end":
 	                          return _context7.stop();
