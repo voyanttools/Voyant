@@ -11008,7 +11008,7 @@ var Spyral = (function () {
 	              /**
 	               * Create an arc-diagram chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function arcdiagram() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11019,7 +11019,7 @@ var Spyral = (function () {
 	               * Create an arc-diagram chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11027,7 +11027,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a dependency wheel chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function dependencywheel() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11038,7 +11038,7 @@ var Spyral = (function () {
 	               * Create a dependency wheel chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11046,7 +11046,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a dumbbell chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function dumbbell() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11057,7 +11057,7 @@ var Spyral = (function () {
 	               * Create a dumbbell chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11065,7 +11065,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a heatmap chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function heatmap() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11076,7 +11076,7 @@ var Spyral = (function () {
 	               * Create a heatmap chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11084,7 +11084,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a histogram chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function histogram() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11095,7 +11095,7 @@ var Spyral = (function () {
 	               * Create a histogram chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11103,7 +11103,7 @@ var Spyral = (function () {
 	              /**
 	               * Create an item chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function item() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11114,7 +11114,7 @@ var Spyral = (function () {
 	               * Create an item chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11122,7 +11122,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a map chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function map() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11133,7 +11133,7 @@ var Spyral = (function () {
 	               * Create a map chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11141,7 +11141,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a sankey chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function sankey() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11152,7 +11152,7 @@ var Spyral = (function () {
 	               * Create a sankey chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11160,7 +11160,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a streamgraph chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function streamgraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11171,7 +11171,7 @@ var Spyral = (function () {
 	               * Create a streamgraph chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11179,7 +11179,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a sunburst chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function sunburst() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11190,7 +11190,7 @@ var Spyral = (function () {
 	               * Create a sunburst chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11198,7 +11198,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a treegraph chart
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function treegraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11209,7 +11209,7 @@ var Spyral = (function () {
 	               * Create a treegraph chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }, {
@@ -11217,7 +11217,7 @@ var Spyral = (function () {
 	              /**
 	               * Create a treemap chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               */
 	              value: function treemap() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11228,7 +11228,7 @@ var Spyral = (function () {
 	               * Create a treemap chart
 	               * @param {(String|Element)} [target] An element or ID to use as the chart's target. If not specified, one will be created.
 	               * @param {Spyral.Chart~HighchartsConfig} config 
-	               * @returns {Highcharts.Chart}
+	               * @returns {Promise}
 	               * @static
 	               */
 	            }], [{
