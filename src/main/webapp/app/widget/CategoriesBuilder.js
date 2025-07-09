@@ -14,6 +14,22 @@ Ext.define('Voyant.categories.CategoriesOption', {
 		if (value !== 'auto') {
 			data.push({name: 'auto', value: 'auto'});
 		}
+		data.push({name: 'Harvard: Adjectives', value: 'categories.h_adjective'});
+		data.push({name: 'Harvard: Cognitive Orientation', value: 'categories.h_cognitive'});
+		data.push({name: 'Harvard: Communication', value: 'categories.h_communication'});
+		data.push({name: 'Harvard: Institutions', value: 'categories.h_institution'});
+		data.push({name: 'Harvard: Motivation', value: 'categories.h_motivation'});
+		data.push({name: 'Harvard: Objects', value: 'categories.h_object'});
+		data.push({name: 'Harvard: Over/Understatement', value: 'categories.h_overunderstate'});
+		data.push({name: 'Harvard: Places', value: 'categories.h_place'});
+		data.push({name: 'Harvard: Pleasure & Pain', value: 'categories.h_pleasurepain'});
+		data.push({name: 'Harvard: Positive & Negative', value: 'categories.h_posneg'});
+		data.push({name: 'Harvard: Processes', value: 'categories.h_process'});
+		data.push({name: 'Harvard: Pronouns', value: 'categories.h_pronoun'});
+		data.push({name: 'Harvard: Roles', value: 'categories.h_role'});
+		data.push({name: 'Harvard: Social', value: 'categories.h_social'});
+		data.push({name: 'Harvard: Verbs', value: 'categories.h_verb'});
+		data.push({name: 'Harvard: Yes & No', value: 'categories.h_yesno'});
 		
 		Ext.apply(this, {
     		layout: 'hbox',
