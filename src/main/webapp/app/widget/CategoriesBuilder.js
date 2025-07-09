@@ -109,6 +109,8 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 			increaseCategory: 'Increase Category Priority',
 			decreaseCategory: 'Decrease Category Priority',
 			setColorsFromPalette: 'Set Colors From Palette',
+			loadingCategories: 'Loading Categories',
+			errorLoadingCategories: 'Error loading Categories',
     		
     		color: 'Color',
     		font: 'Font',
@@ -285,6 +287,7 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 		                    overflowHandler: 'scroller',
 		                    items: [{
 								xtype: 'textfield',
+								itemId: 'categoryFilter',
 								fieldLabel: 'Category Filter',
 								labelAlign: 'right',
 								enableKeyEvents: true,
@@ -383,18 +386,24 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 			}],
 			listeners: {
 				show: function() {
+					this.down('tabpanel').setActiveTab(0);
+					this.queryById('categoryFilter').setValue('');
 					// check to see if the widget value is different from the API
-					if (this.getCategoriesId() && this.getCategoriesId() !== this.getApiParam("categories")) {
+					if (this.getCategoriesId() !== this.panel.getApiParam('categories')) {
+						this.queryById('categories').mask(this.localize('loadingCategories'));
 		    			this.app.loadCategoryData(this.getCategoriesId()).then(function(data) {
+							this.queryById('categories').unmask();
 							this.setColorTermsFromCategoryFeatures();
 							this.buildCategories();
 							this.buildFeatures();
+						}.bind(this), function(error) {
+							this.queryById('categories').unmask();
+							this.panel.showError(this.localize('errorLoadingCategories'));
 						}.bind(this));
 					} else {
 						this.buildCategories();
 						this.buildFeatures();
-					}					
-					this.down('tabpanel').setActiveTab(0);
+					}
 				},
 				afterrender: function(builder) {
 					builder.on('loadedCorpus', function(src, corpus) {
