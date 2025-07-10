@@ -68,6 +68,8 @@ Ext.define('Voyant.VoyantDefaultApp', {
 			xtype = 'corpusset'; // switch to default view
 		}
 
+		var isProd = this.getBaseUrl().indexOf('voyant-tools.org') !== -1;
+
 		this.viewport = Ext.create('Ext.container.Viewport', {
 		    layout: 'border',
 		    rtl: (this.getApiParam('rtl')!==undefined || Voyant.util.Localization.LANGUAGE=="ar" || Voyant.util.Localization.LANGUAGE=="he"),
@@ -92,6 +94,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 					items: [{
 						xtype: 'container',
 						width: 800,
+						hidden: !isProd,
 						html: '<div id="voyantCorpusMessage" style="text-align: center; margin-top: -10px; margin-bottom: 10px;">Alert: We will be deleting unused corpora on August 15th. Check <a href="https://ggle.in/VoyantAlert" target="_blank">https://ggle.in/VoyantAlert</a> to learn more.</div>'
 					},{
 						xtype: 'corpuscreator'
@@ -121,7 +124,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		if (this.getShowServerMessage() === 'true') {
 			this.getServerMessage();
 		}
-		if (Ext.util.Cookies.get('storageMsg') === null) {
+		if (isProd && Ext.util.Cookies.get('storageMsg') === null) {
 			this.showStorageMsg();
 		}
 		this.callParent(arguments);
