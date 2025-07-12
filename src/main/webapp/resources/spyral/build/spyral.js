@@ -11913,7 +11913,7 @@ var Spyral = (function () {
 	             * 
 	             * 	loadCorpus(["http://hermeneuti.ca/", "https://en.wikipedia.org/wiki/Voyant_Tools"]); // two documents from URLs
 	             * 
-	             * 	loadCorpus("Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
+	             * 	loadCorpus(["Hello Voyant!", "http://hermeneuti.ca/"]); // two documents, one from string and one from URL
 	             * 
 	             * 	loadCorpus("https://gist.githubusercontent.com/sgsinclair/84c9da05e9e142af30779cc91440e8c1/raw/goldbug.txt", {
 	             * 		inputRemoveUntil: 'THE GOLD-BUG',
