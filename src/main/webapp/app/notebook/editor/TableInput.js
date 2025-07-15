@@ -173,9 +173,6 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 		var prevTableEditor = this.down('#tableEditor');
 		if (prevTableEditor) prevTableEditor.destroy();
 		if (newVal !== undefined && newVal.rows() > 0) {
-			var cellEditor = Ext.create('Ext.form.field.Text', {
-				allowBlank: false
-			});
 			var firstRow = newVal.row(0);
 			var fields = newVal.headers(true).map(function(val, index) {
 				var firstRowVal = firstRow[index];
@@ -201,7 +198,7 @@ Ext.define('Voyant.notebook.editor.TableInput', {
 					pluginId: 'cellEditor'
 				},
 				columns: newVal.headers(true).map(function(val, index) {
-					return {text: val, dataIndex: val, editor: cellEditor}
+					return {text: val, dataIndex: val, editor: {xtype: 'textfield', allowBlank: false}}
 				}),
 				store: {
 					xtype: 'store.array',
