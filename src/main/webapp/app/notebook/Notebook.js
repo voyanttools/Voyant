@@ -460,6 +460,7 @@ Ext.define('Voyant.notebook.Notebook', {
 		this.getComponent('notebookContainer').getScrollable().trackingScrollTop = 0;
 		this.getComponent('notebookContainer').getScrollable().trackingScrollLeft = 0;
 
+		this.setNotebookId(null); // can't use undefined because applyNotebookId would prevent it from actually being set
 		this.setMetadata(new Spyral.Metadata());
 		this.voyantStorageDialogs.reset();
     	var cells = this.getComponent('notebookContainer').getComponent("cells");
@@ -479,7 +480,7 @@ Ext.define('Voyant.notebook.Notebook', {
 	
 			var storageSolution = this.getStorageSolution();
 			
-			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined) {
+			if (!saveAs && storageSolution === 'voyant' && this.getNotebookId() !== undefined && this.getNotebookId() !== null) {
 				this.voyantStorageDialogs.doSave({
 					notebookName: this.getNotebookName(),
 					data: data,
@@ -608,7 +609,6 @@ Ext.define('Voyant.notebook.Notebook', {
 		} else {
 			Ext.batchLayouts(function() {
 				this.reset();
-				this.setNotebookId(undefined);
 				try {
 					this.importFromHtml(text); // old format
 				} catch (e) {
@@ -1012,6 +1012,8 @@ Ext.define('Voyant.notebook.Notebook', {
 					this.setNotebookName(notebookName);
 				}
 				url += id.replace(this.NOTEBOOK_ID_SEPARATOR, '/')+"/";
+			} else {
+				this.setNotebookName(undefined);
 			}
 			window.history.pushState({
 				url: url
