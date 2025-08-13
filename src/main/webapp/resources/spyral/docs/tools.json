@@ -222,7 +222,7 @@
     }
   },
   "CollocatesGraph": {
-    "doc": "Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CollocatesGraph.html\">More documentation</a>",
+    "doc": "Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.\nYou can work with collocates programmatically using {@link Spyral.Corpus#collocates}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CollocatesGraph.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -259,7 +259,7 @@
     }
   },
   "Contexts": {
-    "doc": "The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Contexts.html\">More documentation</a>",
+    "doc": "The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\nYou can work with contexts programmatically using {@link Spyral.Corpus#contexts}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Contexts.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -316,7 +316,7 @@
     }
   },
   "CorpusCollocates": {
-    "doc": "Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CorpusCollocates.html\">More documentation</a>",
+    "doc": "Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.\nYou can work with collocates programmatically using {@link Spyral.Corpus#collocates}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CorpusCollocates.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -369,7 +369,7 @@
     }
   },
   "CorpusTerms": {
-    "doc": "Corpus Terms tool, a grid that shows the terms in the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CorpusTerms.html\">More documentation</a>",
+    "doc": "Corpus Terms tool, a grid that shows the terms in the corpus.\nYou can work with corpus terms programmatically using {@link Spyral.Corpus#terms}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CorpusTerms.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -418,7 +418,7 @@
     }
   },
   "Correlations": {
-    "doc": "The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Correlations.html\">More documentation</a>",
+    "doc": "The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).\nYou can work with correlations programmatically using {@link Spyral.Corpus#correlations}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Correlations.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -500,7 +500,7 @@
     }
   },
   "DocumentTerms": {
-    "doc": "Document Terms is a table view of term frequencies for each document.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.DocumentTerms.html\">More documentation</a>",
+    "doc": "Document Terms is a table view of term frequencies for each document.\nYou can work with document terms programmatically using {@link Spyral.Corpus#terms}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.DocumentTerms.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -553,7 +553,7 @@
     }
   },
   "Documents": {
-    "doc": "The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Documents.html\">More documentation</a>",
+    "doc": "The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.\nYou can work with documents programmatically using {@link Spyral.Corpus#documents}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Documents.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -735,7 +735,7 @@
     }
   },
   "Phrases": {
-    "doc": "The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Phrases.html\">More documentation</a>",
+    "doc": "The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.\nYou can work with phrases programmatically using {@link Spyral.Corpus#phrases}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Phrases.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -788,7 +788,7 @@
     }
   },
   "Reader": {
-    "doc": "The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Reader.html\">More documentation</a>",
+    "doc": "The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.\nYou can work with corpus text programmatically using {@link Spyral.Corpus#texts}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Reader.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -866,7 +866,7 @@
     }
   },
   "ScatterPlot": {
-    "doc": "ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.ScatterPlot.html\">More documentation</a>",
+    "doc": "ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.\nYou can work with the ScatterPlot algorithms programmatically using {@link Spyral.Corpus#analysis}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.ScatterPlot.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -992,7 +992,7 @@
     }
   },
   "Summary": {
-    "doc": "The Summary panel provides an overview of a corpus, and the content will\ndepend on whether the corpus includes one document or many.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Summary.html\">More documentation</a>",
+    "doc": "The Summary panel provides an overview of a corpus, and the content will depend on whether the corpus includes one document or many.\nYou can work with the summary programmatically using {@link Spyral.Corpus#summary}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Summary.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1152,7 +1152,7 @@
     }
   },
   "Topics": {
-    "doc": "The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Topics.html\">More documentation</a>",
+    "doc": "The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.\nYou can work with topics programmatically using {@link Spyral.Corpus#topics}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Topics.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
