@@ -12,8 +12,7 @@
  *     "minLength": null,
  *     "overlapFilter": null,
  *     "query": null,
- *     "sort": null,
- *     "stopList": null
+ *     "sort": null
  *   };
  *
  *   loadCorpus("austen").tool("phrases", config);
@@ -31,14 +30,6 @@ Ext.define('Voyant.panel.Phrases', {
     	i18n: {
     	},
     	api: {
-			/**
-			 * @memberof Tools.Phrases
-			 * @instance
-			 * @property {stopList}
-			 * @default
-			 */
-    		stopList: 'auto',
-
 			/**
 			 * @memberof Tools.Phrases
 			 * @instance
@@ -113,7 +104,7 @@ Ext.define('Voyant.panel.Phrases', {
     	/**
     	 * @private
     	 */
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}],
+    	options: [{xtype: 'categoriesoption'}],
     },
     constructor: function(config) {
     	
@@ -172,7 +163,7 @@ Ext.define('Voyant.panel.Phrases', {
     
     loadFromApis: function() {
     	if (this.getStore().getCorpus()) {
-    			this.getStore().load({params: this.getApiParams()});
+			this.getStore().load({params: this.getApiParams()});
     	}
     },
     
@@ -190,7 +181,7 @@ Ext.define('Voyant.panel.Phrases', {
         me.on("sortchange", function( ct, column, direction, eOpts ) {
         	this.setApiParam('sort', column.dataIndex);
         	this.setApiParam('dir', direction);
-        	var api = this.getApiParams(["stopList", "query", "docId", "docIndex", "sort", "dir", "minLength", "maxLength", "overlapFilter"]);
+        	var api = this.getApiParams(["query", "docId", "docIndex", "sort", "dir", "minLength", "maxLength", "overlapFilter"]);
         	var proxy = this.getStore().getProxy();
         	for (var key in api) {proxy.setExtraParam(key, api[key]);}
         }, me)
