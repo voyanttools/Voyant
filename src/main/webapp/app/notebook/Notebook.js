@@ -739,7 +739,7 @@ Ext.define('Voyant.notebook.Notebook', {
 
 	handleNotebookSelected: function(source, notebookId, callback) {
 		this.checkIsEditedAndDoCallback(source, function() {
-			callback.call(source);
+			if (callback) callback.call(source);
 			this.loadFromId(notebookId);
 		}.bind(this));
 	},

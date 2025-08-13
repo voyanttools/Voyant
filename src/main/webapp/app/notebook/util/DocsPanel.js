@@ -195,7 +195,11 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 	handleDocLink: function(link, rel) {
 		console.log('handleDocLink', link, rel);
 		link = link.replace(/^https:\/\/voyant-tools.org\//, '');
-		if (link.indexOf('http') === 0) {
+		if (link.indexOf('spyral') === 0) {
+			var notebookId = link.replace(/^spyral\//, '').replace(/\/$/, '').replace(/\//, '_');
+			var parent = this.findParentByType('notebook');
+			parent.fireEvent('notebookSelected', parent, notebookId, null);
+		} else if (link.indexOf('http') === 0) {
 			window.open(link, '_external');
 		} else if (link.indexOf('tutorial') === 0 || rel === 'help') {
 			window.open(this.fullDocsUrl+link, '_spyral_docs');
