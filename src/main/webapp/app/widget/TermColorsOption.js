@@ -3,7 +3,6 @@ Ext.define('Voyant.widget.TermColorsOption', {
 	mixins: ['Voyant.util.Localization'],
 	alias: 'widget.termcolorsoption',
 	layout: 'hbox',
-	margin: '0 0 5px 0',
 	statics: {
 			i18n: {
 				label: 'Term Colors',

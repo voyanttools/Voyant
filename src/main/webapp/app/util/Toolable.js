@@ -75,11 +75,13 @@ Ext.define('Voyant.util.Toolable', {
 						Ext.create('Ext.window.Window', {
 							title: panel.localize("optionsTitle"),
 							modal: true,
+							resizable: false,
 			            	panel: panel,
 							items: {
 								xtype: 'form',
+								bodyPadding: '10 10 0 10',
 								defaults: {
-									margin: '10 10 10 0'
+									margin: '0 0 10 0'
 								},
 								items: panel.getOptions(),
 								listeners: {

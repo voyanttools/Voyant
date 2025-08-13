@@ -46,8 +46,7 @@ Ext.define('Voyant.widget.FontFamilyOption', {
     	        store: {
     	            fields: ['name', 'value'],
     	            data: data
-    	        },
-    	        width: 400
+    	        }
     		}
     	})
         me.callParent(arguments);
