@@ -1,5 +1,6 @@
 /**
  * The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).
+ * You can work with contexts programmatically using {@link Spyral.Corpus#contexts}.
  *
  * @example
  *

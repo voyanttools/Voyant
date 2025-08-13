@@ -1,5 +1,6 @@
 /**
  * The Phrases tool shows repeating sequences of words organized by frequency of repetition or number of words in each repeated phrase.
+ * You can work with phrases programmatically using {@link Spyral.Corpus#phrases}.
  *
  * @example
  *

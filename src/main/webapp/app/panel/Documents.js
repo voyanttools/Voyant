@@ -1,5 +1,6 @@
 /**
  * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
+ * You can work with documents programmatically using {@link Spyral.Corpus#documents}.
  *
  * @example
  *

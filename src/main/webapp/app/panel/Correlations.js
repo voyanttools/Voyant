@@ -1,5 +1,6 @@
 /**
  * The Correlations tool enables an exploration of the extent to which term frequencies vary in sync (terms whose frequencies rise and fall together or inversely).
+ * You can work with correlations programmatically using {@link Spyral.Corpus#correlations}.
  *
  * @example
  *

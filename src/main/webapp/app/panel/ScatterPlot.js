@@ -1,5 +1,6 @@
 /**
  * ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.
+ * You can work with the ScatterPlot algorithms programmatically using {@link Spyral.Corpus#analysis}.
  *
  * @example
  *

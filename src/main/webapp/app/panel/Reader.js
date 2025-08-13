@@ -1,5 +1,6 @@
 /**
  * The Reader tool provides a way of reading documents in the corpus, text is fetched as needed.
+ * You can work with corpus text programmatically using {@link Spyral.Corpus#texts}.
  *
  * @example
  *
