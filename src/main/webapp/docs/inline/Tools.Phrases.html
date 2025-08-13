@@ -110,8 +110,7 @@
     "minLength": null,
     "overlapFilter": null,
     "query": null,
-    "sort": null,
-    "stopList": null
+    "sort": null
   };
 
   loadCorpus("austen").tool("phrases", config);</code></pre>
@@ -1283,129 +1282,6 @@ For query syntax, see the <a href="tutorial-search.html">search documentation</a
             
 
             <td class="description last"><p>The column to sort the results by</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-    
-
-    
-</dd>
-
-        
-            
-
-<dt>
-<h4 class="name" id="stopList">
-    <span class="type-signature"></span>stopList<span class="type-signature"></span>
-    
-    
-    
-</h4>
-
-
-</dt>
-<dd>
-    
-
-    <!--
-    
-    -->
-
-    
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>stopList</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                    auto
-                </td>
-            
-
-            <td class="description last"><p>A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
-By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
-For more information see the <a href="tutorial-stopwords.html">Stopwords documentation</a>.</p></td>
         </tr>
 
     
