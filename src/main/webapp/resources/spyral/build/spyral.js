@@ -9380,6 +9380,12 @@ var Spyral = (function () {
 	          Object.defineProperty(exports, "__esModule", {
 	            value: true
 	          });
+	          Object.defineProperty(exports, "Analysis", {
+	            enumerable: true,
+	            get: function get() {
+	              return _analysis["default"];
+	            }
+	          });
 	          Object.defineProperty(exports, "Categories", {
 	            enumerable: true,
 	            get: function get() {
@@ -9422,13 +9428,15 @@ var Spyral = (function () {
 	          var _util = _interopRequireDefault(require("./src/util"));
 	          var _chart = _interopRequireDefault(require("./src/chart"));
 	          var _categories = _interopRequireDefault(require("./src/categories"));
+	          var _analysis = _interopRequireDefault(require("./src/analysis"));
 	        }, {
-	          "./src/categories": 19,
-	          "./src/chart": 20,
-	          "./src/corpus": 21,
-	          "./src/load": 22,
-	          "./src/table": 24,
-	          "./src/util": 25,
+	          "./src/analysis": 19,
+	          "./src/categories": 20,
+	          "./src/chart": 21,
+	          "./src/corpus": 22,
+	          "./src/load": 23,
+	          "./src/table": 25,
+	          "./src/util": 26,
 	          "@babel/runtime/helpers/interopRequireDefault": 9
 	        }],
 	        2: [function (require, module, exports) {
@@ -10323,6 +10331,114 @@ var Spyral = (function () {
 	          var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 	          var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 	          var _load = _interopRequireDefault(require("./load"));
+	          // TODO add clustering
+	          /**
+	           * The Analysis class in Spyral. Used as an alternative to {@link Spyral.Corpus#analysis}
+	           * for sending vectors directly to the dimension reduction algorithms.
+	           * 
+	           * @memberof Spyral
+	           */
+	          var Analysis = /*#__PURE__*/function () {
+	            function Analysis() {
+	              (0, _classCallCheck2["default"])(this, Analysis);
+	            }
+	            (0, _createClass2["default"])(Analysis, null, [{
+	              key: "pca",
+	              /**
+	               * Performs Principal Components Analysis on the provided vectors.
+	               * @example Spyral.Analysis.pca([[2,3,5],[1,3,4],[3,2,1],[6,5,6],[2,4,1]]);
+	               * @param {Array} vectors A 2 dimensional array of numbers.
+	               * @param {Number} [dimensions=2] The number of dimensions to reduce to. Default is 2.
+	               * @returns {Promise<Array>} 
+	               */
+	              value: function pca(vectors) {
+	                var dimensions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+	                return Analysis._doAnalysis('pca', vectors, {
+	                  dimensions: dimensions
+	                });
+	              }
+	              /**
+	               * Performs Correspondence Analysis on the provided vectors.
+	               * @example Spyral.Analysis.ca([[2,3,5],[1,3,4],[3,2,1],[6,5,6],[2,4,1]]);
+	               * @param {Array} vectors A 2 dimensional array of numbers.
+	               * @param {Number} [dimensions=2] The number of dimensions to reduce to. Default is 2.
+	               * @returns {Promise<Array>} 
+	               */
+	            }, {
+	              key: "ca",
+	              value: function ca(vectors) {
+	                var dimensions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+	                return Analysis._doAnalysis('ca', vectors, {
+	                  dimensions: dimensions
+	                });
+	              }
+	              /**
+	               * Perform TSNE Analysis on the provided vectors.
+	               * @example Spyral.Analysis.tsne([[2,3,5],[1,3,4],[3,2,1],[6,5,6],[2,4,1]]);
+	               * @param {Array} vectors A 2 dimensional array of numbers.
+	               * @param {Number} [dimensions=2] The number of dimensions to reduce to. Default is 2.
+	               * @param {Number} [perplexity=15] The perplexity measure. Default is 15.
+	               * @param {Number} [iterations=1500] The number of times to iterate. Default is 1500.
+	               * @returns {Promise<Array>} 
+	               */
+	            }, {
+	              key: "tsne",
+	              value: function tsne(vectors) {
+	                var dimensions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+	                var perplexity = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 15;
+	                var iterations = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1500;
+	                return Analysis._doAnalysis('tsne', vectors, {
+	                  dimensions: dimensions,
+	                  perplexity: perplexity,
+	                  iterations: iterations
+	                });
+	              }
+	            }, {
+	              key: "_doAnalysis",
+	              value: function _doAnalysis(analysis, vectors, config) {
+	                var tool = '';
+	                var root = '';
+	                if (analysis === 'tsne') {
+	                  tool = 'analysis.TSNE';
+	                  root = 'tsneAnalysis';
+	                } else if (analysis === 'ca') {
+	                  tool = 'analysis.CA';
+	                  root = 'caAnalysis';
+	                } else {
+	                  tool = 'analysis.PCA';
+	                  root = 'pcaAnalysis';
+	                }
+	                if (Array.isArray(vectors)) {
+	                  vectors = JSON.stringify(vectors);
+	                }
+	                return _load["default"].trombone(config, {
+	                  tool: tool,
+	                  vectors: vectors
+	                }).then(function (data) {
+	                  return data[root]['vectors'];
+	                });
+	              }
+	            }]);
+	            return Analysis;
+	          }();
+	          var _default = Analysis;
+	          exports["default"] = _default;
+	        }, {
+	          "./load": 23,
+	          "@babel/runtime/helpers/classCallCheck": 5,
+	          "@babel/runtime/helpers/createClass": 7,
+	          "@babel/runtime/helpers/interopRequireDefault": 9
+	        }],
+	        20: [function (require, module, exports) {
+
+	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+	          Object.defineProperty(exports, "__esModule", {
+	            value: true
+	          });
+	          exports["default"] = undefined;
+	          var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+	          var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+	          var _load = _interopRequireDefault(require("./load"));
 	          /**
 	           * Class for working with categories and features.
 	           * Categories are groupings of terms.
@@ -10755,12 +10871,12 @@ var Spyral = (function () {
 	          var _default = Categories;
 	          exports["default"] = _default;
 	        }, {
-	          "./load": 22,
+	          "./load": 23,
 	          "@babel/runtime/helpers/classCallCheck": 5,
 	          "@babel/runtime/helpers/createClass": 7,
 	          "@babel/runtime/helpers/interopRequireDefault": 9
 	        }],
-	        20: [function (require, module, exports) {
+	        21: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -11805,8 +11921,8 @@ var Spyral = (function () {
 	          var _default = Chart;
 	          exports["default"] = _default;
 	        }, {
-	          "./networkgraph": 23,
-	          "./util.js": 25,
+	          "./networkgraph": 24,
+	          "./util.js": 26,
 	          "@babel/runtime/helpers/asyncToGenerator": 4,
 	          "@babel/runtime/helpers/classCallCheck": 5,
 	          "@babel/runtime/helpers/createClass": 7,
@@ -11815,7 +11931,7 @@ var Spyral = (function () {
 	          "@babel/runtime/helpers/typeof": 15,
 	          "@babel/runtime/regenerator": 17
 	        }],
-	        21: [function (require, module, exports) {
+	        22: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -13603,9 +13719,9 @@ var Spyral = (function () {
 	          var _default = Corpus;
 	          exports["default"] = _default;
 	        }, {
-	          "./categories.js": 19,
-	          "./load": 22,
-	          "./util.js": 25,
+	          "./categories.js": 20,
+	          "./load": 23,
+	          "./util.js": 26,
 	          "@babel/runtime/helpers/asyncToGenerator": 4,
 	          "@babel/runtime/helpers/classCallCheck": 5,
 	          "@babel/runtime/helpers/createClass": 7,
@@ -13614,7 +13730,7 @@ var Spyral = (function () {
 	          "@babel/runtime/helpers/typeof": 15,
 	          "@babel/runtime/regenerator": 17
 	        }],
-	        22: [function (require, module, exports) {
+	        23: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -13841,7 +13957,7 @@ var Spyral = (function () {
 	          "@babel/runtime/helpers/defineProperty": 8,
 	          "@babel/runtime/helpers/interopRequireDefault": 9
 	        }],
-	        23: [function (require, module, exports) {
+	        24: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -14164,7 +14280,7 @@ var Spyral = (function () {
 	          "@babel/runtime/helpers/defineProperty": 8,
 	          "@babel/runtime/helpers/interopRequireDefault": 9
 	        }],
-	        24: [function (require, module, exports) {
+	        25: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -15702,8 +15818,8 @@ var Spyral = (function () {
 	          var _default = Table;
 	          exports["default"] = _default;
 	        }, {
-	          "./chart.js": 20,
-	          "./util.js": 25,
+	          "./chart.js": 21,
+	          "./util.js": 26,
 	          "@babel/runtime/helpers/classCallCheck": 5,
 	          "@babel/runtime/helpers/construct": 6,
 	          "@babel/runtime/helpers/createClass": 7,
@@ -15711,7 +15827,7 @@ var Spyral = (function () {
 	          "@babel/runtime/helpers/slicedToArray": 14,
 	          "@babel/runtime/helpers/typeof": 15
 	        }],
-	        25: [function (require, module, exports) {
+	        26: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
