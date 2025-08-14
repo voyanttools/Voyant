@@ -894,6 +894,26 @@
         "!url": "https://voyant-tools.org/Spyral.Util.html#.getVoyantDocumentFormatFromFileExtension"
       }
     },
+    "Analysis": {
+      "!type": "fn()",
+      "prototype": {},
+      "!url": "https://voyant-tools.org/Spyral.Analysis.html",
+      "pca": {
+        "!type": "fn(vectors: +Array, dimensions?: number) -> +Promise",
+        "!doc": "Performs Principal Components Analysis on the provided vectors.",
+        "!url": "https://voyant-tools.org/Spyral.Analysis.html#.pca"
+      },
+      "ca": {
+        "!type": "fn(vectors: +Array, dimensions?: number) -> +Promise",
+        "!doc": "Performs Correspondence Analysis on the provided vectors.",
+        "!url": "https://voyant-tools.org/Spyral.Analysis.html#.ca"
+      },
+      "tsne": {
+        "!type": "fn(vectors: +Array, dimensions?: number, perplexity?: number, iterations?: number) -> +Promise",
+        "!doc": "Perform TSNE Analysis on the provided vectors.",
+        "!url": "https://voyant-tools.org/Spyral.Analysis.html#.tsne"
+      }
+    },
     "Categories": {
       "!type": "fn(config: +Spyral_Categories_config) -> +Spyral.Categories",
       "prototype": {

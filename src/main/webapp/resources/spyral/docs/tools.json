@@ -1225,7 +1225,7 @@
       },
       "bins": {
         "type": "Number",
-        "doc": "The number of \"bins\" to divide the result into.\n\nverify this:\n\nThe default value will depend on the nature of the corpus:\n\n- corpus has one document: the default number of bins is 10\n- corpus has multiple documents:\n  - corpus has up to 100 documents: the default number is the size of the corpus\n  - corpus has more than 1000 documents: the default number is 100"
+        "doc": "The number of \"bins\" to divide the result into.\n\ndefault value will depend on the nature of the corpus:\n\n- corpus has one document: the default number of bins is 10\n- corpus has multiple documents:\n  - corpus has up to 100 documents: the default number is the size of the corpus\n  - corpus has more than 1000 documents: the default number is 100"
       },
       "docIndex": {
         "type": "Number",
