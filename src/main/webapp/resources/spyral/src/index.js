@@ -1,4 +1,4 @@
-import {Corpus, Table, Load, Util, Chart, Categories} from 'voyant';
+import {Corpus, Table, Load, Util, Chart, Categories, Analysis} from 'voyant';
 
 import Notebook from './notebook';
 import Metadata from './metadata';
@@ -25,7 +25,8 @@ const Spyral = {
 	Table,
 	Load,
 	Chart,
-	Categories
+	Categories,
+	Analysis
 };
 
 /**
