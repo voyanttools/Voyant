@@ -17509,7 +17509,8 @@ var Spyral = (function () {
 		Table: voyantjsExports.Table,
 		Load: voyantjsExports.Load,
 		Chart: voyantjsExports.Chart,
-		Categories: voyantjsExports.Categories
+		Categories: voyantjsExports.Categories,
+		Analysis: voyantjsExports.Analysis
 	};
 
 	/**
