@@ -20,7 +20,7 @@
  *     "storeJson": null,
  *     "target": null,
  *     "term": null,
- *     "whitelist": null,
+ *     "whiteList": null,
  *   };
  *
  *   loadCorpus("austen").tool("scatterplot", config);

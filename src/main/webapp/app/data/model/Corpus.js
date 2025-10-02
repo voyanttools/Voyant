@@ -228,7 +228,7 @@ Ext.define('Voyant.data.model.Corpus', {
      * 	- **docIndex**: a comma-separated list of integers of document indices
      * 	- **docId**: a comma-separated list of document IDs
      * 	- **stopList**: the ID of an existing stopList resource or an array of words to skip
-     * 	- **whitelist**: the ID of an existing whitelist resource or an array of words to keep
+     * 	- **whiteList**: the ID of an existing whiteList resource or an array of words to keep
      * 
      * 
 	 * @returns {Ext.promise.Promise} *Important*: This doesn't immediately return tokens but a promise to return tokens when they're finished loading
@@ -423,7 +423,7 @@ Ext.define('Voyant.data.model.Corpus', {
      * 	 - `perDocLimit`: a limit on the number of words to fetch for each document (by default there's no limit)
      * 	 - `start`: start at this word index for each document
      * 	 - `stopList`: the ID of an existing stopList resource or an array of words to skip
-     * 	 - `whitelist`: the ID of an existing whitelist resource or an array of words to keep
+     * 	 - `whiteList`: the ID of an existing whiteList resource or an array of words to keep
      * 
 	 * @returns {Ext.promise.Promise} *Important*: This doesn't immediately return text but a promise to return text when it's finished loading
 	 * (you should normally chain the promise with {@link Ext.promise.Promise#then then} and provide a function that receives the
