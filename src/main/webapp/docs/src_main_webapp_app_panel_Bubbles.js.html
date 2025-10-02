@@ -276,7 +276,7 @@ Ext.define('Voyant.panel.Bubbles', {
     		var values = Object.keys(me.terms).map(function(k){return me.terms[k]});
     		me.minFreq = Ext.Array.min(values);
     		me.maxFreq = Ext.Array.max(values);
-    		me.getCorpus().loadTokens({whitelist: Object.keys(me.terms), noOthers: true, limit: 0, docIndex: me.getApiParam('docIndex')}).then(function(tokens) {
+    		me.getCorpus().loadTokens({whiteList: Object.keys(me.terms), noOthers: true, limit: 0, docIndex: me.getApiParam('docIndex')}).then(function(tokens) {
     			var words = [];
         		tokens.each(function(token) {
     				words.push(token.getTerm().toLowerCase());
