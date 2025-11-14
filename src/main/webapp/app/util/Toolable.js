@@ -478,7 +478,8 @@ Ext.define('Voyant.util.Toolable', {
 			var html = d3.select(svg)
 				.attr("version", 1.1)
 				.attr("xmlns", "http://www.w3.org/2000/svg")
-				.node().parentNode.innerHTML
+				.attr("xmlns:xlink", "http://www.w3.org/1999/xlink") // TermsBerry support
+				.node().parentNode.innerHTML;
 			Ext.Msg.show({
 			    title: this.localize('exportSvgTitle'),
 			    message: '<img src="'+'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)))+'" style="float: right; max-width: 200px; max-height: 200px; border: thin dotted #ccc;"/>'+this.localize('exportSvgMessage'),
