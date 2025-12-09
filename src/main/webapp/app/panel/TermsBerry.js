@@ -293,12 +293,12 @@ Ext.define('Voyant.panel.TermsBerry', {
     	
     	loadedCorpus: function(src, corpus) {
     		if (this.isVisible()) {
-        		this.doLoad();
+        		this.doLoad(this.getApiParam('query'));
     		}
     	},
     	activate: function() {
     		if (this.getCorpus()) {
-    			this.doLoad();
+    			this.doLoad(this.getApiParam('query'));
     		}
     	}
     },
