@@ -852,10 +852,6 @@
         "type": "Number",
         "doc": "Specify the display height of the tool in pixels."
       },
-      "query": {
-        "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
-      },
       "limit": {
         "type": "Number",
         "doc": "The number of items to limit the result to."
@@ -867,10 +863,6 @@
       "minEdgeCount": {
         "type": "Number",
         "doc": ""
-      },
-      "stopList": {
-        "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       },
       "docId": {
         "type": "String",
