@@ -258,6 +258,23 @@
       }
     }
   },
+  "Constellations": {
+    "doc": "Constellations\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
+    "params": {
+      "style": {
+        "type": "String",
+        "doc": "A string of CSS properties to use as the style attribute for the tool's parent tag."
+      },
+      "width": {
+        "type": "Number",
+        "doc": "Specify the display width of the tool in pixels."
+      },
+      "height": {
+        "type": "Number",
+        "doc": "Specify the display height of the tool in pixels."
+      }
+    }
+  },
   "Contexts": {
     "doc": "The Contexts (or Keywords in Context) tool shows each occurrence of a keyword with a bit of surrounding text (the context).\nYou can work with contexts programmatically using {@link Spyral.Corpus#contexts}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Contexts.html\">More documentation</a>",
     "params": {

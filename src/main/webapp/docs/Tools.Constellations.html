@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Tutorial: StreamGraph | Voyant Tools Help</title>
+    <title>Class: Constellations | Voyant Tools Help</title>
 
     <link rel="shortcut icon" type="image/ico" href="favicon.ico">
     
@@ -51,61 +51,136 @@
 <div class="main" id="main">
     
 
+
+
+
 <section>
-    <!-- <header>
-        <h2>StreamGraph</h2>
-    </header> -->
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="Tools.html">Tools</a>.</span>Constellations<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="Constellations">
+            
+                new <span class="type-signature"></span>Constellations<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="src_main_webapp_app_panel_Constellations.js.html">src/main/webapp/app/panel/Constellations.js</a></code>,
+                <code><a href="src_main_webapp_app_panel_Constellations.js.html#line1">line 1</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
 
     
-        <article class="readme">
-            <h1 id="streamgraph">StreamGraph</h1>
-<p>StreamGraph is a visualization that depicts the change of the frequency of words in a corpus (or within a single document).</p>
-<p>Use it with a <a href="../?view=StreamGraph&amp;corpus=austen">Jane Austen corpus</a> or with <a href="../?view=StreamGraph">your own corpus</a>.</p>
-<h2 id="overview">Overview</h2>
-<p>StreamGraph is intended to be used with a corpus that contain several documents and where the order of the documents is
-meaningful (such as chronological order); it can also be used with a single document that gets automatically segmented.</p>
-<p>Each horizontal line in the graph is coloured according to the word it represents, at the top of the graph a legend
-displays which words are associated with which colours. Hovering over any point on the graph provides additional
-information. The horizontal (x) axis shows brief labels for either the documents or the document segment. The vertical
-(y) axis shows either relative or raw term frequencies. Raw term frequencies are the actual count for each term, while
-relative term frequencies are calculated by dividing the raw term frequency by the total number of terms (per document
-or document segment).</p>
-<p>You can toggle specific terms by clicking on them in the legend at the top.</p>
-<iframe src="../tool/StreamGraph/?corpus=austen&subtitle=The+Works+of+Jane+Austen" style="width: 90%; height: 400px;"></iframe>
-<div style="width: 90%; text-align: center; margin-bottom: 1em;">StreamGraph with the Works of Jane Austen. You can also <a href="../?view=StreamGraph" target="_blank">use StreamGraph with your own corpus</a>.</div>
-<h2 id="options">Options</h2>
-<p>You can add keywords by typing a query into the search box and hitting enter (see <a href="tutorial-search.html">Search</a> for more advanced
-searching capabilities).</p>
-<p>You can use the <em>Clear</em> button to clear all keywords in the graph (to start from scratch and add your own).</p>
-<p>Clicking on the options icon also allows you to define a set of stopwords to exclude – see the
-<a href="tutorial-stopwords.html">Stopwords</a> for more information.</p>
-<h2 id="spyral">Spyral</h2>
-<p>To use StreamGraph widget in Spyral you can use the following code as a starting point. Modify the config object to
-modify the visualization.</p>
-<pre class="prettyprint source"><code>let config = {
-    &quot;bins&quot;: null,
-    &quot;docId&quot;: null,
-    &quot;docIndex&quot;: null,
-    &quot;limit&quot;: null,
-    &quot;query&quot;: null,
-    &quot;stopList&quot;: null,
-    &quot;withDistributions&quot;: null
-}; 
-
-loadCorpus(&quot;austen&quot;).tool(&quot;streamgraph&quot;, config);
-</code></pre>
-<p>Please see <a href="Tools.StreamGraph.html">Tools.StreamGraph</a> for more information about configuration.</p>
-<h2 id="see-also">See Also</h2>
-<ul>
-<li><a href="tutorial-start.html">Getting Started</a></li>
-<li><a href="tutorial-stopwords.html">Stopwords</a></li>
-<li><a href="tutorial-search.html">Search</a></li>
-<li><a href="tutorial-skins.html">Skins</a></li>
-<li><a href="tutorial-tools_.html">Tools</a></li>
-</ul>
-        </article>
+    <div class="description">
+        <p>Constellations</p>
+    </div>
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
 </section>
+
 
 
 
@@ -120,7 +195,13 @@ loadCorpus(&quot;austen&quot;).tool(&quot;streamgraph&quot;, config);
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        showLnbExamples();
+        var id = 'Tools.Constellations_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
     </script>
 
 </body>
