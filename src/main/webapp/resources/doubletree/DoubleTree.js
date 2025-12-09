@@ -259,9 +259,9 @@ doubletree.DoubleTree = function() {
 					.attr("width", width + margin.right + margin.left)
 					.attr("height", height + margin.top + margin.bottom)
 					.attr("cursor", "move")
-					.call(d3.zoom().scaleExtent([1,1]).on('zoom', function() {
-						var x = d3.event.transform.x + width/2; // need offset because of initial offset in g element
-						var y = d3.event.transform.y + height/2;
+					.call(d3.zoom().scaleExtent([1,1]).on('zoom', function(event) {
+						var x = event.transform.x + width/2; // need offset because of initial offset in g element
+						var y = event.transform.y + height/2;
 						d3.select(thisContainer).select("svg > g").attr("transform", 'translate('+x+','+y+')');
 					}));
 
@@ -1041,13 +1041,13 @@ doubletree.Tree = function(vis, visWidth, visHt, data, toLeft,
 	var that = this;
 	
 	// Toggle children on click.
-	function click(d, i) {
-		if (d3.event.altKey) {
+	function click(event, d, i) {
+		if (event.altKey) {
 			that.handleAltPress(d, i);
 			// that.showTokenExtras(showTokenExtra);
 			return;
 		}
-		if (d3.event.shiftKey) {
+		if (event.shiftKey) {
 			that.handleShiftPress(d, i);
 			// that.showTokenExtras(showTokenExtra);
 			return;

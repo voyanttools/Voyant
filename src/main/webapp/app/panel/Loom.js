@@ -628,8 +628,8 @@ Ext.define('Voyant.panel.Loom', {
             			yFisheye = d3.fisheye.scale(d3.scaleIdentity).domain([0, height]);
             			
             			var me = this;
-            			svg.on("mousemove", function() {
-            				var mouse = d3.mouse(this);
+            			svg.on("mousemove", function(event) {
+            				var mouse = d3.pointer(event);
             					currentItem = Math.round(mouse[1]*terms.length/height),
             					currentItem = Math.min(currentItem, terms.length-1);
             				fisheye.focus(mouse[1]);
@@ -787,11 +787,11 @@ Ext.define('Voyant.panel.Loom', {
 						      .attr("class", "line")
             			      .attr("term", term.term)
             			      .attr("d", valueline)
-						      .on('mouseover', function() { // on mouse out hide line, circles and text
+						      .on('mouseover', function(event) { // on mouse out hide line, circles and text
 						    	  d3.select(this)
 						    	  	.attr("opacity", 1);
 						    	  
-						    	  var coords = d3.mouse(this);
+						    	  var coords = d3.pointer(event);
 						    	  
 						    	  tooltip
 						    	  	.attr("opacity", 1)
