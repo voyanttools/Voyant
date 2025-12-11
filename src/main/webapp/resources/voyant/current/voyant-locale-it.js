@@ -1029,6 +1029,7 @@ Ext.apply(Voyant.util.Localization.i18n, {
 "cz":"Ceco",
 "ja":"Giapponese",
 "sl":"Sloveno",
+"fa":"Persiano",
 "he":"Ebraico",
 "ro":"Romeno",
 "sr":"Serbian"});

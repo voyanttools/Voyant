@@ -17,7 +17,7 @@
 	String lang = "en";
 	
 	//hard-coded for now
-	String[] langs = new String[]{"ar","bs","cz","de","en","es","fr","gu","he","hr","it","ja","pt","ru","sl","sr"};
+	String[] langs = new String[]{"ar","bs","cz","de","en","es","fa","fr","gu","he","hr","it","ja","pt","ru","sl","sr"};
 	
 	//try first with parameter
 	if (request.getParameter("lang")!=null) {
@@ -51,7 +51,7 @@
 		if (r.isEmpty()==false && r.equals("false")==false || r.equals("0")==false) {
 			rtl = "-rtl";
 		}
-	} else if (lang.equals("he") || lang.equals("ar")) {
+	} else if (lang.equals("he") || lang.equals("ar") || lang.equals("fa")) {
 		rtl = "-rtl";
 	}
 
