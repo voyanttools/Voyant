@@ -13,15 +13,18 @@ The user interface of Voyant Tools is available in several languages. By default
 * [English](../?lang=en)
 * [French](../?lang=fr)
 * [German](../?lang=de)
+* [Gujarati](../?lang=gu)
 * [Hebrew](../?lang=he)
 * [Italian](../?lang=it)
 * [Japanese](../?lang=ja)
+* [Persian](../?lang=fa)
 * [Portuguese](../?lang=pt)
 * [Russian](../?lang=ru)
 * [Serbian](../?lang=sr)
+* [Slovenian](../?lang=sl)
 * [Spanish](../?lang=es)
 
-Note that the interface of Arabic and Hebrew are by default displayed in [right-to-left](https://en.wikipedia.org/wiki/Right-to-left) mode.
+Note that the interface of Arabic, Hebrew, and Persian are by default displayed in [right-to-left](https://en.wikipedia.org/wiki/Right-to-left) mode.
 
 You can override the browser language preference in two places:
 
