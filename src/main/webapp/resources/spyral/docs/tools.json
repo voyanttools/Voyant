@@ -259,7 +259,7 @@
     }
   },
   "Constellations": {
-    "doc": "Constellations\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
+    "doc": "Constellations\nTODO add word2vec, add term search\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
