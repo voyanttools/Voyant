@@ -1,6 +1,6 @@
 /**
  * Constellations
- *
+ * TODO add word2vec, add term search
  * @class Constellations
  * @memberof Tools
  */
@@ -11,10 +11,17 @@ Ext.define('Voyant.panel.Constellations', {
 	statics: {
 		i18n: {
 			title: 'Constellations',
+			options: 'Options',
+			termSearch: 'Term Search',
 			cutoff: 'Similarity Threshold',
-			numTerms: 'Terms'
+			numTerms: 'Terms',
+			analysis: 'Analysis',
+			ca: 'Correspondence Analysis',
+			pca: 'Principal Component Analysis',
+			tsne: 't-SNE'
 		},
 		api: {
+			analysis: 'ca',
 			docId: undefined,
 			limit: 50,
 			dimensions: 3,
@@ -25,10 +32,17 @@ Ext.define('Voyant.panel.Constellations', {
 	
 	config: {
 		caStore: undefined,
+		pcaStore: undefined,
+		tsneStore: undefined,
 
 		allNodeData: undefined,
 		allEdgeData: undefined,
-		cutoff: 50,
+		
+		simCutoff: 25, // percent
+		simMin: 0,
+		simMax: 1,
+		allSims: [],
+		simWin: undefined,
 
 		vis: undefined,
 		simulation: undefined,
@@ -38,6 +52,8 @@ Ext.define('Voyant.panel.Constellations', {
 		},
 		zoom: undefined, // d3 zoom
 		zoomExtent: [0.25, 8],
+
+		termSearchTimeout: null,
 
 		options: [{xtype: 'stoplistoption'}]
 	},
@@ -51,21 +67,73 @@ Ext.define('Voyant.panel.Constellations', {
 		this.setCaStore(Ext.create('Voyant.data.store.CAAnalysis', {
 			listeners: { load: this.handleData, scope: this }
 		}));
+		this.setPcaStore(Ext.create('Voyant.data.store.PCAAnalysis', {
+			listeners: { load: this.handleData, scope: this }
+		}));
+		this.setTsneStore(Ext.create('Voyant.data.store.TSNEAnalysis', {
+			listeners: { load: this.handleData, scope: this }
+		}));
 
 		Ext.apply(this, {
 			title: this.localize('title'),
-			dockedItems: [{
-				dock: 'bottom',
-				xtype: 'toolbar',
-				overflowHandler: 'scroller',
+			layout: 'border',
+			items: [{
+				xtype: 'container',
+				region: 'center',
+				layout: 'fit',
+				style: 'backgroundColor: #fff',
+				items: {
+					xtype: 'component',
+					itemId: 'visParent'
+				}
+			},{
+				title: this.localize('options'),
+				xtype: 'panel',
+				width: 200,
+				region: 'west',
+				split: true,
+				collapsible: true,
+				scrollable: 'y',
+				layout: {
+					type: 'vbox',
+					align: 'stretch'
+				},
+				defaults: {
+					xtype: 'button',
+					margin: '5',
+					labelAlign: 'top'
+				},
 				items: [{
-					xtype: 'corpusdocumentselector'
+					xtype: 'documentselectorbutton'
+				},{
+					text: this.localize('analysis'),
+					itemId: 'analysis',
+					glyph: 'xf1ec@FontAwesome',
+					menu: {
+						items: [
+							{text: this.localize('ca'), itemId: 'analysis_ca', group:'analysis', xtype: 'menucheckitem'},
+							{text: this.localize('pca'), itemId: 'analysis_pca', group:'analysis', xtype: 'menucheckitem'},
+							{text: this.localize('tsne'), itemId: 'analysis_tsne', group:'analysis', xtype: 'menucheckitem'}
+						],
+						listeners: {
+							render: function(field) {
+								field.child('#analysis_'+this.getApiParam('analysis')).setChecked(true);
+							},
+							click: function(menu, item) {
+								if (item !== undefined) {
+									var analysis = item.getItemId().split('_')[1];
+									if (analysis !== this.getApiParam('analysis')) {
+										this.setApiParam('analysis', analysis);
+										this.loadFromApis();
+									}
+								}
+							},
+							scope: this
+						}
+					}
 				},{
 					xtype: 'slider',
 					fieldLabel: this.localize('numTerms'),
-					labelAlign: 'right',
-					labelWidth: 50,
-					width: 200,
 					minValue: 10,
 					maxValue: 250,
 					increment: 5,
@@ -80,29 +148,49 @@ Ext.define('Voyant.panel.Constellations', {
 						scope: this
 					}
 				},{
+					xtype: 'textfield',
+					fieldLabel: this.localize('termSearch'),
+					itemId: 'termSearch',
+					listeners: {
+						change: function(field, term) {
+							if (this.getTermSearchTimeout() !== null) {
+								clearTimeout(this.getTermSearchTimeout());
+							}
+							this.setTermSearchTimeout(setTimeout(this.updateGraph.bind(this), 500));
+						},
+						scope: this
+					}
+				},{
 					xtype: 'slider',
 					fieldLabel: this.localize('cutoff'),
-					labelAlign: 'right',
-					labelWidth: 150,
-					width: 300,
-					minValue: 0,
-					maxValue: 150,
+					minValue: 1,
+					maxValue: 100,
 					increment: 1,
 					listeners: {
 						render: function(field) {
-							field.setValue(this.getCutoff());
+							field.setValue(this.getSimCutoff());
 						},
 						changecomplete: function(field, newVal) {
-							this.setCutoff(newVal);
+							this.setSimCutoff(newVal);
 							this.updateGraph();
 						},
 						scope: this
 					}
+				},{
+					xtype: 'container',
+					layout: 'fit',
+					items: {
+						itemId: 'simGraph',
+						xtype: 'sparklineline',
+						minSpotColor: '',
+						maxSpotColor: '',
+						spotColor: '',
+						disableTooltips: true,
+						width: 200,
+						height: 50
+					}
 				}]
-			}],
-			listeners: {
-				scope: this
-			}
+			}]
 		});
 
 		this.on('boxready', function(src, corpus) {
@@ -112,6 +200,8 @@ Ext.define('Voyant.panel.Constellations', {
 		this.on('loadedCorpus', function(src, corpus) {
 			if (this.isVisible()) {
 				this.getCaStore().setCorpus(corpus);
+				this.getPcaStore().setCorpus(corpus);
+				this.getTsneStore().setCorpus(corpus);
 				this.loadFromApis();
 			}
 		}, this);
@@ -140,7 +230,7 @@ Ext.define('Voyant.panel.Constellations', {
 	},
 
 	initGraph: function(nodes, edges) {
-		var el = this.getLayout().getRenderTarget();
+		var el = this.down('#visParent').getEl();
 		el.update('');
 		var width = el.getWidth();
 		var height = el.getHeight();
@@ -184,7 +274,7 @@ Ext.define('Voyant.panel.Constellations', {
 					.attr('y', function(d) { return d.y +5 })
 				
 				if (this.getSimulation().alpha() < 0.075) {
- 					this.getSimulation().alpha(-1); // trigger end event
+ 					this.stopSimulation();
  				}
 			}.bind(this))
 			.on('end', function() {
@@ -196,8 +286,11 @@ Ext.define('Voyant.panel.Constellations', {
 	},
 
 	updateGraph: function() {
-		var cutoff = this.getCutoff() / 1000;
-		[nodes, edges] = this.doFilter(this.getAllNodeData(), this.getAllEdgeData(), cutoff, '');
+		this.stopSimulation();
+
+		var selectedTerm = this.down('#termSearch').getValue();
+		console.log(selectedTerm);
+		[nodes, edges] = this.doFilter(this.getAllNodeData(), this.getAllEdgeData(), selectedTerm);
 
 		this.getVis().select('.labels')
 			.selectAll('text')
@@ -223,12 +316,12 @@ Ext.define('Voyant.panel.Constellations', {
 				.classed('node', true)
 				.classed('selected', function(node) { return node.selected === true })
 				.style('cursor', 'pointer')
-				.style('stroke', '#6baed6')
+				.style('stroke', function(node) { return node.selected ? '#ff8800' : '#6baed6' })
 				.style('stroke-width', 1)
-				.style('fill', '#c6dbef')
+				.style('fill', function(node) { return node.selected ? '#ffcd93ff' : '#c6dbef' })
 				.attr('r', function(node) {
 					if (node.selected === true) {
-						return 30;
+						return 20;
 					}
 					return 10;
 				})
@@ -255,6 +348,12 @@ Ext.define('Voyant.panel.Constellations', {
 		this.getSimulation().alpha(1).restart();
 	},
 
+	stopSimulation: function() {
+		if (this.getSimulation()) {
+			this.getSimulation().alpha(-1);
+		}
+	},
+
 	handleNodeClick: function(event, data) {
 		event.stopImmediatePropagation();
 		event.preventDefault();
@@ -279,39 +378,74 @@ Ext.define('Voyant.panel.Constellations', {
 	},
 
 	loadFromApis: function() {
+		this.stopSimulation();
+
 		var params = {};
 		Ext.apply(params, this.getApiParams());
-		this.getCaStore().load({
-			params: params
-		});
+		delete params.analysis;
+		if (this.getApiParam('analysis') === 'tsne') {
+			this.getTsneStore().load({
+				params: params
+			});
+		} else if (this.getApiParam('analysis') === 'pca') {
+			this.getPcaStore().load({
+				params: params
+			});
+		} else {
+			this.getCaStore().load({
+				params: params
+			});
+		}
 	},
 
 	handleData: function(store) {
 		var rec = store.getAt(0);
 		var tokens = rec.getTokens();
 		var data = tokens.map(function(token) { return token.getData(); });
-		data = data.filter(function(d) { return d.category === 'term'; });
+		if (this.getApiParam('analysis') === 'ca') {
+			data = data.filter(function(d) { return d.category === 'term'; });
+		}
 	
 		let all_node_data = data.map(x => { return {id: x["term"] }})
 		let all_edge_data = []
 
+		var sims = [];
 		// Populate edge data with distances
 		for (let pairs of this.combinations(data)) {
 			let sim = this.distance(pairs[0]["vector"], pairs[1]["vector"]);
 			all_edge_data.push({
-			"source": pairs[0]["term"],
-			"target": pairs[1]["term"],
-			"sim": sim
-			})
+				"source": pairs[0]["term"],
+				"target": pairs[1]["term"],
+				"sim": sim
+			});
+			sims.push(sim);
 		}
+		
+		this.setAllSims(sims.sort(function(a, b) { return a - b }));
+
+		this.setSimMin(this.arrayMin(sims));
+		this.setSimMax(this.arrayMax(sims));
+		console.log(this.getSimMin(), this.getSimMax())
+
 		this.setAllNodeData(all_node_data);
 		this.setAllEdgeData(all_edge_data);
 		
 		this.initGraph(all_node_data, all_edge_data);
 		this.updateGraph();
+
+		this.down('#simGraph').setValues(this.getAllSims());
 	},
 
-	doFilter: function(nodes, edges, cutoff, selection) {
+	doFilter: function(nodes, edges, selection) {
+		var cutoffPercent = this.getSimCutoff() / 100;
+		var easedCutoff = this.easeIn(cutoffPercent);
+		var cutoff = this.map(easedCutoff, 0, 1, this.getSimMin(), this.getSimMax());
+		console.log(cutoffPercent, easedCutoff, cutoff)
+
+		var valueSpot = {};
+		valueSpot["0:"+cutoff] = "#ff8800";
+		this.down('#simGraph').setValueSpots(valueSpot);
+
 		if (nodes === undefined || edges === undefined) return [[],[]];
 
 		let nodes_temp = new Set()
@@ -363,6 +497,34 @@ Ext.define('Voyant.panel.Constellations', {
 				yield [x, y]
 			}
 		}
+	},
+
+	arrayMin: function(arr) {
+		var len = arr.length, min = Infinity;
+		while (len--) {
+			if (arr[len] < min) {
+				min = arr[len];
+			}
+		}
+		return min;
+	},
+
+	arrayMax: function(arr) {
+		var len = arr.length, max = -Infinity;
+		while (len--) {
+			if (arr[len] > max) {
+				max = arr[len];
+			}
+		}
+		return max;
+	},
+
+	easeIn: function(x) {
+		return x*x*x;
+	},
+
+	map: function(value, istart, istop, ostart, ostop) {
+		return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 	},
 
 	zoomToFit: function(paddingPercent, transitionDuration) {
