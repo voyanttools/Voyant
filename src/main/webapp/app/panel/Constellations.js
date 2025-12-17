@@ -1,6 +1,6 @@
 /**
  * Constellations
- * TODO add word2vec, add term search
+ * TODO add word2vec
  * @class Constellations
  * @memberof Tools
  */
@@ -18,7 +18,9 @@ Ext.define('Voyant.panel.Constellations', {
 			analysis: 'Analysis',
 			ca: 'Correspondence Analysis',
 			pca: 'Principal Component Analysis',
-			tsne: 't-SNE'
+			tsne: 't-SNE',
+			help: 'Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.',
+			helpTip: 'Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.'
 		},
 		api: {
 			analysis: 'ca',
