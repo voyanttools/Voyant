@@ -58,14 +58,17 @@
       "cirrus": {
         "title": "Cirrus"
       },
-      "corpuscollocates": {
-        "title": "Corpus Collocates"
-      },
       "collocatesgraph": {
         "title": "Collocates Graph"
       },
+      "constellations": {
+        "title": "Constellations"
+      },
       "contexts": {
         "title": "Contexts"
+      },
+      "corpuscollocates": {
+        "title": "Corpus Collocates"
       },
       "corpusterms": {
         "title": "Corpus Terms"
