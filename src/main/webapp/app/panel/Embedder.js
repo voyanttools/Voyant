@@ -13,7 +13,7 @@ Ext.define('Voyant.panel.Embedder', {
 			title: 'Embedder',
 			url: 'URL',
 			go: 'Go',
-			help: 'Embedder provides a way to embed a web page into your Voyant Tools experience.',
+			help: 'Embedder provides a way to embed a web page into your Voyant Tools experience.<br>NB: modern security practices will prevent many URLs from being embedded.',
 			helpTip: 'Embedder provides a way to embed a web page into your Voyant Tools experience.'
 		},
 		api: {
@@ -28,7 +28,10 @@ Ext.define('Voyant.panel.Embedder', {
 	},
 	constructor: function(config) {
 		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments);
-		this.setApiParam('url', config.url);
+		
+		if (config.url) {
+			this.setApiParam('url', config.url);
+		}
 
         this.callParent(arguments);
 		
@@ -51,7 +54,7 @@ Ext.define('Voyant.panel.Embedder', {
 				listeners: {
 					specialkey: function(field, e){
 						if (e.getKey() == e.ENTER) {
-							field.up('panel').down('uxiframe').load(field.getValue());
+							field.up('panel').loadUrl(field.getValue());
 						}
 					}
 				}
@@ -60,7 +63,7 @@ Ext.define('Voyant.panel.Embedder', {
 				text: this.localize('go'),
 				handler: function(btn) {
 					var url = btn.prev('textfield').getValue();
-					btn.up('panel').down('uxiframe').load(url);
+					btn.up('panel').loadUrl(url);
 				}
 			}]
 		});
