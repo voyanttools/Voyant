@@ -563,19 +563,19 @@ Ext.define('Voyant.panel.Cirrus', {
 			.style('font-family', function(d) { return panel.getApplication().getCategoriesManager().getFeatureForTerm('font', d.text); })
 			.style('fill', function(d) { return panel.getApplication().getColorForTerm(d.text, true); })
 			.style('font-size', '1px')
-			.on('click', function(obj) {panel.dispatchEvent('termsClicked', panel, [obj.text]);})
-			.on('mouseover', function(obj) {
+			.on('click', function(event, obj) {panel.dispatchEvent('termsClicked', panel, [obj.text]);})
+			.on('mouseover', function(event, obj) {
 				this.getTip().show();
 			}.bind(this))
-			.on('mousemove', function(obj) {
+			.on('mousemove', function(event, obj) {
 				var tip = this.getTip();
 				tip.update(obj.text+': '+obj.rawFreq);
 				var container = Ext.get(this.getCirrusId()).dom;
-				var coords = d3.mouse(container);
+				var coords = d3.pointer(event, container);
 				coords[1] += 30;
 				tip.setPosition(coords);
 			}.bind(this))
-			.on('mouseout', function(obj) {
+			.on('mouseout', function(event, obj) {
 				this.getTip().hide();
 			}.bind(this));
 		

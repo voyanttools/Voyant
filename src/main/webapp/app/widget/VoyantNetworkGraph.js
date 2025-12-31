@@ -429,8 +429,8 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		
 		var zoom = d3.zoom()
 			.scaleExtent(this.getZoomExtent())
-			.on('zoom', function() {
-				g.attr('transform', d3.event.transform);
+			.on('zoom', function(event) {
+				g.attr('transform', event.transform);
 			});
 		this.setZoom(zoom);
 		svg.call(zoom);
@@ -477,9 +477,9 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 			.style('stroke-width', function(d) { return edgeScaling.scalingFunction(d.value); })
 			.on('mouseover', this.edgeMouseOver.bind(this))
 			.on('mouseout', this.edgeMouseOut.bind(this))
-			.on('click', function(d) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('click', function(event, d) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.setCurrentEdge(d);
 				this.fireEvent('edgeclicked', this, d);
 			}.bind(this));
@@ -494,26 +494,26 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 			.style('cursor', 'pointer')
 			.on('mouseover', this.nodeMouseOver.bind(this))
 			.on('mouseout', this.nodeMouseOut.bind(this))
-			.on('click', function(d) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('click', function(event, d) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.setCurrentNode(d);
 				this.fireEvent('nodeclicked', this, d);
 			}.bind(this))
-			.on('dblclick', function(d) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('dblclick', function(event, d) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.fireEvent('nodedblclicked', this, d);
 			}.bind(this))
-			.on('contextmenu', function(d) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('contextmenu', function(event, d) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.fireEvent('nodecontextclicked', this, d);
 			}.bind(this))
 			.call(d3.drag()
-				.on('start', function(d) {
+				.on('start', function(event, d) {
 					this.setDragging(true);
-					if (!d3.event.active) {
+					if (!event.active) {
 						this.getVisLayout().alpha(0.3).restart();
 					}
 					d.fx = d.x;
@@ -521,15 +521,15 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 					d.fixed = true;
 					this.fireEvent('nodedragstart', this, d);
 				}.bind(this))
-				.on('drag', function(d) {
+				.on('drag', function(event, d) {
 					this.getVisLayout().alpha(0.3); // don't let simulation end while the user is dragging
-					d.fx = d3.event.x;
-					d.fy = d3.event.y;
+					d.fx = event.x;
+					d.fy = event.y;
 					this.fireEvent('nodedrag', this, d);
 				}.bind(this))
-				.on('end', function(d) {
+				.on('end', function(event, d) {
 					this.setDragging(false);
-					// if (!d3.event.active) this.getVisLayout().alpha(0);
+					// if (!event.active) this.getVisLayout().alpha(0);
 					if (d.fixed != true) {
 						d.fx = null;
 						d.fy = null;
@@ -633,16 +633,16 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 //	    	.style('stroke-width', function(d) { return style.strokeWidth; }.bind(this));
 	},
 
-	edgeMouseOver: function(d) {
+	edgeMouseOver: function(event, d) {
 		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
 		this.getVis().select('#'+d.id).call(this.applyEdgeStyle.bind(this), 'highlight');
 	},
 	
-	edgeMouseOut: function(d) {
+	edgeMouseOut: function(event, d) {
 		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
 	},
 	
-	nodeMouseOver: function(d) {
+	nodeMouseOver: function(event, d) {
 		this.setCurrentNode(d);
 		
 		this.getNodeSelection().call(this.applyNodeStyle.bind(this));
@@ -663,7 +663,7 @@ Ext.define('Voyant.widget.VoyantNetworkGraph', {
 		this.getVis().select('#'+d.id).call(this.applyNodeStyle.bind(this), 'highlight');
 	},
 	
-	nodeMouseOut: function(d) {
+	nodeMouseOut: function(event, d) {
 		this.getNodeSelection().call(this.applyNodeStyle.bind(this));
 		this.getEdgeSelection().call(this.applyEdgeStyle.bind(this));
 	}

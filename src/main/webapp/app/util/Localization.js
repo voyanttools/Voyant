@@ -2,7 +2,7 @@ Ext.define('Voyant.util.Localization', {
 	statics: {
 		DEFAULT_LANGUAGE: 'en',
 		LANGUAGE: 'en',
-		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fr","he","hr","it","ja","pt","ru","sr"],
+		AVAILABLE_LANGUAGES: ["ar","bs","cz","de","en","es","fa","fr","gu","he","hr","it","ja","pt","ru","sl","sr"],
 		i18n: {
 		}
 	},
@@ -104,6 +104,7 @@ Ext.define('Voyant.util.Localization', {
 			modal: true,
 			items: {
 				xtype: 'form',
+				bodyPadding: '10 10 10 10',
 				items: [{
 					xtype: 'combo',
 					name: 'lang',
@@ -112,6 +113,7 @@ Ext.define('Voyant.util.Localization', {
 	    	        editable: false,
 	    	        fieldLabel: this.localize('chooseLanguage'),
 	    	        width: 450,
+					margin: 0,
 	    	        labelAlign: 'right',
 	    	        labelWidth: 150,
 	    	        displayField: 'text',
@@ -120,30 +122,7 @@ Ext.define('Voyant.util.Localization', {
 						fields: ['text', 'value'],
 						data: langs
 					}
-				}/*,{
-					xtype: 'combo',
-					name: 'rtl',
-					value: '',
-	    	        queryMode: 'local',
-	    	        editable: false,
-	    	        fieldLabel: this.localize('rtlLabel'),
-	    	        labelAlign: 'right',
-	    	        displayField: 'text',
-	    	        valueField: 'value',
-					store: {
-						fields: ['text', 'value'],
-						data: [{
-							text: this.localize('auto'),
-							value: ''
-						},{
-							text: this.localize('yes'),
-							value: 'true'
-						},{
-							text: this.localize('no'),
-							value: 'false'
-						}]
-					}
-				}*/],
+				}],
 				buttons: [{
 	            	text: this.localize("cancelTitle"),
 		            ui: 'default-toolbar',
@@ -152,7 +131,7 @@ Ext.define('Voyant.util.Localization', {
 	        		handler: function(btn) {
 	        			btn.up('window').close();
 	        		}
-				},{
+				},{xtype: 'tbfill'},{
 	            	text: this.localize("confirmTitle"),
 					glyph: 'xf00c@FontAwesome',
 	            	flex: 1,
@@ -177,8 +156,7 @@ Ext.define('Voyant.util.Localization', {
 	        		},
 	        		scope: me
 	            }]
-			},
-			bodyPadding: 5
+			}
 		}).show()
 	}
 	

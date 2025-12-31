@@ -8,11 +8,10 @@ Ext.define("Voyant.notebook.editor.button.Remove", {
 		}
 	},
 	constructor: function(config) {
-    	Ext.apply(this, {
-			// text: this.localize('text'),
-    		tooltip: this.localize('text')
-    	})
-        this.callParent(arguments);
+		Ext.apply(this, {
+			tooltip: this.localize('text')
+		})
+		this.callParent(arguments);
 	},
 	glyph: 'xf014@FontAwesome',
 	handler: function(evt) {
@@ -31,4 +30,32 @@ Ext.define("Voyant.notebook.editor.button.Remove", {
 			scope: this
 		})
 	}
-})
+});
+
+Ext.define("Voyant.notebook.editor.button.RemoveResults", {
+	extend: "Ext.button.Button",
+	mixins: ["Voyant.util.Localization"],
+	alias: 'widget.notebookwrapperremoveresults',
+	statics: {
+		i18n: {
+			text: 'Remove Results'
+		}
+	},
+	constructor: function(config) {
+		Ext.apply(this, {
+			tooltip: this.localize('text')
+		})
+		this.callParent(arguments);
+	},
+	glyph: 'xf014@FontAwesome',
+	handler: function(evt) {
+		var results = Voyant.notebook.editor.SandboxWrapper.currentResults;
+		if (results) {
+			results.clear();
+			results.hide();
+			Voyant.notebook.editor.SandboxWrapper.hideToolbar(true);
+		} else {
+			console.warn('no results!')
+		}
+	}
+});

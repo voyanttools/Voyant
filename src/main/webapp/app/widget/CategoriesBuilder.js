@@ -14,10 +14,25 @@ Ext.define('Voyant.categories.CategoriesOption', {
 		if (value !== 'auto') {
 			data.push({name: 'auto', value: 'auto'});
 		}
+		data.push({name: 'Harvard: Adjectives', value: 'categories.h_adjective'});
+		data.push({name: 'Harvard: Cognitive Orientation', value: 'categories.h_cognitive'});
+		data.push({name: 'Harvard: Communication', value: 'categories.h_communication'});
+		data.push({name: 'Harvard: Institutions', value: 'categories.h_institution'});
+		data.push({name: 'Harvard: Motivation', value: 'categories.h_motivation'});
+		data.push({name: 'Harvard: Objects', value: 'categories.h_object'});
+		data.push({name: 'Harvard: Over/Understatement', value: 'categories.h_overunderstate'});
+		data.push({name: 'Harvard: Places', value: 'categories.h_place'});
+		data.push({name: 'Harvard: Pleasure & Pain', value: 'categories.h_pleasurepain'});
+		data.push({name: 'Harvard: Positive & Negative', value: 'categories.h_posneg'});
+		data.push({name: 'Harvard: Processes', value: 'categories.h_process'});
+		data.push({name: 'Harvard: Pronouns', value: 'categories.h_pronoun'});
+		data.push({name: 'Harvard: Roles', value: 'categories.h_role'});
+		data.push({name: 'Harvard: Social', value: 'categories.h_social'});
+		data.push({name: 'Harvard: Verbs', value: 'categories.h_verb'});
+		data.push({name: 'Harvard: Yes & No', value: 'categories.h_yesno'});
 		
 		Ext.apply(this, {
     		layout: 'hbox',
-			margin: '0 0 5px 0',
     		items: [{
     			xtype: 'combo',
     			queryMode: 'local',
@@ -93,6 +108,8 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 			increaseCategory: 'Increase Category Priority',
 			decreaseCategory: 'Decrease Category Priority',
 			setColorsFromPalette: 'Set Colors From Palette',
+			loadingCategories: 'Loading Categories',
+			errorLoadingCategories: 'Error loading Categories',
     		
     		color: 'Color',
     		font: 'Font',
@@ -269,6 +286,7 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 		                    overflowHandler: 'scroller',
 		                    items: [{
 								xtype: 'textfield',
+								itemId: 'categoryFilter',
 								fieldLabel: 'Category Filter',
 								labelAlign: 'right',
 								enableKeyEvents: true,
@@ -367,18 +385,24 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
 			}],
 			listeners: {
 				show: function() {
+					this.down('tabpanel').setActiveTab(0);
+					this.queryById('categoryFilter').setValue('');
 					// check to see if the widget value is different from the API
-					if (this.getCategoriesId() && this.getCategoriesId() !== this.getApiParam("categories")) {
+					if (this.getCategoriesId() !== this.panel.getApiParam('categories')) {
+						this.queryById('categories').mask(this.localize('loadingCategories'));
 		    			this.app.loadCategoryData(this.getCategoriesId()).then(function(data) {
+							this.queryById('categories').unmask();
 							this.setColorTermsFromCategoryFeatures();
 							this.buildCategories();
 							this.buildFeatures();
+						}.bind(this), function(error) {
+							this.queryById('categories').unmask();
+							this.panel.showError(this.localize('errorLoadingCategories'));
 						}.bind(this));
 					} else {
 						this.buildCategories();
 						this.buildFeatures();
-					}					
-					this.down('tabpanel').setActiveTab(0);
+					}
 				},
 				afterrender: function(builder) {
 					builder.on('loadedCorpus', function(src, corpus) {

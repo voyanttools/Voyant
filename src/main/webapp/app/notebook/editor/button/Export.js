@@ -59,16 +59,24 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			}
 
 			var wrapper = Voyant.notebook.editor.EditorWrapper.currentEditor;
-			
-			var notebook = wrapper.up('notebook');
-			var notebookId = notebook.getNotebookId() || 'spyral';
-			
-			var mode = wrapper.getMode();
-
-			var dfd = new Ext.Deferred();
+			if (wrapper === undefined) {
+				var results = Voyant.notebook.editor.SandboxWrapper.currentResults;
+				var notebook = results.up('notebook');
+				Ext.Array.each(notebook.query("notebookrunnableeditorwrapper"), function(item) {
+					if (item.results === results) {
+						wrapper = item;
+						return false;
+					}
+				});
+				if (wrapper === undefined) {
+					console.warn('wrapper not found!');
+					return;
+				}
+			}
 
 			var outputPromise = null;
-			if (mode === 'file' || mode === 'corpus') {
+			var mode = wrapper.getMode();
+			if (mode === 'file' || mode === 'corpus' || mode === 'table') {
 				outputPromise = wrapper.cachedInput.getBlob();
 			} else {
 				outputPromise = wrapper.results.updateCachedOutput().then(function() {
@@ -76,6 +84,10 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 				});
 			}
 
+			var notebook = wrapper.up('notebook');
+			var notebookId = notebook.getNotebookId() || 'spyral';
+
+			var dfd = new Ext.Deferred();
 			outputPromise.then(function(output) {
 				var input = wrapper.getInput();
 	
@@ -96,7 +108,7 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 					}
 					fileType = output.type;
 					fileContent = output;
-				} else if (mode === 'javascript') {
+				} else if (mode === 'javascript' || mode === 'table') {
 					// corpus check
 					if (Spyral.Util.isObject(output) && output.hasOwnProperty('corpusid') && Spyral.Util.isString(output.corpusid)) {
 						corpusButton.setHidden(false);
@@ -188,4 +200,35 @@ Ext.define('Voyant.notebook.editor.button.Export', {
 			});
 		});
 	}
-})
+});
+
+Ext.define('Voyant.notebook.editor.button.ExportResults', {
+	extend: 'Ext.button.Button',
+	mixins: ['Voyant.util.Localization'],
+	alias: 'widget.notebookwrapperexportresults',
+	statics: {
+		i18n: {
+			text: 'Export Results',
+		}
+	},
+	glyph: 'xf08e@FontAwesome',
+	constructor: function(config) {
+		config.tooltip = this.localize('text');
+		this.callParent(arguments);
+	},
+	handler: function(cmp) {
+		// hack to get the export menu item so we can pass it to the export window function
+		// TODO need a better way to do this
+		var exportMenuItem = Voyant.notebook.editor.EditorWrapper.toolbarLeft.down('notebookwrapperexport');
+		Voyant.notebook.editor.button.Export.getExportWindow(exportMenuItem).then(function(exportWin) {
+			exportWin.show();
+		}, function(err) {
+			Ext.Msg.show({
+				title: 'Export Error',
+				msg: 'There was an error exporting the cell contents.'+"<br><pre style='color: red'>"+err+"</pre>",
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
+		});
+	}
+});

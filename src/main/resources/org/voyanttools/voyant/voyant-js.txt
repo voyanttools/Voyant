@@ -113,6 +113,7 @@ app/panel/Bubblelines.js
 app/panel/Catalogue.js
 app/panel/Cirrus.js
 app/panel/CollocatesGraph.js
+app/panel/Constellations.js
 app/panel/Contexts.js
 app/panel/CorpusCollocates.js
 app/panel/CorpusTermSummary.js
@@ -171,6 +172,7 @@ app/notebook/editor/button/Remove.js
 app/notebook/editor/button/Run.js
 app/notebook/editor/button/RunAll.js
 app/notebook/editor/button/RunUntil.js
+app/notebook/editor/button/Warning.js
 app/notebook/editor/EditorWrapper.js
 app/notebook/editor/RunnableEditorWrapper.js
 app/notebook/editor/SandboxWrapper.js
@@ -181,6 +183,7 @@ app/notebook/editor/TextEditorWrapper.js
 app/notebook/editor/CachedInput.js
 app/notebook/editor/FileInput.js
 app/notebook/editor/CorpusInput.js
+app/notebook/editor/TableInput.js
 app/notebook/editor/DataWrapper.js
 app/notebook/storage/github/OctokitWrapper.js
 app/notebook/storage/github/ReposBrowser.js

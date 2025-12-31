@@ -19,7 +19,8 @@ Ext.define('Voyant.panel.Subset', {
     	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}],
 		inDocumentsCountOnly: false,
 		stopList: 'auto',
-		store: undefined
+		store: undefined,
+		matchingDocIds: []
     },
     constructor: function(config) {
         this.callParent(arguments);
@@ -165,23 +166,28 @@ Ext.define('Voyant.panel.Subset', {
     		// there's currently no query, so give the option of opening the current corpus in a new window
     		Ext.Msg.alert(this.localize('sendToVoyantButton'), new Ext.XTemplate(this.localize('sendToVoyantNoQuery')).apply([this.getBaseUrl()+"?corpus="+this.getStore().getCorpus().getId()]))
     	} else {
-    		// try spawning a new corpus with the query
-    		var me = this;
         	this.mask("Creating corpus…");
-        	this.getStore().load({
-        		params: {
-        			query: this.getStore().lastOptions.params.query,
-        			createNewCorpus: true
-        		},
-        		callback: function(records, operation, success) {
-        			me.unmask();
-        			if (success && records && records.length==1) {
-            			var corpus = operation.getProxy().getReader().metaData;
-        				var url = me.getBaseUrl()+"?corpus="+corpus;
-        				me.openUrl(url);
-        			}
-        		}
-        	})
+
+			Ext.Ajax.request({
+				url: this.getApplication().getTromboneUrl(),
+				params: {
+					corpus: this.getCorpus().getId(),
+					tool: 'corpus.CorpusManager',
+					keepDocuments: true,
+					docId: this.getMatchingDocIds()
+				},
+				success: function(response, opts) {
+					this.unmask();
+					var json = Ext.JSON.decode(response.responseText);
+					var url = this.getBaseUrl()+"?corpus="+json.corpus.id;
+					this.openUrl(url);
+				},
+				failure: function(response, opts) {
+					this.unmask();
+					this.showResponseError("Unable to export corpus: "+this.getCorpus().getId(), response);
+				},
+				scope: this
+			})
     	}
     },
     
@@ -193,33 +199,33 @@ Ext.define('Voyant.panel.Subset', {
     		if (this.getStore().lastOptions.params.query && record && record.getCount()==0) {
     			this.showMsg({message: this.localize('noMatches')})
     		} else {
-    	    	this.getStore().load({
-    	    		params: {
-    	    			query: this.getStore().lastOptions.params.query,
-    	    			createNewCorpus: true,
-    	    			temporaryCorpus: true
-    	    		},
-    	    		callback: function(records, operation, success) {
-    	    			if (success && records && records.length==1) {
-    	    	    		this.downloadFromCorpusId(operation.getProxy().getReader().metaData);
-    	    			}
-    	    		},
-    	    		scope: this
-    	    	})
+    	    	Ext.Ajax.request({
+					url: this.getApplication().getTromboneUrl(),
+					params: {
+						corpus: this.getCorpus().getId(),
+						tool: 'corpus.CorpusManager',
+						keepDocuments: true,
+						docId: this.getMatchingDocIds()
+					},
+					success: function(response, opts) {
+						this.unmask();
+						var json = Ext.JSON.decode(response.responseText);
+						this.downloadFromCorpusId(json.corpus.id);
+					},
+					failure: function(response, opts) {
+						this.unmask();
+						this.showResponseError("Unable to export corpus: "+this.getCorpus().getId(), response);
+					},
+					scope: this
+				})
     		}
     	}
     },
-    
-    openDownloadCorpus: function(corpus) {
-		var url = this.getTromboneUrl()+"?corpus="+corpus+"&tool=corpus.CorpusExporter&outputFormat=zip"+
-			"&zipFilename=DownloadedVoyantCorpus-"+corpus+".zip"+
-			(this.getApiParam("documentFormat") ? "&documentFormat="+this.getApiParam("documentFormat") : '')+
-			(this.getApiParam("documentFilename") ? "&documentFilename="+this.getApiParam("documentFilename") : '')
-		this.openUrl(url)
-    },
 
     performAggregateQuery: function(query) {
-    	var me = this, statuscontainer = me.queryById('statuscontainer'), status = me.queryById('status'), spark = me.queryById('sparkline');
+    	var statuscontainer = this.queryById('statuscontainer');
+		var status = this.queryById('status');
+		var spark = this.queryById('sparkline');
 		if (statuscontainer) {statuscontainer.show();}
 		if (status) {status.setHtml(new Ext.XTemplate('{0:plural("documents")} matching.').apply([0]))}
 		if (spark) {spark.setValues([0,0]);}
@@ -229,20 +235,22 @@ Ext.define('Voyant.panel.Subset', {
         		params: {
         			query: query,
         			withDistributions: true,
+					includeDocIds: true,
         			bins: docsCount > 100 ? 100 : docsCount 
         		},
         		callback: function(records, operation, success) {
-        			var exp = me.queryById('export');
-        			var spark = me.queryById('sparkline');
         			if (success && records && records.length==1) {
+						var record = records[0];
         				if (status) {
-        					status.setHtml(new Ext.XTemplate('{0:plural("document")} matching.').apply([records[0].getCount()]))
+        					status.setHtml(new Ext.XTemplate('{0:plural("document")} matching.').apply([record.getCount()]))
         				}
         				if (spark) {
-            				spark.setValues(records[0].getDistributions())
+            				spark.setValues(record.getDistributions())
         				}
+						this.setMatchingDocIds(Ext.Array.clone(record.getDocIds()));
         			}
-        		}
+        		},
+				scope: this
         	})
     	} else if (this.getStore().lastOptions) { // set query to undefined so that send/export buttons work properly
     		this.getStore().lastOptions.params.query = undefined

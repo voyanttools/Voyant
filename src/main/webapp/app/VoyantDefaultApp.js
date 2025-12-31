@@ -87,7 +87,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 					layout: {
 						type: 'vbox',
 						pack: 'center',
-						align: 'center'
+						align: 'middle'
 					},
 					items: [{
 						xtype: 'corpuscreator'
@@ -103,8 +103,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 					},{
 						xtype: 'container',
 						width: 800,
-						html: ""+
-						"<div id='voyantServerMessage' style='font-style: italic; text-align: center; margin-top: 10px;'></div>"
+						html: "<div id='voyantServerMessage' style='font-style: italic; text-align: center; margin-top: 10px;'></div>"
 					}]	
 				},{
 					layout: 'fit',

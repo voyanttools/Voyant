@@ -41,7 +41,7 @@
 	/* border-left-color: rgba(30, 189, 66, .5); */
 	border-left-color: rgba(23, 145, 232, .5);
 }
-.notebook-code-results.warning {
+.notebook-code-results.warning, .x-btn.warning {
 	border-left-color: rgba(232, 147, 23, .5);
 }
 

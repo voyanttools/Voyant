@@ -8,8 +8,6 @@
  *     "limit": null,
  *     "minEdgeCount": null,
  *     "nerService": null,
- *     "query": null,
- *     "stopList": null,
  *     "type": null,
  *   };
  *
@@ -33,13 +31,6 @@ Ext.define('Voyant.panel.RezoViz', {
 			/**
 			 * @memberof Tools.RezoViz
 			 * @instance
-			 * @property {query}
-			 */
-			query: undefined,
-
-			/**
-			 * @memberof Tools.RezoViz
-			 * @instance
 			 * @property {limit}
 			 * @default
 			 */
@@ -58,14 +49,6 @@ Ext.define('Voyant.panel.RezoViz', {
 			 * @property {Number} minEdgeCount
 			 */
 			minEdgeCount: 2,
-
-			/**
-			 * @memberof Tools.RezoViz
-			 * @instance
-			 * @property {stopList}
-			 * @default
-			 */
-			stopList: 'auto',
 
 			/**
 			 * @memberof Tools.RezoViz
@@ -97,9 +80,7 @@ Ext.define('Voyant.panel.RezoViz', {
 					strokeOpacity: 0.5
 				}
 			}
-		},
-
-		options: [{xtype: 'stoplistoption'}]
+		}
 	},
 	
 	constructor: function(config) {
@@ -263,7 +244,13 @@ Ext.define('Voyant.panel.RezoViz', {
 						scope: this
 					}
 				}]
-			}]
+			}],
+			listeners: {
+				entityResults: function(src, entities) {
+					this.getEntities();
+				},
+				scope: this
+			}
 		});
 		
 		this.on('loadedCorpus', function(src, corpus) {
@@ -290,8 +277,6 @@ Ext.define('Voyant.panel.RezoViz', {
 			}
 		}, this);
 		
-		this.on('query', function(src, query) {this.loadFromQuery(query);}, this);
-		
 		me.callParent(arguments);
 
 	},
@@ -314,16 +299,19 @@ Ext.define('Voyant.panel.RezoViz', {
 	},
 
 	preloadEntities: function() {
-		var me = this;
-		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')}, function() {
-			me.getEntities();
-		});
+		var types = this.getApiParam('type');
+		if (this.getApiParam('nerService') === 'spacy') {
+			types = types.map(function(type) {
+				return Voyant.data.util.DocumentEntities.getSpacyTypesFromStanfordType(type);
+			}, this).flat();
+			this.setApiParam('type', types);
+		}
+		new Voyant.data.util.DocumentEntities({annotator: this.getApiParam('nerService')});
 	},
 
 	getEntities: function() {
 		this.down('voyantnetworkgraph').resetGraph();
 
-		var corpusId = this.getCorpus().getId();
 		var el = this.getLayout().getRenderTarget();
 		el.mask(this.localize('loadingEntities'));
 
@@ -338,7 +326,6 @@ Ext.define('Voyant.panel.RezoViz', {
 				minEdgeCount: this.getApiParam('minEdgeCount'),
 				corpus: this.getCorpus().getId(),
 				docId: this.getApiParam('docId'),
-				stopList: this.getApiParam('stopList'),
 				noCache: true
 			},
 			timeout: 120000,
@@ -387,10 +374,14 @@ Ext.define('Voyant.panel.RezoViz', {
 		for (var i = 0; i < nodes.length; i++) {
 			var n = nodes[i];
 
+			var type = n.type;
+			if (this.getApiParam('nerService') === 'spacy') {
+				type = Voyant.data.util.DocumentEntities.getStanfordTypeFromSpacyType(n.type);
+			}
 			visNodes.push({
 				term: n.term,
 				title: n.term + ' ('+n.rawFreq+')',
-				type: n.type,
+				type: type,
 				value: n.rawFreq,
 				fixed: false,
 				x: cX,

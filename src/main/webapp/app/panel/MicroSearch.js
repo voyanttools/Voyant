@@ -98,7 +98,13 @@ Ext.define('Voyant.panel.MicroSearch', {
     	this.on('query', function(src, query) {
     		this.setApiParam('query', query);
     		this.updateSearchResults();
-    	})
+    	});
+
+		this.on('resize', function(panel, width, height) {
+			if (this.getCorpus()) {
+				this.initialize();
+			}
+		});
     	
     },
     

@@ -31,3 +31,31 @@ Ext.define("Voyant.notebook.editor.button.ExpandCollapse", {
 		// this.setTooltip(isCollapsed ? this.localize('expand') : this.localize('collapse'));
 	}
 });
+
+Ext.define("Voyant.notebook.editor.button.ExpandCollapseResults", {
+	extend: 'Ext.button.Button',
+	mixins: ["Voyant.util.Localization"],
+	alias: 'widget.notebookwrapperexpandcollapseresults',
+	statics: {
+		i18n: {
+			collapse: 'Collapse Results',
+			expand: 'Expand Results'
+		}
+	},
+	constructor: function(config) {
+		config = config || {};
+		config.tooltip = this.localize('collapse');
+		this.callParent(arguments);
+	},
+	itemId: 'expandButton',
+	isCollapsed: false,
+	glyph: 'xf066@FontAwesome',
+	handler: function(btn, e) {
+		Voyant.notebook.editor.SandboxWrapper.currentResults._doExpandCollapse();
+	},
+	setCollapsed: function(isCollapsed) {
+		this.isCollapsed = isCollapsed;
+		this.setGlyph(isCollapsed ? 'xf065@FontAwesome' : 'xf066@FontAwesome');
+		this.setTooltip(isCollapsed ? this.localize('expand') : this.localize('collapse'));
+	}
+});

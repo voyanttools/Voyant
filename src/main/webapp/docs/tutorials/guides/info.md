@@ -8,6 +8,6 @@
 
 ## {@tutorial notebook}
 
-## {@tutorial server}
+## {@tutorial local}
 
 <span id="no_toc"/>

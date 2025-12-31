@@ -1,5 +1,6 @@
 /**
  * ScatterPlot is a graph visualization of how words cluster in a corpus document similarity, correspondence analysis or principal component analysis.
+ * You can work with the ScatterPlot algorithms programmatically using {@link Spyral.Corpus#analysis}.
  *
  * @example
  *
@@ -19,7 +20,7 @@
  *     "storeJson": null,
  *     "target": null,
  *     "term": null,
- *     "whitelist": null,
+ *     "whiteList": null,
  *   };
  *
  *   loadCorpus("austen").tool("scatterplot", config);
@@ -139,9 +140,9 @@ Ext.define('Voyant.panel.ScatterPlot', {
 			/**
 			 * @memberof Tools.ScatterPlot
 			 * @instance
-			 * @property {String} whitelist TODO Unused or only used in CA?
+			 * @property {String} whiteList A list of words to always include
 			 */
-    		whitelist: undefined,
+    		whiteList: undefined,
 
 			/**
 			 * @memberof Tools.ScatterPlot
@@ -160,7 +161,11 @@ Ext.define('Voyant.panel.ScatterPlot', {
 		glyph: 'xf06e@FontAwesome'
     },
 	config: {
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'}],
+    	options: [
+			{xtype: 'stoplistoption'},
+			{xtype: 'listeditor', name: 'whiteList'},
+			{xtype: 'categoriesoption'}
+		],
     	caStore: null,
     	pcaStore: null,
     	tsneStore: null,
@@ -168,7 +173,8 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	termStore: null,
     	chartMenu: null,
     	newTerm: null,
-    	termsTimeout: null,
+    	termsLimitTimeout: null,
+		ignoreTermsLimitChange: false,
     	highlightData: {x: 0, y: 0, r: 0},
         highlightTask: null
 	},
@@ -340,17 +346,17 @@ Ext.define('Voyant.panel.ScatterPlot', {
         			xtype: 'numberfield',
         			minValue: 5,
         			listeners: {
-        				change: function(numb, newValue, oldValue) {
+        				change: function(cmp, newValue, oldValue) {
         					function doLoad() {
         						this.setApiParam('limit', newValue);
             					this.loadFromApis();
 							}
-							if (oldValue !== null) {
-								if (this.getTermsTimeout() !== null) {
-									clearTimeout(this.getTermsTimeout());
+							if (this.getIgnoreTermsLimitChange() === false) {
+								if (this.getTermsLimitTimeout() !== null) {
+									clearTimeout(this.getTermsLimitTimeout());
 								}
-								if (numb.isValid()) {
-									this.setTermsTimeout(setTimeout(doLoad.bind(this), 500));
+								if (cmp.isValid()) {
+									this.setTermsLimitTimeout(setTimeout(doLoad.bind(this), 500));
 								}
 							}
         				},
@@ -542,9 +548,24 @@ Ext.define('Voyant.panel.ScatterPlot', {
                     items: [{
                     	xtype: 'querysearchfield',
                     	itemId: 'addTerms',
-//                    	emptyText: this.localize('addTerm'),
+						multiSelect: false,
                     	flex: 1
-                    }]
+                    },{
+						xtype: 'button',
+						text: this.localize('addTerm'),
+						handler: function(btn) {
+							var queryField = this.queryById('addTerms');
+							var value = queryField.getValue();
+							if (value !== null && this.getTermStore().findExact('term', value) === -1) {
+								this.setNewTerm(value);
+								this.loadFromApis();
+							} else {
+								this.setNewTerm(null);
+							}
+							queryField.setValue('');
+						},
+						scope: this
+					}]
                 },
         		columns: [{
         			text: this.localize('term'),
@@ -599,14 +620,6 @@ Ext.define('Voyant.panel.ScatterPlot', {
         		listeners: {
         			expand: function(panel) {
         				panel.getView().refresh();
-        			},
-        			query: function(component, value) {
-        				if (value.length > 0 && this.getTermStore().findExact('term', value[0]) === -1) {
-	                		this.setNewTerm(value);
-	                		this.loadFromApis();
-    					} else {
-    						this.setNewTerm(null);
-    					}
         			},
         			scope: this
         		}
@@ -674,6 +687,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
 		this.queryById('reloadButton').setVisible(analysis === 'tsne');
 		this.queryById('perplexity').setVisible(analysis === 'tsne');
 		this.queryById('iterations').setVisible(analysis === 'tsne');
+		this.queryById('limit').setDisabled(analysis === 'docSim');
 		if (analysis === 'ca') {
 			// TODO handling for when there's no corpus
 			if (this.getCorpus().getDocumentsCount() == 3) {
@@ -763,10 +777,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
         var maxFill = 0;
         var minFill = Number.MAX_VALUE;
         
-        
-        if (this.getApiParam('analysis') !== 'docSim') { // docSim doesn't return terms so keep the current ones
-	        this.getTermStore().removeAll();
-        }
+		this.getTermStore().removeAll();
 	        
         var tokens = rec.getTokens();
         var termData = [];
@@ -815,10 +826,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
         	}
         }, this);
         
-        var newCount = this.getTermStore().getCount();
-        this.queryById('limit').setRawValue(newCount);
-        this.setApiParam('limit', newCount);
-        
+        this.updateLimit();
         
     	var termSeriesStore = Ext.create('Ext.data.JsonStore', {
     		fields: ['term', 'x', 'y', 'z', 'rawFreq', 'relativeFreq', 'cluster', 'category', 'docIndex', 'disabled'],
@@ -1021,11 +1029,22 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	
     	this.doLabels();
     	
-    	if (this.getNewTerm() !== null) {
-        	this.selectTerm(this.getNewTerm()[0]);
-        	this.setNewTerm(null);
+		var newTerm = this.getNewTerm();
+    	if (newTerm !== null) {
+			setTimeout(function() {
+				this.selectTerm(newTerm);
+				this.setNewTerm(null);
+			}.bind(this), 0);
         }
     },
+
+	updateLimit: function() {
+		var termCount = this.getCurrentTerms().length;
+		this.setIgnoreTermsLimitChange(true);
+        this.queryById('limit').setValue(termCount);
+		this.setIgnoreTermsLimitChange(false);
+        this.setApiParam('limit', termCount);
+	},
     
     getDefaultDocColor: function(returnHex) {
     	var color = this.getApplication().getColor(6, returnHex);
@@ -1201,8 +1220,7 @@ Ext.define('Voyant.panel.ScatterPlot', {
     	index = this.getTermStore().findExact('term', term);
     	this.getTermStore().removeAt(index);
     	
-    	var newCount = this.getTermStore().getCount();
-        this.queryById('limit').setRawValue(newCount);
+    	this.updateLimit();
     },
     
     loadFromApis: function(keepCurrentTerms) {
@@ -1218,7 +1236,6 @@ Ext.define('Voyant.panel.ScatterPlot', {
     		if (this.getNewTerm() !== null || keepCurrentTerms) {
     			params.query = terms.join(',');
     		}
-//    		params.term = terms;
     	}
     	Ext.apply(params, this.getApiParams());
     	if (params.target != null) {

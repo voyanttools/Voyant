@@ -3,7 +3,6 @@ Ext.define('Voyant.widget.StopListOption', {
     mixins: ['Voyant.util.Localization'],
     alias: 'widget.stoplistoption',
     layout: 'hbox',
-	margin: '0 0 5px 0',
     statics: {
     		stoplists: {
     		    ar: "stop.ar.txt",

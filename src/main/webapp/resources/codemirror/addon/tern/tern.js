@@ -694,6 +694,10 @@
 
   function makeTooltip(x, y, content, cm, className) {
     var node = elt("div", cls + "tooltip" + " " + (className || ""), content);
+    // hack for converting links in hints
+    if (typeof content === 'string' && content.indexOf('<a') !== -1) {
+      node.innerHTML = content;
+    }
     node.style.left = x + "px";
     node.style.top = y + "px";
     var container = ((cm.options || {}).hintOptions || {}).container || document.body;

@@ -30,7 +30,7 @@ Ext.define('Voyant.panel.Knots', {
 			 * @instance
 			 * @property {query}
         	 */
-    		query: null,
+    		query: undefined,
     		/**
 			 * @memberof Tools.Knots
     		 * @instance
@@ -79,17 +79,28 @@ Ext.define('Voyant.panel.Knots', {
     	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
     	
     	this.on('loadedCorpus', function(src, corpus) {
-    		var firstDoc = corpus.getDocument(0);
-    		var pDoc = this.processDocument(firstDoc);
-    		this.getKnots().setCurrentDoc(pDoc);
-    		
-    		this.setApiParams({docId: firstDoc.getId()});
-    		this.getDocTermStore().getProxy().setExtraParam('corpus', corpus.getId());
-    		this.getTokensStore().setCorpus(corpus);
-    		this.getDocTermStore().load({params: {
-		    	limit: 5,
-		    	stopList: this.getApiParams('stopList')
-		    }});
+			var docId = this.getApiParam('docId');
+			if (docId === undefined) {
+				docId = corpus.getDocument(0).getId();
+				this.setApiParam('docId', docId);
+			}
+			
+			var pDoc = this.processDocument(corpus.getDocument(docId));
+			this.getKnots().setCurrentDoc(pDoc);
+			
+			this.getDocTermStore().getProxy().setExtraParam('corpus', corpus.getId());
+			this.getTokensStore().setCorpus(corpus);
+
+			var termsLimit = 5;
+			var query = this.getApiParam('query');
+			if (query != undefined && query != '') {
+				termsLimit = Array.isArray(query) ? query.length : query.split(',').length
+			}
+			this.getDocTermStore().load({params: {
+				query: query,
+				limit: termsLimit,
+				stopList: this.getApiParams('stopList')
+			}});
     	}, this);
     	
         this.on('activate', function() { // load after tab activate (if we're in a tab panel)
@@ -527,14 +538,6 @@ Ext.define('Voyant.panel.Knots', {
     		this.setApiParams({query: query}); // assumes docId already set
 			this.getDocTermStore().load({params: this.getApiParams()});
     	}
-	},
-    
-	reloadTermsData: function() {
-		var terms = [];
-		for (var term in this.bubblelines.currentTerms) {
-			terms.push(term);
-		}
-		this.getDocTermsFromQuery(terms);
 	},
 	
     filterDocuments: function() {

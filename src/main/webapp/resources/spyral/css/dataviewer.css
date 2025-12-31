@@ -5,6 +5,10 @@
     overflow: auto;
 }
 
+.spyral-dv-container.static * {
+	cursor: default !important;
+}
+
 .spyral-dv-folder {
     cursor: pointer;
 }

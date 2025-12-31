@@ -293,12 +293,12 @@ Ext.define('Voyant.panel.TermsBerry', {
     	
     	loadedCorpus: function(src, corpus) {
     		if (this.isVisible()) {
-        		this.doLoad();
+        		this.doLoad(this.getApiParam('query'));
     		}
     	},
     	activate: function() {
     		if (this.getCorpus()) {
-    			this.doLoad();
+    			this.doLoad(this.getApiParam('query'));
     		}
     	}
     },
@@ -563,10 +563,10 @@ Ext.define('Voyant.panel.TermsBerry', {
     		.attr('class', 'node')
     		.style('visibility', function(d) { return d.depth > 0 ? 'visible' : 'hidden'; }) // hide root
     		.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-    		.on('click', function(d) {
+    		.on('click', function(event, d) {
     			me.dispatchEvent('termsClicked', me, [d.data.term]);
     		})
-    		.on('mouseover', function(d, i) {
+    		.on('mouseover', function(event, d) {
     			me.setCurrentNode(d);
     			
     			me.getVis().selectAll('circle')
@@ -603,10 +603,10 @@ Ext.define('Voyant.panel.TermsBerry', {
 					match.select('tspan.value').text(function(d) { return collocate.value; });
 				}
 			})
-			.on('mousemove', function() {
-				me.getTip().setPosition(d3.event.pageX+5, d3.event.pageY-50);
+			.on('mousemove', function(event) {
+				me.getTip().setPosition(event.pageX+5, event.pageY-50);
 			})
-			.on('mouseout', function() {
+			.on('mouseout', function(event) {
 				if (!me.getContextMenu().isVisible()) {
 					me.setCurrentNode(undefined);
 				}
@@ -617,12 +617,12 @@ Ext.define('Voyant.panel.TermsBerry', {
 				me.getTip().hide();
 //				me.getVisInfo().text('');
 			})
-			.on('contextmenu', function(d, i) {
-				d3.event.preventDefault();
+			.on('contextmenu', function(event, d) {
+				event.preventDefault();
 				me.getTip().hide();
 				var menu = me.getContextMenu();
 				menu.queryById('label').setHtml(d.data.term);
-				menu.showAt(d3.event.pageX+5, d3.event.pageY-50);
+				menu.showAt(event.pageX+5, event.pageY-50);
 			});
     	
     	node.append('circle')

@@ -3,7 +3,6 @@ Ext.define('Voyant.widget.ColorPaletteOption', {
     mixins: ['Voyant.util.Localization'],
     alias: 'widget.colorpaletteoption',
     layout: 'hbox',
-	margin: '0 0 5px 0',
     statics: {
     	i18n: {
 			presetPalettes: 'Preset Palettes',

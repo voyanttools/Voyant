@@ -1,5 +1,6 @@
 /**
  * Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
+ * You can work with collocates programmatically using {@link Spyral.Corpus#collocates}.
  *
  * @example
  *

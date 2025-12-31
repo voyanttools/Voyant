@@ -150,8 +150,8 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				html: ''
 			}],
 			listeners: {
-				boxready: function(win) {
-					win.body.addListener('click', function(evt) {
+				boxready: function(cmp) {
+					cmp.body.addListener('click', function(evt) {
 						if (evt.target.tagName.toLowerCase() === 'a') {
 							evt.preventDefault();
 							evt.stopPropagation();
@@ -179,25 +179,32 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		this.lastEntry = undefined;
 		this.lastMember = undefined;
 
-		var html = '<p>'+this.localize('outlineIntro')+'</p>';
-			
 		this.up().setTitle(this.localize('docs')+' '+this.localize('home'));
 		this.down('#overviewBtn').hide();
 		this.down('#methodsBtn').hide();
 		this.down('#configsBtn').hide();
 
+		var html = '<p>'+this.localize('outlineIntro')+'</p>';
 		this._setHtmlForCard('main', html);
+
+		this.up().show().expand();
 
 		this.body.scrollTo('top', 0, false);
 	},
 
 	handleDocLink: function(link, rel) {
 		console.log('handleDocLink', link, rel);
-		if (link.indexOf('http') === 0) {
+		link = link.replace(/^https:\/\/voyant-tools.org\//, '');
+		if (link.indexOf('spyral') === 0) {
+			var notebookId = link.replace(/^spyral\//, '').replace(/\/$/, '').replace(/\//, '_');
+			var parent = this.findParentByType('notebook');
+			parent.fireEvent('notebookSelected', parent, notebookId, null);
+		} else if (link.indexOf('http') === 0) {
 			window.open(link, '_external');
 		} else if (link.indexOf('tutorial') === 0 || rel === 'help') {
 			window.open(this.fullDocsUrl+link, '_spyral_docs');
 		} else {
+			this.up().show().expand();
 			this.loadDocsEntry(link);
 		}
 	},

@@ -7,8 +7,8 @@
 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.4.0/font-awesome-all.css" />
-<script src="<%= base %>/resources/jquery/current/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%= base %>/resources/fontawesome/4.7.0/font-awesome.min.css" />
+<script src="<%= base %>/resources/jquery/jquery.min.js"></script>
 <style>
 	body {
 		font-family: HelveticaNeue, helvetica, arial, clean, sans-serif;
@@ -42,8 +42,8 @@
 
 var Voyant = Voyant || {};
 Voyant.Mirrors = {
-	local: '<%= base %>/resources/docs/servers.json',
-	remote: 'https://raw.githubusercontent.com/voyanttools/Voyant/master/src/main/webapp/resources/docs/servers.json',
+	local: '<%= base %>/docs/servers.json',
+	remote: 'https://raw.githubusercontent.com/voyanttools/Voyant/master/src/main/webapp/docs/servers.json',
 	buildMirrorsList: function(url) {
 		// for remote URL we use Trombone to fetch JSON to avoid any cross-domain issues
 		$.getJSON(url==Voyant.Mirrors.local ? url : "<%= base %>/trombone", {

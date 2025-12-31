@@ -5,24 +5,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import com.google.common.primitives.Longs;
 import com.google.javascript.jscomp.CompilationLevel;
@@ -50,8 +49,6 @@ public class JSCacher {
 
 
 	public static void main(String[] args) throws IOException {
-		System.out.println("Running JSCacher with: "+String.join(", ", args));
-		
 		String webappPath = null;
 		
 		final Options options = new Options();
@@ -75,131 +72,117 @@ public class JSCacher {
 			basePath = new File(voyantRoot, "/src/main/webapp/");
 		}
 		
-		doCache(basePath, true, true);
+		// remove previous files
+		cleanup(basePath);
+		
+		doCache(basePath, true);
 	}
 	
-	private static void doCache(File basePath, boolean doSourceMap, boolean forceUpdate) throws IOException {
+	private static void doCache(File basePath, boolean doSourceMap) throws IOException {
 		
-		System.out.println("JSCacher: path: "+basePath.getPath()+", source: "+doSourceMap+", force: "+forceUpdate);
-		
-		// find the previously cached file and get its ID and modified date
-		File lastCachedFile = getCachedFile(basePath);
-		long lastModifiedCachedFile = 18000; // unix epoch
-		String lastFileID = null;
-		if (lastCachedFile != null) {
-			Matcher idMatcher = Pattern.compile(CACHED_FILE_PATTERN).matcher(lastCachedFile.getName());
-			idMatcher.find();
-			lastFileID = idMatcher.group(1);
-			System.out.println("JSCacher: previous ID: "+lastFileID);
-			lastModifiedCachedFile = lastCachedFile.lastModified();
-		}
-		Date lastModifiedDate = new Date(lastModifiedCachedFile);
+		System.out.println("JSCacher: path: "+basePath.getPath()+", source: "+doSourceMap);
 		
 		List<File> files = getCacheableFiles(basePath);
 		
-		System.out.println("JSCacher: files: "+files.size()+", last modified: "+lastModifiedDate);
-
-		// look for any file that's been updated since last cache
-		boolean needsUpdate = false;
-		if (forceUpdate) {
-			needsUpdate = true;
-		} else {
-			for (File file : files) {
-				if (file.lastModified() > lastModifiedCachedFile) {
-					System.out.println("JSCacher: new change in: "+file.getName()+", last modified: "+new Date(file.lastModified()));
-					needsUpdate = true;
-					break;
-				}
-			}
+		System.out.println("JSCacher: files: "+files.size());
+		
+		String newFileID = DigestUtils.md5Hex(Longs.toByteArray(System.nanoTime()));
+		System.out.println("JSCacher: creating new file with ID: "+newFileID);
+		
+		String sourceMapFilename = "voyant."+newFileID+".min.js.map";
+		
+		String footer = doSourceMap ? "\n//# sourceMappingURL=" + sourceMapFilename : "";
+		
+		List<SourceFile> sourceFiles = new ArrayList<SourceFile>();
+		for (File file : files) {
+			sourceFiles.add(SourceFile.fromFile(file.getPath(), Charset.forName(ENCODING)));
 		}
 		
-		if (needsUpdate) {
-			String newFileID = DigestUtils.md5Hex(Longs.toByteArray(System.nanoTime()));
-			System.out.println("JSCacher: creating new file with ID: "+newFileID);
+		// minified version
+		Compiler compiler = new Compiler();
+		CompilerOptions options = new CompilerOptions();
+		
+		// support for non-standard tags to avoid JSC_BAD_JSDOC_ANNOTATION warnings
+		List<String> tags = new ArrayList<String>();
+		tags.add("cfg");
+		tags.add("exports");
+		tags.add("choices");
+		tags.add("distinguishingFldsArray");
+		tags.add("undistinguishedRoot");
+		options.setExtraAnnotationNames(tags);
+		
+		options.setStrictModeInput(false); // needed to avoid error on "arguments.callee.caller"
+		
+		options.setSummaryDetailLevel(SUMMARY_DETAIL_LEVEL);
+		
+		options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT_2019);
+		options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+		
+		if (doSourceMap) {
+			options.setSourceMapOutputPath(sourceMapFilename);
+			options.setSourceMapFormat(SourceMap.Format.V3);
+			options.setSourceMapIncludeSourcesContent(true);
 			
-			String sourceMapFilename = "voyant."+newFileID+".min.js.map";
-			
-			String footer = doSourceMap ? "\n//# sourceMappingURL=" + sourceMapFilename : "";
-			
-			List<SourceFile> sourceFiles = new ArrayList<SourceFile>();
-			for (File file : files) {
-				sourceFiles.add(SourceFile.fromFile(file.getPath(), Charset.forName(ENCODING)));
-			}
-			
-			// minified version
-			Compiler compiler = new Compiler();
-			CompilerOptions options = new CompilerOptions();
-			
-			// support for non-standard tags to avoid JSC_BAD_JSDOC_ANNOTATION warnings
-			List<String> tags = new ArrayList<String>();
-			tags.add("cfg");
-			tags.add("exports");
-			tags.add("choices");
-			tags.add("distinguishingFldsArray");
-			tags.add("undistinguishedRoot");
-			options.setExtraAnnotationNames(tags);
-			
-			options.setStrictModeInput(false); // needed to avoid error on "arguments.callee.caller"
-			
-			options.setSummaryDetailLevel(SUMMARY_DETAIL_LEVEL);
-			
-			options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT_2019);
-			options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
-			
-			if (doSourceMap) {
-				options.setSourceMapOutputPath(sourceMapFilename);
-				options.setSourceMapFormat(SourceMap.Format.V3);
-				options.setSourceMapIncludeSourcesContent(true);
-				
-				List<PrefixLocationMapping> prefixes = new ArrayList<>();
-				String baseLocation = basePath.toString().replaceAll("\\\\", "/");
-				prefixes.add(new PrefixLocationMapping(baseLocation, ""));
-				options.setSourceMapLocationMappings(prefixes);
-			}
-			
-			CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
-			Result result = compiler.compile(new ArrayList<SourceFile>(), sourceFiles, options);
-			
-			StringBuffer cache = new StringBuffer();
-			cache.append(compiler.toSource());
-			cache.append(footer);
+			List<PrefixLocationMapping> prefixes = new ArrayList<>();
+			String baseLocation = basePath.toString().replaceAll("\\\\", "/");
+			prefixes.add(new PrefixLocationMapping(baseLocation, ""));
+			options.setSourceMapLocationMappings(prefixes);
+		}
+		
+		CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+		Result result = compiler.compile(new ArrayList<SourceFile>(), sourceFiles, options);
+		
+		StringBuffer cache = new StringBuffer();
+		cache.append(compiler.toSource());
+		cache.append(footer);
 
-			File cachedFileMinified = new File(basePath, CACHED_FILE_PATH+"voyant."+newFileID+".min.js");
-			FileUtils.writeStringToFile(cachedFileMinified, cache.toString(), Charset.forName(ENCODING));
-			
-			// source map
-			if (doSourceMap && result.sourceMap != null) {
-				StringBuilder sourceMap = new StringBuilder();
-				result.sourceMap.appendTo(sourceMap, sourceMapFilename);
-				File sourceMapFile = new File(basePath, CACHED_FILE_PATH+"voyant."+newFileID+".min.js.map");
-				FileUtils.writeStringToFile(sourceMapFile, sourceMap.toString(), Charset.forName(ENCODING));
-			}
-			
-			// modify jsp file
-			File jspFile = new File(basePath, JSP_FILE);
-			List<String> jspFileContent = new ArrayList<>(Files.readAllLines(jspFile.toPath(), Charset.forName(ENCODING)));
-			jspFileContent.set(0, "<% String voyant_js_id = \""+newFileID+"\"; %>");
-			FileUtils.writeLines(jspFile, ENCODING, jspFileContent, "\n");
-			
-			
-			// remove previous files
-			if (lastFileID != null) {
-				try {
-					FileUtils.delete(new File(basePath, CACHED_FILE_PATH+"voyant."+lastFileID+".min.js"));
-					FileUtils.delete(new File(basePath, CACHED_FILE_PATH+"voyant."+lastFileID+".min.js.map"));
-				} catch (NoSuchFileException e) {
-					System.out.println(e);
+		File cachedFileMinified = new File(basePath, CACHED_FILE_PATH+"voyant."+newFileID+".min.js");
+		FileUtils.writeStringToFile(cachedFileMinified, cache.toString(), Charset.forName(ENCODING));
+		
+		// source map
+		if (doSourceMap && result.sourceMap != null) {
+			StringBuilder sourceMap = new StringBuilder();
+			result.sourceMap.appendTo(sourceMap, sourceMapFilename);
+			File sourceMapFile = new File(basePath, CACHED_FILE_PATH+"voyant."+newFileID+".min.js.map");
+			FileUtils.writeStringToFile(sourceMapFile, sourceMap.toString(), Charset.forName(ENCODING));
+		}
+		
+		// modify jsp file
+		File jspFile = new File(basePath, JSP_FILE);
+		List<String> jspFileContent = new ArrayList<>(Files.readAllLines(jspFile.toPath(), Charset.forName(ENCODING)));
+		jspFileContent.set(0, "<% String voyant_js_id = \""+newFileID+"\"; %>");
+		FileUtils.writeLines(jspFile, ENCODING, jspFileContent, "\n");
+	}
+
+	private static void cleanup(File basePath) {
+		// find the previously cached file and get its ID and modified date
+		File cacheDir = new File(basePath, CACHED_FILE_PATH);
+		List<File> lastCachedFiles = getCachedFiles(cacheDir);
+		
+		if (lastCachedFiles != null) {
+			for (File file : lastCachedFiles) {
+				Matcher idMatcher = Pattern.compile(CACHED_FILE_PATTERN).matcher(file.getName());
+				idMatcher.find();
+				String fileID = idMatcher.group(1);
+				System.out.println("JSCacher: remove previous build: "+cacheDir.toString()+File.separator+fileID);
+				if (fileID != null) {
+					try {
+						FileUtils.delete(new File(cacheDir, "voyant."+fileID+".min.js"));
+						FileUtils.delete(new File(cacheDir, "voyant."+fileID+".min.js.map"));
+					} catch (Exception e) {
+						System.out.println(e);
+					}
 				}
 			}
 		}
 	}
 	
-	private static File getCachedFile(File basePath) {
-		final Path dir = new File(basePath, CACHED_FILE_PATH).toPath();
-		try (Stream<Path> results = Files.find(dir, 1,
+	private static List<File> getCachedFiles(File cacheDir) {
+		try (Stream<Path> results = Files.find(cacheDir.toPath(), 1,
 				(path, basicFileAttributes) -> path.toFile().getName().matches(CACHED_FILE_PATTERN))) {
-			return results.findAny().get().toFile();
+			return results.map(p -> p.toFile()).collect(Collectors.toList());
 		} catch (Exception e) {
+			System.out.println(e);
 			return null;
 		}
 	}

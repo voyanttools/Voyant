@@ -102,7 +102,8 @@ Ext.define("Voyant.notebook.editor.RunnableEditorWrapper", {
 			}
 			trimContent(container, 10);
 
-			return container.outerHTML.replace(/spyral-dv-collapsed/g, 'spyral-dv-expanded'); // expand all nodes
+			container.classList.add('static'); // used by css to indicate it's not interactable
+			return container.outerHTML;
 		} else {
 			return output;
 		}

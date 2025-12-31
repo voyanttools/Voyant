@@ -23,29 +23,9 @@ Ext.define('Voyant.notebook.Catalogue', {
 
 	gettingFacets: false,
 
+	suggestedNotebookIds: ['learnspyral@gh_aboutspyral', 'learnspyral@gh_Tutorials', 'learnspyral@gh_dialogica'],
+
 	constructor: function() {
-		this.suggestedStore = Ext.create('Ext.data.JsonStore', {
-			fields: [
-				{name: 'id'},
-				{name: 'author'},
-				{name: 'title'},
-				{name: 'description'},
-				{name: 'keywords'},
-				{name: 'language'},
-				{name: 'license'},
-				{name: 'created', type: 'date'},
-				{name: 'modified', type: 'date'},
-				{name: 'version'}
-			]
-		});
-		this.suggestedTemplate = new Ext.XTemplate(
-			'<tpl for=".">',
-				'<div class="catalogue-notebook">',
-					'<div class="title" title="{title}">{title}</div>',
-					'<div class="description">{description}</div>',
-				'</div>',
-			'</tpl>'
-		);
 		this.callParent(arguments);
 	},
 
@@ -178,31 +158,6 @@ Ext.define('Voyant.notebook.Catalogue', {
 						facet: 'facet.license',
 						flex: 1
 					}]
-				},{
-					xtype: 'panel',
-					region: 'east',
-					collapsible: true,
-					collapsed: false,
-					title: this.localize('suggested'),
-					width: 250,
-					layout: 'fit',
-					items: [{
-						xtype: 'dataview',
-						padding: 10,
-						scrollable: 'vertical',
-						itemId: 'suggestedNotebooks',
-						store: this.suggestedStore,
-						tpl: this.suggestedTemplate,
-						itemSelector: 'div.catalogue-notebook',
-						overItemCls: 'catalogue-notebook-over',
-						selectedItemCls: 'catalogue-notebook-selected',
-						listeners: {
-							itemdblclick: function(view, record, el) {
-								this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow);
-							},
-							scope: this
-						}
-					}]
 				}],
 				closeAction: 'hide',
 				buttons: [{
@@ -224,9 +179,6 @@ Ext.define('Voyant.notebook.Catalogue', {
 					glyph: 'xf115@FontAwesome',
 					handler: function(but) {
 						var record = this.window.down('#notebookslist').getSelection()[0];
-						if (record === undefined) {
-							record = this.window.down('#suggestedNotebooks').getSelection()[0];
-						}
 						if (record) {
 							this.fireEvent('notebookSelected', this, record.get('id'), this.hideWindow)
 						}
@@ -245,17 +197,14 @@ Ext.define('Voyant.notebook.Catalogue', {
 			});
 			this.window.down('#queryfield').setValue('');
 			this.window.down('#notebookslist').getSelectionModel().deselectAll();
-			this.window.down('#suggestedNotebooks').getSelectionModel().deselectAll();
 			this.window.down('#notebookslist').getStore().removeAll();
-		}
-
-		if (this.suggestedStore.isLoaded() === false) {
-			this.getSuggestedNotebooks();
 		}
 
 		this.window.show();
 
 		this._loadFacets();
+
+		this.getSuggestedNotebooks();
 	},
 
 	hideWindow: function() {
@@ -337,6 +286,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 		if (queries.length === 0) {
 			this.window.down('#notebookslist').getSelectionModel().deselectAll();
 			this.window.down('#notebookslist').getStore().removeAll();
+			this.getSuggestedNotebooks();
 			return;
 		}
 		
@@ -360,18 +310,7 @@ Ext.define('Voyant.notebook.Catalogue', {
 	},
 
 	getSuggestedNotebooks: function() {
-		var notebookIds = ['learnspyral@gh_Tutorials', 'aboutspyral', 'DialogicaWelcome'];
-		var query = 'id:'+notebookIds.join('|id:');
-		var me = this;
-		Spyral.Load.trombone({
-			tool: 'notebook.NotebookFinder',
-			query: query,
-			parse: false,
-			noCache: 1
-		}).then(function(json) {
-			me.suggestedStore.loadRawData(json.catalogue.notebooks);
-			me.suggestedStore.sort('modified', 'DESC');
-		}).catch(function(err) {
-		})
+		var query = 'id:'+this.suggestedNotebookIds.join('|id:');
+		this.getNotebooks([query]);
 	}
 });

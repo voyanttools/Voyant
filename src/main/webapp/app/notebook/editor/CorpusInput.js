@@ -85,14 +85,17 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 						editable: false,
 						forceSelection: true,
 						emptyText: this.localize('notebookVariables'),
-						store: { fields: ['text'] }
+						store: { fields: ['text'] },
+						listeners: {
+							change: function() {
+								this.setCorpusId(undefined);
+							},
+							scope: this
+						}
 					}],
 					listeners: {
 						activate: function(crd) {
 							this.populateVariables();
-						},
-						change: function() {
-							this.setCorpusId(undefined);
 						},
 						scope: this
 					}
@@ -237,7 +240,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 					dfd.reject();
 				});
 			} else if (type === 'text') {
-				var text = activeItem.down('textfield').getValue().replace('"', '\"');
+				var text = activeItem.down('textfield').getValue().replaceAll('"', '\"');
 				this.setValue(text);
 				if (text !== '') {
 					var val = 'Spyral.Corpus.load({input:"'+text+'"},'+apiParamsStr+').then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';
@@ -246,7 +249,7 @@ Ext.define('Voyant.notebook.editor.CorpusInput', {
 					dfd.reject('No text entered!');
 				}
 			} else if (type === 'id') {
-				var id = activeItem.down('textfield').getValue().replace('"', '\"');
+				var id = activeItem.down('textfield').getValue().replaceAll('"', '\"');
 				this.setValue(id);
 				if (id !== '') {
 					var val = 'Spyral.Corpus.load({corpus:"'+id+'"}).then(function(){'+varName+'=arguments[0];return '+varName+'.metadata()})';

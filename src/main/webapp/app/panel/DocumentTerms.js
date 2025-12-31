@@ -1,5 +1,6 @@
 /**
  * Document Terms is a table view of term frequencies for each document.
+ * You can work with document terms programmatically using {@link Spyral.Corpus#terms}.
  *
  * @example
  *

@@ -194,6 +194,9 @@ Ext.define("Voyant.notebook.editor.CodeEditor", {
 			case 'xml':
 				modeConfig = 'xml';
 				break;
+			case 'table':
+				modeConfig = 'table'
+				break;
 			case 'html':
 				modeConfig = { name: 'xml', htmlMode: true }
 			default:

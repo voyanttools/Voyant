@@ -131,7 +131,7 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 				var doHide = force ? true : false;
 				if (!doHide) {
 					if (evt.relatedTarget !== null) {
-						var isAncestor = Voyant.notebook.editor.EditorWrapper.toolbarLeft.getEl().isAncestor(evt.relatedTarget) || Voyant.notebook.editor.EditorWrapper.toolbarRight.getEl().isAncestor(evt.relatedTarget)
+						var isAncestor = Voyant.notebook.editor.EditorWrapper.toolbarLeft.getEl().isAncestor(evt.relatedTarget) || Voyant.notebook.editor.EditorWrapper.toolbarRight.getEl().isAncestor(evt.relatedTarget);
 						doHide = !isAncestor;
 					}
 				}
@@ -156,11 +156,17 @@ Ext.define("Voyant.notebook.editor.EditorWrapper", {
 	initComponent: function() {
 		this.setCellId(this.config.cellId);
 		this.on("afterrender", function(){
-			this.mon(this.getEl(), "mouseover", function() {
+			this.mon(this.getEl(), "mouseover", function(evt) {
 				Voyant.notebook.editor.EditorWrapper.showToolbars(this);
+				if (this.results && this.results.getY() < evt.getY()) {
+					Voyant.notebook.editor.SandboxWrapper.showToolbar(this.results);
+				}
 			}, this);
 			this.mon(this.getEl(), "mouseleave", function(evt) {
 				Voyant.notebook.editor.EditorWrapper.hideToolbars(evt);
+				if (this.results) {
+					Voyant.notebook.editor.SandboxWrapper.hideToolbar(evt);
+				}
 			}, this);
 		}, this);
 		this.callParent(arguments);

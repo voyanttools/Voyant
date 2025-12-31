@@ -13,10 +13,12 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		dataName: undefined
 	},
 
+	cachedInput: undefined, // Voyant.notebook.editor.CachedInput instance
+
 	constructor: function(config) {
 		config.mode = config.mode !== undefined ? config.mode : 'json';
 
-		var hasCachedInput = config.mode === 'file' || config.mode === 'corpus';
+		var hasCachedInput = config.mode === 'file' || config.mode === 'corpus' || config.mode === 'table';
 
 		var resourceId = undefined;
 		var fileName = undefined;
@@ -35,6 +37,8 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 
 		if (config.mode === 'corpus') {
 			this.cachedInput = Ext.create('Voyant.notebook.editor.CorpusInput', config.input);
+		} else if (config.mode === 'table') {
+			this.cachedInput = Ext.create('Voyant.notebook.editor.TableInput', config.input);
 		} else {
 			var cfg = hasCachedInput && config.input !== '' ? config.input : {};
 			this.cachedInput = Ext.create('Voyant.notebook.editor.FileInput', Ext.apply(cfg, {hidden: !hasCachedInput, margin: '5px'}));
@@ -43,7 +47,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		var hideResults = !config.output || config.output.indexOf('>undefined<') !== -1;
 
 		this.results = Ext.create('Voyant.notebook.editor.SandboxWrapper', {
-			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp', // 'https://beta.voyant-tools.org/spyral/sandbox.jsp',
+			sandboxSrcUrl: Spyral.Load.baseUrl+'spyral/sandbox.jsp',
 			expandResults: config.expandResults,
 			hidden: hideResults,
 			listeners: {
@@ -144,6 +148,14 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 					this.insert(1, this.cachedInput);
 				}
 				this.cachedInput.show();
+			} else if (mode === 'table') {
+				this.editor.hide();
+				if (this.cachedInput.isXType('notebooktableinput')) {
+					this.cachedInput.destroy();
+					this.cachedInput = Ext.create('Voyant.notebook.editor.TableInput', {});
+					this.insert(1, this.cachedInput);
+				}
+				this.cachedInput.show();
 			} else {
 				this.cachedInput.hide();
 				this.editor.switchModes(mode);
@@ -166,7 +178,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 		}
 
 		var mode = this.getMode();
-		if (mode === 'file' || mode === 'corpus') {
+		if (mode === 'file' || mode === 'corpus' || mode === 'table') {
 			this.cachedInput.getCode(dataName).then(function(code) {
 				dfd.resolve(code);
 			}, function() {
@@ -228,7 +240,7 @@ Ext.define("Voyant.notebook.editor.DataWrapper", {
 
 	getInput: function() {
 		var mode = this.getMode();
-		if (mode === 'file' || mode === 'corpus') {
+		if (mode === 'file' || mode === 'corpus' || mode === 'table') {
 			return this.cachedInput.getInput();
 		} else {
 			return this.editor.getValue();

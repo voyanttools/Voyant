@@ -1,5 +1,6 @@
 /**
  * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
+ * You can work with collocates programmatically using {@link Spyral.Corpus#collocates}.
  *
  * @example
  *
@@ -644,8 +645,8 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	
     	var zoom = d3.zoom()
     		.scaleExtent([1/4, 4])
-    		.on('zoom', function() {
-				g.attr('transform', d3.event.transform);
+    		.on('zoom', function(event) {
+				g.attr('transform', event.transform);
 			});
     	this.setZoom(zoom);
 		svg.call(zoom);
@@ -690,9 +691,9 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			.attr('id', function(d) { return d.id; })
 			.on('mouseover', me.linkMouseOver.bind(me))
 			.on('mouseout', me.linkMouseOut.bind(me))
-			.on('click', function(data) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('click', function(event, data) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.dispatchEvent('termsClicked', this, ['"'+data.source.term+' '+data.target.term+'"~'+this.getApiParam('context')]);
 			}.bind(me))
 //			.style('fill', 'none')
@@ -714,52 +715,52 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			.attr('id', function(d) { return d.id; })
 			.on('mouseover', me.nodeMouseOver.bind(me))
 			.on('mouseout', me.nodeMouseOut.bind(me))
-			.on('click', function(data) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('click', function(event, data) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.dispatchEvent('termsClicked', this, [data.term]);
 			}.bind(me))
-			.on('dblclick', function(data) {
-				d3.event.stopImmediatePropagation();
-				d3.event.preventDefault();
+			.on('dblclick', function(event, data) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
 				this.fetchCollocatesForNode(data);
 			}.bind(me))
-			.on('contextmenu', function(d, i) {
-				d3.event.preventDefault();
+			.on('contextmenu', function(event, d, i) {
+				event.preventDefault();
 //				me.getTip().hide();
 				var menu = me.getContextMenu();
 				menu.queryById('label').setHtml(d.term);
     			menu.queryById('fixed').setChecked(d.fixed);
-				menu.showAt(d3.event.pageX+10, d3.event.pageY-50);
+				menu.showAt(event.pageX+10, event.pageY-50);
 			})
 			.call(d3.drag()
-				.on('start', function(d) {
+				.on('start', function(event, d) {
 					me.setDragging(true);
-					if (!d3.event.active) me.getVisLayout().alpha(0.3).restart();
+					if (!event.active) me.getVisLayout().alpha(0.3).restart();
 					d.fx = d.x;
 					d.fy = d.y;
 					d.fixed = true;
 				})
-				.on('drag', function(d) {
+				.on('drag', function(event, d) {
 					me.getVisLayout().alpha(0.3); // don't let simulation end while the user is dragging
-					d.fx = d3.event.x;
-					d.fy = d3.event.y;
+					d.fx = event.x;
+					d.fy = event.y;
 					if (me.isMasked()) {
-			    		if (!me.isOffCanvas(d3.event.x, d3.event.y)) {
+			    		if (!me.isOffCanvas(event.x, event.y)) {
 			    			me.unmask();
 			    		}
-			    	} else if (me.isOffCanvas(d3.event.x, d3.event.y)) {
+			    	} else if (me.isOffCanvas(event.x, event.y)) {
 			    		me.mask(me.localize('releaseToRemove'));
 			    	}
 				})
-				.on('end', function(d) {
+				.on('end', function(event, d) {
 					me.setDragging(false);
-//					if (!d3.event.active) me.getVisLayout().alpha(0);
+//					if (!event.active) me.getVisLayout().alpha(0);
 					if (d.fixed != true) {
 						d.fx = null;
 						d.fy = null;
 					}
-					if (me.isOffCanvas(d3.event.x, d3.event.y)) {
+					if (me.isOffCanvas(event.x, event.y)) {
 	    	    		me.unmask();
 	    	    		me.mask(me.localize('cleaning'));
 	    	    		me.removeNode(d.id);
@@ -870,16 +871,16 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     	sel.style('stroke-opacity', function(d) { return this.getGraphStyle().link[state].strokeOpacity; }.bind(this));
     },
     
-    linkMouseOver: function(d) {
+    linkMouseOver: function(e, d) {
     	this.getVis().selectAll('line').call(this.applyLinkStyle.bind(this));
     	this.getVis().select('#'+d.id).call(this.applyLinkStyle.bind(this), 'highlight');
     },
     
-    linkMouseOut: function(d) {
+    linkMouseOut: function(e, d) {
     	this.getVis().selectAll('line').call(this.applyLinkStyle.bind(this));
     },
     
-    nodeMouseOver: function(d) {
+    nodeMouseOver: function(e, d) {
     	this.setCurrentNode(d);
 		
 		this.getVis().selectAll('rect').call(this.applyNodeStyle.bind(this));
@@ -902,7 +903,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
 			.call(this.applyNodeStyle.bind(this), 'highlight');
     },
     
-    nodeMouseOut: function(d) {
+    nodeMouseOut: function(e, d) {
     	if (!this.getContextMenu().isVisible()) {
 			this.setCurrentNode(undefined);
 		}

@@ -80,13 +80,13 @@ Ext.define('Voyant.panel.CorpusCreator', {
         config = config || {};
         var me = this;
     	this.mixins['Voyant.panel.Panel'].constructor.call(this, 
-    			Ext.apply(config, {
-    				includeTools: {
-    					gear: true,
-    					help: true,
-    					language: this.getLanguageToolMenu()
-    				}
-    			})
+			Ext.apply(config, {
+				includeTools: {
+					gear: true,
+					help: true,
+					language: this.getLanguageToolMenu()
+				}
+			})
     	);
     	
     },
@@ -231,7 +231,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
         	    	}
 	    		},'->', {
 	    	    	xtype: 'button',
-	    	    	scale: 'large',
+					scale: 'small',
         			glyph: 'xf00d@FontAwesome',
 	    	    	text: this.localize('cancel'),
 	    	    	hidden: this.getCorpus()==undefined,
@@ -243,7 +243,7 @@ Ext.define('Voyant.panel.CorpusCreator', {
 	    	    	}
 	    	    }, {
 	    	    	xtype: 'button',
-	    	    	scale: 'large',
+	    	    	scale: this.getCorpus()==undefined ? 'large' : 'small',
                     glyph: 'xf00c@FontAwesome',
 	    	    	text: this.localize('reveal'),
 	    	    	ui: 'default',
@@ -323,6 +323,11 @@ Ext.define('Voyant.panel.CorpusCreator', {
     	Ext.apply(params, apiParams);
     	var view = this.getApplication().getViewport();
 		view.mask(this.localize('uploadingCorpus'));
+		// hide win so we can see uploading mask
+		var win = this.up("window");
+    	if (win && win.isFloating()) {
+    		win.hide();
+    	}
 		form.submit({
 			url: this.getTromboneUrl(),
 			params: params,
@@ -334,7 +339,6 @@ Ext.define('Voyant.panel.CorpusCreator', {
 					this.setCorpus(undefined)
 					this.loadCorpus(corpusParams);
 				} else {
-					
 					this.showResponseError("Unable to load corpus.", action.response)
 				}
 			},

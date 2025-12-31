@@ -20,7 +20,7 @@ body .error {
 }
 body .info {
 	margin-left: 6px;
-	white-space: pre;
+	white-space: pre-wrap;
 }
 body pre {
 	font-size: smaller;
@@ -40,16 +40,18 @@ table.spyral-table td:last-child {
 }
 		</style>
 
-		<!-- <link rel="stylesheet" type="text/css" href="<%= base %>/resources/highcharts/10/css/highcharts.css" /> -->
+		<script type="text/javascript" src="<%=base %>/resources/jquery/jquery.min.js"></script>
+
 		<!-- highcharts -->	
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/highcharts.js"></script>
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/data.js"></script>
-		<!--script type="text/javascript" src="<%=base %>/resources/highcharts/10/highcharts-more.js"></script>
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/exporting.js"></script>
-		<script type="text/javascript" src="<%=base %>/resources/highcharts/10/modules/offline-exporting.js"></script-->
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/11/highcharts.js"></script>
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/11/highcharts-more.js"></script>
+		<script type="text/javascript" src="<%=base %>/resources/highcharts/11/modules/data.js"></script>
 
 		<script type="text/javascript" src="<%=base %>/resources/d3/current/d3.min.js"></script>
 		<script type="text/javascript" src="<%=base %>/resources/d3/d3-scale-chromatic.min.js"></script>
+
+		<script type="text/javascript" src="<%=base %>/resources/datatables/datatables.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="<%=base %>/resources/datatables/datatables.min.css" rel="stylesheet" />
 
 		<script type="text/javascript" src="<%=base %>/resources/esprima/esprima.min.js"></script>
 

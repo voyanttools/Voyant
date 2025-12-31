@@ -160,7 +160,7 @@ that's what you want. You can find [more information on stopwords]{@tutorial sto
 
 One last thing to point out from the Summary tool (bottom left): the "Distinctive words" list. Assuming your corpus has 
 multiple documents, this shows the words that are not only high frequency, but high frequency and relatively distinctive 
-to that document (the frequency is weighted by how often it's found i other documents using something called [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf)).
+to that document (the frequency is weighted by how often it's found in other documents using something called [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf)).
 
 <iframe src="../?corpus=austen&view=summary" style="width: 90%; height: 300px;"></iframe>
 

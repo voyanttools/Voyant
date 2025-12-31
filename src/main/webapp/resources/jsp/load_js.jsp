@@ -1,4 +1,4 @@
-<% String voyant_js_id = "067f41389937b5efa3f8b673a65ae050"; %>
+<% String voyant_js_id = "a02641a3939dc5a3ea3886657eb907f5"; %>
 <%
 String base_js = (String) request.getAttribute("base");
 String lang_js = (String) request.getAttribute("lang");
@@ -13,8 +13,7 @@ String rtl_js = (String) request.getAttribute("rtl");
 <script type="text/javascript" src="<%= base_js %>/resources/ext/6.2.0/ux.js"></script>
 
 <!-- jQuery -->
-<script type="text/javascript" src="<%= base_js %>/resources/jquery/current/jquery.min.js"></script>
-<script type="text/javascript" src="<%= base_js %>/resources/jquery/current/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<%= base_js %>/resources/jquery/jquery.min.js"></script>
 
 <%
 String showServerMessage = System.getProperty("org.voyanttools.server.showservermessage");

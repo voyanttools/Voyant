@@ -17,11 +17,13 @@ two or three dimensions, we will be left with a new data set which ideally conta
 original, but which is easy to visualize. In the resulting visualization, words that are grouped together are 
 associated, i.e. they follow a similar usage in the corpus.
 
-Correspondence Analysis is also conceptually similar to PCA, but handles the data in such a way that both the rows and 
+Correspondence Analysis (CA) is also conceptually similar to PCA, but handles the data in such a way that both the rows and 
 columns are analyzed. This means that given a table of word frequencies, both the words themselves and the document 
 segments will be plotted in the resulting visualization.
 
 Document Similarity is essentially the same as Correspondence Analysis, but terms aren't shown in the graph.
+
+T-Distributed Stochastic Neighbor Embedding (t-SNE) analysis is another dimensionality reduction technique. Where PCA and CA use a linear approach, t-SNE is nonlinear. It is beyond the scope of this document to explain the differences, however this [Wikipedia article on dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction) is a good starting point. Additionally, t-SNE is unique in that it will produce different results each time it is run. As the author of the algorithm Laurens van der Maaten [explains](https://lvdmaaten.github.io/tsne/): "In contrast to, e.g., PCA, t-SNE has a non-convex objective function. The objective function is minimized using a gradient descent optimization that is initiated randomly. As a result, it is possible that different runs give you different solutions."
 
 The scatterplot is presented in the main display in the tool with a legend in the top left hand corner. Hovering over a 
 word in the graph will display more information about the frequency of occurrence of that word.
@@ -36,7 +38,8 @@ that appear in the corpus as well as their frequencies.
 
 The toolbar mainly comprises options for tweaking and exploring the plotting of the graph.
 
-* **Analysis** allows the user to switch between plotting Document Similarity, Principal Component Analysis and Correspondence Analysis
+* **Frequencies** allows the user to switch between Raw (absolute count), Relative (count relative to document total), and [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).
+* **Analysis** allows the user to switch between plotting Document Similarity, Principal Component Analysis, Correspondence Analysis, and t-SNE.
 * **Clusters** allows the user to control the number of groups to cluster the words into. These clusters are determined automatically by the criteria of the analysis and words in a cluster would indicate a measure of similarity between words. Clusters of terms will appear as a single colour.
 * **Dimensions** allows the user to switch between two or three dimensions.
 * **Labels** allows the user to cycle through the label settings for the graph.

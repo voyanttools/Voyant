@@ -1,5 +1,6 @@
 /**
  * The Documents tool shows a table of the documents in the corpus and includes functionality for modifying the corpus.
+ * You can work with documents programmatically using {@link Spyral.Corpus#documents}.
  *
  * @example
  *
@@ -159,7 +160,12 @@ Ext.define('Voyant.panel.Documents', {
                         		    layout: 'fit',
                         		    items: {
                         		    	xtype: 'corpuscreator',
-                        		    	corpus: this.getStore().getCorpus()
+                        		    	corpus: this.getStore().getCorpus(),
+										listeners: {
+											boxready: function(cmp) {
+												cmp.setStyle({borderColor: '#f5f5f5'});
+											}
+										}
                         		    }
                         		}).show();
                 			},

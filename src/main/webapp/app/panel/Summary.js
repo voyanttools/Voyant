@@ -1,6 +1,6 @@
 /**
- * The Summary panel provides an overview of a corpus, and the content will
- * depend on whether the corpus includes one document or many.
+ * The Summary panel provides an overview of a corpus, and the content will depend on whether the corpus includes one document or many.
+ * You can work with the summary programmatically using {@link Spyral.Corpus#summary}.
  *
  * @example
  *

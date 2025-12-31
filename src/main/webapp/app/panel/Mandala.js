@@ -89,7 +89,7 @@ Ext.define('Voyant.panel.Mandala', {
 	                boxLabel: this.localize('labels'),
 	                listeners: {
 	                	render: function(cmp) {
-	                		cmp.setValue(this.getApiParam("labels")===true);
+	                		cmp.setValue(this.getApiParam("labels")===true || this.getApiParam("labels")=="true");
 	    		        	Ext.tip.QuickTipManager.register({
 	    		        		target: cmp.getEl(),
 	   		                 	text: this.localize('labelsTip')
@@ -397,7 +397,7 @@ Ext.define('Voyant.panel.Mandala', {
     	ctx.font = this.textFont;
     	var radius = canvas.width/2;
     	ctx.clearRect(0,0,canvas.width,canvas.height);
-    	var labels = this.getApiParam('labels');
+    	var labels = this.getApiParam("labels")===true || this.getApiParam("labels")=="true";
     	
     	// draw circle
     	ctx.beginPath();

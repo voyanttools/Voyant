@@ -115,8 +115,6 @@ Ext.define('Voyant.panel.Trends', {
 			 * @instance
 			 * @property {bins}
     		 * 
-    		 * TODO verify this:
-			 * 
 			 * The default value will depend on the nature of the corpus:
     		 * 
     		 * - corpus has one document: the default number of bins is 10

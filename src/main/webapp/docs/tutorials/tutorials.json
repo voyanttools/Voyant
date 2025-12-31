@@ -58,14 +58,17 @@
       "cirrus": {
         "title": "Cirrus"
       },
-      "corpuscollocates": {
-        "title": "Corpus Collocates"
-      },
       "collocatesgraph": {
         "title": "Collocates Graph"
       },
+      "constellations": {
+        "title": "Constellations"
+      },
       "contexts": {
         "title": "Contexts"
+      },
+      "corpuscollocates": {
+        "title": "Corpus Collocates"
       },
       "corpusterms": {
         "title": "Corpus Terms"
@@ -81,6 +84,9 @@
       },
       "dreamscape": {
         "title": "Dreamscape"
+      },
+      "embedder": {
+        "title": "Embedder"
       },
       "knots": {
         "title": "Knots"
@@ -150,8 +156,8 @@
       "mirrors": {
         "title": "Mirrors"
       },
-      "server": {
-        "title": "VoyantServer"
+      "local": {
+        "title": "Running Voyant Locally"
       }
     }
   }

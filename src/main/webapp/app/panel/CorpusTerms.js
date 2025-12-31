@@ -1,5 +1,6 @@
 /**
  * Corpus Terms tool, a grid that shows the terms in the corpus.
+ * You can work with corpus terms programmatically using {@link Spyral.Corpus#terms}.
  *
  * @example
  *

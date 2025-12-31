@@ -1,5 +1,6 @@
 /**
  * The Topics tool provides a rudimentary way of generating term clusters from a document or corpus and then seeing how each topic (term cluster) is distributed across the document or corpus.
+ * You can work with topics programmatically using {@link Spyral.Corpus#topics}.
  *
  * @example
  *
