@@ -80,15 +80,10 @@ modify the visualization.
 
 ```
 let config = {
-    "chartType": null,
-    "docId": null,
-    "docIndex": null,
+    "chartType": "barline",
     "labels": null,
-    "limit": null,
-    "mode": null,
-    "query": null,
-    "stopList": null,
-    "withDistributions": null
+    "limit": 10,
+    "query": ["love", "hate"],
 }; 
 
 loadCorpus("austen").tool("Trends", config);

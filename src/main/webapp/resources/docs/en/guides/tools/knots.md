@@ -38,15 +38,15 @@ You can also select the {@tutorial stopwords} (words to ignore) from the top opt
 
 ## Spyral
 
+For 
+
 To use Knots in Spyral you can use the following code as a starting point. Modify the config object to modify 
 the visualization.
 
 ```
 let config = {
     "audio": false,
-    "docId": null,
-    "query": null,
-    "stopList": "auto"
+    "query": ["love", "hate"],
 }; 
 
 loadCorpus("austen").tool("knots", config);

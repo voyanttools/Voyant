@@ -39,10 +39,7 @@ modify the visualization.
 
 ```
 let config = {
-    "docIndex": null,
-    "minRawFreq": null,
-    "speed": null,
-    "stopList": null
+    "minRawFreq": 3,
 }; 
 
 loadCorpus("austen").tool("textualarc", config);

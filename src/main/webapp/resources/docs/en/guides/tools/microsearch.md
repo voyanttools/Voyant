@@ -31,8 +31,7 @@ modify the visualization.
 
 ```
 let config = {
-    "query": null,
-    "stopList": "auto"
+    "query": ["love", "hate"],
 };
 
 loadCorpus("austen").tool("microsearch", config);

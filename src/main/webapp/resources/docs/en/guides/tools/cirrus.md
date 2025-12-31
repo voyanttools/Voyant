@@ -44,15 +44,7 @@ the visualization.
 
 ```
 let config = {
-    background: null, // set the background colour of the word cloud
-    categories: null, // set the categories for the word cloud (usually an ID of an existing categories definition)
-    docIndex: null, // document index to restrict to (can be comma-separated list)
-    fontFamily: null, // the default font to use for the words (default: "Palatino Linotype", "Book Antiqua", Palatino, serif),
-    inlineData: null, // user-defined data, most easily expressed like this: love:20,like:15,dear:10
-    limit: null, // the number of terms to load (that are available, see also visible which determines how many are displayed),
-    stopList: null, // a named stopword list or comma-separated list of words
-    visible: null, // the number of terms to display in the word cloud (default is 50)
-    whiteList: null, // a keyword list – terms will be limited to this list
+    visible: 50,
 };
 
 loadCorpus("austen").tool("cirrus", config);
