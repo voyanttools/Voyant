@@ -32,11 +32,8 @@ the visualization.
 
 ```
 let config = {
-    centralize: null, // If specified, will "centralize" on this keyword
-    context: 5, // The number of terms to consider on each side of the keyword.
-    limit: 5, // The number of items to limit the result to.
-    query: null, // A query or array of queries (queries can be separated by a comma).
-    stopList: "auto", // A comma-separated list of words, a named list or a URL to a plain text list, one word per line. By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+    centralize: "love", 
+    context: 10, 
 };
 
 loadCorpus("austen").tool("collocatesgraph", config);

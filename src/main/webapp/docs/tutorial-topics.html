@@ -100,12 +100,11 @@ of your corpus, you may not want to go too high since it can cause problems with
 <p>To use the Topics widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;iterations&quot;: null,
-    &quot;perDocLimit&quot;: null,
-    &quot;seed&quot;: null,
-    &quot;stopList&quot;: null,
-    &quot;termsPerTopic&quot;: null,
-    &quot;topics&quot;: null
+    &quot;iterations&quot;: 50,
+    &quot;perDocLimit&quot;: 1000,
+    &quot;seed&quot;: 88,
+    &quot;termsPerTopic&quot;: 50,
+    &quot;topics&quot;: 10
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Topics&quot;, config);

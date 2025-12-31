@@ -40,15 +40,8 @@ the visualization.
 
 ```
 let config = {
-    "bins": null,
-    "columns": null,
-    "dir": null,
-    "docId": null,
-    "docIndex": null,
-    "query": null,
-    "sort": null,
-    "stopList": null,
-    "termColors": null,
+    "bins": 5,
+    "query": ["love", "hate"],
 };
 
 loadCorpus("austen").tool("documentterms", config);

@@ -84,13 +84,12 @@ settings (click elsewhere to dismiss the options).</p>
 <p>You can also select the <a href="tutorial-stopwords.html">Stopwords</a> (words to ignore) from the top options menu, as well as edit the colour
 <a href="tutorial-palette.html">Palette</a>.</p>
 <h2 id="spyral">Spyral</h2>
+<p>For</p>
 <p>To use Knots in Spyral you can use the following code as a starting point. Modify the config object to modify
 the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
     &quot;audio&quot;: false,
-    &quot;docId&quot;: null,
-    &quot;query&quot;: null,
-    &quot;stopList&quot;: &quot;auto&quot;
+    &quot;query&quot;: [&quot;love&quot;, &quot;hate&quot;],
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;knots&quot;, config);

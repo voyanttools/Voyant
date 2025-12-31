@@ -79,8 +79,7 @@ guide for more information.</p>
 the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
     &quot;labels&quot;: true,
-    &quot;query&quot;: null,
-    &quot;stopList&quot;: &quot;auto&quot;,
+    &quot;query&quot;: [&quot;love&quot;, &quot;hate&quot;]
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Mandala&quot;, config);

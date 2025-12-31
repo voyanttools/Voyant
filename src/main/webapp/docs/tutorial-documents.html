@@ -87,12 +87,7 @@ can use the author or title prefix to <em>only</em> look at one of those metadat
 <p>To use Documents in Spyral you can use the following code as a starting point. Modify the config object to modify
 the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;columns&quot;: null,
-    &quot;dir&quot;: null,
-    &quot;docId&quot;: null,
-    &quot;docIndex&quot;: null,
-    &quot;query&quot;: null,
-    &quot;sort&quot;: null,
+  docIndex: 2
 };
 
 loadCorpus(&quot;austen&quot;).tool(&quot;documents&quot;, config);

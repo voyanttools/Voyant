@@ -102,16 +102,8 @@ strategies:</p>
 <p>To use MicroSearch widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;columns&quot;: null,
-    &quot;dir&quot;: null,
-    &quot;docId&quot;: null,
-    &quot;docIndex&quot;: null,
-    &quot;maxLength&quot;: null,
-    &quot;minLength&quot;: null,
-    &quot;overlapFilter&quot;: null,
-    &quot;query&quot;: null,
-    &quot;sort&quot;: null,
-    &quot;stopList&quot;: null
+    &quot;maxLength&quot;: 50,
+    &quot;query&quot;: [&quot;love&quot;],
 };
 
 loadCorpus(&quot;austen&quot;).tool(&quot;phrases&quot;, config);

@@ -83,13 +83,9 @@ searching capabilities).</p>
 <p>To use StreamGraph widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;bins&quot;: null,
-    &quot;docId&quot;: null,
-    &quot;docIndex&quot;: null,
-    &quot;limit&quot;: null,
-    &quot;query&quot;: null,
-    &quot;stopList&quot;: null,
-    &quot;withDistributions&quot;: null
+    &quot;bins&quot;: 50,
+    &quot;limit&quot;: 10,
+    &quot;query&quot;: [&quot;love&quot;, &quot;hate&quot;],
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;streamgraph&quot;, config);

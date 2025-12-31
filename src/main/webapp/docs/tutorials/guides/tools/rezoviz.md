@@ -89,13 +89,9 @@ modify the visualization.
 
 ```
 let config = {
-    "docId": null,
-    "limit": null,
-    "minEdgeCount": null,
-    "nerService": null,
-    "query": null,
-    "stopList": null,
-    "type": null,
+    "limit": 100,
+    "minEdgeCount": 2,
+    "nerService": "spacy",
 }; 
 
 loadCorpus("austen").tool("rezoviz", config);

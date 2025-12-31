@@ -81,10 +81,8 @@
 <p>To use Streamgraph widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;limit&quot;: null,
-    &quot;numberOfDocumentsForDistinctiveWords&quot;: null,
-    &quot;start&quot;: null,
-    &quot;stopList&quot;: null,
+    &quot;limit&quot;: 50,
+    &quot;numberOfDocumentsForDistinctiveWords&quot;: 5,
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;Summary&quot;, config);

@@ -85,10 +85,7 @@ the size of the document.</p>
 <p>To use TextualArc widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;docIndex&quot;: null,
-    &quot;minRawFreq&quot;: null,
-    &quot;speed&quot;: null,
-    &quot;stopList&quot;: null
+    &quot;minRawFreq&quot;: 3,
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;textualarc&quot;, config);
