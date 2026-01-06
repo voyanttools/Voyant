@@ -44,6 +44,7 @@ several pre-defined skins that combine a subset of tools, including:
 * *Collocates Skin*: [corpus terms]{@tutorial corpusterms}, [document terms]{@tutorial documentterms}, [corpus collocates]{@tutorial corpuscollocates}, [contexts]{@tutorial contexts}, and [collocates graph]{@tutorial collocatesgraph} (use with [Austen](../?corpus=austen&view=collocatesset) or [your own corpus](../?view=collocatesset))
 * *Scatter Skin*: [scatterplot (PCA and CA)]{@tutorial scatterplot} with [documents]{@tutorial documents}, [trends]{@tutorial trends} and [contexts]{@tutorial contexts} (use with [Austen](../?corpus=austen&view=scatterset) or [your own corpus](../?view=scatterset))
 * *Subset Skin*: a specialized interface to select a subset of documents from your corpus (for download or for use in Voyant), based on full-text and metadata search (use with [Austen](../?corpus=austen&view=subset) or [your own corpus](../?view=subset))
+* *Custom Skin*: build your own skin using the [Skin Builder](../builder/)
 
 
 ## Dynamic Table of Contexts Skin
