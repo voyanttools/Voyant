@@ -1,6 +1,6 @@
 Ext.define('Voyant.panel.Builder', {
 	extend: 'Ext.panel.Panel',
-	requires: [],
+	requires: ['Voyant.util.Localization'],
 	mixins: ['Voyant.panel.Panel'],
 	alias: 'widget.builder',
     config: {
@@ -9,13 +9,14 @@ Ext.define('Voyant.panel.Builder', {
     	dropTargets: {},
     	colResizers: {},
     	rowResizers: {},
-    	toolsList: ["cirrus", "corpusterms", "bubblelines", "corpuscollocates", "microsearch", "streamgraph", "phrases", "documents", "summary", "trends", "scatterplot", "termsradio", "wordtree", "contexts", "documentterms", "reader", "knots", "collocatesgraph"]
+    	toolsList: ["bubblelines","bubbles","cirrus","collocatesgraph","constellations","contexts","corpuscollocates","corpusterms","correlations","documents","documentterms","dreamscape","embedder","knots","loom","mandala","microsearch","phrases","reader","scatterplot","streamgraph","summary","termsberry","termsradio","textualarc","topics","trends","veliza","wordtree"]
     },
     statics: {
     	i18n: {
-    	},
-        api: {
-        }
+			title: 'Skin Builder',
+			helpTip: 'Skin Builder Help',
+			help: 'The Skin Builder can be used to create a custom arrangement of tools.<br>Drag tools from the left column into cells on the right.<br>Use the Cell, Row, and Column menus to modify the layout.<br>Export your skin when complete!'
+    	}
     },
     
     constructor: function(config) {
@@ -30,6 +31,15 @@ Ext.define('Voyant.panel.Builder', {
             items: [{
             	region: 'center',
             	title: 'Layout',
+				tools: [{
+					type: 'help',
+					// glyph: 'xf128@FontAwesome',
+					tooltip: this.localize('helpTip'),
+					callback: function(panel, tool, event) {
+						Ext.Msg.alert(this.localize('title'), this.localize('help'));
+					},
+					scope: this
+				}],
             	tbar: [{
                     text: 'Cell',
                     menu: {

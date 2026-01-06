@@ -34,7 +34,7 @@
     });
 </script>
 
-<script src="Builder.js"></script>
+<script src="Builder.js?1"></script>
 <script src="TableGrid.js"></script>
 
 </body>
