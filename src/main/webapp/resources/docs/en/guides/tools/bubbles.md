@@ -39,10 +39,8 @@ the visualization.
 
 ```
 let config = {
-    audio: false, // whether or not to include audio
-    docIndex: 1, // document index to restrict to (can be comma-separated list)
-    speed: 10, // speed of the animation (0 to 60 lower is slower)
-    stopList: null, // a named stopword list or comma-separated list of words
+    audio: false,
+    speed: 10,
 };
 
 loadCorpus("austen").tool("bubbles", config);

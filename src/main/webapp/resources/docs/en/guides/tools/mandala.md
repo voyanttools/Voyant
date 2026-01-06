@@ -33,8 +33,7 @@ the visualization.
 ```
 let config = {
     "labels": true,
-    "query": null,
-    "stopList": "auto",
+    "query": ["love", "hate"]
 }; 
 
 loadCorpus("austen").tool("Mandala", config);

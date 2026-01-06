@@ -54,16 +54,8 @@ modify the visualization.
 
 ```
 let config = {
-    "columns": null,
-    "dir": null,
-    "docId": null,
-    "docIndex": null,
-    "maxLength": null,
-    "minLength": null,
-    "overlapFilter": null,
-    "query": null,
-    "sort": null,
-    "stopList": null
+    "maxLength": 50,
+    "query": ["love"],
 };
 
 loadCorpus("austen").tool("phrases", config);

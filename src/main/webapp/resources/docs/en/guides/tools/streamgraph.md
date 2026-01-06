@@ -40,13 +40,9 @@ modify the visualization.
 
 ```
 let config = {
-    "bins": null,
-    "docId": null,
-    "docIndex": null,
-    "limit": null,
-    "query": null,
-    "stopList": null,
-    "withDistributions": null
+    "bins": 50,
+    "limit": 10,
+    "query": ["love", "hate"],
 }; 
 
 loadCorpus("austen").tool("streamgraph", config);

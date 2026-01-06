@@ -93,13 +93,8 @@ provides the term frequency as well as the number of documents in which that ter
 <p>To use TermsBerry widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    categories: null, // a query for the keywords (can be comma-separated list)
-    context: null, // a named stopword list or comma-separated list of words
-    docId: null, // document index to restrict to (can be comma-separated list)
-    docIndex: null, // the size of the context (the number of words on each side of the keyword)
-    numInitialTerms: null, // the initial number of terms to display
-    query: null, // the initial number of terms to display
-    stopList: null, // the initial number of terms to display
+    context: 5,
+    query: [&quot;love&quot;, &quot;hate&quot;],
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;termsberry&quot;, config);

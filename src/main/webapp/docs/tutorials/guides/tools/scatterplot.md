@@ -65,22 +65,12 @@ modify the visualization.
 
 ```
 let config = {
-    "analysis": null,
-    "bins": null,
-    "clusters": null,
-    "comparisonType": null,
-    "dimensions": null,
-    "docId": null,
-    "iterations": null,
-    "label": null,
-    "limit": null,
-    "perplexity": null,
-    "query": null,
-    "stopList": null,
-    "storeJson": null,
-    "target": null,
-    "term": null,
-    "whitelist": null,
+    "analysis": "ca",
+    "bins": 5,
+    "clusters": 3,
+    "comparisonType": "relative",
+    "dimensions": 2,
+    "limit": 500,
 }; 
 
 loadCorpus("austen").tool("scatterplot", config);

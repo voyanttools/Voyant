@@ -102,13 +102,10 @@ number of documents visible at once).</p>
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
 	&quot;bins&quot;: 5,
-	&quot;limit&quot;: null,
-	&quot;query&quot;: null,
-	&quot;slider&quot;: null,
-	&quot;speed&quot;: null,
-	&quot;stopList&quot;: null,
-	&quot;visibleBins&quot;: null,
-	&quot;yAxisScale&quot;: null
+	&quot;limit&quot;: 50,
+	&quot;query&quot;: [&quot;love&quot;, &quot;hate&quot;],
+	&quot;visibleBins&quot;: 10,
+	&quot;yAxisScale&quot;: &quot;linear&quot;
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;termsradio&quot;, config);

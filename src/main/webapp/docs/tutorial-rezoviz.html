@@ -131,13 +131,9 @@ shown, their interconnectedness, etc.</p>
 <p>To use Reader widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;docId&quot;: null,
-    &quot;limit&quot;: null,
-    &quot;minEdgeCount&quot;: null,
-    &quot;nerService&quot;: null,
-    &quot;query&quot;: null,
-    &quot;stopList&quot;: null,
-    &quot;type&quot;: null,
+    &quot;limit&quot;: 100,
+    &quot;minEdgeCount&quot;: 2,
+    &quot;nerService&quot;: &quot;spacy&quot;,
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;rezoviz&quot;, config);

@@ -47,13 +47,10 @@ modify the visualization.
 ```
 let config = {
 	"bins": 5,
-	"limit": null,
-	"query": null,
-	"slider": null,
-	"speed": null,
-	"stopList": null,
-	"visibleBins": null,
-	"yAxisScale": null
+	"limit": 50,
+	"query": ["love", "hate"],
+	"visibleBins": 10,
+	"yAxisScale": "linear"
 }; 
 
 loadCorpus("austen").tool("termsradio", config);

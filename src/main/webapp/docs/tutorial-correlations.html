@@ -100,16 +100,8 @@ each document; for a document, it's the relative frequency for each segment.</p>
 <p>To use Correlations in Spyral you can use the following code as a starting point. Modify the config object to modify
 the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    columns: null, 
-    dir: null, 
-    docId: null, 
-    docIndex: null, 
-    minInDocumentsCountRatio: null, 
-    query: null, 
-    sort: null, 
-    stopList: null,
-    termColors: null,
-    withDistributions: null
+    minInDocumentsCountRatio: 50, 
+    query: [&quot;love&quot;, &quot;hate&quot;], 
 };
 
 loadCorpus(&quot;austen&quot;).tool(&quot;correlations&quot;, config);

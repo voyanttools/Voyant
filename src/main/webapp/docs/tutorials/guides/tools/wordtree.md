@@ -39,12 +39,9 @@ modify the visualization.
 
 ```
 let config = {
-    "context": null,
-    "docId": null,
-    "docIndex": null,
-    "limit": null,
-    "query": null,
-    "stopList": null
+    "context": 5,
+    "limit": 500,
+    "query": ["love", "hate"],
 }; 
 
 loadCorpus("austen").tool("wordtree", config);

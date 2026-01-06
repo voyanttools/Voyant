@@ -32,10 +32,8 @@ modify the visualization.
 
 ```
 let config = {
-    "limit": null,
-    "numberOfDocumentsForDistinctiveWords": null,
-    "start": null,
-    "stopList": null,
+    "limit": 50,
+    "numberOfDocumentsForDistinctiveWords": 5,
 }; 
 
 loadCorpus("austen").tool("Summary", config);

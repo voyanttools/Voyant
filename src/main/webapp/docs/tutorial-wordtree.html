@@ -84,12 +84,9 @@ keyword with context on each side), the branches shown are not necessarily based
 <p>To use the WordTree widget in Spyral you can use the following code as a starting point. Modify the config object to
 modify the visualization.</p>
 <pre class="prettyprint source"><code>let config = {
-    &quot;context&quot;: null,
-    &quot;docId&quot;: null,
-    &quot;docIndex&quot;: null,
-    &quot;limit&quot;: null,
-    &quot;query&quot;: null,
-    &quot;stopList&quot;: null
+    &quot;context&quot;: 5,
+    &quot;limit&quot;: 500,
+    &quot;query&quot;: [&quot;love&quot;, &quot;hate&quot;],
 }; 
 
 loadCorpus(&quot;austen&quot;).tool(&quot;wordtree&quot;, config);
