@@ -29,11 +29,11 @@ modified.
 - **Stopwords**: you can define a set of stopwords to exclude – see the {@tutorial stopwords} for more information
 - **White List**: you can define a set of allowed words (the opposite of a stopwords list), only terms in this list will be shown in Cirrus (note that the stopwords list is still active, so you may want to choose "None" from the stopwords menu to deactivate it)
 - **Font Family**: you can determine which font is used by Cirrus, a set of web safe fonts is provided, as well as [Lato](http://www.latofonts.com/); you can also specify a font installed on your computer, but of course it may not be available on other computers (in which case a default font is used)
-- **Palette**: you can {@tutorial palette}
+- **Palette**: you can change the {@tutorial palette}
 
 ## Flexible Scale
 
-By default Cirrus shows the top frequency terms for the entire corpus. It's also possible to show top frequency terms for a single document. In the default skin, click on the [Documents](#!/guide/documents) tab in the lower left side and click on one of the documents – this should cause Cirrus to refresh with words from only the selected document. If you wish to return to the corpus view, click the reset button that appears in the lower right of the Cirrus pane.
+By default Cirrus shows the top frequency terms for the entire corpus. It's also possible to show top frequency terms for a single document. In the default skin, click on the [Documents]{@tutorial documents} tab in the lower left side and click on one of the documents – this should cause Cirrus to refresh with words from only the selected document. If you wish to return to the corpus view, click the reset button that appears in the lower right of the Cirrus pane.
 
 ![Segments](imgs/tools/cirrus/document-mode.png)
 
