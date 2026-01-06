@@ -16,13 +16,13 @@ You can drag and drop terms to move them. You can drag terms off the canvas to r
 
 ## Options
 
-You can add keywords by typing a query into the search box and hitting enter (see [Term Searches](#!/guide/search) for more advanced searching capabilities).
+You can add keywords by typing a query into the search box and hitting enter (see [Term Searches]{@tutorial search} for more advanced searching capabilities).
 
 You can use the _Clear_ button to clear all keywords in the graph (to start from scratch and add your own).
 
 The _Context_ slider determines how many terms to include when looking for collocates. The value specifies the number of words to consider on _each_ side of the keyword (so the total window of words is double). By default the context is set to 5 words per side, and the slider can have a maximum of 30.
 
-Clicking on the [Options](#!/guide/options) icon also allows you to define a set of stopwords to exclude – see the [stopwords guide](#!/guide/stopwords) for more information.
+Clicking on the options icon also allows you to define a set of stopwords to exclude – see the [stopwords guide]{@tutorial stopwords} for more information.
 
 
 ## Spyral
@@ -45,8 +45,8 @@ Please see {@link Tools.CollocatesGraph} for more information about configuratio
 
 ## See Also
 
-- [Getting Started](#!/guide/start)
-- [Stopwords](#!/guide/stopwords)
-- [Term Searches](#!/guide/search)
-- [Default Skin](#!/guide/skins-section-default-skin)
-- [List of Tools](#!/guide/tools)
+- {@tutorial start}
+- {@tutorial stopwords}
+- {@tutorial search}
+- {@tutorial skins}
+- {@tutorial tools}

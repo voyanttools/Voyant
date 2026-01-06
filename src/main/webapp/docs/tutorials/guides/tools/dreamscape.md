@@ -46,7 +46,7 @@ There are a lot of options tucked beneath the controls in the bottom toolbar
 
 ### Display
 
-* **Base Layer**: you can choose from multiple base layers, each of which is represented by a thumbnail (the default is [Stamen Watercolor](http://maps.stamen.com/watercolor/) for its aesthetic and load speed)
+* **Base Layer**: you can choose from multiple base layers, each of which is represented by a thumbnail (the default is [Stamen Watercolor](https://maps.stamen.com/watercolor/) for its aesthetic and load speed)
 * **Projection**: the earth is a globe but maps are represented flat, so [map projection](https://en.wikipedia.org/wiki/Map_projection) (warping) is required (often with socio-political implications; the default is the commonly use [Mercator Projection](https://en.wikipedia.org/wiki/Mercator_projection))
 * **Cities**: displayed as circles (you can toggle their display using the checkbox)
   * **maximum count**: determines the maximum number of cities to load and display
@@ -60,7 +60,7 @@ There are a lot of options tucked beneath the controls in the bottom toolbar
 
 ### Filters
 
-Dreamscape supports multiple filters or views of the corpus, this can include the whole corpus (the default filter) or a filter defined by metadata (author, title, year if available) or text (all documents containing a specified [query]((#!/guide/search)).
+Dreamscape supports multiple filters or views of the corpus, this can include the whole corpus (the default filter) or a filter defined by metadata (author, title, year if available) or text (all documents containing a specified [query]{@tutorial search}.
 
 Click the "Add Filter" button to add a filter.
 
@@ -115,8 +115,7 @@ N.B.: this aspect of Dreamscape is likely to change in the coming months.
 Dreamscape is a collaboration between Voyant Tools, the [Early Modern Conversions Project](http://earlymodernconversions.com/) 
 and the Centre de recherche informatique de Montréal ([CRIM](https://www.crim.ca)).
 
-<img src="guides/dreamscape/crim.png" style="float: right; max-width: 150px;">We wish to recognize in particular the 
-contributions of researchers at CRIM:
+We wish to recognize in particular the contributions of researchers at CRIM:
 
 * Jérôme Labonté: client-side development
 * Lise Rebout: back-end geolocation development 
