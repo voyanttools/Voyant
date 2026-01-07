@@ -244,6 +244,9 @@ ul, ol, li {
     margin: 3px 0 0 3px;
     font-size: 85%;
 }
+.main section article pre {
+    tab-size: 4;
+}
 .main section article .container-properties table.props {
     margin-top: -3px;
 }
