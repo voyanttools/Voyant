@@ -3,12 +3,12 @@
  *
  * @example
  *
- *   let config = {
- *     "query": null,
- *     "stopList": "auto"
- *   };
+ * let config = {
+ * 	"query": null,
+ * 	"stopList": "auto"
+ * };
  *
- *   loadCorpus("austen").tool("microsearch", config);
+ * loadCorpus("austen").tool("microsearch", config);
  *
  * @class MicroSearch
  * @tutorial microsearch

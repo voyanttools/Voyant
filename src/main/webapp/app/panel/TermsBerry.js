@@ -3,17 +3,17 @@
  *
  * @example
  *
- *   let config = {
- *     categories: null, // a query for the keywords (can be comma-separated list)
- *     context: null, // a named stopword list or comma-separated list of words
- *     docId: null, // document index to restrict to (can be comma-separated list)
- *     docIndex: null, // the size of the context (the number of words on each side of the keyword)
- *     numInitialTerms: null, // the initial number of terms to display
- *     query: null, // the initial number of terms to display
- *     stopList: null, // the initial number of terms to display
- *   };
+ * let config = {
+ * 	categories: null, // a query for the keywords (can be comma-separated list)
+ * 	context: null, // a named stopword list or comma-separated list of words
+ * 	docId: null, // document index to restrict to (can be comma-separated list)
+ * 	docIndex: null, // the size of the context (the number of words on each side of the keyword)
+ * 	numInitialTerms: null, // the initial number of terms to display
+ * 	query: null, // the initial number of terms to display
+ * 	stopList: null, // the initial number of terms to display
+ * };
  *
- *   loadCorpus("austen").tool("termsberry", config);
+ * loadCorpus("austen").tool("termsberry", config);
  *
  * @class TermsBerry
  * @tutorial termsberry

@@ -3,14 +3,14 @@
  *
  * @example
  *
- *   let config = {
- *     "docIndex": null,
- *     "minRawFreq": null,
- *     "speed": null,
- *     "stopList": null
- *   };
+ * let config = {
+ * 	"docIndex": null,
+ * 	"minRawFreq": null,
+ * 	"speed": null,
+ * 	"stopList": null
+ * };
  *
- *   loadCorpus("austen").tool("textualarc", config);
+ * loadCorpus("austen").tool("textualarc", config);
  *
  * @class TextualArc
  * @tutorial textualarc

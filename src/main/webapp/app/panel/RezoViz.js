@@ -3,15 +3,15 @@
  *
  * @example
  *
- *   let config = {
- *     "docId": null,
- *     "limit": null,
- *     "minEdgeCount": null,
- *     "nerService": null,
- *     "type": null,
- *   };
+ * let config = {
+ * 	"docId": null,
+ * 	"limit": null,
+ * 	"minEdgeCount": null,
+ * 	"nerService": null,
+ * 	"type": null,
+ * };
  *
- *   loadCorpus("austen").tool("rezoviz", config);
+ * loadCorpus("austen").tool("rezoviz", config);
  *
  * @class RezoViz
  * @tutorial rezoviz

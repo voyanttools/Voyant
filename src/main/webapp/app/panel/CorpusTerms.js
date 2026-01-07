@@ -4,18 +4,18 @@
  *
  * @example
  *
- *   let config = {
- *     columns: null,
- *     comparisonCorpus: null,
- *     dir: null,
- *     maxBins: null,
- *     query: null,
- *     sort: null,
- *     stopList: null,
- *     termColors: null
- *   };
+ * let config = {
+ * 	columns: null,
+ * 	comparisonCorpus: null,
+ * 	dir: null,
+ * 	maxBins: null,
+ * 	query: null,
+ * 	sort: null,
+ * 	stopList: null,
+ * 	termColors: null
+ * };
  *
- *   loadCorpus("austen").tool("corpusterms", config);
+ * loadCorpus("austen").tool("corpusterms", config);
  *
  *
  * @class CorpusTerms

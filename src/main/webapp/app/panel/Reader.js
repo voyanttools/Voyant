@@ -3,15 +3,14 @@
  * You can work with corpus text programmatically using {@link Spyral.Corpus#texts}.
  *
  * @example
- *
- *   let config = {
- *     "limit": null,
- *     "query": null,
- *     "skipTodocId": null,
- *     "start": null
- *   };
- *
- *   loadCorpus("austen").tool("Reader", config);
+ * let config = {
+ * 	"limit": null,
+ * 	"query": null,
+ * 	"skipTodocId": null,
+ * 	"start": null
+ * };
+ * 
+ * loadCorpus("austen").tool("Reader", config);
  *
  * @class Reader
  * @tutorial reader

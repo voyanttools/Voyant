@@ -3,19 +3,19 @@
  *
  * @example
  *
- *   let config = {
- *     "chartType": null,
- *     "docId": null,
- *     "docIndex": null,
- *     "labels": null,
- *     "limit": null,
- *     "mode": null,
- *     "query": null,
- *     "stopList": null,
- *     "withDistributions": null
- *   };
+ * let config = {
+ * 	"chartType": null,
+ * 	"docId": null,
+ * 	"docIndex": null,
+ * 	"labels": null,
+ * 	"limit": null,
+ * 	"mode": null,
+ * 	"query": null,
+ * 	"stopList": null,
+ * 	"withDistributions": null
+ * };
  *
- *   loadCorpus("austen").tool("Trends", config);
+ * loadCorpus("austen").tool("Trends", config);
  *
  * @class Trends
  * @tutorial trends
@@ -735,6 +735,9 @@ Ext.define('Voyant.panel.Trends', {
 	        itemhighlightchange: function (chart, item) {
 	            chart.el.dom.style.cursor = item ? 'pointer' : '';
 	        },
+			/**
+			 * @suppress {uselessCode}
+			 */
 	        afterrender : function() {
 	        	return // TODO: this seems to cause problems, perhaps not destroying properly?
 	        	Ext.defer(function() { // seem to need to defer

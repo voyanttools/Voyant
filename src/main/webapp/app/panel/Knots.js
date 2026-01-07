@@ -4,14 +4,14 @@
  *
  * @example
  *
- *   let config = {
- *     "audio": false,
- *     "docId": null,
- *     "query": null,
- *     "stopList": "auto"
- *   };
+ * let config = {
+ * 	"audio": false,
+ * 	"docId": null,
+ * 	"query": null,
+ * 	"stopList": "auto"
+ * };
  *
- *   loadCorpus("austen").tool("knots", config);
+ * loadCorpus("austen").tool("knots", config);
  *
  * @class Knots
  * @tutorial knots

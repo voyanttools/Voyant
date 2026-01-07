@@ -4,19 +4,19 @@
  *
  * @example
  *
- *   let config = {
- *     "bins": null,
- *     "columns": null,
- *     "dir": null,
- *     "docId": null,
- *     "docIndex": null,
- *     "query": null,
- *     "sort": null,
- *     "stopList": null,
- *     "termColors": null,
- *   };
+ * let config = {
+ * 	"bins": null,
+ * 	"columns": null,
+ * 	"dir": null,
+ * 	"docId": null,
+ * 	"docIndex": null,
+ * 	"query": null,
+ * 	"sort": null,
+ * 	"stopList": null,
+ * 	"termColors": null,
+ * };
  *
- *   loadCorpus("austen").tool("documentterms", config);
+ * loadCorpus("austen").tool("documentterms", config);
  *
  * @class DocumentTerms
  * @tutorial documentterms

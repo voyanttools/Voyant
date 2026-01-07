@@ -3,16 +3,16 @@
  *
  * @example
  *
- *   let config = {
- *     "context": null,
- *     "docId": null,
- *     "docIndex": null,
- *     "limit": null,
- *     "query": null,
- *     "stopList": null
- *   };
+ * let config = {
+ * 	"context": null,
+ * 	"docId": null,
+ * 	"docIndex": null,
+ * 	"limit": null,
+ * 	"query": null,
+ * 	"stopList": null
+ * };
  *
- *   loadCorpus("austen").tool("wordtree", config);
+ * loadCorpus("austen").tool("wordtree", config);
  *
  * @class WordTree
  * @tutorial wordtree
@@ -391,6 +391,9 @@ Ext.define('Voyant.panel.WordTree', {
     	}
     },
     
+	/**
+	 * @suppress {uselessCode}
+	 */
     stripPunctuation: function(value) {
     	if (Ext.isString(value)) return value.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
     	else {
