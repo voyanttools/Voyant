@@ -41,7 +41,7 @@ In addition to the default skin (that can be used with [Austen](../?corpus=auste
 several pre-defined skins that combine a subset of tools, including:
 
 * *Bubblelines Skin*: the [bubblelines]{@tutorial bubblelines} tool combined with the [contexts]{@tutorial contexts} and [reader]{@tutorial reader} tools (use with [Austen](../?corpus=austen&view=bubblelinesset) or [your own corpus](../?view=bubblelinesset))
-* *Collocates Skin*: [corpus terms]{@tutorial corpusterms}, [document terms]{@tutorial documentterms}, [corpus collocates]{@tutorial corpuscollocates}, [contexts]{@tutorial contexts}, and [collocates graph]{@tutorial collocatesgraph} (use with [Austen](../?corpus=austen&view=collocatesset) or [your own corpus](../?view=collocatesset))
+* *Collocates Skin*: [corpus terms]{@tutorial corpusterms}, [document terms]{@tutorial documentterms}, [corpus collocates]{@tutorial corpuscollocates}, [contexts]{@tutorial contexts}, and [links]{@tutorial links} (use with [Austen](../?corpus=austen&view=collocatesset) or [your own corpus](../?view=collocatesset))
 * *Scatter Skin*: [scatterplot (PCA and CA)]{@tutorial scatterplot} with [documents]{@tutorial documents}, [trends]{@tutorial trends} and [contexts]{@tutorial contexts} (use with [Austen](../?corpus=austen&view=scatterset) or [your own corpus](../?view=scatterset))
 * *Subset Skin*: a specialized interface to select a subset of documents from your corpus (for download or for use in Voyant), based on full-text and metadata search (use with [Austen](../?corpus=austen&view=subset) or [your own corpus](../?view=subset))
 * *Custom Skin*: build your own skin using the [Skin Builder](../builder/)

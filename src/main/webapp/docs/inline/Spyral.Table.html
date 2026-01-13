@@ -12,32 +12,32 @@ data.</p>
 <pre><code>let table = createTable([1,2,3]);
 </code></pre>
 <p>Provide a nested array of data with multiple rows:</p>
-<pre><code>	let table = createTable([[1,2],[3,4]]);
+<pre><code>let table = createTable([[1,2],[3,4]]);
 </code></pre>
 <p>Same nested array, but with a second argument specifying headers</p>
-<pre><code>	let table = createTable([[1,2],[3,4]], {headers: ["one","two"]});
+<pre><code>let table = createTable([[1,2],[3,4]], {headers: ["one","two"]});
 </code></pre>
 <p>Create table with comma-separated values:</p>
 <pre><code>let table = createTable("one,two\\n1,2\\n3,4");
 </code></pre>
 <p>Create table with tab-separated values</p>
-<pre><code>	let table = createTable("one\\ttwo\\n1\\t2\\n3\\t4");
+<pre><code>let table = createTable("one\\ttwo\\n1\\t2\\n3\\t4");
 </code></pre>
 <p>Create table with array of objects</p>
 <pre><code>let table = createTable([{one:1,two:2},{one:3,two:4}]);
 </code></pre>
 <p>It's also possible simple to create a sorted frequency table from an array of values:</p>
-<pre><code>	let table = createTable(["one","two","one"], {count: "vertical", headers: ["Term","Count"]})
+<pre><code>let table = createTable(["one","two","one"], {count: "vertical", headers: ["Term","Count"]})
 </code></pre>
 <p>Working with a Corpus is easy. For instance, we can create a table from the top terms:</p>
-<pre><code>	loadCorpus("austen").terms({limit:500, stopList: 'auto'}).then(terms =&gt; {
-		return createTable(terms);
-	})
+<pre><code>loadCorpus("austen").terms({limit:500, stopList: 'auto'}).then(terms =&gt; {
+	return createTable(terms);
+})
 </code></pre>
 <p>Similarly, we could create a frequency table from the first 1,000 words of the corpus:</p>
-<pre><code>	loadCorpus("austen").words({limit:1000, docIndex: 0, stopList: 'auto'}).then(words =&gt; {
-		return createTable(words, {count: "vertical"});
-	});
+<pre><code>loadCorpus("austen").words({limit:1000, docIndex: 0, stopList: 'auto'}).then(words =&gt; {
+	return createTable(words, {count: "vertical"});
+});
 </code></pre>
 <p>Some of the configuration options are as follows:</p>
 <ul>

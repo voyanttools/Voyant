@@ -221,43 +221,6 @@
       }
     }
   },
-  "Links": {
-    "doc": "Links represents keywords and terms that occur in close proximity as a force directed network graph.\nYou can work with collocates programmatically using {@link Spyral.Corpus#collocates}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Links.html\">More documentation</a>",
-    "params": {
-      "style": {
-        "type": "String",
-        "doc": "A string of CSS properties to use as the style attribute for the tool's parent tag."
-      },
-      "width": {
-        "type": "Number",
-        "doc": "Specify the display width of the tool in pixels."
-      },
-      "height": {
-        "type": "Number",
-        "doc": "Specify the display height of the tool in pixels."
-      },
-      "query": {
-        "type": "String",
-        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
-      },
-      "limit": {
-        "type": "Number",
-        "doc": "The number of items to limit the result to."
-      },
-      "stopList": {
-        "type": "String",
-        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
-      },
-      "context": {
-        "type": "Number",
-        "doc": "The number of terms to consider on each side of the keyword."
-      },
-      "centralize": {
-        "type": "String",
-        "doc": "If specified, will \"centralize\" on this keyword"
-      }
-    }
-  },
   "Constellations": {
     "doc": "Constellations\nTODO add word2vec\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
     "params": {
@@ -661,6 +624,43 @@
       "audio": {
         "type": "Boolean",
         "doc": "Whether or not to play audio during the visualization."
+      }
+    }
+  },
+  "Links": {
+    "doc": "Links represents keywords and terms that occur in close proximity (i.e. collocated) as a force directed network graph.\nYou can work with collocates programmatically using {@link Spyral.Corpus#collocates}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Links.html\">More documentation</a>",
+    "params": {
+      "style": {
+        "type": "String",
+        "doc": "A string of CSS properties to use as the style attribute for the tool's parent tag."
+      },
+      "width": {
+        "type": "Number",
+        "doc": "Specify the display width of the tool in pixels."
+      },
+      "height": {
+        "type": "Number",
+        "doc": "Specify the display height of the tool in pixels."
+      },
+      "query": {
+        "type": "String",
+        "doc": "A query or array of queries (queries can be separated by a comma).\nFor query syntax, see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-search.html\">search documentation</a>."
+      },
+      "limit": {
+        "type": "Number",
+        "doc": "The number of items to limit the result to."
+      },
+      "stopList": {
+        "type": "String",
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
+      },
+      "context": {
+        "type": "Number",
+        "doc": "The number of terms to consider on each side of the keyword."
+      },
+      "centralize": {
+        "type": "String",
+        "doc": "If specified, will \"centralize\" on this keyword"
       }
     }
   },

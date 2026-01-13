@@ -712,15 +712,15 @@ Collocates are terms which appear more frequently in proximity to keywords acros
 </code></pre>
 <p>The following is an example of Document Collocate (documents mode):</p>
 <pre><code>{
-		"docIndex": 4,
-		"keyword": "love",
-		"keywordContextRawFrequency": 124,
-		"term": "fanny",
-		"termContextRawFrequency": 8,
-		"termContextRelativeFrequency": 0.021680217,
-		"termDocumentRawFrequency": 816,
-		"termDocumentRelativeFrequency": 0.0050853477,
-		"termContextDocumentRelativeFrequencyDifference": 0.01659487
+	"docIndex": 4,
+	"keyword": "love",
+	"keywordContextRawFrequency": 124,
+	"term": "fanny",
+	"termContextRawFrequency": 8,
+	"termContextRelativeFrequency": 0.021680217,
+	"termDocumentRawFrequency": 816,
+	"termDocumentRelativeFrequency": 0.0050853477,
+	"termContextDocumentRelativeFrequencyDifference": 0.01659487
 }
 </code></pre>
 <p>The following config parameters are valid in both modes:</p>
@@ -1099,13 +1099,13 @@ loadCorpus("austen").collocates({stopList: 'auto', limit: 5}).then(terms =&gt; t
         <p>Returns an array of Objects that contain keywords in contexts (KWICs).</p>
 <p>An individual KWIC Object looks something like this:</p>
 <pre><code>{
-		"docIndex": 0,
-		"query": "love",
-		"term": "love",
-		"position": 0,
-		"left": "FREINDSHIP AND OTHER EARLY WORKS",
-		"middle": "Love",
-		"right": " And Friendship And Other Early"
+	"docIndex": 0,
+	"query": "love",
+	"term": "love",
+	"position": 0,
+	"left": "FREINDSHIP AND OTHER EARLY WORKS",
+	"middle": "Love",
+	"right": " And Friendship And Other Early"
 }
 </code></pre>
 <p>The following are valid in the config parameter:</p>
@@ -3808,30 +3808,30 @@ loadCorpus("austen").documentCorrelations({query: "love", docIndex: 0, limit: 10
 <p>The following is an example of what is returned as metadata for the first document:</p>
 <pre><code>[
 	{
-	"id": "ddac6b12c3f4261013c63d04e8d21b45",
-	"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
-	"tokensCount-lexical": "33559",
-	"lastTokenStartOffset-lexical": "259750",
-	"parent_modified": "1548457455000",
-	"typesCount-lexical": "4235",
-	"typesCountMean-lexical": "7.924203",
-	"lastTokenPositionIndex-lexical": "33558",
-	"index": "0",
-	"language": "en",
-	"sentencesCount": "1302",
-	"source": "stream",
-	"typesCountStdDev-lexical": "46.626404",
-	"title": "1790 Love And Freindship",
-	"parent_queryParameters": "VOYANT_BUILD=M16&amp;textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&amp;VOYANT_REMOTE_ID=199.229.249.196&amp;accessIP=199.229.249.196&amp;VOYANT_VERSION=2.4&amp;palette=default&amp;suppressTools=false",
-	"extra.Content-Type": "text/plain; charset=windows-1252",
-	"parentType": "expansion",
-	"extra.Content-Encoding": "windows-1252",
-	"parent_source": "file",
-	"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
-	"modified": "1432861756000",
-	"location": "1790 Love And Freindship.txt",
-	"parent_title": "Austen",
-	"parent_location": "Austen.zip"
+		"id": "ddac6b12c3f4261013c63d04e8d21b45",
+		"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
+		"tokensCount-lexical": "33559",
+		"lastTokenStartOffset-lexical": "259750",
+		"parent_modified": "1548457455000",
+		"typesCount-lexical": "4235",
+		"typesCountMean-lexical": "7.924203",
+		"lastTokenPositionIndex-lexical": "33558",
+		"index": "0",
+		"language": "en",
+		"sentencesCount": "1302",
+		"source": "stream",
+		"typesCountStdDev-lexical": "46.626404",
+		"title": "1790 Love And Freindship",
+		"parent_queryParameters": "VOYANT_BUILD=M16&amp;textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&amp;VOYANT_REMOTE_ID=199.229.249.196&amp;accessIP=199.229.249.196&amp;VOYANT_VERSION=2.4&amp;palette=default&amp;suppressTools=false",
+		"extra.Content-Type": "text/plain; charset=windows-1252",
+		"parentType": "expansion",
+		"extra.Content-Encoding": "windows-1252",
+		"parent_source": "file",
+		"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
+		"modified": "1432861756000",
+		"location": "1790 Love And Freindship.txt",
+		"parent_title": "Austen",
+		"parent_location": "Austen.zip"
 	}
 ]
 </code></pre>
@@ -6100,30 +6100,30 @@ loadCorpus("austen").documentTerms({stopList: 'auto', perDocLimit: 1, mode: 'doc
 <p>The following is an example of what is returned as metadata for the first document:</p>
 <pre><code>[
 	{
-	"id": "ddac6b12c3f4261013c63d04e8d21b45",
-	"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
-	"tokensCount-lexical": "33559",
-	"lastTokenStartOffset-lexical": "259750",
-	"parent_modified": "1548457455000",
-	"typesCount-lexical": "4235",
-	"typesCountMean-lexical": "7.924203",
-	"lastTokenPositionIndex-lexical": "33558",
-	"index": "0",
-	"language": "en",
-	"sentencesCount": "1302",
-	"source": "stream",
-	"typesCountStdDev-lexical": "46.626404",
-	"title": "1790 Love And Freindship",
-	"parent_queryParameters": "VOYANT_BUILD=M16&amp;textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&amp;VOYANT_REMOTE_ID=199.229.249.196&amp;accessIP=199.229.249.196&amp;VOYANT_VERSION=2.4&amp;palette=default&amp;suppressTools=false",
-	"extra.Content-Type": "text/plain; charset=windows-1252",
-	"parentType": "expansion",
-	"extra.Content-Encoding": "windows-1252",
-	"parent_source": "file",
-	"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
-	"modified": "1432861756000",
-	"location": "1790 Love And Freindship.txt",
-	"parent_title": "Austen",
-	"parent_location": "Austen.zip"
+		"id": "ddac6b12c3f4261013c63d04e8d21b45",
+		"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
+		"tokensCount-lexical": "33559",
+		"lastTokenStartOffset-lexical": "259750",
+		"parent_modified": "1548457455000",
+		"typesCount-lexical": "4235",
+		"typesCountMean-lexical": "7.924203",
+		"lastTokenPositionIndex-lexical": "33558",
+		"index": "0",
+		"language": "en",
+		"sentencesCount": "1302",
+		"source": "stream",
+		"typesCountStdDev-lexical": "46.626404",
+		"title": "1790 Love And Freindship",
+		"parent_queryParameters": "VOYANT_BUILD=M16&amp;textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&amp;VOYANT_REMOTE_ID=199.229.249.196&amp;accessIP=199.229.249.196&amp;VOYANT_VERSION=2.4&amp;palette=default&amp;suppressTools=false",
+		"extra.Content-Type": "text/plain; charset=windows-1252",
+		"parentType": "expansion",
+		"extra.Content-Encoding": "windows-1252",
+		"parent_source": "file",
+		"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
+		"modified": "1432861756000",
+		"location": "1790 Love And Freindship.txt",
+		"parent_title": "Austen",
+		"parent_location": "Austen.zip"
 	}
 ]
 </code></pre>
@@ -8319,16 +8319,16 @@ loadCorpus("austen").texts({limit:1000})
     <div class="description">
         <p>Returns an array of document tokens.</p>
 <p>The promise returns an array of document token objects. A document token object can look something like this:</p>
-<pre><code>	{
-		"docId": "8a61d5d851a69c03c6ba9cc446713574",
-		"docIndex": 0,
-		"term": "LOVE",
-		"tokenType": "lexical",
-		"rawFreq": 54,
-		"position": 0,
-		"startOffset": 3,
-		"endOffset": 7
-	}
+<pre><code>{
+	"docId": "8a61d5d851a69c03c6ba9cc446713574",
+	"docIndex": 0,
+	"term": "LOVE",
+	"tokenType": "lexical",
+	"rawFreq": 54,
+	"position": 0,
+	"startOffset": 3,
+	"endOffset": 7
+}
 </code></pre>
 <p>The following are valid in the config parameter:</p>
 <ul>
