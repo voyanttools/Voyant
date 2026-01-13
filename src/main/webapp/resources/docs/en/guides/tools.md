@@ -53,14 +53,6 @@ Cirrus is a word cloud that visualizes the top frequency words of a corpus or do
 <div class="tool-row">
 
 
-![Icon](imgs/tools/collocatesgraph/icon.png)
-#### {@tutorial collocatesgraph}
-Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
-
-<p class="clear"></p></div>
-<div class="tool-row">
-
-
 ![Icon](imgs/tools/corpuscollocates/icon.png)
 #### {@tutorial corpuscollocates}
 Corpus Collocates is a table view of which terms appear more frequently in proximity to keywords across the entire corpus.
@@ -112,6 +104,14 @@ The Documents tool shows a table of the documents in the corpus and includes fun
 ![Icon](imgs/tools/knots/icon.png)
 #### {@tutorial knots}
 Knots is a creative visualization that represents terms in a single document as a series of twisted lines.
+
+<p class="clear"></p></div>
+<div class="tool-row">
+
+
+![Icon](imgs/tools/links/icon.png)
+#### {@tutorial links}
+Links represents keywords and terms that occur in close proximity as a force directed network graph.
 
 <p class="clear"></p></div>
 <div class="tool-row">

@@ -3,7 +3,7 @@
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 		response.setHeader("Location", "dream/"+(query!=null ? "?"+query : "?corpus=dream"));
         return;
-   } 
+   }
    String skin = request.getParameter("skin");
    if (skin!=null && skin.isEmpty()==false && query.isEmpty()==false) {
 	   skin = skin.toLowerCase();
@@ -26,6 +26,14 @@
 	   response.setHeader("Location", "./" + (skin.equals("dtoc") ? "dtoc/" : "") + (query.length()>0 ? "?"+query+"" : ""));
        return;
    }
+	String view = request.getParameter("view");
+	if (view!=null && view.isEmpty()==false) {
+		if (view.toLowerCase().equals("collocatesgraph")) {
+			response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+			response.setHeader("Location", "./?" + (query.replaceAll("(?i)collocatesgraph", "Links")));
+			return;
+		}
+	}
 %>
 
 <% request.setAttribute("title", "Voyant Tools"); %>

@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"コーパス",
 "scale":"スケール"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"クリーニング",
+"context":"コンテクスト",
+"releaseToRemove":"画面外にドラッグし、そのままリリースすると単語を削除",
+"clearTerms":"クリア",
+"title":"リンク",
+"helpTip":"<p>リンクツールのコロケートグラフは、高頻度で近距離に出現する単語のネットワーク図を表示します。キーワードは青で、また近距離に出現する単語はオレンジで表示されます。含まれる機能</p><ul><li>単語にマウスカーソルを合わせると近距離での出現頻度を表示（全出現頻度ではない）</li><li>単語をダブルクリックするとさらに関連語を表示</li><li>検索ボックス（？アイコンにカーソルを合わせると記法ヘルプが表示されます）</li></ul></li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"コーパスを取得中",
 "moreToolsTypeViz":"視覚化ツール",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"ツールが指定されていません。Voyant ツールのメインページに戻ります",
 "error":"エラー",
 "title":"そのようなツールは存在しません"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"クリーニング",
-"context":"コンテクスト",
-"releaseToRemove":"画面外にドラッグし、そのままリリースすると単語を削除",
-"clearTerms":"クリア",
-"title":"リンク",
-"helpTip":"<p>リンクツールのコロケートグラフは、高頻度で近距離に出現する単語のネットワーク図を表示します。キーワードは青で、また近距離に出現する単語はオレンジで表示されます。含まれる機能</p><ul><li>単語にマウスカーソルを合わせると近距離での出現頻度を表示（全出現頻度ではない）</li><li>単語をダブルクリックするとさらに関連語を表示</li><li>検索ボックス（？アイコンにカーソルを合わせると記法ヘルプが表示されます）</li></ul></li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"キャンセル",
 "accessModeWithoutPassword":"その他のコード",

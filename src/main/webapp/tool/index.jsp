@@ -5,7 +5,7 @@ String[] parts = request.getRequestURI().substring(request.getContextPath().leng
 if (parts.length<2) {
 	response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 	if (parts.length==1 && parts[0].equals("CollocatesGraph")) { // handle bad URL from Hermeneutica book
-		response.setHeader("Location", request.getContextPath()+"/?view=CollocatesGraph");
+		response.setHeader("Location", request.getContextPath()+"/?view=Links");
 	} else {
 		response.setHeader("Location", request.getContextPath()+"/"+(query!=null ? "?"+query : ""));
 	}
@@ -15,7 +15,7 @@ String tool = parts[1];
 
 // tools that need to be redirected
 String redirectTool = null;
-if (tool.equals("Links")) {redirectTool="CollocatesGraph";}
+if (tool.equals("CollocatesGraph")) {redirectTool="Links";}
 else if (tool.equals("CorpusGrid")) {redirectTool="Documents";}
 else if (tool.equals("CorpusSummary")) {redirectTool="Summary";}
 else if (tool.equals("CorpusTypeFrequenciesGrid")) {redirectTool="CorpusTerms";}
@@ -24,7 +24,7 @@ else if (tool.equals("CorpusTypeFrequenciesGrid")) {redirectTool="CorpusTerms";}
 else if (tool.equals("DocumentTypeFrequenciesGrid")) {redirectTool="DocumentTerms";}
 else if (tool.equals("DocumentTypeKwicsGrid")) {redirectTool="Contexts";}
 else if (tool.equals("TypeFrequenciesChart")) {redirectTool="Trends";}
-else if (tool.equals("VisualCollocator")) {redirectTool="CollocatesGraph";}
+else if (tool.equals("VisualCollocator")) {redirectTool="Links";}
 if (redirectTool!=null) {
 	response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 	response.setHeader("Location", "../"+redirectTool+"/"+(query!=null ? "?"+query : ""));

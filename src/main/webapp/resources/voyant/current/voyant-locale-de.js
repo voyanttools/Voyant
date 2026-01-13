@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Abbrechen",
 "scale":"Skalierung"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Bereinigen",
+"context":"Kontext",
+"releaseToRemove":"Lassen Sie los, um diesen Begriff zu entfernen",
+"clearTerms":"Leeren",
+"title":"Links",
+"helpTip":"<p>Links (Collocates graph) zeigt ein Netzwerkdiagramm mit häufig vorkommenden Begriffen, die nah zueinander vorkommen. Schlagworte werden blau angezeigt und Kollokationen (Wörter in der Nähe) werden orange angezeigt. Zu den Funktionen gehören: </p> <ul> <li> Wenn Sie mit der Maus über Schlagwörter fahren, wird deren Häufigkeit im Korpus angezeigt. </li> <li> Wenn Sie mit der Maus über Kollokationen fahren, wird die Häufigkeit ihres nahen Vorkommens (nicht die Gesamthäufigkeit) angezeigt. </li> <li> Durch Doppelklicken auf ein Wort werden weitere Ergebnisse angezeigt. </li> <li> Ein Suchfeld für Abfragen (Bewegen Sie den Mauszeiger über das Fragezeichen, um Hilfe bei der Syntax zu erhalten) </li> </ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Ihr Korpus wird geladen",
 "moreToolsTypeViz":"Visualisierungstools",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Es wurde kein Werkzeug angegeben. Sie werden zur Hauptseite von Voyant Tools weitergeleitet.",
 "error":"Fehler",
 "title":"Das Tool ist nicht vorhanden"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Bereinigen",
-"context":"Kontext",
-"releaseToRemove":"Lassen Sie los, um diesen Begriff zu entfernen",
-"clearTerms":"Leeren",
-"title":"Links",
-"helpTip":"<p>Links (Collocates graph) zeigt ein Netzwerkdiagramm mit häufig vorkommenden Begriffen, die nah zueinander vorkommen. Schlagworte werden blau angezeigt und Kollokationen (Wörter in der Nähe) werden orange angezeigt. Zu den Funktionen gehören: </p> <ul> <li> Wenn Sie mit der Maus über Schlagwörter fahren, wird deren Häufigkeit im Korpus angezeigt. </li> <li> Wenn Sie mit der Maus über Kollokationen fahren, wird die Häufigkeit ihres nahen Vorkommens (nicht die Gesamthäufigkeit) angezeigt. </li> <li> Durch Doppelklicken auf ein Wort werden weitere Ergebnisse angezeigt. </li> <li> Ein Suchfeld für Abfragen (Bewegen Sie den Mauszeiger über das Fragezeichen, um Hilfe bei der Syntax zu erhalten) </li> </ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Abbrechen",
 "accessModeWithoutPassword":"anderer Zugang",

@@ -50,7 +50,7 @@ Ext.define('Voyant.panel.CollocatesSet', {
         items: [{
         	xtype: 'contexts'
         },{
-        	xtype: 'collocatesgraph'
+        	xtype: 'links'
         }]
     }]
 })

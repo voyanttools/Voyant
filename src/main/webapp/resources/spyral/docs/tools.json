@@ -221,8 +221,8 @@
       }
     }
   },
-  "CollocatesGraph": {
-    "doc": "Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.\nYou can work with collocates programmatically using {@link Spyral.Corpus#collocates}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.CollocatesGraph.html\">More documentation</a>",
+  "Links": {
+    "doc": "Links represents keywords and terms that occur in close proximity as a force directed network graph.\nYou can work with collocates programmatically using {@link Spyral.Corpus#collocates}.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Links.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",

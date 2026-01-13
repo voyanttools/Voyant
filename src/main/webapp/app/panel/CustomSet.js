@@ -95,7 +95,7 @@ Ext.define('Voyant.panel.CustomSet', {
 	        .replace(/w2/g, 'west')
 	    	.replace(/"xtype":"(\w+)"/g, function(match, tool) {
             	if (!Ext.ClassManager.getByAlias("widget."+tool.toLowerCase())) {
-		            if (tool=="Links") {tool="CollocatesGraph";}
+		            if (tool=="CollocatesGraph") {tool="Links";}
 		            else if (tool=="CorpusGrid") {tool="Documents";}
 		            else if (tool=="CorpusSummary") {tool="Summary";}
 		            else if (tool=="CorpusTypeFrequenciesGrid") {tool="CorpusTerms";}
@@ -104,7 +104,7 @@ Ext.define('Voyant.panel.CustomSet', {
 		            else if (tool=="DocumentTypeFrequenciesGrid") {tool="DocumentTerms";}
 		            else if (tool=="DocumentTypeKwicsGrid") {tool="Contexts";}
 		            else if (tool=="TypeFrequenciesChart") {tool="Trends";}
-		            else if (tool=="VisualCollocator") {tool="CollocatesGraph";}
+		            else if (tool=="VisualCollocator") {tool="Links";}
 		            else {tool="NoTool"}
             	}
             	return '"xtype":"'+tool.toLowerCase()+'"'+(tool=="NoTool" ? ',"html":"'+new Ext.Template(panel.localize('noSuchTool')).applyTemplate([tool])+'"' : '')

@@ -5,7 +5,7 @@ Ext.define('Voyant.panel.MoreLikeThis', {
 })
 Ext.define('Voyant.VoyantDocumentToolsetApp', {
 	extend : 'Voyant.VoyantCorpusApp',
-	requires: ['Voyant.panel.Contexts','Voyant.panel.CollocatesGraph','Voyant.panel.Trends'],
+	requires: ['Voyant.panel.Contexts','Voyant.panel.Links','Voyant.panel.Trends'],
 	name : 'VoyantDocumentToolsetApp',
 	launch: function() {
 		Ext.create('Ext.container.Viewport', {
@@ -27,7 +27,7 @@ Ext.define('Voyant.VoyantDocumentToolsetApp', {
         		   xtype: 'contexts',
                    collapsible: true
         	   },{
-        		   xtype: 'collocatesgraph',
+        		   xtype: 'links',
                    collapsible: true
         	   },{
         		   xtype: 'trends',

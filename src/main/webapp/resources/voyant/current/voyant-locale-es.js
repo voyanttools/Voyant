@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Corpus",
 "scale":"Escala "});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Limpiando ",
+"context":"Contexto ",
+"releaseToRemove":"Liberar para eliminar este término ",
+"clearTerms":"Limpiar",
+"title":"Enlaces",
+"helpTip":"<p>El gráfico de Colocaciones muestra un gráfico de red de los términos con una frecuencia más alta que aparecen por proximidad. Las palabras clave se muestran en azul y los colocaciones (palabras en la proximidad) se muestran en naranja. Las características incluyen: </p> <ul> <li> flotando sobre palabras clave se muestra su frecuencia en el corpus </ li> <li> flotando sobre las colocaciones se muestra su frecuencia en proximidad (no su frecuencia total) </ li> <li> un cuadro de búsqueda para consultas (coloque el cursor sobre el icono de ampliación para obtener ayuda con la sintaxis) </ li> </ ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Recuperando el corpus",
 "moreToolsTypeViz":"Herramientas de Visualización ",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"No se ha especificado ninguna herramienta. Usted será redirigido a la página principal de Voyant Tools.",
 "error":"Error",
 "title":"Ninguna herramienta "});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Limpiando ",
-"context":"Contexto ",
-"releaseToRemove":"Liberar para eliminar este término ",
-"clearTerms":"Limpiar",
-"title":"Enlaces",
-"helpTip":"<p>El gráfico de Colocaciones muestra un gráfico de red de los términos con una frecuencia más alta que aparecen por proximidad. Las palabras clave se muestran en azul y los colocaciones (palabras en la proximidad) se muestran en naranja. Las características incluyen: </p> <ul> <li> flotando sobre palabras clave se muestra su frecuencia en el corpus </ li> <li> flotando sobre las colocaciones se muestra su frecuencia en proximidad (no su frecuencia total) </ li> <li> un cuadro de búsqueda para consultas (coloque el cursor sobre el icono de ampliación para obtener ayuda con la sintaxis) </ li> </ ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Cancelar ",
 "accessModeWithoutPassword":"otros accesos ",

@@ -58,9 +58,6 @@
       "cirrus": {
         "title": "Cirrus"
       },
-      "collocatesgraph": {
-        "title": "Collocates Graph"
-      },
       "constellations": {
         "title": "Constellations"
       },
@@ -90,6 +87,9 @@
       },
       "knots": {
         "title": "Knots"
+      },
+      "links": {
+        "title": "Links"
       },
       "mandala": {
         "title": "Mandala"

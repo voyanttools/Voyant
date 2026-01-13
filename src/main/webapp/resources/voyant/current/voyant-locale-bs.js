@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Korpus",
 "scale":"Razmjer"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Čišćenje",
+"context":"Kontekst",
+"releaseToRemove":"Otpustiti za uklanjanje ovog termina",
+"clearTerms":"Brisanje",
+"title":"Veze",
+"helpTip":"Grafikon kolokata prikazuje mrežu termina koji se pojavljuju u blizini sa većom učestalošću. Ključne riječi su označene plavom, a kolokati (riječi u blizini) narandžastom bojom. Pozicioniranjem kursora na ključne riječi otkriva se njihova učestalost u korpusu. Pozicioniranjem kursora na kolokate otkriva se njihova učestalost u blizini (ne njihova ukupna učestalost). Dvostruki klik na bilo koju riječ donosi dodatne rezultate. Okvir za pretraživanje (pozicioniranje kursora na ikonu za povećavanje nudi pomoć sa sintaksom upita)."});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Vaš korpus se učitava",
 "moreToolsTypeViz":"atke za vizualizaciju",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Nije odabrana nijedna alatka. Bićete preusmjereni na početnu stranicu Voyant Tools.",
 "error":"Greška",
 "title":"Nepostojeća alatka"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Čišćenje",
-"context":"Kontekst",
-"releaseToRemove":"Otpustiti za uklanjanje ovog termina",
-"clearTerms":"Brisanje",
-"title":"Veze",
-"helpTip":"Grafikon kolokata prikazuje mrežu termina koji se pojavljuju u blizini sa većom učestalošću. Ključne riječi su označene plavom, a kolokati (riječi u blizini) narandžastom bojom. Pozicioniranjem kursora na ključne riječi otkriva se njihova učestalost u korpusu. Pozicioniranjem kursora na kolokate otkriva se njihova učestalost u blizini (ne njihova ukupna učestalost). Dvostruki klik na bilo koju riječ donosi dodatne rezultate. Okvir za pretraživanje (pozicioniranje kursora na ikonu za povećavanje nudi pomoć sa sintaksom upita)."});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Poništiti",
 "accessModeWithoutPassword":"drugi oblik pristupa",

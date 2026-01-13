@@ -112,7 +112,7 @@ app/panel/Bubbles.js
 app/panel/Bubblelines.js
 app/panel/Catalogue.js
 app/panel/Cirrus.js
-app/panel/CollocatesGraph.js
+app/panel/Links.js
 app/panel/Constellations.js
 app/panel/Contexts.js
 app/panel/CorpusCollocates.js

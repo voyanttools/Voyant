@@ -9,7 +9,7 @@ Ext.define('Voyant.panel.Builder', {
     	dropTargets: {},
     	colResizers: {},
     	rowResizers: {},
-    	toolsList: ["bubblelines","bubbles","cirrus","collocatesgraph","constellations","contexts","corpuscollocates","corpusterms","correlations","documents","documentterms","dreamscape","embedder","knots","loom","mandala","microsearch","phrases","reader","scatterplot","streamgraph","summary","termsberry","termsradio","textualarc","topics","trends","veliza","wordtree"]
+    	toolsList: ["bubblelines","bubbles","cirrus","links","constellations","contexts","corpuscollocates","corpusterms","correlations","documents","documentterms","dreamscape","embedder","knots","loom","mandala","microsearch","phrases","reader","scatterplot","streamgraph","summary","termsberry","termsradio","textualarc","topics","trends","veliza","wordtree"]
     },
     statics: {
     	i18n: {

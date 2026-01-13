@@ -1,5 +1,5 @@
 /**
- * Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
+ * Links represents keywords and terms that occur in close proximity (i.e. collocated) as a force directed network graph.
  * You can work with collocates programmatically using {@link Spyral.Corpus#collocates}.
  *
  * @example
@@ -12,29 +12,29 @@
  * 	stopList: "auto",
  * };
  *
- * loadCorpus("austen").tool("collocatesgraph", config);
+ * loadCorpus("austen").tool("links", config);
  *
- * @class CollocatesGraph
- * @tutorial collocatesgraph
+ * @class Links
+ * @tutorial links
  * @memberof Tools
  */
-Ext.define('Voyant.panel.CollocatesGraph', {
+Ext.define('Voyant.panel.Links', {
 	extend: 'Ext.panel.Panel',
 	mixins: ['Voyant.panel.Panel'],
-	alias: 'widget.collocatesgraph',
+	alias: 'widget.links',
     statics: {
     	i18n: {
     	},
     	api: {
 			/**
-			 * @memberof Tools.CollocatesGraph
+			 * @memberof Tools.Links
 			 * @instance
 			 * @property {query}
 			 */
     		query: undefined,
 
 			/**
-			 * @memberof Tools.CollocatesGraph
+			 * @memberof Tools.Links
 			 * @instance
 			 * @property {limit}
 			 * @default
@@ -42,7 +42,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     		limit: 5,
 
 			/**
-			 * @memberof Tools.CollocatesGraph
+			 * @memberof Tools.Links
 			 * @instance
 			 * @property {stopList}
 			 * @default
@@ -50,7 +50,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     		stopList: 'auto',
 
 			/**
-			 * @memberof Tools.CollocatesGraph
+			 * @memberof Tools.Links
 			 * @instance
 			 * @property {context}
 			 * @default
@@ -58,7 +58,7 @@ Ext.define('Voyant.panel.CollocatesGraph', {
     		context: 5,
 
 			/**
-			 * @memberof Tools.CollocatesGraph
+			 * @memberof Tools.Links
 			 * @instance
 			 * @property {String} centralize If specified, will "centralize" on this keyword
 			 */

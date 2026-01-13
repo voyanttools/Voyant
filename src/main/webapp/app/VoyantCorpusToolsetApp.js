@@ -10,7 +10,7 @@ Ext.define('Voyant.panel.DocumentClusters', {
 //})
 Ext.define('Voyant.VoyantCorpusToolsetApp', {
 	extend : 'Voyant.VoyantCorpusApp',
-	requires: ['Voyant.panel.Contexts','Voyant.panel.CollocatesGraph','Voyant.panel.Trends'],
+	requires: ['Voyant.panel.Contexts','Voyant.panel.Links','Voyant.panel.Trends'],
 	name : 'VoyantCorpusToolsetApp',
 	launch: function() {
 		Ext.create('Ext.container.Viewport', {

@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Corpus",
 "scale":"Scale"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Cleaning",
+"context":"Context",
+"releaseToRemove":"Release to remove this term",
+"clearTerms":"Clear",
+"title":"Links",
+"helpTip":"<p>Links shows a network graph of higher frequency terms that appear in proximity. Keywords are shown in blue and collocates (words in proximity) are showing in orange. Features include:</p><ul><li>hovering over keywords shows their frequency in the corpus</li><li>hovering over collocates shows their frequency in proximity (not their total frequency)</li><li>double-clicking on any word fetches more results</li><li>a search box for queries (hover over the magnifying icon for help with the syntax)</li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Fetching your corpus",
 "moreToolsTypeViz":"Visualization Tools",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"No tool has been specified. You will be redirected to the main page of Voyant Tools.",
 "error":"Error",
 "title":"No Such Tool"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Cleaning",
-"context":"Context",
-"releaseToRemove":"Release to remove this term",
-"clearTerms":"Clear",
-"title":"Links",
-"helpTip":"<p>Collocates graph shows a network graph of higher frequency terms that appear in proximity. Keywords are shown in blue and collocates (words in proximity) are showing in orange. Features include:</p><ul><li>hovering over keywords shows their frequency in the corpus</li><li>hovering over collocates shows their frequency in proximity (not their total frequency)</li><li>double-clicking on any word fetches more results</li><li>a search box for queries (hover over the magnifying icon for help with the syntax)</li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Cancel",
 "accessModeWithoutPassword":"other access",

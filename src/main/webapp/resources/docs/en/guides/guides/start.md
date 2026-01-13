@@ -49,7 +49,7 @@ Voyant Tools.
 Additional tools are readily accessible by clicking the tabs in each tool pane. For instance, beside the 
 [Cirrus]{@tutorial cirrus} header label is the [Corpus Terms]{@tutorial corpusterms} label, clicking on the tab will 
 switch the tool. Tools readily available through the tabs are [Corpus Terms]{@tutorial corpusterms}, 
-[Links]{@tutorial collocatesgraph}, [Collocates]{@tutorial corpuscollocates}, [Documents]{@tutorial documents}, 
+[Links]{@tutorial links}, [Collocates]{@tutorial corpuscollocates}, [Documents]{@tutorial documents}, 
 [Phrases]{@tutorial phrases}, and [Bubblelines]{@tutorial bubblelines}.
 
 Beyond the tools visible in the tabs, it's possible to access most of the other tools available by clicking on the 

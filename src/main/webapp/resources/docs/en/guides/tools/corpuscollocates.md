@@ -50,7 +50,7 @@ Please see {@link Tools.CorpusCollocates} for more information about configurati
 
 ## Additional Information
 
-For a graphical view of corpus collocates, try the {@tutorial collocatesgraph} tool.
+For a graphical view of corpus collocates, try the {@tutorial links} tool.
 
 ## See Also
 - {@tutorial start}
@@ -58,4 +58,4 @@ For a graphical view of corpus collocates, try the {@tutorial collocatesgraph} t
 - {@tutorial stopwords}
 - {@tutorial skins}
 - {@tutorial tools}
-- {@tutorial collocatesgraph}
+- {@tutorial links}

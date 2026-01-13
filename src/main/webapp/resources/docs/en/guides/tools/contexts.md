@@ -57,7 +57,7 @@ Please see {@link Tools.Contexts} for more information about configuration.
 
 ## Additional Information
 
-For a graphical view of corpus collocates, try the {@tutorial collocatesgraph} tool.
+For a graphical view of corpus collocates, try the {@tutorial links} tool.
 
 ## See Also
 - {@tutorial start}

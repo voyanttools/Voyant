@@ -361,7 +361,7 @@
         },
         {
             "type": "code",
-            "input": "goldbug.embed('CollocatesGraph', {width: \"500px\", height: \"500px\"});",
+            "input": "goldbug.embed('Links', {width: \"500px\", height: \"500px\"});",
             "mode": "javascript",
             "output": [
                 "<div style='height: 518px'> <div class=\"info\"><iframe style=\"width: 500px; heigh",
@@ -385,7 +385,7 @@
             "type": "code",
             "input": [
                 "// FIXME: this doesn't yet work",
-                "goldbug.embed('CollocatesGraph', {centralize: \"massa\"})"
+                "goldbug.embed('Links', {centralize: \"massa\"})"
             ],
             "mode": "javascript",
             "output": [

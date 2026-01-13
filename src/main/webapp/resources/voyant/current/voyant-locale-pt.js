@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Corpus",
 "scale":"Dimensionar"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Limpeza",
+"context":"Contexto",
+"releaseToRemove":"Soltar para remover este termo",
+"clearTerms":"Limpar",
+"title":"Links",
+"helpTip":"<p>A ferramenta Gráfico de Co-ocorrência exibe um gráfico de rede dos termos que ocorrem conjuntamente com maior frequência. As palavras-chave são exibidas em azul e as co-ocorrências (palavras próximas) são exibidas em laranja. Seus recursos incluem: :</p><ul><li>cursor sobre as palavras-chave exibem sua frequência no corpus</li><li>cursor sobre co-ocorrência exibe sua frequência em proximidade (não sua frequência total)</li><li>duplo clique sobre qualquer palavra exibe mais resultados </li><li>caixa de texto para buscas (para ajuda com a sintaxe, colocar o cursor sobre o ícone de lupa)</li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Acessando o corpus",
 "moreToolsTypeViz":"Ferramentas de visualização",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Nenhuma ferramenta especificada. Você será redirecionado à página inicial do Voyant Tools.",
 "error":"Erro",
 "title":"Nenhuma ferramenta com estas especificações"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Limpeza",
-"context":"Contexto",
-"releaseToRemove":"Soltar para remover este termo",
-"clearTerms":"Limpar",
-"title":"Links",
-"helpTip":"<p>A ferramenta Gráfico de Co-ocorrência exibe um gráfico de rede dos termos que ocorrem conjuntamente com maior frequência. As palavras-chave são exibidas em azul e as co-ocorrências (palavras próximas) são exibidas em laranja. Seus recursos incluem: :</p><ul><li>cursor sobre as palavras-chave exibem sua frequência no corpus</li><li>cursor sobre co-ocorrência exibe sua frequência em proximidade (não sua frequência total)</li><li>duplo clique sobre qualquer palavra exibe mais resultados </li><li>caixa de texto para buscas (para ajuda com a sintaxe, colocar o cursor sobre o ícone de lupa)</li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Cancelar",
 "accessModeWithoutPassword":"outro acesso",

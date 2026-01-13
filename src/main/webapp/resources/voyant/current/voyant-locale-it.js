@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Corpus",
 "scale":"Riduci"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Sto pulendo",
+"context":"Contesto",
+"releaseToRemove":"Rilascia per rimuovere questo termine",
+"clearTerms":"Cancella",
+"title":"Link",
+"helpTip":"<p>Il grafo delle Collocazioni mostra un grafo a rete delle parole che con maggiore frequenza appaiono in prossimità di una parola data. Le parole chiave sono mostrate in blu e le parole collocate (in prossimità) in arancio. Le funzionalità includono:</p><ul><li>quando il puntatore del mouse si posiziona sopra le parole chiave viene mostrata la loro frequenza nel corpus</li><li>quando il puntatore del mouse si posiziona sopra le parole collocate viene mostrata la loro frequenza nel contesto di prossimità (non la frequenza totale)</li><li>facendo doppio click su ogni parola si ottengono ulteriori risultati</li><li>è disponibile una casella di ricerca (posizionare il mouse sopra l'icona lente di ingrandimento per un aiuto sulla sintassi)</li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Sto caricando il tuo corpus",
 "moreToolsTypeViz":"Strumenti per visualizzazione",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Nessuno strumento è stato specificato. Sarai rimandato alla pagina principale di Voyant Tools.",
 "error":"Errore",
 "title":"Non esiste questo strumento"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Sto pulendo",
-"context":"Contesto",
-"releaseToRemove":"Rilascia per rimuovere questo termine",
-"clearTerms":"Cancella",
-"title":"Link",
-"helpTip":"<p>Il grafo delle Collocazioni mostra un grafo a rete delle parole che con maggiore frequenza appaiono in prossimità di una parola data. Le parole chiave sono mostrate in blu e le parole collocate (in prossimità) in arancio. Le funzionalità includono:</p><ul><li>quando il puntatore del mouse si posiziona sopra le parole chiave viene mostrata la loro frequenza nel corpus</li><li>quando il puntatore del mouse si posiziona sopra le parole collocate viene mostrata la loro frequenza nel contesto di prossimità (non la frequenza totale)</li><li>facendo doppio click su ogni parola si ottengono ulteriori risultati</li><li>è disponibile una casella di ricerca (posizionare il mouse sopra l'icona lente di ingrandimento per un aiuto sulla sintassi)</li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Annulla",
 "accessModeWithoutPassword":"Altro tipo di accesso",

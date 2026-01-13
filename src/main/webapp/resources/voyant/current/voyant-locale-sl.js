@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Korpus",
 "scale":"Merilo"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Čiščenje",
+"context":"Kontekst",
+"releaseToRemove":"Opusti, če želite odstraniti ta izraz",
+"clearTerms":"Počisti",
+"title":"Povezave",
+"helpTip":"<p>Grafikon raztrosa prikazuje mrežo izrazov, ki se pogosteje pojavljajo v bližini. Ključne besede so prikazane v modri barvi, kolokati (besede v bližini) pa v oranžni barvi. Omogočene so naslednje funkcije: </p><ul><li>S postavitvijo kazalca na ključne besede se odkriva njihvova frekvenca v korpusu. </li><li>S postavitvijo kazalca na kolokate, se odkriva njihova frekvenca v bližini (ne pa njihova skupna frekvenca). </li><li>Dvojni klik na katero koli besedo omogoča več rezultatov.</li><li>Iskalno polje za poizvedbe (za pomoč pri sintaksi kliknite na ikono za povečavo)</li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Pridobivanje vašega korpusa",
 "moreToolsTypeViz":"Vizualizacijska orodja",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Ni določeno nobeno orodje. Preusmerjeni boste na glavno stran Voyant Tools.",
 "error":"Napaka",
 "title":"Orodje ne obstaja."});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Čiščenje",
-"context":"Kontekst",
-"releaseToRemove":"Opusti, če želite odstraniti ta izraz",
-"clearTerms":"Počisti",
-"title":"Povezave",
-"helpTip":"<p>Grafikon raztrosa prikazuje mrežo izrazov, ki se pogosteje pojavljajo v bližini. Ključne besede so prikazane v modri barvi, kolokati (besede v bližini) pa v oranžni barvi. Omogočene so naslednje funkcije: </p><ul><li>S postavitvijo kazalca na ključne besede se odkriva njihvova frekvenca v korpusu. </li><li>S postavitvijo kazalca na kolokate, se odkriva njihova frekvenca v bližini (ne pa njihova skupna frekvenca). </li><li>Dvojni klik na katero koli besedo omogoča več rezultatov.</li><li>Iskalno polje za poizvedbe (za pomoč pri sintaksi kliknite na ikono za povečavo)</li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Prekliči",
 "accessModeWithoutPassword":"druge oblike dostopa",

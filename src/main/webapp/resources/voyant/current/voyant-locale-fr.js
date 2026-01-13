@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Corpus entier",
 "scale":"Corpus"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Nettoyage en cours…",
+"context":"Contexte",
+"releaseToRemove":"Relâcher pour supprimer ce terme",
+"clearTerms":"Effacer",
+"title":"Liens",
+"helpTip":"<p>L’outil <i>Liens</i> est un graphique des collocations, qui propose une visualisation du réseau des termes les plus fréquents en fonction de leur proximité. Les mots-clés apparaissent en bleu et les termes qui leur sont proches, en orange. À noter&nbsp;:</p><ul><li>au survol des mots-clés, leur fréquence dans le corpus apparaît</li><li>au survol des mots en collocation, leur fréquence à proximité (et non leur fréquence totale) apparaît</li><li>double-cliquer sur un mot entraîne l’affichage de résultats supplémentaires</li><li>une case de recherche est disponible (l’aide de la syntaxe des requêtes apparaît au survol de l’icône représentant une loupe)</li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Corpus en cours de récupération…",
 "moreToolsTypeViz":"Outils de visualisation",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Aucun outil n’a été sélectionné. Vous allez être redirigé(e) vers la page principale de Voyant Tools.",
 "error":"Erreur",
 "title":"Aucun outil de ce nom"});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Nettoyage en cours…",
-"context":"Contexte",
-"releaseToRemove":"Relâcher pour supprimer ce terme",
-"clearTerms":"Effacer",
-"title":"Liens",
-"helpTip":"<p>L’outil <i>Liens</i> est un graphique des collocations, qui propose une visualisation du réseau des termes les plus fréquents en fonction de leur proximité. Les mots-clés apparaissent en bleu et les termes qui leur sont proches, en orange. À noter&nbsp;:</p><ul><li>au survol des mots-clés, leur fréquence dans le corpus apparaît</li><li>au survol des mots en collocation, leur fréquence à proximité (et non leur fréquence totale) apparaît</li><li>double-cliquer sur un mot entraîne l’affichage de résultats supplémentaires</li><li>une case de recherche est disponible (l’aide de la syntaxe des requêtes apparaît au survol de l’icône représentant une loupe)</li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Annuler",
 "accessModeWithoutPassword":"Autre accès",

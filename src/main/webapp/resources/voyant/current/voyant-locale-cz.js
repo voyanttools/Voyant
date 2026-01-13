@@ -221,6 +221,13 @@ Ext.apply(Voyant.notebook.editor.TextEditor.i18n, {
 Ext.apply(Voyant.widget.CorpusDocumentSelector.i18n, {
 "corpus":"Korpus",
 "scale":"Měřítko"});
+Ext.apply(Voyant.panel.Links.i18n, {
+"cleaning":"Čištění",
+"context":"Kontext",
+"releaseToRemove":"Uvolněte pro odstranění tohoto termínu",
+"clearTerms":"Vymazat",
+"title":"Vazby",
+"helpTip":"<p>Graf kolokátů ukazuje síťový graf termínů s vyšší frekvencí, které se objevují ve vzájemné blízkosti. Klíčová slova jsou vyobrazena zeleně a kolokáty (slova v blízkosti) oranžově. Funkce zahrnují:</p><ul><li>po najetí kurzoru na klíčová slova se ukáže jejich frekvence v korpusu</li><li>po najetí kurzoru na kolokáty se ukáže jejich frekvence v blízkosti klíčového slvoa (nikoliv jejich celková frekvence)</li><li>dvojitým kliknutím myši na kterékoliv slovo budou načteny další výsledky</li><li>vyhledávací pole pro dotazy (najeďte kurzorem na ikonu Lupy pro nápovědu syntaxe</li></ul>"});
 Ext.apply(Voyant.VoyantCorpusApp.i18n, {
 "fetchingCorpus":"Načítání vašeho korpusu",
 "moreToolsTypeViz":"Vizualizační nástroje",
@@ -289,13 +296,6 @@ Ext.apply(Voyant.panel.NoTool.i18n, {
 "noToolSpecified":"Nebyl zvolen žádný nástroj. Budete přesměrováni na hlavní stránku Voyant Tools.",
 "error":"Chyba.",
 "title":"Žádný takový nástroj neexistuje."});
-Ext.apply(Voyant.panel.CollocatesGraph.i18n, {
-"cleaning":"Čištění",
-"context":"Kontext",
-"releaseToRemove":"Uvolněte pro odstranění tohoto termínu",
-"clearTerms":"Vymazat",
-"title":"Vazby",
-"helpTip":"<p>Graf kolokátů ukazuje síťový graf termínů s vyšší frekvencí, které se objevují ve vzájemné blízkosti. Klíčová slova jsou vyobrazena zeleně a kolokáty (slova v blízkosti) oranžově. Funkce zahrnují:</p><ul><li>po najetí kurzoru na klíčová slova se ukáže jejich frekvence v korpusu</li><li>po najetí kurzoru na kolokáty se ukáže jejich frekvence v blízkosti klíčového slvoa (nikoliv jejich celková frekvence)</li><li>dvojitým kliknutím myši na kterékoliv slovo budou načteny další výsledky</li><li>vyhledávací pole pro dotazy (najeďte kurzorem na ikonu Lupy pro nápovědu syntaxe</li></ul>"});
 Ext.apply(Voyant.panel.CorpusCreator.i18n, {
 "cancel":"Zrušit",
 "accessModeWithoutPassword":"jiný typ přístupu",

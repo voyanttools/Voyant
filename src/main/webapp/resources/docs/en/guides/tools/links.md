@@ -1,8 +1,8 @@
-# Collocates Graph
+# Links
 	
-Collocates Graph represents keywords and terms that occur in close proximity as a force directed network graph.
+Links represents keywords and terms that occur in close proximity (i.e. collocated) as a force directed network graph.
 
-Use it with a <a href="../?view=CollocatesGraph&corpus=austen" target="_blank">Jane Austen corpus</a> or with <a href="../?view=CollocatesGraph" target="_blank">your own corpus</a>.
+Use it with a <a href="../?view=Links&corpus=austen" target="_blank">Jane Austen corpus</a> or with <a href="../?view=Links" target="_blank">your own corpus</a>.
 
 ## Overview
 
@@ -10,8 +10,8 @@ This represents a network graph where keywords in green are shown linked to coll
 
 You can drag and drop terms to move them. You can drag terms off the canvas to remove them.
 
-<iframe src="../tool/CollocatesGraph/?corpus=austen&subtitle=The+Works+of+Jane+Austen" style="width: 90%; height: 400px;"></iframe>
-<div style="width: 90%; text-align: center; margin-bottom: 1em;">Collocates Graph with the Works of Jane Austen. You can also <a href="../?view=CollocatesGraph" target="_blank">use Collocates Graph with your own corpus</a>.</div>
+<iframe src="../tool/Links/?corpus=austen&subtitle=The+Works+of+Jane+Austen" style="width: 90%; height: 400px;"></iframe>
+<div style="width: 90%; text-align: center; margin-bottom: 1em;">Links with the Works of Jane Austen. You can also <a href="../?view=Links" target="_blank">use Links with your own corpus</a>.</div>
 
 
 ## Options
@@ -27,7 +27,7 @@ Clicking on the options icon also allows you to define a set of stopwords to exc
 
 ## Spyral
 
-To use Collocates Graph in Spyral you can use the following code as a starting point. Modify the config object to modify 
+To use Links in Spyral you can use the following code as a starting point. Modify the config object to modify 
 the visualization.
 
 ```
@@ -36,10 +36,10 @@ let config = {
     context: 10, 
 };
 
-loadCorpus("austen").tool("collocatesgraph", config);
+loadCorpus("austen").tool("links", config);
 ```
 
-Please see {@link Tools.CollocatesGraph} for more information about configuration.
+Please see {@link Tools.Links} for more information about configuration.
 
 
 
