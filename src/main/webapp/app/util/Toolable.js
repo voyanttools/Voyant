@@ -714,6 +714,8 @@ Ext.define('Voyant.util.Toolable', {
 			// add (and overwrite if need be) this tool's api
 			Ext.apply(api, this.getModifiedApiParams());
 			delete api.corpus;
+		} else {
+			toolForUrl = this.getApiParam('view');
 		}
 		let isDebug = api && "debug" in api;
 		delete api.view;
