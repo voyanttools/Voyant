@@ -111,6 +111,10 @@ HyperPo and TAPoRware are the tools with the strongest affinities to Voyant. but
 
 Ultimately, Voyant is an attempt to learn from the strengths and weaknesses of past tools, to recognize current user needs (ex: working with much larger corpora), and to anticipate future practices (ex: referencing text analysis tools and results). We believe that the potential for tools in the interpretive process merits continual rethinking of tool design and functionality, and as such, Voyant is of course a work in progress.
 
+## Bugs and Feature Requests
+
+Found a bug? Something not working quite right? Have an idea for a great new feature in Voyant Tools? Use our [Issues Tracker on GitHub](https://github.com/voyanttools/Voyant/issues) to report bugs and make feature requests.
+
 ## Privacy Statement
 
 The developers of Voyant Tools gather data from the site about what tools are invoked and with what parameters (IP addresses are also logged in order to be able to identify multiple requests during a same session). In addition, Voyant Tools uses Google Analytics (see [Google's Privacy Policy](https://policies.google.com/privacy?hl=en&gl=ca) and the Log Information section in particular). Locally logged data and Google Analytics data will be used by the development team in order to debug and improve the tools, as well as to understand how researchers are using them. This data may also be used for research purposes in anonymous and aggregate forms. Please note that texts submitted to Voyant Tools are stored in order to allow persistent access during a work session and between work sessions. If you have questions about the data being collected and how it is being used, or to request that a corpus be removed, please [email us](mailto:voyanttools@gmail.com).
