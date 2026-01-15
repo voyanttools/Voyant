@@ -403,7 +403,7 @@ Ext.define('Voyant.panel.Links', {
 					limit = Ext.isArray(query) ? query.length : query.split(',').length;
 				}
 			}
-			this.getCorpus().getCorpusTerms({autoLoad: false}).load({
+			this.getCorpus().getCorpusTerms({autoLoad: false, parentPanel: this}).load({
 				params: {
 					limit: limit,
 					query: query,
@@ -430,7 +430,7 @@ Ext.define('Voyant.panel.Links', {
     	var params = this.getApiParams();
     	params.noCache=true;
     	(Ext.isString(query) ? [query] : query).forEach(function(q) {
-        	this.getCorpus().getCorpusCollocates({autoLoad: false}).load({
+        	this.getCorpus().getCorpusCollocates({autoLoad: false, parentPanel: this}).load({
         		params: Ext.apply(Ext.clone(params), {query: q}),
         		callback: function(records, operations, success) {
         			if (success) {
@@ -984,7 +984,7 @@ Ext.define('Voyant.panel.Links', {
     	Ext.Array.include(query, d.term)
 		this.setApiParam("query", query);
 
-    	var corpusCollocates = this.getCorpus().getCorpusCollocates({autoLoad: false});
+    	var corpusCollocates = this.getCorpus().getCorpusCollocates({autoLoad: false, parentPanel: this});
     	corpusCollocates.load({
     		params: Ext.apply(this.getApiParams(), {query: d.term, start: d.start, limit: limit}),
     		callback: function(records, operation, success) {

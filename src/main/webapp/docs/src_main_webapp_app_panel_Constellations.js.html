@@ -127,12 +127,15 @@ Ext.define('Voyant.panel.Constellations', {
 	
 	initComponent: function() {
 		this.setCaStore(Ext.create('Voyant.data.store.CAAnalysis', {
+			parentPanel: this,
 			listeners: { load: this.handleData, scope: this }
 		}));
 		this.setPcaStore(Ext.create('Voyant.data.store.PCAAnalysis', {
+			parentPanel: this,
 			listeners: { load: this.handleData, scope: this }
 		}));
 		this.setTsneStore(Ext.create('Voyant.data.store.TSNEAnalysis', {
+			parentPanel: this,
 			listeners: { load: this.handleData, scope: this }
 		}));
 

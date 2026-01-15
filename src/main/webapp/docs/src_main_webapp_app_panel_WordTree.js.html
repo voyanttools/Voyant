@@ -241,7 +241,7 @@ Ext.define('Voyant.panel.WordTree', {
         }));
         
         this.on('loadedCorpus', function(src, corpus) {
-        	var corpusTerms = corpus.getCorpusTerms({autoLoad: false});
+        	var corpusTerms = corpus.getCorpusTerms({autoLoad: false, parentPanel: this});
     		corpusTerms.load({
     		    callback: function(records, operation, success) {
     		    	if (success &amp;&amp; records.length>0) {
