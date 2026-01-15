@@ -194,15 +194,19 @@ Ext.define('Voyant.panel.ScatterPlot', {
     
     initComponent: function() {
     	this.setCaStore(Ext.create('Voyant.data.store.CAAnalysis', {
+			parentPanel: this,
     		listeners: {load: this.maskAndBuildChart, scope: this}
     	}));
     	this.setPcaStore(Ext.create('Voyant.data.store.PCAAnalysis', {
+			parentPanel: this,
     		listeners: {load: this.maskAndBuildChart, scope: this}
     	}));
     	this.setTsneStore(Ext.create('Voyant.data.store.TSNEAnalysis', {
+			parentPanel: this,
     		listeners: {load: this.maskAndBuildChart, scope: this}
     	}));
     	this.setDocSimStore(Ext.create('Voyant.data.store.DocSimAnalysis', {
+			parentPanel: this,
     		listeners: {load: this.maskAndBuildChart, scope: this}
     	}));
     	

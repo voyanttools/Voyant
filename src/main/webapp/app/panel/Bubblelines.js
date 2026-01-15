@@ -93,6 +93,7 @@ Ext.define('Voyant.panel.Bubblelines', {
     	
     	this.on('loadedCorpus', function(src, corpus) {
     		this.setDocTermStore(corpus.getDocumentTerms({
+				parentPanel: this,
     			proxy: {
 	    			extraParams: {
 						withDistributions: 'raw',
@@ -382,7 +383,7 @@ Ext.define('Voyant.panel.Bubblelines', {
 		this.setApiParam('docId', docIds);
 		
 		// get top terms in corpus
-		this.getCorpus().getCorpusTerms({autoload: false}).load({
+		this.getCorpus().getCorpusTerms({autoload: false, parentPanel: this}).load({
 			callback: function(records, operation, success) {
 		    	var query = [];
 		    	records.forEach(function(record, index) {

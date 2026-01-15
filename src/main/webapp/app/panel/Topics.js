@@ -373,6 +373,7 @@ Ext.define('Voyant.panel.Topics', {
 		params.tool = 'analysis.TopicModeling';
 		params.corpus = this.getCorpus().getAliasOrId();
 		params.noCache = 1;
+		params.forTool = 'topics';
 
 		var iterations = this.getApiParam('iterations');
 		var msg = Ext.MessageBox.progress({

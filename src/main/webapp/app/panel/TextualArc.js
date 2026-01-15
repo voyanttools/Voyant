@@ -400,6 +400,7 @@ Ext.define('Voyant.panel.TextualArc', {
     	if (!this.documentTerms) {this.loadDocument(); return;}
     	this.documentTerms.load({
     		params: {
+				forTool: 'textualarc',
     			start: this.documentTerms.getCount(),
     			limit: this.documentTerms.getCount() == 0 ? 10 : 250
     		},

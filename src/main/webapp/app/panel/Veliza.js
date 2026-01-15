@@ -60,6 +60,7 @@ Ext.define('Voyant.panel.Veliza', {
     						Ext.Ajax.request({
     							url: me.getTromboneUrl(),
     							params: {
+									forTool: 'veliza',
     								tool: 'corpus.Veliza',
     								script: me.getApiParam('script'),
     								corpus: corpus
@@ -162,6 +163,7 @@ Ext.define('Voyant.panel.Veliza', {
     		Ext.Ajax.request({
     			url: this.getApplication().getTromboneUrl(),
     			params: {
+					forTool: 'veliza',
     				corpus: me.getCorpus() ? me.getCorpus().getId() : undefined,
     				tool: 'corpus.Veliza',
     				sentence: sentence,

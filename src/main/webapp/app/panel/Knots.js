@@ -190,6 +190,7 @@ Ext.define('Voyant.panel.Knots', {
 				type: 'ajax',
 				url: Voyant.application.getTromboneUrl(),
 				extraParams: {
+					forTool: 'knots',
 					tool: 'corpus.DocumentTerms',
 					withDistributions: 'raw',
 					withPositions: true

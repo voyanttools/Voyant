@@ -207,6 +207,7 @@ Ext.define('Voyant.panel.Bubbles', {
     	}
 
     	doc.loadDocumentTerms(Ext.apply(this.getApiParams(["stopList"]), {
+			forTool: 'bubbles',
     		limit: 100
     	})).then(function(documentTerms) {
     		me.terms = {};

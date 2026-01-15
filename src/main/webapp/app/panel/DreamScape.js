@@ -1257,6 +1257,7 @@ Ext.define('Voyant.panel.DreamScape', {
     		            Ext.Ajax.request({
     		                url: this.getTromboneUrl(),
     		                params: {
+                                forTool: 'dreamscape',
     		                    tool: 'corpus.Dreamscape',
     		                    corpus: this.getCorpus().getId(),
     		                    suppressLocations: true,
@@ -1759,6 +1760,8 @@ Ext.define('Voyant.widget.GeonamesFilter', {
     loadGeonames: function(params) {
         var me = this;
         params = params || {};
+
+        params.forTool = 'dreamscape';
 
         // add queries
         var queries  = [];

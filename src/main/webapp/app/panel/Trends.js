@@ -312,7 +312,7 @@ Ext.define('Voyant.panel.Trends', {
     		return this.loadDocumentTerms();
     	}
     	if (!this.getApiParam("query")) {
-        	this.getCorpus().getCorpusTerms().load({
+        	this.getCorpus().getCorpusTerms({parentPanel: this}).load({
         		params: {
         			limit: this.getApiParam('limit'),
         			stopList: this.getApiParam("stopList")
@@ -351,7 +351,7 @@ Ext.define('Voyant.panel.Trends', {
     		docLabels = docLabels.map(function(doc,i) {return (i+1)+")"+ doc})
     	}
     	Ext.applyIf(params, this.getApiParams());
-    	this.getCorpus().getCorpusTerms().load({
+    	this.getCorpus().getCorpusTerms({parentPanel: this}).load({
     		params: params,
     		callback: function(records, operation, success) {
     			var data = [], series = [], chartType = this.getApiParam('chartType');
@@ -436,7 +436,7 @@ Ext.define('Voyant.panel.Trends', {
 
     loadDocumentTerms: function(params) {
     	if (!this.getApiParam("query")) {
-        	this.getCorpus().getCorpusTerms().load({
+        	this.getCorpus().getCorpusTerms({parentPanel: this}).load({
         		params: {
         			limit: this.getApiParam('limit'),
         			stopList: this.getApiParam("stopList")
@@ -467,7 +467,7 @@ Ext.define('Voyant.panel.Trends', {
     	}
     	Ext.applyIf(params, this.getApiParams());
     	
-    	this.getCorpus().getDocumentTerms().load({
+    	this.getCorpus().getDocumentTerms({parentPanel: this}).load({
     		params: params,
     		callback: function(records, operation, success) {
     			var data = [], series = [],  chartType = this.getApiParam('chartType');

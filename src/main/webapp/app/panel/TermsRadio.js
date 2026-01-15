@@ -171,24 +171,6 @@ Ext.define('Voyant.panel.TermsRadio', {
 			}
 		};
 		
-		this.corpusStore = Ext.create("Voyant.data.store.CorpusTerms", {
-			listeners : {
-				load: {
-					fn : onLoadHandler.bind(this, 'corpus'),
-					scope : this
-				}
-			}
-		});
-		
-		this.documentStore = Ext.create("Voyant.data.store.DocumentTerms", {
-			listeners : {
-				load: {
-					fn : onLoadHandler.bind(this, 'document'),
-					scope : this
-				}
-			}
-		});
-		
 		Ext.apply(config, {
 			title: this.localize('title'),
 			legendMenu: Ext.create('Ext.menu.Menu', {
@@ -404,6 +386,26 @@ Ext.define('Voyant.panel.TermsRadio', {
 		this.callParent(arguments);
 		this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
 		
+		this.corpusStore = Ext.create("Voyant.data.store.CorpusTerms", {
+			parentPanel: this,
+			listeners : {
+				load: {
+					fn : onLoadHandler.bind(this, 'corpus'),
+					scope : this
+				}
+			}
+		});
+		
+		this.documentStore = Ext.create("Voyant.data.store.DocumentTerms", {
+			parentPanel: this,
+			listeners : {
+				load: {
+					fn : onLoadHandler.bind(this, 'document'),
+					scope : this
+				}
+			}
+		});
+
 		this.on('boxready', function(component) {
 			var sliderParam = this.getApiParam('slider');
 			var showSlider = sliderParam === undefined ? true : sliderParam === 'true';

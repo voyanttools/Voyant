@@ -884,7 +884,7 @@ Ext.define('Voyant.panel.Loom', {
         });
         
         this.on('loadedCorpus', function(src, corpus) {
-        	var store = corpus.getDocumentsCount()==1 ? corpus.getDocumentTerms() : corpus.getCorpusTerms();
+        	var store = corpus.getDocumentsCount()==1 ? corpus.getDocumentTerms({parentPanel: this}) : corpus.getCorpusTerms({parentPanel: this});
         	store.on("load", function() {
         	    this.updateControlsFromStore();
 		    	this.filterRecords();

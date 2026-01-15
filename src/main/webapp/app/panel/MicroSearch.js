@@ -151,7 +151,7 @@ Ext.define('Voyant.panel.MicroSearch', {
 		
     	if (!this.getApiParam('query')) {
     		var me = this;
-    		return this.getCorpus().loadCorpusTerms({limit: 1, stopList: this.getApiParam('stopList'), categories: this.getApiParam("categories")}).then(function(corpusTerms) {
+    		return this.getCorpus().loadCorpusTerms({forTool: 'microsearch', limit: 1, stopList: this.getApiParam('stopList'), categories: this.getApiParam("categories")}).then(function(corpusTerms) {
     			var term = corpusTerms.getAt(0).getTerm();
     			var q = me.down('querysearchfield');
     			q.addValue(new Voyant.data.model.CorpusTerm({term: term}));
@@ -172,7 +172,7 @@ Ext.define('Voyant.panel.MicroSearch', {
 
     	if (Ext.Array.from(query).length > 0) {
     		this.mask(this.localize('loading'))
-    		this.getCorpus().getDocumentTerms().load({
+    		this.getCorpus().getDocumentTerms({parentPanel: this}).load({
     			params: {
     				query: Ext.Array.from(query),
         			withDistributions: 'relative',

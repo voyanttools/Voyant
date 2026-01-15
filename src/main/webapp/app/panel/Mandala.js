@@ -189,6 +189,7 @@ Ext.define('Voyant.panel.Mandala', {
 					xtype: 'querysearchfield',
 					corpus: this.getCorpus(),
 					store: this.getCorpus().getCorpusTerms({
+						parentPanel: this,
 						proxy: {
 							extraParams: {
 								stopList: this.getApiParam('stopList')
@@ -292,7 +293,7 @@ Ext.define('Voyant.panel.Mandala', {
     		if (!params.query) {params.limit=10;}
         	var queries = Ext.Array.from(this.getApiParam('query'));
         	if (!allowEmpty || queries.length>0) {
-        		this.getCorpus().getCorpusTerms().load({
+        		this.getCorpus().getCorpusTerms({parentPanel: this}).load({
         			params: Ext.apply(params, {withDistributions: true}),
         			callback: function(records) {
         		    	var canvas = this.getTargetEl().dom.querySelector("canvas"), ctx = canvas.getContext("2d");
