@@ -213,10 +213,12 @@ Ext.define('Voyant.panel.TextualArc', {
 			}
 			
 			// TODO clear previous/current drawing
-    	})
+    	});
     },
     
     draw: function(canvas, ctx) {
+		if (this.rendered === false) return;
+
     	canvas = canvas ||  this.getTargetEl().dom.querySelector("canvas");
     	ctx = ctx || canvas.getContext("2d");
     	ctx.clearRect(0,0,canvas.width,canvas.height);
