@@ -1,4 +1,5 @@
 /**
+ * @suppress {nonStandardJsDocs}
  * @param {object} config
  * @param {Voyant.panel.TermsRadio} config.parent
  * @param {Ext.dom.Element} config.container
@@ -710,17 +711,17 @@ TermsRadio.prototype = {
 	    	.style('font-size', function(d) { return me.fontScale(d.freq) + 'px'; })
 	    	.style('fill-opacity', function(d) { return me.opacityScale(d.freq); })
 	        .text(function(d) { return d.wordString; })
-	        .on('mouseover', function(d) { 
+	        .on('mouseover', function(event, d) { 
 	 	        d3.select(this).style('cursor', 'pointer').style('font-size', function(d) { return (me.fontScale(d.freq) * me.maxFont / me.fontScale(d.freq)) + 'px'; });
 	 	        var paramsBundle = me.buildParamsBundle(d);
 	 	        me.manageOverlaySlippery(paramsBundle);
 	        })
-	        .on('mouseout', function(d) { 
+	        .on('mouseout', function(event, d) { 
 	        	d3.select(this).style('cursor', 'auto').style('font-size', function(d) { return me.fontScale(d.freq) + 'px'; });
 	        	var paramsBundle = me.buildParamsBundle(d);
 	        	me.manageOverlaySlippery(paramsBundle);
 	        })
-	        .on('click', function(d) {
+	        .on('click', function(event, d) {
 	        	var paramsBundle = me.buildParamsBundle(d);
 	        	me.manageOverlaySticky(paramsBundle);
 			})
@@ -852,18 +853,18 @@ TermsRadio.prototype = {
 	    
 	    var me = this;
     	var drag = d3.drag()
-        .on('drag', function(d) {
+        .on('drag', function(event, d) {
         	if(!me.isTransitioning) {
         		this.drag = true;
         		
 	        	var w = me.parent.getWidth()
-	        		,displaceX = parseInt(d3.event.dx)
+	        		,displaceX = parseInt(event.dx)
 	        		,checkBefore
 	        		,checkAfter
 	        		,pos = 0;
 	        		
 	        	//add up the slider movements as they occur	
-        		me.sliderDragSum += d3.event.dx;
+        		me.sliderDragSum += event.dx;
 	        	
 	        	me.chart.selectAll('#before')
 	        		.attr('x1', function () { 
@@ -898,7 +899,7 @@ TermsRadio.prototype = {
         			.attr('x2', function () { return parseInt(this.getAttribute('x2')) + displaceX; });
         	}
         })
-        .on('end', function(d) {
+        .on('end', function(event, d) {
         	if(this.drag){
         		this.drag = false;
         		
