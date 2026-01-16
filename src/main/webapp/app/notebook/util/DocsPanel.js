@@ -189,7 +189,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 		this.up().show().expand();
 
-		this.body.scrollTo('top', 0, false);
+		this._resetScrollTop();
 	},
 
 	handleDocLink: function(link, rel) {
@@ -240,6 +240,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			if (this.lastMember) {
 				this._showDocEntry(this.lastEntry, this.lastMember);
 			}
+			this._resetScrollTop();
 		}.bind(this), function(error) {
 			this.lastEntry = undefined;
 			this.getLayout().getRenderTarget().unmask();
@@ -357,7 +358,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			entryParent.hidden = false;
 		}
 
-		this.body.scrollTo('top', 0, false);
+		this._resetScrollTop();
 	},
 
 	_setHtmlForCard: function(cardId, html) {
@@ -387,5 +388,9 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 			}
 			this.down('#'+menuId).getMenu().add(menuItems);
 		}.bind(this));
+	},
+
+	_resetScrollTop: function() {
+		this.down('#main').body.scrollTo('top', 0, false);
 	}
 });
