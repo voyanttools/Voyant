@@ -239,23 +239,40 @@ body.exported-notebook {
 	margin: 10px 0;
 }
 
+.docsWindowContent h2 {
+	font-size: 18px;
+}
+.docsWindowContent h3 {
+	font-size: 16px;
+}
+.docsWindowContent h4 {
+	font-size: 14px;
+}
+.docsWindowContent h5 {
+	font-size: 14px;
+}
+
+
 .docsWindowContent article ol,
 .docsWindowContent article ul {
 	margin-left: 15px;
+}
+.docsWindowContent article ul {
+	padding-left: 0;
 }
 
 .docsWindowContent section header {
 	padding-top: 0;
 }
 .docsWindowContent section header h2 {
-	font-size:18px;
-	font-weight:bold;
+	/* font-size:18px; */
+	/* font-weight:bold; */
 }
 .docsWindowContent section article {
 	padding: 0px;
 }
 .docsWindowContent section article p {
-	margin: 0px;
+	/* margin: 0px; */
 }
 .docsWindowContent section article .container-overview {
 	padding: 10px;
@@ -263,16 +280,17 @@ body.exported-notebook {
 	border-radius: 7px;
 }
 .docsWindowContent section article h3.subsection-title {
-	font-size:16px;
+	/* font-size:16px; */
 	color: #bf1b2c;
 	border-bottom: 1px solid #dedede;
+	padding-top: 10px;
 }
 .docsWindowContent section article dl {
 	margin: 0px;
 }
 .docsWindowContent section article dl h4 {
-	font-size: 14px;
-	font-weight: bold;
+	/* font-size: 14px; */
+	/* font-weight: bold; */
 }
 .docsWindowContent section article dl h4 .signature {
 }
@@ -289,8 +307,8 @@ body.exported-notebook {
 	padding: 0px 0px 0px 20px;
 	margin-left: 0px;
 }
-.docsWindowContent section article dl dd h5 {
-	font-weight: bold;
+.docsWindowContent section article dl dd h5.subsection-title  {
+	margin-bottom: -3px;
 }
 .docsWindowContent section article .container-source {
 	margin: -15px -15px 3px 0;
@@ -317,14 +335,6 @@ body.exported-notebook {
 .docsWindowContent section article .container-returns p {
 	display: inline;
 }
-.docsWindowContent section article .container-properties h5,
-.docsWindowContent section article .container-returns h5,
-.docsWindowContent section article .container-params h5,
-.docsWindowContent section article table th,
-.docsWindowContent section article table td.type,
-.docsWindowContent section article table td.attributes {
-	font-size: 90%;
-}
 .docsWindowContent section article table,
 .docsWindowContent section article table th,
 .docsWindowContent section article table td {
@@ -341,7 +351,7 @@ body.exported-notebook {
 .docsWindowContent section article table td.type,
 .docsWindowContent section article table td.attributes,
 .docsWindowContent section article table td.default {
-	min-width: 80px;
+	margin-right: 12px;
 	font-size: 14px;
 	font-weight: bold;
 }
@@ -354,15 +364,18 @@ body.exported-notebook {
 }
 .docsWindowContent section article table td p {
 	padding: 0;
-	margin: 0;
+	margin: 6px 0;
 }
 .docsWindowContent section article table td h6 {
 	padding: 0 0 0 3px;
 	margin: 3px 0 0 3px;
 	font-size: 85%;
 }
-.docsWindowContent section article .container-properties table.props {
+.docsWindowContent section article table.props {
 	margin-top: -3px;
+}
+.docsWindowContent section article table .name code {
+	line-height: 14px;
 }
 .docsWindowContent .main-content article {
 	padding:0;
@@ -386,8 +399,9 @@ body.exported-notebook {
 .docsWindowContent span.param-type {
     color: #aaa;
 }
-.docsWindowContent pre.prettyprint {
+.docsWindowContent pre {
     font-size: 0.9em;
+	tab-size: 4;
     border-radius: 0;
 }
 span.icon {
