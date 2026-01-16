@@ -737,6 +737,7 @@ Ext.define('Voyant.panel.Trends', {
 	        },
 			/**
 			 * @suppress {uselessCode}
+			 * @private
 			 */
 	        afterrender : function() {
 	        	return // TODO: this seems to cause problems, perhaps not destroying properly?

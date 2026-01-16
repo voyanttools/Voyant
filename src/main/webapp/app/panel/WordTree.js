@@ -393,6 +393,7 @@ Ext.define('Voyant.panel.WordTree', {
     
 	/**
 	 * @suppress {uselessCode}
+	 * @private
 	 */
     stripPunctuation: function(value) {
     	if (Ext.isString(value)) return value.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
