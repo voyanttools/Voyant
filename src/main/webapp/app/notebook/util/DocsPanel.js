@@ -24,7 +24,8 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				'<p>Alternatively take a look at our detailed Documentation:</p>' +
 				'<p><a href="Spyral.html" rel="help">Full API Documentation</a> - Open up detailed API Documentation</p>',
 			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
-			loadingDocs: 'Loading Docs'
+			loadingDocs: 'Loading Docs',
+			copyToClipboard: 'Copy Example to Clipboard'
 		}
 	},
 
@@ -322,6 +323,13 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		} else {
 			configsBtn.hide();
 		}
+
+		// add copy button to example(s)
+		docsParentEl.querySelectorAll('article .container-overview pre').forEach(function(preEl) {
+			Ext.fly(preEl)
+				.insertHtml('afterBegin', '<button class="copyToClipboard" title="'+this.localize('copyToClipboard')+'"><i class="fa fa-clipboard" aria-hidden="true"></i></button>', true)
+				.on('click', this._copyToClipboard, this);
+		}, this);
 	},
 
 	_showDocEntry: function(entryClass, entryMember) {
@@ -392,5 +400,11 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 	_resetScrollTop: function() {
 		this.down('#main').body.scrollTo('top', 0, false);
+	},
+
+	_copyToClipboard: function(evt, el) {
+		var button = el.nodeName === 'BUTTON' ? el : el.parentElement;
+		var code = button.nextElementSibling.innerText;
+		navigator.clipboard.writeText(code);
 	}
 });
