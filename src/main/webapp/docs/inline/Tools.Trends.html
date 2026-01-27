@@ -102,15 +102,9 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>let config = {
-	"chartType": null,
-	"docId": null,
-	"docIndex": null,
-	"labels": null,
-	"limit": null,
-	"mode": null,
-	"query": null,
-	"stopList": null,
-	"withDistributions": null
+	"chartType": "barline",
+	"limit": 10,
+	"query": ["love", "hate"]
 };
 
 loadCorpus("austen").tool("Trends", config);</code></pre>
@@ -191,7 +185,7 @@ loadCorpus("austen").tool("Trends", config);</code></pre>
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>bins</code></td>
             
 
             <td class="type">
@@ -208,7 +202,7 @@ loadCorpus("austen").tool("Trends", config);</code></pre>
 
             
 
-            <td class="description last"><p>default value will depend on the nature of the corpus:</p>
+            <td class="description last"><p>The default value will depend on the nature of the corpus:</p>
 <ul>
 <li>corpus has one document: the default number of bins is 10</li>
 <li>corpus has multiple documents:

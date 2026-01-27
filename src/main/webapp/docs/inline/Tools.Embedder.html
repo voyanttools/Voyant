@@ -33,6 +33,7 @@
     
     <div class="description">
         <p>Embedder provides a way to embed a web page into your Voyant Tools experience.</p>
+<p>NB: modern security practices will prevent many URLs from being embedded.</p>
     </div>
     
 
@@ -90,6 +91,15 @@
     
 </dl>
 
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>let config = {
+	url: 'https://gutenberg.org/'
+};
+
+loadCorpus("austen").tool("embedder", config);</code></pre>
 
     
 

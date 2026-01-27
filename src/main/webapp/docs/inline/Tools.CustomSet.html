@@ -92,6 +92,20 @@
 
 
     
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>let myLayout = {
+	"numCols":2,
+	"cells":[{"colspan":1,"rowspan":1,"xtype":"corpusterms"}, {"colspan":1,"rowspan":2,"xtype":"reader"}, {"colspan":1,"rowspan":1,"xtype":"topics"}]
+	};
+let config = {
+	tableLayout: JSON.stringify(myLayout),
+	height: 800
+}
+
+loadCorpus("austen").tool("customset", config);</code></pre>
+
+    
 
 </dd>
 

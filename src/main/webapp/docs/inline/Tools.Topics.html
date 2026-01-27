@@ -103,12 +103,11 @@ You can work with topics programmatically using <a href="Spyral.Corpus.html#topi
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>let config = {
-	"iterations": null,
-	"perDocLimit": null,
-	"seed": null,
-	"stopList": null,
-	"termsPerTopic": null,
-	"topics": null
+	"iterations": 50,
+	"perDocLimit": 1000,
+	"seed": 42,
+	"termsPerTopic": 50,
+	"topics": 10
 };
 
 loadCorpus("austen").tool("Topics", config);</code></pre>

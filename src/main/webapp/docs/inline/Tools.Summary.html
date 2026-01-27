@@ -103,10 +103,8 @@ You can work with the summary programmatically using <a href="Spyral.Corpus.html
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>let config = {
-	"limit": null,
-	"numberOfDocumentsForDistinctiveWords": null,
-	"start": null,
-	"stopList": null,
+	"limit": 50,
+	"numberOfDocumentsForDistinctiveWords": 5
 };
 
 loadCorpus("austen").tool("Summary", config);</code></pre>

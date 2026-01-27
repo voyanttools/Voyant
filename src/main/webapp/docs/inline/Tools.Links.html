@@ -103,11 +103,8 @@ You can work with collocates programmatically using <a href="Spyral.Corpus.html#
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>let config = {
-	centralize: null,
-	context: 5,
-	limit: 5,
-	query: null,
-	stopList: "auto",
+	centralize: "love", 
+	context: 10
 };
 
 loadCorpus("austen").tool("links", config);</code></pre>

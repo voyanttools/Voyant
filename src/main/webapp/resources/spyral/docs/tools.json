@@ -222,7 +222,7 @@
     }
   },
   "Constellations": {
-    "doc": "Constellations\nTODO add word2vec\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
+    "doc": "Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -235,6 +235,26 @@
       "height": {
         "type": "Number",
         "doc": "Specify the display height of the tool in pixels."
+      },
+      "analysis": {
+        "type": "String",
+        "doc": "The type of analysis to perform. Options are: 'ca', 'pca', and 'tsne'."
+      },
+      "docId": {
+        "type": "String",
+        "doc": "The document ID(s) to restrict the results to."
+      },
+      "limit": {
+        "type": "Number",
+        "doc": "The number of items to limit the result to."
+      },
+      "dimensions": {
+        "type": "Number",
+        "doc": "The number of dimensions to render, either 2 or 3."
+      },
+      "stopList": {
+        "type": "String",
+        "doc": "A comma-separated list of words, a named list or a URL to a plain text list, one word per line.\nBy default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.\nFor more information see the <a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/tutorial-stopwords.html\">Stopwords documentation</a>."
       }
     }
   },
@@ -574,7 +594,7 @@
     }
   },
   "Embedder": {
-    "doc": "Embedder provides a way to embed a web page into your Voyant Tools experience.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Embedder.html\">More documentation</a>",
+    "doc": "Embedder provides a way to embed a web page into your Voyant Tools experience.\n\nNB: modern security practices will prevent many URLs from being embedded.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Embedder.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -719,7 +739,7 @@
     }
   },
   "Panel": {
-    "doc": "The base class for Voyant tool panels.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Panel.html\">More documentation</a>",
+    "doc": "The base class for Voyant tool panels. Not for use directly.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Panel.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",
@@ -1234,7 +1254,7 @@
       },
       "bins": {
         "type": "Number",
-        "doc": "The number of \"bins\" to divide the result into.\n\ndefault value will depend on the nature of the corpus:\n\n- corpus has one document: the default number of bins is 10\n- corpus has multiple documents:\n  - corpus has up to 100 documents: the default number is the size of the corpus\n  - corpus has more than 1000 documents: the default number is 100"
+        "doc": "The number of \"bins\" to divide the result into.\n\nThe default value will depend on the nature of the corpus:\n\n- corpus has one document: the default number of bins is 10\n- corpus has multiple documents:\n  - corpus has up to 100 documents: the default number is the size of the corpus\n  - corpus has more than 1000 documents: the default number is 100"
       },
       "docIndex": {
         "type": "Number",
