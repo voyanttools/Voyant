@@ -5,13 +5,11 @@
  * @example
  *
  * let config = {
- * 	bins: 5, // number of bins to separate a document into
- * 	docIndex: 1, //document index to restrict to (can be comma-separated list)
- * 	maxDocs: 5, // maximum number of documents to show
- * 	query: "love", // a query to search for in the corpus
- * 	stopList: null, // a named stopword list or comma-separated list of words
+ *     bins: 5,
+ *     maxDocs: 10,
+ *     query: ["love", "hate"],
  * };
- *
+ * 
  * loadCorpus("austen").tool("bubblelines", config);
  *
  * @class Bubblelines

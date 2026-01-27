@@ -5,12 +5,9 @@
  * @example
  *
  * let config = {
- * 	"audio": false,
- * 	"docId": null,
- * 	"query": null,
- * 	"stopList": "auto"
- * };
- *
+ * 	"query": ["love", "hate"]
+ * }; 
+ * 
  * loadCorpus("austen").tool("knots", config);
  *
  * @class Knots

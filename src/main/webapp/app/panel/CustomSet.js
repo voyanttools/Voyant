@@ -1,6 +1,18 @@
 /**
  * CustomSet is a tool for creating a layout of other tools.
  * 
+ * @example
+ * 
+ * let myLayout = {
+ * 	"numCols":2,
+ * 	"cells":[{"colspan":1,"rowspan":1,"xtype":"corpusterms"}, {"colspan":1,"rowspan":2,"xtype":"reader"}, {"colspan":1,"rowspan":1,"xtype":"topics"}]
+ * 	};
+ * let config = {
+ * 	tableLayout: JSON.stringify(myLayout),
+ * 	height: 800
+ * }
+ * 
+ * loadCorpus("austen").tool("customset", config);
  * @class CustomSet
  * @memberof Tools
  */

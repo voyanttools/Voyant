@@ -4,15 +4,9 @@
  * @example
  *
  * let config = {
- * 	"chartType": null,
- * 	"docId": null,
- * 	"docIndex": null,
- * 	"labels": null,
- * 	"limit": null,
- * 	"mode": null,
- * 	"query": null,
- * 	"stopList": null,
- * 	"withDistributions": null
+ * 	"chartType": "barline",
+ * 	"limit": 10,
+ * 	"query": ["love", "hate"]
  * };
  *
  * loadCorpus("austen").tool("Trends", config);
@@ -113,7 +107,7 @@ Ext.define('Voyant.panel.Trends', {
     		/**
     		 * @memberof Tools.Trends
 			 * @instance
-			 * @property {bins}
+			 * @property {bins} bins
     		 * 
 			 * The default value will depend on the nature of the corpus:
     		 * 

@@ -4,10 +4,7 @@
  *
  * @example
  * let config = {
- * 	"limit": null,
- * 	"query": null,
- * 	"skipTodocId": null,
- * 	"start": null
+ * 	"query": ["love"]
  * };
  * 
  * loadCorpus("austen").tool("Reader", config);

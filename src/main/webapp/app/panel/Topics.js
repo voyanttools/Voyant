@@ -5,12 +5,11 @@
  * @example
  *
  * let config = {
- * 	"iterations": null,
- * 	"perDocLimit": null,
- * 	"seed": null,
- * 	"stopList": null,
- * 	"termsPerTopic": null,
- * 	"topics": null
+ * 	"iterations": 50,
+ * 	"perDocLimit": 1000,
+ * 	"seed": 42,
+ * 	"termsPerTopic": 50,
+ * 	"topics": 10
  * };
  *
  * loadCorpus("austen").tool("Topics", config);

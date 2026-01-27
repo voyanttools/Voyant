@@ -1,6 +1,16 @@
 /**
  * Embedder provides a way to embed a web page into your Voyant Tools experience.
  * 
+ * NB: modern security practices will prevent many URLs from being embedded.
+ * 
+ * @example
+ * 
+ * let config = {
+ * 	url: 'https://gutenberg.org/'
+ * };
+ *
+ * loadCorpus("austen").tool("embedder", config);
+ * 
  * @class Embedder
  * @memberof Tools
  */

@@ -5,14 +5,9 @@
  * @example
  *
  * let config = {
- * 	"columns": null,
- * 	"dir": null,
- * 	"docId": null,
- * 	"docIndex": null,
- * 	"query": null,
- * 	"sort": null,
+ * 	docIndex: 2
  * };
- *
+ * 
  * loadCorpus("austen").tool("documents", config);
  *
  * @class Documents

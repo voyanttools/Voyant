@@ -4,10 +4,7 @@
  * @example
  *
  * let config = {
- * 	"docIndex": null,
- * 	"minRawFreq": null,
- * 	"speed": null,
- * 	"stopList": null
+ * 	"minRawFreq": 20
  * };
  *
  * loadCorpus("austen").tool("textualarc", config);

@@ -1,7 +1,17 @@
 /**
- * Constellations
- * TODO add word2vec
+ * Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.
+ *
+ * @example
+ * 
+ * let config = {
+ * 	"analysis": "ca",
+ * 	"dimensions": 2,
+ * 	"limit": 50
+ * }; 
+ * 
+ * loadCorpus("austen").tool("constellations", config);
  * @class Constellations
+ * @tutorial constellations
  * @memberof Tools
  */
 Ext.define('Voyant.panel.Constellations', {
@@ -23,10 +33,42 @@ Ext.define('Voyant.panel.Constellations', {
 			helpTip: 'Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.'
 		},
 		api: {
+			/**
+			 * @memberof Tools.Constellations
+			 * @instance
+			 * @property {String} analysis The type of analysis to perform. Options are: 'ca', 'pca', and 'tsne'.
+			 */
 			analysis: 'ca',
+
+			/**
+			 * @memberof Tools.Constellations
+			 * @instance
+			 * @property {docId}
+			 */
 			docId: undefined,
+
+			/**
+			 * @memberof Tools.Constellations
+			 * @instance
+			 * @property {limit}
+			 * @default
+			 */
 			limit: 50,
+
+			/**
+			 * @memberof Tools.Constellations
+			 * @instance
+			 * @property {Number} dimensions The number of dimensions to render, either 2 or 3.
+			 * @default
+			 */
 			dimensions: 3,
+
+			/**
+			 * @memberof Tools.Constellations
+			 * @instance
+			 * @property {stopList}
+			 * @default
+			 */
 			stopList: 'auto'
 		},
 		glyph: 'xf1e0@FontAwesome'

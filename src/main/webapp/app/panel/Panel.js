@@ -4,7 +4,7 @@
  */
 
 /**
- * The base class for Voyant tool panels.
+ * The base class for Voyant tool panels. Not for use directly.
  * 
  * @class Panel
  * @memberof Tools

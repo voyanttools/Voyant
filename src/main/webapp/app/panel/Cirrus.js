@@ -5,15 +5,7 @@
  * @example
  *
  * let config = {
- * 	background: null,
- * 	categories: null,
- * 	docIndex: null,
- * 	fontFamily: null,
- * 	inlineData: null,
- * 	limit: null,
- * 	stopList: null,
- * 	visible: null,
- * 	whiteList: null,
+ * 	visible: 50
  * };
  *
  * loadCorpus("austen").tool("cirrus", config);

@@ -5,13 +5,10 @@
  * @example
  *
  * let config = {
- * 	centralize: null,
- * 	context: 5,
- * 	limit: 5,
- * 	query: null,
- * 	stopList: "auto",
+ * 	centralize: "love", 
+ * 	context: 10
  * };
- *
+ * 
  * loadCorpus("austen").tool("links", config);
  *
  * @class Links

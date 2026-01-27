@@ -5,16 +5,10 @@
  * @example
  *
  * let config = {
- * 	columns: null,
- * 	comparisonCorpus: null,
- * 	dir: null,
- * 	maxBins: null,
- * 	query: null,
- * 	sort: null,
- * 	stopList: null,
- * 	termColors: null
+ * 	maxBins: 100,
+ * 	query: ["love", "hate"]
  * };
- *
+ * 
  * loadCorpus("austen").tool("corpusterms", config);
  *
  *

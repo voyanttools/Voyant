@@ -5,19 +5,13 @@
  * @example
  *
  * let config = {
- * 	columns: null,
- * 	context: 5,
- * 	dir: null,
- * 	docId: null,
- * 	docIndex: null,
- * 	expand: null,
- * 	query: null,
- * 	sort: null,
- * 	stopList: null,
- * 	termColors: null
+ *  context: 5,
+ *  dir: "desc",
+ *  expand: 25,
+ *  query: ["love"]
  * };
- *
- * loadCorpus("austen").tool("Contexts", config);
+ * 
+ * loadCorpus("austen").tool("contexts", config);
  *
  * @class Contexts
  * @tutorial contexts

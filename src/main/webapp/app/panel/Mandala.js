@@ -4,9 +4,7 @@
  * @example
  *
  * let config = {
- * 	"labels": true,
- * 	"query": null,
- * 	"stopList": "auto",
+ * 	"query": ["love", "hate", "lady", "lord"]
  * };
  *
  * loadCorpus("austen").tool("Mandala", config);
