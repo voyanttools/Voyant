@@ -25,12 +25,14 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 				'<p><a href="Spyral.html" rel="help">Full API Documentation</a> - Open up detailed API Documentation</p>',
 			outlineApi: 'Here is a list of the Spyral classes that can be used in your notebook:',
 			loadingDocs: 'Loading Docs',
-			copyToClipboard: 'Copy Example to Clipboard'
+			copyToClipboard: 'Copy Example to Clipboard',
+			goBack: 'Go Back',
+			goForward: 'Go Forward'
 		}
 	},
 
-	lastEntry: undefined,
-	lastMember: undefined,
+	history: [],
+	historyPos: -1,
 	
 	inlineDocsUrl: undefined,
 	fullDocsUrl: undefined,
@@ -96,6 +98,22 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 						}]
 					}
 				},{
+					itemId: 'backBtn',
+					tooltip: this.localize('goBack'),
+					glyph: 'xf060@FontAwesome',
+					disabled: true,
+					handler: function(btn) {
+						this._goBack();
+					}.bind(this)
+				},{
+					itemId: 'forwardBtn',
+					tooltip: this.localize('goForward'),
+					glyph: 'xf061@FontAwesome',
+					disabled: true,
+					handler: function(btn) {
+						this._goForward();
+					}.bind(this)
+				},' ',{
 					text: this.localize('overview'),
 					itemId: 'overviewBtn',
 					glyph: 'xf05a@FontAwesome',
@@ -112,7 +130,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 							click: function(menu, item) {
 								if (item) {
 									var method = item.itemId.replace(/^_/, '');
-									this._showDocEntry(this.lastEntry, method);
+									this._showDocEntry(this.history[this.history.length-1][0], method);
 								}
 							},
 							scope: this
@@ -128,7 +146,7 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 						listeners: {
 							click: function(menu, item) {
 								if (item) {
-									this._showDocEntry(this.lastEntry, item.itemId);
+									this._showDocEntry(this.history[this.history.length-1][0], item.itemId);
 								}
 							},
 							scope: this
@@ -177,8 +195,9 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 	},
 
 	showDocs: function() {
-		this.lastEntry = undefined;
-		this.lastMember = undefined;
+		this.history = [];
+		this.historyPos = -1;
+		this._updateNavBtns();
 
 		this.up().setTitle(this.localize('docs')+' '+this.localize('home'));
 		this.down('#overviewBtn').hide();
@@ -214,38 +233,38 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 
 	openFullDocumentation: function() {
 		var url = this.fullDocsUrl;
-		if (this.lastEntry !== undefined) {
-			url += this.lastEntry;
+		var historyEntry = this.history[this.historyPos];
+		if (historyEntry !== undefined) {
+			url += historyEntry[0];
 		}
-		if (this.lastMember !== undefined) {
-			url += '#'+this.lastMember;
+		if (historyEntry[1] !== undefined) {
+			url += '#'+historyEntry[1];
 		}
 		window.open(url, '_spyral_docs');
 	},
 
-	loadDocsEntry: function(entry) {
+	loadDocsEntry: function(entry, fromNavBtn) {
 		var parts = entry.split('#');
-		this.lastEntry = parts[0];
-		if (parts[1]) {
-			this.lastMember = parts[1];
-		} else {
-			this.lastMember = undefined;
-		}
 
-		console.log('loadDocsEntry', entry);
+		console.log('loadDocsEntry', entry, 'member', parts[1]);
+		if (fromNavBtn === undefined) {
+			this._addToHistory(parts[0], parts[1]);
+		}
 		this.getLayout().getRenderTarget().mask(this.localize('loadingDocs'));
 
 		Ext.Ajax.request({
-			url: this.inlineDocsUrl+this.lastEntry
+			url: this.inlineDocsUrl+parts[0]
 		}).then(function(response) {
 			this.getLayout().getRenderTarget().unmask();
 			this._processDocEntry(response.responseText);
-			if (this.lastMember) {
-				this._showDocEntry(this.lastEntry, this.lastMember);
+			if (parts[1]) {
+				this._showDocEntry(parts[0], parts[1], true);
 			}
 			this._resetScrollTop();
 		}.bind(this), function(error) {
-			this.lastEntry = undefined;
+			if (fromNavBtn === undefined) {
+				this.history.pop();
+			}
 			this.getLayout().getRenderTarget().unmask();
 			console.log(error);
 		}.bind(this));
@@ -334,10 +353,12 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		}, this);
 	},
 
-	_showDocEntry: function(entryClass, entryMember) {
-		console.log('showDocEntry', entryClass, entryMember);
+	_showDocEntry: function(entryClass, entryMember, skipHistory) {
+		console.log('showDocEntry', entryClass, 'member', entryMember);
 
-		this.lastMember = entryMember;
+		if (skipHistory === undefined) {
+			this._addToHistory(entryClass, entryMember);
+		}
 
 		var docsParentEl = this.down('#main').getEl().dom;
 
@@ -408,5 +429,38 @@ Ext.define('Voyant.notebook.util.DocsPanel', {
 		var button = el.nodeName === 'BUTTON' ? el : el.parentElement;
 		var code = button.nextElementSibling.innerText;
 		navigator.clipboard.writeText(code);
+	},
+
+	_addToHistory: function(entryClass, entryMember) {
+		if (this.history.length >= 50) {
+			this.history.shift();
+		}
+		this.history.splice(this.historyPos+1, this.history.length-this.historyPos, [entryClass, entryMember]);
+		console.log(JSON.stringify(this.history));
+		this.historyPos = this.history.length-1;
+		this._updateNavBtns();
+	},
+
+	_goBack: function() {
+		this.historyPos = Math.max(0, this.historyPos-1);
+		this._loadEntryFromHistoryPos();
+	},
+
+	_goForward: function() {
+		this.historyPos = Math.min(this.history.length-1, this.historyPos+1);
+		this._loadEntryFromHistoryPos();
+	},
+
+	_loadEntryFromHistoryPos: function() {
+		var entry = this.history[this.historyPos];
+		if (entry) {
+			this.loadDocsEntry(entry[0]+(entry[1] ? '#'+entry[1] : ''), true);
+		}
+		this._updateNavBtns();
+	},
+
+	_updateNavBtns: function() {
+		this.down('#backBtn').setDisabled(this.historyPos <= 0);
+		this.down('#forwardBtn').setDisabled(this.historyPos >= this.history.length-1);
 	}
 });
