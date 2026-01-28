@@ -377,6 +377,11 @@ body.exported-notebook {
 .docsWindowContent section article table .name code {
 	line-height: 14px;
 }
+.docsWindowContent section article .copyToClipboard {
+	padding: 1px 4px;
+	float: right;
+	cursor: pointer;
+}
 .docsWindowContent .main-content article {
 	padding:0;
 }
