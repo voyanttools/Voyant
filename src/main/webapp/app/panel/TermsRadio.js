@@ -156,7 +156,7 @@ Ext.define('Voyant.panel.TermsRadio', {
 			
 			var query = this.getApiParam('query');
 			// check for no results
-			if (query) {
+			if (query && query.indexOf(',') === -1) {
 				if (records.length==0 || (records.length==1 && records[0].getRawFreq()==0)) {
 					this.toastInfo({
 						html: this.localize("termNotFound"),
