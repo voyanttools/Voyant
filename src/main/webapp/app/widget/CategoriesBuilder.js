@@ -96,6 +96,8 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
     		categories: 'Categories',
     		addCategory: 'Add Category',
     		removeCategory: 'Remove Category',
+			editCategory: 'Edit Category',
+			editCategoryMessage: 'This is the category list, one term per line.',
     		removeTerms: 'Remove Selected Terms',
     		categoryName: 'Category Name',
     		add: 'Add',
@@ -506,6 +508,33 @@ Ext.define('Voyant.categories.CategoriesBuilder', {
     		margin: '10 0 10 10',
     		layout: 'fit',
     		tools: [{
+				type: 'gear',
+				tooltip: this.localize('editCategory'),
+				callback: function(panel) {
+					var terms = this.categoriesManager.getCategoryTerms(name).join("\n");
+					Ext.Msg.show({
+						title: this.localize('editCategory'),
+						message: this.localize('editCategoryMessage'),
+						buttons: Ext.Msg.OKCANCEL,
+						prompt: true,
+						multiline: true,
+						value: terms,
+						fn: function(btn, value, messagebox) {
+							if (btn==='ok') {
+								var newTerms = value
+									.split("\n")
+									.map(function(term) { return term.trim()} )
+									.filter(function(term) { return term !== '' });
+								var termsData = newTerms.map(function(term) { return {term: term} });
+								panel.getStore().loadData(termsData, false);
+								this.categoriesManager.categories[name] = newTerms;
+							}
+						},
+						scope: this
+					})
+				},
+				scope: this
+			},{
     			type: 'close',
     			tooltip: this.localize('removeCategory'),
     			callback: function(panel) {
