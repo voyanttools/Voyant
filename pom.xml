@@ -84,7 +84,7 @@
 		<dependency>
 			<groupId>org.voyant-tools</groupId>
 			<artifactId>trombone</artifactId>
-			<version>5.2.26</version>
+			<version>5.2.27</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.xml.bind</groupId>
