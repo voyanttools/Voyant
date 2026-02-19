@@ -131,7 +131,17 @@ Ext.define('Voyant.panel.Constellations', {
 				style: 'backgroundColor: #fff',
 				items: {
 					xtype: 'component',
-					itemId: 'visParent'
+					itemId: 'visParent',
+					listeners: {
+						resize: function(cmp, width, height) {
+							var svg = cmp.getEl().down('svg');
+							if (svg) {
+								d3.select(svg.dom).attr('width', width).attr('height', height);
+								Ext.Function.defer(this.zoomToFit, 50, this);
+							}
+						},
+						scope: this
+					}
 				}
 			},{
 				title: this.localize('options'),
