@@ -379,6 +379,8 @@ The following table summarizes tokenization for the string <span class="keyword"
 </tbody>
 </table>
 
+The default tokenization algorithm used by Voyant Tools is the [ICUTokenizer](https://lucene.apache.org/core/6_2_1/analyzers-icu/org/apache/lucene/analysis/icu/segmentation/ICUTokenizer.html). If you are performing text analysis using other tools you might see word counts which differ from Voyant. For example, the [NLTK library](https://www.nltk.org/) for Python has multiple tokenization algorithms, each of which produce a different result. See [this page](https://text-processing.com/demo/tokenize/) for a demonstration.
+
 ### Text Encoding
 
 Voyant uses algorithms to determine the text encoding of the documents in your corpus. However if the detected text encoding is incorrect, you can use this option to specify a different one. You can use any of the pre-defined values, or enter one manually. The java.nio canonical names from [this table](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html) should be acceptable.

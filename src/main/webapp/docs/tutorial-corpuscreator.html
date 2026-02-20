@@ -384,6 +384,7 @@ from several files).</p>
 </tr>
 </tbody>
 </table>
+<p>The default tokenization algorithm used by Voyant Tools is the <a href="https://lucene.apache.org/core/6_2_1/analyzers-icu/org/apache/lucene/analysis/icu/segmentation/ICUTokenizer.html">ICUTokenizer</a>. If you are performing text analysis using other tools you might see word counts which differ from Voyant. For example, the <a href="https://www.nltk.org/">NLTK library</a> for Python has multiple tokenization algorithms, each of which produce a different result. See <a href="https://text-processing.com/demo/tokenize/">this page</a> for a demonstration.</p>
 <h3 id="text-encoding">Text Encoding</h3>
 <p>Voyant uses algorithms to determine the text encoding of the documents in your corpus. However if the detected text encoding is incorrect, you can use this option to specify a different one. You can use any of the pre-defined values, or enter one manually. The java.nio canonical names from <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html">this table</a> should be acceptable.</p>
 <h2 id="access-management">Access Management</h2>
