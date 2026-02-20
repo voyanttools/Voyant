@@ -132,16 +132,19 @@ strong {
 
 /* Reader */
 
-.voyant-reader .x-panel-body {
+.voyant-reader .readerContainer {
   line-height: 19px !important;
 }
+.voyant-reader .readerContainer span {
+  display: inline-block;
+}
 
-.voyant-reader .x-panel-body .keyword {
-  padding: 1px 2px;
+.voyant-reader .readerContainer .keyword {
+  padding: 0px 2px;
   border-radius: 2px;
 }
 
-.voyant-reader .x-panel-body .keyword, .voyant-reader .x-panel-body .word:hover, .keyword {
+.voyant-reader .readerContainer .keyword, .voyant-reader .readerContainer .word:hover, .keyword {
 	background-color: yellow;
 }
 
