@@ -221,6 +221,7 @@ $lnb.find('.lnb-examples').each(function() {
 });
 
 $(document).ready(function() {
+    // expand navbar to current document
     if (document.location.pathname.indexOf('tutorial') !== -1) {
         var filename = document.location.pathname.match(/tutorial.*.html$/);
         if (filename !== null) {
@@ -228,4 +229,15 @@ $(document).ready(function() {
             $lnb.find('.lnb-examples a[href="'+filename+'"]').parents('div').prev('.toggle-subnav').click();
         }
     }
+    // open external links in a new window
+    $('article.readme a').filter(function(i, el) {
+        return $(el).parents('.toc').length === 0 && $(el).parents('#see-also').length === 0
+            && (
+                el.href.indexOf(document.location.hostname) === -1 || 
+                (el.href.indexOf(document.location.hostname) !== -1 && el.href.indexOf('/docs') === -1)
+            )
+    }).on('click', function(e) {
+        e.preventDefault();
+        window.open(this.href, '_blank');
+    })
 });
