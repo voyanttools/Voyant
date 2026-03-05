@@ -29,6 +29,9 @@ Ext.define('Voyant.panel.Constellations', {
 			ca: 'Correspondence Analysis',
 			pca: 'Principal Component Analysis',
 			tsne: 't-SNE',
+			distance: 'Distance',
+			cosine: 'Cosine Similarity',
+			euclidean: 'Euclidean',
 			help: 'Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.',
 			helpTip: 'Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.'
 		},
@@ -87,6 +90,8 @@ Ext.define('Voyant.panel.Constellations', {
 		simMax: 1,
 		allSims: [],
 		simWin: undefined,
+
+		distanceType: 'cosine',
 
 		vis: undefined,
 		simulation: undefined,
@@ -214,6 +219,21 @@ Ext.define('Voyant.panel.Constellations', {
 								clearTimeout(this.getTermSearchTimeout());
 							}
 							this.setTermSearchTimeout(setTimeout(this.updateGraph.bind(this), 500));
+						},
+						scope: this
+					}
+				},{
+					xtype: 'radiogroup',
+					fieldLabel: this.localize('distance'),
+					items: [{
+						name: 'distance', boxLabel: this.localize('cosine'), inputValue: 'cosine', checked: true
+					},{
+						name: 'distance', boxLabel: this.localize('euclidean'), inputValue: 'euclidean'
+					}],
+					listeners: {
+						change: function(field, newVal) {
+							this.setDistanceType(newVal.distance);
+							this.loadFromApis();
 						},
 						scope: this
 					}
@@ -466,10 +486,11 @@ Ext.define('Voyant.panel.Constellations', {
 		let all_node_data = data.map(x => { return {id: x["term"] }})
 		let all_edge_data = []
 
+		var type = this.getDistanceType();
 		var sims = [];
 		// Populate edge data with distances
 		for (let pairs of this.combinations(data)) {
-			let sim = this.distance(pairs[0]["vector"], pairs[1]["vector"]);
+			let sim = this.distance(pairs[0]["vector"], pairs[1]["vector"], type);
 			all_edge_data.push({
 				"source": pairs[0]["term"],
 				"target": pairs[1]["term"],
@@ -510,6 +531,7 @@ Ext.define('Voyant.panel.Constellations', {
 		// Filter out edges
 		let edges_filtered = edges.filter(edge => {
 			if (edge.sim <= cutoff) {
+				// add nodes that meet the cutoff
 				nodes_temp.add(edge.source.id)
 				nodes_temp.add(edge.target.id)
 				return true
@@ -519,11 +541,13 @@ Ext.define('Voyant.panel.Constellations', {
 		// Filter out nodes
 		let nodes_filtered = nodes.filter(x => {
 			x.selected = false
+			// add node that matches selection
 			if (x.id === selection) {
 				x.selected = true
 				return true
 			}
 
+			// or add nodes that've met the cutoff
 			return nodes_temp.has(x["id"])
 		});
 
@@ -536,12 +560,44 @@ Ext.define('Voyant.panel.Constellations', {
 		return [nodes_filtered, edges_filtered];
 	},
 
-	distance: function(source, target) {
+	distance: function(source, target, type) {
+		if (type === 'euclidean') {
 		// This function returns the Euclidean distance between two arrays.
-		return Math.sqrt(source.reduce((sum, current, index) => {
+			let distance = Math.sqrt(source.reduce((sum, current, index) => {
 			const x = Math.pow(current - target[index], 2)
 			return sum + x
 		}, 0));
+			return distance;
+		} else {
+			// Take dot product of the two vectors.
+			let dot_product = source.map((x, index) => {
+				return x * target[index];
+			}).reduce((x, y) => {
+				return x + y
+			}, 0);
+
+			// Now get the magnitude of the source and target vectors
+			let mag_source = Math.sqrt(source.map((x) => {
+				return x * x;
+			}).reduce((x, y) => {
+				return x + y;
+			}, 0));
+
+			let mag_target = Math.sqrt(target.map((x) => {
+				return x * x;
+			}).reduce((x, y) => {
+				return x + y;
+			}, 0));
+
+			// Now join everything together
+			let similarity = dot_product / (mag_source * mag_target)
+
+			// Similarity is a value between -1 and 1. Where 1 is the closest together.
+			// To meaningfully use this in the graph we need to reverse this. So 1 is farther apart and -1 is close.
+			// Then we will shift the distances to between 0 and 2 instead of -1 and 1.
+			similarity = (similarity * -1) + 1
+			return similarity
+		}
 	},
 
 	combinations: function*(items) {
