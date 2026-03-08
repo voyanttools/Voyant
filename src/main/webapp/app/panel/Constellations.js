@@ -365,9 +365,15 @@ Ext.define('Voyant.panel.Constellations', {
 	updateGraph: function() {
 		this.stopSimulation();
 
-		var selectedTerm = this.down('#termSearch').getValue();
-		console.log(selectedTerm);
-		[nodes, edges] = this.doFilter(this.getAllNodeData(), this.getAllEdgeData(), selectedTerm);
+		var selection = this.down('#termSearch').getValue();
+		var matchedTerm = this.getNodeById(selection, this.getAllNodeData());
+		var customNode = [];
+		// TODO need to add custom node in handleData function
+		if (matchedTerm === null && (selection.includes('-') || selection.includes('+'))) {
+			customNode.push(this.parseSelection(selection, this.getAllNodeData()));
+		}
+		console.log(selection, customNode[0]);
+		[nodes, edges] = this.doFilter(this.getAllNodeData(), this.getAllEdgeData(), selection);
 
 		this.getVis().select('.labels')
 			.selectAll('text')
@@ -562,11 +568,11 @@ Ext.define('Voyant.panel.Constellations', {
 
 	distance: function(source, target, type) {
 		if (type === 'euclidean') {
-		// This function returns the Euclidean distance between two arrays.
+			// This function returns the Euclidean distance between two arrays.
 			let distance = Math.sqrt(source.reduce((sum, current, index) => {
-			const x = Math.pow(current - target[index], 2)
-			return sum + x
-		}, 0));
+				const x = Math.pow(current - target[index], 2)
+				return sum + x
+			}, 0));
 			return distance;
 		} else {
 			// Take dot product of the two vectors.
@@ -610,6 +616,65 @@ Ext.define('Voyant.panel.Constellations', {
 				yield [x, y]
 			}
 		}
+	},
+
+	getNodeById: function(id, node_data) {
+		for (let node of node_data) {
+			if (node.id === id) {
+				return node;
+			}
+		}
+
+		return null;
+	},
+
+	parseSelection: function(selection, node_data) {
+		let values = selection.split(" ")
+
+		let temp = null
+		let next = this.addVectors
+
+		for (let x of values) {
+			let node = this.getNodeById(x, node_data);
+
+			if (x === "+") {
+				next = this.addVectors
+			} else if (x === "-") {
+				next = this.subtractVectors
+			} else if (node !== null) {
+				temp = next(temp, [node.vx, node.vy])
+			} else {
+				console.log("unknown word", x)
+			}
+		}
+
+		return temp
+	},
+
+	// Add two vectors together.
+	addVectors: function(source, target) {
+		if (source === null) {
+			return target
+		} else if (target === null) {
+			return source
+		}
+
+		return source.map((elem, index) => {
+			return elem + target[index];
+		})
+	},
+
+	// Subtracts the second vector from the first.
+	subtractVectors: function(source, target) {
+		if (source === null) {
+			return target
+		} else if (target === null) {
+			return source
+		}
+
+		return source.map((elem, index) => {
+			return elem - target[index];
+		})
 	},
 
 	arrayMin: function(arr) {
