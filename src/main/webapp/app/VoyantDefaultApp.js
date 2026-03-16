@@ -120,8 +120,9 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		this.callParent(arguments);
 	},
 	getServerMessage: function() {
+		var url = this.getServerMessageURL();
 		$.get('trombone', {
-			fetchData: 'https://raw.githubusercontent.com/wiki/voyanttools/voyant/Announcements.md'
+			fetchData: url,
 		}, function(data) {
 			var converter = new showdown.Converter();
 			var html = converter.makeHtml(data);

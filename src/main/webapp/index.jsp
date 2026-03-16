@@ -61,6 +61,7 @@ Ext.onReady(function(){
 			allowInput: '<%= System.getProperty("org.voyanttools.server.allowinput")==null ? "" : System.getProperty("org.voyanttools.server.allowinput") %>',
 			allowDownload: '<%= System.getProperty("org.voyanttools.server.allowdownload")==null ? "" : System.getProperty("org.voyanttools.server.allowdownload") %>',
 			showServerMessage: '<%= System.getProperty("org.voyanttools.server.showservermessage")==null ? "false" : System.getProperty("org.voyanttools.server.showservermessage") %>',
+			serverMessageURL: '<%= System.getProperty("org.voyanttools.server.servermessageurl")==null ? "https://raw.githubusercontent.com/wiki/voyanttools/voyant/Announcements.md" : System.getProperty("org.voyanttools.server.servermessageurl") %>',
 			entitiesEnabled: <%= application.getInitParameter("entitiesenabled") %>
 		},
 		launch: function() {
