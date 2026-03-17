@@ -25,3 +25,4 @@ src/main/resources/oath.properties
 .vscode/
 node_modules/
 .idea
+.rsp/
