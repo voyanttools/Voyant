@@ -123,6 +123,7 @@ Ext.define('Voyant.VoyantDefaultApp', {
 		var url = this.getServerMessageURL();
 		$.get('trombone', {
 			fetchData: url,
+			forTool: 'ServerMessage'
 		}, function(data) {
 			var converter = new showdown.Converter();
 			var html = converter.makeHtml(data);

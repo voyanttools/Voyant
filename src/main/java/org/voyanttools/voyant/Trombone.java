@@ -209,7 +209,9 @@ public class Trombone extends HttpServlet {
 			URLConnection c;
 			try {
 				url = new URL(parameters.getParameterValue("fetchData").replaceAll(" ", "+"));
-				System.out.println(url);
+				if (parameters.getParameterValue("forTool", "").equals("ServerMessage") == false) {
+					System.out.println("fetchData: "+url);
+				}
 				c = url.openConnection();
 //				StringBuilder sb = new StringBuilder();
 //				BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
