@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %><%
+// Browsers (Safari especially) heuristically cache this page without these
+// headers, and a stale copy loads an old llm.js — cells then fail with
+// "Can't find variable: _llmCfg".
+response.setHeader("Cache-Control", "no-cache, must-revalidate");
+response.setHeader("Pragma", "no-cache");
 StringBuilder url = new StringBuilder();
 url.append(request.getContextPath());
 String base = url.toString();
@@ -73,6 +78,7 @@ table.spyral-table td:last-child {
 			String fullbase = fullurl.toString();
 			%><%= fullbase %>/');
 		</script>
+		<script type="text/javascript" src="<%= base %>/resources/spyral/llm/llm-beta.js"></script>
 		<script type="text/javascript" src="<%= base %>/resources/spyral/sandbox.js"></script>
 	</head>
 	<body>
