@@ -553,45 +553,18 @@
         storageSet(KEYS_KEY, JSON.stringify(m));
     }
 
+    // A DOM overlay here would be position:fixed inside this cell's own sandbox
+    // iframe, not the full browser window — on a short iframe the modal clips
+    // and the input becomes unreachable. A native prompt dialog is unaffected
+    // by the iframe's box entirely — but global.prompt is shadowed by
+    // llmPrompt() further down this file, so this must call nativePrompt(),
+    // not prompt(), or it silently hits the template lookup instead.
     global.requestLLMKey = function (providerKey) {
-        return new Promise(function (resolve, reject) {
-            var overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;' +
-                'background:rgba(0,0,0,.35);z-index:99999;display:flex;' +
-                'align-items:center;justify-content:center;';
-            var panel = document.createElement('div');
-            panel.style.cssText = 'font-family:sans-serif;font-size:13px;background:#fff;' +
-                'border-radius:8px;padding:18px;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,.25);';
-            panel.innerHTML =
-                '<strong>API key required</strong>' +
-                '<p style="margin:8px 0;">Provider "' + providerKey + '" needs your API key. ' +
-                'It is kept only in this browser (localStorage) for later cells and sessions — ' +
-                'never in the provenance log, never shown in cell output.</p>' +
-                '<input type="password" placeholder="sk-..." ' +
-                'style="width:100%;padding:6px;box-sizing:border-box;"/>' +
-                '<div style="margin-top:12px;text-align:right;">' +
-                '<button data-act="cancel" style="margin-right:8px;padding:5px 14px;">Cancel</button>' +
-                '<button data-act="ok" style="padding:5px 14px;background:#1d4ed8;color:#fff;' +
-                'border:none;border-radius:5px;cursor:pointer;">Save key</button></div>';
-            overlay.appendChild(panel);
-            document.body.appendChild(overlay);
-            var input = panel.querySelector('input');
-            function finish(val) {
-                document.body.removeChild(overlay);
-                if (val) { resolve(val); }
-                else {
-                    reject(new Error('No API key provided for "' + providerKey + '" — enter one ' +
-                        'when prompted, or run showModelSelector().'));
-                }
-            }
-            panel.querySelector('[data-act="ok"]').addEventListener('click',
-                function () { finish(input.value.trim()); });
-            panel.querySelector('[data-act="cancel"]').addEventListener('click',
-                function () { finish(null); });
-            input.addEventListener('keydown',
-                function (e) { if (e.key === 'Enter') { finish(input.value.trim()); } });
-            input.focus();
-        });
+        var key = global.nativePrompt('API key required for "' + providerKey + '". Kept only in ' +
+            'this browser (localStorage) — never in the provenance log, never shown in cell output:');
+        if (key && key.trim()) { return Promise.resolve(key.trim()); }
+        return Promise.reject(new Error('No API key provided for "' + providerKey + '" — enter one ' +
+            'when prompted, or run showModelSelector().'));
     };
 
     // Live getter: cell iframes load once at notebook startup, so a provider switch
@@ -636,6 +609,9 @@
     };
 
     global.configureLLM = global._configureProvider;
+    // Matches the portable layer's name — notebooks written to be dual-server
+    // portable (B01-B07) call this directly instead of configureLLM/llm.configure.
+    global.setLLMConfig = global._configureProvider;
 
     // Session log — persists across cell iframes via localStorage. Cell iframes are
     // created once at notebook load, so this must be a live getter (re-read on every
@@ -679,6 +655,11 @@
                 return n;
             };
             return arr;
+        },
+        // Setter accepts legacy assignments like `_companionLog = _companionLog || []`
+        // (strict-mode code throws "readonly property" against a getter-only accessor)
+        set: function (v) {
+            if (Array.isArray(v)) { saveLog(Array.prototype.slice.call(v)); }
         },
         configurable: true
     });
@@ -797,7 +778,17 @@
         .then(function (r) {
             if (!r.ok) {
                 return r.text().then(function (t) {
-                    throw new Error('LLM error ' + r.status + ': ' + t.slice(0, 200));
+                    // Cell output only shows a short message; log everything to
+                    // the browser console so a recurring failure is actually
+                    // diagnosable from devtools instead of a truncated string.
+                    var headerDump = {};
+                    r.headers.forEach(function (v, k) { headerDump[k] = v; });
+                    console.error('[spyral-llm] LLM call failed', {
+                        status: r.status, statusText: r.statusText, url: url,
+                        provider: cfg.provider, headers: headerDump, body: t
+                    });
+                    throw new Error('LLM error ' + r.status + ': ' + t.slice(0, 200) +
+                        ' — full response logged to the browser console (F12 / DevTools).');
                 });
             }
             return r.json();
@@ -833,6 +824,32 @@
 
     global._companionChat = function (messages, opts) {
         return global._llmCall(messages, opts);
+    };
+
+    // Public raw-messages entry point — mirrors the portable layer's llmCall(),
+    // where _companionChat is documented as the legacy alias, not the other way round.
+    global.llmCall = global._llmCall;
+
+    // Matches the portable layer's llmExplain(corpus, question, opts): fetches
+    // the corpus's own top terms and grounds the answer in them. Defined here
+    // as a thin wrapper over corpus.llm.explain (installed further down this
+    // file) so dual-server notebooks can call one name on either layer.
+    global.llmExplain = function (corpus, question, opts) {
+        return corpus.llm.explain(question, opts);
+    };
+
+    // Matches the portable layer's llmChat(question, opts): a single-turn,
+    // history-free chat call with the same default system prompt as
+    // LLMCompanion — for cells that already built their own evidence string
+    // and just need a plain question-in/answer-out call, no auto-fetch.
+    global.llmChat = function (question, opts) {
+        var sys = (opts && opts.system) ||
+            'You are a careful and knowledgeable Digital Humanities research assistant. ' +
+            'Interpret patterns analytically, cite evidence, and suggest next steps.';
+        return global._companionChat([
+            { role: 'system', content: sys },
+            { role: 'user', content: String(question) }
+        ], opts);
     };
 
     function stripFences(reply) {
@@ -1106,7 +1123,15 @@
 
     global.LLMCompanion = LLMCompanion;
     global.llm = new LLMCompanion();
-    global.llmChat = function (msg, opts) { return global.llm.chat(msg, opts); };
+    // llmChat is defined earlier in this file (stateless, matches the portable
+    // layer) — not redefined here as a singleton wrapper, so notebooks get the
+    // same single-turn behavior on both layers.
+    // Legacy idiom support: older tutorials run
+    //   (document.__llmCompanion ? Promise.resolve() : import(...)).then(function () {
+    //       window.llm = document.__llmCompanion; ... })
+    // Pointing __llmCompanion at the built-in instance makes both halves work:
+    // the import is skipped and the assignment restores the real llm.
+    if (global.document) { global.document.__llmCompanion = global.llm; }
 
     global.__llmCompanionLoaded = true;
     global.getLLMCompanion = function (config) {
@@ -1223,11 +1248,14 @@
                                 var tw = terms.map(function (t) {
                                     return t.term + ' (' + t.rawFreq + ')';
                                 }).join(', ');
+                                var sys = 'You are a Digital Humanities corpus analyst. ' +
+                                    'The corpus contains these top terms (with raw counts): ' +
+                                    tw + '. Answer only based on evidence from these terms.';
+                                if (opts && opts.strict) {
+                                    sys += ' STRICT MODE: treat the term list as anonymous data. Do NOT attempt to identify the work, author, or characters, and do NOT use outside knowledge about any text this might be. Every claim must be derivable from the term frequencies alone; frequencies cannot show co-occurrence, so make no co-occurrence claims.';
+                                }
                                 return global._companionChat([
-                                    { role: 'system', content:
-                                        'You are a Digital Humanities corpus analyst. ' +
-                                        'The corpus contains these top terms (with raw counts): ' +
-                                        tw + '. Answer only based on evidence from these terms.' },
+                                    { role: 'system', content: sys },
                                     { role: 'user', content: String(question) }
                                 ], opts).then(function (reply) {
                                     global._companionLog.push({
@@ -1260,15 +1288,23 @@
                         if (!Array.isArray(termList) || !termList.length) {
                             return Promise.reject(new Error('corpus.llm.trends() needs a term array'));
                         }
-                        var promises = termList.map(function (term) {
-                            return corpus.terms({ query: term, withDistributions: true, limit: 1 })
-                                .then(function (rows) {
+                        // Multi-document corpus: bins run across documents (e.g. across
+                        // the 37 plays). Single document: that yields one value and
+                        // structural zeros, so switch to within-document bins (docIndex).
+                        return corpus.metadata().then(function (md) {
+                            var single = md && md.documentsCount === 1;
+                            var params = { withDistributions: true, limit: 1 };
+                            if (single) { params.docIndex = 0; params.bins = 10; }
+                            var promises = termList.map(function (term) {
+                                var p = Object.assign({ query: term }, params);
+                                return corpus.terms(p).then(function (rows) {
                                     if (!rows || !rows.length) { return null; }
                                     return { term: term, rawFreqs: rows[0].distributions || [] };
                                 });
-                        });
-                        return Promise.all(promises).then(function (rows) {
-                            return global.analyseTrends(rows.filter(Boolean), opts);
+                            });
+                            return Promise.all(promises).then(function (rows) {
+                                return global.analyseTrends(rows.filter(Boolean), opts);
+                            });
                         });
                     },
                     entities: function (opts) {
