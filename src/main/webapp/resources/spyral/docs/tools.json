@@ -221,8 +221,8 @@
       }
     }
   },
-  "Constellations": {
-    "doc": "Constellations produces a specialized network graph of high frequency terms that are connected by similar word vectors.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellations.html\">More documentation</a>",
+  "Constellation": {
+    "doc": "Constellation produces a specialized network graph of high frequency terms that are connected by similar word vectors.\n\n<a target=\"_spyral_docs\" href=\"https://voyant-tools.org/docs/Tools.Constellation.html\">More documentation</a>",
     "params": {
       "style": {
         "type": "String",

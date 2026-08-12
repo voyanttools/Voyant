@@ -1,10 +1,8 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Source: src/main/webapp/app/panel/Trends.js | Voyant Tools Help</title>
+    <title>Class: Constellation | Voyant Tools Help</title>
 
     <link rel="shortcut icon" type="image/ico" href="favicon.ico">
     
@@ -55,856 +53,1109 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Trends shows a line graph depicting the distribution of a word's occurrence across a corpus or document.
- *
- * @example
- *
- * let config = {
- * 	"chartType": "barline",
- * 	"limit": 10,
- * 	"query": ["love", "hate"]
- * };
- *
- * loadCorpus("austen").tool("Trends", config);
- *
- * @class Trends
- * @tutorial trends
- * @memberof Tools
- */
-Ext.define('Voyant.panel.Trends', {
-	extend: 'Ext.panel.Panel',
-	mixins: ['Voyant.panel.Panel'],
-	requires: ['Voyant.data.store.Documents'],
-	alias: 'widget.trends',
-	config: {
-	    /**
-	     * @private
-	     */
-    	options: [{xtype: 'stoplistoption'},{xtype: 'categoriesoption'},
-
-    		{
-    			name: 'bins',
-		    	xtype: 'slider',
-		    	labelAlign: 'right',
-		    	width: 200,
-		    	minValue: 2,
-		    	maxValue: 100,
-	        	listeners: {
-	        		afterrender: function(slider) {
-	        			var trends = slider.up("window").panel;
-	        			slider.setFieldLabel(trends.localize("segmentsSlider"));
-	        		}
-	        	}    		
-    		},{
-                xtype: 'radiogroup',
-		    	labelAlign: 'right',
-                columns: 3,
-                vertical: true,
-                name: 'withDistributions',
-                items: [{
-                    boxLabel: 'raw',
-                    name: 'withDistributions',
-                    inputValue: 'raw'
-                },{
-                    boxLabel: 'relative',
-                    name: 'withDistributions',
-                    inputValue: 'relative',
-                    style: 'margin-left: 1em;'
-                }],
-	        	listeners: {
-	        		afterrender: function(radiogroup) {
-	        			var panel = this.up("window").panel;
-	        			this.setFieldLabel(panel.localize("freqsMode"));
-	        			var val = panel.getApiParam("withDistributions");
-	        			radiogroup.getBoxes().forEach(function(item) {
-	        				item.setBoxLabel(panel.localize(item.inputValue));
-	        				item.checked = item.inputValue==val;
-	        			});
-	        			this.setValue({withDistributions: val});
-	        		}
-	        	}
-    		},{xtype: 'colorpaletteoption'}]
-	},
-    statics: {
-    	i18n: {},
-    	api: {
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {limit}
-			 * @default
-    		 */
-    		limit: 5,
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {stopList}
-			 * @default
-    		 */
-    		stopList: 'auto',
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {query}
-    		 */
-    		query: undefined,
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {withDistributions}
-			 * @default
-    		 */
-    		withDistributions: 'relative',
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {bins} bins
-    		 * 
-			 * The default value will depend on the nature of the corpus:
-    		 * 
-    		 * - corpus has one document: the default number of bins is 10
-    		 * - corpus has multiple documents:
-    		 *   - corpus has up to 100 documents: the default number is the size of the corpus
-    		 *   - corpus has more than 1000 documents: the default number is 100
-    		 */
-    		bins: 10,
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {docIndex}
-    		 */
-    		docIndex: undefined,
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {docId}
-    		 */
-    		docId: undefined,
-    		
-    		/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {String} mode Force the mode to be either "corpus" (distribution of terms across documents) or "document" (distribution of terms within a document); usually this is correctly set by default according to whether the corpus has one document ("document") or more than one ("corpus").
-			 * @default
-    		 */
-    		mode: "corpus",
-    		
-			/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {String} chartType The of chart to display: Options are: 'area', 'bar', 'line', 'stacked', and 'barline'.
-			 * @default
-    		 */
-    		chartType: 'barline',
-    		
-			/**
-    		 * @memberof Tools.Trends
-			 * @instance
-			 * @property {Boolean} labels Whether to show term labels.
-			 * @default
-    		 */
-    		labels: false
-    	},
-		glyph: 'xf201@FontAwesome'
-    },
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="Tools.html">Tools</a>.</span>Constellation<span class="signature">()</span><span class="type-signature"></span></h2>
+        
     
-    layout: 'fit',
-    documentTermsStore: undefined,
-    //segments: undefined,
+</header>
+
+<article>
     
-    /**
-     * @private
-     */
-    constructor: function(config) {
-    	this.callParent(arguments);
-    	this.mixins['Voyant.panel.Panel'].constructor.apply(this, arguments);
-    },
+        <div class="container-overview">
+        
+            
+
+<dt>
     
-    initComponent: function() {
-		this.mixins['Voyant.util.Api'].constructor.apply(this, arguments); // we need api
-    	Ext.apply(this, {
-    		title: this.localize('title'),
-            dockedItems: [{
-                dock: 'bottom',
-                xtype: 'toolbar',
-                overflowHandler: 'scroller',
-                items: [{
-                    xtype: 'querysearchfield'
-                },{
-                	itemId: 'reset',
-                	text: this.localize("reset"),
-                	tooltip: this.localize("resetTip"),
-                	handler: function(btn) {
-                		this.setApiParams({
-                			docIndex: undefined,
-                			mode: undefined,
-                			query: undefined
-                		});
-                		this.loadCorpusTerms();
-                	},
-                	scope: this
-				},{
-					text: this.localize('display'),
-					tooltip: this.localize('displayTip'),
-					glyph: 'xf013@FontAwesome',
-					menu: {
-						listeners: {
-							afterrender: function(menu) {
-								var val = this.getApiParam("chartType");
-								menu.items.each(function(item) {
-									if (item.getItemId()==val) {
-										item.addCls(item.activeCls);
-									}
-								})
-							},
-							scope: this
-						},
-	                    defaults: {
-	                        xtype: 'menuitem',
-	                        handler: function(item, checked) {
-	                        	if (item.xtype=="menucheckitem") { // labels
-		                        	this.setApiParam("labels", item.checked);
-	                        	} else {
-		                        	this.setApiParam("chartType", item.getItemId());
-	                        	}
-	                        	this.loadCorpusTerms();
-	                        },
-	                        scope: this
-	                    },
-	                    items: [{
-	                    	xtype: 'menucheckitem',
-	                    	text: this.localize('labels'),
-	                        tooltip: this.localize('labelsTip'),
-	                        checked: this.getApiParam("labels")===true || this.getApiParam("labels")=="true"
-	                    },'-',{
-	                        itemId: 'area',
-	                        text: this.localize('area'),
-	                        tooltip: this.localize('areaTip'),
-	                        glyph: 'xe76b@Sencha-Examples'
-	                    },{
-	                        itemId: 'bar',
-	                        text: this.localize('bar'),
-	                        tooltip: this.localize('barTip'),
-	                        glyph: 'xe768@Sencha-Examples'
-	                    },{
-	                        itemId: 'line',
-	                        text: this.localize('line'),
-	                        tooltip: this.localize('lineTip'),
-	                        glyph: 'xe773@Sencha-Examples'
-	                    },{
-	                        itemId: 'stacked',
-	                        text: this.localize('stacked'),
-	                        tooltip: this.localize('stackedTip'),
-	                        glyph: 'xe6c8@Sencha-Examples'
-	                    },{
-	                        itemId: 'barline',
-	                        text: this.localize('barline'),
-	                        tooltip: this.localize('barlineTip'),
-	                        glyph: 'xe779@Sencha-Examples'
-	                    }]
-					}
-				}]
-            }]
-    	});
-        this.callParent(arguments);
-    },
+        <h4 class="name" id="Constellation">
+            
+                new <span class="type-signature"></span>Constellation<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="src_main_webapp_app_panel_Constellation.js.html">src/main/webapp/app/panel/Constellation.js</a></code>,
+                <code><a href="src_main_webapp_app_panel_Constellation.js.html#line1">line 1</a></code>
+            </div>
+            
+        </h4>
+
+        
     
-    listeners: {
-    	loadedCorpus: function(src, corpus) {
-    		this.loadCorpusTerms();
-    	},
-    	termsClicked: function(src, terms) {
-    		var queryTerms = [];
-    		terms.forEach(function(term) {
-    			if (Ext.isString(term)) {queryTerms.push(term);}
-    			else if (term.term) {queryTerms.push(term.term);}
-    			else if (term.getTerm) {queryTerms.push(term.getTerm());}
+</dt>
+<dd>
 
-    		});
-    		this.setApiParam("query", queryTerms &amp;&amp; queryTerms.length>0 ? queryTerms : undefined);
-    		this.loadCorpusTerms();
-    	},
-    	corpusTermsClicked: function(src, terms) {
-    		this.setApiParam("query", terms.map(function(term) {return term.getTerm()}));
-    		this.loadCorpusTerms();
-    	},
-    	documentSelected: function(src, document) {
-			this.setApiParam("docIndex", this.getCorpus().getDocument(document).getIndex());
-    		this.loadDocumentTerms();
-    	},
-    	documentsClicked: function(src, documents) {
-    		if (documents.length==1) {
-    			this.fireEvent("documentSelected", this, documents[0])
-    		}
-    	},
-    	query: function(src, query) {
-			this.fireEvent("termsClicked", this, query)
-    	},
-		entitiesClicked: function(src, ents) {
-			this.fireEvent("termsClicked", this, ents);
-		}
-    },
     
-    loadCorpusTerms: function(params) {
-    	// if our corpus only has one document or if we have docIndex defined
-    	if (
-    		this.getCorpus().getDocumentsCount()&lt;2 || // only one document
-    		this.getApiParam("mode")=="document" || // in document mode
-    		Array.from(this.getApiParam("docIndex") || "").length>0 // we have a docIndex defined
-    		) {
-    		return this.loadDocumentTerms();
-    	}
-    	if (!this.getApiParam("query")) {
-        	this.getCorpus().getCorpusTerms({parentPanel: this}).load({
-        		params: {
-        			limit: this.getApiParam('limit'),
-        			stopList: this.getApiParam("stopList")
-        		},
-        		callback: function(records, operation, success) {
-        			if (records.length==0) {
-        				if (operation &amp;&amp; operation.error) {
-        					this.showError(this.localize("noResults")+"&lt;p style='color: red'>"+operation.error+"&lt;/p>")
-        				} else {
-        					this.showError(this.localize("noResults"))
-        				}
-        			} else {
-            			this.setApiParam("query", records.map(function(r) {return r.getTerm()}))
-            			this.loadCorpusTerms();
-        			}
-        		},
-        		scope: this
-        	})
-    		return;
-    	}
-    	params = params || {};
-    	//this.segments.hide();
-    	var withDistributions = this.getApiParam("withDistributions");
-    	Ext.applyIf(params, {
-    		bins: this.getCorpus().getDocumentsCount(),
-			limit: 100, // should have query, so no limit 
-	    	stopList: "" // automatic queries should be stopped already
-    	});
-    	var docLabels = [];
-		var docLabelsFull = [];
-		this.getCorpus().each(function(doc) {
-			docLabels.push(doc.getTinyTitle());
-			docLabelsFull.push(doc.getTitle());
-		})
-    	if (Ext.Array.unique(docLabels).length&lt;docLabels.length) { // we have duplicates, add index
-    		docLabels = docLabels.map(function(doc,i) {return (i+1)+")"+ doc})
-    	}
-    	Ext.applyIf(params, this.getApiParams());
-    	this.getCorpus().getCorpusTerms({parentPanel: this}).load({
-    		params: params,
-    		callback: function(records, operation, success) {
-    			var data = [], series = [], chartType = this.getApiParam('chartType');
-    			records.forEach(function(record, index) {
-    	    		var term = record.get('term');
-    	    		var color = this.getApplication().getColorForTerm(term, true);
-    	    		record.get('distributions').forEach(function(r, i) {
-    	    			if (!data[i]) {
-    	    				data[i] = {"index": docLabels[i], "docTitle": docLabelsFull[i]};
-    	    			}
-    	    			data[i]["_"+index] = withDistributions=='relative' ? r.toFixed(7) : r;
-    	    			data[i]["term"+index] = term;
-    	    		}, this);
-    	    		
-    	    		
-    	    		if (chartType!='bar') {
-    	    			var kinds = chartType=='barline' ? ["bar","line"] : [chartType];
-    	    			kinds.forEach(function(kind) {
-    	    	        	series.push({
-    	    	        		type: kind=='stacked' ? 'bar' : kind,
-    	    	    			title: term,
-    	    	    			xField: 'index',
-    	    	    			yField: '_'+index,
-    	    	    			term: term,
-    	    	    			colors: [color],
-    	    	    			label: chartType=='barline' &amp;&amp; kind=='bar' ? {
-    	    	    				display: 'none'
-    	    	    			} : {
-    	    	    				field: "term"+index
-    	    	    			}
-    	    	        	})
-    	    			}, this);
-    	    		}
-    			}, this);
-    			
-    			var terms = records.map(function(r) {return r.getTerm()})
-    			var colors = terms.map(function(term) {
-	    			return this.getApplication().getColorForTerm(term, true);
-	    		}, this);
-	    		if (chartType=='bar') {
-		    		series.push({
-		    			type:'bar',
-		    			title: terms,
-			    		colors: colors,
-		    			xField: 'index',
-		    			yField: data.length>0 ? Object.keys(data[0]).filter(function(field) {return field.charAt(0)=="_"}) : undefined,
-    	    			label: {
-    	    				field: records.map(function(r,i) {return "term"+i;})
-    	    			}
-		    		})
-	    		}
-	    		
-    	    	var store = Ext.create('Ext.data.JsonStore', {
-    	    		fields: data.length>0 ? Object.keys(data[0]) : undefined,
-    	    		data: data
-    	    	});
-    	    	
-    			this.buildChart({
-        			store: store,
-        			series: series,
-        			axes: [{
-                		type: 'numeric',
-                		position: 'left',
-                		increment: 1,
-                		title: {
-                			text: this.localize(this.getApiParam("withDistributions")+"Title")
-                		}
-        			},{
-        				type: 'category',
-                		position: 'bottom',
-                		title: {
-                			text: this.localize("corpusTitle")
-                		}
-                		
-        			}]
-    			})
-    		},
-    		scope: this
-    	});
-  
-    },   
-
-    loadDocumentTerms: function(params) {
-    	if (!this.getApiParam("query")) {
-        	this.getCorpus().getCorpusTerms({parentPanel: this}).load({
-        		params: {
-        			limit: this.getApiParam('limit'),
-        			stopList: this.getApiParam("stopList")
-        		},
-        		callback: function(records, operation, success) {
-        			this.setApiParam("query", records.map(function(r) {return r.getTerm()}))
-        			this.loadDocumentTerms();
-        		},
-        		scope: this
-        	})
-    		return;
-    	}
-    	//this.segments.show();
-    	this.setApiParam("mode", "document"); // just to be sure
-    	params = params || {};
-    	var withDistributions = this.getApiParam("withDistributions");
-    	Ext.applyIf(params, {
-			limit: 0, // always have query, so no limit, no stopList
-			sort: 'termasc',
-			stopList: undefined
-    	});
-    	var singleDoc;
-    	if (this.getCorpus().getDocumentsCount()==1) {
-    		singleDoc=this.getCorpus().getDocument(0)
-    	}
-    	else {
-    		singleDoc=this.getCorpus().getDocument(this.getApiParam("docIndex"))
-    	}
-    	Ext.applyIf(params, this.getApiParams());
-    	
-    	this.getCorpus().getDocumentTerms({parentPanel: this}).load({
-    		params: params,
-    		callback: function(records, operation, success) {
-    			var data = [], series = [],  chartType = this.getApiParam('chartType');
-    			if (!singleDoc) { // legend is easier to read if sorted by term then doc
-        			records.sort(function(a,b) {
-        				if (a.getTerm()==b.getTerm()) {
-        					return a.getDocIndex() - b.getDocIndex()
-        				}
-        				return a.getTerm().localeCompare(b.getTerm())
-        			})
-    			}
-    			records.forEach(function(record, index) {
-    	    		var term = record.get('term');
-    	    		var docIndex = record.get('docIndex');
-    	    		var color = singleDoc ? this.getApplication().getColorForTerm(term, true) : this.getApplication().getColor(docIndex, true);
-    	    		record.get('distributions').forEach(function(r, i) {
-    	    			if (!data[i]) {
-    	    				data[i] = {index: (i+1)};
-    	    			}
-    	    			data[i]["_"+index+"_"+docIndex] = withDistributions=='relative' ? r.toFixed(7) : r;
-    	    			data[i]["term"+index] = term;
-    	    		}, this);
-
-    	    		if (chartType!='bar') {
-    	    			var kinds = chartType=='barline' ? ["bar","line"] : [chartType];
-    	    			kinds.forEach(function(kind) {
-    	    	        	series.push({
-    	    	        		type: kind=='stacked' ? 'bar' : kind,
-    	    	    			title: singleDoc ? term : (docIndex+1)+") "+term,
-    	    	    			xField: 'index',
-    	    	    			yField: '_'+index+"_"+docIndex,
-    	    	    			term: term,
-    	    	    			colors: [color],
-    	    	    			label: chartType=='barline' &amp;&amp; kind=='bar' ? {
-    	    	    				display: 'none'
-    	    	    			} : {
-    	    	    				field: "term"+index
-    	    	    			}
-    	    	        	})
-    	    			}, this);
-    	    		}
-    	    		
-    			}, this);
-    			
-	    		if (chartType=='bar') {
-	    			var isOneTerm = Ext.Array.unique(records.map(function(r) {return r.getTerm()})).length === 1;
-	    			var terms = records.map(function(r) {return (1+r.get("docIndex"))	+") "+r.getTerm()})
-	    			var colors = records.map(function(r) {
-		    			return isOneTerm ? this.getApplication().getColor(r.get("docIndex"), true) : this.getApplication().getColorForTerm(r.getTerm(), true);
-		    		}, this);
-
-		    		series.push({
-		    			type:'bar',
-		    			title: terms.length>0 ? terms : this.localize("noResults"),
-			    		colors: colors,
-		    			xField: 'index',
-		    			yField: data.length>0 ? Object.keys(data[0]).filter(function(field) {return field.charAt(0)=="_"}) : undefined,
-		    			label: {
-		    				field: terms
-		    			}
-		    		})
-	    		}
-
-    			
-    	    	var store = Ext.create('Ext.data.JsonStore', {
-    	    		fields: data.length>0 ? Object.keys(data[0]) : undefined,
-    	    		data: data
-    	    	});
-
-    			this.buildChart({
-        			store: store,
-        			series: series,
-        			axes: [{
-                		type: 'numeric',
-                		position: 'left',
-                		title: {
-                			text: this.localize(this.getApiParam("withDistributions")+"Title")
-                		}
-        			},{
-        				type: 'category',
-                		position: 'bottom',
-                		title: {
-                			text: this.localize("segmentsTitle") + (singleDoc ? " ("+singleDoc.getTitle()+")" : "")
-                		}
-                		
-        			}]
-    			})
-    		},
-    		scope: this
-    	});
-  
-    },
-	    
-    getItemToolTip: function (toolTip, record, ctx) {
-    	var parts = ctx.field.split("_"),
-    		docIndex = parts.length==2 ? ctx.index : parts[2],
-    		pos = parseInt(parts[1]),
-    		title = ctx.series.getTitle(),
-    		term = Ext.isArray(title) ? title[pos] : title,
-    		colors = ctx.series.getColors(),
-    		color = colors.length==1 ? colors[0] : colors[pos];
-        var html = "&lt;span class='x-legend-item-marker' style='background:"+color+
-        		"; left: 2px;'>&lt;/span> &lt;span style='padding-left: 1.2em; font-weight: bold;'>"+
-        		term+"&lt;/span>: "+record.get(ctx.field)+
-    			"&lt;br/>&lt;i>"+this.getCorpus().getDocument(docIndex).getShortTitle()+"&lt;/i>"
-		if (this.getApiParam("mode")=="corpus") {
-    		html+="&lt;div style='font-size: smaller'>"+this.localize('dblClickItem')
-		} else {
-			html+="&lt;br/>"+this.localize('segment')+" "+(ctx.index+1)
-		}
-    	toolTip.setHtml(html);
-    },
+    <div class="description">
+        <p>Constellation produces a specialized network graph of high frequency terms that are connected by similar word vectors.</p>
+    </div>
     
-    buildChart: function(config) {
-    	var chartType = this.getApiParam('chartType'), labels = false;
-    	if (this.getApiParam("labels")===true || this.getApiParam("labels")=="true") {labels=true}
-    	
-    	Ext.applyIf(config, {
-    		cls: this.getApiParam("mode")
-    	});
 
-    	config.series.forEach(function(serie) {
-    		Ext.applyIf(serie, {
-				stacked: serie.type=='bar' ? false : true,
-				showInLegend: chartType=='barline' &amp;&amp; serie.type=='line' ? false : true,
-    			smooth: true,
-    			showMarkers: serie.type=='bar' ? false : true,
-    			marker: chartType=='barline' &amp;&amp; serie.type=='line' ? null : {
-    			    type: 'circle',
-    			    radius: 2
-    			},
-                style: {
-                    lineWidth: 1,
-                    fillOpacity: chartType=='barline' &amp;&amp; serie.type=='bar' ? .01 : 1,
-                    strokeOpacity: chartType=='barline' &amp;&amp; serie.type=='bar' ? .1 : 1
-                },
-                highlight: true,
-                highlightCfg: {
-                	scaling: serie.type=="bar" ? 1.1 : 2
-                },
-    			label: {
-//    				display: 'none'
-    			},
-    			tooltip: {
-                    trackMouse: true,
-                    renderer: this.getItemToolTip,
-                    scope: this
-    			},
-                listeners: {
-                	itemclick: function(chart,item,event,eOpts ) {
-            			if (this.clickTimer) {clearTimeout(this.clickTimer);}
-            			if (this.blockClick) {return;} // set by dblclick to avoid menu disappearing
-            			this.blockClick = true // block other clicks within a sec
-            			Ext.defer(function() {
-            				this.blockClick = false;
-            			}, 1000, this);
-                		if (this.getApiParam("mode")=="document") {
-                			var parts = item.field.split("_"),
-                				docIndex = parseInt(parts[2]),
-                				doc = this.getCorpus().getDocument(docIndex),
-                				tokens = doc.get('tokensCount-lexical'),
-                				position = parseInt(item.index  * tokens / parseInt(this.getApiParam("bins")))
-                			this.dispatchEvent("documentIndexTermsClicked", this, [{
-                    			term: item.series.term,
-                    			docIndex: docIndex,
-                    			position: position
-                    		}]);
-                		} else {
-                			if (this.clickTimer) {clearTimeout(this.clickTimer);}
-                			var me = this;
-                			this.clickTimer = setTimeout(function() {
-                    			me.dispatchEvent("documentIndexTermsClicked", me, [{
-                        			term: item.series.term,
-                        			docIndex: item.index
-                        		}]);
-                			}, 300)
-                			
-                		}
-                	},
-                	itemdblclick: function(chart,item,event,eOpts )  {
-            			if (this.clickTimer) {clearTimeout(this.clickTimer);}
-            			// block future single clicks to allow menu to appear
-            			this.blockClick = true
-            			Ext.defer(function() {
-            				this.blockClick = false;
-            			}, 1000, this);
-            			// block future clicks
-                		if (this.getApiParam("mode")!="document") {
-                			var m = Ext.create('Ext.menu.Menu', {
-                				items: [{
-                	    				text: this.localize("drillTerm"),
-                	    				tooltip: this.localize("drillTermTip"),
-//                	    				glyph: 'xf02d@FontAwesome',
-                	    				handler: function() {
-                	    					this.setApiParams({
-                	    						mode: 'document',
-                	    						query: item.series.term
-                	    					});
-                	    					this.loadDocumentTerms();
-                	    				},
-                	    				scope: this
-                					},{
-                	    				text: this.localize("drillDocument"),
-                	    				tooltip: this.localize("drillDocumentTip"),
-//                	    				glyph: 'xf02d@FontAwesome',
-                	    				handler: function() {
-                	    					this.setApiParams({
-                	    						mode: 'document',
-                	    						docIndex: item.index
-                	    					});
-                	    					this.loadDocumentTerms();
-                	    				},
-                	    				scope: this
-                					}],
-                					listeners: {
-                						hide: function(m) {
-                							// defer hiding otherwise click handler not called
-                							Ext.defer(function() {this.destroy()}, 200, m)
-                						},
-                						scope: this
-                					}
-                			}).showAt(event.pageX, event.pageY) 
-                		}
-                	},
-                	scope: this
-                }
-    		})
-    		Ext.applyIf(serie.label, {
-                display: 'over',
-                field: 'index',
-                fontSize: 11,
-                translateY: chartType=='line' ? 9 : undefined
-    		});
-    		if (!labels) {serie.label.display="none";} // hide label 
-    	}, this)
-    	Ext.applyIf(config, {
-    		animation: true,
-    	    plugins: {
-    	        ptype: 'chartitemevents',
-    	        moveEvents: true
-    	    },
-    		legend: {
-    			docked:'top',
-    			listeners: {
-    				itemclick: function(legend, record, dom, index) {
-    					// make sure to hide related series
-    					if (legend.getStore().getCount()&lt;legend.chart.series.length &amp;&amp; this.getApiParam("chartType")=="barline") {
-        					var term = record.get("name"), disabled = record.get("disabled");
-        					legend.chart.series.forEach(function(serie) {
-        						if (serie.getTitle()==term) {
-        							serie.setHidden(disabled);
-        							
-        						}
-        					})
-        					legend.chart.redraw(); // not working?
-    					}
-    				},
-    				scope: this
-    			}
-    		},
-    		interactions: ['itemhighlight','crosszoom'],
-    	    listeners: {}
-    	});
-    	Ext.applyIf(config.listeners, {
-	        itemhighlightchange: function (chart, item) {
-	            chart.el.dom.style.cursor = item ? 'pointer' : '';
-	        },
-			/**
-			 * @suppress {uselessCode}
-			 * @private
-			 */
-	        afterrender : function() {
-	        	return // TODO: this seems to cause problems, perhaps not destroying properly?
-	        	Ext.defer(function() { // seem to need to defer
-		        	Ext.tip.QuickTipManager.register({
-		        		target: this.getTargetEl().down(".x-legend-container"),
-	                 	text: this.localize("toggleTip")
-		        	});
-	        	},1, this)
-	        	
-	        },
-	        scope: this
-    	})
-    	config.axes.forEach(function(axis) {
-    		Ext.applyIf(axis, {
-    			title: {},
-    			label: {}
-    		})
-    		Ext.applyIf(axis.title, {scaling: .75});
-    		Ext.applyIf(axis.label, {scaling: .75});
-    		if (axis.type=='category') {
-    			var titles = "";
-    			config.store.each(function(r) {titles+=r.get("index")})
-    			if (titles.length>this.getTargetEl().getWidth()/9) {
-            		Ext.applyIf(axis.label, {rotate: {degrees:-30}});
-    			}
-        		Ext.applyIf(axis, {
-        			labelInSpan: true
-        		})
-    		}
-    	}, this)
-    	    	
-    	// remove existing chart
-    	this.query('chart').forEach(function(chart) {this.remove(chart, true);}, this);
-    	
-    	// create new chart
-		var chart = Ext.create("Ext.chart.CartesianChart", config);
-    	this.add(chart);
-    },
     
-    reloadFromChart: function() {
-    	var chart = this.down('chart');
-    	if (chart) {
-    		var terms = [];
-    		chart.series.forEach(function(serie) {
-    			terms.push(serie.getTitle());
-    		});
-    		this.fireEvent("termsClicked", this, terms);
-    	}
-    },
 
-	getExtraDataExportItems: function() {
-		return [
-			{
-				name: 'export',
-				inputValue: 'dataAsTsv',
-				boxLabel: this.localize('exportGridCurrentTsv')
-			}
-		]
-	},
+    
 
-	exportDataAsTsv: function(panel, form) {
-		var value = '';
+    
 
-		var chart = panel.down('chart');
-		var store = chart.getStore();
-		var firstModel = store.first();
-		var data = firstModel.getData();
+    
 
-		var fields = ['Index'];
-		
-		var termKeys = Object.keys(data).filter(function(key) {
-			return key.indexOf('term') === 0;
-		}).sort();
-		var terms = [];
-		termKeys.forEach(function(termKey) {
-			terms.push(data[termKey]);
-		});
-		
-		fields = fields.concat(terms);
-		value += fields.join("\t")+"\n";
+    
 
-		var valueKeys = Object.keys(data).filter(function(key) {
-			return key.indexOf('_') === 0;
-		}).sort();
+    
 
-		store.each(function(model) {
-			data = model.getData();
-			var entry = [];
-			if (data['docTitle'] !== undefined) {
-				entry.push(data['docTitle']);
-			} else {
-				entry.push(data['index']);
-			}
-			valueKeys.forEach(function(valueKey) {
-				entry.push(data[valueKey]);
-			});
-			value += entry.join("\t")+"\n";
-		}, panel);
+    
 
-		Ext.Msg.show({
-			title: panel.localize('exportDataTitle'),
-			message: panel.localize('exportDataTsvMessage'),
-			buttons: Ext.Msg.OK,
-			icon: Ext.Msg.INFO,
-			prompt: true,
-			multiline: true,
-			value: value
-		});
-	}
- });</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-tutorial">Tutorials:</dt>
+    <dd class="tag-tutorial">
+        <ul>
+            <li><em class="disabled">Tutorial: constellation</em></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>let config = {
+	"analysis": "ca",
+	"dimensions": 2,
+	"limit": 50
+}; 
+
+loadCorpus("austen").tool("constellation", config);</code></pre>
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+
+        <dl class="members">
+            
+
+<dt>
+<h4 class="name" id="analysis">
+    <span class="type-signature"></span>analysis<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html">src/main/webapp/app/panel/Constellation.js</a></code>,
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html#line49">line 49</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>analysis</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of analysis to perform. Options are: 'ca', 'pca', and 'tsne'.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="dimensions">
+    <span class="type-signature"></span>dimensions<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html">src/main/webapp/app/panel/Constellation.js</a></code>,
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html#line72">line 72</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dimensions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                    3
+                </td>
+            
+
+            <td class="description last"><p>The number of dimensions to render, either 2 or 3.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="docId">
+    <span class="type-signature"></span>docId<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html">src/main/webapp/app/panel/Constellation.js</a></code>,
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html#line56">line 56</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>docId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The document ID(s) to restrict the results to.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="height">
+    height
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The display height of the tool in pixels.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="limit">
+    <span class="type-signature"></span>limit<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html">src/main/webapp/app/panel/Constellation.js</a></code>,
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html#line64">line 64</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                    150
+                </td>
+            
+
+            <td class="description last"><p>The number of items to limit the result to.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="stopList">
+    <span class="type-signature"></span>stopList<span class="type-signature"></span>
+    
+    <div class="container-source members">
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html">src/main/webapp/app/panel/Constellation.js</a></code>,
+        <code><a href="src_main_webapp_app_panel_Constellation.js.html#line80">line 80</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>stopList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                    auto
+                </td>
+            
+
+            <td class="description last"><p>A comma-separated list of words, a named list or a URL to a plain text list, one word per line.
+By default this is set to 'auto' which auto-detects the document's language and loads an appropriate list (if available for that language). Set this to blank to not use the default stopList.
+For more information see the <a href="tutorial-stopwords.html">Stopwords documentation</a>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="style">
+    style
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A string of CSS properties to use as the style attribute for the tool's parent tag.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="width">
+    width
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+    -->
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The display width of the tool in pixels.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -920,7 +1171,7 @@ Ext.define('Voyant.panel.Trends', {
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = '_sub'.replace(/"/g, '_');
+        var id = 'Tools.Constellation_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 
