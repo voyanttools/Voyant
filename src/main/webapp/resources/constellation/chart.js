@@ -55,8 +55,6 @@ export function init_graph(width, height, graphId) {
 
   svg.call(zoom);
 
-  // document.getElementById("reset").addEventListener("click", () => svg.call(zoom.transform, d3.zoomIdentity));
-
   group.append("g").attr("id", "links")
   group.append("g").attr("id", "nodes")
   group.append("g").attr("id", "labels")
@@ -73,7 +71,7 @@ export function init_graph(width, height, graphId) {
     .force("center", d3.forceCenter(width / 2, height / 2)) // Forces viewport towards center
     .on("tick", () => ticked(svg))
 
-  return [svg, simulation]
+  return [svg, simulation, zoom]
 }
 
 export function update_datalist(words) {
@@ -102,7 +100,7 @@ export function update_selection_list(data, fun_unselect) {
     )
 }
 
-export function create_graph(chart_data, links, nodes, hidden=false, restart=true) {
+export function create_graph(chart_data, links, nodes, hidden=false, restart=true, update_selection) {
 
   let svg = chart_data.svg;
   let simulation = chart_data.simulation;
@@ -130,7 +128,8 @@ export function create_graph(chart_data, links, nodes, hidden=false, restart=tru
         return 10
       })
       .on("click", (event) => {
-        svg.dispatch('nodeClicked', {detail: {nodeId: event.target.__data__.id}});
+        chart_data.selection.add(event.target.__data__.id)
+        update_selection(chart_data)
       })
       .call(d3.drag()
         .on("start", e => dragstart(e, simulation))

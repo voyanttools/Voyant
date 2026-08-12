@@ -1,4 +1,4 @@
-import { pipeline, cos_sim } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.0.0-next.7"
+import { pipeline, cos_sim } from "./transformers@4.0.0-next.7.js"
 
 let model = undefined;
 const model_name = "jinaai/jina-embeddings-v2-base-code"
@@ -44,8 +44,8 @@ export async function populate_data(words) {
   words.forEach((word, index) => {
     nodes.push({
       id: word,
+      label: word,
       vector: embeddings[index].data,
-      alt: [],
     })
   });
 

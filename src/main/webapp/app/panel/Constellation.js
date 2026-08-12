@@ -22,14 +22,15 @@ Ext.define('Voyant.panel.Constellation', {
 		i18n: {
 			title: 'Constellation',
 			options: 'Options',
-			termSearch: 'Term Search',
+			selectedTerms: 'Selected Terms',
+			hideUnselected: 'Hide Unselected Terms',
 			cutoff: 'Similarity Threshold',
 			numTerms: 'Terms',
 			analysis: 'Analysis',
 			ca: 'Correspondence Analysis',
 			pca: 'Principal Component Analysis',
 			tsne: 't-SNE',
-			distance: 'Distance',
+			distance: 'Distance Metric',
 			cosine: 'Cosine Similarity',
 			euclidean: 'Euclidean',
 			maxStrength: 'Max Strength',
@@ -91,13 +92,11 @@ Ext.define('Voyant.panel.Constellation', {
 
 		chartData: undefined,
 
-		distanceType: 'cosine',
+		metric: 'cosine',
 		maxStrength: 1000,
 		maxConnections: 50,
 		linkStrength: 1500,
 		bodyStrength: -1500,
-
-		termSearchTimeout: null,
 
 		options: [{xtype: 'stoplistoption'}]
 	},
@@ -147,6 +146,7 @@ Ext.define('Voyant.panel.Constellation', {
 				title: this.localize('options'),
 				xtype: 'panel',
 				width: 200,
+				minWidth: 150,
 				region: 'west',
 				split: true,
 				collapsible: true,
@@ -205,32 +205,30 @@ Ext.define('Voyant.panel.Constellation', {
 						scope: this
 					}
 				},{
-					xtype: 'textfield',
-					fieldLabel: this.localize('termSearch'),
-					itemId: 'termSearch',
-					listeners: {
-						change: function(field, term) {
-							if (this.getTermSearchTimeout() !== null) {
-								clearTimeout(this.getTermSearchTimeout());
-							}
-							this.setTermSearchTimeout(setTimeout(this.updateGraph.bind(this), 500));
-						},
-						scope: this
-					}
+					xtype: 'container',
+					html: '<hr style="border: none; border-top: 1px solid #cfcfcf;"/>'
 				},{
-					xtype: 'radiogroup',
-					fieldLabel: this.localize('distance'),
-					items: [{
-						name: 'distance', boxLabel: this.localize('cosine'), inputValue: 'cosine', checked: true
-					},{
-						name: 'distance', boxLabel: this.localize('euclidean'), inputValue: 'euclidean'
-					}],
-					listeners: {
-						change: function(field, newVal) {
-							this.setDistanceType(newVal.distance);
-							this.loadFromApis();
-						},
-						scope: this
+					text: this.localize('distance'),
+					menu: {
+						items: [
+							{text: this.localize('cosine'), itemId: 'metric_cosine', group: 'metric', xtype: 'menucheckitem'},
+							{text: this.localize('euclidean'), itemId: 'metric_euclidean', group: 'metric', xtype: 'menucheckitem'}
+						],
+						listeners: {
+							render: function(field) {
+								field.child('#metric_'+this.getMetric()).setChecked(true);
+							},
+							click: function(menu, item) {
+								if (item !== undefined) {
+									var metric = item.getItemId().split('_')[1];
+									if (metric !== this.getMetric()) {
+										this.setMetric(metric);
+										this.loadFromApis();
+									}
+								}
+							},
+							scope: this
+						}
 					}
 				},{
 					xtype: 'slider',
@@ -294,6 +292,54 @@ Ext.define('Voyant.panel.Constellation', {
 						},
 						scope: this
 					}
+				},{
+					xtype: 'container',
+					html: '<hr style="border: none; border-top: 1px solid #cfcfcf;"/>'
+				},{
+					xtype: 'checkbox',
+					itemId: 'hideUnselected',
+					boxLabel: this.localize('hideUnselected'),
+					listeners: {
+						change: function(field, val) {
+							this.getChartData().hide_unselected = val;
+							Voyant.panel.Constellation.constellation.update_graph(this.getChartData());
+						},
+						scope: this
+					}
+				},{
+					xtype: 'multiselector',
+					title: this.localize('selectedTerms'),
+					itemId: 'selectedTerms',
+					fieldName: 'label',
+					fieldTitle: 'Term',
+					disableSelection: true,
+					search: {
+						xtype: 'multiselector-search',
+						width: 200,
+						height: 200,
+						store: Ext.create('Ext.data.JsonStore', {
+							fields: ['id', 'label'],
+							data: []
+						})
+					},
+					store: Ext.create('Ext.data.JsonStore', {
+						fields: ['id', 'label'],
+						data: [],
+						listeners: {
+							add: function(store, records) {
+								var record = records[0];
+								var node = this.parseSelection(record.get('label'));
+								this.getChartData().selection.add(node.id);
+								Voyant.panel.Constellation.constellation.update_graph(this.getChartData(), false);
+							},
+							remove: function(store, records) {
+								var record = records[0];
+								this.getChartData().selection.delete(record.get('id'));
+								Voyant.panel.Constellation.constellation.update_graph(this.getChartData(), false);
+							},
+							scope: this
+						}
+					})
 				}]
 			}]
 		});
@@ -375,12 +421,18 @@ Ext.define('Voyant.panel.Constellation', {
 		simulation.force("link").distance(x => x.sim * this.getLinkStrength());
 		simulation.force("body").strength(this.getBodyStrength());
 
-		svg.on('nodeClicked', function(event) {
-			console.log(event);
-			this.dispatchEvent('termsClicked', this, [event.detail.nodeId]);
+		svg.select("#nodes").on('click', function(event) {
+			var term = event.target.__data__.label;
+			this.down('#selectedTerms').getStore().loadRawData([event.target.__data__], true);
+			// this.dispatchEvent('termsClicked', this, [term]);
 		}.bind(this));
 
-		var metric = this.getDistanceType() === 'cosine' ? Voyant.panel.Constellation.vec.cosine_similarity : Voyant.panel.Constellation.vec.distance;
+		var metric = this.getMetric() === 'cosine' ? Voyant.panel.Constellation.vec.cosine_similarity : Voyant.panel.Constellation.vec.distance;
+
+		var selection = new Set();
+		this.down('#selectedTerms').getStore().each(function(r) {
+			selection.add(r.get('id'));
+		})
 
 		this.setChartData({
 			svg: svg,
@@ -389,8 +441,8 @@ Ext.define('Voyant.panel.Constellation', {
 			cutoff: this.getMaxStrength(),
 			connections: this.getMaxConnections(),
 			hidden: false,//document.getElementById("hidetext").checked,
-			hide_unselected: false,//document.getElementById("hide-unselected").checked,
-			selection: new Set(),
+			hide_unselected: this.down('#hideUnselected').getValue(),
+			selection: selection,
 			nodes: nodes,
 			edges: edges
 		});
@@ -440,18 +492,71 @@ Ext.define('Voyant.panel.Constellation', {
 		if (this.getApiParam('analysis') === 'ca') {
 			data = data.filter(function(d) { return d.category === 'term'; });
 		}
-	
-		let nodes = data.map(x => { return {
-			id: x["term"],
-			label: x["term"],
-			vector: x["vector"]
-		}});
 
-		var metric = this.getDistanceType() === 'cosine' ? Voyant.panel.Constellation.vec.cosine_similarity : Voyant.panel.Constellation.vec.distance;
+		let nodes = data.map(x => {
+			return {
+				id: x["term"],
+				label: x["term"],
+				vector: x["vector"]
+			}
+		});
+
+		var selectedTermsToRemove = [];
+		var selectedTermsStore = this.down('#selectedTerms').getStore();
+		selectedTermsStore.each(function(record) {
+			var id = record.get('id');
+			if (nodes.find(n => n.id === id) === undefined) {
+				selectedTermsToRemove.push(record);
+			}
+		});
+		selectedTermsToRemove.forEach(function(r) {
+			selectedTermsStore.remove(r);
+		})
+		
+		this.down('#selectedTerms').getSearch().store.loadRawData(nodes);
+
+		var metric = this.getMetric() === 'cosine' ? Voyant.panel.Constellation.vec.cosine_similarity : Voyant.panel.Constellation.vec.distance;
 		let edges = Voyant.panel.Constellation.constellation.generate_edges(nodes, metric);
 		
 		this.initGraph(nodes, edges);
 		this.updateGraph();
+	},
+
+	parseSelection(selection) {
+		var chartData = this.getChartData();
+		var vec = Voyant.panel.Constellation.vec;
+
+		// Return early if the node already exists.
+		let current = vec.get_from_array(selection, chartData.nodes);
+		if (current !== false) {
+			return current
+		}
+
+		let values = selection.split(" ");
+
+		let temp = null;
+		let next = vec.add;
+
+		for (let x of values) {
+			let row = vec.get_from_array(x, chartData.nodes).vector
+
+			if (x === "+") {
+			next = vec.add
+			} else if (x === "-") {
+			next = vec.subtract
+			} else if (row !== undefined) {
+			temp = next(temp, row)
+			} else {
+			console.log("unknown word", x)
+			}
+		}
+
+		// Return early if selection is invalid.
+		if (temp === null) {
+			return false
+		}
+
+		return Voyant.panel.Constellation.constellation.insert_node(selection, selection, temp, chartData)
 	}
 	
 });

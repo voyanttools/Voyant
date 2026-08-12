@@ -116,7 +116,7 @@ export function update_graph(chart_data, restart=true) {
     return false;
   });
 
-  chart.create_graph(chart_data, edges_filtered, nodes_filtered, chart_data.hidden, restart)
+  chart.create_graph(chart_data, edges_filtered, nodes_filtered, chart_data.hidden, restart, update_selection)
 }
 
 function create_edge(x, y, metric) {
@@ -153,3 +153,15 @@ export function generate_edges(nodes, metric) {
 
   return edges;
 }
+
+export function update_selection(chart_data) {
+  let fun_unselect = function(event) {
+    const id = event.target.getAttribute("data-id");
+    chart_data.selection.delete(id);
+    update_selection(chart_data)
+  }
+
+  update_selection_list(chart_data.selection, fun_unselect)
+  update_graph(chart_data, false);
+}
+

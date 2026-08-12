@@ -6,22 +6,12 @@ Voyant.panel.Constellation.constellation = constellation;
 Voyant.panel.Constellation.vec = vec;
 Voyant.application.dispatchEvent('constellationJSLoaded', Voyant.panel.Constellation);
 
-function add_selection(id, chart_data) {
-    // Adds a node to selection
-    let node = vec.get_from_array(id, chart_data.nodes);
-
-    if (node !== false) {
-      chart_data.selection.add(node.id);
-    }
-}
-
-
 
 function parse_selection(selection, chart_data) {
   // Return early if the node already exists.
   let current = vec.get_from_array(selection, chart_data.nodes);
   if (current !== false) {
-    return false
+    return current
   }
 
   let values = selection.split(" ");
@@ -91,7 +81,7 @@ async function main(data, type) {
 
   // Initialize graph
   // Note: edges need references to the exact object. Note just the term
-  let [svg, simulation] = constellation.init_graph(element.offsetWidth, element.offsetHeight);
+  let [svg, simulation, zoom] = constellation.init_graph(element.offsetWidth, element.offsetHeight);
 
   let chart_data = {
     svg: svg,
@@ -110,16 +100,11 @@ async function main(data, type) {
   constellation.update_graph(chart_data);
 
   // Initialize events
-
-  let fun_unselect = function(event) {
-    const id = event.target.getAttribute("data-id");
-    chart_data.selection.delete(id);
-    constellation.update_selection_list(chart_data.selection, fun_unselect);
-    constellation.update_graph(chart_data);
-  }
-
-
   document.getElementById("wrapper").append(chart_data.svg.node());
+
+  document.getElementById("reset").addEventListener("click", () => {
+    svg.call(zoom.transform, d3.zoomIdentity);
+  });
 
   // Build event listeners for controls
   document.getElementById("strength").addEventListener("input", function(event) {
@@ -147,10 +132,9 @@ async function main(data, type) {
   document.getElementById("selection").addEventListener("change", function(event) {
     const selection = event.target.value.trim();
 
-    parse_selection(selection, chart_data);
-    add_selection(selection, chart_data)
-    constellation.update_selection_list(chart_data.selection, fun_unselect);
-    constellation.update_graph(chart_data, false);
+    let node = parse_selection(selection, chart_data);
+    chart_data.selection.add(node.id)
+    constellation.update_selection(chart_data)
   });
 
   document.getElementById("hidetext").addEventListener("change", function(event) {
@@ -190,10 +174,9 @@ async function main(data, type) {
     // const vector = [0.4, 0.5, 0.2]
     const fulltext = event.target.value.trim()
 
-    constellation.insert_node(fulltext, fulltext, vector, chart_data);
-    add_selection(fulltext, chart_data);
-    constellation.update_selection_list(chart_data.selection, fun_unselect);
-    constellation.update_graph(chart_data);
+    let new_node = constellation.insert_node(fulltext, fulltext, vector, chart_data);
+    chart_data.selection.add(new_node.id)
+    constellation.update_selection(chart_data)
   });
 }
 

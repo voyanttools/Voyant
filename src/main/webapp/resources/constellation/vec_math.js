@@ -80,7 +80,7 @@ export function* combinations(items) {
 export function get_from_array(term, nodes_data) {
 
     for (let row of nodes_data) {
-        if (row.id === term || row.alt.includes(term)) {
+        if (row.id === term) {
             return row;
         }
     }
