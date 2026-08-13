@@ -1,4 +1,4 @@
-import { pipeline, cos_sim } from "./transformers@4.0.0-next.7.js"
+import { pipeline, cos_sim } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.0.0-next.7"
 
 let model = undefined;
 const model_name = "jinaai/jina-embeddings-v2-base-code"
