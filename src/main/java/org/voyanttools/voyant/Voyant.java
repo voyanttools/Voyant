@@ -21,8 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.xml.transform.TransformerException;
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.voyanttools.trombone.tool.corpus.DocumentEntities;
 import org.voyanttools.trombone.util.FlexibleParameters;
 
@@ -96,9 +97,9 @@ public class Voyant implements ServletContextListener {
 		request.getRequestDispatcher("/trombone").include(new PostedInputRequestWrapper(request, params, "corpus.CorpusCreator"), postedInputResponseWrapper);
 
 		String responseString = postedInputResponseWrapper.toString();
-		JSONObject obj= (JSONObject) JSONValue.parse(responseString);
-		JSONObject builder = (JSONObject) obj.get("stepEnabledCorpusCreator");
-		String corpusId = (String) builder.get("storedId");
+		JsonObject obj = JsonParser.parseString(responseString).getAsJsonObject();
+		JsonObject builder = obj.getAsJsonObject("stepEnabledCorpusCreator");
+		String corpusId = builder.get("storedId").getAsString();
 		final StringBuilder uri = new StringBuilder("./?corpus=").append(corpusId);
 		response.sendRedirect(uri.toString());
 		return true;
