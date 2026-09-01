@@ -169,10 +169,8 @@ public class Spyral extends HttpServlet {
 			try {
 				is2 = infoConnection.getInputStream();
 				String respString = IOUtils.toString(is2, StandardCharsets.UTF_8.name());
-				JsonParser parser = new JsonParser();
 				try {
-					JsonElement respJson = parser.parse(respString).getAsJsonObject();
-					JsonObject jsonObj = respJson.getAsJsonObject();
+					JsonObject jsonObj = JsonParser.parseString(respString).getAsJsonObject();
 					String login = jsonObj.get("login").getAsString();
 					String name;
 					JsonElement nameElement = jsonObj.get("name");
