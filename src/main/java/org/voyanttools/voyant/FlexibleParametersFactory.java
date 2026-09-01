@@ -137,7 +137,7 @@ public class FlexibleParametersFactory {
 		}
 		
 		final DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
-		final JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
+		final JakartaServletFileUpload<DiskFileItem, DiskFileItemFactory> upload = new JakartaServletFileUpload<>(factory);
 		final List<DiskFileItem> items = upload.parseRequest(request);
 
 		return items;
