@@ -3,7 +3,7 @@ package org.voyanttools.voyant;
 import java.io.File;
 import java.io.Writer;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;

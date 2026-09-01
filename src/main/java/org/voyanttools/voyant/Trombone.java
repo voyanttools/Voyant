@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -23,11 +24,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
@@ -208,7 +209,7 @@ public class Trombone extends HttpServlet {
 			URL url;
 			URLConnection c;
 			try {
-				url = new URL(parameters.getParameterValue("fetchData").replaceAll(" ", "+"));
+				url = URI.create(parameters.getParameterValue("fetchData").replaceAll(" ", "+")).toURL();
 				if (parameters.getParameterValue("forTool", "").equals("ServerMessage") == false) {
 					System.out.println("fetchData: "+url);
 				}
@@ -253,7 +254,7 @@ public class Trombone extends HttpServlet {
 			URL url;
 			URLConnection c;
 			try {
-				url = new URL(parameters.getParameterValue("fetchJSON").replaceAll(" ", "+"));
+				url = URI.create(parameters.getParameterValue("fetchJSON").replaceAll(" ", "+")).toURL();
 				System.out.println(url);
 				c = url.openConnection();
 				c.setReadTimeout(0);
@@ -476,7 +477,7 @@ public class Trombone extends HttpServlet {
 	private static boolean isPrivateIP(String uri) throws MalformedURLException {
 		InetAddress address;
 		try {
-			URL url = new URL(uri);
+			URL url = URI.create(uri).toURL();
 			String host = url.getHost();
 			InetAddress ad = InetAddress.getByName(host);
 			byte[] ip = ad.getAddress();

@@ -3,7 +3,7 @@ package org.voyanttools.voyant;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -13,11 +13,11 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.voyanttools.trombone.util.FlexibleParameters;
@@ -138,7 +138,7 @@ public class Spyral extends HttpServlet {
 			
 			String code = req.getParameter("code");
 			
-			URLConnection tokenConnection = new URL("https://github.com/login/oauth/access_token?code="+code+"&client_id="+clientId+"&client_secret="+clientSecret).openConnection();
+			URLConnection tokenConnection = URI.create("https://github.com/login/oauth/access_token?code="+code+"&client_id="+clientId+"&client_secret="+clientSecret).toURL().openConnection();
 			tokenConnection.setDoOutput(true);
 			tokenConnection.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
 			
@@ -160,7 +160,7 @@ public class Spyral extends HttpServlet {
 				}
 			}
 			
-			URLConnection infoConnection = new URL("https://api.github.com/user").openConnection();
+			URLConnection infoConnection = URI.create("https://api.github.com/user").toURL().openConnection();
 			infoConnection.setDoInput(true);
 			infoConnection.setDoOutput(true);
 			infoConnection.setRequestProperty("Authorization", "token "+accessToken);

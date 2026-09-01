@@ -1,24 +1,23 @@
 package org.voyanttools.voyant;
 
-import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+
 import org.voyanttools.trombone.input.source.InputSourcesBuilder;
 import org.voyanttools.trombone.util.FlexibleParameters;
 
@@ -58,7 +57,6 @@ public class FlexibleParametersFactory {
 	 * @return {@link FlexibleParameters} instance
 	 * @throws Exception
 	 */
-	@SuppressWarnings("restriction")
 	public FlexibleParameters getInstance(HttpServletRequest request, boolean allowLocalFileSystemAccess) throws Exception {
 
 		if (request == null) {
@@ -72,23 +70,29 @@ public class FlexibleParametersFactory {
 
 		final HttpParametersDecoder parametersDecoder = new HttpParametersDecoder(parameters);
 		
-		if (ServletFileUpload.isMultipartContent(request) && !(request instanceof Voyant.PostedInputRequestWrapper)) {
-			final List<FileItem> items = getRequestItems(request);
-			String tmpDir = AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty("java.io.tmpdir"));
+		if (JakartaServletFileUpload.isMultipartContent(request) && !(request instanceof Voyant.PostedInputRequestWrapper)) {
+			final List<DiskFileItem> items = getRequestItems(request);
+			String tmpDir = System.getProperty("java.io.tmpdir");
 			Path tmpPath = Paths.get(tmpDir, "tmp.voyant.uploads");
 			if (!Files.exists(tmpPath)) {
 				Files.createDirectory(tmpPath);
 			}
 			
-			for (FileItem item : items) {
+			for (DiskFileItem item : items) {
 				if (item.isFormField()) { // normal form field
-					parametersDecoder.decodeParameter(item.getFieldName(), item.getString("UTF-8"), allowLocalFileSystemAccess);
+					parametersDecoder.decodeParameter(item.getFieldName(), item.getString(StandardCharsets.UTF_8), allowLocalFileSystemAccess);
 				}
 				else { // file form field: this is uploaded, therefore the local access check can be bypassed
 					Path path = Files.createTempDirectory(tmpPath, "tmp.voyant.uploads");
-					File file = new File(path.toFile(), item.getName());
-					item.write(file);
-					parametersDecoder.decodeParameter("upload", file.toString(), true);
+					String rawName = item.getName();
+					String safeName = Paths.get(rawName).getFileName().toString();
+					Path fileTarget = path.resolve(safeName).normalize();
+					if (!fileTarget.startsWith(path)) {
+						throw new SecurityException("Illegal path traversal");
+					}
+
+					item.write(fileTarget);
+					parametersDecoder.decodeParameter("upload", fileTarget.toString(), true);
 				}
 			}
 		}
@@ -126,15 +130,15 @@ public class FlexibleParametersFactory {
 	
 	}
 	
-	private static List<FileItem> getRequestItems(HttpServletRequest request) throws FileUploadException {
+	private static List<DiskFileItem> getRequestItems(HttpServletRequest request) throws FileUploadException {
 		
 		if (request == null) {
 			throw new NullPointerException("illegal request");
 		}
 		
-		final DiskFileItemFactory factory = new DiskFileItemFactory();
-		final ServletFileUpload upload = new ServletFileUpload(factory);
-		final List<FileItem> items = upload.parseRequest(request);
+		final DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
+		final JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
+		final List<DiskFileItem> items = upload.parseRequest(request);
 
 		return items;
 		
