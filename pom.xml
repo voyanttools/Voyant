@@ -79,6 +79,42 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>11.0.7</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.6.3</version>
+				<executions>
+					<execution>
+						<id>enforce-ban-duplicate-classes</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<banDuplicateClasses>
+									<scopes>
+										<scope>compile</scope>
+										<scope>provided</scope>
+									</scopes>
+									<findAllDuplicates>true</findAllDuplicates>
+									<ignoreClasses>
+										<ignoreClass>org.jspecify.*</ignoreClass>
+									</ignoreClasses>
+								</banDuplicateClasses>
+								<!-- <dependencyConvergence/> -->
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>extra-enforcer-rules</artifactId>
+						<version>1.12.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
