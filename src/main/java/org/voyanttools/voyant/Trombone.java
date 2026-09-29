@@ -64,6 +64,10 @@ public class Trombone extends HttpServlet {
 		} else {
 			FlexibleParameters parameters = new FlexibleParameters();
 			parameters.setParameter("storage", storage);
+			String dataDir = System.getProperty("org.voyanttools.server.storage.dir", "");
+			if (!dataDir.isBlank()) {
+				parameters.setParameter("dataDirectory", dataDir);
+			}
 			this.storage = new FileStorage(parameters);
 		}
 	}
