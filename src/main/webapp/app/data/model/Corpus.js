@@ -108,7 +108,14 @@ Ext.define('Voyant.data.model.Corpus', {
 				url: Voyant.application.getTromboneUrl(),
 				params: config
 			}).then(function(response) {
-				me.set(Ext.JSON.decode(response.responseText).corpus.metadata);
+				try {
+					me.set(Ext.JSON.decode(response.responseText).corpus.metadata);
+				} catch (e) {
+					Voyant.application.showResponseError(me.localize('failedCreateCorpus'), response);
+					dfd.reject(me.localize('failedCreateCorpus'));
+					
+					return null;
+				}
 				// removed calls to set title and subtitle which should now be in metadata
 				if (config.title || config.subTitle) {
 					me.set('title', config.title);
