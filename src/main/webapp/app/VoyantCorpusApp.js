@@ -181,7 +181,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 	                    		Ext.Ajax.request({
 	                    			  url: me.getTromboneUrl(),
 	                    			  params: {
-	                    				  corpus: corpus.getId(),
+	                    				  corpus: corpus.getAliasOrId(),
 	                    				  passwordForSession: password
 	                    			  },
 	                    			  method: 'POST',
@@ -216,7 +216,7 @@ Ext.define('Voyant.VoyantCorpusApp', {
 	                    		Ext.Ajax.request({
 	                    			  url: me.getTromboneUrl(),
 	                    			  params: {
-	                    				  corpus: corpus.getId(),
+	                    				  corpus: corpus.getAliasOrId(),
 	                    				  passwordForSessionRemove: true
 	                    			  },
 	                    			  method: 'POST',

@@ -119,6 +119,10 @@ public class Trombone extends HttpServlet {
 				CorpusAccess corpusAccess = corpus.getValidatedCorpusAccess(newParams);
 				if (corpusAccess==CorpusAccess.ADMIN || corpusAccess==CorpusAccess.ACCESS) {
 					req.getSession().setAttribute("password-"+id, password);
+					String alias = corpus.getCorpusMetadata().getAlias();
+					if (alias != null && !id.equals(alias)) {
+						req.getSession().setAttribute("password-"+alias, password);
+					}
 				}
 				resp.setContentType("text/plain");
 				resp.getWriter().write(corpusAccess.name());
