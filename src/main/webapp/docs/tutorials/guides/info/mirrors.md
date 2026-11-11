@@ -5,7 +5,7 @@ reliable server to use (though it gets the most use and is subject to occasional
 It's also likely to be the most up-to-date version since new builds are deployed there first.
 
 Having said that, there are good reasons to use one of the mirrors, particularly for geographic proximity (the main 
-Voyant server is hosted by ComputeCanada in its eastern Canada cloud).
+Voyant server is hosted by the [Digital Research Alliance of Canada](https://www.alliancecan.ca/) (formerly Compute Canada) in its western Canada cloud).
 
 ## Known Mirrors
 
