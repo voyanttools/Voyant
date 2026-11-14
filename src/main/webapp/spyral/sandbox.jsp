@@ -47,6 +47,13 @@ table.spyral-table td:last-child {
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/11/highcharts-more.js"></script>
 		<script type="text/javascript" src="<%=base %>/resources/highcharts/11/modules/data.js"></script>
 
+        <!-- transformers -->
+        <script type="module">
+            import * as transformers from "<%=base %>/resources/transformers/transformers-4-3-2.js"
+            window.transformers = transformers
+        </script>
+
+        <!-- d3 -->
 		<script type="text/javascript" src="<%=base %>/resources/d3/current/d3.min.js"></script>
 		<script type="text/javascript" src="<%=base %>/resources/d3/d3-scale-chromatic.min.js"></script>
 
