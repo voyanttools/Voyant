@@ -1823,6 +1823,23 @@ var Spyral = (function () {
 
 	requireEs_symbol_iterator();
 
+	var es_symbol_toPrimitive = {};
+
+	var hasRequiredEs_symbol_toPrimitive;
+
+	function requireEs_symbol_toPrimitive () {
+		if (hasRequiredEs_symbol_toPrimitive) return es_symbol_toPrimitive;
+		hasRequiredEs_symbol_toPrimitive = 1;
+		var defineWellKnownSymbol = requireDefineWellKnownSymbol();
+
+		// `Symbol.toPrimitive` well-known symbol
+		// https://tc39.github.io/ecma262/#sec-symbol.toprimitive
+		defineWellKnownSymbol('toPrimitive');
+		return es_symbol_toPrimitive;
+	}
+
+	requireEs_symbol_toPrimitive();
+
 	var es_symbol_toStringTag = {};
 
 	var hasRequiredEs_symbol_toStringTag;
@@ -3770,6 +3787,47 @@ var Spyral = (function () {
 	}
 
 	requireEs_arrayBuffer_slice();
+
+	var es_date_toPrimitive = {};
+
+	var dateToPrimitive;
+	var hasRequiredDateToPrimitive;
+
+	function requireDateToPrimitive () {
+		if (hasRequiredDateToPrimitive) return dateToPrimitive;
+		hasRequiredDateToPrimitive = 1;
+		var anObject = requireAnObject();
+		var toPrimitive = requireToPrimitive();
+
+		dateToPrimitive = function (hint) {
+		  if (hint !== 'string' && hint !== 'number' && hint !== 'default') {
+		    throw TypeError('Incorrect hint');
+		  } return toPrimitive(anObject(this), hint !== 'number');
+		};
+		return dateToPrimitive;
+	}
+
+	var hasRequiredEs_date_toPrimitive;
+
+	function requireEs_date_toPrimitive () {
+		if (hasRequiredEs_date_toPrimitive) return es_date_toPrimitive;
+		hasRequiredEs_date_toPrimitive = 1;
+		var createNonEnumerableProperty = requireCreateNonEnumerableProperty();
+		var dateToPrimitive = requireDateToPrimitive();
+		var wellKnownSymbol = requireWellKnownSymbol();
+
+		var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
+		var DatePrototype = Date.prototype;
+
+		// `Date.prototype[@@toPrimitive]` method
+		// https://tc39.github.io/ecma262/#sec-date.prototype-@@toprimitive
+		if (!(TO_PRIMITIVE in DatePrototype)) {
+		  createNonEnumerableProperty(DatePrototype, TO_PRIMITIVE, dateToPrimitive);
+		}
+		return es_date_toPrimitive;
+	}
+
+	requireEs_date_toPrimitive();
 
 	var es_date_toString = {};
 
@@ -9430,898 +9488,611 @@ var Spyral = (function () {
 	          var _categories = _interopRequireDefault(require("./src/categories"));
 	          var _analysis = _interopRequireDefault(require("./src/analysis"));
 	        }, {
-	          "./src/analysis": 19,
-	          "./src/categories": 20,
-	          "./src/chart": 21,
-	          "./src/corpus": 22,
-	          "./src/load": 23,
-	          "./src/table": 25,
-	          "./src/util": 26,
-	          "@babel/runtime/helpers/interopRequireDefault": 9
+	          "./src/analysis": 30,
+	          "./src/categories": 31,
+	          "./src/chart": 32,
+	          "./src/corpus": 33,
+	          "./src/load": 34,
+	          "./src/table": 36,
+	          "./src/util": 37,
+	          "@babel/runtime/helpers/interopRequireDefault": 10
 	        }],
 	        2: [function (require, module, exports) {
 
-	          function _arrayLikeToArray(arr, len) {
-	            if (len == null || len > arr.length) len = arr.length;
-	            for (var i = 0, arr2 = new Array(len); i < len; i++) {
-	              arr2[i] = arr[i];
-	            }
-	            return arr2;
+	          function _OverloadYield(e, d) {
+	            this.v = e, this.k = d;
 	          }
-	          module.exports = _arrayLikeToArray;
+	          module.exports = _OverloadYield, module.exports.__esModule = true, module.exports["default"] = module.exports;
 	        }, {}],
 	        3: [function (require, module, exports) {
 
-	          function _arrayWithHoles(arr) {
-	            if (Array.isArray(arr)) return arr;
+	          function _arrayLikeToArray(r, a) {
+	            (null == a || a > r.length) && (a = r.length);
+	            for (var e = 0, n = Array(a); e < a; e++) {
+	              n[e] = r[e];
+	            }
+	            return n;
 	          }
-	          module.exports = _arrayWithHoles;
+	          module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
 	        }, {}],
 	        4: [function (require, module, exports) {
 
-	          function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-	            try {
-	              var info = gen[key](arg);
-	              var value = info.value;
-	            } catch (error) {
-	              reject(error);
-	              return;
-	            }
-	            if (info.done) {
-	              resolve(value);
-	            } else {
-	              Promise.resolve(value).then(_next, _throw);
-	            }
+	          function _arrayWithHoles(r) {
+	            if (Array.isArray(r)) return r;
 	          }
-	          function _asyncToGenerator(fn) {
+	          module.exports = _arrayWithHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
+	        5: [function (require, module, exports) {
+
+	          function asyncGeneratorStep(n, t, e, r, o, a, c) {
+	            try {
+	              var i = n[a](c),
+	                u = i.value;
+	            } catch (n) {
+	              return void e(n);
+	            }
+	            i.done ? t(u) : Promise.resolve(u).then(r, o);
+	          }
+	          function _asyncToGenerator(n) {
 	            return function () {
-	              var self = this,
-	                args = arguments;
-	              return new Promise(function (resolve, reject) {
-	                var gen = fn.apply(self, args);
-	                function _next(value) {
-	                  asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+	              var t = this,
+	                e = arguments;
+	              return new Promise(function (r, o) {
+	                var a = n.apply(t, e);
+	                function _next(n) {
+	                  asyncGeneratorStep(a, r, o, _next, _throw, "next", n);
 	                }
-	                function _throw(err) {
-	                  asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+	                function _throw(n) {
+	                  asyncGeneratorStep(a, r, o, _next, _throw, "throw", n);
 	                }
 	                _next(undefined);
 	              });
 	            };
 	          }
-	          module.exports = _asyncToGenerator;
-	        }, {}],
-	        5: [function (require, module, exports) {
-
-	          function _classCallCheck(instance, Constructor) {
-	            if (!(instance instanceof Constructor)) {
-	              throw new TypeError("Cannot call a class as a function");
-	            }
-	          }
-	          module.exports = _classCallCheck;
+	          module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
 	        }, {}],
 	        6: [function (require, module, exports) {
 
-	          var setPrototypeOf = require("./setPrototypeOf");
-	          var isNativeReflectConstruct = require("./isNativeReflectConstruct");
-	          function _construct(Parent, args, Class) {
-	            if (isNativeReflectConstruct()) {
-	              module.exports = _construct = Reflect.construct;
-	            } else {
-	              module.exports = _construct = function _construct(Parent, args, Class) {
-	                var a = [null];
-	                a.push.apply(a, args);
-	                var Constructor = Function.bind.apply(Parent, a);
-	                var instance = new Constructor();
-	                if (Class) setPrototypeOf(instance, Class.prototype);
-	                return instance;
-	              };
-	            }
-	            return _construct.apply(null, arguments);
+	          function _classCallCheck(a, n) {
+	            if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
 	          }
-	          module.exports = _construct;
-	        }, {
-	          "./isNativeReflectConstruct": 10,
-	          "./setPrototypeOf": 13
-	        }],
+	          module.exports = _classCallCheck, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
 	        7: [function (require, module, exports) {
 
-	          function _defineProperties(target, props) {
-	            for (var i = 0; i < props.length; i++) {
-	              var descriptor = props[i];
-	              descriptor.enumerable = descriptor.enumerable || false;
-	              descriptor.configurable = true;
-	              if ("value" in descriptor) descriptor.writable = true;
-	              Object.defineProperty(target, descriptor.key, descriptor);
-	            }
+	          var isNativeReflectConstruct = require("./isNativeReflectConstruct.js");
+	          var setPrototypeOf = require("./setPrototypeOf.js");
+	          function _construct(t, e, r) {
+	            if (isNativeReflectConstruct()) return Reflect.construct.apply(null, arguments);
+	            var o = [null];
+	            o.push.apply(o, e);
+	            var p = new (t.bind.apply(t, o))();
+	            return r && setPrototypeOf(p, r.prototype), p;
 	          }
-	          function _createClass(Constructor, protoProps, staticProps) {
-	            if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-	            if (staticProps) _defineProperties(Constructor, staticProps);
-	            return Constructor;
-	          }
-	          module.exports = _createClass;
-	        }, {}],
+	          module.exports = _construct, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./isNativeReflectConstruct.js": 11,
+	          "./setPrototypeOf.js": 23
+	        }],
 	        8: [function (require, module, exports) {
 
-	          function _defineProperty(obj, key, value) {
-	            if (key in obj) {
-	              Object.defineProperty(obj, key, {
-	                value: value,
-	                enumerable: true,
-	                configurable: true,
-	                writable: true
-	              });
-	            } else {
-	              obj[key] = value;
+	          var toPropertyKey = require("./toPropertyKey.js");
+	          function _defineProperties(e, r) {
+	            for (var t = 0; t < r.length; t++) {
+	              var o = r[t];
+	              o.enumerable = o.enumerable || false, o.configurable = true, "value" in o && (o.writable = true), Object.defineProperty(e, toPropertyKey(o.key), o);
 	            }
-	            return obj;
 	          }
-	          module.exports = _defineProperty;
-	        }, {}],
+	          function _createClass(e, r, t) {
+	            return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
+	              writable: false
+	            }), e;
+	          }
+	          module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./toPropertyKey.js": 26
+	        }],
 	        9: [function (require, module, exports) {
 
-	          function _interopRequireDefault(obj) {
-	            return obj && obj.__esModule ? obj : {
-	              "default": obj
-	            };
+	          var toPropertyKey = require("./toPropertyKey.js");
+	          function _defineProperty(e, r, t) {
+	            return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+	              value: t,
+	              enumerable: true,
+	              configurable: true,
+	              writable: true
+	            }) : e[r] = t, e;
 	          }
-	          module.exports = _interopRequireDefault;
-	        }, {}],
+	          module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./toPropertyKey.js": 26
+	        }],
 	        10: [function (require, module, exports) {
 
-	          function _isNativeReflectConstruct() {
-	            if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-	            if (Reflect.construct.sham) return false;
-	            if (typeof Proxy === "function") return true;
-	            try {
-	              Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
-	              return true;
-	            } catch (e) {
-	              return false;
-	            }
+	          function _interopRequireDefault(e) {
+	            return e && e.__esModule ? e : {
+	              "default": e
+	            };
 	          }
-	          module.exports = _isNativeReflectConstruct;
+	          module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
 	        }, {}],
 	        11: [function (require, module, exports) {
 
-	          function _iterableToArrayLimit(arr, i) {
-	            if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-	            var _arr = [];
-	            var _n = true;
-	            var _d = false;
-	            var _e = undefined;
+	          function _isNativeReflectConstruct() {
 	            try {
-	              for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-	                _arr.push(_s.value);
-	                if (i && _arr.length === i) break;
-	              }
-	            } catch (err) {
-	              _d = true;
-	              _e = err;
-	            } finally {
-	              try {
-	                if (!_n && _i["return"] != null) _i["return"]();
-	              } finally {
-	                if (_d) throw _e;
-	              }
-	            }
-	            return _arr;
+	              var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+	            } catch (t) {}
+	            return (module.exports = _isNativeReflectConstruct = function _isNativeReflectConstruct() {
+	              return !!t;
+	            }, module.exports.__esModule = true, module.exports["default"] = module.exports)();
 	          }
-	          module.exports = _iterableToArrayLimit;
+	          module.exports = _isNativeReflectConstruct, module.exports.__esModule = true, module.exports["default"] = module.exports;
 	        }, {}],
 	        12: [function (require, module, exports) {
+
+	          function _iterableToArrayLimit(r, l) {
+	            var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+	            if (null != t) {
+	              var e,
+	                n,
+	                i,
+	                u,
+	                a = [],
+	                f = true,
+	                o = false;
+	              try {
+	                if (i = (t = t.call(r)).next, 0 === l) {
+	                  if (Object(t) !== t) return;
+	                  f = !1;
+	                } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0) {
+	                  ;
+	                }
+	              } catch (r) {
+	                o = true, n = r;
+	              } finally {
+	                try {
+	                  if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+	                } finally {
+	                  if (o) throw n;
+	                }
+	              }
+	              return a;
+	            }
+	          }
+	          module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
+	        13: [function (require, module, exports) {
 
 	          function _nonIterableRest() {
 	            throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 	          }
-	          module.exports = _nonIterableRest;
-	        }, {}],
-	        13: [function (require, module, exports) {
-
-	          function _setPrototypeOf(o, p) {
-	            module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-	              o.__proto__ = p;
-	              return o;
-	            };
-	            return _setPrototypeOf(o, p);
-	          }
-	          module.exports = _setPrototypeOf;
+	          module.exports = _nonIterableRest, module.exports.__esModule = true, module.exports["default"] = module.exports;
 	        }, {}],
 	        14: [function (require, module, exports) {
 
-	          var arrayWithHoles = require("./arrayWithHoles");
-	          var iterableToArrayLimit = require("./iterableToArrayLimit");
-	          var unsupportedIterableToArray = require("./unsupportedIterableToArray");
-	          var nonIterableRest = require("./nonIterableRest");
-	          function _slicedToArray(arr, i) {
-	            return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
+	          function _readOnlyError(r) {
+	            throw new TypeError('"' + r + '" is read-only');
 	          }
-	          module.exports = _slicedToArray;
-	        }, {
-	          "./arrayWithHoles": 3,
-	          "./iterableToArrayLimit": 11,
-	          "./nonIterableRest": 12,
-	          "./unsupportedIterableToArray": 16
-	        }],
+	          module.exports = _readOnlyError, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
 	        15: [function (require, module, exports) {
 
-	          function _typeof(obj) {
-	            "@babel/helpers - typeof";
-
-	            if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-	              module.exports = _typeof = function _typeof(obj) {
-	                return typeof obj;
-	              };
-	            } else {
-	              module.exports = _typeof = function _typeof(obj) {
-	                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-	              };
-	            }
-	            return _typeof(obj);
-	          }
-	          module.exports = _typeof;
-	        }, {}],
-	        16: [function (require, module, exports) {
-
-	          var arrayLikeToArray = require("./arrayLikeToArray");
-	          function _unsupportedIterableToArray(o, minLen) {
-	            if (!o) return;
-	            if (typeof o === "string") return arrayLikeToArray(o, minLen);
-	            var n = Object.prototype.toString.call(o).slice(8, -1);
-	            if (n === "Object" && o.constructor) n = o.constructor.name;
-	            if (n === "Map" || n === "Set") return Array.from(n);
-	            if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
-	          }
-	          module.exports = _unsupportedIterableToArray;
-	        }, {
-	          "./arrayLikeToArray": 2
-	        }],
-	        17: [function (require, module, exports) {
-
-	          module.exports = require("regenerator-runtime");
-	        }, {
-	          "regenerator-runtime": 18
-	        }],
-	        18: [function (require, module, exports) {
-
-	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-	          var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-	          /**
-	           * Copyright (c) 2014-present, Facebook, Inc.
-	           *
-	           * This source code is licensed under the MIT license found in the
-	           * LICENSE file in the root directory of this source tree.
-	           */
-
-	          var runtime = function (exports) {
-
-	            var Op = Object.prototype;
-	            var hasOwn = Op.hasOwnProperty;
-	            var undefined$1; // More compressible than void 0.
-	            var $Symbol = typeof Symbol === "function" ? Symbol : {};
-	            var iteratorSymbol = $Symbol.iterator || "@@iterator";
-	            var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-	            var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-	            function wrap(innerFn, outerFn, self, tryLocsList) {
-	              // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-	              var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-	              var generator = Object.create(protoGenerator.prototype);
-	              var context = new Context(tryLocsList || []);
-
-	              // The ._invoke method unifies the implementations of the .next,
-	              // .throw, and .return methods.
-	              generator._invoke = makeInvokeMethod(innerFn, self, context);
-	              return generator;
-	            }
-	            exports.wrap = wrap;
-
-	            // Try/catch helper to minimize deoptimizations. Returns a completion
-	            // record like context.tryEntries[i].completion. This interface could
-	            // have been (and was previously) designed to take a closure to be
-	            // invoked without arguments, but in all the cases we care about we
-	            // already have an existing method we want to call, so there's no need
-	            // to create a new function object. We can even get away with assuming
-	            // the method takes exactly one argument, since that happens to be true
-	            // in every case, so we don't have to touch the arguments object. The
-	            // only additional allocation required is the completion record, which
-	            // has a stable shape and so hopefully should be cheap to allocate.
-	            function tryCatch(fn, obj, arg) {
-	              try {
-	                return {
-	                  type: "normal",
-	                  arg: fn.call(obj, arg)
+	          var regeneratorDefine = require("./regeneratorDefine.js");
+	          function _regenerator() {
+	            /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */
+	            var e,
+	              t,
+	              r = "function" == typeof Symbol ? Symbol : {},
+	              n = r.iterator || "@@iterator",
+	              o = r.toStringTag || "@@toStringTag";
+	            function i(r, n, o, i) {
+	              var c = n && n.prototype instanceof Generator ? n : Generator,
+	                u = Object.create(c.prototype);
+	              return regeneratorDefine(u, "_invoke", function (r, n, o) {
+	                var i,
+	                  c,
+	                  u,
+	                  f = 0,
+	                  p = o || [],
+	                  y = false,
+	                  G = {
+	                    p: 0,
+	                    n: 0,
+	                    v: e,
+	                    a: d,
+	                    f: d.bind(e, 4),
+	                    d: function d(t, r) {
+	                      return i = t, c = 0, u = e, G.n = r, a;
+	                    }
+	                  };
+	                function d(r, n) {
+	                  for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) {
+	                    var o,
+	                      i = p[t],
+	                      d = G.p,
+	                      l = i[2];
+	                    r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0));
+	                  }
+	                  if (o || r > 1) return a;
+	                  throw y = true, n;
+	                }
+	                return function (o, p, l) {
+	                  if (f > 1) throw TypeError("Generator is already running");
+	                  for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) {
+	                    i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u);
+	                    try {
+	                      if (f = 2, i) {
+	                        if (c || (o = "next"), t = i[o]) {
+	                          if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object");
+	                          if (!t.done) return t;
+	                          u = t.value, c < 2 && (c = 0);
+	                        } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1);
+	                        i = e;
+	                      } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break;
+	                    } catch (t) {
+	                      i = e, c = 1, u = t;
+	                    } finally {
+	                      f = 1;
+	                    }
+	                  }
+	                  return {
+	                    value: t,
+	                    done: y
+	                  };
 	                };
-	              } catch (err) {
-	                return {
-	                  type: "throw",
-	                  arg: err
-	                };
-	              }
+	              }(r, o, i), true), u;
 	            }
-	            var GenStateSuspendedStart = "suspendedStart";
-	            var GenStateSuspendedYield = "suspendedYield";
-	            var GenStateExecuting = "executing";
-	            var GenStateCompleted = "completed";
-
-	            // Returning this object from the innerFn has the same effect as
-	            // breaking out of the dispatch switch statement.
-	            var ContinueSentinel = {};
-
-	            // Dummy constructor functions that we use as the .constructor and
-	            // .constructor.prototype properties for functions that return Generator
-	            // objects. For full spec compliance, you may wish to configure your
-	            // minifier not to mangle the names of these two functions.
+	            var a = {};
 	            function Generator() {}
 	            function GeneratorFunction() {}
 	            function GeneratorFunctionPrototype() {}
-
-	            // This is a polyfill for %IteratorPrototype% for environments that
-	            // don't natively support it.
-	            var IteratorPrototype = {};
-	            IteratorPrototype[iteratorSymbol] = function () {
+	            t = Object.getPrototypeOf;
+	            var c = [][n] ? t(t([][n]())) : (regeneratorDefine(t = {}, n, function () {
+	                return this;
+	              }), t),
+	              u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c);
+	            function f(e) {
+	              return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, regeneratorDefine(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e;
+	            }
+	            return GeneratorFunction.prototype = GeneratorFunctionPrototype, regeneratorDefine(u, "constructor", GeneratorFunctionPrototype), regeneratorDefine(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", regeneratorDefine(GeneratorFunctionPrototype, o, "GeneratorFunction"), regeneratorDefine(u), regeneratorDefine(u, o, "Generator"), regeneratorDefine(u, n, function () {
 	              return this;
-	            };
-	            var getProto = Object.getPrototypeOf;
-	            var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-	            if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-	              // This environment has a native %IteratorPrototype%; use it instead
-	              // of the polyfill.
-	              IteratorPrototype = NativeIteratorPrototype;
-	            }
-	            var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-	            GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-	            GeneratorFunctionPrototype.constructor = GeneratorFunction;
-	            GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction";
-
-	            // Helper for defining the .next, .throw, and .return methods of the
-	            // Iterator interface in terms of a single ._invoke method.
-	            function defineIteratorMethods(prototype) {
-	              ["next", "throw", "return"].forEach(function (method) {
-	                prototype[method] = function (arg) {
-	                  return this._invoke(method, arg);
-	                };
-	              });
-	            }
-	            exports.isGeneratorFunction = function (genFun) {
-	              var ctor = typeof genFun === "function" && genFun.constructor;
-	              return ctor ? ctor === GeneratorFunction ||
-	              // For the native GeneratorFunction constructor, the best we can
-	              // do is to check its .name property.
-	              (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
-	            };
-	            exports.mark = function (genFun) {
-	              if (Object.setPrototypeOf) {
-	                Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-	              } else {
-	                genFun.__proto__ = GeneratorFunctionPrototype;
-	                if (!(toStringTagSymbol in genFun)) {
-	                  genFun[toStringTagSymbol] = "GeneratorFunction";
-	                }
-	              }
-	              genFun.prototype = Object.create(Gp);
-	              return genFun;
-	            };
-
-	            // Within the body of any async function, `await x` is transformed to
-	            // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-	            // `hasOwn.call(value, "__await")` to determine if the yielded value is
-	            // meant to be awaited.
-	            exports.awrap = function (arg) {
-	              return {
-	                __await: arg
-	              };
-	            };
-	            function AsyncIterator(generator, PromiseImpl) {
-	              function invoke(method, arg, resolve, reject) {
-	                var record = tryCatch(generator[method], generator, arg);
-	                if (record.type === "throw") {
-	                  reject(record.arg);
-	                } else {
-	                  var result = record.arg;
-	                  var value = result.value;
-	                  if (value && (0, _typeof2["default"])(value) === "object" && hasOwn.call(value, "__await")) {
-	                    return PromiseImpl.resolve(value.__await).then(function (value) {
-	                      invoke("next", value, resolve, reject);
-	                    }, function (err) {
-	                      invoke("throw", err, resolve, reject);
-	                    });
-	                  }
-	                  return PromiseImpl.resolve(value).then(function (unwrapped) {
-	                    // When a yielded Promise is resolved, its final value becomes
-	                    // the .value of the Promise<{value,done}> result for the
-	                    // current iteration.
-	                    result.value = unwrapped;
-	                    resolve(result);
-	                  }, function (error) {
-	                    // If a rejected Promise was yielded, throw the rejection back
-	                    // into the async generator function so it can be handled there.
-	                    return invoke("throw", error, resolve, reject);
-	                  });
-	                }
-	              }
-	              var previousPromise;
-	              function enqueue(method, arg) {
-	                function callInvokeWithMethodAndArg() {
-	                  return new PromiseImpl(function (resolve, reject) {
-	                    invoke(method, arg, resolve, reject);
-	                  });
-	                }
-	                return previousPromise =
-	                // If enqueue has been called before, then we want to wait until
-	                // all previous Promises have been resolved before calling invoke,
-	                // so that results are always delivered in the correct order. If
-	                // enqueue has not been called before, then it is important to
-	                // call invoke immediately, without waiting on a callback to fire,
-	                // so that the async generator function has the opportunity to do
-	                // any necessary setup in a predictable way. This predictability
-	                // is why the Promise constructor synchronously invokes its
-	                // executor callback, and why async functions synchronously
-	                // execute code before the first await. Since we implement simple
-	                // async functions in terms of async generators, it is especially
-	                // important to get this right, even though it requires care.
-	                previousPromise ? previousPromise.then(callInvokeWithMethodAndArg,
-	                // Avoid propagating failures to Promises returned by later
-	                // invocations of the iterator.
-	                callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-	              }
-
-	              // Define the unified helper method that is used to implement .next,
-	              // .throw, and .return (see defineIteratorMethods).
-	              this._invoke = enqueue;
-	            }
-	            defineIteratorMethods(AsyncIterator.prototype);
-	            AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-	              return this;
-	            };
-	            exports.AsyncIterator = AsyncIterator;
-
-	            // Note that simple async functions are implemented on top of
-	            // AsyncIterator objects; they just return a Promise for the value of
-	            // the final result produced by the iterator.
-	            exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-	              if (PromiseImpl === undefined) PromiseImpl = Promise;
-	              var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-	              return exports.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
-	              : iter.next().then(function (result) {
-	                return result.done ? result.value : iter.next();
-	              });
-	            };
-	            function makeInvokeMethod(innerFn, self, context) {
-	              var state = GenStateSuspendedStart;
-	              return function invoke(method, arg) {
-	                if (state === GenStateExecuting) {
-	                  throw new Error("Generator is already running");
-	                }
-	                if (state === GenStateCompleted) {
-	                  if (method === "throw") {
-	                    throw arg;
-	                  }
-
-	                  // Be forgiving, per 25.3.3.3.3 of the spec:
-	                  // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-	                  return doneResult();
-	                }
-	                context.method = method;
-	                context.arg = arg;
-	                while (true) {
-	                  var delegate = context.delegate;
-	                  if (delegate) {
-	                    var delegateResult = maybeInvokeDelegate(delegate, context);
-	                    if (delegateResult) {
-	                      if (delegateResult === ContinueSentinel) continue;
-	                      return delegateResult;
-	                    }
-	                  }
-	                  if (context.method === "next") {
-	                    // Setting context._sent for legacy support of Babel's
-	                    // function.sent implementation.
-	                    context.sent = context._sent = context.arg;
-	                  } else if (context.method === "throw") {
-	                    if (state === GenStateSuspendedStart) {
-	                      state = GenStateCompleted;
-	                      throw context.arg;
-	                    }
-	                    context.dispatchException(context.arg);
-	                  } else if (context.method === "return") {
-	                    context.abrupt("return", context.arg);
-	                  }
-	                  state = GenStateExecuting;
-	                  var record = tryCatch(innerFn, self, context);
-	                  if (record.type === "normal") {
-	                    // If an exception is thrown from innerFn, we leave state ===
-	                    // GenStateExecuting and loop back for another invocation.
-	                    state = context.done ? GenStateCompleted : GenStateSuspendedYield;
-	                    if (record.arg === ContinueSentinel) {
-	                      continue;
-	                    }
-	                    return {
-	                      value: record.arg,
-	                      done: context.done
-	                    };
-	                  } else if (record.type === "throw") {
-	                    state = GenStateCompleted;
-	                    // Dispatch the exception by looping back around to the
-	                    // context.dispatchException(context.arg) call above.
-	                    context.method = "throw";
-	                    context.arg = record.arg;
-	                  }
-	                }
-	              };
-	            }
-
-	            // Call delegate.iterator[context.method](context.arg) and handle the
-	            // result, either by returning a { value, done } result from the
-	            // delegate iterator, or by modifying context.method and context.arg,
-	            // setting context.delegate to null, and returning the ContinueSentinel.
-	            function maybeInvokeDelegate(delegate, context) {
-	              var method = delegate.iterator[context.method];
-	              if (method === undefined$1) {
-	                // A .throw or .return when the delegate iterator has no .throw
-	                // method always terminates the yield* loop.
-	                context.delegate = null;
-	                if (context.method === "throw") {
-	                  // Note: ["return"] must be used for ES3 parsing compatibility.
-	                  if (delegate.iterator["return"]) {
-	                    // If the delegate iterator has a return method, give it a
-	                    // chance to clean up.
-	                    context.method = "return";
-	                    context.arg = undefined$1;
-	                    maybeInvokeDelegate(delegate, context);
-	                    if (context.method === "throw") {
-	                      // If maybeInvokeDelegate(context) changed context.method from
-	                      // "return" to "throw", let that override the TypeError below.
-	                      return ContinueSentinel;
-	                    }
-	                  }
-	                  context.method = "throw";
-	                  context.arg = new TypeError("The iterator does not provide a 'throw' method");
-	                }
-	                return ContinueSentinel;
-	              }
-	              var record = tryCatch(method, delegate.iterator, context.arg);
-	              if (record.type === "throw") {
-	                context.method = "throw";
-	                context.arg = record.arg;
-	                context.delegate = null;
-	                return ContinueSentinel;
-	              }
-	              var info = record.arg;
-	              if (!info) {
-	                context.method = "throw";
-	                context.arg = new TypeError("iterator result is not an object");
-	                context.delegate = null;
-	                return ContinueSentinel;
-	              }
-	              if (info.done) {
-	                // Assign the result of the finished delegate to the temporary
-	                // variable specified by delegate.resultName (see delegateYield).
-	                context[delegate.resultName] = info.value;
-
-	                // Resume execution at the desired location (see delegateYield).
-	                context.next = delegate.nextLoc;
-
-	                // If context.method was "throw" but the delegate handled the
-	                // exception, let the outer generator proceed normally. If
-	                // context.method was "next", forget context.arg since it has been
-	                // "consumed" by the delegate iterator. If context.method was
-	                // "return", allow the original .return call to continue in the
-	                // outer generator.
-	                if (context.method !== "return") {
-	                  context.method = "next";
-	                  context.arg = undefined$1;
-	                }
-	              } else {
-	                // Re-yield the result returned by the delegate method.
-	                return info;
-	              }
-
-	              // The delegate iterator is finished, so forget it and continue with
-	              // the outer generator.
-	              context.delegate = null;
-	              return ContinueSentinel;
-	            }
-
-	            // Define Generator.prototype.{next,throw,return} in terms of the
-	            // unified ._invoke helper method.
-	            defineIteratorMethods(Gp);
-	            Gp[toStringTagSymbol] = "Generator";
-
-	            // A Generator should always return itself as the iterator object when the
-	            // @@iterator function is called on it. Some browsers' implementations of the
-	            // iterator prototype chain incorrectly implement this, causing the Generator
-	            // object to not be returned from this call. This ensures that doesn't happen.
-	            // See https://github.com/facebook/regenerator/issues/274 for more details.
-	            Gp[iteratorSymbol] = function () {
-	              return this;
-	            };
-	            Gp.toString = function () {
+	            }), regeneratorDefine(u, "toString", function () {
 	              return "[object Generator]";
-	            };
-	            function pushTryEntry(locs) {
-	              var entry = {
-	                tryLoc: locs[0]
-	              };
-	              if (1 in locs) {
-	                entry.catchLoc = locs[1];
-	              }
-	              if (2 in locs) {
-	                entry.finallyLoc = locs[2];
-	                entry.afterLoc = locs[3];
-	              }
-	              this.tryEntries.push(entry);
-	            }
-	            function resetTryEntry(entry) {
-	              var record = entry.completion || {};
-	              record.type = "normal";
-	              delete record.arg;
-	              entry.completion = record;
-	            }
-	            function Context(tryLocsList) {
-	              // The root entry object (effectively a try statement without a catch
-	              // or a finally block) gives us a place to store values thrown from
-	              // locations where there is no enclosing try statement.
-	              this.tryEntries = [{
-	                tryLoc: "root"
-	              }];
-	              tryLocsList.forEach(pushTryEntry, this);
-	              this.reset(true);
-	            }
-	            exports.keys = function (object) {
-	              var keys = [];
-	              for (var key in object) {
-	                keys.push(key);
-	              }
-	              keys.reverse();
-
-	              // Rather than returning an object with a next method, we keep
-	              // things simple and return the next function itself.
-	              return function next() {
-	                while (keys.length) {
-	                  var key = keys.pop();
-	                  if (key in object) {
-	                    next.value = key;
-	                    next.done = false;
-	                    return next;
-	                  }
-	                }
-
-	                // To avoid creating an additional object, we just hang the .value
-	                // and .done properties off the next function object itself. This
-	                // also ensures that the minifier will not anonymize the function.
-	                next.done = true;
-	                return next;
-	              };
-	            };
-	            function values(iterable) {
-	              if (iterable) {
-	                var iteratorMethod = iterable[iteratorSymbol];
-	                if (iteratorMethod) {
-	                  return iteratorMethod.call(iterable);
-	                }
-	                if (typeof iterable.next === "function") {
-	                  return iterable;
-	                }
-	                if (!isNaN(iterable.length)) {
-	                  var i = -1,
-	                    next = function next() {
-	                      while (++i < iterable.length) {
-	                        if (hasOwn.call(iterable, i)) {
-	                          next.value = iterable[i];
-	                          next.done = false;
-	                          return next;
-	                        }
-	                      }
-	                      next.value = undefined$1;
-	                      next.done = true;
-	                      return next;
-	                    };
-	                  return next.next = next;
-	                }
-	              }
-
-	              // Return an iterator with no values.
+	            }), (module.exports = _regenerator = function _regenerator() {
 	              return {
-	                next: doneResult
+	                w: i,
+	                m: f
 	              };
-	            }
-	            exports.values = values;
-	            function doneResult() {
-	              return {
-	                value: undefined$1,
-	                done: true
-	              };
-	            }
-	            Context.prototype = {
-	              constructor: Context,
-	              reset: function reset(skipTempReset) {
-	                this.prev = 0;
-	                this.next = 0;
-	                // Resetting context._sent for legacy support of Babel's
-	                // function.sent implementation.
-	                this.sent = this._sent = undefined$1;
-	                this.done = false;
-	                this.delegate = null;
-	                this.method = "next";
-	                this.arg = undefined$1;
-	                this.tryEntries.forEach(resetTryEntry);
-	                if (!skipTempReset) {
-	                  for (var name in this) {
-	                    // Not sure about the optimal order of these conditions:
-	                    if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
-	                      this[name] = undefined$1;
-	                    }
-	                  }
-	                }
-	              },
-	              stop: function stop() {
-	                this.done = true;
-	                var rootEntry = this.tryEntries[0];
-	                var rootRecord = rootEntry.completion;
-	                if (rootRecord.type === "throw") {
-	                  throw rootRecord.arg;
-	                }
-	                return this.rval;
-	              },
-	              dispatchException: function dispatchException(exception) {
-	                if (this.done) {
-	                  throw exception;
-	                }
-	                var context = this;
-	                function handle(loc, caught) {
-	                  record.type = "throw";
-	                  record.arg = exception;
-	                  context.next = loc;
-	                  if (caught) {
-	                    // If the dispatched exception was caught by a catch block,
-	                    // then let that catch block handle the exception normally.
-	                    context.method = "next";
-	                    context.arg = undefined$1;
-	                  }
-	                  return !!caught;
-	                }
-	                for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-	                  var entry = this.tryEntries[i];
-	                  var record = entry.completion;
-	                  if (entry.tryLoc === "root") {
-	                    // Exception thrown outside of any try block that could handle
-	                    // it, so set the completion value of the entire function to
-	                    // throw the exception.
-	                    return handle("end");
-	                  }
-	                  if (entry.tryLoc <= this.prev) {
-	                    var hasCatch = hasOwn.call(entry, "catchLoc");
-	                    var hasFinally = hasOwn.call(entry, "finallyLoc");
-	                    if (hasCatch && hasFinally) {
-	                      if (this.prev < entry.catchLoc) {
-	                        return handle(entry.catchLoc, true);
-	                      } else if (this.prev < entry.finallyLoc) {
-	                        return handle(entry.finallyLoc);
-	                      }
-	                    } else if (hasCatch) {
-	                      if (this.prev < entry.catchLoc) {
-	                        return handle(entry.catchLoc, true);
-	                      }
-	                    } else if (hasFinally) {
-	                      if (this.prev < entry.finallyLoc) {
-	                        return handle(entry.finallyLoc);
-	                      }
-	                    } else {
-	                      throw new Error("try statement without catch or finally");
-	                    }
-	                  }
-	                }
-	              },
-	              abrupt: function abrupt(type, arg) {
-	                for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-	                  var entry = this.tryEntries[i];
-	                  if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-	                    var finallyEntry = entry;
-	                    break;
-	                  }
-	                }
-	                if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
-	                  // Ignore the finally entry if control is not jumping to a
-	                  // location outside the try/catch block.
-	                  finallyEntry = null;
-	                }
-	                var record = finallyEntry ? finallyEntry.completion : {};
-	                record.type = type;
-	                record.arg = arg;
-	                if (finallyEntry) {
-	                  this.method = "next";
-	                  this.next = finallyEntry.finallyLoc;
-	                  return ContinueSentinel;
-	                }
-	                return this.complete(record);
-	              },
-	              complete: function complete(record, afterLoc) {
-	                if (record.type === "throw") {
-	                  throw record.arg;
-	                }
-	                if (record.type === "break" || record.type === "continue") {
-	                  this.next = record.arg;
-	                } else if (record.type === "return") {
-	                  this.rval = this.arg = record.arg;
-	                  this.method = "return";
-	                  this.next = "end";
-	                } else if (record.type === "normal" && afterLoc) {
-	                  this.next = afterLoc;
-	                }
-	                return ContinueSentinel;
-	              },
-	              finish: function finish(finallyLoc) {
-	                for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-	                  var entry = this.tryEntries[i];
-	                  if (entry.finallyLoc === finallyLoc) {
-	                    this.complete(entry.completion, entry.afterLoc);
-	                    resetTryEntry(entry);
-	                    return ContinueSentinel;
-	                  }
-	                }
-	              },
-	              "catch": function _catch(tryLoc) {
-	                for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-	                  var entry = this.tryEntries[i];
-	                  if (entry.tryLoc === tryLoc) {
-	                    var record = entry.completion;
-	                    if (record.type === "throw") {
-	                      var thrown = record.arg;
-	                      resetTryEntry(entry);
-	                    }
-	                    return thrown;
-	                  }
-	                }
+	            }, module.exports.__esModule = true, module.exports["default"] = module.exports)();
+	          }
+	          module.exports = _regenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./regeneratorDefine.js": 19
+	        }],
+	        16: [function (require, module, exports) {
 
-	                // The context.catch method must only be called with a location
-	                // argument that corresponds to a known catch block.
-	                throw new Error("illegal catch attempt");
-	              },
-	              delegateYield: function delegateYield(iterable, resultName, nextLoc) {
-	                this.delegate = {
-	                  iterator: values(iterable),
-	                  resultName: resultName,
-	                  nextLoc: nextLoc
-	                };
-	                if (this.method === "next") {
-	                  // Deliberately forget the last sent value so that we don't
-	                  // accidentally pass it on to the delegate.
-	                  this.arg = undefined$1;
-	                }
-	                return ContinueSentinel;
+	          var regeneratorAsyncGen = require("./regeneratorAsyncGen.js");
+	          function _regeneratorAsync(n, e, r, t, o) {
+	            var a = regeneratorAsyncGen(n, e, r, t, o);
+	            return a.next().then(function (n) {
+	              return n.done ? n.value : a.next();
+	            });
+	          }
+	          module.exports = _regeneratorAsync, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./regeneratorAsyncGen.js": 17
+	        }],
+	        17: [function (require, module, exports) {
+
+	          var regenerator = require("./regenerator.js");
+	          var regeneratorAsyncIterator = require("./regeneratorAsyncIterator.js");
+	          function _regeneratorAsyncGen(r, e, t, o, n) {
+	            return new regeneratorAsyncIterator(regenerator().w(r, e, t, o), n || Promise);
+	          }
+	          module.exports = _regeneratorAsyncGen, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./regenerator.js": 15,
+	          "./regeneratorAsyncIterator.js": 18
+	        }],
+	        18: [function (require, module, exports) {
+
+	          var OverloadYield = require("./OverloadYield.js");
+	          var regeneratorDefine = require("./regeneratorDefine.js");
+	          function AsyncIterator(t, e) {
+	            function n(r, o, i, f) {
+	              try {
+	                var c = t[r](o),
+	                  u = c.value;
+	                return u instanceof OverloadYield ? e.resolve(u.v).then(function (t) {
+	                  n("next", t, i, f);
+	                }, function (t) {
+	                  n("throw", t, i, f);
+	                }) : e.resolve(u).then(function (t) {
+	                  c.value = t, i(c);
+	                }, function (t) {
+	                  return n("throw", t, i, f);
+	                });
+	              } catch (t) {
+	                f(t);
 	              }
-	            };
+	            }
+	            var r;
+	            this.next || (regeneratorDefine(AsyncIterator.prototype), regeneratorDefine(AsyncIterator.prototype, "function" == typeof Symbol && Symbol.asyncIterator || "@asyncIterator", function () {
+	              return this;
+	            })), regeneratorDefine(this, "_invoke", function (t, o, i) {
+	              function f() {
+	                return new e(function (e, r) {
+	                  n(t, i, e, r);
+	                });
+	              }
+	              return r = r ? r.then(f, f) : f();
+	            }, true);
+	          }
+	          module.exports = AsyncIterator, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./OverloadYield.js": 2,
+	          "./regeneratorDefine.js": 19
+	        }],
+	        19: [function (require, module, exports) {
 
-	            // Regardless of whether this script is executing as a CommonJS module
-	            // or not, return the runtime object so that we can declare the variable
-	            // regeneratorRuntime in the outer scope, which allows this module to be
-	            // injected easily by `bin/regenerator --include-runtime script.js`.
-	            return exports;
-	          }(
-	          // If this script is executing as a CommonJS module, use module.exports
-	          // as the regeneratorRuntime namespace. Otherwise create a new empty
-	          // object. Either way, the resulting object will be used to initialize
-	          // the regeneratorRuntime variable at the top of this file.
-	          (typeof module === "undefined" ? "undefined" : (0, _typeof2["default"])(module)) === "object" ? module.exports : {});
+	          function _regeneratorDefine(e, r, n, t) {
+	            var i = Object.defineProperty;
+	            try {
+	              i({}, "", {});
+	            } catch (e) {
+	              i = 0;
+	            }
+	            module.exports = _regeneratorDefine = function regeneratorDefine(e, r, n, t) {
+	              function o(r, n) {
+	                _regeneratorDefine(e, r, function (e) {
+	                  return this._invoke(r, n, e);
+	                });
+	              }
+	              r ? i ? i(e, r, {
+	                value: n,
+	                enumerable: !t,
+	                configurable: !t,
+	                writable: !t
+	              }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2));
+	            }, module.exports.__esModule = true, module.exports["default"] = module.exports, _regeneratorDefine(e, r, n, t);
+	          }
+	          module.exports = _regeneratorDefine, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
+	        20: [function (require, module, exports) {
+
+	          function _regeneratorKeys(e) {
+	            var n = Object(e),
+	              r = [];
+	            for (var t in n) {
+	              r.unshift(t);
+	            }
+	            return function e() {
+	              for (; r.length;) {
+	                if ((t = r.pop()) in n) return e.value = t, e.done = false, e;
+	              }
+	              return e.done = true, e;
+	            };
+	          }
+	          module.exports = _regeneratorKeys, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
+	        21: [function (require, module, exports) {
+
+	          var OverloadYield = require("./OverloadYield.js");
+	          var regenerator = require("./regenerator.js");
+	          var regeneratorAsync = require("./regeneratorAsync.js");
+	          var regeneratorAsyncGen = require("./regeneratorAsyncGen.js");
+	          var regeneratorAsyncIterator = require("./regeneratorAsyncIterator.js");
+	          var regeneratorKeys = require("./regeneratorKeys.js");
+	          var regeneratorValues = require("./regeneratorValues.js");
+	          function _regeneratorRuntime() {
+
+	            var r = regenerator(),
+	              e = r.m(_regeneratorRuntime),
+	              t = (Object.getPrototypeOf ? Object.getPrototypeOf(e) : e.__proto__).constructor;
+	            function n(r) {
+	              var e = "function" == typeof r && r.constructor;
+	              return !!e && (e === t || "GeneratorFunction" === (e.displayName || e.name));
+	            }
+	            var o = {
+	              "throw": 1,
+	              "return": 2,
+	              "break": 3,
+	              "continue": 3
+	            };
+	            function a(r) {
+	              var e, t;
+	              return function (n) {
+	                e || (e = {
+	                  stop: function stop() {
+	                    return t(n.a, 2);
+	                  },
+	                  "catch": function _catch() {
+	                    return n.v;
+	                  },
+	                  abrupt: function abrupt(r, e) {
+	                    return t(n.a, o[r], e);
+	                  },
+	                  delegateYield: function delegateYield(r, o, a) {
+	                    return e.resultName = o, t(n.d, regeneratorValues(r), a);
+	                  },
+	                  finish: function finish(r) {
+	                    return t(n.f, r);
+	                  }
+	                }, t = function t(r, _t, o) {
+	                  n.p = e.prev, n.n = e.next;
+	                  try {
+	                    return r(_t, o);
+	                  } finally {
+	                    e.next = n.n;
+	                  }
+	                }), e.resultName && (e[e.resultName] = n.v, e.resultName = undefined), e.sent = n.v, e.next = n.n;
+	                try {
+	                  return r.call(this, e);
+	                } finally {
+	                  n.p = e.prev, n.n = e.next;
+	                }
+	              };
+	            }
+	            return (module.exports = _regeneratorRuntime = function _regeneratorRuntime() {
+	              return {
+	                wrap: function wrap(e, t, n, o) {
+	                  return r.w(a(e), t, n, o && o.reverse());
+	                },
+	                isGeneratorFunction: n,
+	                mark: r.m,
+	                awrap: function awrap(r, e) {
+	                  return new OverloadYield(r, e);
+	                },
+	                AsyncIterator: regeneratorAsyncIterator,
+	                async: function async(r, e, t, o, u) {
+	                  return (n(e) ? regeneratorAsyncGen : regeneratorAsync)(a(r), e, t, o, u);
+	                },
+	                keys: regeneratorKeys,
+	                values: regeneratorValues
+	              };
+	            }, module.exports.__esModule = true, module.exports["default"] = module.exports)();
+	          }
+	          module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./OverloadYield.js": 2,
+	          "./regenerator.js": 15,
+	          "./regeneratorAsync.js": 16,
+	          "./regeneratorAsyncGen.js": 17,
+	          "./regeneratorAsyncIterator.js": 18,
+	          "./regeneratorKeys.js": 20,
+	          "./regeneratorValues.js": 22
+	        }],
+	        22: [function (require, module, exports) {
+
+	          var _typeof = require("./typeof.js")["default"];
+	          function _regeneratorValues(e) {
+	            if (null != e) {
+	              var t = e["function" == typeof Symbol && Symbol.iterator || "@@iterator"],
+	                r = 0;
+	              if (t) return t.call(e);
+	              if ("function" == typeof e.next) return e;
+	              if (!isNaN(e.length)) return {
+	                next: function next() {
+	                  return e && r >= e.length && (e = undefined), {
+	                    value: e && e[r++],
+	                    done: !e
+	                  };
+	                }
+	              };
+	            }
+	            throw new TypeError(_typeof(e) + " is not iterable");
+	          }
+	          module.exports = _regeneratorValues, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./typeof.js": 27
+	        }],
+	        23: [function (require, module, exports) {
+
+	          function _setPrototypeOf(t, e) {
+	            return module.exports = _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
+	              return t.__proto__ = e, t;
+	            }, module.exports.__esModule = true, module.exports["default"] = module.exports, _setPrototypeOf(t, e);
+	          }
+	          module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
+	        24: [function (require, module, exports) {
+
+	          var arrayWithHoles = require("./arrayWithHoles.js");
+	          var iterableToArrayLimit = require("./iterableToArrayLimit.js");
+	          var unsupportedIterableToArray = require("./unsupportedIterableToArray.js");
+	          var nonIterableRest = require("./nonIterableRest.js");
+	          function _slicedToArray(r, e) {
+	            return arrayWithHoles(r) || iterableToArrayLimit(r, e) || unsupportedIterableToArray(r, e) || nonIterableRest();
+	          }
+	          module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./arrayWithHoles.js": 4,
+	          "./iterableToArrayLimit.js": 12,
+	          "./nonIterableRest.js": 13,
+	          "./unsupportedIterableToArray.js": 28
+	        }],
+	        25: [function (require, module, exports) {
+
+	          var _typeof = require("./typeof.js")["default"];
+	          function toPrimitive(t, r) {
+	            if ("object" != _typeof(t) || !t) return t;
+	            var e = t[Symbol.toPrimitive];
+	            if (undefined !== e) {
+	              var i = e.call(t, r || "default");
+	              if ("object" != _typeof(i)) return i;
+	              throw new TypeError("@@toPrimitive must return a primitive value.");
+	            }
+	            return ("string" === r ? String : Number)(t);
+	          }
+	          module.exports = toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./typeof.js": 27
+	        }],
+	        26: [function (require, module, exports) {
+
+	          var _typeof = require("./typeof.js")["default"];
+	          var toPrimitive = require("./toPrimitive.js");
+	          function toPropertyKey(t) {
+	            var i = toPrimitive(t, "string");
+	            return "symbol" == _typeof(i) ? i : i + "";
+	          }
+	          module.exports = toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./toPrimitive.js": 25,
+	          "./typeof.js": 27
+	        }],
+	        27: [function (require, module, exports) {
+
+	          function _typeof(o) {
+	            "@babel/helpers - typeof";
+
+	            return module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+	              return typeof o;
+	            } : function (o) {
+	              return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+	            }, module.exports.__esModule = true, module.exports["default"] = module.exports, _typeof(o);
+	          }
+	          module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {}],
+	        28: [function (require, module, exports) {
+
+	          var arrayLikeToArray = require("./arrayLikeToArray.js");
+	          function _unsupportedIterableToArray(r, a) {
+	            if (r) {
+	              if ("string" == typeof r) return arrayLikeToArray(r, a);
+	              var t = {}.toString.call(r).slice(8, -1);
+	              return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? arrayLikeToArray(r, a) : undefined;
+	            }
+	          }
+	          module.exports = _unsupportedIterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+	        }, {
+	          "./arrayLikeToArray.js": 3
+	        }],
+	        29: [function (require, module, exports) {
+
+	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+	          var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+	          // TODO(Babel 8): Remove this file.
+
+	          var runtime = require("../helpers/regeneratorRuntime")();
+	          module.exports = runtime;
+
+	          // Copied from https://github.com/facebook/regenerator/blob/main/packages/runtime/runtime.js#L736=
 	          try {
 	            regeneratorRuntime = runtime;
 	          } catch (accidentalStrictMode) {
-	            // This module should not be running in strict mode, so the above
-	            // assignment should always work unless something is misconfigured. Just
-	            // in case runtime.js accidentally runs in strict mode, we can escape
-	            // strict mode using a global Function call. This could conceivably fail
-	            // if a Content Security Policy forbids using Function, but in that case
-	            // the proper solution is to fix the accidental strict mode problem. If
-	            // you've misconfigured your bundler to force strict mode and applied a
-	            // CSP to forbid Function, and you're not willing to fix either of those
-	            // problems, please detail your unique predicament in a GitHub issue.
-	            Function("r", "regeneratorRuntime = r")(runtime);
+	            if ((typeof globalThis === "undefined" ? "undefined" : (0, _typeof2["default"])(globalThis)) === "object") {
+	              globalThis.regeneratorRuntime = runtime;
+	            } else {
+	              Function("r", "regeneratorRuntime = r")(runtime);
+	            }
 	          }
 	        }, {
-	          "@babel/runtime/helpers/interopRequireDefault": 9,
-	          "@babel/runtime/helpers/typeof": 15
+	          "../helpers/regeneratorRuntime": 21,
+	          "@babel/runtime/helpers/interopRequireDefault": 10,
+	          "@babel/runtime/helpers/typeof": 27
 	        }],
-	        19: [function (require, module, exports) {
+	        30: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -10342,8 +10113,9 @@ var Spyral = (function () {
 	            function Analysis() {
 	              (0, _classCallCheck2["default"])(this, Analysis);
 	            }
-	            (0, _createClass2["default"])(Analysis, null, [{
+	            return (0, _createClass2["default"])(Analysis, null, [{
 	              key: "pca",
+	              value:
 	              /**
 	               * Performs Principal Components Analysis on the provided vectors.
 	               * @example Spyral.Analysis.pca([[2,3,5],[1,3,4],[3,2,1],[6,5,6],[2,4,1]]);
@@ -10351,12 +10123,13 @@ var Spyral = (function () {
 	               * @param {Number} [dimensions=2] The number of dimensions to reduce to. Default is 2.
 	               * @returns {Promise<Array>} 
 	               */
-	              value: function pca(vectors) {
+	              function pca(vectors) {
 	                var dimensions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
 	                return Analysis._doAnalysis('pca', vectors, {
 	                  dimensions: dimensions
 	                });
 	              }
+
 	              /**
 	               * Performs Correspondence Analysis on the provided vectors.
 	               * @example Spyral.Analysis.ca([[2,3,5],[1,3,4],[3,2,1],[6,5,6],[2,4,1]]);
@@ -10372,6 +10145,7 @@ var Spyral = (function () {
 	                  dimensions: dimensions
 	                });
 	              }
+
 	              /**
 	               * Perform TSNE Analysis on the provided vectors.
 	               * @example Spyral.Analysis.tsne([[2,3,5],[1,3,4],[3,2,1],[6,5,6],[2,4,1]]);
@@ -10419,17 +10193,15 @@ var Spyral = (function () {
 	                });
 	              }
 	            }]);
-	            return Analysis;
 	          }();
-	          var _default = Analysis;
-	          exports["default"] = _default;
+	          exports["default"] = Analysis;
 	        }, {
-	          "./load": 23,
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/interopRequireDefault": 9
+	          "./load": 34,
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/interopRequireDefault": 10
 	        }],
-	        20: [function (require, module, exports) {
+	        31: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -10491,11 +10263,12 @@ var Spyral = (function () {
 	             * Get the categories.
 	             * @returns {Object}
 	             */
-	            (0, _createClass2["default"])(Categories, [{
+	            return (0, _createClass2["default"])(Categories, [{
 	              key: "getCategories",
 	              value: function getCategories() {
 	                return this.categories;
 	              }
+
 	              /**
 	               * Get category names as an array.
 	               * @returns {Array}
@@ -10505,6 +10278,7 @@ var Spyral = (function () {
 	              value: function getCategoryNames() {
 	                return Object.keys(this.getCategories());
 	              }
+
 	              /**
 	               * Get the terms for a category.
 	               * @param {String} name The category name
@@ -10515,6 +10289,7 @@ var Spyral = (function () {
 	              value: function getCategoryTerms(name) {
 	                return this.categories[name];
 	              }
+
 	              /**
 	               * Add a new category.
 	               * @param {String} name The category name
@@ -10527,6 +10302,7 @@ var Spyral = (function () {
 	                  this.categoriesRanking.push(name);
 	                }
 	              }
+
 	              /**
 	               * Rename a category.
 	               * @param {String} oldName The old category name
@@ -10547,6 +10323,7 @@ var Spyral = (function () {
 	                  this.setCategoryRanking(newName, ranking);
 	                }
 	              }
+
 	              /**
 	               * Remove a category.
 	               * @param {String} name The category name
@@ -10563,6 +10340,7 @@ var Spyral = (function () {
 	                  delete this.features[feature][name];
 	                }
 	              }
+
 	              /**
 	               * Gets the ranking for a category.
 	               * @param {String} name The category name
@@ -10578,6 +10356,7 @@ var Spyral = (function () {
 	                  return ranking;
 	                }
 	              }
+
 	              /**
 	               * Sets the ranking for a category.
 	               * @param {String} name The category name
@@ -10595,6 +10374,7 @@ var Spyral = (function () {
 	                  this.categoriesRanking.splice(ranking, 0, name);
 	                }
 	              }
+
 	              /**
 	               * Add a term to a category.
 	               * @param {String} category The category name
@@ -10605,6 +10385,7 @@ var Spyral = (function () {
 	              value: function addTerm(category, term) {
 	                this.addTerms(category, [term]);
 	              }
+
 	              /**
 	               * Add multiple terms to a category.
 	               * @param {String} category The category name
@@ -10626,6 +10407,7 @@ var Spyral = (function () {
 	                  }
 	                }
 	              }
+
 	              /**
 	               * Remove a term from a category.
 	               * @param {String} category The category name
@@ -10636,6 +10418,7 @@ var Spyral = (function () {
 	              value: function removeTerm(category, term) {
 	                this.removeTerms(category, [term]);
 	              }
+
 	              /**
 	               * Remove multiple terms from a category.
 	               * @param {String} category The category name
@@ -10657,6 +10440,7 @@ var Spyral = (function () {
 	                  }
 	                }
 	              }
+
 	              /**
 	               * Get the category that a term belongs to, taking ranking into account.
 	               * @param {String} term The term
@@ -10675,6 +10459,7 @@ var Spyral = (function () {
 	                }
 	                return cat;
 	              }
+
 	              /**
 	               * Get all the categories a term belongs to.
 	               * @param {String} term The term
@@ -10691,6 +10476,7 @@ var Spyral = (function () {
 	                }
 	                return cats;
 	              }
+
 	              /**
 	               * Get the feature for a term.
 	               * @param {String} feature The feature
@@ -10702,6 +10488,7 @@ var Spyral = (function () {
 	              value: function getFeatureForTerm(feature, term) {
 	                return this.getCategoryFeature(this.getCategoryForTerm(term), feature);
 	              }
+
 	              /**
 	               * Get the features.
 	               * @returns {Object}
@@ -10711,6 +10498,7 @@ var Spyral = (function () {
 	              value: function getFeatures() {
 	                return this.features;
 	              }
+
 	              /**
 	               * Add a feature.
 	               * @param {String} name The feature name
@@ -10726,6 +10514,7 @@ var Spyral = (function () {
 	                  this.featureDefaults[name] = defaultValue;
 	                }
 	              }
+
 	              /**
 	               * Remove a feature.
 	               * @param {String} name The feature name
@@ -10736,6 +10525,7 @@ var Spyral = (function () {
 	                delete this.features[name];
 	                delete this.featureDefaults[name];
 	              }
+
 	              /**
 	               * Set the feature for a category.
 	               * @param {String} categoryName The category name
@@ -10750,6 +10540,7 @@ var Spyral = (function () {
 	                }
 	                this.features[featureName][categoryName] = featureValue;
 	              }
+
 	              /**
 	               * Get the feature for a category.
 	               * @param {String} categoryName The category name
@@ -10771,6 +10562,7 @@ var Spyral = (function () {
 	                }
 	                return value;
 	              }
+
 	              /**
 	               * Get a copy of the category and feature data.
 	               * @returns {Object}
@@ -10786,6 +10578,7 @@ var Spyral = (function () {
 	                  features: Object.assign({}, this.features)
 	                };
 	              }
+
 	              /**
 	               * Save the categories (if we're in a recognized environment).
 	               * @param {Object} config for the network call (specifying if needed the location of Trombone, etc., see {@link Spyral.Load#trombone}
@@ -10805,6 +10598,7 @@ var Spyral = (function () {
 	                  return data.storedCategories.id;
 	                });
 	              }
+
 	              /**
 	               * Load the categories (if we're in a recognized environment).
 	               * 
@@ -10849,6 +10643,7 @@ var Spyral = (function () {
 	                  return me;
 	                });
 	              }
+
 	              /**
 	               * Load categories and return a promise that resolves to a new Spyral.Categories instance.
 	               * 
@@ -10866,17 +10661,15 @@ var Spyral = (function () {
 	                return categories.load(config, api);
 	              }
 	            }]);
-	            return Categories;
 	          }();
-	          var _default = Categories;
-	          exports["default"] = _default;
+	          exports["default"] = Categories;
 	        }, {
-	          "./load": 23,
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/interopRequireDefault": 9
+	          "./load": 34,
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/interopRequireDefault": 10
 	        }],
-	        21: [function (require, module, exports) {
+	        32: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -10969,7 +10762,7 @@ var Spyral = (function () {
 	             * @param {Spyral.Chart~HighchartsConfig} config 
 	             * @returns {Highcharts.Chart}
 	             */
-	            (0, _createClass2["default"])(Chart, [{
+	            return (0, _createClass2["default"])(Chart, [{
 	              key: "create",
 	              value: function create(target, config) {
 	                var _Chart$_handleTargetA = Chart._handleTargetAndConfig(target, config);
@@ -10978,6 +10771,7 @@ var Spyral = (function () {
 	                config = _Chart$_handleTargetA2[1];
 	                return Highcharts.chart(target, config);
 	              }
+
 	              /**
 	               * Create a new chart.
 	               * See [Highcharts API]{@link https://api.highcharts.com/highcharts/} for full set of config options.
@@ -10988,12 +10782,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "bar",
+	              value:
 	              /**
 	               * Create a bar chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
-	              value: function bar() {
+	              function bar() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.bar(this.target, config);
@@ -11007,12 +10802,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "column",
+	              value:
 	              /**
 	               * Create a column chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
-	              value: function column() {
+	              function column() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.column(this.target, config);
@@ -11026,12 +10822,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "line",
+	              value:
 	              /**
 	               * Create a line chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
-	              value: function line() {
+	              function line() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.line(this.target, config);
@@ -11045,12 +10842,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "pie",
+	              value:
 	              /**
 	               * Create a pie chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
-	              value: function pie() {
+	              function pie() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.pie(this.target, config);
@@ -11064,12 +10862,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "polar",
+	              value:
 	              /**
 	               * Create a polar chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
-	              value: function polar() {
+	              function polar() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.polar(this.target, config);
@@ -11083,12 +10882,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "scatter",
+	              value:
 	              /**
 	               * Create a scatter plot
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Highcharts.Chart}
 	               */
-	              value: function scatter() {
+	              function scatter() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.scatter(this.target, config);
@@ -11102,12 +10902,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "networkgraph",
+	              value:
 	              /**
 	               * Create a network graph
 	               * @param {NetworkGraph~Config} [config]
 	               * @returns {NetworkGraph}
 	               */
-	              value: function networkgraph() {
+	              function networkgraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.networkgraph(this.target, config);
@@ -11121,12 +10922,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "arcdiagram",
+	              value:
 	              /**
 	               * Create an arc-diagram chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function arcdiagram() {
+	              function arcdiagram() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.arcdiagram(this.target, config);
@@ -11140,12 +10942,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "dependencywheel",
+	              value:
 	              /**
 	               * Create a dependency wheel chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function dependencywheel() {
+	              function dependencywheel() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.dependencywheel(this.target, config);
@@ -11159,12 +10962,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "dumbbell",
+	              value:
 	              /**
 	               * Create a dumbbell chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function dumbbell() {
+	              function dumbbell() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.dumbbell(this.target, config);
@@ -11178,12 +10982,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "heatmap",
+	              value:
 	              /**
 	               * Create a heatmap chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function heatmap() {
+	              function heatmap() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.heatmap(this.target, config);
@@ -11197,12 +11002,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "histogram",
+	              value:
 	              /**
 	               * Create a histogram chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function histogram() {
+	              function histogram() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.histogram(this.target, config);
@@ -11216,12 +11022,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "item",
+	              value:
 	              /**
 	               * Create an item chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function item() {
+	              function item() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.item(this.target, config);
@@ -11235,12 +11042,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "map",
+	              value:
 	              /**
 	               * Create a map chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function map() {
+	              function map() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.map(this.target, config);
@@ -11254,12 +11062,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "sankey",
+	              value:
 	              /**
 	               * Create a sankey chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function sankey() {
+	              function sankey() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.sankey(this.target, config);
@@ -11273,12 +11082,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "streamgraph",
+	              value:
 	              /**
 	               * Create a streamgraph chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function streamgraph() {
+	              function streamgraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.streamgraph(this.target, config);
@@ -11292,12 +11102,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "sunburst",
+	              value:
 	              /**
 	               * Create a sunburst chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function sunburst() {
+	              function sunburst() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.sunburst(this.target, config);
@@ -11311,12 +11122,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "treegraph",
+	              value:
 	              /**
 	               * Create a treegraph chart
 	               * @param {Spyral.Chart~HighchartsConfig} config 
 	               * @returns {Promise}
 	               */
-	              value: function treegraph() {
+	              function treegraph() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.treegraph(this.target, config);
@@ -11330,12 +11142,13 @@ var Spyral = (function () {
 	               */
 	            }, {
 	              key: "treemap",
+	              value:
 	              /**
 	               * Create a treemap chart
 	               * @param {Spyral.Chart~HighchartsConfig} [config]
 	               * @returns {Promise}
 	               */
-	              value: function treemap() {
+	              function treemap() {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                Chart.setSeriesData(config, this.data);
 	                return Chart.treemap(this.target, config);
@@ -11452,6 +11265,7 @@ var Spyral = (function () {
 	                config.chart.type = type;
 	                return config;
 	              }
+
 	              /**
 	               * Add the provided data to the config as a series
 	               * @param {Spyral.Chart~HighchartsConfig} config 
@@ -11499,49 +11313,49 @@ var Spyral = (function () {
 	              key: "line",
 	              value: function line(target, config) {
 	                var _Chart$_handleTargetA9 = Chart._handleTargetAndConfig(target, config);
-	                var _Chart$_handleTargetA10 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA9, 2);
-	                target = _Chart$_handleTargetA10[0];
-	                config = _Chart$_handleTargetA10[1];
+	                var _Chart$_handleTargetA0 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA9, 2);
+	                target = _Chart$_handleTargetA0[0];
+	                config = _Chart$_handleTargetA0[1];
 	                Chart._setDefaultChartType(config, 'line');
 	                return Highcharts.chart(target, config);
 	              }
 	            }, {
 	              key: "pie",
 	              value: function pie(target, config) {
-	                var _Chart$_handleTargetA11 = Chart._handleTargetAndConfig(target, config);
-	                var _Chart$_handleTargetA12 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA11, 2);
-	                target = _Chart$_handleTargetA12[0];
-	                config = _Chart$_handleTargetA12[1];
+	                var _Chart$_handleTargetA1 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA10 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA1, 2);
+	                target = _Chart$_handleTargetA10[0];
+	                config = _Chart$_handleTargetA10[1];
 	                Chart._setDefaultChartType(config, 'pie');
 	                return Highcharts.chart(target, config);
 	              }
 	            }, {
 	              key: "polar",
 	              value: function polar(target, config) {
-	                var _Chart$_handleTargetA13 = Chart._handleTargetAndConfig(target, config);
-	                var _Chart$_handleTargetA14 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA13, 2);
-	                target = _Chart$_handleTargetA14[0];
-	                config = _Chart$_handleTargetA14[1];
+	                var _Chart$_handleTargetA11 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA12 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA11, 2);
+	                target = _Chart$_handleTargetA12[0];
+	                config = _Chart$_handleTargetA12[1];
 	                Chart._setDefaultChartType(config, 'polar');
 	                return Highcharts.chart(target, config);
 	              }
 	            }, {
 	              key: "scatter",
 	              value: function scatter(target, config) {
-	                var _Chart$_handleTargetA15 = Chart._handleTargetAndConfig(target, config);
-	                var _Chart$_handleTargetA16 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA15, 2);
-	                target = _Chart$_handleTargetA16[0];
-	                config = _Chart$_handleTargetA16[1];
+	                var _Chart$_handleTargetA13 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA14 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA13, 2);
+	                target = _Chart$_handleTargetA14[0];
+	                config = _Chart$_handleTargetA14[1];
 	                Chart._setDefaultChartType(config, 'scatter');
 	                return Highcharts.chart(target, config);
 	              }
 	            }, {
 	              key: "networkgraph",
 	              value: function networkgraph(target, config) {
-	                var _Chart$_handleTargetA17 = Chart._handleTargetAndConfig(target, config);
-	                var _Chart$_handleTargetA18 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA17, 2);
-	                target = _Chart$_handleTargetA18[0];
-	                config = _Chart$_handleTargetA18[1];
+	                var _Chart$_handleTargetA15 = Chart._handleTargetAndConfig(target, config);
+	                var _Chart$_handleTargetA16 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA15, 2);
+	                target = _Chart$_handleTargetA16[0];
+	                config = _Chart$_handleTargetA16[1];
 	                return new _networkgraph["default"](target, config);
 	              }
 	            }, {
@@ -11553,21 +11367,21 @@ var Spyral = (function () {
 	              key: "arcdiagram",
 	              value: function () {
 	                var _arcdiagram = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee(target, config) {
-	                  var _Chart$_handleTargetA19, _Chart$_handleTargetA20;
-	                  return _regenerator["default"].wrap(function _callee$(_context) {
+	                  var _Chart$_handleTargetA17, _Chart$_handleTargetA18;
+	                  return _regenerator["default"].wrap(function (_context) {
 	                    while (1) {
 	                      switch (_context.prev = _context.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA19 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA20 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA19, 2);
-	                          target = _Chart$_handleTargetA20[0];
-	                          config = _Chart$_handleTargetA20[1];
+	                          _Chart$_handleTargetA17 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA18 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA17, 2);
+	                          target = _Chart$_handleTargetA18[0];
+	                          config = _Chart$_handleTargetA18[1];
 	                          Chart._setDefaultChartType(config, 'arcdiagram');
-	                          _context.next = 7;
+	                          _context.next = 1;
 	                          return Chart._loadHighchartsModule('arc-diagram');
-	                        case 7:
+	                        case 1:
 	                          return _context.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context.stop();
 	                      }
@@ -11583,24 +11397,24 @@ var Spyral = (function () {
 	              key: "dependencywheel",
 	              value: function () {
 	                var _dependencywheel = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee2(target, config) {
-	                  var _Chart$_handleTargetA21, _Chart$_handleTargetA22;
-	                  return _regenerator["default"].wrap(function _callee2$(_context2) {
+	                  var _Chart$_handleTargetA19, _Chart$_handleTargetA20;
+	                  return _regenerator["default"].wrap(function (_context2) {
 	                    while (1) {
 	                      switch (_context2.prev = _context2.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA21 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA22 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA21, 2);
-	                          target = _Chart$_handleTargetA22[0];
-	                          config = _Chart$_handleTargetA22[1];
+	                          _Chart$_handleTargetA19 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA20 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA19, 2);
+	                          target = _Chart$_handleTargetA20[0];
+	                          config = _Chart$_handleTargetA20[1];
 	                          Chart._setDefaultChartType(config, 'dependencywheel');
-	                          _context2.next = 7;
+	                          _context2.next = 1;
 	                          return Chart._loadHighchartsModule('sankey');
-	                        case 7:
-	                          _context2.next = 9;
+	                        case 1:
+	                          _context2.next = 2;
 	                          return Chart._loadHighchartsModule('dependency-wheel');
-	                        case 9:
+	                        case 2:
 	                          return _context2.abrupt("return", Highcharts.chart(target, config));
-	                        case 10:
+	                        case 3:
 	                        case "end":
 	                          return _context2.stop();
 	                      }
@@ -11616,21 +11430,21 @@ var Spyral = (function () {
 	              key: "dumbbell",
 	              value: function () {
 	                var _dumbbell = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee3(target, config) {
-	                  var _Chart$_handleTargetA23, _Chart$_handleTargetA24;
-	                  return _regenerator["default"].wrap(function _callee3$(_context3) {
+	                  var _Chart$_handleTargetA21, _Chart$_handleTargetA22;
+	                  return _regenerator["default"].wrap(function (_context3) {
 	                    while (1) {
 	                      switch (_context3.prev = _context3.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA23 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA24 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA23, 2);
-	                          target = _Chart$_handleTargetA24[0];
-	                          config = _Chart$_handleTargetA24[1];
+	                          _Chart$_handleTargetA21 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA22 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA21, 2);
+	                          target = _Chart$_handleTargetA22[0];
+	                          config = _Chart$_handleTargetA22[1];
 	                          Chart._setDefaultChartType(config, 'dumbbell');
-	                          _context3.next = 7;
+	                          _context3.next = 1;
 	                          return Chart._loadHighchartsModule('dumbbell');
-	                        case 7:
+	                        case 1:
 	                          return _context3.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context3.stop();
 	                      }
@@ -11646,21 +11460,21 @@ var Spyral = (function () {
 	              key: "heatmap",
 	              value: function () {
 	                var _heatmap = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee4(target, config) {
-	                  var _Chart$_handleTargetA25, _Chart$_handleTargetA26;
-	                  return _regenerator["default"].wrap(function _callee4$(_context4) {
+	                  var _Chart$_handleTargetA23, _Chart$_handleTargetA24;
+	                  return _regenerator["default"].wrap(function (_context4) {
 	                    while (1) {
 	                      switch (_context4.prev = _context4.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA25 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA26 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA25, 2);
-	                          target = _Chart$_handleTargetA26[0];
-	                          config = _Chart$_handleTargetA26[1];
+	                          _Chart$_handleTargetA23 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA24 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA23, 2);
+	                          target = _Chart$_handleTargetA24[0];
+	                          config = _Chart$_handleTargetA24[1];
 	                          Chart._setDefaultChartType(config, 'heatmap');
-	                          _context4.next = 7;
+	                          _context4.next = 1;
 	                          return Chart._loadHighchartsModule('heatmap');
-	                        case 7:
+	                        case 1:
 	                          return _context4.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context4.stop();
 	                      }
@@ -11676,28 +11490,28 @@ var Spyral = (function () {
 	              key: "histogram",
 	              value: function () {
 	                var _histogram = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee5(target, config) {
-	                  var _Chart$_handleTargetA27, _Chart$_handleTargetA28;
-	                  return _regenerator["default"].wrap(function _callee5$(_context5) {
+	                  var _Chart$_handleTargetA25, _Chart$_handleTargetA26;
+	                  return _regenerator["default"].wrap(function (_context5) {
 	                    while (1) {
 	                      switch (_context5.prev = _context5.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA27 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA28 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA27, 2);
-	                          target = _Chart$_handleTargetA28[0];
-	                          config = _Chart$_handleTargetA28[1];
+	                          _Chart$_handleTargetA25 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA26 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA25, 2);
+	                          target = _Chart$_handleTargetA26[0];
+	                          config = _Chart$_handleTargetA26[1];
 	                          Chart._setDefaultChartType(config, 'histogram');
-	                          _context5.next = 7;
+	                          _context5.next = 1;
 	                          return Chart._loadHighchartsModule('histogram-bellcurve');
-	                        case 7:
+	                        case 1:
 	                          return _context5.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context5.stop();
 	                      }
 	                    }
 	                  }, _callee5);
 	                }));
-	                function histogram(_x9, _x10) {
+	                function histogram(_x9, _x0) {
 	                  return _histogram.apply(this, arguments);
 	                }
 	                return histogram;
@@ -11706,28 +11520,28 @@ var Spyral = (function () {
 	              key: "item",
 	              value: function () {
 	                var _item = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee6(target, config) {
-	                  var _Chart$_handleTargetA29, _Chart$_handleTargetA30;
-	                  return _regenerator["default"].wrap(function _callee6$(_context6) {
+	                  var _Chart$_handleTargetA27, _Chart$_handleTargetA28;
+	                  return _regenerator["default"].wrap(function (_context6) {
 	                    while (1) {
 	                      switch (_context6.prev = _context6.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA29 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA30 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA29, 2);
-	                          target = _Chart$_handleTargetA30[0];
-	                          config = _Chart$_handleTargetA30[1];
+	                          _Chart$_handleTargetA27 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA28 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA27, 2);
+	                          target = _Chart$_handleTargetA28[0];
+	                          config = _Chart$_handleTargetA28[1];
 	                          Chart._setDefaultChartType(config, 'item');
-	                          _context6.next = 7;
+	                          _context6.next = 1;
 	                          return Chart._loadHighchartsModule('item-series');
-	                        case 7:
+	                        case 1:
 	                          return _context6.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context6.stop();
 	                      }
 	                    }
 	                  }, _callee6);
 	                }));
-	                function item(_x11, _x12) {
+	                function item(_x1, _x10) {
 	                  return _item.apply(this, arguments);
 	                }
 	                return item;
@@ -11736,28 +11550,28 @@ var Spyral = (function () {
 	              key: "map",
 	              value: function () {
 	                var _map = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee7(target, config) {
-	                  var _Chart$_handleTargetA31, _Chart$_handleTargetA32;
-	                  return _regenerator["default"].wrap(function _callee7$(_context7) {
+	                  var _Chart$_handleTargetA29, _Chart$_handleTargetA30;
+	                  return _regenerator["default"].wrap(function (_context7) {
 	                    while (1) {
 	                      switch (_context7.prev = _context7.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA31 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA32 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA31, 2);
-	                          target = _Chart$_handleTargetA32[0];
-	                          config = _Chart$_handleTargetA32[1];
+	                          _Chart$_handleTargetA29 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA30 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA29, 2);
+	                          target = _Chart$_handleTargetA30[0];
+	                          config = _Chart$_handleTargetA30[1];
 	                          Chart._setDefaultChartType(config, 'map');
-	                          _context7.next = 7;
+	                          _context7.next = 1;
 	                          return Chart._loadHighchartsModule('map');
-	                        case 7:
+	                        case 1:
 	                          return _context7.abrupt("return", Highcharts.mapChart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context7.stop();
 	                      }
 	                    }
 	                  }, _callee7);
 	                }));
-	                function map(_x13, _x14) {
+	                function map(_x11, _x12) {
 	                  return _map.apply(this, arguments);
 	                }
 	                return map;
@@ -11766,28 +11580,28 @@ var Spyral = (function () {
 	              key: "sankey",
 	              value: function () {
 	                var _sankey = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee8(target, config) {
-	                  var _Chart$_handleTargetA33, _Chart$_handleTargetA34;
-	                  return _regenerator["default"].wrap(function _callee8$(_context8) {
+	                  var _Chart$_handleTargetA31, _Chart$_handleTargetA32;
+	                  return _regenerator["default"].wrap(function (_context8) {
 	                    while (1) {
 	                      switch (_context8.prev = _context8.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA33 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA34 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA33, 2);
-	                          target = _Chart$_handleTargetA34[0];
-	                          config = _Chart$_handleTargetA34[1];
+	                          _Chart$_handleTargetA31 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA32 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA31, 2);
+	                          target = _Chart$_handleTargetA32[0];
+	                          config = _Chart$_handleTargetA32[1];
 	                          Chart._setDefaultChartType(config, 'sankey');
-	                          _context8.next = 7;
+	                          _context8.next = 1;
 	                          return Chart._loadHighchartsModule('sankey');
-	                        case 7:
+	                        case 1:
 	                          return _context8.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context8.stop();
 	                      }
 	                    }
 	                  }, _callee8);
 	                }));
-	                function sankey(_x15, _x16) {
+	                function sankey(_x13, _x14) {
 	                  return _sankey.apply(this, arguments);
 	                }
 	                return sankey;
@@ -11796,28 +11610,28 @@ var Spyral = (function () {
 	              key: "streamgraph",
 	              value: function () {
 	                var _streamgraph = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee9(target, config) {
-	                  var _Chart$_handleTargetA35, _Chart$_handleTargetA36;
-	                  return _regenerator["default"].wrap(function _callee9$(_context9) {
+	                  var _Chart$_handleTargetA33, _Chart$_handleTargetA34;
+	                  return _regenerator["default"].wrap(function (_context9) {
 	                    while (1) {
 	                      switch (_context9.prev = _context9.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA35 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA36 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA35, 2);
-	                          target = _Chart$_handleTargetA36[0];
-	                          config = _Chart$_handleTargetA36[1];
+	                          _Chart$_handleTargetA33 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA34 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA33, 2);
+	                          target = _Chart$_handleTargetA34[0];
+	                          config = _Chart$_handleTargetA34[1];
 	                          Chart._setDefaultChartType(config, 'streamgraph');
-	                          _context9.next = 7;
+	                          _context9.next = 1;
 	                          return Chart._loadHighchartsModule('streamgraph');
-	                        case 7:
+	                        case 1:
 	                          return _context9.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 2:
 	                        case "end":
 	                          return _context9.stop();
 	                      }
 	                    }
 	                  }, _callee9);
 	                }));
-	                function streamgraph(_x17, _x18) {
+	                function streamgraph(_x15, _x16) {
 	                  return _streamgraph.apply(this, arguments);
 	                }
 	                return streamgraph;
@@ -11825,29 +11639,29 @@ var Spyral = (function () {
 	            }, {
 	              key: "sunburst",
 	              value: function () {
-	                var _sunburst = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee10(target, config) {
-	                  var _Chart$_handleTargetA37, _Chart$_handleTargetA38;
-	                  return _regenerator["default"].wrap(function _callee10$(_context10) {
+	                var _sunburst = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee0(target, config) {
+	                  var _Chart$_handleTargetA35, _Chart$_handleTargetA36;
+	                  return _regenerator["default"].wrap(function (_context0) {
 	                    while (1) {
-	                      switch (_context10.prev = _context10.next) {
+	                      switch (_context0.prev = _context0.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA37 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA38 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA37, 2);
-	                          target = _Chart$_handleTargetA38[0];
-	                          config = _Chart$_handleTargetA38[1];
+	                          _Chart$_handleTargetA35 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA36 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA35, 2);
+	                          target = _Chart$_handleTargetA36[0];
+	                          config = _Chart$_handleTargetA36[1];
 	                          Chart._setDefaultChartType(config, 'sunburst');
-	                          _context10.next = 7;
+	                          _context0.next = 1;
 	                          return Chart._loadHighchartsModule('sunburst');
-	                        case 7:
-	                          return _context10.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 1:
+	                          return _context0.abrupt("return", Highcharts.chart(target, config));
+	                        case 2:
 	                        case "end":
-	                          return _context10.stop();
+	                          return _context0.stop();
 	                      }
 	                    }
-	                  }, _callee10);
+	                  }, _callee0);
 	                }));
-	                function sunburst(_x19, _x20) {
+	                function sunburst(_x17, _x18) {
 	                  return _sunburst.apply(this, arguments);
 	                }
 	                return sunburst;
@@ -11855,32 +11669,32 @@ var Spyral = (function () {
 	            }, {
 	              key: "treegraph",
 	              value: function () {
-	                var _treegraph = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee11(target, config) {
-	                  var _Chart$_handleTargetA39, _Chart$_handleTargetA40;
-	                  return _regenerator["default"].wrap(function _callee11$(_context11) {
+	                var _treegraph = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee1(target, config) {
+	                  var _Chart$_handleTargetA37, _Chart$_handleTargetA38;
+	                  return _regenerator["default"].wrap(function (_context1) {
 	                    while (1) {
-	                      switch (_context11.prev = _context11.next) {
+	                      switch (_context1.prev = _context1.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA39 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA40 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA39, 2);
-	                          target = _Chart$_handleTargetA40[0];
-	                          config = _Chart$_handleTargetA40[1];
+	                          _Chart$_handleTargetA37 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA38 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA37, 2);
+	                          target = _Chart$_handleTargetA38[0];
+	                          config = _Chart$_handleTargetA38[1];
 	                          Chart._setDefaultChartType(config, 'treegraph');
-	                          _context11.next = 7;
+	                          _context1.next = 1;
 	                          return Chart._loadHighchartsModule('treemap');
-	                        case 7:
-	                          _context11.next = 9;
+	                        case 1:
+	                          _context1.next = 2;
 	                          return Chart._loadHighchartsModule('treegraph');
-	                        case 9:
-	                          return _context11.abrupt("return", Highcharts.chart(target, config));
-	                        case 10:
+	                        case 2:
+	                          return _context1.abrupt("return", Highcharts.chart(target, config));
+	                        case 3:
 	                        case "end":
-	                          return _context11.stop();
+	                          return _context1.stop();
 	                      }
 	                    }
-	                  }, _callee11);
+	                  }, _callee1);
 	                }));
-	                function treegraph(_x21, _x22) {
+	                function treegraph(_x19, _x20) {
 	                  return _treegraph.apply(this, arguments);
 	                }
 	                return treegraph;
@@ -11888,58 +11702,57 @@ var Spyral = (function () {
 	            }, {
 	              key: "treemap",
 	              value: function () {
-	                var _treemap = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee12(target, config) {
-	                  var _Chart$_handleTargetA41, _Chart$_handleTargetA42;
-	                  return _regenerator["default"].wrap(function _callee12$(_context12) {
+	                var _treemap = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee10(target, config) {
+	                  var _Chart$_handleTargetA39, _Chart$_handleTargetA40;
+	                  return _regenerator["default"].wrap(function (_context10) {
 	                    while (1) {
-	                      switch (_context12.prev = _context12.next) {
+	                      switch (_context10.prev = _context10.next) {
 	                        case 0:
-	                          _Chart$_handleTargetA41 = Chart._handleTargetAndConfig(target, config);
-	                          _Chart$_handleTargetA42 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA41, 2);
-	                          target = _Chart$_handleTargetA42[0];
-	                          config = _Chart$_handleTargetA42[1];
+	                          _Chart$_handleTargetA39 = Chart._handleTargetAndConfig(target, config);
+	                          _Chart$_handleTargetA40 = (0, _slicedToArray2["default"])(_Chart$_handleTargetA39, 2);
+	                          target = _Chart$_handleTargetA40[0];
+	                          config = _Chart$_handleTargetA40[1];
 	                          Chart._setDefaultChartType(config, 'treemap');
-	                          _context12.next = 7;
+	                          _context10.next = 1;
 	                          return Chart._loadHighchartsModule('treemap');
-	                        case 7:
-	                          return _context12.abrupt("return", Highcharts.chart(target, config));
-	                        case 8:
+	                        case 1:
+	                          return _context10.abrupt("return", Highcharts.chart(target, config));
+	                        case 2:
 	                        case "end":
-	                          return _context12.stop();
+	                          return _context10.stop();
 	                      }
 	                    }
-	                  }, _callee12);
+	                  }, _callee10);
 	                }));
-	                function treemap(_x23, _x24) {
+	                function treemap(_x21, _x22) {
 	                  return _treemap.apply(this, arguments);
 	                }
 	                return treemap;
 	              }()
 	            }]);
-	            return Chart;
 	          }();
-	          var _default = Chart;
-	          exports["default"] = _default;
+	          exports["default"] = Chart;
 	        }, {
-	          "./networkgraph": 24,
-	          "./util.js": 26,
-	          "@babel/runtime/helpers/asyncToGenerator": 4,
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/interopRequireDefault": 9,
-	          "@babel/runtime/helpers/slicedToArray": 14,
-	          "@babel/runtime/helpers/typeof": 15,
-	          "@babel/runtime/regenerator": 17
+	          "./networkgraph": 35,
+	          "./util.js": 37,
+	          "@babel/runtime/helpers/asyncToGenerator": 5,
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/interopRequireDefault": 10,
+	          "@babel/runtime/helpers/slicedToArray": 24,
+	          "@babel/runtime/helpers/typeof": 27,
+	          "@babel/runtime/regenerator": 29
 	        }],
-	        22: [function (require, module, exports) {
+	        33: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
 	            value: true
 	          });
 	          exports["default"] = undefined;
-	          var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 	          var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+	          var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+	          _interopRequireDefault(require("@babel/runtime/helpers/readOnlyError"));
 	          var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 	          var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 	          var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -11947,26 +11760,26 @@ var Spyral = (function () {
 	          var _load = _interopRequireDefault(require("./load"));
 	          var _util = _interopRequireDefault(require("./util.js"));
 	          var _categories = _interopRequireDefault(require("./categories.js"));
-	          function ownKeys(object, enumerableOnly) {
-	            var keys = Object.keys(object);
+	          function ownKeys(e, r) {
+	            var t = Object.keys(e);
 	            if (Object.getOwnPropertySymbols) {
-	              var symbols = Object.getOwnPropertySymbols(object);
-	              enumerableOnly && (symbols = symbols.filter(function (sym) {
-	                return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-	              })), keys.push.apply(keys, symbols);
+	              var o = Object.getOwnPropertySymbols(e);
+	              r && (o = o.filter(function (r) {
+	                return Object.getOwnPropertyDescriptor(e, r).enumerable;
+	              })), t.push.apply(t, o);
 	            }
-	            return keys;
+	            return t;
 	          }
-	          function _objectSpread(target) {
-	            for (var i = 1; i < arguments.length; i++) {
-	              var source = null != arguments[i] ? arguments[i] : {};
-	              i % 2 ? ownKeys(Object(source), true).forEach(function (key) {
-	                (0, _defineProperty2["default"])(target, key, source[key]);
-	              }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-	                Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	          function _objectSpread(e) {
+	            for (var r = 1; r < arguments.length; r++) {
+	              var t = null != arguments[r] ? arguments[r] : {};
+	              r % 2 ? ownKeys(Object(t), true).forEach(function (r) {
+	                (0, _defineProperty2["default"])(e, r, t[r]);
+	              }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+	                Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 	              });
 	            }
-	            return target;
+	            return e;
 	          }
 	          // this is essentially a private method to determine if we're in corpus or documents mode.
 	          // if docIndex or docId is defined, or if mode=="documents" then we're in documents mode
@@ -12281,19 +12094,21 @@ var Spyral = (function () {
 	              (0, _classCallCheck2["default"])(this, Corpus);
 	              this.corpusid = id;
 	            }
-	            (0, _createClass2["default"])(Corpus, [{
+	            return (0, _createClass2["default"])(Corpus, [{
 	              key: "id",
+	              value:
 	              /**
 	               * Returns the ID of the corpus.
 	               * 
 	               * @returns {Promise<string>} a Promise for the string ID of the corpus
 	               */
-	              value: function id() {
+	              function id() {
 	                var me = this;
 	                return new Promise(function (resolve) {
 	                  return resolve(me.corpusid);
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the ID
 	               * @param {Object} config 
@@ -12302,6 +12117,7 @@ var Spyral = (function () {
 	              //	static id(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.id(api || config));
 	              //	}
+
 	              /**
 	               * Returns the metadata object (of the corpus or document, depending on which mode is used).
 	               * 
@@ -12327,30 +12143,30 @@ var Spyral = (function () {
 	               *
 	               * 	[
 	                  * 		{
-	                  *   		"id": "ddac6b12c3f4261013c63d04e8d21b45",
-	                  *   		"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
-	                  *   		"tokensCount-lexical": "33559",
-	                  *   		"lastTokenStartOffset-lexical": "259750",
-	                  *   		"parent_modified": "1548457455000",
-	                  *   		"typesCount-lexical": "4235",
-	                  *   		"typesCountMean-lexical": "7.924203",
-	                  *   		"lastTokenPositionIndex-lexical": "33558",
-	                  *   		"index": "0",
-	                  *   		"language": "en",
-	                  *   		"sentencesCount": "1302",
-	                  *   		"source": "stream",
-	                  *   		"typesCountStdDev-lexical": "46.626404",
-	                  *   		"title": "1790 Love And Freindship",
-	                  *   		"parent_queryParameters": "VOYANT_BUILD=M16&textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&VOYANT_REMOTE_ID=199.229.249.196&accessIP=199.229.249.196&VOYANT_VERSION=2.4&palette=default&suppressTools=false",
-	                  *   		"extra.Content-Type": "text/plain; charset=windows-1252",
-	                  *   		"parentType": "expansion",
-	                  *   		"extra.Content-Encoding": "windows-1252",
-	                  *   		"parent_source": "file",
-	                  *   		"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
-	                  *   		"modified": "1432861756000",
-	                  *   		"location": "1790 Love And Freindship.txt",
-	                  *   		"parent_title": "Austen",
-	                  *   		"parent_location": "Austen.zip"
+	                  * 			"id": "ddac6b12c3f4261013c63d04e8d21b45",
+	                  * 			"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
+	                  * 			"tokensCount-lexical": "33559",
+	                  * 			"lastTokenStartOffset-lexical": "259750",
+	                  * 			"parent_modified": "1548457455000",
+	                  * 			"typesCount-lexical": "4235",
+	                  * 			"typesCountMean-lexical": "7.924203",
+	                  * 			"lastTokenPositionIndex-lexical": "33558",
+	                  * 			"index": "0",
+	                  * 			"language": "en",
+	                  * 			"sentencesCount": "1302",
+	                  * 			"source": "stream",
+	                  * 			"typesCountStdDev-lexical": "46.626404",
+	                  * 			"title": "1790 Love And Freindship",
+	                  * 			"parent_queryParameters": "VOYANT_BUILD=M16&textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&VOYANT_REMOTE_ID=199.229.249.196&accessIP=199.229.249.196&VOYANT_VERSION=2.4&palette=default&suppressTools=false",
+	                  * 			"extra.Content-Type": "text/plain; charset=windows-1252",
+	                  * 			"parentType": "expansion",
+	                  * 			"extra.Content-Encoding": "windows-1252",
+	                  * 			"parent_source": "file",
+	                  * 			"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
+	                  * 			"modified": "1432861756000",
+	                  * 			"location": "1790 Love And Freindship.txt",
+	                  * 			"parent_title": "Austen",
+	                  * 			"parent_location": "Austen.zip"
 	                  * 		}
 	                  * 	]
 	               * 
@@ -12363,7 +12179,7 @@ var Spyral = (function () {
 	               *  * **docId**: a set of document IDs; multiple documents can be separated by a comma
 	               *  * **query**: one or more term queries for the title, author or full-text
 	               *  * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	               * 
 	               *  An example:
 	               *  
@@ -12383,6 +12199,107 @@ var Spyral = (function () {
 	                  return isDocumentsMode(config) ? data.documentsMetadata.documents : data.corpus.metadata;
 	                });
 	              }
+
+	              /**
+	               * Returns the metadata object for the corpus.
+	               * 
+	               * The following is an example of the object return for the metadata of the Jane Austen corpus:
+	               * 
+	               * 	{
+	               * 		"id": "b50407fd1cbbecec4315a8fc411bad3c",
+	               * 		"alias": "austen",
+	              	 * 		"title": "",
+	               * 		"subTitle": "",
+	               * 		"documentsCount": 8,
+	               * 		"createdTime": 1582429585984,
+	               * 		"createdDate": "2020-02-22T22:46:25.984-0500",
+	               * 		"lexicalTokensCount": 781763,
+	               * 		"lexicalTypesCount": 15368,
+	               * 		"noPasswordAccess": "NORMAL",
+	               * 		"languageCodes": [
+	               * 			"en"
+	               * 		]
+	               * 	}
+	               * 
+	               *  An example:
+	               *  
+	               *  	// this would show the number 8 (the size of the corpus)
+	               *  	loadCorpus("austen").corpusMetadata().then(metadata => metadata.documentsCount)
+	               *  
+	               * @returns {Promise<object>} a Promise for an Object containing metadata
+	               */
+	            }, {
+	              key: "corpusMetadata",
+	              value: function corpusMetadata() {
+	                return _load["default"].trombone({
+	                  tool: 'corpus.CorpusMetadata',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.corpus.metadata;
+	                });
+	              }
+
+	              /**
+	               * Returns the metadata object for the document(s).
+	               * 
+	               * The following is an example of what is returned as metadata for the first document:
+	               *
+	               * 	[
+	                  * 		{
+	                  * 			"id": "ddac6b12c3f4261013c63d04e8d21b45",
+	                  * 			"extra.X-Parsed-By": "org.apache.tika.parser.DefaultParser",
+	                  * 			"tokensCount-lexical": "33559",
+	                  * 			"lastTokenStartOffset-lexical": "259750",
+	                  * 			"parent_modified": "1548457455000",
+	                  * 			"typesCount-lexical": "4235",
+	                  * 			"typesCountMean-lexical": "7.924203",
+	                  * 			"lastTokenPositionIndex-lexical": "33558",
+	                  * 			"index": "0",
+	                  * 			"language": "en",
+	                  * 			"sentencesCount": "1302",
+	                  * 			"source": "stream",
+	                  * 			"typesCountStdDev-lexical": "46.626404",
+	                  * 			"title": "1790 Love And Freindship",
+	                  * 			"parent_queryParameters": "VOYANT_BUILD=M16&textarea-1015-inputEl=Type+in+one+or+more+URLs+on+separate+lines+or+paste+in+a+full+text.&VOYANT_REMOTE_ID=199.229.249.196&accessIP=199.229.249.196&VOYANT_VERSION=2.4&palette=default&suppressTools=false",
+	                  * 			"extra.Content-Type": "text/plain; charset=windows-1252",
+	                  * 			"parentType": "expansion",
+	                  * 			"extra.Content-Encoding": "windows-1252",
+	                  * 			"parent_source": "file",
+	                  * 			"parent_id": "ae47e3a72cd3cad51e196e8a41e21aec",
+	                  * 			"modified": "1432861756000",
+	                  * 			"location": "1790 Love And Freindship.txt",
+	                  * 			"parent_title": "Austen",
+	                  * 			"parent_location": "Austen.zip"
+	                  * 		}
+	                  * 	]
+	               * 
+	               * You can request specific documents in the config object:
+	               * 
+	               *  * **start**: the zero-based start of the list
+	               *  * **limit**: a limit to the number of items to return at a time
+	               *  * **docIndex**: a zero-based list of documents (first document is zero, etc.); multiple documents can be separated by a comma
+	               *  * **docId**: a set of document IDs; multiple documents can be separated by a comma
+	               *  * **query**: one or more term queries for the title, author or full-text
+	               *  * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  
+	               * @param {Object} config an Object specifying parameters (see list above)
+	               * @returns {Promise<object>} a Promise for an Object containing metadata
+	               */
+	            }, {
+	              key: "documentMetadata",
+	              value: function documentMetadata(config) {
+	                if (!isDocumentsMode(config)) {
+	                  throw new Error('Must specify a docIndex or docId.');
+	                }
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.DocumentsMetadata',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.documentsMetadata.documents;
+	                });
+	              }
+
 	              /*
 	               * Create a Corpus and return the metadata
 	               * @param {*} config 
@@ -12391,6 +12308,7 @@ var Spyral = (function () {
 	              //	static metadata(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.metadata(api || config));
 	              //	}
+
 	              /**
 	               * Returns a brief summary of the corpus that includes essential metadata (documents count, terms count, etc.) 
 	               * 
@@ -12407,6 +12325,7 @@ var Spyral = (function () {
 	                  return "This corpus (".concat(data.alias ? data.alias : data.id, ") has ").concat(data.documentsCount.toLocaleString(), " documents with ").concat(data.lexicalTokensCount.toLocaleString(), " total words and ").concat(data.lexicalTypesCount.toLocaleString(), " unique word forms.");
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the summary
 	               * @param {*} config 
@@ -12415,6 +12334,7 @@ var Spyral = (function () {
 	              //	static summary(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.summary(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of document titles for the corpus.
 	               * 
@@ -12426,7 +12346,7 @@ var Spyral = (function () {
 	               *  * **docId**: a set of document IDs; multiple documents can be separated by a comma
 	               *  * **query**: one or more term queries for the title, author or full-text
 	               *  * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	               * 
 	               * An example:
 	               *
@@ -12439,7 +12359,7 @@ var Spyral = (function () {
 	               * @param {string} config.docId a set of document IDs; multiple documents can be separated by a comma
 	               * @param {string} config.query one or more term queries for the title, author or full-text
 	               * @param {string} config.sort one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	               * @returns {Promise<Array>} a Promise for an Array of document titles
 	               */
 	            }, {
@@ -12453,6 +12373,7 @@ var Spyral = (function () {
 	                  });
 	                });
 	              }
+
 	              /**
 	               * Returns an array of documents metadata for the corpus.
 	               * 
@@ -12464,7 +12385,7 @@ var Spyral = (function () {
 	               *  * **docId**: a set of document IDs; multiple documents can be separated by a comma
 	               *  * **query**: one or more term queries for the title, author or full-text
 	               *  * **sort**: one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	               * 
 	               * @param {Object} config an Object specifying parameters (see list above) 
 	               * @param {number} config.start the zero-based start of the list
@@ -12473,7 +12394,7 @@ var Spyral = (function () {
 	               * @param {string} config.docId a set of document IDs; multiple documents can be separated by a comma
 	               * @param {string} config.query one or more term queries for the title, author or full-text
 	               * @param {string} config.sort one of the following sort orders: `INDEX`, `TITLE`, `AUTHOR`, `TOKENSCOUNTLEXICAL`, `TYPESCOUNTLEXICAL`, `TYPETOKENRATIOLEXICAL`, `PUBDATE`
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	               * @returns {Promise<Array>} a Promise for an Array of documents metadata
 	               */
 	            }, {
@@ -12483,6 +12404,7 @@ var Spyral = (function () {
 	                config.mode = 'documents';
 	                return this.metadata(config);
 	              }
+
 	              /*
 	               * Create a Corpus and return the titles
 	               * @param {*} config 
@@ -12491,6 +12413,7 @@ var Spyral = (function () {
 	              //	static titles(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.titles(api || config));
 	              //	}
+
 	              /**
 	               * Returns the text of the entire corpus.
 	               * 
@@ -12522,6 +12445,7 @@ var Spyral = (function () {
 	                  return data.join('\n\n---\n\n');
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the text
 	               * @param {*} config 
@@ -12530,6 +12454,7 @@ var Spyral = (function () {
 	              //	static text(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.text(api || config));	
 	              //	}
+
 	              /**
 	               * Returns an array of texts from the entire corpus.
 	               * 
@@ -12562,6 +12487,7 @@ var Spyral = (function () {
 	                  return data.texts.texts;
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the texts
 	               * @param {*} config 
@@ -12570,6 +12496,7 @@ var Spyral = (function () {
 	              //	static texts(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.texts(api || config));	
 	              //	}
+
 	              /**
 	               * Returns an array of terms (either CorpusTerms or DocumentTerms, depending on the specified mode).
 	               * These terms are actually types, so information about each type is collected (as opposed to the [tokens]{@link Spyral.Corpus#tokens}
@@ -12591,7 +12518,7 @@ var Spyral = (function () {
 	               * 		"comparisonRelativeFreqDifference": 0
 	               * 	}
 	               * 
-	               * The following is an example of Document Term (documents mode):
+	               * The following is an example of a Document Term (documents mode):
 	               * 
 	               * 	{
 	               * 		"term": "the",
@@ -12615,19 +12542,19 @@ var Spyral = (function () {
 	               *  * **withDistributions**: a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	               *  * **whiteList**: a keyword list – terms will be limited to this list
 	               *  * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	               * 
 	               * The following are specific to corpus mode:
 	               * 
 	               *  * **bins**: by default there are the same number of bins as there are documents (for distribution values), this can be modified
 	               *  * **corpusComparison**: you can provide the ID of a corpus for comparison of frequency values
 	               *  * **inDocumentsCountOnly**: if you don't need term frequencies but only frequency per document set this to true
-	               *  * **sort**: the order of the terms, one of the following: `INDOCUMENTSCOUNT, RAWFREQ, TERM, RELATIVEPEAKEDNESS, RELATIVESKEWNESS, COMPARISONRELATIVEFREQDIFFERENCE`
+	               *  * **sort**: the order of the terms, one of the following: `INDOCUMENTSCOUNT`, `RAWFREQ`, `TERM`, `RELATIVEPEAKEDNESS`, `RELATIVESKEWNESS`, `COMPARISONRELATIVEFREQDIFFERENCE`
 	               *  
 	               *  The following are specific to documents mode:
 	               * 
 	               *  * **bins**: by default the document is divided into 10 equal bins(for distribution values), this can be modified
-	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ, RELATIVEFREQ, TERM, TFIDF, ZSCORE`
+	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ`, `RELATIVEFREQ`, `TERM`, `TFIDF`, `ZSCORE`
 	               *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	               *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
 	               *  * **docId**: the document IDs to include (use commas to separate multiple values)
@@ -12649,7 +12576,7 @@ var Spyral = (function () {
 	               * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
 	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	               * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	               * @returns {Promise<Array>} a Promise for a Array of Terms
 	               */
 	            }, {
@@ -12662,6 +12589,142 @@ var Spyral = (function () {
 	                  return isDocumentsMode(config) ? data.documentTerms.terms : data.corpusTerms.terms;
 	                });
 	              }
+
+	              /**
+	               * Returns an array of corpus terms.
+	               * These terms are actually types, so information about each type is collected (as opposed to the [tokens]{@link Spyral.Corpus#tokens}
+	               * method which is for every occurrence in document order).
+	               * 
+	               * The following is an example a corpus term:
+	               * 
+	               * 	{
+	               * 		"term": "the",
+	               * 		"inDocumentsCount": 8,
+	               * 		"rawFreq": 28292,
+	               * 		"relativeFreq": 0.036189996,
+	               * 		"comparisonRelativeFreqDifference": 0
+	               * 	}
+	               * 
+	               * The following config parameters are valid:
+	               * 
+	               *  * **start**: the zero-based start index of the list (for paging)
+	               *  * **limit**: the maximum number of terms to provide per request
+	               *  * **minRawFreq**: the minimum raw frequency of terms
+	               *  * **query**: a term query (see [search tutorial]{@tutorial search})
+	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
+	               *  * **withDistributions**: a true value shows distribution across the corpus
+	               *  * **whiteList**: a keyword list – terms will be limited to this list
+	               *  * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  * **bins**: by default there are the same number of bins as there are documents (for distribution values), this can be modified
+	               *  * **corpusComparison**: you can provide the ID of a corpus for comparison of frequency values
+	               *  * **inDocumentsCountOnly**: if you don't need term frequencies but only frequency per document set this to true
+	               *  * **sort**: the order of the terms, one of the following: `INDOCUMENTSCOUNT`, `RAWFREQ`, `TERM`, `RELATIVEPEAKEDNESS`, `RELATIVESKEWNESS`, `COMPARISONRELATIVEFREQDIFFERENCE`
+	               *  
+	               * An example:
+	               * 
+	               * 	// show top 5 terms
+	                	 * 	loadCorpus("austen").corpusTerms({stopList: 'auto', limit: 5}).then(terms => terms.map(term => term.term))
+	                	 * 
+	               * @param {Object} config an Object specifying parameters (see list above)
+	               * @param {number} config.start the zero-based start index of the list (for paging)
+	               * @param {number} config.limit the maximum number of terms to provide per request
+	               * @param {number} config.minRawFreq the minimum raw frequency of terms
+	               * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
+	               * @param {boolean} config.withDistributions a true value shows distribution across the corpus
+	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
+	               * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
+	               * @param {number} config.bins by default there are the same number of bins as there are documents (for distribution values), this can be modified
+	               * @param {string} config.corpusComparison you can provide the ID of a corpus for comparison of frequency values
+	               * @param {boolean} config.inDocumentsCountOnly if you don't need term frequencies but only frequency per document set this to true
+	               * @param {string} config.sort the order of the terms, one of the following: `INDOCUMENTSCOUNT`, `RAWFREQ`, `TERM`, `RELATIVEPEAKEDNESS`, `RELATIVESKEWNESS`, `COMPARISONRELATIVEFREQDIFFERENCE`
+	               * @returns {Promise<Array>} a Promise for a Array of Terms
+	               */
+	            }, {
+	              key: "corpusTerms",
+	              value: function corpusTerms(config) {
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.CorpusTerms',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.corpusTerms.terms;
+	                });
+	              }
+
+	              /**
+	               * Returns an array of document terms.
+	               * These terms are actually types, so information about each type is collected (as opposed to the [tokens]{@link Spyral.Corpus#tokens}
+	               * method which is for every occurrence in document order).
+	               * 
+	               * The following is an example of a document term:
+	               * 
+	               * 	{
+	               * 		"term": "the",
+	               * 		"rawFreq": 1333,
+	               * 		"relativeFreq": 39721.086,
+	               * 		"zscore": 28.419,
+	               * 		"zscoreRatio": -373.4891,
+	               * 		"tfidf": 0.0,
+	               * 		"totalTermsCount": 33559,
+	              	 * 		"docIndex": 0,
+	               * 		"docId": "8a61d5d851a69c03c6ba9cc446713574"
+	               * 	}
+	               * 
+	               * The following config parameters are valid:
+	               * 
+	               *  * **start**: the zero-based start index of the list (for paging)
+	               *  * **limit**: the maximum number of terms to provide per request
+	               *  * **minRawFreq**: the minimum raw frequency of terms
+	               *  * **query**: a term query (see [search tutorial]{@tutorial search})
+	               *  * **stopList**: a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
+	               *  * **withDistributions**: a true value shows distribution across the document
+	               *  * **whiteList**: a keyword list – terms will be limited to this list
+	               *  * **tokenType**: the token type to use, by default `lexical` (other possible values might be `title` and `author`)
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  * **bins**: by default the document is divided into 10 equal bins(for distribution values), this can be modified
+	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ`, `RELATIVEFREQ`, `TERM`, `TFIDF`, `ZSCORE`
+	               *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
+	               *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
+	               *  * **docId**: the document IDs to include (use commas to separate multiple values)
+	               *  
+	               * An example:
+	                	 *
+	                	 * 	// show top term for each document
+	                	 * 	loadCorpus("austen").documentTerms({stopList: 'auto', perDocLimit: 1, mode: 'documents'}).then(terms => terms.map(term => term.term))
+	                	 * 
+	               * @param {Object} config an Object specifying parameters (see list above)
+	               * @param {number} config.start the zero-based start index of the list (for paging)
+	               * @param {number} config.limit the maximum number of terms to provide per request
+	               * @param {number} config.minRawFreq the minimum raw frequency of terms
+	               * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
+	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
+	               * @param {boolean} config.withDistributions a true value shows distribution across the corpus (corpus mode) or across the document (documents mode)
+	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
+	               * @param {string} config.tokenType the token type to use, by default `lexical` (other possible values might be `title` and `author`)
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
+	               * @param {number} config.bins by default the document is divided into 10 equal bins(for distribution values), this can be modified
+	               * @param {string} config.sort the order of the terms, one of the following: `RAWFREQ`, `RELATIVEFREQ`, `TERM`, `TFIDF`, `ZSCORE`
+	               * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
+	               * @param {(number|string)} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	               * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
+	               * @returns {Promise<Array>} a Promise for a Array of Terms
+	               */
+	            }, {
+	              key: "documentTerms",
+	              value: function documentTerms(config) {
+	                if (!isDocumentsMode(config)) {
+	                  throw new Error('Must specify a docIndex or docId.');
+	                }
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.DocumentTerms',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.documentTerms.terms;
+	                });
+	              }
+
 	              /*
 	               * Create a Corpus and return the terms
 	               * @param {*} config 
@@ -12670,21 +12733,22 @@ var Spyral = (function () {
 	              //	static terms(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.terms(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of document tokens.
 	               * 
 	               * The promise returns an array of document token objects. A document token object can look something like this:
 	               * 
-	               *		{
-	               *			"docId": "8a61d5d851a69c03c6ba9cc446713574",
-	               *			"docIndex": 0,
-	               *			"term": "LOVE",
-	               *			"tokenType": "lexical",
-	               *			"rawFreq": 54,
-	               *			"position": 0,
-	               *			"startOffset": 3,
-	               *			"endOffset": 7
-	               *		}
+	               *	{
+	               * 		"docId": "8a61d5d851a69c03c6ba9cc446713574",
+	               * 		"docIndex": 0,
+	               * 		"term": "LOVE",
+	               * 		"tokenType": "lexical",
+	               * 		"rawFreq": 54,
+	               * 		"position": 0,
+	               * 		"startOffset": 3,
+	               * 		"endOffset": 7
+	               *	}
 	               *
 	               * The following are valid in the config parameter:
 	               * 
@@ -12713,7 +12777,7 @@ var Spyral = (function () {
 	               * @param {boolean} config.noOthers only include lexical forms, no other tokens
 	               * @param {string} config.stripTags one of the following: `ALL`, `BLOCKSONLY`, `NONE` (`BLOCKSONLY` tries to maintain blocks for line formatting)
 	               * @param {boolean} config.withPosLemmas include part-of-speech and lemma information when available (reliability of this may vary by instance)
-	               * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	               * @param {(number|string)} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
 	               * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
 	               * @returns {Promise<Array>} a Promise for an Array of document tokens
 	               */
@@ -12727,6 +12791,7 @@ var Spyral = (function () {
 	                  return data.documentTokens.tokens;
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the tokens
 	               * @param {*} config 
@@ -12735,6 +12800,7 @@ var Spyral = (function () {
 	              //	static tokens(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.tokens(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of words from the corpus.
 	               * 
@@ -12761,7 +12827,7 @@ var Spyral = (function () {
 	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @param {string} config.whiteList a keyword list – terms will be limited to this list
 	               * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
-	               * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	               * @param {(number|string)} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
 	               * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
 	               * @returns {Promise<Array>} a Promise for an Array of words
 	               */
@@ -12783,6 +12849,7 @@ var Spyral = (function () {
 	                  });
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return an array of lexical forms (words) in document order.
 	               * @param {Object} config 
@@ -12791,19 +12858,20 @@ var Spyral = (function () {
 	              //	static words(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.words(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of Objects that contain keywords in contexts (KWICs).
 	               * 
 	               * An individual KWIC Object looks something like this:
 	               * 
 	                  * 	{
-	                  *			"docIndex": 0,
-	                  *			"query": "love",
-	                  *			"term": "love",
-	                  *			"position": 0,
-	                  *			"left": "FREINDSHIP AND OTHER EARLY WORKS",
-	                  *			"middle": "Love",
-	                  *			"right": " And Friendship And Other Early"
+	                  * 		"docIndex": 0,
+	                  * 		"query": "love",
+	                  * 		"term": "love",
+	                  * 		"position": 0,
+	                  * 		"left": "FREINDSHIP AND OTHER EARLY WORKS",
+	                  * 		"middle": "Love",
+	                  * 		"right": " And Friendship And Other Early"
 	                  * 	}
 	                  *  
 	                  * The following are valid in the config parameter:
@@ -12811,8 +12879,8 @@ var Spyral = (function () {
 	                  *  * **start**: the zero-based start index of the list (for paging)
 	                  *  * **limit**: the maximum number of terms to provide per request
 	                  *  * **query**: a term query (see [search tutorial]{@tutorial search})
-	                  *  * **sort**: the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	                  *  * **sort**: the order of the contexts: `TERM`, `DOCINDEX`, `POSITION`, `LEFT`, `RIGHT`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	                  *  * **perDocLimit**: the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	                  *  * **stripTags**: for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)
 	                  *  * **context**: the size of the context (the number of words on each side of the keyword)
@@ -12837,12 +12905,12 @@ var Spyral = (function () {
 	                  * @param {number} config.start the zero-based start index of the list (for paging)
 	                  * @param {number} config.limit the maximum number of terms to provide per request
 	                  * @param {string} config.query a term query (see [search tutorial]{@tutorial search})
-	                  * @param {string} config.sort the order of the contexts: `TERM, DOCINDEX, POSITION, LEFT, RIGHT`
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	                  * @param {string} config.sort the order of the contexts: `TERM`, `DOCINDEX`, `POSITION`, `LEFT`, `RIGHT`
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	                  * @param {number} config.perDocLimit the `limit` parameter is for the total number of terms returned, this parameter allows you to specify a limit value per document
 	                  * @param {string} config.stripTags for the `left`, `middle` and `right` values, one of the following: `ALL`, `BLOCKSONLY` (tries to maintain blocks for line formatting), `NONE` (default)
 	                  * @param {number} config.context the size of the context (the number of words on each side of the keyword)
-	                  * @param {number} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	                  * @param {(number|string)} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
 	                  * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
 	                  * @param {string} config.overlapStrategy determines how to handle cases where there's overlap between KWICs, such as "to be or not to be" when the keyword is "be"
 	                  * @returns {Promise<Array>} a Promise for an Array of KWIC Objects
@@ -12860,6 +12928,7 @@ var Spyral = (function () {
 	                  return data.documentContexts.contexts;
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the contexts
 	               * @param {Object} config 
@@ -12868,6 +12937,7 @@ var Spyral = (function () {
 	              //	static contexts(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.contexts(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of collocates (either document or corpus collocates, depending on the specified mode).
 	               * Collocates are terms which appear more frequently in proximity to keywords across the corpus or document.
@@ -12881,24 +12951,24 @@ var Spyral = (function () {
 	               * The following is an example a Corpus Collocate (corpus mode):
 	               * 
 	               * 	{
-	                  *   		"term": "love",
-	                  *   		"rawFreq": 568,
-	                  *   		"contextTerm": "mr",
-	                  *   		"contextTermRawFreq": 24
+	                  *  		"term": "love",
+	                  *  		"rawFreq": 568,
+	                  *  		"contextTerm": "mr",
+	                  *  		"contextTermRawFreq": 24
 	                  * 	}
 	               * 
 	               * The following is an example of Document Collocate (documents mode):
 	               * 
 	               * 	{
-	                  * 			"docIndex": 4,
-	                  * 			"keyword": "love",
-	                  * 			"keywordContextRawFrequency": 124,
-	                  * 			"term": "fanny",
-	                  * 			"termContextRawFrequency": 8,
-	                  * 			"termContextRelativeFrequency": 0.021680217,
-	                  * 			"termDocumentRawFrequency": 816,
-	                  * 			"termDocumentRelativeFrequency": 0.0050853477,
-	                  * 			"termContextDocumentRelativeFrequencyDifference": 0.01659487
+	                  * 		"docIndex": 4,
+	                  * 		"keyword": "love",
+	                  * 		"keywordContextRawFrequency": 124,
+	                  * 		"term": "fanny",
+	                  * 		"termContextRawFrequency": 8,
+	                  * 		"termContextRelativeFrequency": 0.021680217,
+	                  * 		"termDocumentRawFrequency": 816,
+	                  * 		"termDocumentRelativeFrequency": 0.0050853477,
+	                  * 		"termContextDocumentRelativeFrequencyDifference": 0.01659487
 	                  * 	}
 	               * 
 	               * The following config parameters are valid in both modes:
@@ -12913,11 +12983,11 @@ var Spyral = (function () {
 	               * 
 	               * The following are specific to corpus mode:
 	               * 
-	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, CONTEXTTERM, CONTEXTTERMRAWFREQ`
+	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ`, `TERM`, `CONTEXTTERM`, `CONTEXTTERMRAWFREQ`
 	               *  
 	               *  The following are specific to documents mode:
 	               * 
-	               *  * **sort**: the order of the terms, one of the following: `TERM, REL, REL, RAW, DOCREL, DOCRAW, CONTEXTDOCRELDIFF`
+	               *  * **sort**: the order of the terms, one of the following: `TERM`, `REL`, `RAW`, `DOCREL`, `DOCRAW`, `CONTEXTDOCRELDIFF`
 	               *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
 	               *  * **docId**: the document IDs to include (use commas to separate multiple values)
 	               *  
@@ -12933,7 +13003,7 @@ var Spyral = (function () {
 	               * @param {string} config.stopList a list of stopwords to include (see [stopwords tutorial]{@tutorial stopwords})
 	               * @param {string} config.collocatesWhitelist collocates will be limited to this list
 	               * @param {number} config.context the size of the context (the number of words on each side of the keyword)
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	               * @returns {Promise<Array>} a Promise for a Array of Terms
 	               */
 	            }, {
@@ -12949,6 +13019,7 @@ var Spyral = (function () {
 	                  return data.corpusCollocates.collocates;
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the collocates
 	               * @param {Object} config 
@@ -12957,6 +13028,7 @@ var Spyral = (function () {
 	              //	static collocates(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.collocates(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of phrases or n-grams (either document or corpus phrases, depending on the specified mode).
 	               * 
@@ -12966,7 +13038,7 @@ var Spyral = (function () {
 	               * * a `docIndex` parameter being set
 	               * * a `docId` parameter being set
 	               * 
-	               * The following is an example a Corpus phrase (corpus mode), without distributions requested:
+	               * The following is an example of a Corpus phrase (corpus mode), without distributions requested:
 	               * 
 	               * 	{
 	                  *  		"term": "love with",
@@ -12974,7 +13046,7 @@ var Spyral = (function () {
 	                  *  		"length": 2
 	                  * 	}
 	               * 
-	               * The following is an example of Document phrase (documents mode), without positions requested:
+	               * The following is an example of a Document phrase (documents mode), without positions requested:
 	               * 
 	               * 	{
 	                  *   		"term": "love with",
@@ -12990,8 +13062,8 @@ var Spyral = (function () {
 	               *  * **minLength**: the minimum length of the phrase
 	               *  * **maxLength**: the maximum length of the phrase
 	               *  * **minRawFreq**: the minimum raw frequency of the phrase
-	               * 	* **sort**: the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ`, `TERM`, `LENGTH`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	               *  * **overlapFilter**: it happens that phrases contain other phrases and we need a strategy for handling overlap:
 	                  *      * **NONE**: nevermind the overlap, keep all phrases
 	                  *      * **LENGTHFIRST**: priority goes to the longest phrases
@@ -13014,8 +13086,8 @@ var Spyral = (function () {
 	               * @param {number} config.minLength the minimum length of the phrase
 	               * @param {number} config.maxLength the maximum length of the phrase
 	               * @param {number} config.minRawFreq the minimum raw frequency of the phrase
-	               * @param {string} config.sort the order of the terms, one of the following: `RAWFREQ, TERM, LENGTH`
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	               * @param {string} config.sort the order of the terms, one of the following: `RAWFREQ`, `TERM`, `LENGTH`
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	               * @param {string} config.overlapFilter it happens that phrases contain other phrases and we need a strategy for handling overlap
 	                  * @returns {Promise<Array>} a Promise for an Array of phrase Objects
 	                  */
@@ -13029,6 +13101,121 @@ var Spyral = (function () {
 	                  return isDocumentsMode(config) ? data.documentNgrams.ngrams : data.corpusNgrams.ngrams;
 	                });
 	              }
+
+	              /**
+	               * Returns an array of corpus phrases or n-grams.
+	               * 
+	               * The following is an example of a Corpus phrase, without distributions requested:
+	               * 
+	               * 	{
+	                  *  		"term": "love with",
+	                  *  		"rawFreq": 103,
+	                  *  		"length": 2
+	                  * 	}
+	               * 
+	               * The following config parameters are valid:
+	               * 
+	               *  * **start**: the zero-based start index of the list (for paging)
+	               *  * **limit**: the maximum number of terms to provide per request
+	               *  * **minLength**: the minimum length of the phrase
+	               *  * **maxLength**: the maximum length of the phrase
+	               *  * **minRawFreq**: the minimum raw frequency of the phrase
+	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ`, `TERM`, `LENGTH`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  * **overlapFilter**: it happens that phrases contain other phrases and we need a strategy for handling overlap:
+	                  *      * **NONE**: nevermind the overlap, keep all phrases
+	                  *      * **LENGTHFIRST**: priority goes to the longest phrases
+	                  *      * **RAWFREQFIRST**: priority goes to the highest frequency phrases
+	                  *      * **POSITIONFIRST**: priority goes to the first phrases
+	                  * 
+	                  * An example:
+	                  * 
+	                  * 	// load the first 20 phrases in the corpus
+	                  * 	loadCorpus("austen").corpusPhrases({query: "love", limit: 10})
+	                  * 
+	                  * @param {Object} config an Object specifying parameters (see above)
+	               * @param {number} config.start the zero-based start index of the list (for paging)
+	               * @param {number} config.limit the maximum number of terms to provide per request
+	               * @param {number} config.minLength the minimum length of the phrase
+	               * @param {number} config.maxLength the maximum length of the phrase
+	               * @param {number} config.minRawFreq the minimum raw frequency of the phrase
+	               * @param {string} config.sort the order of the terms, one of the following: `RAWFREQ`, `TERM`, `LENGTH`
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
+	               * @param {string} config.overlapFilter it happens that phrases contain other phrases and we need a strategy for handling overlap
+	                  * @returns {Promise<Array>} a Promise for an Array of phrase Objects
+	                  */
+	            }, {
+	              key: "corpusPhrases",
+	              value: function corpusPhrases(config) {
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.CorpusNgrams',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.corpusNgrams.ngrams;
+	                });
+	              }
+
+	              /**
+	               * Returns an array of document phrases or n-grams.
+	               * 
+	               * The following is an example of a Document phrase, without positions requested:
+	               * 
+	               * 	{
+	                  *   		"term": "love with",
+	                  *   		"rawFreq": 31,
+	                  *   		"length": 2,
+	                  *   		"docIndex": 5
+	                  * 	}
+	               * 
+	               * The following config parameters are valid:
+	               * 
+	               *  * **start**: the zero-based start index of the list (for paging)
+	               *  * **limit**: the maximum number of terms to provide per request
+	               *  * **minLength**: the minimum length of the phrase
+	               *  * **maxLength**: the maximum length of the phrase
+	               *  * **minRawFreq**: the minimum raw frequency of the phrase
+	               *  * **sort**: the order of the terms, one of the following: `RAWFREQ`, `TERM`, `LENGTH`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  * **overlapFilter**: it happens that phrases contain other phrases and we need a strategy for handling overlap:
+	                  *      * **NONE**: nevermind the overlap, keep all phrases
+	                  *      * **LENGTHFIRST**: priority goes to the longest phrases
+	                  *      * **RAWFREQFIRST**: priority goes to the highest frequency phrases
+	                  *      * **POSITIONFIRST**: priority goes to the first phrases
+	               *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
+	               *  * **docId**: the document IDs to include (use commas to separate multiple values)
+	                  *  
+	                  * An example:
+	                  * 
+	                  * 	// load the first 20 phrases for the first document in the corpus
+	                  * 	loadCorpus("austen").documentPhrases({query: "love", docIndex: 0, limit: 10})
+	                  * 
+	                  * @param {Object} config an Object specifying parameters (see above)
+	               * @param {number} config.start the zero-based start index of the list (for paging)
+	               * @param {number} config.limit the maximum number of terms to provide per request
+	               * @param {number} config.minLength the minimum length of the phrase
+	               * @param {number} config.maxLength the maximum length of the phrase
+	               * @param {number} config.minRawFreq the minimum raw frequency of the phrase
+	               * @param {string} config.sort the order of the terms, one of the following: `RAWFREQ`, `TERM`, `LENGTH`
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
+	               * @param {string} config.overlapFilter it happens that phrases contain other phrases and we need a strategy for handling overlap
+	               * @param {(number|string)} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	               * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
+	                  * @returns {Promise<Array>} a Promise for an Array of phrase Objects
+	                  */
+	            }, {
+	              key: "documentPhrases",
+	              value: function documentPhrases(config) {
+	                if (!isDocumentsMode(config)) {
+	                  throw new Error('Must specify a docIndex or docId.');
+	                }
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.DocumentNgrams',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.documentNgrams.ngrams;
+	                });
+	              }
+
 	              /*
 	               * Create a Corpus and return the phrases
 	               * @param {Object} config 
@@ -13037,6 +13224,7 @@ var Spyral = (function () {
 	              //	static phrases(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.phrases(api || config));
 	              //	}
+
 	              /**
 	               * Returns an array of correlations (either document or corpus correlations, depending on the specified mode).
 	               * 
@@ -13067,7 +13255,7 @@ var Spyral = (function () {
 	                  * 		"significance": 0.08580014
 	                  * 	}
 	               * 
-	               * The following is an example of Document correlation (documents mode), without positions requested:
+	               * The following is an example of a Document correlation (documents mode), without positions requested:
 	               * 
 	               * 	{
 	                  * 		"source": {
@@ -13102,7 +13290,7 @@ var Spyral = (function () {
 	               *  * **limit**: the maximum number of terms to provide per request
 	               *  * **termsOnly**: a very compact data view of the correlations
 	               *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
-	               *  * **dir**: sort direction, **`ASC`**ending or **`DESC`**ending
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
 	                  * 
 	               * The following is specific to corpus mode:
 	               * 
@@ -13124,7 +13312,7 @@ var Spyral = (function () {
 	               * @param {number} config.minInDocumentsCountRatio the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
 	               * @param {boolean} config.termsOnly a very compact data view of the correlations
 	               * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
-	               * @param {string} config.dir sort direction, **`ASC`**ending or **`DESC`**ending
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
 	                  * @returns {Promise<Array>} a Promise for an Array of phrase Objects
 	                  */
 	            }, {
@@ -13143,6 +13331,140 @@ var Spyral = (function () {
 	                  return data.termCorrelations.correlations;
 	                });
 	              }
+
+	              /**
+	               * Returns an array of corpus correlations.
+	               * 
+	               * The following is an example a Corpus correlation:
+	               * 
+	               * 	{
+	                  * 		"source": {
+	                  * 			"term": "mrs",
+	                  * 			"inDocumentsCount": 8,
+	                  * 			"rawFreq": 2531,
+	                  * 			"relativePeakedness": 0.46444246,
+	                  * 			"relativeSkewness": -0.44197384
+	                  * 		},
+	                  * 		"target": {
+	                  * 			"term": "love",
+	                  * 			"inDocumentsCount": 8,
+	                  * 			"rawFreq": 568,
+	                  * 			"relativePeakedness": 5.763066,
+	                  * 			"relativeSkewness": 2.2536576
+	                  * 		},
+	                  * 		"correlation": -0.44287738,
+	                  * 		"significance": 0.08580014
+	                  * 	}
+	               * 
+	               * The following config parameters are valid:
+	               * 
+	               *  * **start**: the zero-based start index of the list (for paging)
+	               *  * **limit**: the maximum number of terms to provide per request
+	               *  * **termsOnly**: a very compact data view of the correlations
+	               *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  * **minInDocumentsCountRatio**: the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
+	               * 
+	                  * An example:
+	                  * 
+	                  * 	// load the first 10 phrases in the corpus
+	                  * 	loadCorpus("austen").corpusCorrelations({query: "love", limit: 10})
+	                  * 
+	                  * @param {Object} config an Object specifying parameters (see above)
+	               * @param {number} config.start the zero-based start index of the list (for paging)
+	               * @param {number} config.limit the maximum number of terms to provide per request
+	               * @param {number} config.minInDocumentsCountRatio the minimum coverage (as a percentage between 0 and 100) of the term, amongst all the documents
+	               * @param {boolean} config.termsOnly a very compact data view of the correlations
+	               * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
+	                  * @returns {Promise<Array>} a Promise for an Array of phrase Objects
+	                  */
+	            }, {
+	              key: "corpusCorrelations",
+	              value: function corpusCorrelations(config) {
+	                if ((!config || !config.query) && console) {
+	                  console.warn('No query provided for correlations request.');
+	                  throw new Error('Unable to run correlations for a corpus without a query.');
+	                }
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.CorpusTermCorrelations',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.termCorrelations.correlations;
+	                });
+	              }
+
+	              /**
+	               * Returns an array of document correlations.
+	               * 
+	               * The following is an example of a Document correlation, without positions requested:
+	               * 
+	               * 	{
+	                  * 		"source": {
+	                  * 			"term": "confide",
+	                  * 			"rawFreq": 3,
+	                  * 			"relativeFreq": 89.3948,
+	                  * 			"zscore": -0.10560975,
+	                  * 			"zscoreRatio": -0.7541012,
+	                  * 			"tfidf": 1.1168874E-5,
+	                  * 			"totalTermsCount": 33559,
+	                  * 			"docIndex": 0,
+	                  * 			"docId": "8a61d5d851a69c03c6ba9cc446713574"
+	                  * 		},
+	                  * 		"target": {
+	                  * 			"term": "love",
+	                  * 			"rawFreq": 54,
+	                  * 			"relativeFreq": 1609.1063,
+	                  * 			"zscore": 53.830048,
+	                  * 			"zscoreRatio": -707.44696,
+	                  * 			"tfidf": 0.0,
+	                  * 			"totalTermsCount": 33559,
+	                  * 			"docIndex": 0,
+	                  * 			"docId": "8a61d5d851a69c03c6ba9cc446713574"
+	                  * 		},
+	                  * 		"correlation": 0.93527687,
+	                  * 		"significance": 7.0970666E-5
+	                  * 	}
+	               * 
+	               * The following config parameters are valid:
+	               * 
+	               *  * **start**: the zero-based start index of the list (for paging)
+	               *  * **limit**: the maximum number of terms to provide per request
+	               *  * **termsOnly**: a very compact data view of the correlations
+	               *  * **sort**: the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
+	               *  * **dir**: sort direction, `ASC`ending or `DESC`ending
+	               *  * **docIndex**: the zero-based index of the documents to include (use commas to separate multiple values)
+	               *  * **docId**: the document IDs to include (use commas to separate multiple values)
+	                  *  
+	                  * An example:
+	                  * 
+	                  * 	// load the first 10 phrases for the first document in the corpus
+	                  * 	loadCorpus("austen").documentCorrelations({query: "love", docIndex: 0, limit: 10})
+	                  * 
+	                  * @param {Object} config an Object specifying parameters (see above)
+	               * @param {number} config.start the zero-based start index of the list (for paging)
+	               * @param {number} config.limit the maximum number of terms to provide per request
+	               * @param {boolean} config.termsOnly a very compact data view of the correlations
+	               * @param {string} config.sort the order of the terms, one of the following: `CORRELATION`, `CORRELATIONABS`
+	               * @param {string} config.dir sort direction, `ASC`ending or `DESC`ending
+	               * @param {(number|string)} config.docIndex the zero-based index of the documents to include (use commas to separate multiple values)
+	               * @param {string} config.docId the document IDs to include (use commas to separate multiple values)
+	                  * @returns {Promise<Array>} a Promise for an Array of phrase Objects
+	                  */
+	            }, {
+	              key: "documentCorrelations",
+	              value: function documentCorrelations(config) {
+	                if (!isDocumentsMode(config)) {
+	                  throw new Error('Must specify a docIndex or docId.');
+	                }
+	                return _load["default"].trombone(config, {
+	                  tool: 'corpus.DocumentTermCorrelations',
+	                  corpus: this.corpusid
+	                }).then(function (data) {
+	                  return data.termCorrelations.correlations;
+	                });
+	              }
+
 	              /*
 	               * Create a Corpus and return the correlations
 	               * @param {Object} config 
@@ -13151,6 +13473,7 @@ var Spyral = (function () {
 	              //	static correlations(config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.correlations(api || config));
 	              //	}
+
 	              /**
 	               * Get lemmas. This is the equivalent of calling: this.tokens({ withPosLemmas: true, noOthers: true })
 	               * @param {Object} config an Object specifying parameters (see above)
@@ -13164,6 +13487,7 @@ var Spyral = (function () {
 	                config.noOthers = true;
 	                return this.tokens(config);
 	              }
+
 	              /**
 	               * Performs topic modelling using the latent Dirichlet allocation. Returns an object that has two primary properties:
 	               * 
@@ -13215,7 +13539,7 @@ var Spyral = (function () {
 	                var _topics = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee() {
 	                  var config,
 	                    _args = arguments;
-	                  return _regenerator["default"].wrap(function _callee$(_context) {
+	                  return _regenerator["default"].wrap(function (_context) {
 	                    while (1) {
 	                      switch (_context.prev = _context.next) {
 	                        case 0:
@@ -13232,7 +13556,7 @@ var Spyral = (function () {
 	                          }).then(function (data) {
 	                            return data.topicModeling;
 	                          }));
-	                        case 2:
+	                        case 1:
 	                        case "end":
 	                          return _context.stop();
 	                      }
@@ -13302,6 +13626,7 @@ var Spyral = (function () {
 	                  doLoad(config);
 	                });
 	              }
+
 	              /**
 	               * Given a Categories instance or ID, returns an object mapping category names to corpus terms. The results can be limited to specific category names by providing one or more of them.
 	               * @param {String|Spyral.Categories} categories A categories ID or a Spyral.Categories instance.
@@ -13314,25 +13639,25 @@ var Spyral = (function () {
 	                var _filterByCategory = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee2(categories, categoryName) {
 	                  var _this2 = this;
 	                  var categoryNames, termsResults, results;
-	                  return _regenerator["default"].wrap(function _callee2$(_context2) {
+	                  return _regenerator["default"].wrap(function (_context2) {
 	                    while (1) {
 	                      switch (_context2.prev = _context2.next) {
 	                        case 0:
 	                          if (!(categories === undefined)) {
-	                            _context2.next = 2;
+	                            _context2.next = 1;
 	                            break;
 	                          }
 	                          return _context2.abrupt("return");
-	                        case 2:
+	                        case 1:
 	                          if (!(categories instanceof _categories["default"] === false)) {
-	                            _context2.next = 6;
+	                            _context2.next = 3;
 	                            break;
 	                          }
-	                          _context2.next = 5;
+	                          _context2.next = 2;
 	                          return _categories["default"].load(categories);
-	                        case 5:
+	                        case 2:
 	                          categories = _context2.sent;
-	                        case 6:
+	                        case 3:
 	                          categoryNames = []; // TODO make sure categoryName is a valid key for categories
 	                          if (categoryName === undefined) {
 	                            categoryNames = categories.getCategoryNames();
@@ -13341,21 +13666,21 @@ var Spyral = (function () {
 	                          } else {
 	                            categoryNames = categoryName;
 	                          }
-	                          _context2.next = 10;
+	                          _context2.next = 4;
 	                          return Promise.all(categoryNames.map(function (key) {
 	                            var catTerms = categories.getCategoryTerms(key);
 	                            return _this2.terms({
 	                              whiteList: catTerms
 	                            });
 	                          }));
-	                        case 10:
+	                        case 4:
 	                          termsResults = _context2.sent;
 	                          results = {};
 	                          termsResults.forEach(function (terms, i) {
 	                            results[categoryNames[i]] = terms;
 	                          });
 	                          return _context2.abrupt("return", results);
-	                        case 14:
+	                        case 5:
 	                        case "end":
 	                          return _context2.stop();
 	                      }
@@ -13432,6 +13757,7 @@ var Spyral = (function () {
 	                  return data[root];
 	                });
 	              }
+
 	              /**
 	               * Returns an HTML snippet that will produce the specified Voyant tools to appear.
 	               * 
@@ -13479,92 +13805,88 @@ var Spyral = (function () {
 
 	                  // we have all tools and we'll show them individually
 	                  if (isTool(_tool) && (isTool(lastArg) || isConfig(lastArg))) {
-	                    var width;
-	                    var height;
-	                    var val;
-	                    var url;
-	                    var _ret = function () {
-	                      var defaultAttributes = {
-	                        style: ''
-	                      };
-	                      var out = '';
-	                      for (var i = 0; i < _arguments.length; i++) {
+	                    var defaultAttributes = {
+	                      style: ''
+	                    };
+	                    var out = '';
+	                    var _loop = function _loop() {
 	                        var t = _arguments[i];
 	                        if (isTool(t)) {
-	                          (function () {
-	                            if (typeof t === 'string') {
-	                              t = {
-	                                forTool: t
-	                              };
-	                            } // make sure we have object
+	                          if (typeof t === 'string') {
+	                            t = {
+	                              forTool: t
+	                            };
+	                          } // make sure we have object
 
-	                            // process width and height info
-	                            width = config['width'] !== undefined ? config['width'] + '' : '100%';
-	                            height = config['height'] !== undefined ? config['height'] + '' : '450';
-	                            if (width.search(/^\d+$/) === 0) width += 'px';
-	                            if (height.search(/^\d+$/) === 0) height += 'px';
-	                            if (config['style'] !== undefined) {
-	                              if (config['style'].indexOf('width') === -1) {
-	                                config['style'] = "width: ".concat(width, ";") + config['style'];
-	                              }
-	                              if (config['style'].indexOf('height') === -1) {
-	                                config['style'] = "height: ".concat(height, ";") + config['style'];
-	                              }
-	                            } else {
-	                              config['style'] = "width: ".concat(width, "; height: ").concat(height, ";");
+	                          // process width and height info
+	                          width = config['width'] !== undefined ? config['width'] + '' : '100%';
+	                          height = config['height'] !== undefined ? config['height'] + '' : '450';
+	                          if (width.search(/^\d+$/) === 0) width += 'px';
+	                          if (height.search(/^\d+$/) === 0) height += 'px';
+	                          if (config['style'] !== undefined) {
+	                            if (config['style'].indexOf('width') === -1) {
+	                              config['style'] = "width: ".concat(width, ";") + config['style'];
 	                            }
-
-	                            // build iframe tag
-	                            out += '<iframe ';
-	                            for (var attr in defaultAttributes) {
-	                              val = (attr in t ? t[attr] : undefined) || (attr in config ? config[attr] : undefined) || (attr in defaultAttributes ? defaultAttributes[attr] : undefined);
-	                              if (val !== undefined) {
-	                                out += ' ' + attr + '="' + val + '"';
-	                              }
+	                            if (config['style'].indexOf('height') === -1) {
+	                              config['style'] = "height: ".concat(height, ";") + config['style'];
 	                            }
+	                          } else {
+	                            config['style'] = "width: ".concat(width, "; height: ").concat(height, ";");
+	                          }
 
-	                            // build url
-	                            url = new URL((config && config.voyantUrl ? config.voyantUrl : _load["default"].baseUrl) + 'tool/' + t.forTool + '/');
-	                            url.searchParams.append('corpus', me.corpusid);
-	                            // add API values from config (some may be ignored)
-	                            var all = Object.assign(t, config);
-	                            Object.keys(all).forEach(function (key) {
-	                              if (key !== 'input' && !(key in defaultAttributes)) {
-	                                var value = all[key];
-	                                // TODO need to sort this out, if key is "query" and value is an array then stringify will break the query format for voyant
-	                                // if (typeof value !== 'string') {
-	                                // 	value = JSON.stringify(value);
-	                                // }
-	                                url.searchParams.append(key, value);
-	                              }
-	                            });
+	                          // build iframe tag
+	                          out += '<iframe ';
+	                          for (var attr in defaultAttributes) {
+	                            val = (attr in t ? t[attr] : undefined) || (attr in config ? config[attr] : undefined) || (attr in defaultAttributes ? defaultAttributes[attr] : undefined);
+	                            if (val !== undefined) {
+	                              out += ' ' + attr + '="' + val + '"';
+	                            }
+	                          }
 
-	                            // finish tag
-	                            out += ' src="' + url + '"></iframe>';
-	                          })();
+	                          // build url
+	                          url = new URL((config && config.voyantUrl ? config.voyantUrl : _load["default"].baseUrl) + 'tool/' + t.forTool + '/');
+	                          url.searchParams.append('corpus', me.corpusid);
+	                          // add API values from config (some may be ignored)
+	                          var all = Object.assign(t, config);
+	                          Object.keys(all).forEach(function (key) {
+	                            if (key !== 'input' && !(key in defaultAttributes)) {
+	                              var value = all[key];
+	                              // TODO need to sort this out, if key is "query" and value is an array then stringify will break the query format for voyant
+	                              // if (typeof value !== 'string') {
+	                              // 	value = JSON.stringify(value);
+	                              // }
+	                              url.searchParams.append(key, value);
+	                            }
+	                          });
+
+	                          // finish tag
+	                          out += ' src="' + url + '"></iframe>';
 	                        }
-	                      }
-	                      return {
-	                        v: resolve(out)
-	                      };
-	                    }();
-	                    if ((0, _typeof2["default"])(_ret) === "object") return _ret.v;
+	                      },
+	                      width,
+	                      height,
+	                      val,
+	                      url;
+	                    for (var i = 0; i < _arguments.length; i++) {
+	                      _loop();
+	                    }
+	                    return resolve(out);
 	                  } else {
 	                    if (Array.isArray(_tool)) {
 	                      _tool = _tool.join(';');
 	                    }
-	                    var defaultAttributes = {
+	                    var _defaultAttributes = {
 	                      width: undefined,
 	                      height: undefined,
 	                      style: 'width: 90%; height: ' + 350 * (_tool ? _tool : '').split(';').length + 'px'
 	                    };
 
 	                    // build iframe tag
-	                    var out = '<iframe ';
-	                    for (var attr in defaultAttributes) {
-	                      var val = (attr in config ? config[attr] : undefined) || (attr in defaultAttributes ? defaultAttributes[attr] : undefined);
+	                    var _out = '<iframe ';
+	                    for (var attr in _defaultAttributes) {
+	                      var val = (attr in config ? config[attr] : undefined) || (attr in _defaultAttributes ? _defaultAttributes[attr] : undefined);
 	                      if (val !== undefined) {
-	                        out += ' ' + attr + '="' + val + '"';
+	                        _out += ' ' + attr + '="' + val + '"';
 	                      }
 	                    }
 
@@ -13573,7 +13895,7 @@ var Spyral = (function () {
 	                    url.searchParams.append('corpus', me.corpusid);
 	                    // add API values from config (some may be ignored)
 	                    Object.keys(config).forEach(function (key) {
-	                      if (key !== 'input' && !(key in defaultAttributes)) {
+	                      if (key !== 'input' && !(key in _defaultAttributes)) {
 	                        var value = config[key];
 	                        // if (typeof value !== 'string') {
 	                        // 	value = JSON.stringify(value);
@@ -13581,10 +13903,11 @@ var Spyral = (function () {
 	                        url.searchParams.append(key, value);
 	                      }
 	                    });
-	                    resolve(out + ' src=\'' + url + '\'></iframe>');
+	                    resolve(_out + ' src=\'' + url + '\'></iframe>');
 	                  }
 	                });
 	              }
+
 	              /*
 	               * Create a Corpus and return the tool
 	               * @param {*} tool 
@@ -13594,6 +13917,7 @@ var Spyral = (function () {
 	              //	static tool(tool, config, api) {
 	              //		return Corpus.load(config).then(corpus => corpus.tool(tool, config, api));
 	              //	}
+
 	              /**
 	               * An alias for [summary]{@link Spyral.Corpus#summary}.
 	               */
@@ -13602,6 +13926,7 @@ var Spyral = (function () {
 	              value: function toString() {
 	                return this.summary();
 	              }
+
 	              /*
 	               * Create a new Corpus using the provided config
 	               * @param {Object} config 
@@ -13609,6 +13934,7 @@ var Spyral = (function () {
 	              //	static create(config) {
 	              //		return Corpus.load(config);
 	              //	}
+
 	              /**
 	               * Load a Corpus using the provided config and api
 	               * @param {Spyral.Corpus~CorpusConfig} config the Corpus config
@@ -13686,7 +14012,7 @@ var Spyral = (function () {
 	                      config.input = JSON.stringify(config.input);
 	                    }
 	                  }
-	                  _load["default"].trombone(_objectSpread({}, config, {}, api), {
+	                  _load["default"].trombone(_objectSpread(_objectSpread({}, config), api), {
 	                    tool: 'corpus.CorpusMetadata'
 	                  }).then(function (data) {
 	                    resolve(new Corpus(data.corpus.metadata.id));
@@ -13694,7 +14020,7 @@ var Spyral = (function () {
 	                    reject(err);
 	                  });
 	                });
-	                ['analysis', 'collocates', 'contexts', 'correlations', 'documents', 'entities', 'id', 'topics', 'lemmas', 'metadata', 'phrases', 'summary', 'terms', 'text', 'texts', 'titles', 'toString', 'tokens', 'tool', 'words'].forEach(function (name) {
+	                ['analysis', 'collocates', 'contexts', 'corpusCorrelations', 'corpusMetadata', 'corpusPhrases', 'corpusTerms', 'correlations', 'documentCorrelations', 'documentMetadata', 'documentPhrases', 'documents', 'documentTerms', 'entities', 'id', 'topics', 'lemmas', 'metadata', 'phrases', 'summary', 'terms', 'text', 'texts', 'titles', 'toString', 'tokens', 'tool', 'words'].forEach(function (name) {
 	                  promise[name] = function () {
 	                    var args = arguments;
 	                    return promise.then(function (corpus) {
@@ -13713,24 +14039,23 @@ var Spyral = (function () {
 	                return promise;
 	              }
 	            }]);
-	            return Corpus;
 	          }();
 	          (0, _defineProperty2["default"])(Corpus, "Load", _load["default"]);
-	          var _default = Corpus;
-	          exports["default"] = _default;
+	          exports["default"] = Corpus;
 	        }, {
-	          "./categories.js": 20,
-	          "./load": 23,
-	          "./util.js": 26,
-	          "@babel/runtime/helpers/asyncToGenerator": 4,
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/defineProperty": 8,
-	          "@babel/runtime/helpers/interopRequireDefault": 9,
-	          "@babel/runtime/helpers/typeof": 15,
-	          "@babel/runtime/regenerator": 17
+	          "./categories.js": 31,
+	          "./load": 34,
+	          "./util.js": 37,
+	          "@babel/runtime/helpers/asyncToGenerator": 5,
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/defineProperty": 9,
+	          "@babel/runtime/helpers/interopRequireDefault": 10,
+	          "@babel/runtime/helpers/readOnlyError": 14,
+	          "@babel/runtime/helpers/typeof": 27,
+	          "@babel/runtime/regenerator": 29
 	        }],
-	        23: [function (require, module, exports) {
+	        34: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -13740,26 +14065,26 @@ var Spyral = (function () {
 	          var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 	          var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 	          var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-	          function ownKeys(object, enumerableOnly) {
-	            var keys = Object.keys(object);
+	          function ownKeys(e, r) {
+	            var t = Object.keys(e);
 	            if (Object.getOwnPropertySymbols) {
-	              var symbols = Object.getOwnPropertySymbols(object);
-	              enumerableOnly && (symbols = symbols.filter(function (sym) {
-	                return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-	              })), keys.push.apply(keys, symbols);
+	              var o = Object.getOwnPropertySymbols(e);
+	              r && (o = o.filter(function (r) {
+	                return Object.getOwnPropertyDescriptor(e, r).enumerable;
+	              })), t.push.apply(t, o);
 	            }
-	            return keys;
+	            return t;
 	          }
-	          function _objectSpread(target) {
-	            for (var i = 1; i < arguments.length; i++) {
-	              var source = null != arguments[i] ? arguments[i] : {};
-	              i % 2 ? ownKeys(Object(source), true).forEach(function (key) {
-	                (0, _defineProperty2["default"])(target, key, source[key]);
-	              }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-	                Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	          function _objectSpread(e) {
+	            for (var r = 1; r < arguments.length; r++) {
+	              var t = null != arguments[r] ? arguments[r] : {};
+	              r % 2 ? ownKeys(Object(t), true).forEach(function (r) {
+	                (0, _defineProperty2["default"])(e, r, t[r]);
+	              }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+	                Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 	              });
 	            }
-	            return target;
+	            return e;
 	          }
 	          /**
 	           * Class embodying Load functionality.
@@ -13771,16 +14096,18 @@ var Spyral = (function () {
 	            function Load() {
 	              (0, _classCallCheck2["default"])(this, Load);
 	            }
-	            (0, _createClass2["default"])(Load, null, [{
+	            return (0, _createClass2["default"])(Load, null, [{
 	              key: "setBaseUrl",
+	              value:
 	              /**
 	               * Set the base URL for use with the Load class
 	               * @param {string} baseUrl 
 	               * @static
 	               */
-	              value: function setBaseUrl(baseUrl) {
+	              function setBaseUrl(baseUrl) {
 	                this.baseUrl = baseUrl;
 	              }
+
 	              /**
 	               * Make a call to trombone
 	               * @param {Object} config 
@@ -13795,7 +14122,7 @@ var Spyral = (function () {
 	                var params = arguments.length > 1 ? arguments[1] : undefined;
 	                var url = new URL(config.trombone ? config.trombone : this.baseUrl + 'trombone', window.location.origin);
 	                delete config.trombone;
-	                var all = _objectSpread({}, config, {}, params);
+	                var all = _objectSpread(_objectSpread({}, config), params);
 	                for (var key in all) {
 	                  if (all[key] === undefined) {
 	                    delete all[key];
@@ -13818,23 +14145,21 @@ var Spyral = (function () {
 	                      // opt.headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' };
 	                      opt.body = all['body'];
 	                    } else {
-	                      (function () {
-	                        // don't set header as it messes up boundaries
-	                        var formData = new FormData();
-	                        var _loop = function _loop(_key) {
-	                          if (all[_key] instanceof Array) {
-	                            all[_key].forEach(function (val) {
-	                              formData.append(_key, val);
-	                            });
-	                          } else {
-	                            formData.set(_key, all[_key]);
-	                          }
-	                        };
-	                        for (var _key in all) {
-	                          _loop(_key);
+	                      // don't set header as it messes up boundaries
+	                      var formData = new FormData();
+	                      var _loop = function _loop(_key) {
+	                        if (all[_key] instanceof Array) {
+	                          all[_key].forEach(function (val) {
+	                            formData.append(_key, val);
+	                          });
+	                        } else {
+	                          formData.set(_key, all[_key]);
 	                        }
-	                        opt.body = formData;
-	                      })();
+	                      };
+	                      for (var _key in all) {
+	                        _loop(_key);
+	                      }
+	                      opt.body = formData;
 	                    }
 	                  } else {
 	                    var _loop2 = function _loop2(_key2) {
@@ -13866,6 +14191,7 @@ var Spyral = (function () {
 	                  }
 	                });
 	              }
+
 	              /**
 	               * Fetch content from a URL, often resolving cross-domain data constraints
 	               * @param {string} urlToFetch 
@@ -13893,6 +14219,7 @@ var Spyral = (function () {
 	                  throw err;
 	                });
 	              }
+
 	              /**
 	               * Fetch HTML content from a URL
 	               * @param {string} url 
@@ -13906,6 +14233,7 @@ var Spyral = (function () {
 	                  return new DOMParser().parseFromString(text, 'text/html');
 	                });
 	              }
+
 	              /**
 	               * Fetch XML content from a URL
 	               * @param {string} url 
@@ -13919,6 +14247,7 @@ var Spyral = (function () {
 	                  return new DOMParser().parseFromString(text, 'text/xml');
 	                });
 	              }
+
 	              /**
 	               * Fetch JSON content from a URL
 	               * @param {string} url 
@@ -13932,6 +14261,7 @@ var Spyral = (function () {
 	                  return response.json();
 	                });
 	              }
+
 	              /**
 	               * Fetch text content from a URL
 	               * @param {string} url 
@@ -13946,18 +14276,16 @@ var Spyral = (function () {
 	                });
 	              }
 	            }]);
-	            return Load;
 	          }();
 	          (0, _defineProperty2["default"])(Load, "baseUrl", undefined);
-	          var _default = Load;
-	          exports["default"] = _default;
+	          exports["default"] = Load;
 	        }, {
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/defineProperty": 8,
-	          "@babel/runtime/helpers/interopRequireDefault": 9
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/defineProperty": 9,
+	          "@babel/runtime/helpers/interopRequireDefault": 10
 	        }],
-	        24: [function (require, module, exports) {
+	        35: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -14070,7 +14398,7 @@ var Spyral = (function () {
 	              this.initGraph();
 	              return this;
 	            }
-	            (0, _createClass2["default"])(NetworkGraph, [{
+	            return (0, _createClass2["default"])(NetworkGraph, [{
 	              key: "initGraph",
 	              value: function initGraph() {
 	                var _this2 = this;
@@ -14270,17 +14598,15 @@ var Spyral = (function () {
 	                this.target.parentElement.prepend(styleElement);
 	              }
 	            }]);
-	            return NetworkGraph;
 	          }();
-	          var _default = NetworkGraph;
-	          exports["default"] = _default;
+	          exports["default"] = NetworkGraph;
 	        }, {
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/defineProperty": 8,
-	          "@babel/runtime/helpers/interopRequireDefault": 9
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/defineProperty": 9,
+	          "@babel/runtime/helpers/interopRequireDefault": 10
 	        }],
-	        25: [function (require, module, exports) {
+	        36: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -14309,11 +14635,11 @@ var Spyral = (function () {
 	           *
 	           * Provide a nested array of data with multiple rows:
 	           * 
-	           *		let table = createTable([[1,2],[3,4]]);
+	           *  	let table = createTable([[1,2],[3,4]]);
 	           * 
 	           * Same nested array, but with a second argument specifying headers
 	           * 
-	           *		let table = createTable([[1,2],[3,4]], {headers: ["one","two"]});
+	           *  	let table = createTable([[1,2],[3,4]], {headers: ["one","two"]});
 	           * 
 	           * Create table with comma-separated values:
 	           * 
@@ -14321,7 +14647,7 @@ var Spyral = (function () {
 	           * 
 	           * Create table with tab-separated values
 	           * 
-	           *		let table = createTable("one\\ttwo\\n1\\t2\\n3\\t4");
+	           *  	let table = createTable("one\\ttwo\\n1\\t2\\n3\\t4");
 	           * 
 	           * Create table with array of objects
 	           * 
@@ -14329,19 +14655,19 @@ var Spyral = (function () {
 	           * 
 	           * It's also possible simple to create a sorted frequency table from an array of values:
 	           * 
-	           *		let table = createTable(["one","two","one"], {count: "vertical", headers: ["Term","Count"]})
+	           *  	let table = createTable(["one","two","one"], {count: "vertical", headers: ["Term","Count"]})
 	           * 
 	           * Working with a Corpus is easy. For instance, we can create a table from the top terms:
 	           * 
-	           *		loadCorpus("austen").terms({limit:500, stopList: 'auto'}).then(terms => {
-	           *			return createTable(terms);
-	           *		})
+	           *  	loadCorpus("austen").terms({limit:500, stopList: 'auto'}).then(terms => {
+	           *  		return createTable(terms);
+	           *  	})
 	           * 
 	           * Similarly, we could create a frequency table from the first 1,000 words of the corpus:
 	           * 
-	           *		loadCorpus("austen").words({limit:1000, docIndex: 0, stopList: 'auto'}).then(words => {
-	           *			return createTable(words, {count: "vertical"});
-	           *		});
+	           *  	loadCorpus("austen").words({limit:1000, docIndex: 0, stopList: 'auto'}).then(words => {
+	           *  		return createTable(words, {count: "vertical"});
+	           *  	});
 	           *
 	           * Some of the configuration options are as follows:
 	           * 
@@ -14505,7 +14831,7 @@ var Spyral = (function () {
 	             * @param {(Object|Array)} data
 	             * @returns {Spyral.Table}
 	             */
-	            (0, _createClass2["default"])(Table, [{
+	            return (0, _createClass2["default"])(Table, [{
 	              key: "setHeaders",
 	              value: function setHeaders(data) {
 	                var _this2 = this;
@@ -14524,6 +14850,7 @@ var Spyral = (function () {
 	                }
 	                return this;
 	              }
+
 	              /**
 	               * Add rows to the Table
 	               * @param {Array} data
@@ -14538,6 +14865,7 @@ var Spyral = (function () {
 	                }, this);
 	                return this;
 	              }
+
 	              /**
 	               * Add a row to the Table
 	               * @param {(Array|Object)} data
@@ -14556,6 +14884,7 @@ var Spyral = (function () {
 	                this.setRow(this.rows(), data, true);
 	                return this;
 	              }
+
 	              /**
 	               * Set a row
 	               * @param {(number|string)} ind The row index
@@ -14605,6 +14934,7 @@ var Spyral = (function () {
 	                }
 	                return this;
 	              }
+
 	              /**
 	               * Set a column
 	               * @param {(number|string)} ind The column index
@@ -14641,6 +14971,7 @@ var Spyral = (function () {
 	                }
 	                return this;
 	              }
+
 	              /**
 	               * Add to or set a cell value
 	               * @param {(number|string)} row The row index
@@ -14657,6 +14988,7 @@ var Spyral = (function () {
 	                this._rows[rowIndex][columnIndex] = val && !overwrite ? val + value : value;
 	                return this;
 	              }
+
 	              /**
 	               * Get the value of a cell
 	               * @param {(number|string)} rowInd The row index
@@ -14668,6 +15000,7 @@ var Spyral = (function () {
 	              value: function cell(rowInd, colInd) {
 	                return this._rows[this.getRowIndex(rowInd)][this.getColumnIndex(colInd)];
 	              }
+
 	              /**
 	               * Set the value of a cell
 	               * @param {(number|string)} row The row index
@@ -14681,6 +15014,7 @@ var Spyral = (function () {
 	                this.updateCell(row, column, value, true);
 	                return this;
 	              }
+
 	              /**
 	               * Get (and create) the row index
 	               * @param {(number|string)} ind The index
@@ -14716,6 +15050,7 @@ var Spyral = (function () {
 	                }
 	                throw new Error('Please provide a valid row (number or named row)');
 	              }
+
 	              /**
 	               * Get (and create) the column index
 	               * @param {(number|string)} ind The index
@@ -14746,6 +15081,7 @@ var Spyral = (function () {
 	                }
 	                throw new Error('Please provide a valid column (number or named column)');
 	              }
+
 	              /**
 	               * Add a column (at the specified index)
 	               * @param {(Object|String)} config
@@ -14792,6 +15128,7 @@ var Spyral = (function () {
 	                });
 	                return this;
 	              }
+
 	              /**
 	               * This function returns different values depending on the arguments provided.
 	               * When there are no arguments, it returns the number of rows in this table.
@@ -14859,6 +15196,7 @@ var Spyral = (function () {
 	                  return rows;
 	                }
 	              }
+
 	              /**
 	               * Get the specified row
 	               * @param {(number|string)} ind
@@ -14879,6 +15217,7 @@ var Spyral = (function () {
 	                  return row;
 	                }
 	              }
+
 	              /**
 	               * This function returns different values depending on the arguments provided.
 	               * When there are no arguments, it returns the number of columns in this table.
@@ -14941,6 +15280,7 @@ var Spyral = (function () {
 	                  return columns;
 	                }
 	              }
+
 	              /**
 	               * Get the specified column
 	               * @param {(number|string)} ind
@@ -14967,6 +15307,7 @@ var Spyral = (function () {
 	                  });
 	                }
 	              }
+
 	              /**
 	               * Get the specified header
 	               * @param {(number|string)} ind
@@ -14975,13 +15316,14 @@ var Spyral = (function () {
 	            }, {
 	              key: "header",
 	              value: function header(ind) {
-	                var _this10 = this;
+	                var _this0 = this;
 	                var keys = Object.keys(this._headers);
 	                var i = this.getColumnIndex(ind);
 	                return keys[keys.findIndex(function (k) {
-	                  return i === _this10._headers[k];
+	                  return i === _this0._headers[k];
 	                })];
 	              }
+
 	              /**
 	               * This function returns different values depending on the arguments provided.
 	               * When there are no arguments, it returns the number of headers in this table.
@@ -14994,7 +15336,7 @@ var Spyral = (function () {
 	            }, {
 	              key: "headers",
 	              value: function headers(inds) {
-	                var _this11 = this;
+	                var _this1 = this;
 	                // return length
 	                if (inds === undefined) {
 	                  return Object.keys(this._headers).length;
@@ -15012,7 +15354,7 @@ var Spyral = (function () {
 	                // return specified rows
 	                if (Array.isArray(inds)) {
 	                  return inds.map(function (i) {
-	                    return _this11.header(i);
+	                    return _this1.header(i);
 	                  });
 	                }
 
@@ -15022,10 +15364,11 @@ var Spyral = (function () {
 	                    other[_key5 - 1] = arguments[_key5];
 	                  }
 	                  return [inds].concat(other).map(function (i) {
-	                    return _this11.header(i);
+	                    return _this1.header(i);
 	                  });
 	                }
 	              }
+
 	              /**
 	               * Does the specified column exist
 	               * @param {(number|string)} ind
@@ -15036,6 +15379,7 @@ var Spyral = (function () {
 	              value: function hasColumn(ind) {
 	                return ind in this._headers;
 	              }
+
 	              /**
 	               * Runs the specified function on each row.
 	               * The function is passed the row and the row index.
@@ -15048,6 +15392,7 @@ var Spyral = (function () {
 	                  return fn(r, i);
 	                });
 	              }
+
 	              /**
 	               * Get the minimum value in the specified row
 	               * @param {(number|string)} ind
@@ -15058,6 +15403,7 @@ var Spyral = (function () {
 	              value: function rowMin(ind) {
 	                return Math.min.apply(null, this.row(ind));
 	              }
+
 	              /**
 	               * Get the maximum value in the specified row
 	               * @param {(number|string)} ind
@@ -15068,6 +15414,7 @@ var Spyral = (function () {
 	              value: function rowMax(ind) {
 	                return Math.max.apply(null, this.row(ind));
 	              }
+
 	              /**
 	               * Get the minimum value in the specified column
 	               * @param {(number|string)} ind
@@ -15078,6 +15425,7 @@ var Spyral = (function () {
 	              value: function columnMin(ind) {
 	                return Math.min.apply(null, this.column(ind));
 	              }
+
 	              /**
 	               * Get the maximum value in the specified column
 	               * @param {(number|string)} ind
@@ -15088,6 +15436,7 @@ var Spyral = (function () {
 	              value: function columnMax(ind) {
 	                return Math.max.apply(null, this.column(ind));
 	              }
+
 	              /**
 	               * Get the sum of the values in the specified row
 	               * @param {(number|string)} ind
@@ -15098,6 +15447,7 @@ var Spyral = (function () {
 	              value: function rowSum(ind) {
 	                return Table.sum(this.row(ind));
 	              }
+
 	              /**
 	               * Get the sum of the values in the specified column
 	               * @param {(number|string)} ind
@@ -15108,6 +15458,7 @@ var Spyral = (function () {
 	              value: function columnSum(ind) {
 	                return Table.sum(this.column(ind));
 	              }
+
 	              /**
 	               * Get the mean of the values in the specified row
 	               * @param {(number|string)} ind
@@ -15118,6 +15469,7 @@ var Spyral = (function () {
 	              value: function rowMean(ind) {
 	                return Table.mean(this.row(ind));
 	              }
+
 	              /**
 	               * Get the mean of the values in the specified column
 	               * @param {(number|string)} ind
@@ -15128,6 +15480,7 @@ var Spyral = (function () {
 	              value: function columnMean(ind) {
 	                return Table.mean(this.column(ind));
 	              }
+
 	              /**
 	               * Get the count of each unique value in the specified row
 	               * @param {(number|string)} ind
@@ -15138,6 +15491,7 @@ var Spyral = (function () {
 	              value: function rowCounts(ind) {
 	                return Table.counts(this.row(ind));
 	              }
+
 	              /**
 	               * Get the count of each unique value in the specified column
 	               * @param {(number|string)} ind
@@ -15148,6 +15502,7 @@ var Spyral = (function () {
 	              value: function columnCounts(ind) {
 	                return Table.counts(this.column(ind));
 	              }
+
 	              /**
 	               * Get the rolling mean for the specified row
 	               * @param {(number|string)} ind
@@ -15164,6 +15519,7 @@ var Spyral = (function () {
 	                }
 	                return means;
 	              }
+
 	              /**
 	               * Get the rolling mean for the specified column
 	               * @param {(number|string)} ind
@@ -15180,6 +15536,7 @@ var Spyral = (function () {
 	                }
 	                return means;
 	              }
+
 	              /**
 	               * Get the variance for the specified row
 	               * @param {(number|string)} ind
@@ -15190,6 +15547,7 @@ var Spyral = (function () {
 	              value: function rowVariance(ind) {
 	                return Table.variance(this.row(ind));
 	              }
+
 	              /**
 	               * Get the variance for the specified column
 	               * @param {(number|string)} ind
@@ -15200,6 +15558,7 @@ var Spyral = (function () {
 	              value: function columnVariance(ind) {
 	                return Table.variance(this.column(ind));
 	              }
+
 	              /**
 	               * Get the standard deviation for the specified row
 	               * @param {(number|string)} ind
@@ -15210,6 +15569,7 @@ var Spyral = (function () {
 	              value: function rowStandardDeviation(ind) {
 	                return Table.standardDeviation(this.row(ind));
 	              }
+
 	              /**
 	               * Get the standard deviation for the specified column
 	               * @param {(number|string)} ind
@@ -15220,6 +15580,7 @@ var Spyral = (function () {
 	              value: function columnStandardDeviation(ind) {
 	                return Table.standardDeviation(this.column(ind));
 	              }
+
 	              /**
 	               * Get the z scores for the specified row
 	               * @param {(number|string)} ind
@@ -15230,6 +15591,7 @@ var Spyral = (function () {
 	              value: function rowZScores(ind) {
 	                return Table.zScores(this.row(ind));
 	              }
+
 	              /**
 	               * Get the z scores for the specified column
 	               * @param {(number|string)} ind
@@ -15240,6 +15602,7 @@ var Spyral = (function () {
 	              value: function columnZScores(ind) {
 	                return Table.zScores(this.column(ind));
 	              }
+
 	              /**
 	               * TODO
 	               * Sort the specified rows
@@ -15248,7 +15611,7 @@ var Spyral = (function () {
 	            }, {
 	              key: "rowSort",
 	              value: function rowSort(inds, config) {
-	                var _this12 = this;
+	                var _this10 = this;
 	                // no inds, use all columns
 	                if (inds === undefined) {
 	                  inds = Array(this.columns()).fill().map(function (_, i) {
@@ -15264,7 +15627,7 @@ var Spyral = (function () {
 	                  return this.rowSort(function (a, b) {
 	                    var ind;
 	                    for (var i = 0, len = inds.length; i < len; i++) {
-	                      ind = _this12.getColumnIndex(inds[i]);
+	                      ind = _this10.getColumnIndex(inds[i]);
 	                      if (a !== b) {
 	                        if (typeof a[ind] === 'string' && typeof b[ind] === 'string') {
 	                          return a[ind].localeCompare(b[ind]);
@@ -15280,16 +15643,16 @@ var Spyral = (function () {
 	                  this._rows.sort(function (a, b) {
 	                    if (config && 'asObject' in config && config.asObject) {
 	                      var c = {};
-	                      for (var k in _this12._headers) {
-	                        c[k] = a[_this12._headers[k]];
+	                      for (var k in _this10._headers) {
+	                        c[k] = a[_this10._headers[k]];
 	                      }
 	                      var d = {};
-	                      for (var _k in _this12._headers) {
-	                        d[_k] = b[_this12._headers[_k]];
+	                      for (var _k in _this10._headers) {
+	                        d[_k] = b[_this10._headers[_k]];
 	                      }
-	                      return inds.apply(_this12, [c, d]);
+	                      return inds.apply(_this10, [c, d]);
 	                    } else {
-	                      return inds.apply(_this12, [a, b]);
+	                      return inds.apply(_this10, [a, b]);
 	                    }
 	                  });
 	                  if (config && 'reverse' in config && config.reverse) {
@@ -15298,6 +15661,7 @@ var Spyral = (function () {
 	                }
 	                return this;
 	              }
+
 	              /**
 	               * TODO
 	               * Sort the specified columns
@@ -15306,7 +15670,7 @@ var Spyral = (function () {
 	            }, {
 	              key: "columnSort",
 	              value: function columnSort(inds, config) {
-	                var _this13 = this;
+	                var _this11 = this;
 	                // no inds, use all columns
 	                if (inds === undefined) {
 	                  inds = Array(this.columns()).fill().map(function (_, i) {
@@ -15321,7 +15685,7 @@ var Spyral = (function () {
 	                if (Array.isArray(inds)) {
 	                  // convert to column names
 	                  var headers = inds.map(function (ind) {
-	                    return _this13.header(ind);
+	                    return _this11.header(ind);
 	                  });
 
 	                  // make sure we have all columns
@@ -15339,12 +15703,12 @@ var Spyral = (function () {
 	                  // reorder by columns
 	                  this._rows = this._rows.map(function (_, i) {
 	                    return headers.map(function (h) {
-	                      return _this13.cell(i, h);
+	                      return _this11.cell(i, h);
 	                    });
 	                  });
 	                  this._headers = {};
 	                  headers.forEach(function (h, i) {
-	                    return _this13._headers[h] = i;
+	                    return _this11._headers[h] = i;
 	                  });
 	                }
 	                if (typeof inds === 'function') {
@@ -15353,14 +15717,14 @@ var Spyral = (function () {
 	                    _headers = _headers.map(function (h, i) {
 	                      return {
 	                        header: h,
-	                        data: _this13._rows.map(function (r, j) {
-	                          return _this13.cell(i, j);
+	                        data: _this11._rows.map(function (r, j) {
+	                          return _this11.cell(i, j);
 	                        })
 	                      };
 	                    });
 	                  }
 	                  _headers.sort(function (a, b) {
-	                    return inds.apply(_this13, [a, b]);
+	                    return inds.apply(_this11, [a, b]);
 	                  });
 	                  _headers = _headers.map(function (h) {
 	                    return (0, _typeof2["default"])(h) === 'object' ? h.header : h;
@@ -15374,15 +15738,16 @@ var Spyral = (function () {
 	                  });
 	                  this._rows = this._rows.map(function (_, i) {
 	                    return _headers.map(function (h) {
-	                      return _this13.cell(i, h);
+	                      return _this11.cell(i, h);
 	                    });
 	                  });
 	                  this._headers = {};
 	                  _headers.forEach(function (h, i) {
-	                    return _this13._headers[h] = i;
+	                    return _this11._headers[h] = i;
 	                  });
 	                }
 	              }
+
 	              /**
 	               * Get a CSV representation of the Table
 	               * @param {Object} [config]
@@ -15403,6 +15768,7 @@ var Spyral = (function () {
 	                  }).join(',');
 	                }).join('\n');
 	              }
+
 	              /**
 	               * Get a TSV representation of the Table
 	               * @param {Object} [config]
@@ -15415,6 +15781,7 @@ var Spyral = (function () {
 	                  return row.join('\t');
 	                }).join('\n');
 	              }
+
 	              /**
 	               * Get an array of the rows of the Table.
 	               * @param {Boolean} [rowsAsObjects=false] If true, each row will be returned as an object with the headers as keys
@@ -15435,6 +15802,7 @@ var Spyral = (function () {
 	                  });
 	                }
 	              }
+
 	              /**
 	               * Set the target's contents to an HTML representation of the Table
 	               * @param {(Function|String|Object)} target
@@ -15460,6 +15828,7 @@ var Spyral = (function () {
 	                }
 	                return this;
 	              }
+
 	              /**
 	               * Same as {@link toString}.
 	               */
@@ -15469,6 +15838,7 @@ var Spyral = (function () {
 	                var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	                return this.toString(config);
 	              }
+
 	              /**
 	               * Displays an interactive table using [DataTables]{@link https://datatables.net/}
 	               * @param {HTMLElement} [target]
@@ -15500,6 +15870,7 @@ var Spyral = (function () {
 	                var dataTable = new DataTable(target.firstElementChild);
 	                return dataTable;
 	              }
+
 	              /**
 	               * Get an HTML representation of the Table
 	               * @param {Object} [config]
@@ -15533,6 +15904,7 @@ var Spyral = (function () {
 	                  }).join('') + '</tr>';
 	                }).join('') + '</tbody></table>';
 	              }
+
 	              /**
 	               * Show a chart representing the Table
 	               * @param {(String|HTMLElement)} [target]
@@ -15542,7 +15914,7 @@ var Spyral = (function () {
 	            }, {
 	              key: "chart",
 	              value: function chart() {
-	                var _this14 = this;
+	                var _this12 = this;
 	                var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 	                var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	                var _Chart$_handleTargetA = _chart["default"]._handleTargetAndConfig(target, config);
@@ -15597,7 +15969,7 @@ var Spyral = (function () {
 	                    this.rows(config.rows ? config.rows : true).forEach(function (row, i) {
 	                      config.series[i] = config.series[i] || {};
 	                      config.series[i].data = headers.map(function (h) {
-	                        return _this14.cell(i, h);
+	                        return _this12.cell(i, h);
 	                      });
 	                    });
 	                  } else if (config.seriesFrom === 'columns') {
@@ -15605,7 +15977,7 @@ var Spyral = (function () {
 	                      config.series[i] = config.series[i] || {};
 	                      config.series[i].data = [];
 	                      for (var r = 0; r < rowsCount; r++) {
-	                        config.series[i].data.push(_this14.cell(r, i));
+	                        config.series[i].data.push(_this12.cell(r, i));
 	                      }
 	                    });
 	                  }
@@ -15614,6 +15986,7 @@ var Spyral = (function () {
 	                delete config.seriesFrom;
 	                return _chart["default"].create(target, config);
 	              }
+
 	              /**
 	               * Create a new Table
 	               * @param {(Object|Array|String|Number)} data
@@ -15629,6 +16002,7 @@ var Spyral = (function () {
 	                }
 	                return (0, _construct2["default"])(Table, [data, config].concat(other));
 	              }
+
 	              /**
 	               * Fetch a Table from a source
 	               * @param {(String|Request)} input
@@ -15651,6 +16025,7 @@ var Spyral = (function () {
 	                  });
 	                });
 	              }
+
 	              /**
 	               * Get the count of each unique value in the data
 	               * @param {Array} data
@@ -15666,6 +16041,7 @@ var Spyral = (function () {
 	                });
 	                return vals;
 	              }
+
 	              /**
 	               * Compare two values
 	               * @param {(number|string)} a
@@ -15678,6 +16054,7 @@ var Spyral = (function () {
 	              value: function cmp(a, b) {
 	                return typeof a === 'string' && typeof b === 'string' ? a.localeCompare(b) : a - b;
 	              }
+
 	              /**
 	               * Get the sum of the provided values
 	               * @param {Array} data
@@ -15691,6 +16068,7 @@ var Spyral = (function () {
 	                  return a + b;
 	                }, 0);
 	              }
+
 	              /**
 	               * Get the mean of the provided values
 	               * @param {Array} data
@@ -15702,6 +16080,7 @@ var Spyral = (function () {
 	              value: function mean(data) {
 	                return Table.sum(data) / data.length;
 	              }
+
 	              /**
 	               * Get rolling mean for the provided values
 	               * @param {Array} data
@@ -15723,6 +16102,7 @@ var Spyral = (function () {
 	                  return sum / subset.length;
 	                });
 	              }
+
 	              /**
 	               * Get the variance for the provided values
 	               * @param {Array} data
@@ -15737,6 +16117,7 @@ var Spyral = (function () {
 	                  return Math.pow(num - m, 2);
 	                }));
 	              }
+
 	              /**
 	               * Get the standard deviation for the provided values
 	               * @param {Array} data
@@ -15748,6 +16129,7 @@ var Spyral = (function () {
 	              value: function standardDeviation(data) {
 	                return Math.sqrt(Table.variance(data));
 	              }
+
 	              /**
 	               * Get the z scores for the provided values
 	               * @param {Array} data
@@ -15763,6 +16145,7 @@ var Spyral = (function () {
 	                  return (num - m) / s;
 	                });
 	              }
+
 	              /**
 	               * Perform a zip operation of the provided arrays. Learn more about zip on [Wikipedia]{@link https://en.wikipedia.org/wiki/Convolution_%28computer_science%29}.
 	               * @param {Array} data
@@ -15794,7 +16177,6 @@ var Spyral = (function () {
 	                });
 	              }
 	            }]);
-	            return Table;
 	          }(); // this seems like a good balance between a built-in flexible parser and a heavier external parser
 	          // https://lowrey.me/parsing-a-csv-file-in-es6-javascript/
 	          var regex = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
@@ -15815,19 +16197,18 @@ var Spyral = (function () {
 	            }
 	            return arr;
 	          }
-	          var _default = Table;
-	          exports["default"] = _default;
+	          exports["default"] = Table;
 	        }, {
-	          "./chart.js": 21,
-	          "./util.js": 26,
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/construct": 6,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/interopRequireDefault": 9,
-	          "@babel/runtime/helpers/slicedToArray": 14,
-	          "@babel/runtime/helpers/typeof": 15
+	          "./chart.js": 32,
+	          "./util.js": 37,
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/construct": 7,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/interopRequireDefault": 10,
+	          "@babel/runtime/helpers/slicedToArray": 24,
+	          "@babel/runtime/helpers/typeof": 27
 	        }],
-	        26: [function (require, module, exports) {
+	        37: [function (require, module, exports) {
 
 	          var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 	          Object.defineProperty(exports, "__esModule", {
@@ -15846,15 +16227,16 @@ var Spyral = (function () {
 	            function Util() {
 	              (0, _classCallCheck2["default"])(this, Util);
 	            }
-	            (0, _createClass2["default"])(Util, null, [{
+	            return (0, _createClass2["default"])(Util, null, [{
 	              key: "id",
+	              value:
 	              /**
 	               * Generates a random ID of the specified length.
 	               * @param {Number} len The length of the ID to generate?
 	               * @returns {String}
 	               * @static
 	               */
-	              value: function id() {
+	              function id() {
 	                var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
 	                // based on https://stackoverflow.com/a/13403498
 	                var times = Math.ceil(len / 11);
@@ -15866,6 +16248,7 @@ var Spyral = (function () {
 	                id = letters[Math.floor(Math.random() * 26)] + id; // ensure the id starts with a letter
 	                return id.substring(0, len);
 	              }
+
 	              /**
 	               * 
 	               * @param {Array|Object|String} contents 
@@ -15883,6 +16266,7 @@ var Spyral = (function () {
 	                }
 	                return contents.toString();
 	              }
+
 	              /**
 	               * 
 	               * @param {String} before 
@@ -15895,6 +16279,7 @@ var Spyral = (function () {
 	              value: function more(before, _more, after) {
 	                return before + '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' + _more.substring(0, 500) + ' <a href="">+</a><div style="display: none">' + _more.substring(501) + '</div>' + after;
 	              }
+
 	              /**
 	               * Take a data URL and convert it to a Blob.
 	               * @param {String} dataUrl 
@@ -15916,6 +16301,7 @@ var Spyral = (function () {
 	                  type: mimeString
 	                });
 	              }
+
 	              /**
 	               * Take a Blob and convert it to a data URL.
 	               * @param {Blob} blob 
@@ -15937,6 +16323,7 @@ var Spyral = (function () {
 	                  }
 	                });
 	              }
+
 	              /**
 	               * Take a Blob and convert it to a String.
 	               * @param {Blob} blob 
@@ -15960,6 +16347,7 @@ var Spyral = (function () {
 	                  reader.readAsArrayBuffer(blob);
 	                });
 	              }
+
 	              /**
 	               * Takes an XML document and XSL stylesheet and returns the resulting transformation.
 	               * @param {(Document|String)} xmlDoc The XML document to transform
@@ -16007,6 +16395,7 @@ var Spyral = (function () {
 	                }
 	                return result;
 	              }
+
 	              /**
 	               * Checks the Document for a parser error and returns an Error if found, or null.
 	               * @ignore
@@ -16035,6 +16424,7 @@ var Spyral = (function () {
 	                  return null;
 	                }
 	              }
+
 	              /**
 	               * Loads an external script for use with your notebook.
 	               * @param {String} scriptUrl The URL of the script to load.
@@ -16055,6 +16445,7 @@ var Spyral = (function () {
 	                  document.body.appendChild(scriptsEl);
 	                });
 	              }
+
 	              /**
 	               * Returns true if the value is a String.
 	               * @param {*} val 
@@ -16066,6 +16457,7 @@ var Spyral = (function () {
 	              value: function isString(val) {
 	                return typeof val === 'string';
 	              }
+
 	              /**
 	               * Returns true if the value is a Number.
 	               * @param {*} val 
@@ -16077,6 +16469,7 @@ var Spyral = (function () {
 	              value: function isNumber(val) {
 	                return typeof val === 'number';
 	              }
+
 	              /**
 	               * Returns true if the value is a Boolean.
 	               * @param {*} val 
@@ -16088,6 +16481,7 @@ var Spyral = (function () {
 	              value: function isBoolean(val) {
 	                return typeof val === 'boolean';
 	              }
+
 	              /**
 	               * Returns true if the value is Undefined.
 	               * @param {*} val 
@@ -16099,6 +16493,7 @@ var Spyral = (function () {
 	              value: function isUndefined(val) {
 	                return typeof val === 'undefined';
 	              }
+
 	              /**
 	               * Returns true if the value is an Array.
 	               * @param {*} val 
@@ -16110,6 +16505,7 @@ var Spyral = (function () {
 	              value: function isArray(val) {
 	                return Object.prototype.toString.call(val) === '[object Array]';
 	              }
+
 	              /**
 	               * Returns true if the value is an Object.
 	               * @param {*} val 
@@ -16121,6 +16517,7 @@ var Spyral = (function () {
 	              value: function isObject(val) {
 	                return Object.prototype.toString.call(val) === '[object Object]';
 	              }
+
 	              /**
 	               * Returns true if the value is Null.
 	               * @param {*} val 
@@ -16132,6 +16529,7 @@ var Spyral = (function () {
 	              value: function isNull(val) {
 	                return Object.prototype.toString.call(val) === '[object Null]';
 	              }
+
 	              /**
 	               * Returns true if the value is a Node.
 	               * @param {*} val 
@@ -16143,6 +16541,7 @@ var Spyral = (function () {
 	              value: function isNode(val) {
 	                return val instanceof Node;
 	              }
+
 	              /**
 	               * Returns true if the value is a Function.
 	               * @param {*} val 
@@ -16155,6 +16554,7 @@ var Spyral = (function () {
 	                var typeString = Object.prototype.toString.call(val);
 	                return typeString === '[object Function]' || typeString === '[object AsyncFunction]';
 	              }
+
 	              /**
 	               * Returns true if the value is a Promise.
 	               * @param {*} val 
@@ -16170,6 +16570,7 @@ var Spyral = (function () {
 	                // general promise detection
 	                return !!val && ((0, _typeof2["default"])(val) === 'object' || typeof val === 'function') && typeof val.then === 'function';
 	              }
+
 	              /**
 	               * Returns true if the value is a Blob.
 	               * @param {*} val 
@@ -16181,6 +16582,7 @@ var Spyral = (function () {
 	              value: function isBlob(val) {
 	                return val instanceof Blob;
 	              }
+
 	              /**
 	               * Takes a MIME type and returns the related file extension.
 	               * Only handles file types supported by Voyant.
@@ -16241,6 +16643,7 @@ var Spyral = (function () {
 	                    }
 	                }
 	              }
+
 	              /**
 	               * Takes a file extension and returns the corresponding Voyant Document Format name.
 	               * @param {String} fileExtension 
@@ -16272,15 +16675,13 @@ var Spyral = (function () {
 	                }
 	              }
 	            }]);
-	            return Util;
 	          }();
-	          var _default = Util;
-	          exports["default"] = _default;
+	          exports["default"] = Util;
 	        }, {
-	          "@babel/runtime/helpers/classCallCheck": 5,
-	          "@babel/runtime/helpers/createClass": 7,
-	          "@babel/runtime/helpers/interopRequireDefault": 9,
-	          "@babel/runtime/helpers/typeof": 15
+	          "@babel/runtime/helpers/classCallCheck": 6,
+	          "@babel/runtime/helpers/createClass": 8,
+	          "@babel/runtime/helpers/interopRequireDefault": 10,
+	          "@babel/runtime/helpers/typeof": 27
 	        }]
 	      }, {}, [1])(1);
 	    });
@@ -16289,6 +16690,192 @@ var Spyral = (function () {
 	}
 
 	var voyantjsExports = requireVoyantjs();
+
+	class Provider {
+	  constructor(config, override) {
+	    if (override === undefined) {
+	      override = {};
+	    }
+
+
+
+	    this.label = override.label || config.label;
+	    this.url = override.url || config.url;
+	    this.model = override.model || config.model;
+	    this.needs_key = override.key || config.key;
+	    this.api = override.api || config.api;
+
+	    let system = override.system || config.system || "You are a helpful assistant";
+	    this.messages = [
+	      {"role": "system", "content": system}
+	    ];
+
+	    // Only used for huggingface models.
+	    this.pipeline = undefined;
+	  }
+
+	  async chat(message, config) {
+	    if (config === undefined) {
+	      config = {};
+	    }
+
+	    // Update messages
+	    this.messages.push(
+	      {"role": "user", "content": message}
+	    );
+
+	    console.log("running chat");
+
+	    let return_message;
+	    if (this.api === 'openai') {
+	      return_message = await this.open_ai_chat(message, config);
+	    } else if (this.api === "huggingface") {
+	      return_message = await this.hugging_face_chat(message, config);
+	    } else {
+	      throw new Error("Unknown api type")
+	    }
+
+	    console.log("got message");
+	    console.log(return_message);
+
+	    this.messages.push(return_message);
+	    return return_message.content;
+
+	  }
+
+	  async hugging_face_chat(message, config) {
+	    if (this.pipeline === undefined) {
+	      this.pipeline = await transformers.pipeline(
+	        "text-generation",
+	        this.model
+	      );
+	    }
+
+	    const output = await this.pipeline(this.messages, config);
+	    return output[0].generated_text.at(-1);
+	  }
+
+
+	  async open_ai_chat(message, config) {
+	    console.log("running open ai chat");
+
+	    const body = {
+	      model: this.model,
+	      messages: this.messages,
+	      stream: false,
+	      max_tokens: config.max_tokens | 600,
+	      temperature: config.temperature | 0.4
+	    };
+
+	    let headers = {
+	        'Content-Type': 'application/json'
+	    };
+
+	    if (this.needs_key) {
+	      let key = await this.get_api_key();
+	      headers["Authorization"] = 'Bearer ' + key;
+	    }
+
+	    console.log("about to run");
+
+	    const results = await fetch(this.url, {
+	      method: "POST",
+	      headers: headers,
+	      body: JSON.stringify(body)
+	    });
+
+	    console.log("done running");
+
+	    if (results.status === 401) {
+	      return "Invalid api key."
+	    } else if (results.status !== 200) {
+	      console.log(results);
+	      return `Server returned status code ${results.status}`
+	    }
+
+	    const output = await results.json();
+
+	    console.log("about to return");
+	    console.log(output.message);
+
+	    return output.message;
+	  }
+
+	  get_api_key(force=false) {
+	    const storage_name = "spyral-llm-keys";
+
+	    // Get entry from local storage
+	    let storage = localStorage.getItem(storage_name);
+	    if (storage === null) {
+	      storage = {};
+	    } else {
+	      storage = JSON.parse(storage);
+	    }
+
+	    // Return key if we already have it.
+	    if (!force && storage.hasOwnProperty(this.url)) {
+	      return storage[this.url];
+	    }
+
+	    // Get key from user if we don't.
+	    const message = `${this.label} needs your API key. This key is kept in this browser only and never sent to the Voyant servers.`;
+	    const key = window.prompt(message).trim();
+
+	    // Save key back to local storage
+	    storage[this.url] = key;
+	    localStorage.setItem(storage_name, JSON.stringify(storage));
+
+	    return key;
+	  }
+	}
+
+	let LLM_CONFIG = {
+	  'openai': {
+	    'label': 'Openai',
+	    'url': 'https://api.openai.com/v1/chat/completions',
+	    'model': 'gpt-4o-mini',
+	    'api': 'openai',
+	    'key': true
+	  },
+	  'gemini': {
+	    'label': 'Gemini',
+	    'url': 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+	    'model': 'gemini-3.5-flash',
+	    'api': 'openai',
+	    'key': true
+	  },
+	  'ollama': {
+	    'label': 'Ollama Local',
+	    'url': 'http://localhost:11434/api/chat',
+	    'model': 'qwen3',
+	    'api': 'openai',
+	    'key': false
+	  },
+	  'huggingface': {
+	    'label': 'HuggingFace',
+	    'url': undefined,
+	    'model': 'HuggingFaceTB/SmolLM2-360M-Instruct',
+	    'api': 'huggingface',
+	    'key': false
+	  },
+	  'vulcan': {
+	    'label': 'Vulcan',
+	    'url': 'https://experimentalvoyanttools.ca/llm/v1/chat/completions',
+	    'model': 'meta-llama/Llama-3.3-70B-Instruct',
+	    'api': 'openai',
+	    'key': true
+	  }
+	};
+
+	let LLM = {
+	  'openai': new Provider(LLM_CONFIG.openai),
+	  'gemini': new Provider(LLM_CONFIG.gemini),
+	  // Ollama Cloud doesn't work due to CORS  issues.
+	  // 'ollama_cloud': new Provider("Ollama Cloud", "https://ollama.com", "qwen3.5"),
+	  "ollama": new Provider(LLM_CONFIG.ollama),
+	  "huggingface": new Provider(LLM_CONFIG.huggingface),
+	  "vulcan": new Provider(LLM_CONFIG.vulcan),
+	};
 
 	/**
 	 * A helper for working with the Voyant Notebook app.
@@ -17502,6 +18089,9 @@ var Spyral = (function () {
 	 * @namespace Spyral
 	 */
 	const Spyral$1 = {
+		LLM,
+		LLM_CONFIG,
+		Provider,
 		Notebook,
 		Util: voyantjsExports.Util,
 		Metadata,
