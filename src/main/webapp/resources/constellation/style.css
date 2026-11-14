@@ -10,6 +10,16 @@
   stroke: hsl(98, 57%, 43%);
 }
 
+
+#constellationGraph .node.attached {
+  fill: red;
+  stroke: hsl(98, 57%, 43%);
+}
+
+#constellationGraph .link.attached {
+    stroke-width: 4;
+}
+
 #constellationGraph .link {
 	stroke: rgb(0, 0, 0);
 	stroke-opacity: 0.1;
