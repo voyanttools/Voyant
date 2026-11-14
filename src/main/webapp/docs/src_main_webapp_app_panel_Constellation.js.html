@@ -93,8 +93,8 @@ Ext.define('Voyant.panel.Constellation', {
 			distance: 'Distance Metric',
 			cosine: 'Cosine Similarity',
 			euclidean: 'Euclidean',
-			maxStrength: 'Max Strength',
-			maxConnections: 'Max Connections',
+			maxStrength: 'Connections',
+			// maxConnections: 'Max Connections',
 			linkStrength: 'Link Strength',
 			bodyStrength: 'Body Strength',
 			help: 'Constellation produces a specialized network graph of high frequency terms that are connected by similar word vectors.',
@@ -154,7 +154,7 @@ Ext.define('Voyant.panel.Constellation', {
 
 		metric: 'cosine',
 		maxStrength: 1000,
-		maxConnections: 50,
+		// maxConnections: 50,
 		linkStrength: 1500,
 		bodyStrength: -1500,
 
@@ -294,7 +294,7 @@ Ext.define('Voyant.panel.Constellation', {
 					xtype: 'slider',
 					fieldLabel: this.localize('maxStrength'),
 					minValue: 0,
-					maxValue: 8000,
+					maxValue: 100,
 					increment: 1,
 					listeners: {
 						render: function(field) {
@@ -302,22 +302,6 @@ Ext.define('Voyant.panel.Constellation', {
 						},
 						changecomplete: function(field, newVal) {
 							this.setMaxStrength(newVal);
-							this.updateGraph();
-						},
-						scope: this
-					}
-				},{
-					xtype: 'slider',
-					fieldLabel: this.localize('maxConnections'),
-					minValue: 2,
-					maxValue: 100,
-					increment: 1,
-					listeners: {
-						render: function(field) {
-							field.setValue(this.getMaxConnections());
-						},
-						changecomplete: function(field, newVal) {
-							this.setMaxConnections(newVal);
 							this.updateGraph();
 						},
 						scope: this
@@ -341,13 +325,13 @@ Ext.define('Voyant.panel.Constellation', {
 					xtype: 'slider',
 					fieldLabel: this.localize('bodyStrength'),
 					value: this.getBodyStrength(),
-					minValue: -3000,
-					maxValue: -1,
+					minValue: 1,
+					maxValue: 3000,
 					increment: 1,
 					listeners: {
 						change: function(field, newVal) {
 							this.setBodyStrength(newVal);
-							this.getChartData().simulation.force("body").strength(newVal);
+							this.getChartData().simulation.force("body").strength(-newVal);
     						this.getChartData().simulation.alpha(1).restart();
 						},
 						scope: this
@@ -387,6 +371,7 @@ Ext.define('Voyant.panel.Constellation', {
 						data: [],
 						listeners: {
 							add: function(store, records) {
+								console.log("adding value")
 								var record = records[0];
 								var node = this.parseSelection(record.get('label'));
 								this.getChartData().selection.add(node.id);
@@ -482,7 +467,17 @@ Ext.define('Voyant.panel.Constellation', {
 		simulation.force("body").strength(this.getBodyStrength());
 
 		svg.select("#nodes").on('click', function(event) {
-			var term = event.target.__data__.label;
+			// let selection = this.getChartData().selection;
+			// let id = event.target.__data__.id
+			// if (selection.has(id)) {
+			// 	this.down("#selectedTerms").getStore().remove([event.target.__data__], true)
+			// } else {
+			// 	this.down('#selectedTerms').getStore().loadRawData([event.target.__data__], true);
+			// }
+
+			// console.log(this.down('#selectedTerms').getStore())
+
+			//console.log(event.target.__data__)
 			this.down('#selectedTerms').getStore().loadRawData([event.target.__data__], true);
 			// this.dispatchEvent('termsClicked', this, [term]);
 		}.bind(this));
@@ -499,22 +494,20 @@ Ext.define('Voyant.panel.Constellation', {
 			simulation: simulation,
 			metric: metric,
 			cutoff: this.getMaxStrength(),
-			connections: this.getMaxConnections(),
+			// connections: this.getMaxConnections(),
 			hidden: false,//document.getElementById("hidetext").checked,
 			hide_unselected: this.down('#hideUnselected').getValue(),
 			selection: selection,
 			nodes: nodes,
 			edges: edges
 		});
-
-
 	},
 
 	updateGraph: function() {
 		var chartData = this.getChartData();
 		chartData.cutoff = this.getMaxStrength();
-		chartData.connections = this.getMaxConnections();
-		
+		// chartData.connections = this.getMaxConnections();
+
 		Voyant.panel.Constellation.constellation.update_graph(chartData);
 	},
 
