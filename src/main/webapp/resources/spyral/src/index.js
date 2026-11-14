@@ -1,5 +1,6 @@
 import {Corpus, Table, Load, Util, Chart, Categories, Analysis} from 'voyant';
 
+import { LLM, LLM_CONFIG, Provider } from './llm.js'
 import Notebook from './notebook';
 import Metadata from './metadata';
 
@@ -18,6 +19,9 @@ Util.DataViewer = DataViewer;
  * @namespace Spyral
  */
 const Spyral = {
+	LLM,
+	LLM_CONFIG,
+	Provider,
 	Notebook,
 	Util,
 	Metadata,
