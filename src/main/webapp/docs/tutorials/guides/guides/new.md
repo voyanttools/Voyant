@@ -2,6 +2,12 @@
 
 For the most recent updates to Voyant please see the [VoyantServer releases](https://github.com/voyanttools/VoyantServer/releases).
 
+## Voyant 2.6
+
+Highlights include:
+* [The Spyral Notebook environment]{@tutorial notebook}
+* [Constellation tool]{@tutorial constellation}
+
 ## Voyant 2.2
 
 Again, hundreds of bug fixes and refinements, most notably:

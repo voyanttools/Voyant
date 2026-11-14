@@ -8,12 +8,13 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -210,76 +211,53 @@ public class Trombone extends HttpServlet {
 
 		if (parameters.containsKey("fetchData")) {
 			URL url;
-			URLConnection c;
+			HttpURLConnection c;
 			try {
 				url = new URL(parameters.getParameterValue("fetchData").replaceAll(" ", "+"));
+				if (!isURLPermitted(url)) {
+					throw new SecurityException("URL is not permitted");
+				}
 				if (parameters.getParameterValue("forTool", "").equals("ServerMessage") == false) {
 					System.out.println("fetchData: "+url);
 				}
-				c = url.openConnection();
-//				StringBuilder sb = new StringBuilder();
-//				BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
-//				String inputLine;
-//				while ((inputLine = in.readLine()) != null) {
-//					sb.append(inputLine);
-//				}
-//				in.close();
-//				System.out.println(sb.toString());
+				c = (HttpURLConnection) url.openConnection();
+			} catch (MalformedURLException e) {
+				throw new IllegalArgumentException("Attempt to use a malformed URL: "+parameters.getParameterValue("fetchData"), e);
 			}
-			catch (MalformedURLException e) {
-				throw new IllegalArgumentException("Attempt to use a malformed URL: "+parameters.getParameterValue("fetchJSON"), e);
-			}
+
+			c.setInstanceFollowRedirects(false);
+			c.setConnectTimeout(15000);
+			c.setReadTimeout(60000);
 			c.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; Trombone)");
-			InputStream is = null;
-			try {
-				is = c.getInputStream();
-				c.setReadTimeout(60000);
+			try (InputStream is = c.getInputStream()) {
 				resp.setContentType(c.getContentType());
-//				if (parameters.containsKey("format")) {
-//					String format = parameters.getParameterValue("format").toUpperCase();
-//					if (format.equals("XML")) {
-//						resp.setContentType("application/xml;charset=UTF-8");
-//					} else if (format.equals("JSON")) {
-//						resp.setContentType("application/json;charset=UTF-8");
-//					}
-//				}
-				IOUtils.copy(is, resp.getWriter(), "UTF-8");
+				IOUtils.copy(is, resp.getWriter(), StandardCharsets.UTF_8);
 				resp.flushBuffer();
-			}
-			finally {
-				if (is!=null) {
-					is.close();
-				}
 			}
 			
 		}
 		else if (parameters.containsKey("fetchJSON")) {
 			URL url;
-			URLConnection c;
+			HttpURLConnection c;
 			try {
 				url = new URL(parameters.getParameterValue("fetchJSON").replaceAll(" ", "+"));
-				System.out.println(url);
-				c = url.openConnection();
-				c.setReadTimeout(0);
-			}
-			catch (MalformedURLException e) {
+				if (!isURLPermitted(url)) {
+					throw new SecurityException("URL is not permitted");
+				}
+				c = (HttpURLConnection) url.openConnection();
+			} catch (MalformedURLException e) {
 				throw new IllegalArgumentException("Attempt to use a malformed URL: "+parameters.getParameterValue("fetchJSON"), e);
 			}
+
+			c.setInstanceFollowRedirects(false);
+			c.setConnectTimeout(15000);
+			c.setReadTimeout(60000);
 			c.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; Trombone)");
-//	        c.setReadTimeout(readTimeoutMilliseconds); 
-//	        c.setConnectTimeout(connectTimeoutMilliseconds);
-			InputStream is = null;
-			try {
-				is = c.getInputStream();
+			try (InputStream is = c.getInputStream()) {
 				//application/json
 				resp.setContentType("application/json;charset=UTF-8");
-				IOUtils.copy(is, resp.getWriter(), "UTF-8");
+				IOUtils.copy(is, resp.getWriter(), StandardCharsets.UTF_8);
 				resp.flushBuffer();
-			}
-			finally {
-				if (is!=null) {
-					is.close();
-				}
 			}
 			
 		}
@@ -328,6 +306,29 @@ public class Trombone extends HttpServlet {
 			}
 		}
 		
+	}
+
+	private boolean isURLPermitted(URL url) {
+		String protocol = url.getProtocol().toLowerCase();
+		if (!"http".equals(protocol) && !"https".equals(protocol)) {
+			return false;
+		}
+		try {
+			String host = url.getHost();
+			if (host == null || host.isEmpty()) {
+				return false;
+			}
+			InetAddress[] addresses = InetAddress.getAllByName(host);
+			for (InetAddress address : addresses) {
+				if (address.isLinkLocalAddress() || address.isLoopbackAddress() || address.isSiteLocalAddress() || address.isAnyLocalAddress()) {
+					return false;
+				}
+			}
+			
+		} catch (UnknownHostException e) {
+			return false;
+		}
+		return true;
 	}
 
 	private void runTromboneController(FlexibleParameters parameters, Writer writer) throws IOException {

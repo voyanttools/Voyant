@@ -2,6 +2,7 @@ package org.voyanttools.voyant;
 
 import java.io.File;
 import java.io.Writer;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.xml.transform.Source;
@@ -17,6 +18,8 @@ import org.voyanttools.trombone.util.FlexibleParameters;
  * @author Stéfan Sinclair, Cyril Briquet
  */
 public class XslTransformer {
+
+	private final static Set<String> templates = Set.of("contexts2tsv","corpuscollocates2tsv","corpusentities2tsv","corpusterms2tsv","correlations2tsv","docTokens2idsAndText","docTokens2lemmas","docTokens2plainText","docTokens2spans","docTokens2textPlusTokenIds","docTokens2text","docTokens2words","docTokensPlusStructure2html","docTokensPlusStructureDToC","documents2tsv","documentterms2tsv","phrases2tsv");
 
 	static void transform(Source xml, Source xslt, Writer writer) throws TransformerException {
 		transform(new FlexibleParameters(), xml, xslt, writer);
@@ -49,7 +52,11 @@ public class XslTransformer {
 	}
 
 	public static Source getTemplateSource(String template, ServletContext servletContext) {
-		String path = servletContext.getRealPath("/resources/xsl");
-		return getTemplatePath(template, new File(path));
+		if (templates.contains(template)) {
+			String path = servletContext.getRealPath("/resources/xsl");
+			return getTemplatePath(template, new File(path));
+		} else {
+			throw new SecurityException("Invalid template specified");
+		}
 	}
 }
