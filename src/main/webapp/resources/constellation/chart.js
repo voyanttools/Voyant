@@ -33,13 +33,22 @@ function dragend(event, simulation) {
   event.subject.fy = null;
 }
 
-function dragdrag(event) {
+function dragdrag(event, simulation) {
    // The fx attribute fixes the element so the simulation no longer controls it
   event.subject.fx = event.x;
   event.subject.fy = event.y;
 }
 
-export function init_graph(width, height, graphId) {
+export function init_graph(width, height, graphId, link, body) {
+
+  if (link === undefined) {
+    link = 100
+  }
+
+  if (body === undefined) {
+    body = -500
+  }
+
 
   let nodes = [];
   let edges = [];
@@ -64,10 +73,10 @@ export function init_graph(width, height, graphId) {
     .force("y", d3.forceY(width / 2)) // Same as above
     .force("link", d3.forceLink(edges)
                      .id(d => d.id)
-                     .distance(d => d.sim * 100)
+                     .distance(d => d.sim * link)
                      .strength(1)) // Creates links and forces linked elements together
     .force("body", d3.forceManyBody()
-                     .strength(-500)) // Keeps circles apart if they are not linked
+                     .strength(body)) // Keeps circles apart if they are not linked
     .force("center", d3.forceCenter(width / 2, height / 2)) // Forces viewport towards center
     .on("tick", () => ticked(svg))
 
@@ -121,6 +130,7 @@ export function create_graph(chart_data, links, nodes, hidden=false, restart=tru
     .join("circle")
       .classed("node", true)
       .classed("selected", node => node.selected === true)
+      .classed("attached", node => node.attached === true)
       .attr("r", node => {
         if (node.selected === true) {
           return 30
@@ -128,12 +138,16 @@ export function create_graph(chart_data, links, nodes, hidden=false, restart=tru
         return 10
       })
       .on("click", (event) => {
-        chart_data.selection.add(event.target.__data__.id)
+        if (chart_data.selection.has(event.target.__data__.id)) {
+          chart_data.selection.delete(event.target.__data__.id)
+        } else {
+          chart_data.selection.add(event.target.__data__.id)
+        }
         update_selection(chart_data)
       })
       .call(d3.drag()
         .on("start", e => dragstart(e, simulation))
-        .on("drag", dragdrag)
+        .on("drag", e => dragdrag(e, simulation))
         .on("end", e => dragend(e, simulation))
       );
 
@@ -142,7 +156,8 @@ export function create_graph(chart_data, links, nodes, hidden=false, restart=tru
     .selectAll("line")
     .data(links)
     .join("line")
-      .classed("link", true);
+      .classed("link", true)
+      .classed("attached", edge => edge.attached === true);
 
   simulation
     .nodes(nodes)

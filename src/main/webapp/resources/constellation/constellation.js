@@ -34,6 +34,7 @@ export function insert_node(id, label, vector, chart_data) {
       "target": node,
       "sim": chart_data.metric(custom_node.vector, node.vector),
     }
+
     chart_data.edges.push(edge);
   }
 
@@ -60,6 +61,12 @@ export function update_graph(chart_data, restart=true) {
   // Update selection attribute on all nodes.
   for (let node of chart_data.nodes) {
     node.selected = chart_data.selection.has(node.id);
+    node.attached = false;
+  }
+
+  // Reset selection data on edges.
+  for (let edge of chart_data.edges) {
+    edge.attached = false;
   }
 
   // Find all edges that exist between the cutoffs.
@@ -74,6 +81,7 @@ export function update_graph(chart_data, restart=true) {
     if (edge.source.selected || edge.target.selected) {
       selection_connection.add(edge.source.id);
       selection_connection.add(edge.target.id);
+      edge.attached = true;
     }
 
     nodes_counter[edge.source.id] = (nodes_counter[edge.source.id] || 0) + 1
@@ -93,8 +101,12 @@ export function update_graph(chart_data, restart=true) {
     }
 
     // Prune nodes less with connections less than cut off.
-    if (nodes_counter[node.id] > chart_data.connections) {
-      return false;
+    // if (nodes_counter[node.id] > chart_data.connections) {
+    //   return false;
+    // }
+
+    if (selection_connection.has(node.id)) {
+      node.attached = true;
     }
 
     if (chart_data.hide_unselected) {
@@ -121,6 +133,7 @@ export function update_graph(chart_data, restart=true) {
 
 function create_edge(x, y, metric) {
   let sim = metric(x["vector"], y["vector"])
+
   return {
     "source": x,
     "target": y,
@@ -149,10 +162,11 @@ export function generate_edges(nodes, metric) {
     return x.sim - y.sim
   });
 
-  console.log("done generating edges")
+  console.log("done generating edges", edges.length);
 
   return edges;
 }
+
 
 export function update_selection(chart_data) {
   let fun_unselect = function(event) {
