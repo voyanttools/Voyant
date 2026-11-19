@@ -58,8 +58,7 @@ public class FlexibleParametersFactory {
 	 * @return {@link FlexibleParameters} instance
 	 * @throws Exception
 	 */
-	@SuppressWarnings("restriction")
-	public FlexibleParameters getInstance(HttpServletRequest request, boolean allowLocalFileSystemAccess) throws Exception {
+	private FlexibleParameters getInstance(HttpServletRequest request, boolean allowLocalFileSystemAccess) throws Exception {
 
 		if (request == null) {
 			throw new NullPointerException("illegal request");
@@ -86,7 +85,7 @@ public class FlexibleParametersFactory {
 				}
 				else { // file form field: this is uploaded, therefore the local access check can be bypassed
 					Path path = Files.createTempDirectory(tmpPath, "tmp.voyant.uploads");
-					File file = new File(path.toFile(), item.getName());
+					File file = InputSourcesBuilder.resolveSafeFile(path, item.getName());
 					item.write(file);
 					parametersDecoder.decodeParameter("upload", file.toString(), true);
 				}
