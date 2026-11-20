@@ -73,8 +73,7 @@ public class FlexibleParametersFactory {
 		
 		if (ServletFileUpload.isMultipartContent(request) && !(request instanceof Voyant.PostedInputRequestWrapper)) {
 			final List<FileItem> items = getRequestItems(request);
-			String tmpDir = AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty("java.io.tmpdir"));
-			Path tmpPath = Paths.get(tmpDir, "tmp.voyant.uploads");
+			Path tmpPath = InputSourcesBuilder.getTemporaryUploadsPath();
 			if (!Files.exists(tmpPath)) {
 				Files.createDirectory(tmpPath);
 			}
